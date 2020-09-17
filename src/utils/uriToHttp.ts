@@ -4,24 +4,24 @@
  */
 export default function uriToHttp(uri: string): string[] {
   try {
-    const parsed = new URL(uri)
+    const parsed = new URL(uri);
     if (parsed.protocol === 'http:') {
-      return ['https' + uri.substr(4), uri]
+      return ['https' + uri.substr(4), uri];
     } else if (parsed.protocol === 'https:') {
-      return [uri]
+      return [uri];
     } else if (parsed.protocol === 'ipfs:') {
-      const hash = parsed.href.match(/^ipfs:(\/\/)?(.*)$/)?.[2]
-      return [`https://cloudflare-ipfs.com/ipfs/${hash}/`, `https://ipfs.io/ipfs/${hash}/`]
+      const hash = parsed.href.match(/^ipfs:(\/\/)?(.*)$/)?.[2];
+      return [`https://cloudflare-ipfs.com/ipfs/${hash}/`, `https://ipfs.io/ipfs/${hash}/`];
     } else if (parsed.protocol === 'ipns:') {
-      const name = parsed.href.match(/^ipns:(\/\/)?(.*)$/)?.[2]
-      return [`https://cloudflare-ipfs.com/ipns/${name}/`, `https://ipfs.io/ipns/${name}/`]
+      const name = parsed.href.match(/^ipns:(\/\/)?(.*)$/)?.[2];
+      return [`https://cloudflare-ipfs.com/ipns/${name}/`, `https://ipfs.io/ipns/${name}/`];
     } else {
-      return []
+      return [];
     }
   } catch (error) {
     if (uri.toLowerCase().endsWith('.eth')) {
-      return [`https://${uri.toLowerCase()}.link`]
+      return [`https://${uri.toLowerCase()}.link`];
     }
-    return []
+    return [];
   }
 }

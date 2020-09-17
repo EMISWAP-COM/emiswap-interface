@@ -1,14 +1,14 @@
-import { MaxUint256 } from '@ethersproject/constants'
-import { TokenAmount, ETHER, Token, Trade, TradeType } from '@uniswap/sdk'
-import { getTradeVersion } from '../data/V1'
-import { Version } from '../hooks/useToggledVersion'
+import { MaxUint256 } from '@ethersproject/constants';
+import { TokenAmount, ETHER, Token, Trade, TradeType } from '@uniswap/sdk';
+import { getTradeVersion } from '../data/V1';
+import { Version } from '../hooks/useToggledVersion';
 
 function toHex(currencyAmount: TokenAmount): string {
-  return `0x${currencyAmount.raw.toString(16)}`
+  return `0x${currencyAmount.raw.toString(16)}`;
 }
 
 function deadlineFromNow(ttl: number): string {
-  return `0x${(Math.floor(new Date().getTime() / 1000) + ttl).toString(16)}`
+  return `0x${(Math.floor(new Date().getTime() / 1000) + ttl).toString(16)}`;
 }
 
 /**
@@ -18,60 +18,67 @@ function deadlineFromNow(ttl: number): string {
  */
 export default function v1SwapArguments(trade: Trade, options: Omit<any, 'feeOnTransfer'>): any {
   if (getTradeVersion(trade) !== Version.v1) {
-    throw new Error('invalid trade version')
+    throw new Error('invalid trade version');
   }
   if (trade.route.pairs.length > 2) {
-    throw new Error('too many pairs')
+    throw new Error('too many pairs');
   }
-  const isExactIn = trade.tradeType === TradeType.EXACT_INPUT
-  const inputETH = trade.inputAmount.token === ETHER
-  const outputETH = trade.outputAmount.token === ETHER
-  if (inputETH && outputETH) throw new Error('ETHER to ETHER')
-  const minimumAmountOut = toHex(trade.minimumAmountOut(options.allowedSlippage))
-  const maximumAmountIn = toHex(trade.maximumAmountIn(options.allowedSlippage))
-  const deadline = deadlineFromNow(options.ttl)
+  const isExactIn = trade.tradeType === TradeType.EXACT_INPUT;
+  const inputETH = trade.inputAmount.token === ETHER;
+  const outputETH = trade.outputAmount.token === ETHER;
+  if (inputETH && outputETH) throw new Error('ETHER to ETHER');
+  const minimumAmountOut = toHex(trade.minimumAmountOut(options.allowedSlippage));
+  const maximumAmountIn = toHex(trade.maximumAmountIn(options.allowedSlippage));
+  const deadline = deadlineFromNow(options.ttl);
   if (isExactIn) {
     if (inputETH) {
       return {
         methodName: 'ethToTokenTransferInput',
         args: [minimumAmountOut, deadline, options.recipient],
-        value: maximumAmountIn
-      }
+        value: maximumAmountIn,
+      };
     } else if (outputETH) {
       return {
         methodName: 'tokenToEthTransferInput',
         args: [maximumAmountIn, minimumAmountOut, deadline, options.recipient],
-        value: '0x0'
-      }
+        value: '0x0',
+      };
     } else {
-      const outputToken = trade.outputAmount.token
+      const outputToken = trade.outputAmount.token;
       // should never happen, needed for type check
       if (!(outputToken instanceof Token)) {
-        throw new Error('token to token')
+        throw new Error('token to token');
       }
       return {
         methodName: 'tokenToTokenTransferInput',
-        args: [maximumAmountIn, minimumAmountOut, '0x1', deadline, options.recipient, outputToken.address],
-        value: '0x0'
-      }
+        args: [
+          maximumAmountIn,
+          minimumAmountOut,
+          '0x1',
+          deadline,
+          options.recipient,
+          outputToken.address,
+        ],
+        value: '0x0',
+      };
     }
   } else {
     if (inputETH) {
       return {
         methodName: 'ethToTokenTransferOutput',
         args: [minimumAmountOut, deadline, options.recipient],
-        value: maximumAmountIn
-      }
+        value: maximumAmountIn,
+      };
     } else if (outputETH) {
       return {
         methodName: 'tokenToEthTransferOutput',
         args: [minimumAmountOut, maximumAmountIn, deadline, options.recipient],
-        value: '0x0'
-      }
+        value: '0x0',
+      };
     } else {
-      const output = trade.outputAmount.token
+      const output = trade.outputAmount.token;
       if (!(output instanceof Token)) {
-        throw new Error('invalid output amount currency')
+        throw new Error('invalid output amount currency');
       }
 
       return {
@@ -82,10 +89,10 @@ export default function v1SwapArguments(trade: Trade, options: Omit<any, 'feeOnT
           MaxUint256.toHexString(),
           deadline,
           options.recipient,
-          output.address
+          output.address,
         ],
-        value: '0x0'
-      }
+        value: '0x0',
+      };
     }
   }
 }

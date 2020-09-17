@@ -1,54 +1,56 @@
-import { Token, TokenAmount } from '@uniswap/sdk'
-import React, { useCallback, useContext, useState, useEffect } from 'react'
-import { ThemeContext } from 'styled-components'
-import { AutoColumn } from '../../components/Column'
-import { AutoRow } from '../../components/Row'
-import { SearchInput } from '../../components/SearchModal/styleds'
-import { useActiveWeb3React } from '../../hooks'
-import { useAllTokens, useToken } from '../../hooks/Tokens'
-import { useDefaultTokenList } from '../../state/lists/hooks'
-import { BackArrow, TYPE } from '../../theme'
-import { LightCard } from '../../components/Card'
-import { BodyWrapper } from '../AppBody'
-import { EmptyState } from './EmptyState'
-import UniV2PositionCard from '../../components/PositionCard/V1'
-import QuestionHelper from '../../components/QuestionHelper'
-import { Dots } from '../../components/swap/styleds'
-import { useAddUserToken } from '../../state/user/hooks'
-import { isDefaultToken } from '../../utils'
-import { useAllUniswapV2Pairs } from '../../data-mooniswap/UniswapV2'
+import { Token, TokenAmount } from '@uniswap/sdk';
+import React, { useCallback, useContext, useState, useEffect } from 'react';
+import { ThemeContext } from 'styled-components';
+import { AutoColumn } from '../../components/Column';
+import { AutoRow } from '../../components/Row';
+import { SearchInput } from '../../components/SearchModal/styleds';
+import { useActiveWeb3React } from '../../hooks';
+import { useAllTokens, useToken } from '../../hooks/Tokens';
+import { useDefaultTokenList } from '../../state/lists/hooks';
+import { BackArrow, TYPE } from '../../theme';
+import { LightCard } from '../../components/Card';
+import { BodyWrapper } from '../AppBody';
+import { EmptyState } from './EmptyState';
+import UniV2PositionCard from '../../components/PositionCard/V1';
+import QuestionHelper from '../../components/QuestionHelper';
+import { Dots } from '../../components/swap/styleds';
+import { useAddUserToken } from '../../state/user/hooks';
+import { isDefaultToken } from '../../utils';
+import { useAllUniswapV2Pairs } from '../../data-mooniswap/UniswapV2';
 
 export default function MigrateV1() {
-  const theme = useContext(ThemeContext)
-  const { account, chainId } = useActiveWeb3React()
+  const theme = useContext(ThemeContext);
+  const { account, chainId } = useActiveWeb3React();
 
-  const [tokenSearch, setTokenSearch] = useState<string>('')
-  const handleTokenSearchChange = useCallback(e => setTokenSearch(e.target.value), [setTokenSearch])
+  const [tokenSearch, setTokenSearch] = useState<string>('');
+  const handleTokenSearchChange = useCallback(e => setTokenSearch(e.target.value), [
+    setTokenSearch,
+  ]);
 
   // automatically add the search token
-  const token = useToken(tokenSearch)
-  const defaultTokens = useDefaultTokenList()
-  const isDefault = isDefaultToken(defaultTokens, token)
-  const allTokens = useAllTokens()
+  const token = useToken(tokenSearch);
+  const defaultTokens = useDefaultTokenList();
+  const isDefault = isDefaultToken(defaultTokens, token);
+  const allTokens = useAllTokens();
 
-  const addToken = useAddUserToken()
+  const addToken = useAddUserToken();
 
   useEffect(() => {
     if (token && !isDefault && !allTokens[token.address]) {
-      addToken(token)
+      addToken(token);
     }
-  }, [token, isDefault, addToken, allTokens])
+  }, [token, isDefault, addToken, allTokens]);
 
   // get UniswapV2 pairs with balances
-  const [uniswapV2Pairs, pairLoading] = useAllUniswapV2Pairs(account)
+  const [uniswapV2Pairs, pairLoading] = useAllUniswapV2Pairs(account);
 
-  const allUniV2WithLiquidity = []
+  const allUniV2WithLiquidity = [];
   for (let i = 0; i < uniswapV2Pairs.length; i++) {
-    const pair = uniswapV2Pairs[i]
+    const pair = uniswapV2Pairs[i];
 
     if (!allTokens?.[pair?.token0]) {
       if (pair?.token0?.toLowerCase() === token?.address?.toLowerCase()) {
-        pair.token0 = token.address
+        pair.token0 = token.address;
       } else {
         continue;
       }
@@ -56,28 +58,23 @@ export default function MigrateV1() {
 
     if (!allTokens?.[pair?.token1]) {
       if (pair?.token1?.toLowerCase() === token?.address?.toLowerCase()) {
-        pair.token1 = token.address
+        pair.token1 = token.address;
       } else {
         continue;
       }
     }
 
     const lpToken = new Token(chainId, pair.pair, 18, 'UNI-V2', 'Uniswap V2');
-    const token0 = allTokens[pair.token0]
-    const token1 = allTokens[pair.token1]
-    const bal = new TokenAmount(lpToken, pair.balance.toString())
+    const token0 = allTokens[pair.token0];
+    const token1 = allTokens[pair.token1];
+    const bal = new TokenAmount(lpToken, pair.balance.toString());
     const card = (
-      <UniV2PositionCard
-        key={pair.pair}
-        token0={token0}
-        token1={token1}
-        V1LiquidityBalance={bal}
-      />
-    )
+      <UniV2PositionCard key={pair.pair} token0={token0} token1={token1} V1LiquidityBalance={bal} />
+    );
     allUniV2WithLiquidity.push(card);
   }
 
-  const isLoading = uniswapV2Pairs?.length === 0 || pairLoading
+  const isLoading = uniswapV2Pairs?.length === 0 || pairLoading;
 
   return (
     <BodyWrapper style={{ padding: 24 }}>
@@ -91,7 +88,8 @@ export default function MigrateV1() {
         </AutoRow>
 
         <TYPE.body style={{ marginBottom: 8, fontWeight: 400 }}>
-          For each pool shown below, click migrate to remove your liquidity from Uniswap V2 and deposit it into Mooniswap.
+          For each pool shown below, click migrate to remove your liquidity from Uniswap V2 and
+          deposit it into Mooniswap.
         </TYPE.body>
 
         {!account ? (
@@ -124,5 +122,5 @@ export default function MigrateV1() {
         )}
       </AutoColumn>
     </BodyWrapper>
-  )
+  );
 }

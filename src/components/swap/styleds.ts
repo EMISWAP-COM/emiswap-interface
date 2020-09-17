@@ -1,12 +1,12 @@
-import styled, { css } from 'styled-components'
-import { AutoColumn } from '../Column'
-import { Text } from 'rebass'
+import styled, { css } from 'styled-components';
+import { AutoColumn } from '../Column';
+import { Text } from 'rebass';
 
-import NumericalInput from '../NumericalInput'
+import NumericalInput from '../NumericalInput';
 
 export const Wrapper = styled.div`
   position: relative;
-`
+`;
 
 export const ArrowWrapper = styled.div<{ clickable: boolean }>`
   padding: 2px;
@@ -20,18 +20,18 @@ export const ArrowWrapper = styled.div<{ clickable: boolean }>`
           }
         `
       : null}
-`
+`;
 
 export const SectionBreak = styled.div`
   height: 1px;
   width: 100%;
   background-color: ${({ theme }) => theme.bg3};
-`
+`;
 
 export const BottomGrouping = styled.div`
   margin-top: 12px;
   position: relative;
-`
+`;
 
 export const ErrorText = styled(Text)<{ severity?: 0 | 1 | 2 | 3 | 4 }>`
   color: ${({ theme, severity }) =>
@@ -42,12 +42,12 @@ export const ErrorText = styled(Text)<{ severity?: 0 | 1 | 2 | 3 | 4 }>`
       : severity === 1
       ? theme.text1
       : theme.green1};
-`
+`;
 
 export const InputGroup = styled(AutoColumn)`
   position: relative;
   padding: 40px 0 20px 0;
-`
+`;
 
 export const StyledNumerical = styled(NumericalInput)`
   text-align: center;
@@ -58,7 +58,7 @@ export const StyledNumerical = styled(NumericalInput)`
   ::placeholder {
     color: ${({ theme }) => theme.text4};
   }
-`
+`;
 export const StyledBalanceMaxMini = styled.button`
   height: 22px;
   width: 22px;
@@ -83,13 +83,13 @@ export const StyledBalanceMaxMini = styled.button`
     background-color: ${({ theme }) => theme.bg3};
     outline: none;
   }
-`
+`;
 
 export const TruncatedText = styled(Text)`
   text-overflow: ellipsis;
   width: 220px;
   overflow: hidden;
-`
+`;
 
 // styles
 export const Dots = styled.span`
@@ -111,4 +111,4 @@ export const Dots = styled.span`
       content: '...';
     }
   }
-`
+`;

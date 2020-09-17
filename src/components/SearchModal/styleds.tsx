@@ -1,6 +1,6 @@
-import styled from 'styled-components'
-import { AutoColumn } from '../Column'
-import { RowBetween, RowFixed } from '../Row'
+import styled from 'styled-components';
+import { AutoColumn } from '../Column';
+import { RowBetween, RowFixed } from '../Row';
 
 export const ModalInfo = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -10,17 +10,17 @@ export const ModalInfo = styled.div`
   justify-content: center;
   flex: 1;
   user-select: none;
-`
+`;
 
 export const FadedSpan = styled(RowFixed)`
   color: ${({ theme }) => theme.primary1};
   font-size: 14px;
-`
+`;
 
 export const GreySpan = styled.span`
   color: ${({ theme }) => theme.text3};
   font-weight: 400;
-`
+`;
 
 export const Input = styled.input`
   position: relative;
@@ -43,12 +43,12 @@ export const Input = styled.input`
   ::placeholder {
     color: ${({ theme }) => theme.text3};
   }
-`
+`;
 
 export const PaddedColumn = styled(AutoColumn)`
   padding: 20px;
   padding-bottom: 12px;
-`
+`;
 
 export const MenuItem = styled(RowBetween)`
   padding: 4px 20px;
@@ -59,7 +59,7 @@ export const MenuItem = styled(RowBetween)`
     background-color: ${({ theme, disabled }) => !disabled && theme.bg2};
   }
   opacity: ${({ disabled, selected }) => (disabled || selected ? 0.5 : 1)};
-`
+`;
 
 export const SearchInput = styled(Input)`
   transition: border 100ms;
@@ -67,4 +67,4 @@ export const SearchInput = styled(Input)`
     border: 1px solid ${({ theme }) => theme.primary1};
     outline: none;
   }
-`
+`;

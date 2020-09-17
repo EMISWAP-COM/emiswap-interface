@@ -1,24 +1,24 @@
-import { Token, TokenAmount, currencyEquals, ETHER, JSBI } from '@uniswap/sdk'
-import React, { CSSProperties, memo, useContext, useMemo } from 'react'
-import { FixedSizeList } from 'react-window'
-import { Text } from 'rebass'
-import { ThemeContext } from 'styled-components'
-import { useActiveWeb3React } from '../../hooks'
-import { useAllTokens } from '../../hooks/Tokens'
-import { useDefaultTokenList } from '../../state/lists/hooks'
-import { useAddUserToken, useRemoveUserAddedToken } from '../../state/user/hooks'
-import { useETHBalances } from '../../state/wallet/hooks'
-import { LinkStyledButton, TYPE } from '../../theme'
-import { ButtonSecondary } from '../Button'
-import Column, { AutoColumn } from '../Column'
-import { RowFixed } from '../Row'
-import CurrencyLogo from '../CurrencyLogo'
-import { FadedSpan, MenuItem } from './styleds'
-import Loader from '../Loader'
-import { isDefaultToken } from '../../utils'
+import { Token, TokenAmount, currencyEquals, ETHER, JSBI } from '@uniswap/sdk';
+import React, { CSSProperties, memo, useContext, useMemo } from 'react';
+import { FixedSizeList } from 'react-window';
+import { Text } from 'rebass';
+import { ThemeContext } from 'styled-components';
+import { useActiveWeb3React } from '../../hooks';
+import { useAllTokens } from '../../hooks/Tokens';
+import { useDefaultTokenList } from '../../state/lists/hooks';
+import { useAddUserToken, useRemoveUserAddedToken } from '../../state/user/hooks';
+import { useETHBalances } from '../../state/wallet/hooks';
+import { LinkStyledButton, TYPE } from '../../theme';
+import { ButtonSecondary } from '../Button';
+import Column, { AutoColumn } from '../Column';
+import { RowFixed } from '../Row';
+import CurrencyLogo from '../CurrencyLogo';
+import { FadedSpan, MenuItem } from './styleds';
+import Loader from '../Loader';
+import { isDefaultToken } from '../../utils';
 
 function currencyKey(currency: Token): string {
-  return currency instanceof Token ? currency.address : currency === ETHER ? 'ETHER' : ''
+  return currency instanceof Token ? currency.address : currency === ETHER ? 'ETHER' : '';
 }
 
 export default function CurrencyList({
@@ -27,35 +27,37 @@ export default function CurrencyList({
   selectedCurrency,
   onCurrencySelect,
   otherCurrency,
-  showSendWithSwap
+  showSendWithSwap,
 }: {
-  currencies: Token[]
-  selectedCurrency: Token
-  allBalances: { [tokenAddress: string]: TokenAmount }
-  onCurrencySelect: (currency: Token) => void
-  otherCurrency: Token
-  showSendWithSwap?: boolean
+  currencies: Token[];
+  selectedCurrency: Token;
+  allBalances: { [tokenAddress: string]: TokenAmount };
+  onCurrencySelect: (currency: Token) => void;
+  otherCurrency: Token;
+  showSendWithSwap?: boolean;
 }) {
-  const { account, chainId } = useActiveWeb3React()
-  const theme = useContext(ThemeContext)
-  const allTokens = useAllTokens()
-  const defaultTokens = useDefaultTokenList()
-  const addToken = useAddUserToken()
-  const removeToken = useRemoveUserAddedToken()
-  const ETHBalance = useETHBalances([account])[account]
+  const { account, chainId } = useActiveWeb3React();
+  const theme = useContext(ThemeContext);
+  const allTokens = useAllTokens();
+  const defaultTokens = useDefaultTokenList();
+  const addToken = useAddUserToken();
+  const removeToken = useRemoveUserAddedToken();
+  const ETHBalance = useETHBalances([account])[account];
 
   const CurrencyRow = useMemo(() => {
     return memo(function CurrencyRow({ index, style }: { index: number; style: CSSProperties }) {
-      const currency = index === 0 ? ETHER : currencies[index - 1]
-      const key = currencyKey(currency)
-      const isDefault = isDefaultToken(defaultTokens, currency)
-      const customAdded = Boolean(!isDefault && currency instanceof Token && allTokens[currency.address])
-      const balance = currency === ETHER ? ETHBalance : allBalances[key]
+      const currency = index === 0 ? ETHER : currencies[index - 1];
+      const key = currencyKey(currency);
+      const isDefault = isDefaultToken(defaultTokens, currency);
+      const customAdded = Boolean(
+        !isDefault && currency instanceof Token && allTokens[currency.address],
+      );
+      const balance = currency === ETHER ? ETHBalance : allBalances[key];
 
-      const zeroBalance = balance && JSBI.equal(JSBI.BigInt(0), balance.raw)
+      const zeroBalance = balance && JSBI.equal(JSBI.BigInt(0), balance.raw);
 
-      const isSelected = Boolean(selectedCurrency && currencyEquals(currency, selectedCurrency))
-      const otherSelected = Boolean(otherCurrency && currencyEquals(otherCurrency, currency))
+      const isSelected = Boolean(selectedCurrency && currencyEquals(currency, selectedCurrency));
+      const otherSelected = Boolean(otherCurrency && currencyEquals(otherCurrency, currency));
 
       return (
         <MenuItem
@@ -75,8 +77,8 @@ export default function CurrencyList({
                     Added by user
                     <LinkStyledButton
                       onClick={event => {
-                        event.stopPropagation()
-                        if (currency instanceof Token) removeToken(chainId, currency.address)
+                        event.stopPropagation();
+                        if (currency instanceof Token) removeToken(chainId, currency.address);
                       }}
                     >
                       (Remove)
@@ -88,8 +90,8 @@ export default function CurrencyList({
                     Found by address
                     <LinkStyledButton
                       onClick={event => {
-                        event.stopPropagation()
-                        if (currency instanceof Token) addToken(currency)
+                        event.stopPropagation();
+                        if (currency instanceof Token) addToken(currency);
                       }}
                     >
                       (Add)
@@ -121,8 +123,8 @@ export default function CurrencyList({
             )}
           </AutoColumn>
         </MenuItem>
-      )
-    })
+      );
+    });
   }, [
     ETHBalance,
     account,
@@ -137,8 +139,8 @@ export default function CurrencyList({
     removeToken,
     selectedCurrency,
     showSendWithSwap,
-    theme.primary1
-  ])
+    theme.primary1,
+  ]);
 
   return (
     <FixedSizeList
@@ -151,5 +153,5 @@ export default function CurrencyList({
     >
       {CurrencyRow}
     </FixedSizeList>
-  )
+  );
 }

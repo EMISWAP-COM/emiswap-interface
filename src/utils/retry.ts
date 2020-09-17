@@ -1,9 +1,9 @@
 function wait(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms))
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 function waitRandom(min: number, max: number): Promise<void> {
-  return wait(min + Math.round(Math.random() * Math.max(0, max - min)))
+  return wait(min + Math.round(Math.random() * Math.max(0, max - min)));
 }
 
 /**
@@ -16,10 +16,10 @@ function waitRandom(min: number, max: number): Promise<void> {
 // todo: support cancelling the retry
 export function retry<T>(
   fn: () => Promise<T>,
-  { n = 3, minWait = 500, maxWait = 1000 }: { n?: number; minWait?: number; maxWait?: number } = {}
+  { n = 3, minWait = 500, maxWait = 1000 }: { n?: number; minWait?: number; maxWait?: number } = {},
 ): Promise<T> {
   return fn().catch(error => {
-    if (n === 0) throw error
-    return waitRandom(minWait, maxWait).then(() => retry(fn, { n: n - 1, minWait, maxWait }))
-  })
+    if (n === 0) throw error;
+    return waitRandom(minWait, maxWait).then(() => retry(fn, { n: n - 1, minWait, maxWait }));
+  });
 }

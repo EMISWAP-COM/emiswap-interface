@@ -1,17 +1,19 @@
-import React from 'react'
-import styled, { css } from 'styled-components'
-import { animated, useTransition, useSpring } from 'react-spring'
-import { Spring } from 'react-spring/renderprops'
+import React from 'react';
+import styled, { css } from 'styled-components';
+import { animated, useTransition, useSpring } from 'react-spring';
+import { Spring } from 'react-spring/renderprops';
 
-import { DialogOverlay, DialogContent } from '@reach/dialog'
-import { isMobile } from 'react-device-detect'
-import '@reach/dialog/styles.css'
-import { transparentize } from 'polished'
-import { useGesture } from 'react-use-gesture'
+import { DialogOverlay, DialogContent } from '@reach/dialog';
+import { isMobile } from 'react-device-detect';
+import '@reach/dialog/styles.css';
+import { transparentize } from 'polished';
+import { useGesture } from 'react-use-gesture';
 
-const AnimatedDialogOverlay = animated(DialogOverlay)
+const AnimatedDialogOverlay = animated(DialogOverlay);
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const StyledDialogOverlay = styled(({ mobile, ...rest }) => <AnimatedDialogOverlay {...rest} />)<{ mobile: boolean }>`
+const StyledDialogOverlay = styled(({ mobile, ...rest }) => <AnimatedDialogOverlay {...rest} />)<{
+  mobile: boolean;
+}>`
   &[data-reach-dialog-overlay] {
     z-index: 2;
     display: flex;
@@ -38,14 +40,14 @@ const StyledDialogOverlay = styled(({ mobile, ...rest }) => <AnimatedDialogOverl
       z-index: -1;
     }
   }
-`
+`;
 
 // destructure to not pass custom props to Dialog DOM element
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const StyledDialogContent = styled(({ minHeight, maxHeight, mobile, isOpen, ...rest }) => (
   <DialogContent {...rest} />
 )).attrs({
-  'aria-label': 'dialog'
+  'aria-label': 'dialog',
 })`
   &[data-reach-dialog-content] {
     margin: 0 0 2rem 0;
@@ -83,15 +85,15 @@ const StyledDialogContent = styled(({ minHeight, maxHeight, mobile, isOpen, ...r
         `}
     `}
   }
-`
+`;
 
 interface ModalProps {
-  isOpen: boolean
-  onDismiss: () => void
-  minHeight?: number | false
-  maxHeight?: number
-  initialFocusRef?: React.RefObject<any>
-  children?: React.ReactNode
+  isOpen: boolean;
+  onDismiss: () => void;
+  minHeight?: number | false;
+  maxHeight?: number;
+  initialFocusRef?: React.RefObject<any>;
+  children?: React.ReactNode;
 }
 
 export default function Modal({
@@ -100,26 +102,26 @@ export default function Modal({
   minHeight = false,
   maxHeight = 50,
   initialFocusRef = null,
-  children
+  children,
 }: ModalProps) {
   const transitions = useTransition(isOpen, null, {
     config: { duration: 200 },
     from: { opacity: 0 },
     enter: { opacity: 1 },
-    leave: { opacity: 0 }
-  })
+    leave: { opacity: 0 },
+  });
 
-  const [{ y }, set] = useSpring(() => ({ y: 0, config: { mass: 1, tension: 210, friction: 20 } }))
+  const [{ y }, set] = useSpring(() => ({ y: 0, config: { mass: 1, tension: 210, friction: 20 } }));
   const bind = useGesture({
     onDrag: state => {
       set({
-        y: state.down ? state.movement[1] : 0
-      })
+        y: state.down ? state.movement[1] : 0,
+      });
       if (state.velocity > 3 && state.direction[1] > 0) {
-        onDismiss()
+        onDismiss();
       }
-    }
-  })
+    },
+  });
 
   if (isMobile) {
     return (
@@ -138,17 +140,17 @@ export default function Modal({
                 {initialFocusRef ? null : <div tabIndex={1} />}
                 <Spring // animation for entrance and exit
                   from={{
-                    transform: isOpen ? 'translateY(200px)' : 'translateY(100px)'
+                    transform: isOpen ? 'translateY(200px)' : 'translateY(100px)',
                   }}
                   to={{
-                    transform: isOpen ? 'translateY(0px)' : 'translateY(200px)'
+                    transform: isOpen ? 'translateY(0px)' : 'translateY(200px)',
                   }}
                 >
                   {props => (
                     <animated.div
                       {...bind()}
                       style={{
-                        transform: y.interpolate(y => `translateY(${y > 0 ? y : 0}px)`)
+                        transform: y.interpolate(y => `translateY(${y > 0 ? y : 0}px)`),
                       }}
                     >
                       <StyledDialogContent
@@ -165,17 +167,22 @@ export default function Modal({
                   )}
                 </Spring>
               </StyledDialogOverlay>
-            )
+            ),
         )}
       </>
-    )
+    );
   } else {
     return (
       <>
         {transitions.map(
           ({ item, key, props }) =>
             item && (
-              <StyledDialogOverlay key={key} style={props} onDismiss={onDismiss} initialFocusRef={initialFocusRef}>
+              <StyledDialogOverlay
+                key={key}
+                style={props}
+                onDismiss={onDismiss}
+                initialFocusRef={initialFocusRef}
+              >
                 <StyledDialogContent
                   aria-label="dialog content"
                   hidden={true}
@@ -186,9 +193,9 @@ export default function Modal({
                   {children}
                 </StyledDialogContent>
               </StyledDialogOverlay>
-            )
+            ),
         )}
       </>
-    )
+    );
   }
 }

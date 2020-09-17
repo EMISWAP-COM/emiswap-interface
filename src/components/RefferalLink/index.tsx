@@ -1,26 +1,25 @@
-import React, { useContext } from 'react'
+import React, { useContext } from 'react';
 
-import styled, { ThemeContext } from 'styled-components'
-import { RowFixed } from '../Row'
-import { Text } from 'rebass'
-import { TYPE } from '../../theme'
-import Copy from '../AccountDetails/Copy'
-import { useActiveWeb3React } from '../../hooks'
+import styled, { ThemeContext } from 'styled-components';
+import { RowFixed } from '../Row';
+import { Text } from 'rebass';
+import { TYPE } from '../../theme';
+import Copy from '../AccountDetails/Copy';
+import { useActiveWeb3React } from '../../hooks';
 
 const ReferralLinkBox = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-`
+`;
 
 function getRefferalLink(currentUserAddress: string): string {
-  return `https://mooniswap.exchange/#/swap?r=${currentUserAddress}`
+  return `https://mooniswap.exchange/#/swap?r=${currentUserAddress}`;
 }
 
 export default function ReferralLink() {
-
-  const theme = useContext(ThemeContext)
-  const { account } = useActiveWeb3React()
+  const theme = useContext(ThemeContext);
+  const { account } = useActiveWeb3React();
 
   return (
     <div>
@@ -41,5 +40,5 @@ export default function ReferralLink() {
         </ReferralLinkBox>
       </Text>
     </div>
-  )
+  );
 }

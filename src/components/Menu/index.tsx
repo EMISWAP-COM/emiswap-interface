@@ -1,16 +1,16 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect } from 'react';
 // import { Info, BookOpen, Code, PieChart, MessageCircle } from 'react-feather'
-import { BookOpen, Code, Info, MessageCircle, PieChart } from 'react-feather'
-import styled from 'styled-components'
-import { ReactComponent as MenuIcon } from '../../assets/images/menu.svg'
-import useToggle from '../../hooks/useToggle'
-import { ExternalLink } from '../../theme'
+import { BookOpen, Code, Info, MessageCircle, PieChart } from 'react-feather';
+import styled from 'styled-components';
+import { ReactComponent as MenuIcon } from '../../assets/images/menu.svg';
+import useToggle from '../../hooks/useToggle';
+import { ExternalLink } from '../../theme';
 
 const StyledMenuIcon = styled(MenuIcon)`
   path {
     stroke: ${({ theme }) => theme.text1};
   }
-`
+`;
 
 const StyledMenuButton = styled.button`
   width: 100%;
@@ -35,7 +35,7 @@ const StyledMenuButton = styled.button`
   svg {
     margin-top: 2px;
   }
-`
+`;
 
 const StyledMenu = styled.div`
   margin-left: 0.5rem;
@@ -45,13 +45,13 @@ const StyledMenu = styled.div`
   position: relative;
   border: none;
   text-align: left;
-`
+`;
 
 const MenuFlyout = styled.span`
   min-width: 9.125rem;
   background-color: ${({ theme }) => theme.bg3};
-  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
-    0px 24px 32px rgba(0, 0, 0, 0.01);
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04),
+    0px 16px 24px rgba(0, 0, 0, 0.04), 0px 24px 32px rgba(0, 0, 0, 0.01);
   border-radius: 0.5rem;
   padding: 0.5rem;
   display: flex;
@@ -61,7 +61,7 @@ const MenuFlyout = styled.span`
   top: 3rem;
   right: 0rem;
   z-index: 100;
-`
+`;
 
 const MenuItem = styled(ExternalLink)`
   flex: 1;
@@ -75,32 +75,32 @@ const MenuItem = styled(ExternalLink)`
   > svg {
     margin-right: 8px;
   }
-`
+`;
 
-const CODE_LINK = 'https://github.com/CryptoManiacsZone/mooniswap'
+const CODE_LINK = 'https://github.com/CryptoManiacsZone/mooniswap';
 
 export default function Menu() {
-  const node = useRef<HTMLDivElement>()
-  const [open, toggle] = useToggle(false)
+  const node = useRef<HTMLDivElement>();
+  const [open, toggle] = useToggle(false);
 
   useEffect(() => {
     const handleClickOutside = e => {
       if (node.current?.contains(e.target) ?? false) {
-        return
+        return;
       }
-      toggle()
-    }
+      toggle();
+    };
 
     if (open) {
-      document.addEventListener('mousedown', handleClickOutside)
+      document.addEventListener('mousedown', handleClickOutside);
     } else {
-      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('mousedown', handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [open, toggle])
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [open, toggle]);
 
   return (
     <StyledMenu ref={node}>
@@ -109,7 +109,10 @@ export default function Menu() {
       </StyledMenuButton>
       {open && (
         <MenuFlyout>
-          <MenuItem id="link" href="https://medium.com/@1inch.exchange/1inch-revolutionizes-automated-market-maker-amm-segment-with-mooniswap-e068c20d94c">
+          <MenuItem
+            id="link"
+            href="https://medium.com/@1inch.exchange/1inch-revolutionizes-automated-market-maker-amm-segment-with-mooniswap-e068c20d94c"
+          >
             <Info size={14} />
             About
           </MenuItem>
@@ -144,5 +147,5 @@ export default function Menu() {
         </MenuFlyout>
       )}
     </StyledMenu>
-  )
+  );
 }

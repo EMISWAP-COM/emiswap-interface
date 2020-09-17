@@ -1,27 +1,27 @@
-import React, { useRef, useEffect, useContext, useState } from 'react'
-import { Settings, X } from 'react-feather'
-import styled from 'styled-components'
+import React, { useRef, useEffect, useContext, useState } from 'react';
+import { Settings, X } from 'react-feather';
+import styled from 'styled-components';
 
 import {
   useUserSlippageTolerance,
   useExpertModeManager,
   useUserDeadline,
-  useDarkModeManager
-} from '../../state/user/hooks'
-import SlippageTabs from '../SlippageTabs'
-import { RowFixed, RowBetween } from '../Row'
-import { TYPE } from '../../theme'
-import QuestionHelper from '../QuestionHelper'
-import Toggle from '../Toggle'
-import { ThemeContext } from 'styled-components'
-import { AutoColumn } from '../Column'
-import { ButtonError } from '../Button'
-import { useSettingsMenuOpen, useToggleSettingsMenu } from '../../state/application/hooks'
-import { Text } from 'rebass'
-import Modal from '../Modal'
-import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg'
-import Option from '../WalletModal/Option'
-import { ChiRow } from './ChiRow'
+  useDarkModeManager,
+} from '../../state/user/hooks';
+import SlippageTabs from '../SlippageTabs';
+import { RowFixed, RowBetween } from '../Row';
+import { TYPE } from '../../theme';
+import QuestionHelper from '../QuestionHelper';
+import Toggle from '../Toggle';
+import { ThemeContext } from 'styled-components';
+import { AutoColumn } from '../Column';
+import { ButtonError } from '../Button';
+import { useSettingsMenuOpen, useToggleSettingsMenu } from '../../state/application/hooks';
+import { Text } from 'rebass';
+import Modal from '../Modal';
+import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg';
+import Option from '../WalletModal/Option';
+import { ChiRow } from './ChiRow';
 
 const StyledMenuIcon = styled(Settings)`
   height: 20px;
@@ -30,7 +30,7 @@ const StyledMenuIcon = styled(Settings)`
   > * {
     stroke: ${({ theme }) => theme.text1};
   }
-`
+`;
 
 const StyledCloseIcon = styled(X)`
   height: 20px;
@@ -42,7 +42,7 @@ const StyledCloseIcon = styled(X)`
   > * {
     stroke: ${({ theme }) => theme.text1};
   }
-`
+`;
 
 const StyledMenuButton = styled.button`
   position: relative;
@@ -68,13 +68,13 @@ const StyledMenuButton = styled.button`
   svg {
     margin-top: 2px;
   }
-`
+`;
 const EmojiWrapper = styled.div`
   position: absolute;
   bottom: -6px;
   right: 0px;
   font-size: 14px;
-`
+`;
 
 const StyledMenu = styled.div`
   margin-left: 0.5rem;
@@ -84,7 +84,7 @@ const StyledMenu = styled.div`
   position: relative;
   border: none;
   text-align: left;
-`
+`;
 
 const OptionGrid = styled.div`
   display: grid;
@@ -93,13 +93,13 @@ const OptionGrid = styled.div`
     grid-template-columns: 1fr;
     grid-gap: 10px;
   `};
-`
+`;
 
 const MenuFlyout = styled.span`
   min-width: 20.125rem;
   background-color: ${({ theme }) => theme.bg1};
-  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
-    0px 24px 32px rgba(0, 0, 0, 0.01);
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04),
+    0px 16px 24px rgba(0, 0, 0, 0.04), 0px 24px 32px rgba(0, 0, 0, 0.01);
 
   border: 1px solid ${({ theme }) => theme.bg3};
 
@@ -116,13 +116,13 @@ const MenuFlyout = styled.span`
     min-width: 18.125rem;
     right: -46px;
   `};
-`
+`;
 
 const Break = styled.div`
   width: 100%;
   height: 1px;
   background-color: ${({ theme }) => theme.bg3};
-`
+`;
 
 const ModalContentWrapper = styled.div`
   display: flex;
@@ -131,7 +131,7 @@ const ModalContentWrapper = styled.div`
   padding: 2rem 0;
   background-color: ${({ theme }) => theme.bg2};
   border-radius: 20px;
-`
+`;
 
 const DropDownIcon = styled(DropDown)<{ selected: boolean }>`
   margin: 0 0.25rem 0.1rem 0.25rem;
@@ -142,36 +142,39 @@ const DropDownIcon = styled(DropDown)<{ selected: boolean }>`
     stroke: ${({ selected, theme }) => (selected ? theme.text1 : theme.white)};
     stroke-width: 1.5px;
   }
-`
+`;
 
 const langNameMap = {
-  'de': 'German',
-  'en': 'English',
+  de: 'German',
+  en: 'English',
   'es-AR': 'Spanish (Argentina)',
   'es-US': 'Spanish',
   'it-IT': 'Italian',
-  'iw': 'Hebrew',
-  'ro': 'Romanian',
-  'ru': 'Russian',
-  'vi': 'Vietnamese',
+  iw: 'Hebrew',
+  ro: 'Romanian',
+  ru: 'Russian',
+  vi: 'Vietnamese',
   'zh-CN': 'Chinese (PRC)',
   'zh-TW': 'Chinese (Taiwan)',
 };
 
-function LanguageSelect({handleClick}: {handleClick: () => void}) {
-  const langCode = window.localStorage.getItem('i18nextLng')
-  const theme = useContext(ThemeContext)
+function LanguageSelect({ handleClick }: { handleClick: () => void }) {
+  const langCode = window.localStorage.getItem('i18nextLng');
+  const theme = useContext(ThemeContext);
 
   return (
-    <span style={{
-      cursor: 'pointer',
-      fontSize: 14,
-      color: theme.text2,
-      display: 'flex',
-      borderRadius: 16,
-      border: `1px solid ${theme.text4}`,
-      padding: '0.25rem 0.5rem'
-    }} onClick={handleClick}>
+    <span
+      style={{
+        cursor: 'pointer',
+        fontSize: 14,
+        color: theme.text2,
+        display: 'flex',
+        borderRadius: 16,
+        border: `1px solid ${theme.text4}`,
+        padding: '0.25rem 0.5rem',
+      }}
+      onClick={handleClick}
+    >
       {langNameMap[langCode] || 'English'}
       <DropDownIcon selected={true}></DropDownIcon>
     </span>
@@ -179,29 +182,28 @@ function LanguageSelect({handleClick}: {handleClick: () => void}) {
 }
 
 function getLangOptions() {
-    const langList = [
-      {code: 'en', color: '#315CF5', iconName: 'en.svg' },
-      {code: 'de', color: '#315CF5', iconName: 'de.svg' },
-      {code: 'es-AR', color: '#315CF5', iconName: 'es-AR.svg' },
-      {code: 'es-US', color: '#315CF5', iconName: 'es-US.svg' },
-      {code: 'it-IT', color: '#315CF5', iconName: 'it-IT.svg' },
-      {code: 'iw', color: '#315CF5', iconName: 'iw.svg' },
-      {code: 'ro', color: '#315CF5', iconName: 'ro.svg' },
-      {code: 'ru', color: '#315CF5', iconName: 'ru.svg' },
-      {code: 'vi', color: '#315CF5', iconName: 'vi.svg' },
-      {code: 'zh-CN', color: '#315CF5', iconName: 'zh-CN.svg' },
-      {code: 'zh-TW', color: '#315CF5', iconName: 'zh-TW.svg' },
-    ];
+  const langList = [
+    { code: 'en', color: '#315CF5', iconName: 'en.svg' },
+    { code: 'de', color: '#315CF5', iconName: 'de.svg' },
+    { code: 'es-AR', color: '#315CF5', iconName: 'es-AR.svg' },
+    { code: 'es-US', color: '#315CF5', iconName: 'es-US.svg' },
+    { code: 'it-IT', color: '#315CF5', iconName: 'it-IT.svg' },
+    { code: 'iw', color: '#315CF5', iconName: 'iw.svg' },
+    { code: 'ro', color: '#315CF5', iconName: 'ro.svg' },
+    { code: 'ru', color: '#315CF5', iconName: 'ru.svg' },
+    { code: 'vi', color: '#315CF5', iconName: 'vi.svg' },
+    { code: 'zh-CN', color: '#315CF5', iconName: 'zh-CN.svg' },
+    { code: 'zh-TW', color: '#315CF5', iconName: 'zh-TW.svg' },
+  ];
 
   const selectedLangCode = window.localStorage.getItem('i18nextLng');
 
   return langList.map(option => {
-
     return (
       <Option
         id={`connect-${option.code}`}
         onClick={() => {
-          window.localStorage.setItem('i18nextLng', option.code)
+          window.localStorage.setItem('i18nextLng', option.code);
           window.location.reload();
         }}
         key={option.code}
@@ -212,57 +214,53 @@ function getLangOptions() {
         subheader={null} //use option.descriptio to bring back multi-line
         icon={require('../../assets/flags/' + option.iconName)}
       />
-    )
-  })
-
+    );
+  });
 }
 
-
 export default function SettingsTab() {
-  const node = useRef<HTMLDivElement>()
-  const open = useSettingsMenuOpen()
-  const toggle = useToggleSettingsMenu()
+  const node = useRef<HTMLDivElement>();
+  const open = useSettingsMenuOpen();
+  const toggle = useToggleSettingsMenu();
 
-  const theme = useContext(ThemeContext)
-  const [userSlippageTolerance, setUserslippageTolerance] = useUserSlippageTolerance()
+  const theme = useContext(ThemeContext);
+  const [userSlippageTolerance, setUserslippageTolerance] = useUserSlippageTolerance();
 
-  const [deadline, setDeadline] = useUserDeadline()
+  const [deadline, setDeadline] = useUserDeadline();
 
-  const [expertMode, toggleExpertMode] = useExpertModeManager()
+  const [expertMode, toggleExpertMode] = useExpertModeManager();
 
-  const [darkMode, toggleDarkMode] = useDarkModeManager()
+  const [darkMode, toggleDarkMode] = useDarkModeManager();
 
   // show confirmation view before turning on
-  const [showConfirmation, setShowConfirmation] = useState(false)
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
-  const [showLangDialog, setShowLangDialog] = useState(false)
+  const [showLangDialog, setShowLangDialog] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = e => {
       if (node.current?.contains(e.target) ?? false) {
-        return
+        return;
       }
-      toggle()
-    }
+      toggle();
+    };
 
     if (open) {
-      document.addEventListener('mousedown', handleClickOutside)
+      document.addEventListener('mousedown', handleClickOutside);
     } else {
-      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('mousedown', handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [open, toggle])
-
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [open, toggle]);
 
   return (
     <StyledMenu ref={node}>
-
       <Modal isOpen={showLangDialog} onDismiss={() => setShowLangDialog(false)} maxHeight={80}>
-        <ModalContentWrapper style={{width: '100%'}}>
-          <AutoColumn gap="lg" style={{width: '100%'}}>
+        <ModalContentWrapper style={{ width: '100%' }}>
+          <AutoColumn gap="lg" style={{ width: '100%' }}>
             <RowBetween style={{ padding: '0 2rem' }}>
               <div />
               <Text fontWeight={500} fontSize={20}>
@@ -271,11 +269,9 @@ export default function SettingsTab() {
               <StyledCloseIcon onClick={() => setShowLangDialog(false)} />
             </RowBetween>
             <Break />
-            <div style={{overflow: 'auto', height: 500}}>
-              <AutoColumn gap="lg" style={{ padding: '0 2rem'}}>
-                  <OptionGrid>
-                    {getLangOptions()}
-                  </OptionGrid>
+            <div style={{ overflow: 'auto', height: 500 }}>
+              <AutoColumn gap="lg" style={{ padding: '0 2rem' }}>
+                <OptionGrid>{getLangOptions()}</OptionGrid>
               </AutoColumn>
             </div>
           </AutoColumn>
@@ -295,8 +291,8 @@ export default function SettingsTab() {
             <Break />
             <AutoColumn gap="lg" style={{ padding: '0 2rem' }}>
               <Text fontWeight={500} fontSize={20}>
-                Expert mode turns off the confirm transaction prompt and allows high slippage trades that often result
-                in bad rates and lost funds.
+                Expert mode turns off the confirm transaction prompt and allows high slippage trades
+                that often result in bad rates and lost funds.
               </Text>
               <Text fontWeight={600} fontSize={20}>
                 ONLY USE THIS MODE IF YOU KNOW WHAT YOU ARE DOING.
@@ -305,9 +301,12 @@ export default function SettingsTab() {
                 error={true}
                 padding={'12px'}
                 onClick={() => {
-                  if (window.prompt(`Please type the word "confirm" to enable expert mode.`) === 'confirm') {
-                    toggleExpertMode()
-                    setShowConfirmation(false)
+                  if (
+                    window.prompt(`Please type the word "confirm" to enable expert mode.`) ===
+                    'confirm'
+                  ) {
+                    toggleExpertMode();
+                    setShowConfirmation(false);
                   }
                 }}
               >
@@ -345,7 +344,7 @@ export default function SettingsTab() {
             <Text fontWeight={600} fontSize={14}>
               Gas Token
             </Text>
-            <ChiRow/>
+            <ChiRow />
 
             <Text fontWeight={600} fontSize={14}>
               Interface Settings
@@ -362,12 +361,12 @@ export default function SettingsTab() {
                 toggle={
                   expertMode
                     ? () => {
-                        toggleExpertMode()
-                        setShowConfirmation(false)
+                        toggleExpertMode();
+                        setShowConfirmation(false);
                       }
                     : () => {
-                        toggle()
-                        setShowConfirmation(true)
+                        toggle();
+                        setShowConfirmation(true);
                       }
                 }
               />
@@ -392,5 +391,5 @@ export default function SettingsTab() {
         </MenuFlyout>
       )}
     </StyledMenu>
-  )
+  );
 }

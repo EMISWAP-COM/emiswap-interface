@@ -1,45 +1,45 @@
-import { Token, ETHER, JSBI, TokenAmount } from '@uniswap/sdk'
-import React, { useCallback, useEffect, useState } from 'react'
-import { Plus } from 'react-feather'
-import { Text } from 'rebass'
-import { ButtonDropdownLight } from '../../components/Button'
-import { LightCard } from '../../components/Card'
-import { AutoColumn, ColumnCenter } from '../../components/Column'
-import CurrencyLogo from '../../components/CurrencyLogo'
-import { FindPoolTabs } from '../../components/NavigationTabs'
-import { MinimalPositionCard } from '../../components/PositionCard'
-import Row from '../../components/Row'
-import CurrencySearchModal from '../../components/SearchModal/CurrencySearchModal'
-import { PairState, usePair } from '../../data-mooniswap/Reserves'
-import { useActiveWeb3React } from '../../hooks'
-import { usePairAdder } from '../../state/user/hooks'
-import { useTokenBalance } from '../../state/wallet/hooks'
-import { StyledInternalLink } from '../../theme'
-import { currencyId } from '../../utils/currencyId'
-import AppBody from '../AppBody'
-import { Dots } from '../Pool/styleds'
+import { Token, ETHER, JSBI, TokenAmount } from '@uniswap/sdk';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Plus } from 'react-feather';
+import { Text } from 'rebass';
+import { ButtonDropdownLight } from '../../components/Button';
+import { LightCard } from '../../components/Card';
+import { AutoColumn, ColumnCenter } from '../../components/Column';
+import CurrencyLogo from '../../components/CurrencyLogo';
+import { FindPoolTabs } from '../../components/NavigationTabs';
+import { MinimalPositionCard } from '../../components/PositionCard';
+import Row from '../../components/Row';
+import CurrencySearchModal from '../../components/SearchModal/CurrencySearchModal';
+import { PairState, usePair } from '../../data-mooniswap/Reserves';
+import { useActiveWeb3React } from '../../hooks';
+import { usePairAdder } from '../../state/user/hooks';
+import { useTokenBalance } from '../../state/wallet/hooks';
+import { StyledInternalLink } from '../../theme';
+import { currencyId } from '../../utils/currencyId';
+import AppBody from '../AppBody';
+import { Dots } from '../Pool/styleds';
 
 enum Fields {
   TOKEN0 = 0,
-  TOKEN1 = 1
+  TOKEN1 = 1,
 }
 
 export default function PoolFinder() {
-  const { account } = useActiveWeb3React()
+  const { account } = useActiveWeb3React();
 
-  const [showSearch, setShowSearch] = useState<boolean>(false)
-  const [activeField, setActiveField] = useState<number>(Fields.TOKEN1)
+  const [showSearch, setShowSearch] = useState<boolean>(false);
+  const [activeField, setActiveField] = useState<number>(Fields.TOKEN1);
 
-  const [currency0, setCurrency0] = useState<Token | null>(ETHER)
-  const [currency1, setCurrency1] = useState<Token | null>(null)
+  const [currency0, setCurrency0] = useState<Token | null>(ETHER);
+  const [currency1, setCurrency1] = useState<Token | null>(null);
 
-  const [pairState, pair] = usePair(currency0 ?? undefined, currency1 ?? undefined)
-  const addPair = usePairAdder()
+  const [pairState, pair] = usePair(currency0 ?? undefined, currency1 ?? undefined);
+  const addPair = usePairAdder();
   useEffect(() => {
     if (pair) {
-      addPair(pair)
+      addPair(pair);
     }
-  }, [pair, addPair])
+  }, [pair, addPair]);
 
   const validPairNoLiquidity: boolean =
     pairState === PairState.NOT_EXISTS ||
@@ -47,26 +47,29 @@ export default function PoolFinder() {
       pairState === PairState.EXISTS &&
         pair &&
         JSBI.equal(pair.reserve0.raw, JSBI.BigInt(0)) &&
-        JSBI.equal(pair.reserve1.raw, JSBI.BigInt(0))
-    )
+        JSBI.equal(pair.reserve1.raw, JSBI.BigInt(0)),
+    );
 
-  const position: TokenAmount | undefined = useTokenBalance(account ?? undefined, pair?.liquidityToken)
-  const hasPosition = Boolean(position && JSBI.greaterThan(position.raw, JSBI.BigInt(0)))
+  const position: TokenAmount | undefined = useTokenBalance(
+    account ?? undefined,
+    pair?.liquidityToken,
+  );
+  const hasPosition = Boolean(position && JSBI.greaterThan(position.raw, JSBI.BigInt(0)));
 
   const handleCurrencySelect = useCallback(
     (currency: Token) => {
       if (activeField === Fields.TOKEN0) {
-        setCurrency0(currency)
+        setCurrency0(currency);
       } else {
-        setCurrency1(currency)
+        setCurrency1(currency);
       }
     },
-    [activeField]
-  )
+    [activeField],
+  );
 
   const handleSearchDismiss = useCallback(() => {
-    setShowSearch(false)
-  }, [setShowSearch])
+    setShowSearch(false);
+  }, [setShowSearch]);
 
   const prerequisiteMessage = (
     <LightCard padding="45px 10px">
@@ -74,7 +77,7 @@ export default function PoolFinder() {
         {!account ? 'Connect to a wallet to find pools' : 'Select a token to find your liquidity.'}
       </Text>
     </LightCard>
-  )
+  );
 
   return (
     <AppBody>
@@ -82,8 +85,8 @@ export default function PoolFinder() {
       <AutoColumn gap="md">
         <ButtonDropdownLight
           onClick={() => {
-            setShowSearch(true)
-            setActiveField(Fields.TOKEN0)
+            setShowSearch(true);
+            setActiveField(Fields.TOKEN0);
           }}
         >
           {currency0 ? (
@@ -106,8 +109,8 @@ export default function PoolFinder() {
 
         <ButtonDropdownLight
           onClick={() => {
-            setShowSearch(true)
-            setActiveField(Fields.TOKEN1)
+            setShowSearch(true);
+            setActiveField(Fields.TOKEN1);
           }}
         >
           {currency1 ? (
@@ -126,7 +129,12 @@ export default function PoolFinder() {
 
         {hasPosition && (
           <ColumnCenter
-            style={{ justifyItems: 'center', backgroundColor: '', padding: '12px 0px', borderRadius: '12px' }}
+            style={{
+              justifyItems: 'center',
+              backgroundColor: '',
+              padding: '12px 0px',
+              borderRadius: '12px',
+            }}
           >
             <Text textAlign="center" fontWeight={500}>
               Pool Found!
@@ -188,5 +196,5 @@ export default function PoolFinder() {
         hiddenCurrency={(activeField === Fields.TOKEN0 ? currency1 : currency0) ?? undefined}
       />
     </AppBody>
-  )
+  );
 }

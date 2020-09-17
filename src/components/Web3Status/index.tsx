@@ -1,33 +1,33 @@
-import React, { useMemo } from 'react'
-import styled, { css } from 'styled-components'
-import { useTranslation } from 'react-i18next'
-import { useWeb3React, UnsupportedChainIdError } from '@web3-react/core'
-import { darken, lighten } from 'polished'
-import { Activity } from 'react-feather'
-import useENSName from '../../hooks/useENSName'
-import { useWalletModalToggle } from '../../state/application/hooks'
-import { TransactionDetails } from '../../state/transactions/reducer'
+import React, { useMemo } from 'react';
+import styled, { css } from 'styled-components';
+import { useTranslation } from 'react-i18next';
+import { useWeb3React, UnsupportedChainIdError } from '@web3-react/core';
+import { darken, lighten } from 'polished';
+import { Activity } from 'react-feather';
+import useENSName from '../../hooks/useENSName';
+import { useWalletModalToggle } from '../../state/application/hooks';
+import { TransactionDetails } from '../../state/transactions/reducer';
 
-import Identicon from '../Identicon'
-import PortisIcon from '../../assets/images/portisIcon.png'
-import WalletModal from '../WalletModal'
-import { ButtonSecondary } from '../Button'
-import FortmaticIcon from '../../assets/images/fortmaticIcon.png'
-import WalletConnectIcon from '../../assets/images/walletConnectIcon.svg'
-import CoinbaseWalletIcon from '../../assets/images/coinbaseWalletIcon.svg'
-import { RowBetween } from '../Row'
-import { shortenAddress } from '../../utils'
-import { useAllTransactions } from '../../state/transactions/hooks'
-import { CHI, NetworkContextName } from '../../constants'
-import { injected, walletconnect, walletlink, fortmatic, portis } from '../../connectors'
-import Loader from '../Loader'
-import ChiIcon from '../../assets/images/chi.png'
-import { MouseoverTooltip } from '../Tooltip'
-import { MIN_CHI_BALANCE, useHasChi } from '../../hooks/useChi'
-import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
-import { TokenAmount } from '@uniswap/sdk'
-import { ONE_SPLIT_ADDRESSES } from '../../constants/one-split'
-import JSBI from 'jsbi'
+import Identicon from '../Identicon';
+import PortisIcon from '../../assets/images/portisIcon.png';
+import WalletModal from '../WalletModal';
+import { ButtonSecondary } from '../Button';
+import FortmaticIcon from '../../assets/images/fortmaticIcon.png';
+import WalletConnectIcon from '../../assets/images/walletConnectIcon.svg';
+import CoinbaseWalletIcon from '../../assets/images/coinbaseWalletIcon.svg';
+import { RowBetween } from '../Row';
+import { shortenAddress } from '../../utils';
+import { useAllTransactions } from '../../state/transactions/hooks';
+import { CHI, NetworkContextName } from '../../constants';
+import { injected, walletconnect, walletlink, fortmatic, portis } from '../../connectors';
+import Loader from '../Loader';
+import ChiIcon from '../../assets/images/chi.png';
+import { MouseoverTooltip } from '../Tooltip';
+import { MIN_CHI_BALANCE, useHasChi } from '../../hooks/useChi';
+import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback';
+import { TokenAmount } from '@uniswap/sdk';
+import { ONE_SPLIT_ADDRESSES } from '../../constants/one-split';
+import JSBI from 'jsbi';
 
 const IconWrapper = styled.div<{ size?: number }>`
   ${({ theme }) => theme.flexColumnNoWrap};
@@ -37,7 +37,7 @@ const IconWrapper = styled.div<{ size?: number }>`
     height: ${({ size }) => (size ? size + 'px' : '32px')};
     width: ${({ size }) => (size ? size + 'px' : '32px')};
   }
-`
+`;
 
 const Web3StatusGeneric = styled(ButtonSecondary)`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -50,7 +50,7 @@ const Web3StatusGeneric = styled(ButtonSecondary)`
   :focus {
     outline: none;
   }
-`
+`;
 const Web3StatusError = styled(Web3StatusGeneric)`
   background-color: ${({ theme }) => theme.red1};
   border: 1px solid ${({ theme }) => theme.red1};
@@ -60,7 +60,7 @@ const Web3StatusError = styled(Web3StatusGeneric)`
   :focus {
     background-color: ${({ theme }) => darken(0.1, theme.red1)};
   }
-`
+`;
 
 const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
   background-color: ${({ theme }) => theme.primary4};
@@ -75,8 +75,8 @@ const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
   }
 
   ${({ faded }) =>
-  faded &&
-  css`
+    faded &&
+    css`
       background-color: ${({ theme }) => theme.primary5};
       border: 1px solid ${({ theme }) => theme.primary5};
       color: ${({ theme }) => theme.primaryText1};
@@ -87,7 +87,7 @@ const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
         color: ${({ theme }) => darken(0.05, theme.primaryText1)};
       }
     `}
-`
+`;
 
 const Web3StatusConnected = styled(Web3StatusGeneric)<{ pending?: boolean }>`
   background-color: ${({ pending, theme }) => (pending ? theme.primary1 : theme.bg2)};
@@ -96,13 +96,15 @@ const Web3StatusConnected = styled(Web3StatusGeneric)<{ pending?: boolean }>`
   font-weight: 500;
   :hover,
   :focus {
-    background-color: ${({ pending, theme }) => (pending ? darken(0.05, theme.primary1) : lighten(0.05, theme.bg2))};
+    background-color: ${({ pending, theme }) =>
+      pending ? darken(0.05, theme.primary1) : lighten(0.05, theme.bg2)};
 
     :focus {
-      border: 1px solid ${({ pending, theme }) => (pending ? darken(0.1, theme.primary1) : darken(0.1, theme.bg3))};
+      border: 1px solid
+        ${({ pending, theme }) => (pending ? darken(0.1, theme.primary1) : darken(0.1, theme.bg3))};
     }
   }
-`
+`;
 
 const Text = styled.p`
   flex: 1 1 auto;
@@ -113,117 +115,124 @@ const Text = styled.p`
   font-size: 1rem;
   width: fit-content;
   font-weight: 500;
-`
+`;
 
 const NetworkIcon = styled(Activity)`
   margin-left: 0.25rem;
   margin-right: 0.5rem;
   width: 16px;
   height: 16px;
-`
+`;
 
 // we want the latest one to come first, so return negative if a is after b
 function newTranscationsFirst(a: TransactionDetails, b: TransactionDetails) {
-  return b.addedTime - a.addedTime
+  return b.addedTime - a.addedTime;
 }
 
 function recentTransactionsOnly(a: TransactionDetails) {
-  return new Date().getTime() - a.addedTime < 86_400_000
+  return new Date().getTime() - a.addedTime < 86_400_000;
 }
 
 function ChiComponent() {
-
-  const { chainId } = useWeb3React()
-  const hasChi = useHasChi(0)
-  const hasEnoughChi = useHasChi(MIN_CHI_BALANCE)
+  const { chainId } = useWeb3React();
+  const hasChi = useHasChi(0);
+  const hasEnoughChi = useHasChi(MIN_CHI_BALANCE);
 
   const [approvalState] = useApproveCallback(
     new TokenAmount(CHI, JSBI.BigInt(MIN_CHI_BALANCE)),
-    ONE_SPLIT_ADDRESSES[chainId]
-  )
+    ONE_SPLIT_ADDRESSES[chainId],
+  );
 
-  const successMessage = 'CHI token is activated!'
-  let tooltipText = successMessage
+  const successMessage = 'CHI token is activated!';
+  let tooltipText = successMessage;
   if (!hasChi || approvalState !== ApprovalState.APPROVED) {
-    tooltipText = `Activate CHI gas token in settings to pay less fees for ethereum transactions`
+    tooltipText = `Activate CHI gas token in settings to pay less fees for ethereum transactions`;
   } else if (!hasEnoughChi) {
-    tooltipText = `Your CHI balance become too small`
+    tooltipText = `Your CHI balance become too small`;
   }
 
   const enabled = tooltipText === successMessage;
 
   return (
     <MouseoverTooltip text={tooltipText} placement={'bottom'}>
-      <img style={{
-        width: '16px',
-        marginLeft: '0.5rem',
-        marginRight: '0.25rem',
-        marginTop: '0.25rem',
-        filter: !enabled ? 'grayscale(100%)' : ''
-      }} src={ChiIcon} alt={tooltipText}/>
+      <img
+        style={{
+          width: '16px',
+          marginLeft: '0.5rem',
+          marginRight: '0.25rem',
+          marginTop: '0.25rem',
+          filter: !enabled ? 'grayscale(100%)' : '',
+        }}
+        src={ChiIcon}
+        alt={tooltipText}
+      />
     </MouseoverTooltip>
-  )
+  );
 }
 
 export default function Web3Status() {
-  const { t } = useTranslation()
-  const { active, account, connector, error } = useWeb3React()
-  const contextNetwork = useWeb3React(NetworkContextName)
+  const { t } = useTranslation();
+  const { active, account, connector, error } = useWeb3React();
+  const contextNetwork = useWeb3React(NetworkContextName);
 
-  const { ENSName } = useENSName(account)
+  const { ENSName } = useENSName(account);
 
-  const allTransactions = useAllTransactions()
+  const allTransactions = useAllTransactions();
 
   const sortedRecentTransactions = useMemo(() => {
-    const txs = Object.values(allTransactions)
-    return txs.filter(recentTransactionsOnly).sort(newTranscationsFirst)
-  }, [allTransactions])
+    const txs = Object.values(allTransactions);
+    return txs.filter(recentTransactionsOnly).sort(newTranscationsFirst);
+  }, [allTransactions]);
 
-  const pending = sortedRecentTransactions.filter(tx => !tx.receipt).map(tx => tx.hash)
-  const confirmed = sortedRecentTransactions.filter(tx => tx.receipt).map(tx => tx.hash)
+  const pending = sortedRecentTransactions.filter(tx => !tx.receipt).map(tx => tx.hash);
+  const confirmed = sortedRecentTransactions.filter(tx => tx.receipt).map(tx => tx.hash);
 
-  const hasPendingTransactions = !!pending.length
+  const hasPendingTransactions = !!pending.length;
   // const hasSocks = useHasSocks()
-  const toggleWalletModal = useWalletModalToggle()
+  const toggleWalletModal = useWalletModalToggle();
 
   // handle the logo we want to show with the account
   function getStatusIcon() {
     if (connector === injected) {
-      return <Identicon/>
+      return <Identicon />;
     } else if (connector === walletconnect) {
       return (
         <IconWrapper size={16}>
-          <img src={WalletConnectIcon} alt={''}/>
+          <img src={WalletConnectIcon} alt={''} />
         </IconWrapper>
-      )
+      );
     } else if (connector === walletlink) {
       return (
         <IconWrapper size={16}>
-          <img src={CoinbaseWalletIcon} alt={''}/>
+          <img src={CoinbaseWalletIcon} alt={''} />
         </IconWrapper>
-      )
+      );
     } else if (connector === fortmatic) {
       return (
         <IconWrapper size={16}>
-          <img src={FortmaticIcon} alt={''}/>
+          <img src={FortmaticIcon} alt={''} />
         </IconWrapper>
-      )
+      );
     } else if (connector === portis) {
       return (
         <IconWrapper size={16}>
-          <img src={PortisIcon} alt={''}/>
+          <img src={PortisIcon} alt={''} />
         </IconWrapper>
-      )
+      );
     }
   }
 
   function getWeb3Status() {
     if (account) {
       return (
-        <Web3StatusConnected id="web3-status-connected" onClick={toggleWalletModal} pending={hasPendingTransactions}>
+        <Web3StatusConnected
+          id="web3-status-connected"
+          onClick={toggleWalletModal}
+          pending={hasPendingTransactions}
+        >
           {hasPendingTransactions ? (
             <RowBetween>
-              <Text>{pending?.length} Pending</Text> <Loader stroke="white"/>
+              <Text>{pending?.length} Pending</Text> <Loader stroke="white" />
             </RowBetween>
           ) : (
             <>
@@ -232,33 +241,37 @@ export default function Web3Status() {
             </>
           )}
           {!hasPendingTransactions && getStatusIcon()}
-          <ChiComponent/>
+          <ChiComponent />
         </Web3StatusConnected>
-      )
+      );
     } else if (error) {
       return (
         <Web3StatusError onClick={toggleWalletModal}>
-          <NetworkIcon/>
+          <NetworkIcon />
           <Text>{error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error'}</Text>
         </Web3StatusError>
-      )
+      );
     } else {
       return (
         <Web3StatusConnect id="connect-wallet" onClick={toggleWalletModal} faded={!account}>
           <Text>{t('Connect to a wallet')}</Text>
         </Web3StatusConnect>
-      )
+      );
     }
   }
 
   if (!contextNetwork.active && !active) {
-    return null
+    return null;
   }
 
   return (
     <>
       {getWeb3Status()}
-      <WalletModal ENSName={ENSName} pendingTransactions={pending} confirmedTransactions={confirmed}/>
+      <WalletModal
+        ENSName={ENSName}
+        pendingTransactions={pending}
+        confirmedTransactions={confirmed}
+      />
     </>
-  )
+  );
 }
