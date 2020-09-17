@@ -1,27 +1,41 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Wordmark from '../components/Wordmark';
 import Logo from '../components/Logo';
 import styled from 'styled-components';
-import UnicornSvg from '../components/UnicornSvg';
+import PolygonSvg from '../assets/images/polygon.svg';
 
 export const HeadersPlusBodyWrapper = styled.div<{ disabled?: boolean }>`
   position: relative;
-  max-width: 420px;
+  max-width: 440px;
   width: 100%;
   text-align: center;
+
+  :after {
+    content: '';
+    background: center / contain no-repeat url('${PolygonSvg}');
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    width: 875px;
+    height: 857px;
+    z-index: -1;
+  }
 `;
 
 export const BodyWrapper = styled.div<{ disabled?: boolean }>`
   position: relative;
-  max-width: 420px;
+  max-width: 440px;
   width: 100%;
   background: ${({ theme }) => theme.bg1};
-  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04),
-    0px 16px 24px rgba(0, 0, 0, 0.04), 0px 24px 32px rgba(0, 0, 0, 0.01);
-  border-radius: 30px;
-  padding: 1rem;
+  box-shadow: 0px 0px 10px -2px rgba(231, 215, 175, 0.9),
+    0px 21px 20px -15px rgba(140, 125, 85, 0.15);
+  border-radius: 24px;
+  padding: 34px 30px 40px;
   opacity: ${({ disabled }) => (disabled ? '0.4' : '1')};
   pointer-events: ${({ disabled }) => disabled && 'none'};
+  bottom: 7px;
 `;
 
 /**
@@ -34,20 +48,12 @@ export default function AppBody({
   children: React.ReactNode;
   disabled?: boolean;
 }) {
-  const [highlight, setHighlight] = useState<boolean>(false);
-
   return (
     <HeadersPlusBodyWrapper>
-      <div
-        className="onlyDesktop"
-        onMouseEnter={() => setHighlight(true)}
-        onMouseLeave={() => setHighlight(false)}
-      >
+      <div className="onlyDesktop">
         <Logo />
         <Wordmark />
       </div>
-      <UnicornSvg highlight={highlight} />
-      <UnicornSvg highlight={highlight} flip={true} />
       <BodyWrapper disabled={disabled}>{children}</BodyWrapper>
     </HeadersPlusBodyWrapper>
   );

@@ -8,20 +8,22 @@ import { AutoColumn } from '../Column';
 import QuestionHelper from '../QuestionHelper';
 import { AutoRow } from '../Row';
 import CurrencyLogo from '../CurrencyLogo';
+import { darken } from 'polished';
 
 const BaseWrapper = styled.div<{ disable?: boolean }>`
   border: 1px solid ${({ theme, disable }) => (disable ? 'transparent' : theme.bg3)};
   border-radius: 10px;
   display: flex;
-  padding: 6px;
+  padding: 4px 12px 4px 6px;
+  transition: all 0.3s ease-in-out;
 
   align-items: center;
   :hover {
     cursor: ${({ disable }) => !disable && 'pointer'};
-    background-color: ${({ theme, disable }) => !disable && theme.bg2};
+    background-color: ${({ theme, disable }) => !disable && darken(0.05, theme.grey5)};
   }
 
-  background-color: ${({ theme, disable }) => disable && theme.bg3};
+  background-color: ${({ theme, disable }) => (disable ? theme.bg3 : theme.grey5)};
   opacity: ${({ disable }) => disable && '0.4'};
 `;
 

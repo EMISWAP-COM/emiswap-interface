@@ -166,3 +166,14 @@ export function BackArrow({ to }: { to: string }) {
     </BackArrowLink>
   );
 }
+
+export const StyledButtonNavigation = styled.div`
+  height: 24px;
+  width: 100%;
+  background: #eaeeee;
+  opacity: 0.5;
+  border-radius: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;

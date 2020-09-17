@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { FixedSizeList } from 'react-window';
 import { AutoColumn } from '../Column';
 import { RowBetween, RowFixed } from '../Row';
 
@@ -25,15 +26,15 @@ export const GreySpan = styled.span`
 export const Input = styled.input`
   position: relative;
   display: flex;
-  padding: 16px;
+  padding: 14px 16px;
   align-items: center;
   width: 100%;
   white-space: nowrap;
   background: none;
   border: none;
   outline: none;
-  border-radius: 20px;
-  color: ${({ theme }) => theme.text1};
+  border-radius: 8px;
+  color: ${({ theme }) => theme.grey3};
   border-style: solid;
   border: 1px solid ${({ theme }) => theme.bg3};
   -webkit-appearance: none;
@@ -46,15 +47,16 @@ export const Input = styled.input`
 `;
 
 export const PaddedColumn = styled(AutoColumn)`
-  padding: 20px;
+  padding: 34px 30px 20px;
   padding-bottom: 12px;
 `;
 
 export const MenuItem = styled(RowBetween)`
-  padding: 4px 20px;
-  height: 56px;
+  padding: 4px 30px 4px 16px;
+  height: 50px;
   cursor: ${({ disabled }) => !disabled && 'pointer'};
   pointer-events: ${({ disabled }) => disabled && 'none'};
+  transition: all 0.3s ease-in-out;
   :hover {
     background-color: ${({ theme, disabled }) => !disabled && theme.bg2};
   }
@@ -66,5 +68,39 @@ export const SearchInput = styled(Input)`
   :focus {
     border: 1px solid ${({ theme }) => theme.primary1};
     outline: none;
+  }
+`;
+
+export const StyledFixedSizeList = styled(FixedSizeList)`
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #7d979433;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background: #11b382;
+  }
+`;
+
+export const StyledMenuItem = styled(MenuItem)`
+  color: #555959;
+  transition: all 0.3s ease-in-out;
+
+  img {
+    filter: grayscale(1);
+    transition: all 0.3s ease-in-out;
+  }
+
+  :hover {
+    color: #11b382;
+
+    img {
+      filter: none;
+    }
   }
 `;

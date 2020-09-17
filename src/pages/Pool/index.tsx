@@ -142,7 +142,7 @@ export default function Pool() {
 
       <div style={{ display: 'flex', alignItems: 'center', marginTop: '1.5rem' }}>
         <ButtonSecondary as={Link} style={{ width: 'initial' }} to="/migrate">
-          Migrate Liquidity to Mooniswap
+          Migrate Liquidity to Emiswap
         </ButtonSecondary>
       </div>
     </>

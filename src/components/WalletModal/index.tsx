@@ -22,12 +22,17 @@ import { useLocalStorage } from '../../hooks/useLocalStorage';
 
 const CloseIcon = styled.div`
   position: absolute;
-  right: 1rem;
-  top: 14px;
+  top: 30px;
+  right: 30px;
   &:hover {
     cursor: pointer;
     opacity: 0.6;
   }
+
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    top: 14px;
+    right: 16px;
+  `};
 `;
 
 const CloseColor = styled(Close)`
@@ -45,7 +50,7 @@ const Wrapper = styled.div`
 
 const HeaderRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
-  padding: 1rem 1rem;
+  padding: 34px 30px;
   font-weight: 500;
   color: ${props => (props.color === 'blue' ? ({ theme }) => theme.primary1 : 'inherit')};
   ${({ theme }) => theme.mediaWidth.upToMedium`

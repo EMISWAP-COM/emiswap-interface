@@ -1,19 +1,18 @@
 import { TokenAmount, JSBI } from '@uniswap/sdk';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { ArrowDown, ArrowUp } from 'react-feather';
+import { Plus } from 'react-feather';
 import { Text } from 'rebass';
 import { ThemeContext } from 'styled-components';
 import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button';
 import Card, { GreyCard } from '../../components/Card';
-import { AutoColumn } from '../../components/Column';
+import { AutoColumn, ColumnCenter } from '../../components/Column';
 import ConfirmationModal from '../../components/ConfirmationModal';
 import CurrencyInputPanel from '../../components/CurrencyInputPanel';
-import { SwapPoolTabs } from '../../components/NavigationTabs';
-import { AutoRow, RowBetween } from '../../components/Row';
+import { RowBetween } from '../../components/Row';
 import AdvancedSwapDetailsDropdown from '../../components/swap/AdvancedSwapDetailsDropdown';
 import BetterTradeLink from '../../components/swap/BetterTradeLink';
 import confirmPriceImpactWithoutFee from '../../components/swap/confirmPriceImpactWithoutFee';
-import { ArrowWrapper, BottomGrouping, Dots, Wrapper } from '../../components/swap/styleds';
+import { BottomGrouping, Dots, Wrapper } from '../../components/swap/styleds';
 import SwapModalFooter from '../../components/swap/SwapModalFooter';
 import SwapModalHeader from '../../components/swap/SwapModalHeader';
 import TradePrice from '../../components/swap/TradePrice';
@@ -38,7 +37,7 @@ import {
   useUserSlippageTolerance,
   useTokenWarningDismissal,
 } from '../../state/user/hooks';
-import { CursorPointer, StyledButtonNavigation, TYPE } from '../../theme';
+import { StyledButtonNavigation, TYPE } from '../../theme';
 import { maxAmountSpend } from '../../utils/maxAmountSpend';
 import {
   computeSlippageAdjustedAmounts,
@@ -50,8 +49,9 @@ import { ClickableText } from '../Pool/styleds';
 import { isUseOneSplitContract } from '../../utils';
 import ReferralLink from '../../components/RefferalLink';
 import GasConsumption from '../../components/swap/GasConsumption';
+import { Tabs, TabsTitle } from './styleds';
 
-export default function Swap() {
+const Invest = () => {
   useDefaultsFromURLSearch();
 
   const { account, chainId } = useActiveWeb3React();
@@ -70,7 +70,7 @@ export default function Swap() {
   // swap state
   const { independentField, typedValue } = useSwapState();
 
-  const { onSwitchTokens, onCurrencySelection, onUserInput } = useSwapActionHandlers();
+  const { onCurrencySelection, onUserInput } = useSwapActionHandlers();
   const {
     v1Trade,
     v2Trade,
@@ -124,8 +124,6 @@ export default function Swap() {
     },
     [onUserInput],
   );
-
-  const handleNothing = () => {};
 
   // modal and loading
   const [showConfirm, setShowConfirm] = useState<boolean>(false); // show confirmation modal
@@ -314,7 +312,9 @@ export default function Swap() {
     <>
       {showWarning && <TokenWarningCards currencies={currencies} />}
       <AppBody disabled={!!showWarning}>
-        <SwapPoolTabs active={'swap'} />
+        <Tabs style={{ marginBottom: '24px' }}>
+          <TabsTitle>Invest</TabsTitle>
+        </Tabs>
         <Wrapper id="swap-page">
           <ConfirmationModal
             isOpen={showConfirm}
@@ -352,49 +352,11 @@ export default function Swap() {
               id="swap-currency-input"
             />
 
-            <CursorPointer>
-              <StyledButtonNavigation
-                onClick={() => {
-                  setApprovalSubmitted(false); // reset 2 step UI for approvals
-                  onSwitchTokens(formattedAmounts[Field.OUTPUT]);
-                }}
-              >
-                <AutoColumn justify="space-between">
-                  <AutoRow justify="space-between" style={{ padding: '0 1rem' }}>
-                    <ArrowWrapper clickable>
-                      <ArrowDown
-                        size="16"
-                        color={
-                          currencies[Field.INPUT] && currencies[Field.OUTPUT]
-                            ? theme.grey6
-                            : theme.text2
-                        }
-                      />
-                      <span style={{ marginLeft: '-3px' }}>
-                        <ArrowUp
-                          size="16"
-                          color={
-                            currencies[Field.INPUT] && currencies[Field.OUTPUT]
-                              ? theme.grey6
-                              : theme.text2
-                          }
-                        />
-                      </span>
-                    </ArrowWrapper>
-                  </AutoRow>
-                </AutoColumn>
-              </StyledButtonNavigation>
-            </CursorPointer>
-            <CurrencyInputPanel
-              value={formattedAmounts[Field.OUTPUT]}
-              onUserInput={handleNothing}
-              label={independentField === Field.INPUT && !showWrap ? 'To (estimated)' : 'To'}
-              showMaxButton={false}
-              currency={currencies[Field.OUTPUT]}
-              onCurrencySelect={address => onCurrencySelection(Field.OUTPUT, address)}
-              otherCurrency={currencies[Field.INPUT]}
-              id="swap-currency-output"
-            />
+            <StyledButtonNavigation>
+              <ColumnCenter>
+                <Plus size="16" color={theme.grey6} />
+              </ColumnCenter>
+            </StyledButtonNavigation>
 
             {showWrap ? null : (
               <Card padding={'.25rem .75rem 0 .75rem'} borderRadius={'20px'}>
@@ -531,4 +493,6 @@ export default function Swap() {
       <AdvancedSwapDetailsDropdown trade={trade} />
     </>
   );
-}
+};
+
+export default Invest;

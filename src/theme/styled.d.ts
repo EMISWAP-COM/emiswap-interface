@@ -38,11 +38,22 @@ export interface Colors {
   secondary3: Color;
 
   // other
+  grey1: Color;
+  grey2: Color;
+  grey3: Color;
+  grey4: Color;
+  grey5: Color;
+  grey6: Color;
   red1: Color;
   red2: Color;
   green1: Color;
+  green2: Color;
+  green3: Color;
+  green4: Color;
   yellow1: Color;
   yellow2: Color;
+  yellow3: Color;
+  yellow4: Color;
   horse: Color;
 }
 
@@ -65,6 +76,10 @@ declare module 'styled-components' {
       upToSmall: ThemedCssFunction<DefaultTheme>;
       upToMedium: ThemedCssFunction<DefaultTheme>;
       upToLarge: ThemedCssFunction<DefaultTheme>;
+    };
+
+    mediaHeight: {
+      upToSmall: ThemedCssFunction<DefaultTheme>;
     };
 
     // css snippets

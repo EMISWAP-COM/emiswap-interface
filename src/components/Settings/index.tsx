@@ -6,7 +6,6 @@ import {
   useUserSlippageTolerance,
   useExpertModeManager,
   useUserDeadline,
-  useDarkModeManager,
 } from '../../state/user/hooks';
 import SlippageTabs from '../SlippageTabs';
 import { RowFixed, RowBetween } from '../Row';
@@ -28,7 +27,7 @@ const StyledMenuIcon = styled(Settings)`
   width: 20px;
 
   > * {
-    stroke: ${({ theme }) => theme.text1};
+    stroke: ${({ theme }) => theme.green4};
   }
 `;
 
@@ -52,21 +51,20 @@ const StyledMenuButton = styled.button`
   background-color: transparent;
   margin: 0;
   padding: 0;
-  height: 35px;
-  background-color: ${({ theme }) => theme.bg3};
+  height: 40px;
+  background-color: ${({ theme }) => theme.green2};
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease-in-out;
 
-  padding: 0.15rem 0.5rem;
+  padding: 0.15rem 0.625rem;
   border-radius: 0.5rem;
 
   :hover,
   :focus {
     cursor: pointer;
     outline: none;
-    background-color: ${({ theme }) => theme.bg4};
-  }
-
-  svg {
-    margin-top: 2px;
+    background-color: ${({ theme }) => theme.green3};
   }
 `;
 const EmojiWrapper = styled.div`
@@ -158,7 +156,7 @@ const langNameMap = {
   'zh-TW': 'Chinese (Taiwan)',
 };
 
-function LanguageSelect({ handleClick }: { handleClick: () => void }) {
+export function LanguageSelect({ handleClick }: { handleClick: () => void }) {
   const langCode = window.localStorage.getItem('i18nextLng');
   const theme = useContext(ThemeContext);
 
@@ -229,8 +227,6 @@ export default function SettingsTab() {
   const [deadline, setDeadline] = useUserDeadline();
 
   const [expertMode, toggleExpertMode] = useExpertModeManager();
-
-  const [darkMode, toggleDarkMode] = useDarkModeManager();
 
   // show confirmation view before turning on
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -370,22 +366,6 @@ export default function SettingsTab() {
                       }
                 }
               />
-            </RowBetween>
-            <RowBetween>
-              <RowFixed>
-                <TYPE.black fontWeight={400} fontSize={14} color={theme.text2}>
-                  Toggle Dark Mode
-                </TYPE.black>
-              </RowFixed>
-              <Toggle isActive={darkMode} toggle={toggleDarkMode} />
-            </RowBetween>
-            <RowBetween>
-              <RowFixed>
-                <TYPE.black fontWeight={400} fontSize={14} color={theme.text2}>
-                  Language
-                </TYPE.black>
-              </RowFixed>
-              <LanguageSelect handleClick={() => setShowLangDialog(true)}></LanguageSelect>
             </RowBetween>
           </AutoColumn>
         </MenuFlyout>

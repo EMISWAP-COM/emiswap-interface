@@ -24,7 +24,7 @@ import { useCurrency } from '../../hooks/Tokens';
 import { useMooniswapContract } from '../../hooks/useContract';
 
 import { useTransactionAdder } from '../../state/transactions/hooks';
-import { StyledInternalLink, TYPE } from '../../theme';
+import { StyledButtonNavigation, StyledInternalLink, TYPE } from '../../theme';
 import { calculateGasMargin, calculateSlippageAmount } from '../../utils';
 import { currencyId } from '../../utils/currencyId';
 import AppBody from '../AppBody';
@@ -544,9 +544,11 @@ export default function RemoveLiquidity({
                   onCurrencySelect={handleSelectCurrencyA}
                   id="remove-liquidity-tokena"
                 />
-                <ColumnCenter>
-                  <Plus size="16" color={theme.text2} />
-                </ColumnCenter>
+                <StyledButtonNavigation>
+                  <ColumnCenter>
+                    <Plus size="16" color={theme.text2} />
+                  </ColumnCenter>
+                </StyledButtonNavigation>
                 <CurrencyInputPanel
                   hideBalance={true}
                   value={formattedAmounts[Field.CURRENCY_B]}

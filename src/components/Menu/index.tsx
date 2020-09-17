@@ -8,7 +8,7 @@ import { ExternalLink } from '../../theme';
 
 const StyledMenuIcon = styled(MenuIcon)`
   path {
-    stroke: ${({ theme }) => theme.text1};
+    stroke: ${({ theme }) => theme.green4};
   }
 `;
 
@@ -19,21 +19,20 @@ const StyledMenuButton = styled.button`
   background-color: transparent;
   margin: 0;
   padding: 0;
-  height: 35px;
-  background-color: ${({ theme }) => theme.bg3};
+  height: 40px;
+  background-color: ${({ theme }) => theme.green2};
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease-in-out;
 
-  padding: 0.15rem 0.5rem;
+  padding: 0.15rem 0.625rem;
   border-radius: 0.5rem;
 
   :hover,
   :focus {
     cursor: pointer;
     outline: none;
-    background-color: ${({ theme }) => theme.bg4};
-  }
-
-  svg {
-    margin-top: 2px;
+    background-color: ${({ theme }) => theme.green3};
   }
 `;
 

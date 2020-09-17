@@ -2,15 +2,16 @@ import { ChainId } from '@uniswap/sdk';
 import React from 'react';
 import { isMobile } from 'react-device-detect';
 import { Text } from 'rebass';
+import { Image } from 'react-feather';
 
 import styled from 'styled-components';
 
-// import Logo from '../../assets/svg/logo.svg'
-// import LogoDark from '../../assets/svg/logo_white.svg'
+import Logo from '../../assets/svg/logo.svg';
+import LogoDark from '../../assets/svg/logo_dark.svg';
 // import Wordmark from '../../assets/svg/wordmark.svg'
 // import WordmarkDark from '../../assets/svg/wordmark_white.svg'
 import { useActiveWeb3React } from '../../hooks';
-// import { useDarkModeManager } from '../../state/user/hooks'
+import { useDarkModeManager } from '../../state/user/hooks';
 import { useETHBalances } from '../../state/wallet/hooks';
 
 import { YellowCard } from '../Card';
@@ -66,7 +67,8 @@ const AccountElement = styled.div<{ active: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: ${({ theme, active }) => (!active ? theme.bg1 : theme.bg3)};
+  background-color: ${({ theme, active }) => (!active ? theme.bg1 : 'transparent')};
+  color: ${({ theme }) => theme.grey3};
   border-radius: 12px;
   white-space: nowrap;
   width: 100%;
@@ -96,7 +98,7 @@ const UniIcon = styled.div`
     transform: rotate(-5deg);
   }
   ${({ theme }) => theme.mediaWidth.upToSmall`
-    img { 
+    img {
       width: 4.5rem;
     }
   `};
@@ -109,6 +111,11 @@ const HeaderControls = styled.div`
 `;
 
 const BalanceText = styled(Text)`
+  font-weight: 450;
+  font-size: 13px;
+  line-height: 19px;
+  letter-spacing: 0.02em;
+
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     display: none;
   `};
@@ -135,14 +142,16 @@ export default function Header() {
   const { account, chainId } = useActiveWeb3React();
 
   const userEthBalance = useETHBalances([account])[account];
-  // const [isDark] = useDarkModeManager()
+  const [isDark] = useDarkModeManager();
 
   return (
     <HeaderFrame>
       <RowBetweenStyled>
         <HeaderElement>
           <Title href=".">
-            <UniIcon>{/*<img src={isDark ? LogoDark : Logo} alt="logo" />*/}</UniIcon>
+            <UniIcon>
+              <img src={isDark ? LogoDark : Logo} alt="logo" />
+            </UniIcon>
             <TitleText>
               {/*<img style={{ marginLeft: '4px', marginTop: '4px' }} src={isDark ? WordmarkDark : Wordmark} alt="logo" width="160px"/>*/}
             </TitleText>
@@ -157,9 +166,12 @@ export default function Header() {
             </TestnetWrapper>
             <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
               {account && userEthBalance ? (
-                <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
-                  {userEthBalance?.toSignificant(4)} ETH
-                </BalanceText>
+                <>
+                  <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={450}>
+                    {userEthBalance?.toSignificant(4)} ETH
+                  </BalanceText>
+                  <Image size={40} style={{ paddingRight: 16 }} />
+                </>
               ) : null}
               <Web3Status />
             </AccountElement>

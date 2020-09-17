@@ -151,7 +151,7 @@ export default function CurrencySearchModal({
       minHeight={70}
     >
       <Column style={{ width: '100%' }}>
-        <PaddedColumn gap="14px">
+        <PaddedColumn gap="16px">
           <RowBetween>
             <Text fontWeight={500} fontSize={16}>
               Select a token
@@ -196,7 +196,6 @@ export default function CurrencySearchModal({
             />
           </RowBetween>
         </PaddedColumn>
-        <div style={{ width: '100%', height: '1px', backgroundColor: theme.bg2 }} />
         <CurrencyList
           currencies={filteredSortedTokens}
           allBalances={allTokenBalances}
@@ -205,7 +204,7 @@ export default function CurrencySearchModal({
           selectedCurrency={hiddenCurrency}
           showSendWithSwap={showSendWithSwap}
         />
-        <div style={{ width: '100%', height: '1px', backgroundColor: theme.bg2 }} />
+        <div style={{ height: '1px', backgroundColor: theme.bg2, margin: '0 30px' }} />
         <Card>
           <AutoRow justify={'center'}>
             <div>

@@ -1,6 +1,5 @@
 import { Token, TokenAmount, currencyEquals, ETHER, JSBI } from '@uniswap/sdk';
 import React, { CSSProperties, memo, useContext, useMemo } from 'react';
-import { FixedSizeList } from 'react-window';
 import { Text } from 'rebass';
 import { ThemeContext } from 'styled-components';
 import { useActiveWeb3React } from '../../hooks';
@@ -13,7 +12,7 @@ import { ButtonSecondary } from '../Button';
 import Column, { AutoColumn } from '../Column';
 import { RowFixed } from '../Row';
 import CurrencyLogo from '../CurrencyLogo';
-import { FadedSpan, MenuItem } from './styleds';
+import { FadedSpan, StyledFixedSizeList, StyledMenuItem } from './styleds';
 import Loader from '../Loader';
 import { isDefaultToken } from '../../utils';
 
@@ -60,7 +59,7 @@ export default function CurrencyList({
       const otherSelected = Boolean(otherCurrency && currencyEquals(otherCurrency, currency));
 
       return (
-        <MenuItem
+        <StyledMenuItem
           style={style}
           className={`token-item-${key}`}
           onClick={() => (isSelected ? null : onCurrencySelect(currency))}
@@ -68,7 +67,7 @@ export default function CurrencyList({
           selected={otherSelected}
         >
           <RowFixed>
-            <CurrencyLogo currency={currency} size={'24px'} style={{ marginRight: '14px' }} />
+            <CurrencyLogo currency={currency} size={'18px'} style={{ marginRight: '16px' }} />
             <Column>
               <Text fontWeight={500}>{currency.symbol}</Text>
               <FadedSpan>
@@ -122,7 +121,7 @@ export default function CurrencyList({
               '-'
             )}
           </AutoColumn>
-        </MenuItem>
+        </StyledMenuItem>
       );
     });
   }, [
@@ -143,15 +142,15 @@ export default function CurrencyList({
   ]);
 
   return (
-    <FixedSizeList
-      width="100%"
+    <StyledFixedSizeList
+      width="auto"
       height={500}
       itemCount={currencies.length + 1}
-      itemSize={56}
-      style={{ flex: '1' }}
+      itemSize={50}
+      style={{ flex: '1', margin: '0 30px' }}
       itemKey={index => currencyKey(currencies[index])}
     >
       {CurrencyRow}
-    </FixedSizeList>
+    </StyledFixedSizeList>
   );
 }

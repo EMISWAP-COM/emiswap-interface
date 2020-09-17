@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import styled, { css } from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { useWeb3React, UnsupportedChainIdError } from '@web3-react/core';
-import { darken, lighten } from 'polished';
+import { darken } from 'polished';
 import { Activity } from 'react-feather';
 import useENSName from '../../hooks/useENSName';
 import { useWalletModalToggle } from '../../state/application/hooks';
@@ -43,8 +43,8 @@ const Web3StatusGeneric = styled(ButtonSecondary)`
   ${({ theme }) => theme.flexRowNoWrap}
   width: 100%;
   align-items: center;
-  padding: 0.5rem;
-  border-radius: 12px;
+  padding: 0.35rem 0.5rem;
+  border-radius: 4px;
   cursor: pointer;
   user-select: none;
   :focus {
@@ -67,6 +67,10 @@ const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
   border: none;
   color: ${({ theme }) => theme.primaryText1};
   font-weight: 500;
+  padding: 10px 12px;
+  font-size: 13px;
+  line-height: 19px;
+  letter-spacing: 0.02em;
 
   :hover,
   :focus {
@@ -77,27 +81,27 @@ const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
   ${({ faded }) =>
     faded &&
     css`
-      background-color: ${({ theme }) => theme.primary5};
+      background-color: ${({ theme }) => theme.primary1};
       border: 1px solid ${({ theme }) => theme.primary5};
-      color: ${({ theme }) => theme.primaryText1};
+      color: ${({ theme }) => theme.grey2};
 
       :hover,
       :focus {
-        border: 1px solid ${({ theme }) => darken(0.05, theme.primary4)};
+        border: 1px solid ${({ theme }) => darken(0.05, theme.yellow4)};
         color: ${({ theme }) => darken(0.05, theme.primaryText1)};
       }
     `}
 `;
 
 const Web3StatusConnected = styled(Web3StatusGeneric)<{ pending?: boolean }>`
-  background-color: ${({ pending, theme }) => (pending ? theme.primary1 : theme.bg2)};
+  background-color: ${({ pending, theme }) => (pending ? theme.primary1 : theme.green2)};
   border: 1px solid ${({ pending, theme }) => (pending ? theme.primary1 : theme.bg3)};
   color: ${({ pending, theme }) => (pending ? theme.white : theme.text1)};
   font-weight: 500;
   :hover,
   :focus {
     background-color: ${({ pending, theme }) =>
-      pending ? darken(0.05, theme.primary1) : lighten(0.05, theme.bg2)};
+      pending ? darken(0.05, theme.primary1) : theme.green3};
 
     :focus {
       border: 1px solid
@@ -111,10 +115,9 @@ const Text = styled.p`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  margin: 0 0.5rem 0 0.25rem;
-  font-size: 1rem;
+  margin: 0 0.5rem 0;
   width: fit-content;
-  font-weight: 500;
+  font-weight: 450;
 `;
 
 const NetworkIcon = styled(Activity)`
@@ -254,7 +257,7 @@ export default function Web3Status() {
     } else {
       return (
         <Web3StatusConnect id="connect-wallet" onClick={toggleWalletModal} faded={!account}>
-          <Text>{t('Connect to a wallet')}</Text>
+          <Text>{t('Connect to a Wallet')}</Text>
         </Web3StatusConnect>
       );
     }

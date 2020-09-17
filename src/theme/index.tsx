@@ -20,11 +20,26 @@ export const MEDIA_WIDTHS = {
   upToLarge: 1280,
 };
 
+export const MEDIA_HEIGHTS = {
+  upToSmall: 750,
+};
+
 const mediaWidthTemplates: { [width in keyof typeof MEDIA_WIDTHS]: typeof css } = Object.keys(
   MEDIA_WIDTHS,
 ).reduce((accumulator, size) => {
   (accumulator as any)[size] = (a: any, b: any, c: any) => css`
     @media (max-width: ${(MEDIA_WIDTHS as any)[size]}px) {
+      ${css(a, b, c)}
+    }
+  `;
+  return accumulator;
+}, {}) as any;
+
+const mediaHeightTemplates: { [height in keyof typeof MEDIA_HEIGHTS]: typeof css } = Object.keys(
+  MEDIA_HEIGHTS,
+).reduce((accumulator, size) => {
+  (accumulator as any)[size] = (a: any, b: any, c: any) => css`
+    @media (max-height: ${(MEDIA_HEIGHTS as any)[size]}px) {
       ${css(a, b, c)}
     }
   `;
@@ -41,7 +56,7 @@ export function colors(darkMode: boolean): Colors {
     black,
 
     // text
-    text1: darkMode ? '#FFFFFF' : '#000000',
+    text1: darkMode ? '#FFFFFF' : '#555959',
     text2: darkMode ? '#C3C5CB' : '#565A69',
     text3: darkMode ? '#6C7284' : '#888D9B',
     text4: darkMode ? '#565A69' : '#C3C5CB',
@@ -55,18 +70,18 @@ export function colors(darkMode: boolean): Colors {
     bg5: darkMode ? '#565A69' : '#888D9B',
 
     //specialty colors
-    modalBG: darkMode ? 'rgba(0,0,0,0.85)' : 'rgba(0,0,0,0.6)',
+    modalBG: darkMode ? 'rgba(0,0,0,0.85)' : '#03160D',
     advancedBG: darkMode ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.6)',
 
     //primary colors
-    primary1: darkMode ? '#3A619D' : '#3A619D',
+    primary1: darkMode ? '#FFD541' : '#FFD541',
     primary2: darkMode ? '#3680E7' : '#3680E7',
     primary3: darkMode ? '#4D8FEA' : '#4D8FEA',
     primary4: darkMode ? '#376bad70' : '#376bad70',
-    primary5: darkMode ? '#153d6f70' : '#e7e7e7',
+    primary5: darkMode ? '#153d6f70' : '#e85e591a',
 
     // color text
-    primaryText1: darkMode ? '#6da8ff' : '#474747',
+    primaryText1: darkMode ? '#6da8ff' : '#E85E59',
 
     // secondary colors
     secondary1: darkMode ? '#2172E5' : '#ff007a',
@@ -74,12 +89,23 @@ export function colors(darkMode: boolean): Colors {
     secondary3: darkMode ? '#17000b26' : '#FDEAF1',
 
     // other
-    red1: '#FF6871',
+    grey1: '#DBDEDE',
+    grey2: '#141717',
+    grey3: '#24272C',
+    grey4: '#BFC1C4',
+    grey5: '#EAEEEE',
+    grey6: '#89919A',
+    red1: '#FFD541',
     red2: '#F82D3A',
     green1: '#27AE60',
+    green2: '#9ecfc326',
+    green3: '#4a867826',
+    green4: '#648280',
     yellow1: '#FFE270',
     yellow2: '#F3841E',
-    horse: darkMode ? '#ffffff' : '#3A619D',
+    yellow3: '#C39465',
+    yellow4: '#ffd54170',
+    horse: darkMode ? '#ffffff' : '#FFD541',
 
     // dont wanna forget these blue yet
     // blue4: darkMode ? '#153d6f70' : '#C4D9F8',
@@ -102,6 +128,7 @@ export function theme(darkMode: boolean): DefaultTheme {
 
     // media queries
     mediaWidth: mediaWidthTemplates,
+    mediaHeight: mediaHeightTemplates,
 
     // css snippets
     flexColumnNoWrap: css`
@@ -190,7 +217,7 @@ html, input, textarea, button {
 
 @supports (font-variation-settings: normal) {
   html, input, textarea, button {
-    font-family: 'Inter var', sans-serif;
+    font-family: 'IBM Plex Arabic', sans-serif;
     font-display: fallback;
   }
 }
@@ -199,7 +226,7 @@ html, input, textarea, button {
   .onlyDesktop {
     display: none;
   }
-  
+
   .onlyMobile {
     display: block;
   }

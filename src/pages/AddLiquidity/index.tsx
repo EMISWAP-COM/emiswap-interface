@@ -28,7 +28,7 @@ import {
 } from '../../state/mint-mooniswap/hooks';
 import { useTransactionAdder } from '../../state/transactions/hooks';
 import { useIsExpertMode, useUserSlippageTolerance } from '../../state/user/hooks';
-import { TYPE } from '../../theme';
+import { TYPE, StyledButtonNavigation } from '../../theme';
 import {
   calculateGasMargin,
   calculateSlippageAmount,
@@ -390,9 +390,11 @@ export default function AddLiquidity({
               id="add-liquidity-input-tokena"
               showCommonBases
             />
-            <ColumnCenter>
-              <Plus size="16" color={theme.text2} />
-            </ColumnCenter>
+            <StyledButtonNavigation>
+              <ColumnCenter>
+                <Plus size="16" color={theme.text2} />
+              </ColumnCenter>
+            </StyledButtonNavigation>
             <CurrencyInputPanel
               value={formattedAmounts[Field.CURRENCY_B]}
               onUserInput={onFieldBInput}

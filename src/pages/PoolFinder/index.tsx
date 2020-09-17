@@ -14,7 +14,7 @@ import { PairState, usePair } from '../../data-mooniswap/Reserves';
 import { useActiveWeb3React } from '../../hooks';
 import { usePairAdder } from '../../state/user/hooks';
 import { useTokenBalance } from '../../state/wallet/hooks';
-import { StyledInternalLink } from '../../theme';
+import { StyledButtonNavigation, StyledInternalLink } from '../../theme';
 import { currencyId } from '../../utils/currencyId';
 import AppBody from '../AppBody';
 import { Dots } from '../Pool/styleds';
@@ -103,9 +103,11 @@ export default function PoolFinder() {
           )}
         </ButtonDropdownLight>
 
-        <ColumnCenter>
-          <Plus size="16" color="#888D9B" />
-        </ColumnCenter>
+        <StyledButtonNavigation>
+          <ColumnCenter>
+            <Plus size="16" color="#888D9B" />
+          </ColumnCenter>
+        </StyledButtonNavigation>
 
         <ButtonDropdownLight
           onClick={() => {

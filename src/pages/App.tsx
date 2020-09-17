@@ -19,10 +19,12 @@ import PoolFinder from './PoolFinder';
 import RemoveLiquidity from './RemoveLiquidity';
 import { RedirectOldRemoveLiquidityPathStructure } from './RemoveLiquidity/redirects';
 import Swap from './Swap';
+import Invest from './Invest';
 import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects';
 import ReferralUrlParser from '../referral-url-parser';
 import MigrateV1 from './MigrateV1';
 import MigrateV1Exchange from './MigrateV1/MigrateV1Exchange';
+import UnicornSvg from '../assets/images/bg.svg';
 
 const AppWrapper = styled.div`
   display: flex;
@@ -30,13 +32,13 @@ const AppWrapper = styled.div`
   align-items: flex-start;
   overflow-x: hidden;
   height: 100vh;
+  background: center / cover no-repeat url('${UnicornSvg}');
 `;
 
 const LogoWrapper = styled.div`
   display: none;
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
-    display: block;
     padding-left: 65px;
     margin: 15px;
     position: relative;
@@ -53,12 +55,17 @@ const BodyWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding-top: 30px;
   align-items: center;
+  justify-content: center;
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
   z-index: 10;
+
+  ${({ theme }) => theme.mediaHeight.upToSmall`
+       justify-content: start;
+       padding-top: 16px;
+  `};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
       padding: 16px;
@@ -86,6 +93,7 @@ export default function App() {
               <Popups />
               <Web3ReactManager>
                 <Switch>
+                  <Route exact strict path="/invest" component={Invest} />
                   <Route exact strict path="/swap" component={Swap} />
                   <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
                   <Route exact strict path="/send" component={RedirectPathToSwapOnly} />

@@ -43,7 +43,7 @@ const Option = styled(FancyButton)<{ active: boolean }>`
     cursor: pointer;
   }
   background-color: ${({ active, theme }) => active && theme.primary1};
-  color: ${({ active, theme }) => (active ? theme.white : theme.text1)};
+  color: ${({ active, theme }) => (active ? theme.grey2 : theme.text1)};
 `;
 
 const Input = styled.input`
@@ -82,7 +82,7 @@ const OptionCustom = styled(FancyButton)<{ active?: boolean; warning?: boolean }
 const SlippageEmojiContainer = styled.span`
   color: #f3841e;
   ${({ theme }) => theme.mediaWidth.upToSmall`
-    display: none;  
+    display: none;
   `}
 `;
 
