@@ -9,10 +9,11 @@ import mint from './mint/reducer';
 import lists from './lists/reducer';
 import burn from './burn/reducer';
 import multicall from './multicall/reducer';
+import invest from './invest/reducer';
 
 import { updateVersion } from './user/actions';
 
-const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists', 'swap'];
+const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists', 'swap', 'invest'];
 
 const store = configureStore({
   reducer: {
@@ -24,6 +25,7 @@ const store = configureStore({
     burn,
     multicall,
     lists,
+    invest,
   },
   middleware: [...getDefaultMiddleware(), save({ states: PERSISTED_KEYS })],
   preloadedState: load({ states: PERSISTED_KEYS }),
