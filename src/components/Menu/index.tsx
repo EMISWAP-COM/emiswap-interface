@@ -115,7 +115,7 @@ export default function Menu() {
             <Info size={14} />
             About
           </MenuItem>
-          <MenuItem id="link" href="https://mooniswap.info/">
+          <MenuItem id="link" href={process.env.REACT_APP_ANALYTICS_URL}>
             <PieChart size={14} />
             Analytics
           </MenuItem>

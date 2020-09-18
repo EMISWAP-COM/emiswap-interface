@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-
+import { useLocation } from 'react-router-dom';
 import styled, { ThemeContext } from 'styled-components';
 import { RowFixed } from '../Row';
 import { Text } from 'rebass';
@@ -13,13 +13,14 @@ const ReferralLinkBox = styled.div`
   flex-direction: column;
 `;
 
-function getRefferalLink(currentUserAddress: string): string {
-  return `https://mooniswap.exchange/#/swap?r=${currentUserAddress}`;
-}
-
 export default function ReferralLink() {
   const theme = useContext(ThemeContext);
   const { account } = useActiveWeb3React();
+  let location = useLocation();
+
+  function getRefferalLink(currentUserAddress: string): string {
+    return `${window.location.origin}/#${location.pathname}?r=${currentUserAddress}`;
+  }
 
   return (
     <div>

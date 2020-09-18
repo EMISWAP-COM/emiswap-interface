@@ -1,43 +1,43 @@
 import { TokenAmount, JSBI } from '@uniswap/sdk';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { Plus } from 'react-feather';
 import { Text } from 'rebass';
 import { ThemeContext } from 'styled-components';
+import { useTranslation } from 'react-i18next';
 import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button';
 import Card, { GreyCard } from '../../components/Card';
-import { AutoColumn, ColumnCenter } from '../../components/Column';
+import { AutoColumn } from '../../components/Column';
 import ConfirmationModal from '../../components/ConfirmationModal';
 import CurrencyInputPanel from '../../components/CurrencyInputPanel';
 import { RowBetween } from '../../components/Row';
-import AdvancedSwapDetailsDropdown from '../../components/swap/AdvancedSwapDetailsDropdown';
-import BetterTradeLink from '../../components/swap/BetterTradeLink';
-import confirmPriceImpactWithoutFee from '../../components/swap/confirmPriceImpactWithoutFee';
-import { BottomGrouping, Dots, Wrapper } from '../../components/swap/styleds';
-import SwapModalFooter from '../../components/swap/SwapModalFooter';
-import SwapModalHeader from '../../components/swap/SwapModalHeader';
-import TradePrice from '../../components/swap/TradePrice';
+import AdvancedInvestDetailsDropdown from '../../components/invest/AdvancedInvestDetailsDropdown';
+import BetterTradeLink from '../../components/invest/BetterTradeLink';
+import confirmPriceImpactWithoutFee from '../../components/invest/confirmPriceImpactWithoutFee';
+import { BottomGrouping, Dots, Wrapper } from '../../components/invest/styleds';
+import InvestModalFooter from '../../components/invest/InvestModalFooter';
+import InvestModalHeader from '../../components/invest/InvestModalHeader';
+import TradePrice from '../../components/invest/TradePrice';
 import { TokenWarningCards } from '../../components/TokenWarningCard';
 import { BETTER_TRADE_LINK_THRESHOLD, INITIAL_ALLOWED_SLIPPAGE } from '../../constants';
 import { isTradeBetter } from '../../data/V1';
 import { useActiveWeb3React } from '../../hooks';
 import { ApprovalState, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback';
-import { useSwap } from '../../hooks/useSwapCallback';
+import { useInvest } from '../../hooks/useInvestCallback';
 import useToggledVersion, { Version } from '../../hooks/useToggledVersion';
 import useWrapCallback, { WrapType } from '../../hooks/useWrapCallback';
 import { useToggleSettingsMenu, useWalletModalToggle } from '../../state/application/hooks';
-import { Field } from '../../state/swap/actions';
+import { Field } from '../../state/invest/actions';
 import {
   useDefaultsFromURLSearch,
-  useDerivedSwapInfo,
-  useSwapActionHandlers,
-  useSwapState,
-} from '../../state/swap/hooks';
+  useDerivedInvestInfo,
+  useInvestActionHandlers,
+  useInvestState,
+} from '../../state/invest/hooks';
 import {
   useExpertModeManager,
   useUserSlippageTolerance,
   useTokenWarningDismissal,
 } from '../../state/user/hooks';
-import { StyledButtonNavigation, TYPE } from '../../theme';
+import { TYPE } from '../../theme';
 import { maxAmountSpend } from '../../utils/maxAmountSpend';
 import {
   computeSlippageAdjustedAmounts,
@@ -48,12 +48,14 @@ import AppBody from '../AppBody';
 import { ClickableText } from '../Pool/styleds';
 import { isUseOneSplitContract } from '../../utils';
 import ReferralLink from '../../components/RefferalLink';
-import GasConsumption from '../../components/swap/GasConsumption';
+import GasConsumption from '../../components/invest/GasConsumption';
 import { Tabs, TabsTitle } from './styleds';
+import { useCurrencyBalance } from '../../state/wallet/hooks';
 
 const Invest = () => {
   useDefaultsFromURLSearch();
 
+  const { t } = useTranslation();
   const { account, chainId } = useActiveWeb3React();
   const theme = useContext(ThemeContext);
 
@@ -67,10 +69,10 @@ const Invest = () => {
   // get custom setting values for user
   const [allowedSlippage] = useUserSlippageTolerance();
 
-  // swap state
-  const { independentField, typedValue } = useSwapState();
+  // invest state
+  const { independentField, typedValue } = useInvestState();
 
-  const { onCurrencySelection, onUserInput } = useSwapActionHandlers();
+  const { onCurrencySelection, onUserInput } = useInvestActionHandlers();
   const {
     v1Trade,
     v2Trade,
@@ -79,7 +81,8 @@ const Invest = () => {
     parsedAmount,
     currencies,
     error,
-  } = useDerivedSwapInfo();
+  } = useDerivedInvestInfo();
+  const selectedCurrencyBalance = useCurrencyBalance(account, currencies[Field.OUTPUT]);
 
   const distribution = mooniswapTrade?.[1];
 
@@ -117,6 +120,8 @@ const Invest = () => {
 
   const isValid = !error;
   const dependentField: Field = independentField === Field.INPUT ? Field.OUTPUT : Field.INPUT;
+
+  const handleNothing = () => {};
 
   const handleTypeInput = useCallback(
     (value: string) => {
@@ -165,8 +170,8 @@ const Invest = () => {
   const [gas, setGas] = useState(0);
   const [gasWhenUseChi, setGasWhenUseChi] = useState(0);
 
-  // the callback to execute the swap
-  const [isChiApplied, swapCallback, estimate] = useSwap(
+  // the callback to execute the invest
+  const [isChiApplied, investCallback, estimate] = useInvest(
     chainId,
     parsedAmount,
     trade,
@@ -180,7 +185,7 @@ const Invest = () => {
   useEffect(() => {
     let unmounted = false;
 
-    function handleStatusChange(result: number[]) {
+    function handleStatusChange(result: Array<number | undefined> | undefined) {
       if (unmounted || !result || !result[1]) {
         return;
       }
@@ -217,21 +222,21 @@ const Invest = () => {
 
   const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown(trade);
 
-  function onSwap() {
+  function onInvest() {
     if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee)) {
       return;
     }
-    if (!swapCallback) {
+    if (!investCallback) {
       return;
     }
     setAttemptingTxn(true);
-    swapCallback()
+    investCallback()
       .then(hash => {
         setAttemptingTxn(false);
         setTxHash(hash);
 
         // ReactGA.event({
-        //   category: 'Swap',
+        //   category: 'Invest',
         //   action: account
         //   label: [
         //     trade?.inputAmount?.token?.symbol,
@@ -266,7 +271,7 @@ const Invest = () => {
 
   function modalHeader() {
     return (
-      <SwapModalHeader
+      <InvestModalHeader
         currencies={currencies}
         formattedAmounts={formattedAmounts}
         slippageAdjustedAmounts={slippageAdjustedAmounts}
@@ -279,12 +284,12 @@ const Invest = () => {
 
   function modalBottom() {
     return (
-      <SwapModalFooter
-        confirmText={priceImpactSeverity > 2 ? 'Swap Anyway' : 'Confirm Swap'}
+      <InvestModalFooter
+        confirmText={priceImpactSeverity > 2 ? 'Invest Anyway' : 'Confirm Invest'}
         showInverted={showInverted}
         severity={priceImpactSeverity}
         setShowInverted={setShowInverted}
-        onSwap={onSwap}
+        onInvest={onInvest}
         realizedLPFee={realizedLPFee}
         parsedAmounts={parsedAmounts}
         priceImpactWithoutFee={priceImpactWithoutFee}
@@ -295,7 +300,7 @@ const Invest = () => {
   }
 
   // text to show while loading
-  const pendingText = `Swapping ${parsedAmounts[Field.INPUT]?.toSignificant(6)} ${
+  const pendingText = `Investing ${parsedAmounts[Field.INPUT]?.toSignificant(6)} ${
     currencies[Field.INPUT]?.symbol
   } for ${parsedAmounts[Field.OUTPUT]?.toSignificant(6)} ${currencies[Field.OUTPUT]?.symbol}`;
 
@@ -313,12 +318,12 @@ const Invest = () => {
       {showWarning && <TokenWarningCards currencies={currencies} />}
       <AppBody disabled={!!showWarning}>
         <Tabs style={{ marginBottom: '24px' }}>
-          <TabsTitle>Invest</TabsTitle>
+          <TabsTitle>{t('invest')}</TabsTitle>
         </Tabs>
-        <Wrapper id="swap-page">
+        <Wrapper id="invest-page">
           <ConfirmationModal
             isOpen={showConfirm}
-            title="Confirm Swap"
+            title="Confirm Invest"
             onDismiss={() => {
               setShowConfirm(false);
               // if there was a tx hash, we want to clear the input
@@ -349,14 +354,19 @@ const Invest = () => {
                 onCurrencySelection(Field.INPUT, currency);
               }}
               otherCurrency={currencies[Field.OUTPUT]}
-              id="swap-currency-input"
+              id="invest-currency-input"
             />
 
-            <StyledButtonNavigation>
-              <ColumnCenter>
-                <Plus size="16" color={theme.grey6} />
-              </ColumnCenter>
-            </StyledButtonNavigation>
+            <CurrencyInputPanel
+              value={formattedAmounts[Field.OUTPUT]}
+              onUserInput={handleNothing}
+              label={independentField === Field.INPUT && !showWrap ? 'To (estimated)' : 'To'}
+              showMaxButton={false}
+              hideBalance={true}
+              currency={currencies[Field.OUTPUT]}
+              id="swap-currency-output"
+              disableCurrencySelect
+            />
 
             {showWrap ? null : (
               <Card padding={'.25rem .75rem 0 .75rem'} borderRadius={'20px'}>
@@ -409,88 +419,96 @@ const Invest = () => {
               </Card>
             )}
           </AutoColumn>
-          <BottomGrouping>
-            {!account ? (
-              <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
-            ) : showWrap ? (
-              <ButtonPrimary disabled={Boolean(wrapError)} onClick={onWrap}>
-                {wrapError ??
-                  (wrapType === WrapType.WRAP
-                    ? 'Wrap'
-                    : wrapType === WrapType.UNWRAP
-                    ? 'Unwrap'
-                    : null)}
-              </ButtonPrimary>
-            ) : noRoute && userHasSpecifiedInputOutput && !isUseOneSplitContract(distribution) ? (
-              <GreyCard style={{ textAlign: 'center' }}>
-                <TYPE.main mb="4px">Insufficient liquidity for this trade.</TYPE.main>
-              </GreyCard>
-            ) : showApproveFlow ? (
-              <RowBetween>
-                <ButtonPrimary
-                  onClick={approveCallback}
-                  disabled={approval !== ApprovalState.NOT_APPROVED || approvalSubmitted}
-                  width="48%"
-                  altDisbaledStyle={approval === ApprovalState.PENDING} // show solid button while waiting
-                >
-                  {approval === ApprovalState.PENDING ? (
-                    <Dots>Approving</Dots>
-                  ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
-                    'Approved'
-                  ) : (
-                    'Approve ' + currencies[Field.INPUT]?.symbol
-                  )}
-                </ButtonPrimary>
+
+          <AutoColumn gap={'md'}>
+            <BottomGrouping>
+              {!account ? (
+                <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
+              ) : noRoute && userHasSpecifiedInputOutput && !isUseOneSplitContract(distribution) ? (
+                <GreyCard style={{ textAlign: 'center' }}>
+                  <TYPE.main mb="4px">Insufficient liquidity for this trade.</TYPE.main>
+                </GreyCard>
+              ) : showApproveFlow ? (
+                <RowBetween>
+                  <ButtonPrimary
+                    onClick={approveCallback}
+                    disabled={approval !== ApprovalState.NOT_APPROVED || approvalSubmitted}
+                    width="48%"
+                    altDisbaledStyle={approval === ApprovalState.PENDING} // show solid button while waiting
+                  >
+                    {approval === ApprovalState.PENDING ? (
+                      <Dots>Approving</Dots>
+                    ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
+                      'Approved'
+                    ) : (
+                      'Approve ' + currencies[Field.INPUT]?.symbol
+                    )}
+                  </ButtonPrimary>
+                  <ButtonError
+                    onClick={() => {
+                      expertMode ? onInvest() : setShowConfirm(true);
+                    }}
+                    width="48%"
+                    id="invest-button"
+                    disabled={
+                      !isValid ||
+                      approval !== ApprovalState.APPROVED ||
+                      (priceImpactSeverity > 3 && !expertMode) ||
+                      notEnoughBalance
+                    }
+                    error={isValid && priceImpactSeverity > 2}
+                  >
+                    <Text fontSize={16} fontWeight={450}>
+                      {notEnoughBalance
+                        ? `Not enough balance`
+                        : priceImpactSeverity > 3 && !expertMode
+                        ? `Price Impact High`
+                        : `Invest${priceImpactSeverity > 2 ? ' Anyway' : ''}`}
+                    </Text>
+                  </ButtonError>
+                </RowBetween>
+              ) : (
                 <ButtonError
                   onClick={() => {
-                    expertMode ? onSwap() : setShowConfirm(true);
+                    expertMode ? onInvest() : setShowConfirm(true);
                   }}
-                  width="48%"
-                  id="swap-button"
+                  id="invest-button"
                   disabled={
-                    !isValid ||
-                    approval !== ApprovalState.APPROVED ||
-                    (priceImpactSeverity > 3 && !expertMode) ||
-                    notEnoughBalance
+                    !isValid || (priceImpactSeverity > 3 && !expertMode) || notEnoughBalance
                   }
                   error={isValid && priceImpactSeverity > 2}
                 >
                   <Text fontSize={16} fontWeight={450}>
-                    {notEnoughBalance
+                    {error
+                      ? error
+                      : notEnoughBalance
                       ? `Not enough balance`
                       : priceImpactSeverity > 3 && !expertMode
-                      ? `Price Impact High`
-                      : `Swap${priceImpactSeverity > 2 ? ' Anyway' : ''}`}
+                      ? `Price Impact Too High`
+                      : `Invest${priceImpactSeverity > 2 ? ' Anyway' : ''}`}
                   </Text>
                 </ButtonError>
-              </RowBetween>
-            ) : (
-              <ButtonError
-                onClick={() => {
-                  expertMode ? onSwap() : setShowConfirm(true);
-                }}
-                id="swap-button"
-                disabled={!isValid || (priceImpactSeverity > 3 && !expertMode) || notEnoughBalance}
-                error={isValid && priceImpactSeverity > 2}
-              >
-                <Text fontSize={16} fontWeight={450}>
-                  {error
-                    ? error
-                    : notEnoughBalance
-                    ? `Not enough balance`
-                    : priceImpactSeverity > 3 && !expertMode
-                    ? `Price Impact Too High`
-                    : `Swap${priceImpactSeverity > 2 ? ' Anyway' : ''}`}
-                </Text>
-              </ButtonError>
-            )}
-            {betterTradeLinkVersion && <BetterTradeLink version={betterTradeLinkVersion} />}
-          </BottomGrouping>
+              )}
+              {betterTradeLinkVersion && <BetterTradeLink version={betterTradeLinkVersion} />}
+            </BottomGrouping>
 
+            {account && (
+              <CurrencyInputPanel
+                value={selectedCurrencyBalance?.toSignificant(6)}
+                onUserInput={handleNothing}
+                label={'Current balance'}
+                showMaxButton={false}
+                currency={currencies[Field.OUTPUT]}
+                id="invest-currency-balance"
+                disableCurrencySelect
+                hideBalance
+              />
+            )}
+          </AutoColumn>
           {account ? <ReferralLink /> : ''}
         </Wrapper>
       </AppBody>
-      <AdvancedSwapDetailsDropdown trade={trade} />
+      <AdvancedInvestDetailsDropdown trade={trade} />
     </>
   );
 };
