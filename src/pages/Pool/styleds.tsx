@@ -13,8 +13,8 @@ export const ClickableText = styled(Text)`
 `;
 export const MaxButton = styled.button<{ width: string }>`
   padding: 0.5rem 1rem;
-  background-color: ${({ theme }) => theme.primary5};
-  border: 1px solid ${({ theme }) => theme.primary5};
+  background-color: ${({ theme }) => theme.primary1};
+  border: 1px solid ${({ theme }) => theme.primary1};
   border-radius: 0.5rem;
   font-size: 1rem;
   ${({ theme }) => theme.mediaWidth.upToSmall`
@@ -53,4 +53,11 @@ export const Dots = styled.span`
       content: '...';
     }
   }
+`;
+
+export const ButtonText = styled.p`
+  margin: 0 0.5rem 0;
+  font-weight: 450;
+  font-size: 13px;
+  line-height: 19px;
 `;

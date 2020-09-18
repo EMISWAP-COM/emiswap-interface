@@ -46,6 +46,7 @@ export interface Colors {
   grey6: Color;
   red1: Color;
   red2: Color;
+  red3: Color;
   green1: Color;
   green2: Color;
   green3: Color;

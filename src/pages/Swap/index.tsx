@@ -493,7 +493,7 @@ export default function Swap() {
                   }
                   error={isValid && priceImpactSeverity > 2}
                 >
-                  <Text fontSize={16} fontWeight={500}>
+                  <Text fontSize={16} fontWeight={450}>
                     {notEnoughBalance
                       ? `Not enough balance`
                       : priceImpactSeverity > 3 && !expertMode
@@ -511,7 +511,7 @@ export default function Swap() {
                 disabled={!isValid || (priceImpactSeverity > 3 && !expertMode) || notEnoughBalance}
                 error={isValid && priceImpactSeverity > 2}
               >
-                <Text fontSize={20} fontWeight={500}>
+                <Text fontSize={16} fontWeight={450}>
                   {error
                     ? error
                     : notEnoughBalance

@@ -20,6 +20,7 @@ import { useTrackedTokenPairs } from '../../state/user/hooks';
 import AppBody from '../AppBody';
 import { Dots } from '../../components/swap/styleds';
 import ReferralLink from '../../components/RefferalLink';
+import { ButtonText } from './styleds';
 
 export default function Pool() {
   const theme = useContext(ThemeContext);
@@ -84,10 +85,10 @@ export default function Pool() {
           <ButtonPrimary
             id="join-pool-button"
             as={Link}
-            style={{ padding: 16 }}
+            style={{ padding: '15px 16px' }}
             to={'/add/' + ZERO_ADDRESS}
           >
-            <Text fontWeight={500} fontSize={20}>
+            <Text fontWeight={450} fontSize={16}>
               Add Liquidity
             </Text>
           </ButtonPrimary>
@@ -142,7 +143,7 @@ export default function Pool() {
 
       <div style={{ display: 'flex', alignItems: 'center', marginTop: '1.5rem' }}>
         <ButtonSecondary as={Link} style={{ width: 'initial' }} to="/migrate">
-          Migrate Liquidity to Emiswap
+          <ButtonText>Migrate Liquidity to Emiswap</ButtonText>
         </ButtonSecondary>
       </div>
     </>
