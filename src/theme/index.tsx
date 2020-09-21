@@ -21,7 +21,7 @@ export const MEDIA_WIDTHS = {
 };
 
 export const MEDIA_HEIGHTS = {
-  upToSmall: 725,
+  upToSmall: 800,
 };
 
 const mediaWidthTemplates: { [width in keyof typeof MEDIA_WIDTHS]: typeof css } = Object.keys(
