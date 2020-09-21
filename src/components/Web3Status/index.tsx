@@ -102,11 +102,7 @@ const Web3StatusConnected = styled(Web3StatusGeneric)<{ pending?: boolean }>`
   :focus {
     background-color: ${({ pending, theme }) =>
       pending ? darken(0.05, theme.primary1) : theme.green3};
-
-    :focus {
-      border: 1px solid
-        ${({ pending, theme }) => (pending ? darken(0.1, theme.primary1) : darken(0.1, theme.bg3))};
-    }
+    border: 1px solid transparent;
   }
 `;
 
