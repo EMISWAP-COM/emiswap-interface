@@ -15,12 +15,11 @@ import InvestModalFooter from '../../components/invest/InvestModalFooter';
 import InvestModalHeader from '../../components/invest/InvestModalHeader';
 import TradePrice from '../../components/invest/TradePrice';
 import { TokenWarningCards } from '../../components/TokenWarningCard';
-import { INITIAL_ALLOWED_SLIPPAGE } from '../../constants';
 import { useActiveWeb3React } from '../../hooks';
 import { ApprovalState, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback';
 import { useInvest } from '../../hooks/useInvestCallback';
 import useToggledVersion, { Version } from '../../hooks/useToggledVersion';
-import { useToggleSettingsMenu, useWalletModalToggle } from '../../state/application/hooks';
+import { useWalletModalToggle } from '../../state/application/hooks';
 import { Field } from '../../state/invest/actions';
 import {
   useDefaultsFromURLSearch,
@@ -28,19 +27,10 @@ import {
   useInvestActionHandlers,
   useInvestState,
 } from '../../state/invest/hooks';
-import {
-  useExpertModeManager,
-  useUserSlippageTolerance,
-  useTokenWarningDismissal,
-} from '../../state/user/hooks';
+import { useExpertModeManager, useTokenWarningDismissal } from '../../state/user/hooks';
 import { maxAmountSpend } from '../../utils/maxAmountSpend';
-import {
-  computeSlippageAdjustedAmounts,
-  computeTradePriceBreakdown,
-  warningSeverity,
-} from '../../utils/prices';
+import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices';
 import AppBody from '../AppBody';
-import { ClickableText } from '../Pool/styleds';
 import ReferralLink from '../../components/RefferalLink';
 import { Tabs, TabsTitle } from './styleds';
 import { useCurrencyBalance } from '../../state/wallet/hooks';
@@ -56,11 +46,7 @@ const Invest = () => {
   const toggleWalletModal = useWalletModalToggle();
 
   // for expert mode
-  const toggleSettings = useToggleSettingsMenu();
   const [expertMode] = useExpertModeManager();
-
-  // get custom setting values for user
-  const [allowedSlippage] = useUserSlippageTolerance();
 
   // invest state
   const { independentField, typedValue } = useInvestState();
@@ -114,11 +100,7 @@ const Invest = () => {
   };
 
   // check whether the user has approved the router on the input token
-  const [approval, approveCallback] = useApproveCallbackFromTrade(
-    trade,
-    distribution,
-    allowedSlippage,
-  );
+  const [approval, approveCallback] = useApproveCallbackFromTrade(trade, distribution);
 
   // check if user has gone through approval process, used to show two step buttons, reset on token change
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false);
@@ -131,13 +113,7 @@ const Invest = () => {
   }, [approval, approvalSubmitted]);
 
   // the callback to execute the invest
-  const [investCallback, estimate] = useInvest(
-    chainId,
-    parsedAmount,
-    trade,
-    distribution,
-    allowedSlippage,
-  );
+  const [investCallback, estimate] = useInvest(chainId, parsedAmount, trade, distribution);
 
   const srcAmount = trade?.inputAmount?.toExact();
 
@@ -165,8 +141,6 @@ const Invest = () => {
   const atMaxAmountInput = Boolean(
     maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput),
   );
-
-  const slippageAdjustedAmounts = computeSlippageAdjustedAmounts(trade, allowedSlippage);
 
   const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown(trade);
 
@@ -212,7 +186,6 @@ const Invest = () => {
       <InvestModalHeader
         currencies={currencies}
         formattedAmounts={formattedAmounts}
-        slippageAdjustedAmounts={slippageAdjustedAmounts}
         priceImpactSeverity={priceImpactSeverity}
         independentField={independentField}
         recipient={account as string | null}
@@ -231,7 +204,6 @@ const Invest = () => {
         realizedLPFee={realizedLPFee}
         parsedAmounts={parsedAmounts}
         priceImpactWithoutFee={priceImpactWithoutFee}
-        slippageAdjustedAmounts={slippageAdjustedAmounts}
         trade={trade}
       />
     );
@@ -322,27 +294,6 @@ const Invest = () => {
                     setShowInverted={setShowInverted}
                   />
                 </RowBetween>
-
-                {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
-                  <RowBetween align="center">
-                    <ClickableText
-                      fontWeight={500}
-                      fontSize={14}
-                      color={theme.text2}
-                      onClick={toggleSettings}
-                    >
-                      Slippage Tolerance
-                    </ClickableText>
-                    <ClickableText
-                      fontWeight={500}
-                      fontSize={14}
-                      color={theme.text2}
-                      onClick={toggleSettings}
-                    >
-                      {allowedSlippage ? allowedSlippage / 100 : '-'}%
-                    </ClickableText>
-                  </RowBetween>
-                )}
               </AutoColumn>
             </Card>
           </AutoColumn>

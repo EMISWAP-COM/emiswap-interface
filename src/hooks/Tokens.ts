@@ -65,17 +65,20 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
 
   console.log('---tokens---', tokens)
   const address = isAddress(tokenAddress);
+  console.log('---address---', address)
 
   const tokenContract = useTokenContract(address ? address : undefined, false);
+  console.log('---tokenContract---', tokenContract)
   const tokenContractBytes32 = useBytes32TokenContract(address ? address : undefined, false);
   const token: Token | undefined = address ? tokens[address] : undefined;
-
+console.log('----token 2---', token)
   const tokenName = useSingleCallResult(
     token ? undefined : tokenContract,
     'name',
     undefined,
     NEVER_RELOAD,
   );
+  console.log('----tokenName---', tokenName)
   const tokenNameBytes32 = useSingleCallResult(
     token ? undefined : tokenContractBytes32,
     'name',

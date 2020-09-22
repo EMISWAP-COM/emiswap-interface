@@ -2,7 +2,7 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { Contract } from '@ethersproject/contracts';
 import { TokenAmount, Trade } from '@uniswap/sdk';
 import { useMemo } from 'react';
-import { INITIAL_ALLOWED_SLIPPAGE, REFERRAL_ADDRESS_STORAGE_KEY } from '../constants';
+import { REFERRAL_ADDRESS_STORAGE_KEY } from '../constants';
 import { getTradeVersion } from '../data/V1';
 import { useTransactionAdder } from '../state/transactions/hooks';
 import { calculateGasMargin, getMooniswapContract, isAddress } from '../utils';
@@ -20,10 +20,9 @@ export function useInvest(
   fromAmount: TokenAmount | undefined,
   trade: Trade | undefined, // trade to execute, required
   distribution: BigNumber[] | undefined,
-  allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
 ): useInvestResult {
-  const estimate = useEstimateCallback(fromAmount, trade, distribution, allowedSlippage);
-  const InvestCallback = useInvestCallback(fromAmount, trade, distribution, allowedSlippage);
+  const estimate = useEstimateCallback(fromAmount, trade, distribution);
+  const InvestCallback = useInvestCallback(fromAmount, trade, distribution);
   return [InvestCallback, estimate];
 }
 
@@ -31,7 +30,6 @@ export function useEstimateCallback(
   fromAmount: TokenAmount | undefined,
   trade: Trade | undefined, // trade to execute, required
   distribution: BigNumber[] | undefined,
-  allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips,
 ): EstimateCallback {
   const { account, chainId, library } = useActiveWeb3React();
   const recipient = account;
@@ -59,19 +57,16 @@ export function useEstimateCallback(
     account,
     tradeVersion,
     chainId,
-    allowedSlippage,
     distribution,
     fromAmount,
   ]);
 }
 
 // returns a function that will execute a invest, if the parameters are all valid
-// and the user has approved the slippage adjusted input amount for the trade
 export function useInvestCallback(
   fromAmount: TokenAmount | undefined,
   trade: Trade | undefined, // trade to execute, required
   distribution: BigNumber[] | undefined,
-  allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips,
   // TODO: should be taked into consideration
   //useChi: boolean | undefined
 ): InvestCallback {
@@ -145,7 +140,7 @@ export function useInvestCallback(
       };
 
       const minReturn = BigNumber.from(trade.outputAmount.raw.toString())
-        .mul(String(10000 - allowedSlippage))
+        .mul(String(10000))
         .div(String(10000));
 
       const referalAddressStr = localStorage.getItem(REFERRAL_ADDRESS_STORAGE_KEY);
@@ -184,7 +179,6 @@ export function useInvestCallback(
     account,
     tradeVersion,
     chainId,
-    allowedSlippage,
     addTransaction,
     distribution,
     fromAmount,
