@@ -21,7 +21,7 @@ export const MEDIA_WIDTHS = {
 };
 
 export const MEDIA_HEIGHTS = {
-  upToSmall: 750,
+  upToSmall: 800,
 };
 
 const mediaWidthTemplates: { [width in keyof typeof MEDIA_WIDTHS]: typeof css } = Object.keys(
@@ -102,6 +102,7 @@ export function colors(darkMode: boolean): Colors {
     green2: '#9ecfc326',
     green3: '#4a867826',
     green4: '#648280',
+    green5: '#11B382',
     yellow1: '#FFE270',
     yellow2: '#F3841E',
     yellow3: '#C39465',

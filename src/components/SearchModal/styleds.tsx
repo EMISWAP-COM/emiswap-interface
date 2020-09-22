@@ -64,9 +64,9 @@ export const MenuItem = styled(RowBetween)`
 `;
 
 export const SearchInput = styled(Input)`
-  transition: border 100ms;
+  transition: border 300ms;
   :focus {
-    border: 1px solid ${({ theme }) => theme.primary1};
+    border: 1px solid ${({ theme }) => theme.green5};
     outline: none;
   }
 `;

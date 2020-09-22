@@ -14,13 +14,17 @@ export const HeadersPlusBodyWrapper = styled.div<{ disabled?: boolean }>`
     content: '';
     background: center / contain no-repeat url('${PolygonSvg}');
     position: absolute;
-    top: 60%;
+    top: 55%;
     left: 50%;
     margin-right: -50%;
     transform: translate(-50%, -50%);
     width: 875px;
     height: 857px;
     z-index: -1;
+
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+      display: none;
+    `};
   }
 `;
 
@@ -36,6 +40,10 @@ export const BodyWrapper = styled.div<{ disabled?: boolean }>`
   opacity: ${({ disabled }) => (disabled ? '0.4' : '1')};
   pointer-events: ${({ disabled }) => disabled && 'none'};
   bottom: 7px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    padding: 1rem;
+  `};
 `;
 
 /**

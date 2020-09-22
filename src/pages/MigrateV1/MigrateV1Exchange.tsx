@@ -254,7 +254,7 @@ function V1PairMigration({
         <YellowCard>
           <AutoColumn gap="8px">
             <RowBetween>
-              <TYPE.body>Uniswap V2 Price:</TYPE.body>
+              <TYPE.body>Mooniswap V2 Price:</TYPE.body>
               <TYPE.black>
                 {uniswapSpotPrice?.toSignificant(6)} {token0.symbol}/{token1.symbol}
               </TYPE.black>
@@ -304,7 +304,7 @@ function V1PairMigration({
 
           <AutoColumn gap="8px">
             <RowBetween>
-              <TYPE.body>Uniswap V2 Price:</TYPE.body>
+              <TYPE.body>Mooniswap V2 Price:</TYPE.body>
               <TYPE.black>
                 {uniswapSpotPrice?.toSignificant(6)} {token0.symbol}/{token1.symbol}
               </TYPE.black>

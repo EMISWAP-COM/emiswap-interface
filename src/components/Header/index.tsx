@@ -49,6 +49,7 @@ const Title = styled.a`
   display: flex;
   align-items: center;
   pointer-events: auto;
+  margin-right: 10px;
 
   :hover {
     cursor: pointer;
@@ -115,6 +116,8 @@ const BalanceText = styled(Text)`
   font-size: 13px;
   line-height: 19px;
   letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     display: none;
@@ -127,6 +130,7 @@ const RowBetweenStyled = styled(RowBetween)`
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
       padding: 1rem 1rem 0.5rem 1rem;
+      flex-wrap: wrap;
   `};
 `;
 
@@ -159,18 +163,23 @@ export default function Header() {
         </HeaderElement>
         <HeaderControls>
           <HeaderElement>
-            <TestnetWrapper>
-              {!isMobile && NETWORK_LABELS[chainId] && (
+            {!isMobile && NETWORK_LABELS[chainId] && (
+              <TestnetWrapper>
                 <NetworkCard>{NETWORK_LABELS[chainId]}</NetworkCard>
-              )}
-            </TestnetWrapper>
+              </TestnetWrapper>
+            )}
             <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
               {account && userEthBalance ? (
                 <>
-                  <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={450}>
+                  <BalanceText
+                    style={{ flexShrink: 0 }}
+                    pl="0.75rem"
+                    pr="1.125rem"
+                    fontWeight={450}
+                  >
                     {userEthBalance?.toSignificant(4)} ETH
+                    <Image size={30} style={{ paddingLeft: 12 }} />
                   </BalanceText>
-                  <Image size={40} style={{ paddingRight: 16 }} />
                 </>
               ) : null}
               <Web3Status />
