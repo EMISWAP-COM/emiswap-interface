@@ -3,7 +3,7 @@ import React, { CSSProperties, memo, useContext, useMemo } from 'react';
 import { Text } from 'rebass';
 import { ThemeContext } from 'styled-components';
 import { useActiveWeb3React } from '../../hooks';
-import { useAllCoins, useAllTokens } from '../../hooks/Tokens'
+import { useAllCoins, useAllTokens } from '../../hooks/Tokens';
 import { useDefaultTokenList } from '../../state/lists/hooks';
 import { useAddUserToken, useRemoveUserAddedToken } from '../../state/user/hooks';
 import { useETHBalances } from '../../state/wallet/hooks';

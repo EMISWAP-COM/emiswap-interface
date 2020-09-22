@@ -2,7 +2,7 @@ import useToggledVersion, { Version } from '../../hooks/useToggledVersion';
 import { parseUnits } from '@ethersproject/units';
 import { BigNumber } from '@ethersproject/bignumber';
 import { Contract } from '@ethersproject/contracts';
-import { Token, TokenAmount, JSBI, Trade, ZERO_ADDRESS, ChainId } from '@uniswap/sdk'
+import { Token, TokenAmount, JSBI, Trade, ZERO_ADDRESS, ChainId } from '@uniswap/sdk';
 import { ParsedQs } from 'qs';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

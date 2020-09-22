@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { ReactComponent as MenuIcon } from '../../assets/images/menu.svg';
 import useToggle from '../../hooks/useToggle';
 import { ExternalLink } from '../../theme';
-import { Link as HistoryLink } from 'react-router-dom'
+import { Link as HistoryLink } from 'react-router-dom';
 
 const StyledMenuIcon = styled(MenuIcon)`
   path {

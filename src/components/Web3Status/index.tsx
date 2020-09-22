@@ -94,15 +94,16 @@ const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
 `;
 
 const Web3StatusConnected = styled(Web3StatusGeneric)<{ pending?: boolean }>`
-  background-color: ${({ pending, theme }) => (pending ? theme.primary1 : theme.green2)};
-  border: 1px solid ${({ pending, theme }) => (pending ? theme.primary1 : theme.bg3)};
-  color: ${({ pending, theme }) => (pending ? theme.white : theme.text1)};
+  background-color: ${({ pending, theme }) => (pending ? theme.primary1 : theme.green5)};
+  border: 1px solid ${({ pending, theme }) => (pending ? theme.primary1 : theme.green5)};
+  color: ${({ pending, theme }) => (pending ? theme.grey2 : theme.white)};
   font-weight: 500;
   :hover,
   :focus {
     background-color: ${({ pending, theme }) =>
-      pending ? darken(0.05, theme.primary1) : theme.green3};
+      darken(0.05, pending ? theme.primary1 : theme.green5)};
     border: 1px solid transparent;
+    box-shadow: none;
   }
 `;
 
