@@ -1,10 +1,11 @@
 import React, { useRef, useEffect } from 'react';
 // import { Info, BookOpen, Code, PieChart, MessageCircle } from 'react-feather'
-import { BookOpen, Code, Info, MessageCircle, PieChart } from 'react-feather';
+import { BookOpen, Code, Info, MessageCircle, PieChart, DollarSign } from 'react-feather';
 import styled from 'styled-components';
 import { ReactComponent as MenuIcon } from '../../assets/images/menu.svg';
 import useToggle from '../../hooks/useToggle';
 import { ExternalLink } from '../../theme';
+import { Link as HistoryLink } from 'react-router-dom'
 
 const StyledMenuIcon = styled(MenuIcon)`
   path {
@@ -62,6 +63,21 @@ const MenuFlyout = styled.span`
   z-index: 100;
 `;
 
+const MenuItemHistory = styled(HistoryLink)`
+  flex: 1;
+  padding: 0.5rem 0.5rem;
+  color: ${({ theme }) => theme.text2};
+  text-decoration: none;
+  :hover {
+    color: ${({ theme }) => theme.text1};
+    cursor: pointer;
+    text-decoration: none;
+  }
+  > svg {
+    margin-right: 8px;
+  }
+`;
+
 const MenuItem = styled(ExternalLink)`
   flex: 1;
   padding: 0.5rem 0.5rem;
@@ -75,8 +91,6 @@ const MenuItem = styled(ExternalLink)`
     margin-right: 8px;
   }
 `;
-
-const CODE_LINK = 'https://github.com/CryptoManiacsZone/mooniswap';
 
 export default function Menu() {
   const node = useRef<HTMLDivElement>();
@@ -108,40 +122,25 @@ export default function Menu() {
       </StyledMenuButton>
       {open && (
         <MenuFlyout>
-          <MenuItem
-            id="link"
-            href="https://medium.com/@1inch.exchange/1inch-revolutionizes-automated-market-maker-amm-segment-with-mooniswap-e068c20d94c"
-          >
-            <Info size={14} />
-            About
-          </MenuItem>
+          <MenuItemHistory to="/invest">
+            <DollarSign size={14} />
+            Invest
+          </MenuItemHistory>
+          <MenuItemHistory to="/swap">
+            <DollarSign size={14} />
+            Swap
+          </MenuItemHistory>
+          <MenuItemHistory to="/pool">
+            <DollarSign size={14} />
+            Pool
+          </MenuItemHistory>
           <MenuItem id="link" href={process.env.REACT_APP_ANALYTICS_URL}>
             <PieChart size={14} />
             Analytics
           </MenuItem>
-          <MenuItem id="link" href={CODE_LINK}>
+          <MenuItem id="link" href={process.env.REACT_APP_CODE_LINK}>
             <Code size={14} />
             Code
-          </MenuItem>
-          <MenuItem id="link" href="https://discord.gg/FZADkCZ">
-            <MessageCircle size={14} />
-            Discord
-          </MenuItem>
-          <MenuItem id="link" href={process.env.PUBLIC_URL + '/docs/MooniswapWhitePaper-v1.0.pdf'}>
-            <BookOpen size={14} />
-            Whitepaper
-          </MenuItem>
-          <MenuItem id="link" href="https://dapp.org.uk/reports/mooniswap.html">
-            <BookOpen size={14} />
-            Audit
-          </MenuItem>
-          <MenuItem id="link" href={process.env.PUBLIC_URL + '/docs/mooniswap-audit-report-2.pdf'}>
-            <BookOpen size={14} />
-            Audit 2
-          </MenuItem>
-          <MenuItem id="link" href={process.env.PUBLIC_URL + '/docs/mooniswap-audit-report-3.pdf'}>
-            <BookOpen size={14} />
-            Audit 3
           </MenuItem>
         </MenuFlyout>
       )}
