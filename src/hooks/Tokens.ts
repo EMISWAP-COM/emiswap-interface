@@ -136,7 +136,6 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
 export function useCurrency(currencyId: string | undefined): Token | null | undefined {
   const isETH = currencyId?.toUpperCase() === ETHER.address.toUpperCase();
   const token = useToken(isETH ? undefined : currencyId);
-  console.log('---token---', token)
   return isETH ? ETHER : token;
 }
 

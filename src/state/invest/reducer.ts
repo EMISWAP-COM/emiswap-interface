@@ -32,6 +32,7 @@ const initialState: InvestState = {
   [Field.OUTPUT]: {
     currencyId: process.env.REACT_APP_ESW_ID,
   },
+  coins: [],
 };
 
 export default createReducer<InvestState>(initialState, builder =>
