@@ -96,7 +96,12 @@ export function useInvestCallback(
       return null;
 
     return async function onInvest() {
-      const contract: Contract | null = getMooniswapContract(chainId, library, trade.route.pairs[0].poolAddress, account);
+      const contract: Contract | null = getMooniswapContract(
+        chainId,
+        library,
+        trade.route.pairs[0].poolAddress,
+        account,
+      );
 
       if (!contract) {
         throw new Error('Failed to get a crowdsale contract');

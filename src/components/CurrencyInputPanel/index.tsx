@@ -13,7 +13,7 @@ import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg';
 
 import { useActiveWeb3React } from '../../hooks';
 import { useTranslation } from 'react-i18next';
-import CrowdsaleCurrencySearchModal from '../SearchModal/CrowdsaleCurrencySearchModal'
+import CrowdsaleCurrencySearchModal from '../SearchModal/CrowdsaleCurrencySearchModal';
 
 const InputRow = styled.div<{ selected: boolean }>`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -90,7 +90,8 @@ const Container = styled.div<{ hideInput: boolean }>`
 `;
 
 const StyledTokenName = styled.span<{ active?: boolean }>`
-  ${({ active }) => (active ? '  margin: 0 0.25rem 0 0.5rem;' : '  margin: 0 0.25rem 0 0.25rem;')}
+  ${({ active }) =>
+    active ? '  margin: 0 0.25rem 0 0.5rem;' : '  margin: 0.125rem 0.25rem 0 0.25rem;'}
   font-size:  ${({ active }) => (active ? '18px' : '16px')};
   font-weight: 450;
   line-height: 27px;
@@ -255,8 +256,8 @@ export default function CurrencyInputPanel({
           </CurrencySelect>
         </InputRow>
       </Container>
-      {!disableCurrencySelect && (
-        isCrowdsale ? (
+      {!disableCurrencySelect &&
+        (isCrowdsale ? (
           <CrowdsaleCurrencySearchModal
             isOpen={modalOpen}
             onDismiss={handleDismissSearch}
@@ -276,8 +277,7 @@ export default function CurrencyInputPanel({
             otherSelectedCurrency={otherCurrency}
             showCommonBases={showCommonBases}
           />
-        )
-      )}
+        ))}
     </InputPanel>
   );
 }

@@ -23,12 +23,14 @@ import { useIsTransactionPending, useTransactionAdder } from '../../state/transa
 import { useTokenBalance, useTokenBalances } from '../../state/wallet/hooks';
 import { BackArrow, TYPE } from '../../theme';
 import { calculateSlippageAmount, getMooniswapMigratorContract, isAddress } from '../../utils';
-import { BodyWrapper } from '../AppBody';
+import { BodyWrapper, HeadersPlusBodyWrapper } from '../AppBody';
 import { EmptyState } from './EmptyState';
 import { usePairTokens } from '../../data-mooniswap/UniswapV2';
 import DoubleCurrencyLogo from '../../components/DoubleLogo';
 import { Link } from 'react-router-dom';
 import { useUserSlippageTolerance } from '../../state/user/hooks';
+import Logo from '../../components/Logo';
+import Wordmark from '../../components/Wordmark';
 
 const POOL_CURRENCY_AMOUNT_MIN = new Fraction(JSBI.BigInt(1), JSBI.BigInt(1000000));
 const ZERO = JSBI.BigInt(0);
@@ -425,28 +427,34 @@ export default function MigrateV1Exchange({
   }
 
   return (
-    <BodyWrapper style={{ padding: 24 }}>
-      <AutoColumn gap="16px">
-        <AutoRow style={{ alignItems: 'center', justifyContent: 'space-between' }} gap="8px">
-          <BackArrow to="/migrate" />
-          <TYPE.mediumHeader>Migrate Liquidity</TYPE.mediumHeader>
-          <div>
-            <QuestionHelper text="Migrate your liquidity tokens from Uniswap V2 to Mooniswap." />
-          </div>
-        </AutoRow>
+    <HeadersPlusBodyWrapper>
+      <div className="onlyDesktop">
+        <Logo />
+        <Wordmark />
+      </div>
+      <BodyWrapper style={{ padding: 24 }}>
+        <AutoColumn gap="16px">
+          <AutoRow style={{ alignItems: 'center', justifyContent: 'space-between' }} gap="8px">
+            <BackArrow to="/migrate" />
+            <TYPE.mediumHeader>Migrate Liquidity</TYPE.mediumHeader>
+            <div>
+              <QuestionHelper text="Migrate your liquidity tokens from Uniswap V2 to Mooniswap." />
+            </div>
+          </AutoRow>
 
-        {!account ? (
-          <TYPE.largeHeader>You must connect an account.</TYPE.largeHeader>
-        ) : userLiquidityBalance && token0 && token1 ? (
-          <V1PairMigration
-            liquidityTokenAmount={userLiquidityBalance}
-            token0={token0}
-            token1={token1}
-          />
-        ) : (
-          <EmptyState message="Loading..." />
-        )}
-      </AutoColumn>
-    </BodyWrapper>
+          {!account ? (
+            <TYPE.largeHeader>You must connect an account.</TYPE.largeHeader>
+          ) : userLiquidityBalance && token0 && token1 ? (
+            <V1PairMigration
+              liquidityTokenAmount={userLiquidityBalance}
+              token0={token0}
+              token1={token1}
+            />
+          ) : (
+            <EmptyState message="Loading..." />
+          )}
+        </AutoColumn>
+      </BodyWrapper>
+    </HeadersPlusBodyWrapper>
   );
 }

@@ -56,16 +56,11 @@ const BodyWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   align-items: center;
-  justify-content: center;
+  padding-top: 30px;
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
   z-index: 10;
-
-  ${({ theme }) => theme.mediaHeight.upToSmall`
-       justify-content: start;
-       padding-top: 16px;
-  `};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
       padding: 16px;
