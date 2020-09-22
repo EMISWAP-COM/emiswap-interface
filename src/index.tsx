@@ -15,6 +15,7 @@ import TransactionUpdater from './state/transactions/updater';
 import ListsUpdater from './state/lists/updater';
 import UserUpdater from './state/user/updater';
 import MulticallUpdater from './state/multicall/updater';
+import InvestUpdater from './state/invest/updater';
 import ThemeProvider, { FixedGlobalStyle, ThemedGlobalStyle } from './theme';
 import HttpsRedirect from './https-redirect';
 
@@ -59,6 +60,7 @@ function Updaters() {
       <ApplicationUpdater />
       <TransactionUpdater />
       <MulticallUpdater />
+      <InvestUpdater />
     </>
   );
 }

@@ -10,20 +10,17 @@ import ConfirmationModal from '../../components/ConfirmationModal';
 import CurrencyInputPanel from '../../components/CurrencyInputPanel';
 import { RowBetween } from '../../components/Row';
 import AdvancedInvestDetailsDropdown from '../../components/invest/AdvancedInvestDetailsDropdown';
-import BetterTradeLink from '../../components/invest/BetterTradeLink';
 import confirmPriceImpactWithoutFee from '../../components/invest/confirmPriceImpactWithoutFee';
 import { BottomGrouping, Dots, Wrapper } from '../../components/invest/styleds';
 import InvestModalFooter from '../../components/invest/InvestModalFooter';
 import InvestModalHeader from '../../components/invest/InvestModalHeader';
 import TradePrice from '../../components/invest/TradePrice';
 import { TokenWarningCards } from '../../components/TokenWarningCard';
-import { BETTER_TRADE_LINK_THRESHOLD, INITIAL_ALLOWED_SLIPPAGE } from '../../constants';
-import { isTradeBetter } from '../../data/V1';
+import { INITIAL_ALLOWED_SLIPPAGE } from '../../constants';
 import { useActiveWeb3React } from '../../hooks';
 import { ApprovalState, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback';
 import { useInvest } from '../../hooks/useInvestCallback';
 import useToggledVersion, { Version } from '../../hooks/useToggledVersion';
-import useWrapCallback, { WrapType } from '../../hooks/useWrapCallback';
 import { useToggleSettingsMenu, useWalletModalToggle } from '../../state/application/hooks';
 import { Field } from '../../state/invest/actions';
 import {
@@ -37,7 +34,6 @@ import {
   useUserSlippageTolerance,
   useTokenWarningDismissal,
 } from '../../state/user/hooks';
-import { TYPE } from '../../theme';
 import { maxAmountSpend } from '../../utils/maxAmountSpend';
 import {
   computeSlippageAdjustedAmounts,
@@ -46,9 +42,7 @@ import {
 } from '../../utils/prices';
 import AppBody from '../AppBody';
 import { ClickableText } from '../Pool/styleds';
-import { isUseOneSplitContract } from '../../utils';
 import ReferralLink from '../../components/RefferalLink';
-import GasConsumption from '../../components/invest/GasConsumption';
 import { Tabs, TabsTitle } from './styleds';
 import { useCurrencyBalance } from '../../state/wallet/hooks';
 
@@ -86,37 +80,17 @@ const Invest = () => {
 
   const distribution = mooniswapTrade?.[1];
 
-  const { wrapType, execute: onWrap, error: wrapError } = useWrapCallback();
-  // currencies[Field.INPUT],
-  // currencies[Field.OUTPUT],
-  // typedValue
-  const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE;
   const toggledVersion = useToggledVersion();
-  const trade = showWrap
-    ? undefined
-    : {
-        [Version.v1]: v1Trade,
-        [Version.v2]: v2Trade,
-        [Version.v3]: mooniswapTrade?.[0],
-      }[toggledVersion];
+  const trade = {
+    [Version.v1]: v1Trade,
+    [Version.v2]: v2Trade,
+    [Version.v3]: mooniswapTrade?.[0],
+  }[toggledVersion];
 
-  const betterTradeLinkVersion: Version | undefined =
-    toggledVersion === Version.v2 && isTradeBetter(v2Trade, v1Trade, BETTER_TRADE_LINK_THRESHOLD)
-      ? Version.v1
-      : toggledVersion === Version.v1 && isTradeBetter(v1Trade, v2Trade)
-      ? Version.v2
-      : undefined;
-
-  const parsedAmounts = showWrap
-    ? {
-        [Field.INPUT]: parsedAmount,
-        [Field.OUTPUT]: parsedAmount,
-      }
-    : {
-        [Field.INPUT]: parsedAmount,
-        // [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
-        [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
-      };
+  const parsedAmounts = {
+    [Field.INPUT]: parsedAmount,
+    [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
+  };
 
   const isValid = !error;
   const dependentField: Field = independentField === Field.INPUT ? Field.OUTPUT : Field.INPUT;
@@ -137,18 +111,8 @@ const Invest = () => {
 
   const formattedAmounts = {
     [independentField]: typedValue,
-    [dependentField]: showWrap
-      ? parsedAmounts[independentField]?.toExact() ?? ''
-      : parsedAmounts[dependentField]?.toSignificant(6) ?? '',
+    [dependentField]: parsedAmounts[dependentField]?.toSignificant(6) ?? '',
   };
-
-  const route = trade?.route;
-  const userHasSpecifiedInputOutput = Boolean(
-    currencies[Field.INPUT] &&
-      currencies[Field.OUTPUT] &&
-      parsedAmounts[independentField]?.greaterThan(JSBI.BigInt(0)),
-  );
-  const noRoute = !route;
 
   // check whether the user has approved the router on the input token
   const [approval, approveCallback] = useApproveCallbackFromTrade(
@@ -167,11 +131,8 @@ const Invest = () => {
     }
   }, [approval, approvalSubmitted]);
 
-  const [gas, setGas] = useState(0);
-  const [gasWhenUseChi, setGasWhenUseChi] = useState(0);
-
   // the callback to execute the invest
-  const [isChiApplied, investCallback, estimate] = useInvest(
+  const [investCallback, estimate] = useInvest(
     chainId,
     parsedAmount,
     trade,
@@ -189,18 +150,6 @@ const Invest = () => {
       if (unmounted || !result || !result[1]) {
         return;
       }
-
-      const gasWithoutChi = result[0];
-      const gasWithChi = result[1];
-
-      // As base gas amount on UI show the same amount of gas that metamask would show (red one)
-      const gas = Math.round(gasWithChi / 1000);
-
-      // Chi allow to safe up to 43% from original transaction (the one without CHI burn) green
-      const gasWhenUseChi = Math.round((gasWithoutChi * 0.57) / 1000);
-      //
-      setGas(gas);
-      setGasWhenUseChi(gasWhenUseChi);
     }
 
     srcAmount && estimate && estimate().then(result => handleStatusChange(result));
@@ -234,16 +183,6 @@ const Invest = () => {
       .then(hash => {
         setAttemptingTxn(false);
         setTxHash(hash);
-
-        // ReactGA.event({
-        //   category: 'Invest',
-        //   action: account
-        //   label: [
-        //     trade?.inputAmount?.token?.symbol,
-        //     trade?.outputAmount?.token?.symbol,
-        //     getTradeVersion(trade)
-        //   ].join('/')
-        // })
       })
       .catch(error => {
         setAttemptingTxn(false);
@@ -341,7 +280,7 @@ const Invest = () => {
 
           <AutoColumn gap={'md'}>
             <CurrencyInputPanel
-              label={independentField === Field.OUTPUT && !showWrap ? 'From (estimated)' : 'From'}
+              label={independentField === Field.OUTPUT ? 'From (estimated)' : 'From'}
               value={formattedAmounts[Field.INPUT]}
               showMaxButton={!atMaxAmountInput}
               currency={currencies[Field.INPUT]}
@@ -355,79 +294,64 @@ const Invest = () => {
               }}
               otherCurrency={currencies[Field.OUTPUT]}
               id="invest-currency-input"
+              isCrowdsale
             />
 
             <CurrencyInputPanel
               value={formattedAmounts[Field.OUTPUT]}
               onUserInput={handleNothing}
-              label={independentField === Field.INPUT && !showWrap ? 'To (estimated)' : 'To'}
+              label={independentField === Field.INPUT ? 'To (estimated)' : 'To'}
               showMaxButton={false}
-              hideBalance={true}
               currency={currencies[Field.OUTPUT]}
               id="swap-currency-output"
               disableCurrencySelect
+              hideBalance
+              isCrowdsale
             />
 
-            {showWrap ? null : (
-              <Card padding={'.25rem .75rem 0 .75rem'} borderRadius={'20px'}>
-                <AutoColumn gap="4px">
+            <Card padding={'.25rem .75rem 0 .75rem'} borderRadius={'20px'}>
+              <AutoColumn gap="4px">
+                <RowBetween align="center">
+                  <Text fontWeight={500} fontSize={14} color={theme.text2}>
+                    Price
+                  </Text>
+                  <TradePrice
+                    inputCurrency={currencies[Field.INPUT]}
+                    outputCurrency={currencies[Field.OUTPUT]}
+                    price={trade?.executionPrice}
+                    showInverted={showInverted}
+                    setShowInverted={setShowInverted}
+                  />
+                </RowBetween>
+
+                {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
                   <RowBetween align="center">
-                    <Text fontWeight={500} fontSize={14} color={theme.text2}>
-                      Price
-                    </Text>
-                    <TradePrice
-                      inputCurrency={currencies[Field.INPUT]}
-                      outputCurrency={currencies[Field.OUTPUT]}
-                      price={trade?.executionPrice}
-                      showInverted={showInverted}
-                      setShowInverted={setShowInverted}
-                    />
+                    <ClickableText
+                      fontWeight={500}
+                      fontSize={14}
+                      color={theme.text2}
+                      onClick={toggleSettings}
+                    >
+                      Slippage Tolerance
+                    </ClickableText>
+                    <ClickableText
+                      fontWeight={500}
+                      fontSize={14}
+                      color={theme.text2}
+                      onClick={toggleSettings}
+                    >
+                      {allowedSlippage ? allowedSlippage / 100 : '-'}%
+                    </ClickableText>
                   </RowBetween>
-
-                  {isChiApplied && gas ? (
-                    <RowBetween align="center">
-                      <Text fontWeight={500} fontSize={14} color={theme.text2}>
-                        Gas consumption
-                      </Text>
-                      {<GasConsumption gas={gas} gasWhenUseChi={gasWhenUseChi} />}
-                    </RowBetween>
-                  ) : (
-                    ''
-                  )}
-
-                  {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
-                    <RowBetween align="center">
-                      <ClickableText
-                        fontWeight={500}
-                        fontSize={14}
-                        color={theme.text2}
-                        onClick={toggleSettings}
-                      >
-                        Slippage Tolerance
-                      </ClickableText>
-                      <ClickableText
-                        fontWeight={500}
-                        fontSize={14}
-                        color={theme.text2}
-                        onClick={toggleSettings}
-                      >
-                        {allowedSlippage ? allowedSlippage / 100 : '-'}%
-                      </ClickableText>
-                    </RowBetween>
-                  )}
-                </AutoColumn>
-              </Card>
-            )}
+                )}
+              </AutoColumn>
+            </Card>
           </AutoColumn>
 
           <AutoColumn gap={'md'}>
             <BottomGrouping>
               {!account ? (
                 <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
-              ) : noRoute && userHasSpecifiedInputOutput && !isUseOneSplitContract(distribution) ? (
-                <GreyCard style={{ textAlign: 'center' }}>
-                  <TYPE.main mb="4px">Insufficient liquidity for this trade.</TYPE.main>
-                </GreyCard>
               ) : showApproveFlow ? (
                 <RowBetween>
                   <ButtonPrimary
@@ -489,7 +413,6 @@ const Invest = () => {
                   </Text>
                 </ButtonError>
               )}
-              {betterTradeLinkVersion && <BetterTradeLink version={betterTradeLinkVersion} />}
             </BottomGrouping>
 
             {account && (
@@ -502,6 +425,7 @@ const Invest = () => {
                 id="invest-currency-balance"
                 disableCurrencySelect
                 hideBalance
+                isCrowdsale
               />
             )}
           </AutoColumn>

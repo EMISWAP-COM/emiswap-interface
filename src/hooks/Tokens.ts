@@ -4,8 +4,8 @@ import { useMemo } from 'react';
 import { useDefaultTokenList } from '../state/lists/hooks';
 import { NEVER_RELOAD, useSingleCallResult } from '../state/multicall/hooks';
 import { useUserAddedTokens } from '../state/user/hooks';
+import { useCoinList } from '../state/invest/hooks';
 import { isAddress } from '../utils';
-
 import { useActiveWeb3React } from './index';
 import { useBytes32TokenContract, useTokenContract } from './useContract';
 
@@ -30,6 +30,16 @@ export function useAllTokens(): { [address: string]: Token } {
         )
     );
   }, [chainId, userAddedTokens, allTokens]);
+}
+
+export function useAllCoins(): { [address: string]: Token } {
+  const { chainId } = useActiveWeb3React();
+  const allCoins = useCoinList();
+
+  return useMemo(() => {
+    if (!chainId) return {};
+    return { ...allCoins[chainId] };
+  }, [chainId, allCoins]);
 }
 
 // parse a name or symbol from a token response

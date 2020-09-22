@@ -13,6 +13,7 @@ import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg';
 
 import { useActiveWeb3React } from '../../hooks';
 import { useTranslation } from 'react-i18next';
+import CrowdsaleCurrencySearchModal from '../SearchModal/CrowdsaleCurrencySearchModal'
 
 const InputRow = styled.div<{ selected: boolean }>`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -136,6 +137,7 @@ interface CurrencyInputPanelProps {
   otherCurrency?: Token | null;
   id: string;
   showCommonBases?: boolean;
+  isCrowdsale?: boolean;
 }
 
 export default function CurrencyInputPanel({
@@ -154,6 +156,7 @@ export default function CurrencyInputPanel({
   otherCurrency = null,
   id,
   showCommonBases,
+  isCrowdsale = false,
 }: CurrencyInputPanelProps) {
   const { t } = useTranslation();
 
@@ -253,15 +256,27 @@ export default function CurrencyInputPanel({
         </InputRow>
       </Container>
       {!disableCurrencySelect && (
-        <CurrencySearchModal
-          isOpen={modalOpen}
-          onDismiss={handleDismissSearch}
-          onCurrencySelect={onCurrencySelect}
-          showSendWithSwap={showSendWithSwap}
-          hiddenCurrency={currency}
-          otherSelectedCurrency={otherCurrency}
-          showCommonBases={showCommonBases}
-        />
+        isCrowdsale ? (
+          <CrowdsaleCurrencySearchModal
+            isOpen={modalOpen}
+            onDismiss={handleDismissSearch}
+            onCurrencySelect={onCurrencySelect}
+            showSendWithSwap={showSendWithSwap}
+            hiddenCurrency={currency}
+            otherSelectedCurrency={otherCurrency}
+            showCommonBases={showCommonBases}
+          />
+        ) : (
+          <CurrencySearchModal
+            isOpen={modalOpen}
+            onDismiss={handleDismissSearch}
+            onCurrencySelect={onCurrencySelect}
+            showSendWithSwap={showSendWithSwap}
+            hiddenCurrency={currency}
+            otherSelectedCurrency={otherCurrency}
+            showCommonBases={showCommonBases}
+          />
+        )
       )}
     </InputPanel>
   );

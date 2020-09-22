@@ -1,7 +1,7 @@
 import { Token, TokenAmount, ETHER, JSBI } from '@uniswap/sdk';
 import { useMemo } from 'react';
 import ERC20_INTERFACE from '../../constants/abis/erc20';
-import { useAllTokens } from '../../hooks/Tokens';
+import { useAllCoins, useAllTokens } from '../../hooks/Tokens'
 import { useActiveWeb3React } from '../../hooks';
 import { useMulticallContract } from '../../hooks/useContract';
 import { isAddress } from '../../utils';
@@ -208,5 +208,14 @@ export function useAllTokenBalances(): { [tokenAddress: string]: TokenAmount | u
   const allTokens = useAllTokens();
   const allTokensArray = useMemo(() => Object.values(allTokens ?? {}), [allTokens]);
   const balances = useTokenBalances(account ?? undefined, allTokensArray);
+  return balances ?? {};
+}
+
+// mimics useAllBalances
+export function useAllCoinBalances(): { [tokenAddress: string]: TokenAmount | undefined } {
+  const { account } = useActiveWeb3React();
+  const allCoins = useAllCoins();
+  const allCoinsArray = useMemo(() => Object.values(allCoins ?? {}), [allCoins]);
+  const balances = useTokenBalances(account ?? undefined, allCoinsArray);
   return balances ?? {};
 }

@@ -1,15 +1,17 @@
 import useToggledVersion, { Version } from '../../hooks/useToggledVersion';
 import { parseUnits } from '@ethersproject/units';
-import { Token, TokenAmount, JSBI, Trade, ZERO_ADDRESS } from '@uniswap/sdk';
+import { BigNumber } from '@ethersproject/bignumber';
+import { Contract } from '@ethersproject/contracts';
+import { Token, TokenAmount, JSBI, Trade, ZERO_ADDRESS, ChainId } from '@uniswap/sdk'
 import { ParsedQs } from 'qs';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMooniswapTrade, useV1Trade } from '../../data-mooniswap/V1';
 import { useActiveWeb3React } from '../../hooks';
 import { useCurrency } from '../../hooks/Tokens';
 import { useTradeExactIn, useTradeExactOut } from '../../hooks/Trades';
 import useParsedQueryString from '../../hooks/useParsedQueryString';
-import { isAddress } from '../../utils';
+import { getCrowdsaleContract, isAddress } from '../../utils';
 import { AppDispatch, AppState } from '../index';
 import { useCurrencyBalances } from '../wallet/hooks';
 import {
@@ -23,7 +25,18 @@ import {
 import { InvestState } from './reducer';
 import { useUserSlippageTolerance } from '../user/hooks';
 import { computeSlippageAdjustedAmounts } from '../../utils/prices';
-import { BigNumber } from '@ethersproject/bignumber';
+import { TokenAddressMap, WrappedTokenInfo } from '../lists/hooks';
+
+/**
+ * An empty result, useful as a default.
+ */
+const EMPTY_LIST: TokenAddressMap = {
+  [ChainId.KOVAN]: {},
+  [ChainId.RINKEBY]: {},
+  [ChainId.ROPSTEN]: {},
+  [ChainId.GÖRLI]: {},
+  [ChainId.MAINNET]: {},
+};
 
 export function useInvestState(): AppState['invest'] {
   return useSelector<AppState, AppState['invest']>(state => state.invest);
@@ -301,4 +314,81 @@ export function useDefaultsFromURLSearch() {
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, chainId]);
+}
+
+export function useCoinList(): TokenAddressMap {
+  const list = useSelector<AppState, AppState['invest']['coins']>(state => state.invest.coins);
+  return useMemo(() => {
+    if (!list) return EMPTY_LIST;
+    return listToTokenMap(list);
+  }, [list]);
+}
+
+const listCache: WeakMap<Token[], TokenAddressMap> | null =
+  'WeakMap' in window ? new WeakMap<Token[], TokenAddressMap>() : null;
+
+export function listToTokenMap(list: Token[]): TokenAddressMap {
+  const result = listCache?.get(list);
+  if (result) return result;
+
+  const map = list.reduce<TokenAddressMap>(
+    (tokenMap, tokenInfo) => {
+      const token = new WrappedTokenInfo(tokenInfo);
+      if (tokenMap[token.chainId][token.address] !== undefined) throw Error('Duplicate tokens.');
+      if (token.address === '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE') {
+        return { ...tokenMap };
+      }
+      return {
+        ...tokenMap,
+        [token.chainId]: {
+          ...tokenMap[token.chainId],
+          [token.address]: token,
+        },
+      };
+    },
+    { ...EMPTY_LIST },
+  );
+  listCache?.set(list, map);
+  return map;
+}
+
+export function useCoinCounter(): number {
+  const { account, library } = useActiveWeb3React();
+  const contract: Contract | null = getCrowdsaleContract(library, account);
+  try {
+    return contract.coinCounter();
+  } catch (error) {
+    console.error(`useCoinCounter failed`, error);
+  }
+  return 0;
+}
+
+export function useCoin(index: number) {
+  const { account, library } = useActiveWeb3React();
+  const contract: Contract | null = getCrowdsaleContract(library, account);
+  try {
+    return contract.coin(index);
+  } catch (error) {
+    console.error(`useCoin failed`, error);
+  }
+}
+
+export function useCoinData(index: number) {
+  const { account, library } = useActiveWeb3React();
+  const contract: Contract | null = getCrowdsaleContract(library, account);
+  try {
+    return contract.coinData(index);
+  } catch (error) {
+    console.error(`useCoinData failed`, error);
+  }
+}
+
+export function useCoinGetRate() {
+  const { account, library } = useActiveWeb3React();
+  const contract: Contract | null = getCrowdsaleContract(library, account);
+  try {
+    return contract.coinRate(1);
+  } catch (error) {
+    console.error(`useCoinGetRate`, error);
+  }
 }

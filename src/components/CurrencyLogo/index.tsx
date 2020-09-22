@@ -70,7 +70,7 @@ export default function CurrencyLogo({
       return (
         <Image
           {...rest}
-          alt={`${currency.name} Logo`}
+          alt=""
           src={uri}
           size={size}
           onError={() => {

@@ -1,12 +1,14 @@
 import { createReducer } from '@reduxjs/toolkit';
 import {
   Field,
+  getCoinList,
   receiveOutput,
   replaceInvestState,
   selectCurrency,
   switchCurrencies,
   typeInput,
 } from './actions';
+import { Token } from '@uniswap/sdk';
 
 export interface InvestState {
   readonly independentField: Field;
@@ -18,6 +20,7 @@ export interface InvestState {
     readonly currencyId: string | undefined;
   };
   readonly outputValue?: string;
+  readonly coins?: Token[];
 }
 
 const initialState: InvestState = {
@@ -89,6 +92,12 @@ export default createReducer<InvestState>(initialState, builder =>
       return {
         ...state,
         outputValue: outputValue,
+      };
+    })
+    .addCase(getCoinList.fulfilled, (state, action) => {
+      return {
+        ...state,
+        coins: action.payload,
       };
     }),
 );
