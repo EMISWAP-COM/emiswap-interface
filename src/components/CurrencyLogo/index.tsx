@@ -57,10 +57,10 @@ export default function CurrencyLogo({
     let uri: string | undefined;
 
     if (!uri) {
-      const defaultUri = getTokenLogoURL(currency.address);
-      if (!BAD_URIS[defaultUri]) {
-        uri = defaultUri;
-      }
+      // const defaultUri = getTokenLogoURL(currency.address);
+      // if (!BAD_URIS[defaultUri]) {
+      //   uri = defaultUri;
+      // }
       if (FALLBACK_URIS[currency.address]) {
         uri = FALLBACK_URIS[currency.address];
       }
@@ -85,11 +85,5 @@ export default function CurrencyLogo({
     }
   }
 
-  return (
-    <Emoji {...rest} size={size}>
-      <span role="img" aria-label="Thinking">
-        🤔
-      </span>
-    </Emoji>
-  );
+  return <span />;
 }
