@@ -63,6 +63,7 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
   const { chainId } = useActiveWeb3React();
   const tokens = useAllTokens();
 
+  console.log('---tokens---', tokens)
   const address = isAddress(tokenAddress);
 
   const tokenContract = useTokenContract(address ? address : undefined, false);
@@ -132,5 +133,11 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
 export function useCurrency(currencyId: string | undefined): Token | null | undefined {
   const isETH = currencyId?.toUpperCase() === ETHER.address.toUpperCase();
   const token = useToken(isETH ? undefined : currencyId);
+  console.log('---token---', token)
   return isETH ? ETHER : token;
 }
+
+// export function getESW(): Token | null | undefined {
+//   const { chainId } = useActiveWeb3React();
+//   return new Token(chainId, process.env.REACT_APP_ESW_ID, 18, 'ESW', '');
+// }

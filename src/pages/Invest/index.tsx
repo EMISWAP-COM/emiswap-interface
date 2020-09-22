@@ -4,12 +4,11 @@ import { Text } from 'rebass';
 import { ThemeContext } from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button';
-import Card, { GreyCard } from '../../components/Card';
+import Card from '../../components/Card';
 import { AutoColumn } from '../../components/Column';
 import ConfirmationModal from '../../components/ConfirmationModal';
 import CurrencyInputPanel from '../../components/CurrencyInputPanel';
 import { RowBetween } from '../../components/Row';
-import AdvancedInvestDetailsDropdown from '../../components/invest/AdvancedInvestDetailsDropdown';
 import confirmPriceImpactWithoutFee from '../../components/invest/confirmPriceImpactWithoutFee';
 import { BottomGrouping, Dots, Wrapper } from '../../components/invest/styleds';
 import InvestModalFooter from '../../components/invest/InvestModalFooter';
@@ -432,7 +431,6 @@ const Invest = () => {
           {account ? <ReferralLink /> : ''}
         </Wrapper>
       </AppBody>
-      <AdvancedInvestDetailsDropdown trade={trade} />
     </>
   );
 };
