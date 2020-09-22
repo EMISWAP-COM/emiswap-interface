@@ -9,13 +9,13 @@ import { MouseoverTooltip } from '../Tooltip';
 const VersionLabel = styled.span<{ enabled: boolean }>`
   padding: 0.35rem 0.6rem;
   border-radius: 12px;
-  background: ${({ theme, enabled }) => (enabled ? theme.primary1 : 'none')};
+  background: ${({ theme, enabled }) => (enabled ? theme.green5 : 'none')};
   color: ${({ theme, enabled }) => (enabled ? theme.white : theme.text1)};
   font-size: 1rem;
   font-weight: ${({ enabled }) => (enabled ? '500' : '400')};
   :hover {
     user-select: ${({ enabled }) => (enabled ? 'none' : 'initial')};
-    background: ${({ theme, enabled }) => (enabled ? theme.primary1 : 'none')};
+    background: ${({ theme, enabled }) => (enabled ? theme.green5 : 'none')};
     color: ${({ theme, enabled }) => (enabled ? theme.white : theme.text1)};
   }
 `;
