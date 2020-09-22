@@ -9,16 +9,16 @@ export enum Field {
   OUTPUT = 'OUTPUT',
 }
 
-export const selectCurrency = createAction<{ field: Field; currencyId: string }>('selectCurrency');
-export const switchCurrencies = createAction<void>('switchCurrencies');
-export const typeInput = createAction<{ field: Field; typedValue: string }>('typeInput');
-export const receiveOutput = createAction<{ outputValue: string }>('receiveOutput');
+export const selectCurrency = createAction<{ field: Field; currencyId: string }>('invest/selectCurrency');
+export const switchCurrencies = createAction<void>('invest/switchCurrencies');
+export const typeInput = createAction<{ field: Field; typedValue: string }>('invest/typeInput');
+export const receiveOutput = createAction<{ outputValue: string }>('invest/receiveOutput');
 export const replaceInvestState = createAction<{
   field: Field;
   typedValue: string;
   inputCurrencyId?: string;
   outputCurrencyId?: string;
-}>('replaceInvestState');
+}>('invest/replaceInvestState');
 
 async function useCoinList(
   chainId: ChainId,
