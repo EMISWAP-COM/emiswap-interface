@@ -51,28 +51,11 @@ const Invest = () => {
   const { independentField, typedValue } = useInvestState();
 
   const { onCurrencySelection, onUserInput } = useInvestActionHandlers();
-  const {
-    v1Trade,
-    v2Trade,
-    mooniswapTrade,
-    currencyBalances,
-    parsedAmount,
-    currencies,
-    error,
-  } = useDerivedInvestInfo();
-
-  const distribution = mooniswapTrade?.[1];
-
-  const toggledVersion = useToggledVersion();
-  const trade = {
-    [Version.v1]: v1Trade,
-    [Version.v2]: v2Trade,
-    [Version.v3]: mooniswapTrade?.[0],
-  }[toggledVersion];
+  const { currencyBalances, parsedAmount, currencies, error } = useDerivedInvestInfo();
 
   const parsedAmounts = {
     [Field.INPUT]: parsedAmount,
-    [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
+    [Field.OUTPUT]: parsedAmount,
   };
 
   const isValid = !error;
@@ -97,8 +80,17 @@ const Invest = () => {
     [dependentField]: parsedAmounts[dependentField]?.toSignificant(6) ?? '',
   };
 
+  // @ts-ignore
+  const inputCurrencyRate = currencies[Field.INPUT]?.tokenInfo?.rate;
+  const inputCurrencyPrice = inputCurrencyRate / Math.pow(10, currencies[Field.INPUT].decimals);
+  const inputAmount = parseFloat(formattedAmounts[Field.INPUT]);
+  formattedAmounts[Field.OUTPUT] =
+    inputCurrencyPrice && inputCurrencyRate && inputAmount
+      ? parseFloat((inputAmount * inputCurrencyPrice).toFixed(6)).toString()
+      : '';
+
   // check whether the user has approved the router on the input token
-  const [approval, approveCallback] = useApproveCallbackFromTrade(trade, distribution);
+  const [approval, approveCallback] = useApproveCallbackFromTrade();
 
   // check if user has gone through approval process, used to show two step buttons, reset on token change
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false);
@@ -111,57 +103,54 @@ const Invest = () => {
   }, [approval, approvalSubmitted]);
 
   // the callback to execute the invest
-  const [investCallback, estimate] = useInvest(chainId, parsedAmount, trade, distribution);
+  const [investCallback, estimate] = useInvest(chainId, parsedAmount);
 
-  const srcAmount = trade?.inputAmount?.toExact();
+  // const srcAmount = trade?.inputAmount?.toExact();
 
   // TODO: for sure should be more elegant solution for estimation calls
-  useEffect(() => {
-    let unmounted = false;
-
-    function handleStatusChange(result: Array<number | undefined> | undefined) {
-      if (unmounted || !result || !result[1]) {
-        return;
-      }
-    }
-
-    srcAmount && estimate && estimate().then(result => handleStatusChange(result));
-
-    // Specify how to clean up after this effect:
-    return function cleanup() {
-      unmounted = true;
-    };
-
-    // eslint-disable-next-line
-  }, [srcAmount]);
+  // useEffect(() => {
+  //   let unmounted = false;
+  //
+  //   function handleStatusChange(result: Array<number | undefined> | undefined) {
+  //     if (unmounted || !result || !result[1]) {
+  //       return;
+  //     }
+  //   }
+  //
+  //   srcAmount && estimate && estimate().then(result => handleStatusChange(result));
+  //
+  //   // Specify how to clean up after this effect:
+  //   return function cleanup() {
+  //     unmounted = true;
+  //   };
+  //
+  //   // eslint-disable-next-line
+  // }, [srcAmount]);
 
   const maxAmountInput: TokenAmount | undefined = maxAmountSpend(currencyBalances[Field.INPUT]);
   const atMaxAmountInput = Boolean(
     maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput),
   );
 
-  const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown(trade);
+  const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown();
 
   function onInvest() {
-    if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee)) {
-      return;
-    }
     if (!investCallback) {
       return;
     }
     setAttemptingTxn(true);
-    investCallback()
-      .then(hash => {
-        setAttemptingTxn(false);
-        setTxHash(hash);
-      })
-      .catch(error => {
-        setAttemptingTxn(false);
-        // we only care if the error is something _other_ than the user rejected the tx
-        if (error?.code !== 4001) {
-          console.error(error);
-        }
-      });
+    // investCallback()
+    //   .then(hash => {
+    //     setAttemptingTxn(false);
+    //     setTxHash(hash);
+    //   })
+    //   .catch(error => {
+    //     setAttemptingTxn(false);
+    //     // we only care if the error is something _other_ than the user rejected the tx
+    //     if (error?.code !== 4001) {
+    //       console.error(error);
+    //     }
+    //   });
   }
 
   // errors
@@ -202,7 +191,6 @@ const Invest = () => {
         realizedLPFee={realizedLPFee}
         parsedAmounts={parsedAmounts}
         priceImpactWithoutFee={priceImpactWithoutFee}
-        trade={trade}
       />
     );
   }
@@ -284,9 +272,9 @@ const Invest = () => {
                     Price
                   </Text>
                   <TradePrice
+                    inputCurrencyPrice={inputCurrencyPrice}
                     inputCurrency={currencies[Field.INPUT]}
                     outputCurrency={currencies[Field.OUTPUT]}
-                    price={trade?.executionPrice}
                     showInverted={showInverted}
                     setShowInverted={setShowInverted}
                   />

@@ -1,15 +1,11 @@
-import useToggledVersion, { Version } from '../../hooks/useToggledVersion';
 import { parseUnits } from '@ethersproject/units';
-import { BigNumber } from '@ethersproject/bignumber';
 import { Contract } from '@ethersproject/contracts';
-import { Token, TokenAmount, JSBI, Trade, ZERO_ADDRESS, ChainId } from '@uniswap/sdk';
+import { Token, TokenAmount, JSBI, ZERO_ADDRESS, ChainId } from '@uniswap/sdk';
 import { ParsedQs } from 'qs';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useMooniswapTrade, useV1Trade } from '../../data-mooniswap/V1';
 import { useActiveWeb3React } from '../../hooks';
 import { useCurrency } from '../../hooks/Coins';
-import { useTradeExactIn, useTradeExactOut } from '../../hooks/Trades';
 import useParsedQueryString from '../../hooks/useParsedQueryString';
 import { getCrowdsaleContract, isAddress } from '../../utils';
 import { AppDispatch, AppState } from '../index';
@@ -23,8 +19,6 @@ import {
   typeInput,
 } from './actions';
 import { InvestState } from './reducer';
-import { useUserSlippageTolerance } from '../user/hooks';
-import { computeSlippageAdjustedAmounts } from '../../utils/prices';
 import { TokenAddressMap, WrappedTokenInfo } from '../lists/hooks';
 
 /**
@@ -116,14 +110,9 @@ export function useDerivedInvestInfo(): {
   currencies: { [field in Field]?: Token };
   currencyBalances: { [field in Field]?: TokenAmount };
   parsedAmount: TokenAmount | undefined;
-  v2Trade: Trade | undefined;
   error?: string;
-  v1Trade: Trade | undefined;
-  mooniswapTrade: [Trade, BigNumber[]] | [undefined, undefined] | undefined;
 } {
   const { account } = useActiveWeb3React();
-
-  const toggledVersion = useToggledVersion();
 
   const {
     independentField,
@@ -148,17 +137,6 @@ export function useDerivedInvestInfo(): {
     (isExactIn ? inputCurrency : outputCurrency) ?? undefined,
   );
 
-  const bestTradeExactIn = useTradeExactIn(
-    isExactIn ? parsedAmount : undefined,
-    outputCurrency ?? undefined,
-  );
-  const bestTradeExactOut = useTradeExactOut(
-    inputCurrency ?? undefined,
-    !isExactIn ? parsedAmount : undefined,
-  );
-
-  const v2Trade = isExactIn ? bestTradeExactIn : bestTradeExactOut;
-
   const currencyBalances = {
     [Field.INPUT]: relevantTokenBalances[0],
     [Field.OUTPUT]: relevantTokenBalances[1],
@@ -168,14 +146,6 @@ export function useDerivedInvestInfo(): {
     [Field.INPUT]: inputCurrency ?? undefined,
     [Field.OUTPUT]: outputCurrency ?? undefined,
   };
-
-  // get link to trade on v1, if a better rate exists
-  const v1Trade = useV1Trade(
-    isExactIn,
-    currencies[Field.INPUT],
-    currencies[Field.OUTPUT],
-    parsedAmount,
-  );
 
   let error: string | undefined;
   if (!account) {
@@ -194,31 +164,8 @@ export function useDerivedInvestInfo(): {
     error = error ?? 'Enter a recipient';
   }
 
-  const [allowedSlippage] = useUserSlippageTolerance();
-
-  const slippageAdjustedAmounts =
-    v2Trade && allowedSlippage && computeSlippageAdjustedAmounts(v2Trade, allowedSlippage);
-
-  const slippageAdjustedAmountsV1 =
-    v1Trade && allowedSlippage && computeSlippageAdjustedAmounts(v1Trade, allowedSlippage);
-
-  const mooniswapTrade = useMooniswapTrade(
-    currencies[Field.INPUT],
-    currencies[Field.OUTPUT],
-    parsedAmount,
-  );
-
   // compare input balance to max input based on version
-  const [balanceIn, amountIn] = [
-    currencyBalances[Field.INPUT],
-    toggledVersion === Version.v1
-      ? slippageAdjustedAmountsV1
-        ? slippageAdjustedAmountsV1[Field.INPUT]
-        : null
-      : slippageAdjustedAmounts
-      ? slippageAdjustedAmounts[Field.INPUT]
-      : null,
-  ];
+  const [balanceIn, amountIn] = [currencyBalances[Field.INPUT], null];
 
   if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
     error = 'Insufficient ' + amountIn.token.symbol + ' balance';
@@ -228,10 +175,7 @@ export function useDerivedInvestInfo(): {
     currencies,
     currencyBalances,
     parsedAmount,
-    v2Trade: v2Trade ?? undefined,
     error,
-    v1Trade,
-    mooniswapTrade,
   };
 }
 
@@ -383,11 +327,11 @@ export function useCoinData(index: number) {
   }
 }
 
-export function useCoinGetRate() {
+export function useCoinGetRate(index: string) {
   const { account, library } = useActiveWeb3React();
   const contract: Contract | null = getCrowdsaleContract(library, account);
   try {
-    return contract.coinRate(1);
+    return contract.coinRate(index);
   } catch (error) {
     console.error(`useCoinGetRate`, error);
   }

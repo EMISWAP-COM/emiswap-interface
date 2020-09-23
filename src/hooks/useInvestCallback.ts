@@ -18,12 +18,11 @@ export type useInvestResult = [InvestCallback, EstimateCallback];
 export function useInvest(
   chainId: number | undefined,
   fromAmount: TokenAmount | undefined,
-  trade: Trade | undefined, // trade to execute, required
-  distribution: BigNumber[] | undefined,
-): useInvestResult {
-  const estimate = useEstimateCallback(fromAmount, trade, distribution);
-  const InvestCallback = useInvestCallback(fromAmount, trade, distribution);
-  return [InvestCallback, estimate];
+): any {
+  // const estimate = useEstimateCallback(fromAmount);
+  // const InvestCallback = useInvestCallback(fromAmount);
+  // return [InvestCallback, estimate];
+  return [null, null];
 }
 
 export function useEstimateCallback(

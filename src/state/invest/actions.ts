@@ -26,15 +26,23 @@ async function useCoinList(
   chainId: ChainId,
   account: string,
   library: Web3Provider,
-): Promise<Token[]> {
+): Promise<any[]> {
   const contract: Contract | null = getCrowdsaleContract(library, account);
 
   const counter = await contract.coinCounter();
-  let coins: Token[] = [];
+  let coins: any[] = [];
   for (let i = 1; i < counter; i++) {
     const coin = await contract.coin(i);
     const coinData = await contract.coinData(i);
-    coins[i - 1] = new Token(chainId, coinData.coinAddress, coin.decimals, coin.symbol, coin.name);
+    const coinRate = await contract.coinRate(i);
+    coins[i - 1] = {
+      chainId,
+      address: coinData.coinAddress,
+      decimals: coin.decimals,
+      symbol: coin.symbol,
+      name: coin.name,
+      rate: coinRate,
+    };
   }
   return coins;
 }

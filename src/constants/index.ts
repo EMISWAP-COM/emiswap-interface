@@ -9,6 +9,13 @@ type ChainTokenList = {
   readonly [chainId in ChainId]: Token[];
 };
 
+export const ESW = new Token(
+  ChainId.MAINNET,
+  '0x9a33Ddd074Cd1275DCF6aDe8920675FD8fade75E',
+  18,
+  'ESW',
+  'EmiDAO Token',
+);
 export const DAI = new Token(
   ChainId.MAINNET,
   '0x6B175474E89094C44Da98b954EedeAC495271d0F',
