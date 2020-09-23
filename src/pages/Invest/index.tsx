@@ -33,6 +33,7 @@ import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
 import AppBody from '../AppBody';
 import ReferralLink from '../../components/RefferalLink';
 import { Tabs, TabsTitle } from './styleds';
+import { SwapPoolTabs } from '../../components/NavigationTabs'
 
 const Invest = () => {
   useDefaultsFromURLSearch();
@@ -213,9 +214,7 @@ const Invest = () => {
     <>
       {showWarning && <TokenWarningCards currencies={currencies} />}
       <AppBody disabled={!!showWarning}>
-        <Tabs style={{ marginBottom: '24px' }}>
-          <TabsTitle>{t('invest')}</TabsTitle>
-        </Tabs>
+        <SwapPoolTabs active={'invest'} />
         <Wrapper id="invest-page">
           <ConfirmationModal
             isOpen={showConfirm}

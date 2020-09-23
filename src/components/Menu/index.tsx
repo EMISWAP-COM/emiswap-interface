@@ -122,18 +122,6 @@ export default function Menu() {
       </StyledMenuButton>
       {open && (
         <MenuFlyout>
-          <MenuItemHistory to="/invest">
-            <DollarSign size={14} />
-            Invest
-          </MenuItemHistory>
-          <MenuItemHistory to="/swap">
-            <DollarSign size={14} />
-            Swap
-          </MenuItemHistory>
-          <MenuItemHistory to="/pool">
-            <DollarSign size={14} />
-            Pool
-          </MenuItemHistory>
           <MenuItem id="link" href={process.env.REACT_APP_ANALYTICS_URL}>
             <PieChart size={14} />
             Analytics
