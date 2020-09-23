@@ -33,7 +33,6 @@ import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
 import AppBody from '../AppBody';
 import ReferralLink from '../../components/RefferalLink';
 import { Tabs, TabsTitle } from './styleds';
-import { useCurrencyBalance } from '../../state/wallet/hooks';
 
 const Invest = () => {
   useDefaultsFromURLSearch();
@@ -61,7 +60,6 @@ const Invest = () => {
     currencies,
     error,
   } = useDerivedInvestInfo();
-  const selectedCurrencyBalance = useCurrencyBalance(account, currencies[Field.OUTPUT]);
 
   const distribution = mooniswapTrade?.[1];
 
@@ -276,7 +274,6 @@ const Invest = () => {
               currency={currencies[Field.OUTPUT]}
               id="swap-currency-output"
               disableCurrencySelect
-              hideBalance
               isCrowdsale
             />
 
@@ -364,20 +361,6 @@ const Invest = () => {
                 </ButtonError>
               )}
             </BottomGrouping>
-
-            {account && (
-              <CurrencyInputPanel
-                value={selectedCurrencyBalance?.toSignificant(6)}
-                onUserInput={handleNothing}
-                label={'Current balance'}
-                showMaxButton={false}
-                currency={currencies[Field.OUTPUT]}
-                id="invest-currency-balance"
-                disableCurrencySelect
-                hideBalance
-                isCrowdsale
-              />
-            )}
           </AutoColumn>
           {account ? <ReferralLink /> : ''}
         </Wrapper>

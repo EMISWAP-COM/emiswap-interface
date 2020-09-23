@@ -3,18 +3,13 @@ import React, { CSSProperties, memo, useContext, useMemo } from 'react';
 import { Text } from 'rebass';
 import { ThemeContext } from 'styled-components';
 import { useActiveWeb3React } from '../../hooks';
-import { useAllCoins, useAllTokens } from '../../hooks/Tokens';
-import { useDefaultTokenList } from '../../state/lists/hooks';
-import { useAddUserToken, useRemoveUserAddedToken } from '../../state/user/hooks';
 import { useETHBalances } from '../../state/wallet/hooks';
-import { LinkStyledButton, TYPE } from '../../theme';
 import { ButtonSecondary } from '../Button';
 import Column, { AutoColumn } from '../Column';
 import { RowFixed } from '../Row';
 import CurrencyLogo from '../CurrencyLogo';
-import { FadedSpan, StyledFixedSizeList, StyledMenuItem } from './styleds';
+import { StyledFixedSizeList, StyledMenuItem } from './styleds';
 import Loader from '../Loader';
-import { isDefaultToken } from '../../utils';
 
 function currencyKey(currency: Token): string {
   return currency instanceof Token ? currency.address : currency === ETHER ? 'ETHER' : '';
@@ -35,11 +30,8 @@ export default function CrowdsaleCurrencyList({
   otherCurrency: Token;
   showSendWithSwap?: boolean;
 }) {
-  const { account, chainId } = useActiveWeb3React();
+  const { account } = useActiveWeb3React();
   const theme = useContext(ThemeContext);
-  const allTokens = useAllCoins();
-  const addToken = useAddUserToken();
-  const removeToken = useRemoveUserAddedToken();
   const ETHBalance = useETHBalances([account])[account];
 
   const CurrencyRow = useMemo(() => {
@@ -94,14 +86,10 @@ export default function CrowdsaleCurrencyList({
   }, [
     ETHBalance,
     account,
-    addToken,
     allBalances,
-    allTokens,
-    chainId,
     currencies,
     onCurrencySelect,
     otherCurrency,
-    removeToken,
     selectedCurrency,
     showSendWithSwap,
     theme.primary1,

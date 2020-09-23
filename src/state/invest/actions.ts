@@ -9,7 +9,9 @@ export enum Field {
   OUTPUT = 'OUTPUT',
 }
 
-export const selectCurrency = createAction<{ field: Field; currencyId: string }>('invest/selectCurrency');
+export const selectCurrency = createAction<{ field: Field; currencyId: string }>(
+  'invest/selectCurrency',
+);
 export const switchCurrencies = createAction<void>('invest/switchCurrencies');
 export const typeInput = createAction<{ field: Field; typedValue: string }>('invest/typeInput');
 export const receiveOutput = createAction<{ outputValue: string }>('invest/receiveOutput');

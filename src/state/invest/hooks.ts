@@ -8,7 +8,7 @@ import { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMooniswapTrade, useV1Trade } from '../../data-mooniswap/V1';
 import { useActiveWeb3React } from '../../hooks';
-import { useCurrency } from '../../hooks/Tokens';
+import { useCurrency } from '../../hooks/Coins';
 import { useTradeExactIn, useTradeExactOut } from '../../hooks/Trades';
 import useParsedQueryString from '../../hooks/useParsedQueryString';
 import { getCrowdsaleContract, isAddress } from '../../utils';

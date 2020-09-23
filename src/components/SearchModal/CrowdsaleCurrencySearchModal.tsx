@@ -14,9 +14,10 @@ import { Text } from 'rebass';
 import { ThemeContext } from 'styled-components';
 import Card from '../../components/Card';
 import { useActiveWeb3React } from '../../hooks';
-import { useAllCoins, useToken } from '../../hooks/Tokens';
+import { useToken } from '../../hooks/Tokens';
+import { useAllCoins } from '../../hooks/Coins';
 import useInterval from '../../hooks/useInterval';
-import { useAllCoinBalances, useAllTokenBalances, useTokenBalance } from '../../state/wallet/hooks';
+import { useAllCoinBalances, useTokenBalance } from '../../state/wallet/hooks';
 import { CloseIcon, LinkStyledButton } from '../../theme';
 import { isAddress } from '../../utils';
 import Column from '../Column';
@@ -28,9 +29,7 @@ import CommonBases from './CommonBases';
 import { filterTokens } from './filtering';
 import { useTokenComparator } from './sorting';
 import { PaddedColumn, SearchInput } from './styleds';
-import CurrencyList from './CurrencyList';
 import SortButton from './SortButton';
-import { useCoinList } from '../../state/invest/hooks';
 import CrowdsaleCurrencyList from './CrowdsaleCurrencyList';
 
 interface CurrencySearchModalProps {

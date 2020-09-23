@@ -171,7 +171,7 @@ export default function Updater() {
           );
         })
         .catch((error: any) => {
-          console.error('Failed to fetch multicall chunk', chunk, chainId, error);
+          // console.error('Failed to fetch multicall chunk', chunk, chainId, error);
           dispatch(
             errorFetchingMulticallResults({
               calls: chunk,

@@ -1,35 +1,21 @@
 import { parseBytes32String } from '@ethersproject/strings';
 import { Token, ETHER } from '@uniswap/sdk';
 import { useMemo } from 'react';
-import { useDefaultTokenList } from '../state/lists/hooks';
 import { NEVER_RELOAD, useSingleCallResult } from '../state/multicall/hooks';
-import { useUserAddedTokens } from '../state/user/hooks';
+import { useCoinList } from '../state/invest/hooks';
 import { isAddress } from '../utils';
 import { useActiveWeb3React } from './index';
 import { useBytes32TokenContract, useTokenContract } from './useContract';
-import { useDefaultCoin } from './Coins';
+import defaultCoins from '../constants/defaultCoins';
 
-export function useAllTokens(): { [address: string]: Token } {
+export function useAllCoins(): { [address: string]: Token } {
   const { chainId } = useActiveWeb3React();
-  const userAddedTokens = useUserAddedTokens();
-  const allTokens = useDefaultTokenList();
+  const allCoins = useCoinList();
 
   return useMemo(() => {
     if (!chainId) return {};
-    return (
-      userAddedTokens
-        // reduce into all ALL_TOKENS filtered by the current chain
-        .reduce<{ [address: string]: Token }>(
-          (tokenMap, token) => {
-            tokenMap[token.address] = token;
-            return tokenMap;
-          },
-          // must make a copy because reduce modifies the map, and we do not
-          // want to make a copy in every iteration
-          { ...allTokens[chainId] },
-        )
-    );
-  }, [chainId, userAddedTokens, allTokens]);
+    return { ...allCoins[chainId] };
+  }, [chainId, allCoins]);
 }
 
 // parse a name or symbol from a token response
@@ -51,7 +37,7 @@ function parseStringOrBytes32(
 // otherwise returns the token
 export function useToken(tokenAddress?: string): Token | undefined | null {
   const { chainId } = useActiveWeb3React();
-  const tokens = useAllTokens();
+  const tokens = useAllCoins();
 
   const address = isAddress(tokenAddress);
   const tokenContract = useTokenContract(address ? address : undefined, false);
@@ -125,4 +111,17 @@ export function useCurrency(currencyId: string | undefined): Token | null | unde
   const isETH = currencyId?.toUpperCase() === ETHER.address.toUpperCase();
   const token = useToken(isESW || isETH ? undefined : currencyId);
   return isESW ? defaultCoin : isETH ? ETHER : token;
+}
+
+export function useDefaultCoin(address?: string): Token | undefined {
+  const { chainId } = useActiveWeb3React();
+  const defaultCoin = defaultCoins.find(
+    (item: any) => item.address.toUpperCase() === address?.toUpperCase(),
+  );
+  return useMemo(() => {
+    if (defaultCoin) {
+      return new Token(chainId, address, defaultCoin.decimals, defaultCoin.symbol, defaultCoin.name);
+    }
+    return undefined;
+  }, [address, chainId, defaultCoin]);
 }
