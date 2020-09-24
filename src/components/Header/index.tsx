@@ -98,17 +98,16 @@ const UniIcon = styled.div`
   :hover {
     transform: rotate(-5deg);
   }
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    img {
-      width: 4.5rem;
-    }
-  `};
 `;
 
 const HeaderControls = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+
+  :last-child {
+    margin-left: auto;
+  }
 `;
 
 const BalanceText = styled(Text)`
