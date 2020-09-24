@@ -2,14 +2,12 @@ import { TokenAmount, JSBI } from '@uniswap/sdk';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Text } from 'rebass';
 import { ThemeContext } from 'styled-components';
-import { useTranslation } from 'react-i18next';
 import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button';
 import Card from '../../components/Card';
 import { AutoColumn } from '../../components/Column';
 import ConfirmationModal from '../../components/ConfirmationModal';
 import CurrencyInputPanel from '../../components/CurrencyInputPanel';
 import { RowBetween } from '../../components/Row';
-import confirmPriceImpactWithoutFee from '../../components/invest/confirmPriceImpactWithoutFee';
 import { BottomGrouping, Dots, Wrapper } from '../../components/invest/styleds';
 import InvestModalFooter from '../../components/invest/InvestModalFooter';
 import InvestModalHeader from '../../components/invest/InvestModalHeader';
@@ -18,7 +16,6 @@ import { TokenWarningCards } from '../../components/TokenWarningCard';
 import { useActiveWeb3React } from '../../hooks';
 import { ApprovalState, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback';
 import { useInvest } from '../../hooks/useInvestCallback';
-import useToggledVersion, { Version } from '../../hooks/useToggledVersion';
 import { useWalletModalToggle } from '../../state/application/hooks';
 import { Field } from '../../state/invest/actions';
 import {
@@ -32,13 +29,11 @@ import { maxAmountSpend } from '../../utils/maxAmountSpend';
 import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices';
 import AppBody from '../AppBody';
 import ReferralLink from '../../components/RefferalLink';
-import { Tabs, TabsTitle } from './styleds';
-import { SwapPoolTabs } from '../../components/NavigationTabs'
+import { SwapPoolTabs } from '../../components/NavigationTabs';
 
 const Invest = () => {
   useDefaultsFromURLSearch();
 
-  const { t } = useTranslation();
   const { account, chainId } = useActiveWeb3React();
   const theme = useContext(ThemeContext);
 
@@ -83,11 +78,10 @@ const Invest = () => {
 
   // @ts-ignore
   const inputCurrencyRate = currencies[Field.INPUT]?.tokenInfo?.rate;
-  const inputCurrencyPrice = inputCurrencyRate / Math.pow(10, currencies[Field.INPUT].decimals);
   const inputAmount = parseFloat(formattedAmounts[Field.INPUT]);
   formattedAmounts[Field.OUTPUT] =
-    inputCurrencyPrice && inputCurrencyRate && inputAmount
-      ? parseFloat((inputAmount * inputCurrencyPrice).toFixed(6)).toString()
+    inputCurrencyRate && inputAmount
+      ? parseFloat((inputAmount * inputCurrencyRate).toFixed(6)).toString()
       : '';
 
   // check whether the user has approved the router on the input token
@@ -271,7 +265,7 @@ const Invest = () => {
                     Price
                   </Text>
                   <TradePrice
-                    inputCurrencyPrice={inputCurrencyPrice}
+                    inputCurrencyRate={inputCurrencyRate}
                     inputCurrency={currencies[Field.INPUT]}
                     outputCurrency={currencies[Field.OUTPUT]}
                     showInverted={showInverted}

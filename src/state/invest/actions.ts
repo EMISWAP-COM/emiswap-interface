@@ -3,6 +3,7 @@ import { ChainId, Token } from '@uniswap/sdk';
 import { getCrowdsaleContract } from '../../utils';
 import { Contract } from '@ethersproject/contracts';
 import { Web3Provider } from '@ethersproject/providers';
+import { BigNumber } from '@ethersproject/bignumber';
 
 export enum Field {
   INPUT = 'INPUT',
@@ -28,6 +29,10 @@ async function useCoinList(
   library: Web3Provider,
 ): Promise<any[]> {
   const contract: Contract | null = getCrowdsaleContract(library, account);
+
+  // const am = await contract.getBuyCoinAmount('0xc73cbC85C8Df0e7b40Cc05f8B82De4a7ae8F8813', 12);
+  // const amBig = BigNumber.from(am)
+  // console.log('---am---', am, amBig.toNumber())
 
   const counter = await contract.coinCounter();
   let coins: any[] = [];

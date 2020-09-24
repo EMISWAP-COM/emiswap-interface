@@ -7,7 +7,7 @@ import { ThemeContext } from 'styled-components';
 import { StyledBalanceMaxMini } from './styleds';
 
 interface TradePriceProps {
-  inputCurrencyPrice?: number;
+  inputCurrencyRate?: number;
   inputCurrency?: Token;
   outputCurrency?: Token;
   showInverted: boolean;
@@ -15,7 +15,7 @@ interface TradePriceProps {
 }
 
 export default function TradePrice({
-  inputCurrencyPrice,
+  inputCurrencyRate,
   inputCurrency,
   outputCurrency,
   showInverted,
@@ -23,7 +23,7 @@ export default function TradePrice({
 }: TradePriceProps) {
   const theme = useContext(ThemeContext);
 
-  let formattedPrice = inputCurrencyPrice || 0;
+  let formattedPrice = inputCurrencyRate || 0;
   if (showInverted) {
     formattedPrice = 1 / formattedPrice;
   }

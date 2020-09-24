@@ -317,13 +317,13 @@ export function useCoin(index: number) {
   }
 }
 
-export function useCoinData(index: number) {
+export async function useBuyCoinAmount(address?: string, amount?: number) {
   const { account, library } = useActiveWeb3React();
   const contract: Contract | null = getCrowdsaleContract(library, account);
   try {
-    return contract.coinData(index);
+    return await contract.getBuyCoinAmount(address, amount);
   } catch (error) {
-    console.error(`useCoinData failed`, error);
+    console.error(`useBuyCoinAmount failed`, error);
   }
 }
 

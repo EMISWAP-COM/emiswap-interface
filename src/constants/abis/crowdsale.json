@@ -10,6 +10,11 @@
         "internalType": "address",
         "name": "uniswapFactory",
         "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "referralStoreInput",
+        "type": "address"
       }
     ],
     "stateMutability": "nonpayable",
@@ -88,6 +93,11 @@
         "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "referralInput",
+        "type": "address"
       }
     ],
     "name": "buy",
@@ -102,7 +112,13 @@
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "referralInput",
+        "type": "address"
+      }
+    ],
     "name": "buyWithETH",
     "outputs": [],
     "stateMutability": "payable",
@@ -464,6 +480,19 @@
   {
     "inputs": [],
     "name": "getToken",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "referralStore",
     "outputs": [
       {
         "internalType": "address",
