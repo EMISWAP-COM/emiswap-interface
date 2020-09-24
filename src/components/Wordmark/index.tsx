@@ -18,21 +18,51 @@ const WordmarkStyled = styled.div`
       U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
   }
 
+  color: ${({ theme }) => theme.yellow3};
+
   .mainWordmark {
     font-family: 'IBM Plex Arabic', sans-serif;
-    margin: 0;
+    margin-top: 5px;
+    margin-bottom: 5px;
     font-size: 50px;
     line-height: 75px;
     font-weight: 450;
     opacity: 0.4;
+  }
+
+  .mainHeader {
+    font-family: 'IBM Plex Arabic', sans-serif;
+    text-transform: uppercase;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-weight: 400;
+  }
+
+  a {
     color: ${({ theme }) => theme.yellow3};
   }
 
   @media (max-width: ${(MEDIA_WIDTHS as any)['upToSmall']}px) {
     .mainWordmark {
+      margin-top: 0;
+      margin-bottom: 0;
       text-align: left;
       font-size: 24px;
       line-height: 36px;
+    }
+
+    .mainHeader {
+      text-align: left;
+      font-size: 12px;
+      margin-top: 7px;
+      margin-bottom: 7px;
+      width: 260px;
+    }
+
+    @media (max-width: ${(MEDIA_WIDTHS as any)['upToTheSmallest']}px) {
+      .mainHeader {
+        font-size: 10px;
+      }
     }
   }
 `;
@@ -40,7 +70,13 @@ const WordmarkStyled = styled.div`
 export default function Wordmark() {
   return (
     <WordmarkStyled>
-      <h1 className="mainWordmark">Invest in Emiswap</h1>
+      <h1 className="mainWordmark">Emiswap</h1>
+      <h4 className="mainHeader">
+        Next generation by{' '}
+        <a href="https://emirex.com/" target="_blank" rel="noopener noreferrer">
+          EMIREX
+        </a>
+      </h4>
     </WordmarkStyled>
   );
 }
