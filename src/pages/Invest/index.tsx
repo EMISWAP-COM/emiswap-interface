@@ -14,7 +14,7 @@ import InvestModalHeader from '../../components/invest/InvestModalHeader';
 import TradePrice from '../../components/invest/TradePrice';
 import { TokenWarningCards } from '../../components/TokenWarningCard';
 import { useActiveWeb3React } from '../../hooks';
-import { ApprovalState, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback';
+import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback';
 import { useInvest } from '../../hooks/useInvestCallback';
 import { useWalletModalToggle } from '../../state/application/hooks';
 import { Field } from '../../state/invest/actions';
@@ -26,7 +26,6 @@ import {
 } from '../../state/invest/hooks';
 import { useExpertModeManager, useTokenWarningDismissal } from '../../state/user/hooks';
 import { maxAmountSpend } from '../../utils/maxAmountSpend';
-import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices';
 import AppBody from '../AppBody';
 import ReferralLink from '../../components/RefferalLink';
 import { SwapPoolTabs } from '../../components/NavigationTabs';
@@ -85,7 +84,10 @@ const Invest = () => {
       : '';
 
   // check whether the user has approved the router on the input token
-  const [approval, approveCallback] = useApproveCallbackFromTrade();
+  const [approval, approveCallback] = useApproveCallback(
+    parsedAmount,
+    currencies[Field.INPUT]?.address,
+  );
 
   // check if user has gone through approval process, used to show two step buttons, reset on token change
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false);
