@@ -1,14 +1,14 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { Contract } from '@ethersproject/contracts';
-import { TokenAmount, Trade } from '@uniswap/sdk';
+import { Token, TokenAmount, Trade } from '@uniswap/sdk';
 import { useMemo } from 'react';
 import { REFERRAL_ADDRESS_STORAGE_KEY } from '../constants';
 import { getTradeVersion } from '../data/V1';
 import { useTransactionAdder } from '../state/transactions/hooks';
-import { calculateGasMargin, getMooniswapContract, isAddress } from '../utils';
+import { getCrowdsaleContract, isAddress } from '../utils';
 import { useActiveWeb3React } from './index';
-import { Version } from './useToggledVersion';
 import { getAddress } from '@ethersproject/address';
+import { Field } from '../state/invest/actions';
 
 export type InvestCallback = null | (() => Promise<string>);
 export type EstimateCallback = null | (() => Promise<Array<number | undefined> | undefined>);
@@ -17,12 +17,13 @@ export type useInvestResult = [InvestCallback, EstimateCallback];
 
 export function useInvest(
   chainId: number | undefined,
-  fromAmount: TokenAmount | undefined,
+  currencies: { [field in Field]?: Token },
+  parsedAmounts: { [field in Field]?: TokenAmount },
 ): any {
   // const estimate = useEstimateCallback(fromAmount);
-  // const InvestCallback = useInvestCallback(fromAmount);
+  const InvestCallback = useInvestCallback(currencies, parsedAmounts);
   // return [InvestCallback, estimate];
-  return [null, null];
+  return [InvestCallback, null];
 }
 
 export function useEstimateCallback(
@@ -49,75 +50,38 @@ export function useEstimateCallback(
       return () => Promise.resolve(undefined);
 
     return () => Promise.resolve(undefined);
-  }, [
-    trade,
-    recipient,
-    library,
-    account,
-    tradeVersion,
-    chainId,
-    distribution,
-    fromAmount,
-  ]);
+  }, [trade, recipient, library, account, tradeVersion, chainId, distribution, fromAmount]);
 }
 
 // returns a function that will execute a invest, if the parameters are all valid
 export function useInvestCallback(
-  fromAmount: TokenAmount | undefined,
-  trade: Trade | undefined, // trade to execute, required
-  distribution: BigNumber[] | undefined,
-  // TODO: should be taked into consideration
-  //useChi: boolean | undefined
+  currencies?: { [field in Field]?: Token },
+  parsedAmounts?: { [field in Field]?: TokenAmount },
 ): InvestCallback {
   const { account, chainId, library } = useActiveWeb3React();
   const addTransaction = useTransactionAdder();
-
   const recipient = account;
 
-  const tradeVersion = getTradeVersion(trade);
-
   return useMemo(() => {
-    if (
-      !trade ||
-      !recipient ||
-      !library ||
-      !account ||
-      !tradeVersion ||
-      !chainId ||
-      !distribution ||
-      !fromAmount
-    )
+    if (!recipient || !library || !account || !chainId || !parsedAmounts || !currencies) {
       return null;
+    }
 
     return async function onInvest() {
-      const contract: Contract | null = getMooniswapContract(
-        chainId,
-        library,
-        trade.route.pairs[0].poolAddress,
-        account,
-      );
+      const contract: Contract | null = getCrowdsaleContract(library, account);
 
       if (!contract) {
         throw new Error('Failed to get a crowdsale contract');
       }
 
-      let value: BigNumber | undefined;
-      if (trade.inputAmount.token.symbol === 'ETH') {
-        value = BigNumber.from(fromAmount.raw.toString());
-      }
-
       const onSuccess = (response: any): string => {
-        const inputSymbol = trade.inputAmount.token.symbol;
-        const outputSymbol = trade.outputAmount.token.symbol;
-        const inputAmount = trade.inputAmount.toSignificant(3);
-        const outputAmount = trade.outputAmount.toSignificant(3);
+        console.log('--onSuccess--', response);
+        const inputSymbol = currencies[Field.INPUT]?.symbol;
+        const outputSymbol = currencies[Field.INPUT]?.symbol;
+        const inputAmount = parsedAmounts[Field.INPUT]?.toSignificant(3);
+        const outputAmount = parsedAmounts[Field.OUTPUT]?.toSignificant(3);
 
-        const withRecipient = `Invest ${inputAmount} ${inputSymbol} for ${outputAmount} ${outputSymbol}`;
-
-        const withVersion =
-          tradeVersion === Version.v2
-            ? withRecipient
-            : `${withRecipient} on ${(tradeVersion as any).toUpperCase()}`;
+        const withVersion = `Invest ${inputAmount} ${inputSymbol} for ${outputAmount} ${outputSymbol}`;
 
         addTransaction(response, {
           summary: withVersion,
@@ -127,6 +91,7 @@ export function useInvestCallback(
       };
 
       const onError = (error: any) => {
+        console.log('--onError--', error);
         // if the user rejected the tx, pass this along
         if (error?.code === 4001) {
           throw error;
@@ -138,49 +103,20 @@ export function useInvestCallback(
         }
       };
 
-      const minReturn = BigNumber.from(trade.outputAmount.raw.toString())
-        .mul(String(10000))
-        .div(String(10000));
-
-      const referalAddressStr = localStorage.getItem(REFERRAL_ADDRESS_STORAGE_KEY);
-      let referalAddress = '0x68a17B587CAF4f9329f0e372e3A78D23A46De6b5';
-      if (referalAddressStr && isAddress(referalAddressStr)) {
-        referalAddress = getAddress(referalAddressStr);
+      const referralAddressStr = localStorage.getItem(REFERRAL_ADDRESS_STORAGE_KEY);
+      let referralAddress = '0x0000000000000000000000000000000000000000';
+      if (referralAddressStr && isAddress(referralAddressStr)) {
+        referralAddress = getAddress(referralAddressStr);
       }
 
-      const args = [
-        trade.inputAmount.token.address,
-        trade.outputAmount.token.address,
-        fromAmount?.raw.toString(),
-        minReturn.toString(),
-        referalAddress,
-      ];
+      const amount =
+        parseFloat(<string>parsedAmounts[Field.INPUT]?.raw.toString()) *
+        Math.pow(10, <number>currencies[Field.INPUT]?.decimals);
 
-      return contract.estimateGas['invest'](...args, value && !value.isZero() ? { value } : {})
-        .then(result => {
-          const gasLimit = calculateGasMargin(BigNumber.from(result));
-          return contract['invest'](...args, {
-            gasLimit,
-            ...(value && !value.isZero() ? { value } : {}),
-          })
-            .then(onSuccess)
-            .catch(onError);
-        })
-        .catch(error => {
-          console.error(`estimateGas failed for ${'invest'}`, error);
-          return undefined;
-        });
+      return contract
+        .buy(currencies[Field.INPUT]?.address, amount, referralAddress)
+        .then(onSuccess)
+        .catch(onError);
     };
-  }, [
-    trade,
-    recipient,
-    library,
-    account,
-    tradeVersion,
-    chainId,
-    addTransaction,
-    distribution,
-    fromAmount,
-    // useChi
-  ]);
+  }, [recipient, library, account, chainId, addTransaction, parsedAmounts, currencies]);
 }

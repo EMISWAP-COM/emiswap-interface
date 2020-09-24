@@ -14,13 +14,11 @@ import { TruncatedText } from './styleds';
 export default function InvestModalHeader({
   currencies,
   formattedAmounts,
-  priceImpactSeverity,
   independentField,
   recipient,
 }: {
   currencies: { [field in Field]?: Token };
   formattedAmounts: { [field in Field]?: string };
-  priceImpactSeverity: number;
   independentField: Field;
   recipient: string | null;
 }) {
@@ -43,11 +41,7 @@ export default function InvestModalHeader({
         <ArrowDown size="16" color={theme.text2} />
       </RowFixed>
       <RowBetween align="flex-end">
-        <TruncatedText
-          fontSize={24}
-          fontWeight={500}
-          color={priceImpactSeverity > 2 ? theme.red1 : ''}
-        >
+        <TruncatedText fontSize={24} fontWeight={500}>
           {formattedAmounts[Field.OUTPUT]}
         </TruncatedText>
         <RowFixed gap="4px">

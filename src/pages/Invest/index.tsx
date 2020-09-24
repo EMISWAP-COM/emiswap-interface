@@ -77,7 +77,7 @@ const Invest = () => {
   };
 
   // @ts-ignore
-  const inputCurrencyRate = currencies[Field.INPUT]?.tokenInfo?.rate;
+  const inputCurrencyRate = currencies[Field.INPUT]?.tokenInfo?.rate || 10000;
   const inputAmount = parseFloat(formattedAmounts[Field.INPUT]);
   formattedAmounts[Field.OUTPUT] =
     inputCurrencyRate && inputAmount
@@ -98,7 +98,7 @@ const Invest = () => {
   }, [approval, approvalSubmitted]);
 
   // the callback to execute the invest
-  const [investCallback, estimate] = useInvest(chainId, parsedAmount);
+  const [investCallback, estimate] = useInvest(chainId, currencies, parsedAmounts);
 
   // const srcAmount = trade?.inputAmount?.toExact();
 
@@ -127,32 +127,27 @@ const Invest = () => {
     maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput),
   );
 
-  const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown();
-
   function onInvest() {
     if (!investCallback) {
       return;
     }
     setAttemptingTxn(true);
-    // investCallback()
-    //   .then(hash => {
-    //     setAttemptingTxn(false);
-    //     setTxHash(hash);
-    //   })
-    //   .catch(error => {
-    //     setAttemptingTxn(false);
-    //     // we only care if the error is something _other_ than the user rejected the tx
-    //     if (error?.code !== 4001) {
-    //       console.error(error);
-    //     }
-    //   });
+    investCallback()
+      .then(hash => {
+        setAttemptingTxn(false);
+        setTxHash(hash);
+      })
+      .catch(error => {
+        setAttemptingTxn(false);
+        // we only care if the error is something _other_ than the user rejected the tx
+        if (error?.code !== 4001) {
+          console.error(error);
+        }
+      });
   }
 
   // errors
   const [showInverted, setShowInverted] = useState<boolean>(false);
-
-  // warnings on slippage
-  const priceImpactSeverity = warningSeverity(priceImpactWithoutFee);
 
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
   // never show if price impact is above threshold in non expert mode
@@ -160,15 +155,13 @@ const Invest = () => {
     !error &&
     (approval === ApprovalState.NOT_APPROVED ||
       approval === ApprovalState.PENDING ||
-      (approvalSubmitted && approval === ApprovalState.APPROVED)) &&
-    !(priceImpactSeverity > 3 && !expertMode);
+      (approvalSubmitted && approval === ApprovalState.APPROVED));
 
   function modalHeader() {
     return (
       <InvestModalHeader
         currencies={currencies}
         formattedAmounts={formattedAmounts}
-        priceImpactSeverity={priceImpactSeverity}
         independentField={independentField}
         recipient={account as string | null}
       />
@@ -178,14 +171,12 @@ const Invest = () => {
   function modalBottom() {
     return (
       <InvestModalFooter
-        confirmText={priceImpactSeverity > 2 ? 'Invest Anyway' : 'Confirm Invest'}
+        confirmText={'Confirm Invest'}
         showInverted={showInverted}
-        severity={priceImpactSeverity}
         setShowInverted={setShowInverted}
         onInvest={onInvest}
-        realizedLPFee={realizedLPFee}
-        parsedAmounts={parsedAmounts}
-        priceImpactWithoutFee={priceImpactWithoutFee}
+        rate={inputCurrencyRate}
+        currencies={currencies}
       />
     );
   }
@@ -302,20 +293,11 @@ const Invest = () => {
                     }}
                     width="48%"
                     id="invest-button"
-                    disabled={
-                      !isValid ||
-                      approval !== ApprovalState.APPROVED ||
-                      (priceImpactSeverity > 3 && !expertMode) ||
-                      notEnoughBalance
-                    }
-                    error={isValid && priceImpactSeverity > 2}
+                    disabled={!isValid || approval !== ApprovalState.APPROVED || notEnoughBalance}
+                    error={isValid}
                   >
                     <Text fontSize={16} fontWeight={450}>
-                      {notEnoughBalance
-                        ? `Not enough balance`
-                        : priceImpactSeverity > 3 && !expertMode
-                        ? `Price Impact High`
-                        : `Invest${priceImpactSeverity > 2 ? ' Anyway' : ''}`}
+                      {notEnoughBalance ? `Not enough balance` : `Invest`}
                     </Text>
                   </ButtonError>
                 </RowBetween>
@@ -325,19 +307,11 @@ const Invest = () => {
                     expertMode ? onInvest() : setShowConfirm(true);
                   }}
                   id="invest-button"
-                  disabled={
-                    !isValid || (priceImpactSeverity > 3 && !expertMode) || notEnoughBalance
-                  }
-                  error={isValid && priceImpactSeverity > 2}
+                  disabled={!isValid || notEnoughBalance}
+                  error={isValid}
                 >
                   <Text fontSize={16} fontWeight={450}>
-                    {error
-                      ? error
-                      : notEnoughBalance
-                      ? `Not enough balance`
-                      : priceImpactSeverity > 3 && !expertMode
-                      ? `Price Impact Too High`
-                      : `Invest${priceImpactSeverity > 2 ? ' Anyway' : ''}`}
+                    {error ? error : notEnoughBalance ? `Not enough balance` : `Invest`}
                   </Text>
                 </ButtonError>
               )}
