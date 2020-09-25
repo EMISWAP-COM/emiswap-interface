@@ -32,23 +32,17 @@ async function useCoinList(
 ): Promise<any[]> {
   const contract: Contract | null = getCrowdsaleContract(library, account);
 
-  // const am = await contract.getBuyCoinAmount('0xc73cbC85C8Df0e7b40Cc05f8B82De4a7ae8F8813', 12);
-  // const amBig = BigNumber.from(am)
-  // console.log('---am---', am, amBig.toNumber())
-
   const counter = await contract.coinCounter();
   let coins: any[] = [];
   for (let i = 1; i < counter; i++) {
     const coin = await contract.coin(i);
     const coinData = await contract.coinData(i);
-    const coinRate = await contract.coinRate(i);
     coins[i - 1] = {
       chainId,
       address: coinData.coinAddress,
       decimals: coin.decimals,
       symbol: coin.symbol,
       name: coin.name,
-      rate: coinRate,
     };
   }
   return coins;

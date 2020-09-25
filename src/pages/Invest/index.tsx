@@ -97,29 +97,7 @@ const Invest = () => {
   }, [approval, approvalSubmitted]);
 
   // the callback to execute the invest
-  const [investCallback, estimate] = useInvest(chainId, currencies, parsedAmounts);
-
-  // const srcAmount = trade?.inputAmount?.toExact();
-
-  // TODO: for sure should be more elegant solution for estimation calls
-  // useEffect(() => {
-  //   let unmounted = false;
-  //
-  //   function handleStatusChange(result: Array<number | undefined> | undefined) {
-  //     if (unmounted || !result || !result[1]) {
-  //       return;
-  //     }
-  //   }
-  //
-  //   srcAmount && estimate && estimate().then(result => handleStatusChange(result));
-  //
-  //   // Specify how to clean up after this effect:
-  //   return function cleanup() {
-  //     unmounted = true;
-  //   };
-  //
-  //   // eslint-disable-next-line
-  // }, [srcAmount]);
+  const [investCallback] = useInvest(chainId, currencies, parsedAmounts);
 
   const maxAmountInput: TokenAmount | undefined = maxAmountSpend(currencyBalances[Field.INPUT]);
   const atMaxAmountInput = Boolean(
@@ -298,7 +276,7 @@ const Invest = () => {
                     width="48%"
                     id="invest-button"
                     disabled={!isValid || approval !== ApprovalState.APPROVED || notEnoughBalance}
-                    error={isValid}
+                    error={!isValid || notEnoughBalance}
                   >
                     <Text fontSize={16} fontWeight={450}>
                       {notEnoughBalance ? `Not enough balance` : `Invest`}
@@ -312,7 +290,7 @@ const Invest = () => {
                   }}
                   id="invest-button"
                   disabled={!isValid || notEnoughBalance}
-                  error={isValid}
+                  error={!!error}
                 >
                   <Text fontSize={16} fontWeight={450}>
                     {error ? error : notEnoughBalance ? `Not enough balance` : `Invest`}
