@@ -3,7 +3,6 @@ import { ChainId, Token } from '@uniswap/sdk';
 import { getCrowdsaleContract } from '../../utils';
 import { Contract } from '@ethersproject/contracts';
 import { Web3Provider } from '@ethersproject/providers';
-import { BigNumber } from '@ethersproject/bignumber';
 
 export enum Field {
   INPUT = 'INPUT',
@@ -15,6 +14,9 @@ export const selectCurrency = createAction<{ field: Field; currencyId: string }>
 );
 export const switchCurrencies = createAction<void>('invest/switchCurrencies');
 export const typeInput = createAction<{ field: Field; typedValue: string }>('invest/typeInput');
+export const receiveOutputAmount = createAction<{ outputAmount: string }>(
+  'invest/receiveOutputAmount',
+);
 export const receiveOutput = createAction<{ outputValue: string }>('invest/receiveOutput');
 export const replaceInvestState = createAction<{
   field: Field;

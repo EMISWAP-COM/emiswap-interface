@@ -3,6 +3,7 @@ import {
   Field,
   getCoinList,
   receiveOutput,
+  receiveOutputAmount,
   replaceInvestState,
   selectCurrency,
   switchCurrencies,
@@ -13,6 +14,7 @@ import { Token } from '@uniswap/sdk';
 export interface InvestState {
   readonly independentField: Field;
   readonly typedValue: string;
+  readonly outputAmount?: string;
   readonly [Field.INPUT]: {
     readonly currencyId: string | undefined;
   };
@@ -26,6 +28,7 @@ export interface InvestState {
 const initialState: InvestState = {
   independentField: Field.INPUT,
   typedValue: '',
+  outputAmount: '',
   [Field.INPUT]: {
     currencyId: '',
   },
@@ -87,6 +90,12 @@ export default createReducer<InvestState>(initialState, builder =>
         ...state,
         independentField: field,
         typedValue,
+      };
+    })
+    .addCase(receiveOutputAmount, (state, { payload: { outputAmount } }) => {
+      return {
+        ...state,
+        outputAmount,
       };
     })
     .addCase(receiveOutput, (state, { payload: { outputValue } }) => {

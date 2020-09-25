@@ -5,9 +5,10 @@ import { Repeat } from 'react-feather';
 import { Text } from 'rebass';
 import { ThemeContext } from 'styled-components';
 import { StyledBalanceMaxMini } from './styleds';
+import { Field } from '../../state/invest/actions';
 
 interface TradePriceProps {
-  inputCurrencyRate?: number;
+  parsedAmounts?: { [field in Field]?: TokenAmount };
   inputCurrency?: Token;
   outputCurrency?: Token;
   showInverted: boolean;
@@ -15,7 +16,7 @@ interface TradePriceProps {
 }
 
 export default function TradePrice({
-  inputCurrencyRate,
+  parsedAmounts,
   inputCurrency,
   outputCurrency,
   showInverted,
@@ -23,11 +24,16 @@ export default function TradePrice({
 }: TradePriceProps) {
   const theme = useContext(ThemeContext);
 
-  let formattedPrice = inputCurrencyRate || 0;
-  if (showInverted) {
-    formattedPrice = 1 / formattedPrice;
+  let formattedPrice;
+  if (!showInverted) {
+    formattedPrice = parsedAmounts[Field.OUTPUT]
+      ? parsedAmounts[Field.INPUT]?.divide(parsedAmounts[Field.OUTPUT]).toSignificant(6)
+      : null;
+  } else {
+    formattedPrice = parsedAmounts[Field.INPUT]
+      ? parsedAmounts[Field.OUTPUT]?.divide(parsedAmounts[Field.INPUT]).toSignificant(6)
+      : null;
   }
-  formattedPrice = formattedPrice && parseFloat(formattedPrice.toFixed(6));
 
   const show = Boolean(inputCurrency && outputCurrency);
   const label = showInverted

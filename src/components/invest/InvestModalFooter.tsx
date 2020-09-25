@@ -17,18 +17,32 @@ export default function InvestModalFooter({
   showInverted,
   setShowInverted,
   onInvest,
-  rate,
+  parsedAmounts,
   confirmText,
   currencies,
 }: {
   showInverted: boolean;
   setShowInverted: (inverted: boolean) => void;
   onInvest: () => any;
-  rate?: number;
+  parsedAmounts?: { [field in Field]?: TokenAmount };
   confirmText: string;
   currencies: { [field in Field]?: Token };
 }) {
   const theme = useContext(ThemeContext);
+
+  let rate;
+  let price;
+  if (!showInverted) {
+    rate = parsedAmounts[Field.OUTPUT]
+      ? parsedAmounts[Field.INPUT]?.divide(parsedAmounts[Field.OUTPUT]).toSignificant(6)
+      : null;
+    price = `${rate} ${currencies[Field.INPUT]?.symbol} / ${currencies[Field.OUTPUT]?.symbol}`;
+  } else {
+    rate = parsedAmounts[Field.INPUT]
+      ? parsedAmounts[Field.OUTPUT]?.divide(parsedAmounts[Field.INPUT]).toSignificant(6)
+      : null;
+    price = `${rate} ${currencies[Field.OUTPUT]?.symbol} / ${currencies[Field.INPUT]?.symbol}`;
+  }
 
   return (
     <>
@@ -49,11 +63,7 @@ export default function InvestModalFooter({
               paddingLeft: '10px',
             }}
           >
-            {showInverted
-              ? `${1 / rate} ${currencies[Field.OUTPUT]?.symbol} / ${
-                  currencies[Field.INPUT]?.symbol
-                }`
-              : `${rate} ${currencies[Field.INPUT]?.symbol} / ${currencies[Field.OUTPUT]?.symbol}`}
+            {price}
             <StyledBalanceMaxMini onClick={() => setShowInverted(!showInverted)}>
               <Repeat size={14} />
             </StyledBalanceMaxMini>

@@ -1,6 +1,6 @@
 import { parseUnits } from '@ethersproject/units';
 import { Contract } from '@ethersproject/contracts';
-import { Token, TokenAmount, JSBI, ZERO_ADDRESS, ChainId } from '@uniswap/sdk';
+import { ChainId, JSBI, Token, TokenAmount, ZERO_ADDRESS } from '@uniswap/sdk';
 import { ParsedQs } from 'qs';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,9 +17,11 @@ import {
   selectCurrency,
   switchCurrencies,
   typeInput,
+  receiveOutputAmount,
 } from './actions';
 import { InvestState } from './reducer';
 import { TokenAddressMap, WrappedTokenInfo } from '../lists/hooks';
+import { BigNumber } from '@ethersproject/bignumber';
 
 /**
  * An empty result, useful as a default.
@@ -39,12 +41,14 @@ export function useInvestState(): AppState['invest'] {
 export type InvestActionHandlers = {
   onCurrencySelection: (field: Field, currency: Token) => void;
   onSwitchTokens: (outputValue: string) => void;
-  onUserInput: (field: Field, typedValue: string) => void;
+  onUserInput: (field: Field, typedValue: string, address?: string) => void;
   onOutputValue: (outputValue: string) => void;
 };
 
 export function useInvestActionHandlers(): InvestActionHandlers {
   const dispatch = useDispatch<AppDispatch>();
+  const { executeBuyCoinAmount } = useBuyCoinAmount();
+
   const onCurrencySelection = useCallback(
     (field: Field, currency: Token) => {
       dispatch(
@@ -73,8 +77,11 @@ export function useInvestActionHandlers(): InvestActionHandlers {
   );
 
   const onUserInput = useCallback(
-    (field: Field, typedValue: string) => {
+    (field: Field, typedValue: string, address: string) => {
+      const inputAmount = parseFloat(typedValue);
       dispatch(typeInput({ field, typedValue }));
+      dispatch(receiveOutputAmount({ outputAmount: '' }));
+      executeBuyCoinAmount(address, inputAmount);
     },
     [dispatch],
   );
@@ -110,6 +117,7 @@ export function useDerivedInvestInfo(): {
   currencies: { [field in Field]?: Token };
   currencyBalances: { [field in Field]?: TokenAmount };
   parsedAmount: TokenAmount | undefined;
+  parsedOutputAmount: TokenAmount | undefined;
   error?: string;
 } {
   const { account } = useActiveWeb3React();
@@ -117,6 +125,7 @@ export function useDerivedInvestInfo(): {
   const {
     independentField,
     typedValue,
+    outputAmount,
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
   } = useInvestState();
@@ -136,6 +145,7 @@ export function useDerivedInvestInfo(): {
     typedValue,
     (isExactIn ? inputCurrency : outputCurrency) ?? undefined,
   );
+  const parsedOutputAmount = tryParseAmount(outputAmount, outputCurrency ?? undefined);
 
   const currencyBalances = {
     [Field.INPUT]: relevantTokenBalances[0],
@@ -175,6 +185,7 @@ export function useDerivedInvestInfo(): {
     currencies,
     currencyBalances,
     parsedAmount,
+    parsedOutputAmount,
     error,
   };
 }
@@ -317,14 +328,25 @@ export function useCoin(index: number) {
   }
 }
 
-export async function useBuyCoinAmount(address?: string, amount?: number) {
+export function useBuyCoinAmount() {
+  const dispatch = useDispatch<AppDispatch>();
   const { account, library } = useActiveWeb3React();
   const contract: Contract | null = getCrowdsaleContract(library, account);
-  try {
-    return await contract.getBuyCoinAmount(address, amount);
-  } catch (error) {
-    console.error(`useBuyCoinAmount failed`, error);
-  }
+
+  const executeBuyCoinAmount = useCallback(
+    (address?: string, amount?: number) => {
+      if (!address || !amount) {
+        dispatch(receiveOutputAmount({ outputAmount: '' }));
+        return;
+      }
+      return contract.getBuyCoinAmount(address, amount).then(response => {
+        const outputAmount = BigNumber.from(response).toString();
+        dispatch(receiveOutputAmount({ outputAmount }));
+      });
+    },
+    [dispatch],
+  );
+  return { executeBuyCoinAmount };
 }
 
 export function useCoinGetRate(index: string) {

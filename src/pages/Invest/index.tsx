@@ -43,24 +43,29 @@ const Invest = () => {
   const [expertMode] = useExpertModeManager();
 
   // invest state
-  const { independentField, typedValue } = useInvestState();
+  const { independentField } = useInvestState();
 
   const { onCurrencySelection, onUserInput } = useInvestActionHandlers();
-  const { currencyBalances, parsedAmount, currencies, error } = useDerivedInvestInfo();
+  const {
+    currencyBalances,
+    parsedAmount,
+    parsedOutputAmount,
+    currencies,
+    error,
+  } = useDerivedInvestInfo();
 
   const parsedAmounts = {
     [Field.INPUT]: parsedAmount,
-    [Field.OUTPUT]: parsedAmount,
+    [Field.OUTPUT]: parsedOutputAmount,
   };
 
   const isValid = !error;
-  const dependentField: Field = independentField === Field.INPUT ? Field.OUTPUT : Field.INPUT;
 
   const handleNothing = () => {};
 
   const handleTypeInput = useCallback(
     (value: string) => {
-      onUserInput(Field.INPUT, value);
+      onUserInput(Field.INPUT, value, currencies[Field.INPUT]?.address);
     },
     [onUserInput],
   );
@@ -71,17 +76,9 @@ const Invest = () => {
   const [txHash, setTxHash] = useState<string>('');
 
   const formattedAmounts = {
-    [independentField]: typedValue,
-    [dependentField]: parsedAmounts[dependentField]?.toSignificant(6) ?? '',
+    [Field.INPUT]: parsedAmounts[Field.INPUT]?.toSignificant(6) ?? '',
+    [Field.OUTPUT]: parsedAmounts[Field.OUTPUT]?.toSignificant(6) ?? '',
   };
-
-  // @ts-ignore
-  const inputCurrencyRate = currencies[Field.INPUT]?.tokenInfo?.rate || 10000;
-  const inputAmount = parseFloat(formattedAmounts[Field.INPUT]);
-  formattedAmounts[Field.OUTPUT] =
-    inputCurrencyRate && inputAmount
-      ? parseFloat((inputAmount * inputCurrencyRate).toFixed(6)).toString()
-      : '';
 
   // check whether the user has approved the router on the input token
   const [approval, approveCallback] = useApproveCallback(
@@ -135,11 +132,11 @@ const Invest = () => {
     }
     setAttemptingTxn(true);
     investCallback()
-      .then(hash => {
+      .then((hash: string) => {
         setAttemptingTxn(false);
         setTxHash(hash);
       })
-      .catch(error => {
+      .catch((error: any) => {
         setAttemptingTxn(false);
         // we only care if the error is something _other_ than the user rejected the tx
         if (error?.code !== 4001) {
@@ -177,7 +174,7 @@ const Invest = () => {
         showInverted={showInverted}
         setShowInverted={setShowInverted}
         onInvest={onInvest}
-        rate={inputCurrencyRate}
+        parsedAmounts={parsedAmounts}
         currencies={currencies}
       />
     );
@@ -210,7 +207,7 @@ const Invest = () => {
               setShowConfirm(false);
               // if there was a tx hash, we want to clear the input
               if (txHash) {
-                onUserInput(Field.INPUT, '');
+                onUserInput(Field.INPUT, '', currencies[Field.INPUT]?.address);
               }
               setTxHash('');
             }}
@@ -229,7 +226,12 @@ const Invest = () => {
               currency={currencies[Field.INPUT]}
               onUserInput={handleTypeInput}
               onMax={() => {
-                maxAmountInput && onUserInput(Field.INPUT, maxAmountInput.toExact());
+                maxAmountInput &&
+                  onUserInput(
+                    Field.INPUT,
+                    maxAmountInput.toExact(),
+                    currencies[Field.INPUT]?.address,
+                  );
               }}
               onCurrencySelect={currency => {
                 setApprovalSubmitted(false); // reset 2 step UI for approvals
@@ -258,7 +260,7 @@ const Invest = () => {
                     Price
                   </Text>
                   <TradePrice
-                    inputCurrencyRate={inputCurrencyRate}
+                    parsedAmounts={parsedAmounts}
                     inputCurrency={currencies[Field.INPUT]}
                     outputCurrency={currencies[Field.OUTPUT]}
                     showInverted={showInverted}
