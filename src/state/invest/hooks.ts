@@ -264,7 +264,6 @@ export function useDefaultsFromURLSearch() {
         typedValue: parsed.typedValue,
         field: parsed.independentField,
         inputCurrencyId: parsed[Field.INPUT].currencyId,
-        outputCurrencyId: parsed[Field.OUTPUT].currencyId,
       }),
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps

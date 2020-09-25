@@ -13,16 +13,26 @@ const saveReferralLinkToLocalStorage = (link: string): void => {
   localStorage.setItem(REFERRAL_ADDRESS_STORAGE_KEY, link);
 };
 
-const ReferralUrlParser = ({ children }) => {
-  if (isReferralLinkSetInLocalStorage()) {
-    return children;
-  }
+const removeReferralLinkToLocalStorage = (): void => {
+  localStorage.removeItem(REFERRAL_ADDRESS_STORAGE_KEY);
+};
 
+const ReferralUrlParser = ({ children }) => {
   const href = window.location.href;
   const begin = href.indexOf(separator) + offset;
   const addrStr = href.slice(begin, begin + 42);
-  if (addrStr && isAddress(addrStr)) {
-    saveReferralLinkToLocalStorage(getAddress(addrStr));
+  if (isReferralLinkSetInLocalStorage()) {
+    const referralAddress = localStorage.getItem(REFERRAL_ADDRESS_STORAGE_KEY);
+    if (referralAddress === addrStr) {
+      return children;
+    }
+  }
+  if (addrStr) {
+    if (isAddress(addrStr)) {
+      saveReferralLinkToLocalStorage(getAddress(addrStr));
+    } else {
+      removeReferralLinkToLocalStorage();
+    }
   }
   return children;
 };
