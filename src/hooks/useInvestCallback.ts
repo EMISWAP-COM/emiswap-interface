@@ -117,10 +117,17 @@ export function useInvestCallback(
               .toFixed(0)
           : inputParseAmount?.toFixed(0);
 
-      return contract
-        .buy(inputCurrency?.address, amount, referralAddress)
-        .then(onSuccess)
-        .catch(onError);
+      if (inputCurrency?.symbol === 'ETH') {
+        return contract
+          .buyWithETH(referralAddress, { value: amount })
+          .then(onSuccess)
+          .catch(onError);
+      } else {
+        return contract
+          .buy(inputCurrency?.address, amount, referralAddress)
+          .then(onSuccess)
+          .catch(onError);
+      }
     };
   }, [recipient, library, account, chainId, addTransaction, parsedAmounts, currencies]);
 }
