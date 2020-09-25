@@ -20,9 +20,7 @@ export function useInvest(
   currencies: { [field in Field]?: Token },
   parsedAmounts: { [field in Field]?: TokenAmount },
 ): any {
-  // const estimate = useEstimateCallback(fromAmount);
   const InvestCallback = useInvestCallback(currencies, parsedAmounts);
-  // return [InvestCallback, estimate];
   return [InvestCallback, null];
 }
 
