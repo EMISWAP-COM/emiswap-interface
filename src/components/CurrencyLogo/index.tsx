@@ -4,11 +4,16 @@ import styled from 'styled-components';
 
 import EthereumLogo from '../../assets/images/ethereum-logo.png';
 
-// const getTokenLogoURL = address =>
-//   `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`;
+const getTokenLogoURL = address =>
+  `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`;
 
-const getTokenLogoURL1inch = address =>
-  `https://1inch.exchange/assets/tokens/${address.toLowerCase()}.png`;
+const getTokenLogoURL1inch = ({ symbol, address }) => {
+  try {
+    return require(`../../assets/currencies/${symbol}.png`);
+  } catch {
+    return `https://1inch.exchange/assets/tokens/${address.toLowerCase()}.png`;
+  }
+};
 
 const BAD_URIS: { [tokenAddress: string]: true } = {};
 const FALLBACK_URIS: { [tokenAddress: string]: string } = {};
@@ -47,10 +52,10 @@ export default function CurrencyLogo({
     let uri: string | undefined;
 
     if (!uri) {
-      // const defaultUri = getTokenLogoURL(currency.address);
-      // if (!BAD_URIS[defaultUri]) {
-      //   uri = defaultUri;
-      // }
+      const defaultUri = getTokenLogoURL(currency.address);
+      if (!BAD_URIS[defaultUri]) {
+        uri = defaultUri;
+      }
       if (FALLBACK_URIS[currency.address]) {
         uri = FALLBACK_URIS[currency.address];
       }
@@ -66,7 +71,7 @@ export default function CurrencyLogo({
           onError={() => {
             if (currency instanceof Token) {
               BAD_URIS[uri] = true;
-              FALLBACK_URIS[currency.address] = getTokenLogoURL1inch(currency.address);
+              FALLBACK_URIS[currency.address] = getTokenLogoURL1inch(currency);
             }
             refresh(i => i + 1);
           }}
