@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { Contract } from '@ethersproject/contracts';
-import { Token, TokenAmount, Trade } from '@uniswap/sdk';
+import { JSBI, Token, TokenAmount, Trade } from '@uniswap/sdk';
 import { useMemo } from 'react';
 import { REFERRAL_ADDRESS_STORAGE_KEY } from '../constants';
 import { getTradeVersion } from '../data/V1';
@@ -67,6 +67,9 @@ export function useInvestCallback(
       return null;
     }
 
+    const inputCurrency = currencies[Field.INPUT];
+    const inputParseAmount = parsedAmounts[Field.INPUT];
+
     return async function onInvest() {
       const contract: Contract | null = getCrowdsaleContract(library, account);
 
@@ -76,9 +79,9 @@ export function useInvestCallback(
 
       const onSuccess = (response: any): string => {
         console.log('--onSuccess--', response);
-        const inputSymbol = currencies[Field.INPUT]?.symbol;
-        const outputSymbol = currencies[Field.INPUT]?.symbol;
-        const inputAmount = parsedAmounts[Field.INPUT]?.toSignificant(3);
+        const inputSymbol = inputCurrency?.symbol;
+        const outputSymbol = currencies[Field.OUTPUT]?.symbol;
+        const inputAmount = inputParseAmount?.toSignificant(3);
         const outputAmount = parsedAmounts[Field.OUTPUT]?.toSignificant(3);
 
         const withVersion = `Invest ${inputAmount} ${inputSymbol} for ${outputAmount} ${outputSymbol}`;
@@ -110,11 +113,14 @@ export function useInvestCallback(
       }
 
       const amount =
-        parseFloat(<string>parsedAmounts[Field.INPUT]?.raw.toString()) *
-        Math.pow(10, <number>currencies[Field.INPUT]?.decimals);
+        inputCurrency?.decimals && inputCurrency?.decimals !== 0
+          ? inputParseAmount
+              ?.multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(inputCurrency?.decimals)))
+              .toFixed(0)
+          : inputParseAmount?.toFixed(0);
 
       return contract
-        .buy(currencies[Field.INPUT]?.address, amount, referralAddress)
+        .buy(inputCurrency?.address, amount, referralAddress)
         .then(onSuccess)
         .catch(onError);
     };
