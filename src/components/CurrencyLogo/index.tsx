@@ -7,11 +7,18 @@ import EthereumLogo from '../../assets/images/ethereum-logo.png';
 const getTokenLogoURL = address =>
   `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`;
 
-const getTokenLogoURL1inch = ({ symbol, address }) => {
+const getTokenLogoURL1inch = async ({ symbol, address }) => {
   try {
     return require(`../../assets/currencies/${symbol}.png`);
   } catch {
-    return `https://1inch.exchange/assets/tokens/${address.toLowerCase()}.png`;
+    const response = await fetch(
+      `https://1inch.exchange/assets/tokens/${address.toLowerCase()}.png`,
+    );
+
+    if (!response.ok) return '';
+
+    const responseBlob = await response.blob();
+    return URL.createObjectURL(responseBlob);
   }
 };
 
@@ -68,10 +75,10 @@ export default function CurrencyLogo({
           alt=""
           src={uri}
           size={size}
-          onError={() => {
+          onError={async () => {
             if (currency instanceof Token) {
               BAD_URIS[uri] = true;
-              FALLBACK_URIS[currency.address] = getTokenLogoURL1inch(currency);
+              FALLBACK_URIS[currency.address] = await getTokenLogoURL1inch(currency);
             }
             refresh(i => i + 1);
           }}
