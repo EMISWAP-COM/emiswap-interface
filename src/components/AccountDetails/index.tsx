@@ -356,10 +356,12 @@ export default function AccountDetails({
   const filteredTokens: Token[] = Object.values(allTokens);
 
   const handleSelectCurrencies = (currency: Token): void => {
-    const isCurrencyExist = selectedCurrencies.some(({ address }) => address === currency.address);
+    const isCurrencySelected: boolean = selectedCurrencies.some(
+      ({ address }) => address === currency.address,
+    );
 
     onSelectCurrencies(selectedCurrencies =>
-      isCurrencyExist
+      isCurrencySelected
         ? [...selectedCurrencies].filter(({ address }) => address !== currency.address)
         : [...selectedCurrencies, currency],
     );
