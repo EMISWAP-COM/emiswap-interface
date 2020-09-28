@@ -5,9 +5,6 @@ import { Text } from 'rebass';
 
 import { currencyKey } from '../../utils/currencyId';
 import { useActiveWeb3React } from '../../hooks';
-import { useAllTokens } from '../../hooks/Tokens';
-import { useDefaultTokenList } from '../../state/lists/hooks';
-import { useAddUserToken, useRemoveUserAddedToken } from '../../state/user/hooks';
 import { useETHBalances } from '../../state/wallet/hooks';
 import { ButtonSecondary } from '../Button';
 import Column, { AutoColumn } from '../Column';
@@ -37,12 +34,8 @@ const CurrencyList = ({
   selectedCurrencies,
   showSendWithSwap,
 }: CurrencyListProps) => {
-  const { account, chainId } = useActiveWeb3React();
+  const { account } = useActiveWeb3React();
   const theme = useContext(ThemeContext);
-  const allTokens = useAllTokens();
-  const defaultTokens = useDefaultTokenList();
-  const addToken = useAddUserToken();
-  const removeToken = useRemoveUserAddedToken();
   const ETHBalance = useETHBalances([account])[account];
 
   const CurrencyRow = useMemo(
@@ -105,17 +98,11 @@ const CurrencyList = ({
     [
       ETHBalance,
       account,
-      addToken,
       allBalances,
-      allTokens,
-      chainId,
       currencies,
-      defaultTokens,
       onCurrencySelect,
-      removeToken,
       showSendWithSwap,
       selectedCurrencies,
-      theme.primary1,
     ],
   );
 
