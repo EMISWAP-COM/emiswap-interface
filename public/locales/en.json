@@ -89,5 +89,16 @@
   "toleranceExplanation": "Lowering this limit decreases your risk of frontrunning. However, this makes more likely that your transaction will fail due to normal price movements.",
   "tokenSearchPlaceholder": "Search name or paste address",
   "invest": "Invest",
-  "investAnyway": "Invest Anyway"
+  "investAnyway": "Invest Anyway",
+  "fullESWBalance": "Full ESW balance",
+  "frozenESWBalance": "Frozen ESW balance",
+  "dividendsWithdrawal": "Withdrawal of dividends to your wallet",
+  "BonusESW": "Bonus ESW",
+  "liquidityBonuses": "Liquidity bonuses",
+  "swappersBonuses": "Bonuses for swappers",
+  "swappersReferralBonuses": "bonuses for referral swappers",
+  "getBonusESWs": "Get Bonus ESWs",
+  "tokensNotIncludedInTheDividendPool": "Add tokens not yet included in the dividend pool",
+  "lastCall": "The last call",
+  "dividends": "Dividends"
 }

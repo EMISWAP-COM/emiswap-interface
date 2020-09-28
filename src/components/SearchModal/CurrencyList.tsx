@@ -15,10 +15,7 @@ import CurrencyLogo from '../CurrencyLogo';
 import { FadedSpan, StyledFixedSizeList, StyledMenuItem } from './styleds';
 import Loader from '../Loader';
 import { isDefaultToken } from '../../utils';
-
-function currencyKey(currency: Token): string {
-  return currency instanceof Token ? currency.address : currency === ETHER ? 'ETHER' : '';
-}
+import { currencyKey } from '../../utils/currencyId';
 
 export default function CurrencyList({
   currencies,

@@ -115,7 +115,7 @@ export const ButtonSecondary = styled(Base)`
   background-color: ${({ theme }) => theme.primary1};
   color: ${({ theme }) => theme.primaryText1};
   font-size: 16px;
-  border-radius: 8px;
+  border-radius: 4px;
   padding: ${({ padding }) => (padding ? padding : '10px 12px')};
 
   &:hover,

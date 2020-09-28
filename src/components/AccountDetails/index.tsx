@@ -1,31 +1,36 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled, { ThemeContext } from 'styled-components';
+import { useTranslation } from 'react-i18next';
+import { Text } from 'rebass';
+import { Token } from '@uniswap/sdk';
 import { useActiveWeb3React } from '../../hooks';
+import { useAllTokens } from '../../hooks/Tokens';
+import { useAllTokenBalances } from '../../state/wallet/hooks';
 import { AppDispatch } from '../../state';
 import { clearAllTransactions } from '../../state/transactions/actions';
-import { shortenAddress } from '../../utils';
+import { shortenAddress, getEtherscanLink } from '../../utils';
 import { AutoRow } from '../Row';
 import Copy from './Copy';
 import Transaction from './Transaction';
 
 import { SUPPORTED_WALLETS } from '../../constants';
 import { ReactComponent as Close } from '../../assets/images/x.svg';
-import { getEtherscanLink } from '../../utils';
 import { injected, walletconnect, walletlink, fortmatic, portis } from '../../connectors';
 import CoinbaseWalletIcon from '../../assets/images/coinbaseWalletIcon.svg';
 import WalletConnectIcon from '../../assets/images/walletConnectIcon.svg';
 import FortmaticIcon from '../../assets/images/fortmaticIcon.png';
 import PortisIcon from '../../assets/images/portisIcon.png';
 import Identicon from '../Identicon';
-import { ButtonSecondary } from '../Button';
+import { ButtonPrimary, ButtonSecondary } from '../Button';
+import CurrencyList from './CurrencyList';
 import { ExternalLink as LinkIcon } from 'react-feather';
 import { ExternalLink, LinkStyledButton, TYPE } from '../../theme';
 
 const HeaderRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
   padding: 1rem 1rem;
-  font-weight: 500;
+  font-weight: 450;
   color: ${props => (props.color === 'blue' ? ({ theme }) => theme.primary1 : 'inherit')};
   ${({ theme }) => theme.mediaWidth.upToMedium`
     padding: 1rem;
@@ -48,7 +53,7 @@ const UpperSection = styled.div`
 
   h4 {
     margin-top: 0;
-    font-weight: 500;
+    font-weight: 450;
   }
 `;
 
@@ -75,10 +80,33 @@ const AccountGroupingRow = styled.div`
   }
 `;
 
+const AccountGroupingDividendsRow = styled(AccountGroupingRow)`
+  margin-bottom: 0.5rem;
+`;
+
+const AccountPrimaryButton = styled(ButtonPrimary)`
+  margin-bottom: 1rem;
+`;
+
+const AccountButtonSecondary = styled(ButtonSecondary)`
+  width: auto;
+  margin-right: 0.5rem;
+`;
+
+const AccountFooter = styled(AutoRow)`
+  flex-wrap: nowrap;
+`;
+
+const AccountFooterText = styled(Text)`
+  white-space: nowrap;
+`;
+
 const AccountSection = styled.div`
   background-color: ${({ theme }) => theme.bg1};
   padding: 0rem 1rem;
   ${({ theme }) => theme.mediaWidth.upToMedium`padding: 0rem 1rem 1.5rem 1rem;`};
+  overflow-y: scroll;
+  max-height: calc(100vh - 200px);
 `;
 
 const YourAccount = styled.div`
@@ -89,7 +117,7 @@ const YourAccount = styled.div`
 
   h4 {
     margin: 0;
-    font-weight: 500;
+    font-weight: 450;
   }
 `;
 
@@ -115,7 +143,7 @@ const AccountControl = styled.div`
   min-width: 0;
   width: 100%;
 
-  font-weight: 500;
+  font-weight: 450;
   font-size: 1.25rem;
 
   a:hover {
@@ -161,7 +189,7 @@ const CloseColor = styled(Close)`
 const WalletName = styled.div`
   width: initial;
   font-size: 0.825rem;
-  font-weight: 500;
+  font-weight: 450;
   color: ${({ theme }) => theme.text3};
 `;
 
@@ -200,6 +228,34 @@ const MainWalletAction = styled(WalletAction)`
   color: ${({ theme }) => theme.primary1};
 `;
 
+const BonusList = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 1rem;
+`;
+
+const BonusListItem = styled.li`
+  position: relative;
+  padding: 0.25rem;
+
+  &:first-child {
+    padding-top: 0;
+  }
+
+  &:last-child {
+    padding-bottom: 0;
+  }
+
+  :before {
+    content: '-';
+    position: absolute;
+  }
+
+  > div {
+    padding-left: 10px;
+  }
+`;
+
 function renderTransactions(transactions) {
   return (
     <TransactionListWrapper>
@@ -225,9 +281,13 @@ export default function AccountDetails({
   ENSName,
   openOptions,
 }: AccountDetailsProps) {
+  const [selectedCurrencies, onSelectCurrencies] = useState<Token[]>([]);
   const { chainId, account, connector } = useActiveWeb3React();
   const theme = useContext(ThemeContext);
   const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation();
+  const allTokens = useAllTokens();
+  const allTokenBalances = useAllTokenBalances();
 
   function formatConnectorName() {
     const { ethereum } = window;
@@ -292,6 +352,18 @@ export default function AccountDetails({
     },
     [dispatch, chainId],
   );
+
+  const filteredTokens: Token[] = Object.values(allTokens);
+
+  const handleSelectCurrencies = (currency: Token): void => {
+    const isCurrencyExist = selectedCurrencies.some(({ address }) => address === currency.address);
+
+    onSelectCurrencies(selectedCurrencies =>
+      isCurrencyExist
+        ? [...selectedCurrencies].filter(({ address }) => address !== currency.address)
+        : [...selectedCurrencies, currency],
+    );
+  };
 
   return (
     <>
@@ -386,6 +458,67 @@ export default function AccountDetails({
                 {/* {formatConnectorName()} */}
               </AccountGroupingRow>
             </InfoCard>
+
+            <AccountGroupingDividendsRow>
+              <TYPE.body>{t('fullESWBalance')}</TYPE.body>
+              <TYPE.body>125</TYPE.body>
+            </AccountGroupingDividendsRow>
+            <AccountGroupingDividendsRow>
+              <TYPE.body>{t('frozenESWBalance')}</TYPE.body>
+              <TYPE.body>15</TYPE.body>
+            </AccountGroupingDividendsRow>
+            <Text>{t('dividends')}:</Text>
+            <CurrencyList
+              currencies={filteredTokens}
+              selectedCurrencies={selectedCurrencies}
+              allBalances={allTokenBalances}
+              onCurrencySelect={handleSelectCurrencies}
+            />
+            <AccountPrimaryButton>
+              <Text fontSize={16} fontWeight={450}>
+                {t('dividendsWithdrawal')}
+              </Text>
+            </AccountPrimaryButton>
+            <AccountGroupingDividendsRow>
+              <TYPE.body>{t('BonusESW')}</TYPE.body>
+              <TYPE.body>25</TYPE.body>
+            </AccountGroupingDividendsRow>
+            <BonusList>
+              <BonusListItem>
+                <AccountGroupingRow>
+                  <TYPE.body>{t('liquidityBonuses')}</TYPE.body>
+                  <TYPE.body>5</TYPE.body>
+                </AccountGroupingRow>
+              </BonusListItem>
+              <BonusListItem>
+                <AccountGroupingRow>
+                  <TYPE.body>{t('swappersBonuses')}</TYPE.body>
+                  <TYPE.body>20</TYPE.body>
+                </AccountGroupingRow>
+              </BonusListItem>
+              <BonusListItem>
+                <AccountGroupingRow>
+                  <TYPE.body>{t('swappersReferralBonuses')}</TYPE.body>
+                  <TYPE.body>0</TYPE.body>
+                </AccountGroupingRow>
+              </BonusListItem>
+            </BonusList>
+            <AccountPrimaryButton>
+              <Text fontSize={16} fontWeight={450}>
+                {t('getBonusESWs')}
+              </Text>
+            </AccountPrimaryButton>
+            <AccountFooter>
+              <AccountButtonSecondary>
+                <Text textAlign="center" fontWeight={450} fontSize={14}>
+                  {t('tokensNotIncludedInTheDividendPool')}
+                </Text>
+              </AccountButtonSecondary>
+              <AccountFooterText fontWeight={450} fontSize={14}>
+                <div>{t('lastCall')}:</div>
+                <div>25/09/2020</div>
+              </AccountFooterText>
+            </AccountFooter>
           </YourAccount>
         </AccountSection>
       </UpperSection>
