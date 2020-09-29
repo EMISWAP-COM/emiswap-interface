@@ -111,7 +111,7 @@ const CurrencyList = ({
   return (
     <StyledFixedSizeList
       width="auto"
-      height={150}
+      height={currencies.length < 3 ? currencies.length * 50 : 150}
       itemCount={++currencies.length}
       itemSize={50}
       style={{ flex: '1', margin: '0.5rem 0 1rem' }}

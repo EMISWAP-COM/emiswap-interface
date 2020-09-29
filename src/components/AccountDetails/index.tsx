@@ -103,13 +103,13 @@ const AccountFooterText = styled(Text)`
 
 const AccountSection = styled.div`
   background-color: ${({ theme }) => theme.bg1};
-  padding: 0rem 1rem;
-  ${({ theme }) => theme.mediaWidth.upToMedium`padding: 0rem 1rem 1.5rem 1rem;`};
   overflow-y: scroll;
   max-height: calc(100vh - 200px);
 `;
 
 const YourAccount = styled.div`
+  padding: 0 1rem 1.5rem;
+
   h5 {
     margin: 0 0 1rem 0;
     font-weight: 400;
@@ -127,8 +127,6 @@ const LowerSection = styled.div`
   flex-grow: 1;
   overflow: auto;
   background-color: ${({ theme }) => theme.bg2};
-  border-bottom-left-radius: 25px;
-  border-bottom-right-radius: 20px;
 
   h5 {
     margin: 0;
@@ -522,22 +520,24 @@ export default function AccountDetails({
               </AccountFooterText>
             </AccountFooter>
           </YourAccount>
+          {!!pendingTransactions.length || !!confirmedTransactions.length ? (
+            <LowerSection>
+              <AutoRow mb={'1rem'} style={{ justifyContent: 'space-between' }}>
+                <TYPE.body>Recent Transactions</TYPE.body>
+                <LinkStyledButton onClick={clearAllTransactionsCallback}>
+                  (clear all)
+                </LinkStyledButton>
+              </AutoRow>
+              {renderTransactions(pendingTransactions)}
+              {renderTransactions(confirmedTransactions)}
+            </LowerSection>
+          ) : (
+            <LowerSection>
+              <TYPE.body color={theme.text1}>Your transactions will appear here...</TYPE.body>
+            </LowerSection>
+          )}
         </AccountSection>
       </UpperSection>
-      {!!pendingTransactions.length || !!confirmedTransactions.length ? (
-        <LowerSection>
-          <AutoRow mb={'1rem'} style={{ justifyContent: 'space-between' }}>
-            <TYPE.body>Recent Transactions</TYPE.body>
-            <LinkStyledButton onClick={clearAllTransactionsCallback}>(clear all)</LinkStyledButton>
-          </AutoRow>
-          {renderTransactions(pendingTransactions)}
-          {renderTransactions(confirmedTransactions)}
-        </LowerSection>
-      ) : (
-        <LowerSection>
-          <TYPE.body color={theme.text1}>Your transactions will appear here...</TYPE.body>
-        </LowerSection>
-      )}
     </>
   );
 }
