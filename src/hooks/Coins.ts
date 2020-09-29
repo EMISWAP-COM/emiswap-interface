@@ -120,7 +120,13 @@ export function useDefaultCoin(address?: string): Token | undefined {
   );
   return useMemo(() => {
     if (defaultCoin) {
-      return new Token(chainId, address, defaultCoin.decimals, defaultCoin.symbol, defaultCoin.name);
+      return new Token(
+        chainId,
+        address,
+        defaultCoin.decimals,
+        defaultCoin.symbol,
+        defaultCoin.name,
+      );
     }
     return undefined;
   }, [address, chainId, defaultCoin]);
