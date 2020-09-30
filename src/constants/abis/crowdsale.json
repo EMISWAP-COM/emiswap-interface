@@ -3,7 +3,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "token",
+        "name": "ESWtoken",
         "type": "address"
       },
       {
@@ -14,6 +14,26 @@
       {
         "internalType": "address",
         "name": "referralStoreInput",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "wethToken",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_foundationWallet",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_securityWallet",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_teamWallet",
         "type": "address"
       }
     ],
@@ -86,42 +106,88 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "coinAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "referralInput",
+        "name": "",
         "type": "address"
       }
     ],
-    "name": "buy",
+    "name": "coinIndex",
     "outputs": [
       {
-        "internalType": "bool",
+        "internalType": "uint16",
         "name": "",
-        "type": "bool"
+        "type": "uint16"
       }
     ],
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [
+    "inputs": [],
+    "name": "foundationWallet",
+    "outputs": [
       {
         "internalType": "address",
-        "name": "referralInput",
+        "name": "",
         "type": "address"
       }
     ],
-    "name": "buyWithETH",
-    "outputs": [],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "referralStore",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "securityWallet",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "teamWallet",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "stateMutability": "payable",
+    "type": "receive"
+  },
+  {
+    "inputs": [],
+    "name": "coinCounter",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -154,13 +220,19 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "coinCounter",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "coinAddress",
+        "type": "address"
+      }
+    ],
+    "name": "coinRatebyAddress",
     "outputs": [
       {
-        "internalType": "uint16",
-        "name": "",
-        "type": "uint16"
+        "internalType": "uint32",
+        "name": "rate",
+        "type": "uint32"
       }
     ],
     "stateMutability": "view",
@@ -174,17 +246,12 @@
         "type": "uint16"
       }
     ],
-    "name": "coinData",
+    "name": "coinRate",
     "outputs": [
       {
-        "internalType": "address",
-        "name": "coinAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "uint8",
-        "name": "status",
-        "type": "uint8"
+        "internalType": "uint32",
+        "name": "rate",
+        "type": "uint32"
       }
     ],
     "stateMutability": "view",
@@ -231,79 +298,22 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "coinIndex",
-    "outputs": [
-      {
-        "internalType": "uint16",
-        "name": "",
-        "type": "uint16"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "uint16",
         "name": "index",
         "type": "uint16"
       }
     ],
-    "name": "coinRate",
+    "name": "coinData",
     "outputs": [
-      {
-        "internalType": "uint32",
-        "name": "rate",
-        "type": "uint32"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "coinAddress",
-        "type": "address"
-      }
-    ],
-    "name": "fetchCoin",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
       {
         "internalType": "address",
         "name": "coinAddress",
         "type": "address"
       },
       {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "getBuyCoinAmount",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
+        "internalType": "uint8",
+        "name": "status",
+        "type": "uint8"
       }
     ],
     "stateMutability": "view",
@@ -341,182 +351,17 @@
         "type": "address"
       },
       {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "getBuyTokenAmount",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint16",
-        "name": "coinId",
-        "type": "uint16"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "getBuyTokenAmountByID",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "coinAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "getSellCoinAmount",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint16",
-        "name": "coinId",
-        "type": "uint16"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "getSellCoinAmountByID",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "coinAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "getSellTokenAmount",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint16",
-        "name": "coinId",
-        "type": "uint16"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "getSellTokenAmountByID",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getToken",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "referralStore",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint16",
-        "name": "coinId",
-        "type": "uint16"
-      },
-      {
         "internalType": "uint32",
         "name": "rate",
         "type": "uint32"
+      },
+      {
+        "internalType": "uint8",
+        "name": "status",
+        "type": "uint8"
       }
     ],
-    "name": "setRateByID",
+    "name": "fetchCoin",
     "outputs": [
       {
         "internalType": "bool",
@@ -552,7 +397,164 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "coinId",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint32",
+        "name": "rate",
+        "type": "uint32"
+      }
+    ],
+    "name": "setRateByID",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "coinAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint32",
+        "name": "rate",
+        "type": "uint32"
+      }
+    ],
+    "name": "setRateByAddress",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "coinAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "buyView",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "currentTokenAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint16",
+        "name": "coinId",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint256",
+        "name": "coinAmount",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "coinAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "referralInput",
+        "type": "address"
+      }
+    ],
+    "name": "buy",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "ethAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "buyWithETHView",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "currentTokenAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "coinAmount",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "referralInput",
+        "type": "address"
+      }
+    ],
+    "name": "buyWithETH",
+    "outputs": [],
     "stateMutability": "payable",
-    "type": "receive"
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getToken",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
   }
 ]
