@@ -133,43 +133,6 @@ function recentTransactionsOnly(a: TransactionDetails) {
   return new Date().getTime() - a.addedTime < 86_400_000;
 }
 
-function ChiComponent() {
-  const { chainId } = useWeb3React();
-  const hasChi = useHasChi(0);
-  const hasEnoughChi = useHasChi(MIN_CHI_BALANCE);
-
-  const [approvalState] = useApproveCallback(
-    new TokenAmount(CHI, JSBI.BigInt(MIN_CHI_BALANCE)),
-    ONE_SPLIT_ADDRESSES[chainId],
-  );
-
-  const successMessage = 'CHI token is activated!';
-  let tooltipText = successMessage;
-  if (!hasChi || approvalState !== ApprovalState.APPROVED) {
-    tooltipText = `Activate CHI gas token in settings to pay less fees for ethereum transactions`;
-  } else if (!hasEnoughChi) {
-    tooltipText = `Your CHI balance become too small`;
-  }
-
-  const enabled = tooltipText === successMessage;
-
-  return (
-    <MouseoverTooltip text={tooltipText} placement={'bottom'}>
-      <img
-        style={{
-          width: '16px',
-          marginLeft: '0.5rem',
-          marginRight: '0.25rem',
-          marginTop: '0.25rem',
-          filter: !enabled ? 'grayscale(100%)' : '',
-        }}
-        src={ChiIcon}
-        alt={tooltipText}
-      />
-    </MouseoverTooltip>
-  );
-}
-
 export default function Web3Status() {
   const { t } = useTranslation();
   const { active, account, connector, error } = useWeb3React();
@@ -241,7 +204,6 @@ export default function Web3Status() {
             </>
           )}
           {!hasPendingTransactions && getStatusIcon()}
-          <ChiComponent />
         </Web3StatusConnected>
       );
     } else if (error) {

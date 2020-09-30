@@ -338,11 +338,6 @@ export default function SettingsTab() {
             />
 
             <Text fontWeight={600} fontSize={14}>
-              Gas Token
-            </Text>
-            <ChiRow />
-
-            <Text fontWeight={600} fontSize={14}>
               Interface Settings
             </Text>
             <RowBetween>
