@@ -73,7 +73,7 @@ export const SearchInput = styled(Input)`
 
 export const StyledFixedSizeList = styled(FixedSizeList)`
   ::-webkit-scrollbar {
-    width: 4px;
+    width: 8px;
   }
 
   ::-webkit-scrollbar-track {
