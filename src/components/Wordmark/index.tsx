@@ -32,7 +32,6 @@ const WordmarkStyled = styled.div`
 
   .mainHeader {
     font-family: 'IBM Plex Arabic', sans-serif;
-    text-transform: uppercase;
     margin-top: 0;
     margin-bottom: 20px;
     font-weight: 400;
@@ -71,12 +70,7 @@ export default function Wordmark() {
   return (
     <WordmarkStyled>
       <h1 className="mainWordmark">Emiswap</h1>
-      <h4 className="mainHeader">
-        Next generation by{' '}
-        <a href="https://emirex.com/" target="_blank" rel="noopener noreferrer">
-          EMIREX
-        </a>
-      </h4>
+      <h4 className="mainHeader">Cutting-edge AMM decentralized exchange</h4>
     </WordmarkStyled>
   );
 }

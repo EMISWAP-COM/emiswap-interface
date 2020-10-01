@@ -338,7 +338,7 @@ export function useBuyCoinAmount() {
         dispatch(receiveOutputAmount({ outputAmount: '' }));
         return;
       }
-      return contract.getBuyCoinAmount(address, amount).then(response => {
+      return contract.buyView(address, amount).then(response => {
         const outputAmount = BigNumber.from(response).toString();
         dispatch(receiveOutputAmount({ outputAmount }));
       });
