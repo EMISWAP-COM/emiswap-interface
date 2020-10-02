@@ -6,7 +6,7 @@ import { Text } from 'rebass';
 import { Token } from '@uniswap/sdk';
 import { useActiveWeb3React } from '../../hooks';
 import { useAllTokens } from '../../hooks/Tokens';
-import { useAllTokenBalances } from '../../state/wallet/hooks';
+import { useAllCoinBalances, useAllTokenBalances } from '../../state/wallet/hooks'
 import { AppDispatch } from '../../state';
 import { clearAllTransactions } from '../../state/transactions/actions';
 import { shortenAddress, getEtherscanLink } from '../../utils';
@@ -26,6 +26,10 @@ import { ButtonPrimary, ButtonSecondary } from '../Button';
 import CurrencyList from './CurrencyList';
 import { ExternalLink as LinkIcon } from 'react-feather';
 import { ExternalLink, LinkStyledButton, TYPE } from '../../theme';
+import Tooltip from '../Tooltip';
+import useInterval from '../../hooks/useInterval';
+import QuestionHelper from '../QuestionHelper';
+import { useAllCoins } from '../../hooks/Coins'
 
 const HeaderRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
@@ -84,6 +88,21 @@ const AccountGroupingDividendsRow = styled(AccountGroupingRow)`
   margin-bottom: 0.5rem;
 `;
 
+const AccountGroupingInfoRow = styled(AccountGroupingRow)`
+  font-size: 0.825rem;
+  color: ${({ theme }) => theme.text3};
+`;
+
+const AccountSectionHeader = styled(AccountGroupingRow)`
+  margin-bottom: 0.5rem;
+`;
+
+const AccountSectionBody = styled.div`
+  display: grid;
+  grid-row-gap: 12px;
+  margin-bottom: 1.5rem;
+`;
+
 const AccountPrimaryButton = styled(ButtonPrimary)`
   margin-bottom: 1rem;
 `;
@@ -99,6 +118,10 @@ const AccountFooter = styled(AutoRow)`
 
 const AccountFooterText = styled(Text)`
   white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
 `;
 
 const AccountSection = styled.div`
@@ -284,8 +307,8 @@ export default function AccountDetails({
   const theme = useContext(ThemeContext);
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation();
-  const allTokens = useAllTokens();
-  const allTokenBalances = useAllTokenBalances();
+  const allTokens = useAllCoins();
+  const allTokenBalances = useAllCoinBalances();
 
   function formatConnectorName() {
     const { ethereum } = window;
@@ -459,64 +482,72 @@ export default function AccountDetails({
               </AccountGroupingRow>
             </InfoCard>
 
-            <AccountGroupingDividendsRow>
-              <TYPE.body>{t('fullESWBalance')}</TYPE.body>
-              <TYPE.body>125</TYPE.body>
-            </AccountGroupingDividendsRow>
-            <AccountGroupingDividendsRow>
-              <TYPE.body>{t('frozenESWBalance')}</TYPE.body>
-              <TYPE.body>15</TYPE.body>
-            </AccountGroupingDividendsRow>
-            <Text>{t('dividends')}:</Text>
+            <div>
+              <AccountSectionHeader>
+                <TYPE.body>{t('totalESWBalanceWithDividends')}</TYPE.body>
+                <div>
+                  <span>125</span>
+                  <QuestionHelper text="Count all tokens" />
+                  <span>Arrow</span>
+                </div>
+              </AccountSectionHeader>
+              <AccountSectionBody>
+                <AccountGroupingInfoRow>
+                  <span>{t('availableESWBalance')}</span>
+                  <span>15</span>
+                </AccountGroupingInfoRow>
+                <AccountGroupingInfoRow>
+                  <span>{t('frozenBonusESWBalance')}</span>
+                  <span>15</span>
+                </AccountGroupingInfoRow>
+                <AccountGroupingInfoRow>
+                  <span>{t('claimBonusESWBalance')}</span>
+                  <span>15</span>
+                </AccountGroupingInfoRow>
+              </AccountSectionBody>
+            </div>
+
+            <div>
+              <AccountSectionHeader>
+                <TYPE.body>{t('totalESWBalanceWithoutDividends')}</TYPE.body>
+                <div>
+                  <span>125</span>
+                  <QuestionHelper text="Count all tokens" />
+                  <span>Arrow</span>
+                </div>
+              </AccountSectionHeader>
+              <AccountSectionBody>
+                <AccountGroupingInfoRow>
+                  <span>{t('bonusESWSwapping')}</span>
+                  <span>15</span>
+                </AccountGroupingInfoRow>
+                <AccountGroupingInfoRow>
+                  <span>{t('bonusESWLP')}</span>
+                  <span>15</span>
+                </AccountGroupingInfoRow>
+                <AccountGroupingInfoRow>
+                  <span>{t('bonusESWReferral')}</span>
+                  <span>15</span>
+                </AccountGroupingInfoRow>
+              </AccountSectionBody>
+            </div>
+
+            <Text textAlign="center">{t('dividendPool')}</Text>
             <CurrencyList
               currencies={filteredTokens}
               selectedCurrencies={selectedCurrencies}
               allBalances={allTokenBalances}
               onCurrencySelect={handleSelectCurrencies}
             />
-            <AccountPrimaryButton>
-              <Text fontSize={16} fontWeight={450}>
-                {t('dividendsWithdrawal')}
-              </Text>
-            </AccountPrimaryButton>
-            <AccountGroupingDividendsRow>
-              <TYPE.body>{t('BonusESW')}</TYPE.body>
-              <TYPE.body>25</TYPE.body>
-            </AccountGroupingDividendsRow>
-            <BonusList>
-              <BonusListItem>
-                <AccountGroupingRow>
-                  <TYPE.body>{t('liquidityBonuses')}</TYPE.body>
-                  <TYPE.body>5</TYPE.body>
-                </AccountGroupingRow>
-              </BonusListItem>
-              <BonusListItem>
-                <AccountGroupingRow>
-                  <TYPE.body>{t('swappersBonuses')}</TYPE.body>
-                  <TYPE.body>20</TYPE.body>
-                </AccountGroupingRow>
-              </BonusListItem>
-              <BonusListItem>
-                <AccountGroupingRow>
-                  <TYPE.body>{t('swappersReferralBonuses')}</TYPE.body>
-                  <TYPE.body>0</TYPE.body>
-                </AccountGroupingRow>
-              </BonusListItem>
-            </BonusList>
-            <AccountPrimaryButton>
-              <Text fontSize={16} fontWeight={450}>
-                {t('getBonusESWs')}
-              </Text>
-            </AccountPrimaryButton>
             <AccountFooter>
               <AccountButtonSecondary>
-                <Text textAlign="center" fontWeight={450} fontSize={14}>
-                  {t('tokensNotIncludedInTheDividendPool')}
+                <Text fontSize={16} fontWeight={450}>
+                  {t('recountSelectedDividends')}
                 </Text>
               </AccountButtonSecondary>
-              <AccountFooterText fontWeight={450} fontSize={14}>
-                <div>{t('lastCall')}:</div>
-                <div>25/09/2020</div>
+              <AccountFooterText textAlign="center" fontWeight={450} fontSize={14}>
+                {t('lastCall')}:<br />
+                25/09/2020
               </AccountFooterText>
             </AccountFooter>
           </YourAccount>

@@ -1,6 +1,6 @@
 export default [
   {
-    address: '0x9a33Ddd074Cd1275DCF6aDe8920675FD8fade75E',
+    address: process.env.REACT_APP_ESW_ID,
     chainId: 42,
     decimals: 18,
     name: 'EmiDAO Token',

@@ -338,9 +338,12 @@ export function useBuyCoinAmount() {
         dispatch(receiveOutputAmount({ outputAmount: '' }));
         return;
       }
-      return contract.buyView(address, amount).then(response => {
-        const outputAmount = BigNumber.from(response).toString();
-        dispatch(receiveOutputAmount({ outputAmount }));
+      const coinAmount = (amount * Math.pow(10, 18)).toString();
+      const coinAmountBN = BigNumber.from(coinAmount);
+      return contract.buyView(address, coinAmountBN).then((response: any) => {
+        const outputAmount = BigNumber.from(response.currentTokenAmount).toString();
+        const test = (parseFloat(outputAmount) / Math.pow(10, 18)).toString();
+        dispatch(receiveOutputAmount({ outputAmount: test }));
       });
     },
     [dispatch],

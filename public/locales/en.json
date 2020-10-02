@@ -90,9 +90,15 @@
   "tokenSearchPlaceholder": "Search name or paste address",
   "invest": "Invest",
   "investAnyway": "Invest Anyway",
-  "fullESWBalance": "Full ESW balance",
-  "frozenESWBalance": "Frozen ESW balance",
-  "dividendsWithdrawal": "Withdrawal of dividends to your wallet",
+  "totalESWBalanceWithDividends": "Total ESW that earn dividends",
+  "totalESWBalanceWithoutDividends": "Total ESW that not yet earn dividends",
+  "availableESWBalance": "ESW available in wallet",
+  "frozenBonusESWBalance": "Frozen bonus ESW",
+  "claimBonusESWBalance": "Ready to claim bonus ESW",
+  "bonusESWSwapping": "Bonus ESW for swapping",
+  "bonusESWLP": "Bonus ESW for being LP",
+  "bonusESWReferral": "Bonus ESW for being referral",
+  "recountSelectedDividends": "Recount selected dividends",
   "BonusESW": "Bonus ESW",
   "liquidityBonuses": "Liquidity bonuses",
   "swappersBonuses": "Bonuses for swappers",
@@ -100,5 +106,5 @@
   "getBonusESWs": "Get Bonus ESWs",
   "tokensNotIncludedInTheDividendPool": "Add tokens not yet included in the dividend pool",
   "lastCall": "The last call",
-  "dividends": "Dividends"
+  "dividendPool": "Dividend pool"
 }
