@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { Contract } from '@ethersproject/contracts';
-import { JSBI, Token, TokenAmount, Trade } from '@uniswap/sdk';
+import { ETHER, JSBI, Token, TokenAmount, Trade } from '@uniswap/sdk';
 import { useMemo } from 'react';
 import { REFERRAL_ADDRESS_STORAGE_KEY } from '../constants';
 import { getTradeVersion } from '../data/V1';
@@ -9,6 +9,7 @@ import { getCrowdsaleContract, isAddress } from '../utils';
 import { useActiveWeb3React } from './index';
 import { getAddress } from '@ethersproject/address';
 import { Field } from '../state/invest/actions';
+import { toHex } from '../utils/v1SwapArguments';
 
 export type InvestCallback = null | (() => Promise<string>);
 export type EstimateCallback = null | (() => Promise<Array<number | undefined> | undefined>);
@@ -110,16 +111,19 @@ export function useInvestCallback(
         referralAddress = getAddress(referralAddressStr);
       }
 
-      const amount =
-        inputCurrency?.decimals && inputCurrency?.decimals !== 0
+      const amount: string =
+        (inputCurrency?.decimals && inputCurrency?.decimals !== 0
           ? inputParseAmount
               ?.multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(inputCurrency?.decimals)))
               .toFixed(0)
-          : inputParseAmount?.toFixed(0);
+          : inputParseAmount?.toFixed(0)) || '';
 
-      if (inputCurrency?.symbol === 'ETH') {
+      const isETH = inputCurrency?.address.toUpperCase() === ETHER.address.toUpperCase();
+
+      if (isETH) {
+        const amountETH = toHex(new TokenAmount(ETHER, JSBI.BigInt(amount)));
         return contract
-          .buyWithETH(referralAddress, { value: amount })
+          .buyWithETH(referralAddress, { value: amountETH })
           .then(onSuccess)
           .catch(onError);
       } else {

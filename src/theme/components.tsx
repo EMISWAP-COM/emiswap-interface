@@ -69,7 +69,7 @@ export const LinkStyledButton = styled.button`
 export const StyledInternalLink = styled(Link)`
   text-decoration: none;
   cursor: pointer;
-  color: ${({ theme }) => theme.green5};
+  color: ${({ theme }) => theme.primary1};
   font-weight: 500;
 
   :hover {
@@ -89,7 +89,7 @@ export const StyledInternalLink = styled(Link)`
 const StyledLink = styled.a`
   text-decoration: none;
   cursor: pointer;
-  color: ${({ theme }) => theme.green5};
+  color: ${({ theme }) => theme.primary1};
   font-weight: 500;
 
   :hover {

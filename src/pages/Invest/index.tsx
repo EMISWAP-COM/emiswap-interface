@@ -43,7 +43,7 @@ const Invest = () => {
   const [expertMode] = useExpertModeManager();
 
   // invest state
-  const { independentField } = useInvestState();
+  const { independentField, typedValue } = useInvestState();
 
   const { onCurrencySelection, onUserInput } = useInvestActionHandlers();
   const {
@@ -76,7 +76,7 @@ const Invest = () => {
   const [txHash, setTxHash] = useState<string>('');
 
   const formattedAmounts = {
-    [Field.INPUT]: parsedAmounts[Field.INPUT]?.toSignificant(6) ?? '',
+    [Field.INPUT]: typedValue,
     [Field.OUTPUT]: parsedAmounts[Field.OUTPUT]?.toSignificant(6) ?? '',
   };
 

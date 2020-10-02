@@ -3,7 +3,7 @@ import { TokenAmount, ETHER, Token, Trade, TradeType } from '@uniswap/sdk';
 import { getTradeVersion } from '../data/V1';
 import { Version } from '../hooks/useToggledVersion';
 
-function toHex(currencyAmount: TokenAmount): string {
+export function toHex(currencyAmount: TokenAmount): string {
   return `0x${currencyAmount.raw.toString(16)}`;
 }
 
