@@ -65,9 +65,9 @@ const Invest = () => {
 
   const handleTypeInput = useCallback(
     (value: string) => {
-      onUserInput(Field.INPUT, value, currencies[Field.INPUT]?.address);
+      onUserInput(Field.INPUT, value, currencies[Field.INPUT]);
     },
-    [onUserInput],
+    [Field.INPUT, onUserInput, currencies[Field.INPUT]],
   );
 
   // modal and loading
@@ -185,7 +185,7 @@ const Invest = () => {
               setShowConfirm(false);
               // if there was a tx hash, we want to clear the input
               if (txHash) {
-                onUserInput(Field.INPUT, '', currencies[Field.INPUT]?.address);
+                onUserInput(Field.INPUT, '', currencies[Field.INPUT]);
               }
               setTxHash('');
             }}
@@ -205,15 +205,11 @@ const Invest = () => {
               onUserInput={handleTypeInput}
               onMax={() => {
                 maxAmountInput &&
-                  onUserInput(
-                    Field.INPUT,
-                    maxAmountInput.toExact(),
-                    currencies[Field.INPUT]?.address,
-                  );
+                  onUserInput(Field.INPUT, maxAmountInput.toExact(), currencies[Field.INPUT]);
               }}
               onCurrencySelect={currency => {
                 setApprovalSubmitted(false); // reset 2 step UI for approvals
-                onCurrencySelection(Field.INPUT, currency);
+                onCurrencySelection(Field.INPUT, currency, formattedAmounts[Field.INPUT]);
               }}
               otherCurrency={currencies[Field.OUTPUT]}
               id="invest-currency-input"

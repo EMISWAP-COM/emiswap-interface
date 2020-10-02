@@ -1,6 +1,6 @@
 import { parseUnits } from '@ethersproject/units';
 import { Contract } from '@ethersproject/contracts';
-import { ChainId, JSBI, Token, TokenAmount, ZERO_ADDRESS } from '@uniswap/sdk';
+import { ChainId, ETHER, JSBI, Token, TokenAmount, ZERO_ADDRESS } from '@uniswap/sdk';
 import { ParsedQs } from 'qs';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -39,9 +39,9 @@ export function useInvestState(): AppState['invest'] {
 }
 
 export type InvestActionHandlers = {
-  onCurrencySelection: (field: Field, currency: Token) => void;
+  onCurrencySelection: (field: Field, currency: Token, amount: string) => void;
   onSwitchTokens: (outputValue: string) => void;
-  onUserInput: (field: Field, typedValue: string, address?: string) => void;
+  onUserInput: (field: Field, typedValue: string, address?: Token) => void;
   onOutputValue: (outputValue: string) => void;
 };
 
@@ -50,13 +50,14 @@ export function useInvestActionHandlers(): InvestActionHandlers {
   const { executeBuyCoinAmount } = useBuyCoinAmount();
 
   const onCurrencySelection = useCallback(
-    (field: Field, currency: Token) => {
+    (field: Field, currency: Token, amount: string) => {
       dispatch(
         selectCurrency({
           field,
           currencyId: currency.address,
         }),
       );
+      executeBuyCoinAmount(currency, parseFloat(amount));
     },
     [dispatch],
   );
@@ -77,11 +78,11 @@ export function useInvestActionHandlers(): InvestActionHandlers {
   );
 
   const onUserInput = useCallback(
-    (field: Field, typedValue: string, address: string) => {
+    (field: Field, typedValue: string, currency: Token) => {
       const inputAmount = parseFloat(typedValue);
       dispatch(typeInput({ field, typedValue }));
       dispatch(receiveOutputAmount({ outputAmount: '' }));
-      executeBuyCoinAmount(address, inputAmount);
+      executeBuyCoinAmount(currency, inputAmount);
     },
     [dispatch],
   );
@@ -333,18 +334,27 @@ export function useBuyCoinAmount() {
   const contract: Contract | null = getCrowdsaleContract(library, account);
 
   const executeBuyCoinAmount = useCallback(
-    (address?: string, amount?: number) => {
-      if (!address || !amount) {
+    (currency?: Token, amount?: number) => {
+      if (!currency || !amount) {
         dispatch(receiveOutputAmount({ outputAmount: '' }));
         return;
       }
-      const coinAmount = (amount * Math.pow(10, 18)).toString();
+      const coinAmount = (amount * Math.pow(10, currency.decimals)).toString();
       const coinAmountBN = BigNumber.from(coinAmount);
-      return contract.buyView(address, coinAmountBN).then((response: any) => {
-        const outputAmount = BigNumber.from(response.currentTokenAmount).toString();
-        const test = (parseFloat(outputAmount) / Math.pow(10, 18)).toString();
-        dispatch(receiveOutputAmount({ outputAmount: test }));
-      });
+      const isETH = currency.address?.toUpperCase() === ETHER.address.toUpperCase();
+      if (isETH) {
+        return contract.buyWithETHView(coinAmountBN).then((response: any) => {
+          const outputAmount = BigNumber.from(response.currentTokenAmount).toString();
+          const test = (parseFloat(outputAmount) / Math.pow(10, currency.decimals)).toString();
+          dispatch(receiveOutputAmount({ outputAmount: test }));
+        });
+      } else {
+        return contract.buyView(currency.address, coinAmountBN).then((response: any) => {
+          const outputAmount = BigNumber.from(response.currentTokenAmount).toString();
+          const test = (parseFloat(outputAmount) / Math.pow(10, currency.decimals)).toString();
+          dispatch(receiveOutputAmount({ outputAmount: test }));
+        });
+      }
     },
     [dispatch],
   );
