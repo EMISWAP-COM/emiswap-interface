@@ -45,6 +45,9 @@ export function getEtherscanLink(
     case 'token': {
       return `${prefix}/token/${data}`;
     }
+    case 'block': {
+      return `${prefix}/block/${data}`;
+    }
     case 'address':
     default: {
       return `${prefix}/address/${data}`;
