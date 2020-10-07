@@ -350,7 +350,7 @@ export function useBuyCoinAmount() {
         });
       } else {
         return contract.buyView(currency.address, coinAmountBN).then((response: any) => {
-          const outputAmount = BigNumber.from(response.coinAmount).toString();
+          const outputAmount = BigNumber.from(response.currentTokenAmount).toString();
           const test = (parseFloat(outputAmount) / Math.pow(10, currency.decimals)).toString();
           dispatch(receiveOutputAmount({ outputAmount: test }));
         });

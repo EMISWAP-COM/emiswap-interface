@@ -52,6 +52,24 @@ export const CHI = new Token(
   'Chi Gastoken by 1inch',
 );
 
+export const ESW: ChainTokenList = {
+  [ChainId.MAINNET]: [
+    new Token(ChainId.MAINNET, process.env.REACT_APP_ESW_ID, 18, 'ESW', 'EmiDAO Token'),
+  ],
+  [ChainId.ROPSTEN]: [
+    new Token(ChainId.ROPSTEN, process.env.REACT_APP_ESW_ID, 18, 'ESW', 'EmiDAO Token'),
+  ],
+  [ChainId.RINKEBY]: [
+    new Token(ChainId.RINKEBY, process.env.REACT_APP_ESW_ID, 18, 'ESW', 'EmiDAO Token'),
+  ],
+  [ChainId.GÖRLI]: [
+    new Token(ChainId.GÖRLI, process.env.REACT_APP_ESW_ID, 18, 'ESW', 'EmiDAO Token'),
+  ],
+  [ChainId.KOVAN]: [
+    new Token(ChainId.KOVAN, process.env.REACT_APP_ESW_ID, 18, 'ESW', 'EmiDAO Token'),
+  ],
+};
+
 const ETH_ONLY: ChainTokenList = {
   [ChainId.MAINNET]: [ETHER],
   [ChainId.ROPSTEN]: [ETHER],

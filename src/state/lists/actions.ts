@@ -3,6 +3,8 @@ import { TokenList, Version } from '@uniswap/token-lists';
 import schema from '@uniswap/token-lists/src/tokenlist.schema.json';
 import Ajv from 'ajv';
 import uriToHttp from '../../utils/uriToHttp';
+import { DEFAULT_TOKEN_LIST_URL } from '../../constants';
+import defaultCoins from '../../constants/defaultCoins';
 
 const tokenListValidator = new Ajv({ allErrors: true }).compile(schema);
 
@@ -14,15 +16,20 @@ async function getTokenList(listUrl: string): Promise<TokenList> {
   const urls = uriToHttp(listUrl);
   for (const url of urls) {
     let response;
+    let json;
     try {
-      response = await fetch(url);
-      if (!response.ok) continue;
+      if (url === DEFAULT_TOKEN_LIST_URL) {
+        json = defaultCoins;
+      } else {
+        response = await fetch(url);
+        if (!response.ok) continue;
+        json = await response.json();
+      }
     } catch (error) {
       console.error(`failed to fetch list ${listUrl} at uri ${url}`);
       continue;
     }
 
-    const json = await response.json();
     if (!tokenListValidator(json)) {
       throw new Error(
         tokenListValidator.errors?.reduce<string>((memo, error) => {

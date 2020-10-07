@@ -6,7 +6,7 @@ import { useCoinList } from '../state/invest/hooks';
 import { isAddress } from '../utils';
 import { useActiveWeb3React } from './index';
 import { useBytes32TokenContract, useTokenContract } from './useContract';
-import defaultCoins from '../constants/defaultCoins';
+import { ESW } from '../constants';
 
 export function useAllCoins(): { [address: string]: Token } {
   const { chainId } = useActiveWeb3React();
@@ -115,18 +115,10 @@ export function useCurrency(currencyId: string | undefined): Token | null | unde
 
 export function useDefaultCoin(address?: string): Token | undefined {
   const { chainId } = useActiveWeb3React();
-  const defaultCoin = defaultCoins.find(
-    (item: any) => item.address.toUpperCase() === address?.toUpperCase(),
-  );
+  const defaultCoin = address === process.env.REACT_APP_ESW_ID ? ESW[chainId] : undefined;
   return useMemo(() => {
     if (defaultCoin) {
-      return new Token(
-        chainId,
-        address,
-        defaultCoin.decimals,
-        defaultCoin.symbol,
-        defaultCoin.name,
-      );
+      return defaultCoin[0];
     }
     return undefined;
   }, [address, chainId, defaultCoin]);
