@@ -6,7 +6,7 @@ import { Text } from 'rebass';
 import { Token } from '@uniswap/sdk';
 import { useActiveWeb3React } from '../../hooks';
 import { useAllTokens } from '../../hooks/Tokens';
-import { useAllCoinBalances, useAllTokenBalances } from '../../state/wallet/hooks'
+import { useAllCoinBalances, useAllTokenBalances } from '../../state/wallet/hooks';
 import { AppDispatch } from '../../state';
 import { clearAllTransactions } from '../../state/transactions/actions';
 import { shortenAddress, getEtherscanLink } from '../../utils';
@@ -29,7 +29,7 @@ import { ExternalLink, LinkStyledButton, TYPE } from '../../theme';
 import Tooltip from '../Tooltip';
 import useInterval from '../../hooks/useInterval';
 import QuestionHelper from '../QuestionHelper';
-import { useAllCoins } from '../../hooks/Coins'
+import { useAllCoins } from '../../hooks/Coins';
 
 const HeaderRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
@@ -84,32 +84,112 @@ const AccountGroupingRow = styled.div`
   }
 `;
 
-const AccountGroupingDividendsRow = styled(AccountGroupingRow)`
-  margin-bottom: 0.5rem;
+const AccountGroupingInfoRow = styled.div`
+  ${({ theme }) => theme.flexRowNoWrap};
+  flex-direction: row;
+  border-right: 1px solid #edeef2;
+  padding: 0.5rem 1rem;
+  justify-content: space-between;
+  flex: 1 1 auto;
 `;
 
-const AccountGroupingInfoRow = styled(AccountGroupingRow)`
-  font-size: 0.825rem;
-  color: ${({ theme }) => theme.text3};
+const AccountGroupingInfoColumn = styled.div`
+  ${({ theme }) => theme.flexRowNoWrap};
+  flex-direction: column;
+  border-right: 1px solid #edeef2;
+  padding: 0.5rem 1rem;
+  flex: 1 1 auto;
+  div {
+    ${({ theme }) => theme.flexRowNoWrap};
+    justify-content: space-between;
+    flex: 1 1 auto;
+  }
+`;
+
+const AccountGroupingInfoTitleRow = styled.div`
+  flex: 1;
+  justify-content: center;
+  font-weight: 600;
+  border-right: 1px solid #edeef2;
+  padding: 0.5rem 0.5rem 0.5rem 1rem;
 `;
 
 const AccountSectionHeader = styled(AccountGroupingRow)`
   margin-bottom: 0.5rem;
+  justify-content: center;
 `;
 
 const AccountSectionBody = styled.div`
-  display: grid;
-  grid-row-gap: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
   margin-bottom: 1.5rem;
+  flex-direction: column;
+  border: 1px solid ${({ theme }) => theme.bg3};
+  border-radius: 20px;
+  overflow: hidden;
+  font-size: 0.825rem;
+  color: ${({ theme }) => theme.text3};
 `;
 
-const AccountPrimaryButton = styled(ButtonPrimary)`
-  margin-bottom: 1rem;
+const Divider = styled.div`
+  border-bottom: 1px solid ${({ theme }) => theme.bg3};
+`;
+
+const AccountSectionBodyPart = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  flex-direction: row;
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    flex-direction: column;
+  `};
+`;
+
+const AccountSectionTable = styled.div`
+  display: flex;
+  flex: 6;
+  flex-wrap: wrap;
+  position: relative;
+  flex-direction: row;
+  > div {
+    ${({ theme }) => theme.flexRowNoWrap};
+    justify-content: space-between;
+    flex: 1;
+    flex-grow: 1;
+    padding: 0.5em 0.25em;
+    overflow: hidden;
+    flex-direction: column;
+    text-align: center;
+    background-color: ${({ theme }) => theme.bg2};
+  }
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    display: block;
+    flex-direction: column;
+    > div {
+      width: 100% !important;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 0.25em 0.5em;
+      &:first-of-type {
+        padding: 0.5em 0.5em 0.25em;
+      }
+      &:last-of-type {
+        padding: 0.25em 0.5em 0.5em;
+      }
+    }
+  `};
 `;
 
 const AccountButtonSecondary = styled(ButtonSecondary)`
-  width: auto;
-  margin-right: 0.5rem;
+  width: fit-content;
+  font-size: 0.825rem;
+  padding: 4px 6px;
+  margin-top: 1rem;
+  :hover {
+    cursor: pointer;
+    text-decoration: none;
+  }
 `;
 
 const AccountFooter = styled(AutoRow)`
@@ -247,34 +327,6 @@ const WalletAction = styled(ButtonSecondary)`
 
 const MainWalletAction = styled(WalletAction)`
   color: ${({ theme }) => theme.primary1};
-`;
-
-const BonusList = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin: 0.5rem 0 1rem;
-`;
-
-const BonusListItem = styled.li`
-  position: relative;
-  padding: 0.25rem;
-
-  &:first-child {
-    padding-top: 0;
-  }
-
-  &:last-child {
-    padding-bottom: 0;
-  }
-
-  :before {
-    content: '-';
-    position: absolute;
-  }
-
-  > div {
-    padding-left: 10px;
-  }
 `;
 
 function renderTransactions(transactions) {
@@ -484,51 +536,50 @@ export default function AccountDetails({
 
             <div>
               <AccountSectionHeader>
-                <TYPE.body>{t('totalESWBalanceWithDividends')}</TYPE.body>
-                <div>
-                  <span>125</span>
-                  <QuestionHelper text="Count all tokens" />
-                  <span>Arrow</span>
-                </div>
+                <TYPE.mediumHeader>{t('totalESWBalanceWithDividends')}</TYPE.mediumHeader>
               </AccountSectionHeader>
               <AccountSectionBody>
-                <AccountGroupingInfoRow>
-                  <span>{t('availableESWBalance')}</span>
-                  <span>15</span>
-                </AccountGroupingInfoRow>
-                <AccountGroupingInfoRow>
-                  <span>{t('frozenBonusESWBalance')}</span>
-                  <span>15</span>
-                </AccountGroupingInfoRow>
-                <AccountGroupingInfoRow>
-                  <span>{t('claimBonusESWBalance')}</span>
-                  <span>15</span>
-                </AccountGroupingInfoRow>
-              </AccountSectionBody>
-            </div>
-
-            <div>
-              <AccountSectionHeader>
-                <TYPE.body>{t('totalESWBalanceWithoutDividends')}</TYPE.body>
-                <div>
-                  <span>125</span>
-                  <QuestionHelper text="Count all tokens" />
-                  <span>Arrow</span>
-                </div>
-              </AccountSectionHeader>
-              <AccountSectionBody>
-                <AccountGroupingInfoRow>
-                  <span>{t('bonusESWSwapping')}</span>
-                  <span>15</span>
-                </AccountGroupingInfoRow>
-                <AccountGroupingInfoRow>
-                  <span>{t('bonusESWLP')}</span>
-                  <span>15</span>
-                </AccountGroupingInfoRow>
-                <AccountGroupingInfoRow>
-                  <span>{t('bonusESWReferral')}</span>
-                  <span>15</span>
-                </AccountGroupingInfoRow>
+                <AccountSectionBodyPart>
+                  <AccountGroupingInfoTitleRow>
+                    <span>Available on smart-contract</span>
+                  </AccountGroupingInfoTitleRow>
+                  <AccountSectionTable>
+                    <div>
+                      <span>Total</span>
+                      <span>180</span>
+                    </div>
+                    <div>
+                      <span>Available for collecting</span>
+                      <span>150</span>
+                    </div>
+                    <div>
+                      <span>Frozen</span>
+                      <span>30</span>
+                    </div>
+                    <div>
+                      <span>Next unfreezing amount</span>
+                      <span>10</span>
+                    </div>
+                    <div>
+                      <span>Next unfreezing date</span>
+                      <span>15/10/2020</span>
+                    </div>
+                  </AccountSectionTable>
+                </AccountSectionBodyPart>
+                <Divider />
+                <AccountSectionBodyPart>
+                  <AccountGroupingInfoColumn>
+                    <div>
+                      <span>ESW available in wallet</span>
+                      <span>100</span>
+                    </div>
+                    <AccountButtonSecondary>Collect to my wallet</AccountButtonSecondary>
+                  </AccountGroupingInfoColumn>
+                  <AccountGroupingInfoRow>
+                    <span>Total ESW</span>
+                    <span>280</span>
+                  </AccountGroupingInfoRow>
+                </AccountSectionBodyPart>
               </AccountSectionBody>
             </div>
 
