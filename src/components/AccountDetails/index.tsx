@@ -26,6 +26,7 @@ import CurrencyList from './CurrencyList';
 import { ExternalLink as LinkIcon } from 'react-feather';
 import { ExternalLink, LinkStyledButton, TYPE } from '../../theme';
 import { useAllCoins } from '../../hooks/Coins';
+import TotalEarnDividends from './TotalEarnDividends';
 import SourcesList from './SourcesList';
 
 const HeaderRow = styled.div`
@@ -536,58 +537,9 @@ export default function AccountDetails({
               </AccountGroupingRow>
             </InfoCard>
 
-            <div>
-              <AccountSectionHeader>
-                <TYPE.mediumHeader>{t('totalESWBalanceWithDividends')}</TYPE.mediumHeader>
-              </AccountSectionHeader>
-              <AccountSectionBody>
-                <AccountSectionBodyPart>
-                  <AccountGroupingInfoTitleRow>
-                    <span>Available on smart-contract</span>
-                  </AccountGroupingInfoTitleRow>
-                  <AccountSectionTable>
-                    <div>
-                      <span>Total</span>
-                      <span>180</span>
-                    </div>
-                    <div>
-                      <span>Available for collecting</span>
-                      <span>150</span>
-                    </div>
-                    <div>
-                      <span>Frozen</span>
-                      <span>30</span>
-                    </div>
-                    <div>
-                      <span>Next unfreezing amount</span>
-                      <span>10</span>
-                    </div>
-                    <div>
-                      <span>Next unfreezing date</span>
-                      <span>15/10/2020</span>
-                    </div>
-                  </AccountSectionTable>
-                </AccountSectionBodyPart>
-                <Divider />
-                <AccountSectionBodyPart>
-                  <AccountGroupingInfoColumn>
-                    <div>
-                      <span>ESW available in wallet</span>
-                      <span>100</span>
-                    </div>
-                    <AccountButtonSecondary>Collect to my wallet</AccountButtonSecondary>
-                  </AccountGroupingInfoColumn>
-                  <AccountGroupingInfoRow>
-                    <span>Total ESW</span>
-                    <span>280</span>
-                  </AccountGroupingInfoRow>
-                </AccountSectionBodyPart>
-              </AccountSectionBody>
-            </div>
+            <TotalEarnDividends />
 
-            <div>
-              <SourcesList />
-            </div>
+            <SourcesList />
 
             <Text textAlign="center">{t('dividendPool')}</Text>
             <CurrencyList
