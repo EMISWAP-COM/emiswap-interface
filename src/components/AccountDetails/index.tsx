@@ -5,8 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Text } from 'rebass';
 import { Token } from '@uniswap/sdk';
 import { useActiveWeb3React } from '../../hooks';
-import { useAllTokens } from '../../hooks/Tokens';
-import { useAllCoinBalances, useAllTokenBalances } from '../../state/wallet/hooks';
+import { useAllCoinBalances } from '../../state/wallet/hooks';
 import { AppDispatch } from '../../state';
 import { clearAllTransactions } from '../../state/transactions/actions';
 import { shortenAddress, getEtherscanLink } from '../../utils';
@@ -26,10 +25,8 @@ import { ButtonPrimary, ButtonSecondary } from '../Button';
 import CurrencyList from './CurrencyList';
 import { ExternalLink as LinkIcon } from 'react-feather';
 import { ExternalLink, LinkStyledButton, TYPE } from '../../theme';
-import Tooltip from '../Tooltip';
-import useInterval from '../../hooks/useInterval';
-import QuestionHelper from '../QuestionHelper';
 import { useAllCoins } from '../../hooks/Coins';
+import SourcesList from './SourcesList';
 
 const HeaderRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
@@ -120,16 +117,15 @@ const AccountSectionHeader = styled(AccountGroupingRow)`
 `;
 
 const AccountSectionBody = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  position: relative;
+  display: grid;
   margin-bottom: 1.5rem;
-  flex-direction: column;
   border: 1px solid ${({ theme }) => theme.bg3};
   border-radius: 20px;
-  overflow: hidden;
   font-size: 0.825rem;
   color: ${({ theme }) => theme.text3};
+  > div:first-of-type > div > div > span:first-of-type {
+    display: inline;
+  }
 `;
 
 const Divider = styled.div`
@@ -148,7 +144,7 @@ const AccountSectionBodyPart = styled.div`
 
 const AccountSectionTable = styled.div`
   display: flex;
-  flex: 6;
+  flex: 5;
   flex-wrap: wrap;
   position: relative;
   flex-direction: row;
@@ -162,6 +158,9 @@ const AccountSectionTable = styled.div`
     flex-direction: column;
     text-align: center;
     background-color: ${({ theme }) => theme.bg2};
+    > span:first-of-type {
+      display: none;
+    }
   }
   ${({ theme }) => theme.mediaWidth.upToMedium`
     display: block;
@@ -176,6 +175,9 @@ const AccountSectionTable = styled.div`
       }
       &:last-of-type {
         padding: 0.25em 0.5em 0.5em;
+      }
+      > span:first-of-type {
+        display: inline;
       }
     }
   `};
@@ -581,6 +583,10 @@ export default function AccountDetails({
                   </AccountGroupingInfoRow>
                 </AccountSectionBodyPart>
               </AccountSectionBody>
+            </div>
+
+            <div>
+              <SourcesList />
             </div>
 
             <Text textAlign="center">{t('dividendPool')}</Text>
