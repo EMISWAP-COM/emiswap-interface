@@ -26,6 +26,7 @@ import { ExternalLink, LinkStyledButton, TYPE } from '../../theme';
 import { useAllCoins } from '../../hooks/Coins';
 import TotalEarnDividends from './TotalEarnDividends';
 import SourcesList from './SourcesList';
+import TotalNotEarnDividends from './TotalNotEarnDividends';
 
 const HeaderRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
@@ -412,6 +413,7 @@ export default function AccountDetails({
 
             <TotalEarnDividends />
             <SourcesList />
+            <TotalNotEarnDividends />
           </YourAccount>
           {!!pendingTransactions.length || !!confirmedTransactions.length ? (
             <LowerSection>
