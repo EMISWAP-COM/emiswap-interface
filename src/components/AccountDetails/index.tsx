@@ -2,7 +2,6 @@ import React, { useCallback, useContext, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled, { ThemeContext } from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { Text } from 'rebass';
 import { Token } from '@uniswap/sdk';
 import { useActiveWeb3React } from '../../hooks';
 import { useAllCoinBalances } from '../../state/wallet/hooks';
@@ -21,8 +20,7 @@ import WalletConnectIcon from '../../assets/images/walletConnectIcon.svg';
 import FortmaticIcon from '../../assets/images/fortmaticIcon.png';
 import PortisIcon from '../../assets/images/portisIcon.png';
 import Identicon from '../Identicon';
-import { ButtonPrimary, ButtonSecondary } from '../Button';
-import CurrencyList from './CurrencyList';
+import { ButtonSecondary } from '../Button';
 import { ExternalLink as LinkIcon } from 'react-feather';
 import { ExternalLink, LinkStyledButton, TYPE } from '../../theme';
 import { useAllCoins } from '../../hooks/Coins';
@@ -80,131 +78,6 @@ const AccountGroupingRow = styled.div`
     ${({ theme }) => theme.flexRowNoWrap}
     align-items: center;
   }
-`;
-
-const AccountGroupingInfoRow = styled.div`
-  ${({ theme }) => theme.flexRowNoWrap};
-  flex-direction: row;
-  border-right: 1px solid #edeef2;
-  padding: 0.5rem 1rem;
-  justify-content: space-between;
-  flex: 1 1 auto;
-`;
-
-const AccountGroupingInfoColumn = styled.div`
-  ${({ theme }) => theme.flexRowNoWrap};
-  flex-direction: column;
-  border-right: 1px solid #edeef2;
-  padding: 0.5rem 1rem;
-  flex: 1 1 auto;
-  div {
-    ${({ theme }) => theme.flexRowNoWrap};
-    justify-content: space-between;
-    flex: 1 1 auto;
-  }
-`;
-
-const AccountGroupingInfoTitleRow = styled.div`
-  flex: 1;
-  justify-content: center;
-  font-weight: 600;
-  border-right: 1px solid #edeef2;
-  padding: 0.5rem 0.5rem 0.5rem 1rem;
-`;
-
-const AccountSectionHeader = styled(AccountGroupingRow)`
-  margin-bottom: 0.5rem;
-  justify-content: center;
-`;
-
-const AccountSectionBody = styled.div`
-  display: grid;
-  margin-bottom: 1.5rem;
-  border: 1px solid ${({ theme }) => theme.bg3};
-  border-radius: 20px;
-  font-size: 0.825rem;
-  color: ${({ theme }) => theme.text3};
-  > div:first-of-type > div > div > span:first-of-type {
-    display: inline;
-  }
-`;
-
-const Divider = styled.div`
-  border-bottom: 1px solid ${({ theme }) => theme.bg3};
-`;
-
-const AccountSectionBodyPart = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  position: relative;
-  flex-direction: row;
-  ${({ theme }) => theme.mediaWidth.upToMedium`
-    flex-direction: column;
-  `};
-`;
-
-const AccountSectionTable = styled.div`
-  display: flex;
-  flex: 5;
-  flex-wrap: wrap;
-  position: relative;
-  flex-direction: row;
-  > div {
-    ${({ theme }) => theme.flexRowNoWrap};
-    justify-content: space-between;
-    flex: 1;
-    flex-grow: 1;
-    padding: 0.5em 0.25em;
-    overflow: hidden;
-    flex-direction: column;
-    text-align: center;
-    background-color: ${({ theme }) => theme.bg2};
-    > span:first-of-type {
-      display: none;
-    }
-  }
-  ${({ theme }) => theme.mediaWidth.upToMedium`
-    display: block;
-    flex-direction: column;
-    > div {
-      width: 100% !important;
-      flex-direction: row;
-      justify-content: space-between;
-      padding: 0.25em 0.5em;
-      &:first-of-type {
-        padding: 0.5em 0.5em 0.25em;
-      }
-      &:last-of-type {
-        padding: 0.25em 0.5em 0.5em;
-      }
-      > span:first-of-type {
-        display: inline;
-      }
-    }
-  `};
-`;
-
-const AccountButtonSecondary = styled(ButtonSecondary)`
-  width: fit-content;
-  font-size: 0.825rem;
-  padding: 4px 6px;
-  margin-top: 1rem;
-  :hover {
-    cursor: pointer;
-    text-decoration: none;
-  }
-`;
-
-const AccountFooter = styled(AutoRow)`
-  flex-wrap: nowrap;
-`;
-
-const AccountFooterText = styled(Text)`
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
 `;
 
 const AccountSection = styled.div`
@@ -538,27 +411,7 @@ export default function AccountDetails({
             </InfoCard>
 
             <TotalEarnDividends />
-
             <SourcesList />
-
-            <Text textAlign="center">{t('dividendPool')}</Text>
-            <CurrencyList
-              currencies={filteredTokens}
-              selectedCurrencies={selectedCurrencies}
-              allBalances={allTokenBalances}
-              onCurrencySelect={handleSelectCurrencies}
-            />
-            <AccountFooter>
-              <AccountButtonSecondary>
-                <Text fontSize={16} fontWeight={450}>
-                  {t('recountSelectedDividends')}
-                </Text>
-              </AccountButtonSecondary>
-              <AccountFooterText textAlign="center" fontWeight={450} fontSize={14}>
-                {t('lastCall')}:<br />
-                25/09/2020
-              </AccountFooterText>
-            </AccountFooter>
           </YourAccount>
           {!!pendingTransactions.length || !!confirmedTransactions.length ? (
             <LowerSection>
