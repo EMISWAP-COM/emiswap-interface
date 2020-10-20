@@ -81,71 +81,10 @@ export default function Pool() {
     <>
       <AppBody>
         <SwapPoolTabs active={'pool'} />
-        <AutoColumn gap="lg" justify="center">
-          <ButtonPrimary
-            id="join-pool-button"
-            as={Link}
-            style={{ padding: '15px 16px' }}
-            to={'/add/' + ZERO_ADDRESS}
-          >
-            <Text fontWeight={450} fontSize={16}>
-              Add Liquidity
-            </Text>
-          </ButtonPrimary>
-
-          <AutoColumn gap="12px" style={{ width: '100%' }}>
-            <RowBetween padding={'0 8px'}>
-              <Text color={theme.text1} fontWeight={500}>
-                Your Liquidity
-              </Text>
-              <Question text="When you add liquidity, you are given pool tokens that represent your share. If you don’t see a pool you joined in this list, try importing a pool below." />
-            </RowBetween>
-
-            {!account ? (
-              <LightCard padding="40px">
-                <TYPE.body color={theme.text3} textAlign="center">
-                  Connect to a wallet to view your liquidity.
-                </TYPE.body>
-              </LightCard>
-            ) : v2IsLoading ? (
-              <LightCard padding="40px">
-                <TYPE.body color={theme.text3} textAlign="center">
-                  <Dots>Loading</Dots>
-                </TYPE.body>
-              </LightCard>
-            ) : allV2PairsWithLiquidity?.length > 0 ? (
-              <>
-                {allV2PairsWithLiquidity.map(v2Pair => (
-                  <FullPositionCard key={v2Pair.liquidityToken.address} pair={v2Pair} />
-                ))}
-              </>
-            ) : (
-              <LightCard padding="40px">
-                <TYPE.body color={theme.text3} textAlign="center">
-                  No liquidity found.
-                </TYPE.body>
-              </LightCard>
-            )}
-
-            <div>
-              <Text textAlign="center" fontSize={14} style={{ padding: '.5rem 0 .5rem 0' }}>
-                {"Don't see a pool you joined?"}{' '}
-                <StyledInternalLink id="import-pool-link" to={false ? '/migrate' : '/find'}>
-                  {'Import it.'}
-                </StyledInternalLink>
-              </Text>
-
-              {account ? <ReferralLink /> : ''}
-            </div>
-          </AutoColumn>
-        </AutoColumn>
+        <Text fontWeight={500} fontSize={20} color={theme.text2}>
+          Coming soon!
+        </Text>
       </AppBody>
-
-      <div style={{ display: 'flex', alignItems: 'center', marginTop: '1.5rem' }}>
-        <ButtonSecondary as={Link} style={{ width: 'initial' }} to="/migrate">
-          <ButtonText>Migrate Liquidity to Emiswap</ButtonText>
-        </ButtonSecondary>
-      </div>
     </>
   );
 }

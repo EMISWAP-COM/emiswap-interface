@@ -129,11 +129,11 @@ const AccountButtonSecondary = styled(ButtonSecondary)`
   }
 `;
 
-export default function TotalEarnDividends() {
+export default function TotalEarnDividends({ availableToCollect, frozenTokens, nextUnlockAmount, nextUnlockDate }) {
   return (
     <>
       <AccountSectionHeader>
-        <TYPE.mediumHeader>Total ESW that earn dividends</TYPE.mediumHeader>
+        <TYPE.mediumHeader>Total ESWc</TYPE.mediumHeader>
       </AccountSectionHeader>
       <AccountSectionBody>
         <AccountSectionBodyPart>
@@ -143,23 +143,23 @@ export default function TotalEarnDividends() {
           <AccountSectionTable>
             <div>
               <span>Total</span>
-              <span>180</span>
+              <span>{availableToCollect + frozenTokens}</span>
             </div>
             <div>
               <span>Available for collecting</span>
-              <span>150</span>
+              <span>{availableToCollect}</span>
             </div>
             <div>
               <span>Frozen</span>
-              <span>30</span>
+              <span>{frozenTokens}</span>
             </div>
             <div>
               <span>Next unfreezing amount</span>
-              <span>10</span>
+              <span>{nextUnlockAmount}</span>
             </div>
             <div>
               <span>Next unfreezing date</span>
-              <span>15/10/2020</span>
+              <span>{nextUnlockDate}</span>
             </div>
           </AccountSectionTable>
         </AccountSectionBodyPart>
@@ -167,13 +167,13 @@ export default function TotalEarnDividends() {
         <AccountSectionBodyPart>
           <AccountGroupingInfoColumn>
             <div>
-              <span>ESW available in wallet</span>
+              <span>ESWc available in wallet</span>
               <span>100</span>
             </div>
             <AccountButtonSecondary>Collect to my wallet</AccountButtonSecondary>
           </AccountGroupingInfoColumn>
           <AccountGroupingInfoRow>
-            <span>Total ESW</span>
+            <span>Total ESWc</span>
             <span>280</span>
           </AccountGroupingInfoRow>
         </AccountSectionBodyPart>

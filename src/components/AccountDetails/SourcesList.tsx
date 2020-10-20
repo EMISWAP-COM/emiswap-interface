@@ -91,124 +91,84 @@ const AccountSectionTable = styled.div`
   `};
 `;
 
-export default function SourcesList() {
+export default function SourcesList({crowdSaleAlreadyMinted, crowdSaleAvailableForMinting, crowdSaleReferalRewardAlreadyMinted, crowdSaleReferalRewardAvailableForMinting}) {
   return (
     <>
       <AccountSectionHeader>
-        <TYPE.mediumHeader>Sources of received ESW</TYPE.mediumHeader>
+        <TYPE.mediumHeader>ESWc sources</TYPE.mediumHeader>
       </AccountSectionHeader>
       <AccountSectionBody>
         <AccountSectionBodyPart>
           <AccountGroupingInfoTitleRow>
-            <span>Bought on crowdsale</span>
+            <span>Не помню что сюда надо вписать</span>
           </AccountGroupingInfoTitleRow>
           <AccountSectionTable>
             <div>
               <span>Total acquired (available + minted)</span>
-              <span>10000</span>
             </div>
             <div>
               <span>Already minted</span>
-              <span>10000</span>
             </div>
             <div>
               <span>Available for minting</span>
-              <span>-</span>
             </div>
           </AccountSectionTable>
         </AccountSectionBodyPart>
         <AccountSectionBodyPart>
           <AccountGroupingInfoTitleRow>
-            <span>Swapping</span>
+            <span>Crowdsale</span>
           </AccountGroupingInfoTitleRow>
           <AccountSectionTable>
             <div>
               <span>Total acquired (available + minted)</span>
-              <span>25</span>
+              <span>{crowdSaleAlreadyMinted + crowdSaleAvailableForMinting}</span>
             </div>
             <div>
               <span>Already minted</span>
-              <span>5</span>
+              <span>{crowdSaleAlreadyMinted}</span>
             </div>
             <div>
               <span>Available for minting</span>
-              <span>20</span>
+              <span>{crowdSaleAvailableForMinting}</span>
+            </div>
+          </AccountSectionTable>
+        </AccountSectionBodyPart>
+        
+        <AccountSectionBodyPart>
+          <AccountGroupingInfoTitleRow>
+            <span>Crowdsale referral reward</span>
+          </AccountGroupingInfoTitleRow>
+          <AccountSectionTable>
+            <div>
+              <span>Total acquired (available + minted)</span>
+              <span>{crowdSaleReferalRewardAlreadyMinted + crowdSaleReferalRewardAvailableForMinting}</span>
+            </div>
+            <div>
+              <span>Already minted</span>
+              <span>{crowdSaleReferalRewardAlreadyMinted}</span>
+            </div>
+            <div>
+              <span>Available for minting</span>
+              <span>{crowdSaleReferalRewardAvailableForMinting}</span>
             </div>
           </AccountSectionTable>
         </AccountSectionBodyPart>
         <AccountSectionBodyPart>
           <AccountGroupingInfoTitleRow>
-            <span>Providing liquidity</span>
+            <span>Total</span>
           </AccountGroupingInfoTitleRow>
           <AccountSectionTable>
             <div>
               <span>Total acquired (available + minted)</span>
-              <span>25</span>
+              <span>{crowdSaleAlreadyMinted + crowdSaleReferalRewardAlreadyMinted + crowdSaleAvailableForMinting + crowdSaleReferalRewardAvailableForMinting}</span>
             </div>
             <div>
               <span>Already minted</span>
-              <span>5</span>
+              <span>{crowdSaleAlreadyMinted + crowdSaleReferalRewardAlreadyMinted}</span>
             </div>
             <div>
               <span>Available for minting</span>
-              <span>20</span>
-            </div>
-          </AccountSectionTable>
-        </AccountSectionBodyPart>
-        <AccountSectionBodyPart>
-          <AccountGroupingInfoTitleRow>
-            <span>Bonus ESW for being crowdsale referral</span>
-          </AccountGroupingInfoTitleRow>
-          <AccountSectionTable>
-            <div>
-              <span>Total acquired (available + minted)</span>
-              <span>30</span>
-            </div>
-            <div>
-              <span>Already minted</span>
-              <span>10</span>
-            </div>
-            <div>
-              <span>Available for minting</span>
-              <span>20</span>
-            </div>
-          </AccountSectionTable>
-        </AccountSectionBodyPart>
-        <AccountSectionBodyPart>
-          <AccountGroupingInfoTitleRow>
-            <span>Bonus ESW for being swap referral</span>
-          </AccountGroupingInfoTitleRow>
-          <AccountSectionTable>
-            <div>
-              <span>Total acquired (available + minted)</span>
-              <span>25</span>
-            </div>
-            <div>
-              <span>Already minted</span>
-              <span>5</span>
-            </div>
-            <div>
-              <span>Available for minting</span>
-              <span>20</span>
-            </div>
-          </AccountSectionTable>
-        </AccountSectionBodyPart>
-        <AccountSectionBodyPart>
-          <AccountGroupingInfoTitleRow>
-            <span>Bonus ESW for being ambassador</span>
-          </AccountGroupingInfoTitleRow>
-          <AccountSectionTable>
-            <div>
-              <span>Total acquired (available + minted)</span>
-              <span>30</span>
-            </div>
-            <div>
-              <span>Already minted</span>
-              <span>10</span>
-            </div>
-            <div>
-              <span>Available for minting</span>
-              <span>0</span>
+              <span>{crowdSaleAvailableForMinting + crowdSaleReferalRewardAvailableForMinting}</span>
             </div>
           </AccountSectionTable>
         </AccountSectionBodyPart>

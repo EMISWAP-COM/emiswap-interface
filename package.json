@@ -1,6 +1,6 @@
 {
   "name": "@emiswap/interface",
-  "description": "Emiswap Interface",
+  "description": "EmiSwap Interface",
   "homepage": ".",
   "private": true,
   "devDependencies": {

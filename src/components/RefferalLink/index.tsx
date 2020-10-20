@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import styled, { ThemeContext } from 'styled-components';
 import { RowFixed } from '../Row';
 import { Text } from 'rebass';
-import { TYPE } from '../../theme';
+import { ExternalLink, TYPE } from '../../theme';
 import Copy from '../AccountDetails/Copy';
 import { useActiveWeb3React } from '../../hooks';
 
@@ -37,6 +37,14 @@ export default function ReferralLink() {
             <Copy toCopy={getRefferalLink(account)}>
               <span style={{ marginLeft: '4px' }}>Copy Referral Link</span>
             </Copy>
+          </RowFixed>
+          <RowFixed style={{ marginTop: '10px' }}>
+            <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
+              <ExternalLink  href="https://crowdsale.emidao.org" style={{ color: theme.text1  }}>
+              Discover EmiSwap Crowdsale Terms
+              </ExternalLink>
+            </TYPE.black>
+            {/*<QuestionHelper text="Your transaction will revert if there is a large, unfavorable price movement before it is confirmed." />*/}
           </RowFixed>
         </ReferralLinkBox>
       </Text>

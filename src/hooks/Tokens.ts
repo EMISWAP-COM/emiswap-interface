@@ -13,6 +13,7 @@ export function useAllTokens(): { [address: string]: Token } {
   const { chainId } = useActiveWeb3React();
   const userAddedTokens = useUserAddedTokens();
   const allTokens = useDefaultTokenList();
+  
 
   return useMemo(() => {
     if (!chainId) return {};

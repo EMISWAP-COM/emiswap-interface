@@ -395,12 +395,12 @@ export default function WalletModal({
                   I accept {'  '}
                   <DocLink
                     title="Terms of Use"
-                    href={process.env.PUBLIC_URL + '/docs/Mooniswap_Terms_of_Use.pdf'}
+                    href={process.env.PUBLIC_URL + '/docs/EmiSwap_Terms_of_Use.pdf'}
                   />
                   {'  '} and {'  '}
                   <DocLink
                     title="Privacy Policy"
-                    href={process.env.PUBLIC_URL + '/docs/Mooniswap_Privacy_Policy.pdf'}
+                    href={process.env.PUBLIC_URL + '/docs/EmiSwap_Privacy_Policy.pdf'}
                   />
                 </b>
               </span>
