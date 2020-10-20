@@ -100,7 +100,7 @@ export default function SourcesList({crowdSaleAlreadyMinted, crowdSaleAvailableF
       <AccountSectionBody>
         <AccountSectionBodyPart>
           <AccountGroupingInfoTitleRow>
-            <span>Не помню что сюда надо вписать</span>
+            <span>&nbsp;</span>
           </AccountGroupingInfoTitleRow>
           <AccountSectionTable>
             <div>

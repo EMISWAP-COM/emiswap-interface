@@ -138,27 +138,49 @@ export default function TotalEarnDividends({ availableToCollect, frozenTokens, n
       <AccountSectionBody>
         <AccountSectionBodyPart>
           <AccountGroupingInfoTitleRow>
-            <span>Available on smart-contract</span>
+            <span>&nbsp;</span>
           </AccountGroupingInfoTitleRow>
           <AccountSectionTable>
             <div>
-              <span>Total</span>
+              <span>Total ESWc amount</span>
+            </div>
+            <div>
+              <span>Available to collect</span>
+            </div>
+            <div>
+              <span>Frozen tokens</span>
+            </div>
+            <div>
+              <span>Next unlock amount</span>
+            </div>
+            <div>
+              <span>Date of next unlock</span>
+            </div>
+          </AccountSectionTable>
+        </AccountSectionBodyPart>
+        <AccountSectionBodyPart>
+          <AccountGroupingInfoTitleRow>
+            <span>ESWc on Smart Contract</span>
+          </AccountGroupingInfoTitleRow>
+          <AccountSectionTable>
+            <div>
+              <span>Total ESWc amount</span>
               <span>{availableToCollect + frozenTokens}</span>
             </div>
             <div>
-              <span>Available for collecting</span>
+              <span>Available to collect</span>
               <span>{availableToCollect}</span>
             </div>
             <div>
-              <span>Frozen</span>
+              <span>Frozen tokens</span>
               <span>{frozenTokens}</span>
             </div>
             <div>
-              <span>Next unfreezing amount</span>
+              <span>Next unlock amount</span>
               <span>{nextUnlockAmount}</span>
             </div>
             <div>
-              <span>Next unfreezing date</span>
+              <span>Date of next unlock</span>
               <span>{nextUnlockDate}</span>
             </div>
           </AccountSectionTable>
@@ -167,7 +189,7 @@ export default function TotalEarnDividends({ availableToCollect, frozenTokens, n
         <AccountSectionBodyPart>
           <AccountGroupingInfoColumn>
             <div>
-              <span>ESWc available in wallet</span>
+              <span>ESWc on Smark Contract</span>
               <span>100</span>
             </div>
             <AccountButtonSecondary>Collect to my wallet</AccountButtonSecondary>

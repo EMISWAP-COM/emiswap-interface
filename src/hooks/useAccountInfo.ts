@@ -2,12 +2,14 @@ import { Contract } from '@ethersproject/contracts';
 import { BigNumber } from '@ethersproject/bignumber';
 import { useEffect, useState } from 'react';
 import { useActiveWeb3React } from './index';
-import { getVestingContract } from '../utils';
+import { getCrowdsaleContract, getVestingContract } from '../utils';
 
 const bn2num = (value: BigNumber): number => {
-  return (BigNumber.from(value).div(BigNumber.from('10000000000000000')).toNumber()/100);
+  return (BigNumber.from(value).div(BigNumber.from('100000000000000')).toNumber()/10000);
 }
 export type EarningActionHandlers = {
+  totalAcquired: number;
+  totalAcquiredInDAI: number;
   availableToCollect: number;
   frozenTokens: number;
   nextUnlockAmount: number;
@@ -20,6 +22,8 @@ export type EarningActionHandlers = {
 
 export default function useAccountInfo(): EarningActionHandlers {
   const { library, account } = useActiveWeb3React();
+  const [totalAcquired, setTotalAcquired] = useState(0);
+  const [totalAcquiredInDAI, setTotalAcquiredInDAI] = useState(0);
   const [availableToCollect, setAvailableToCollect] = useState(0);
   const [frozenTokens, setFrozenTokens] = useState(0);
   const [nextUnlockAmount, setNextUnlockAmount] = useState(0);
@@ -42,9 +46,17 @@ export default function useAccountInfo(): EarningActionHandlers {
     throw new Error('Failed to get a crowdsale contract');
   }
 
+  const contractCrowdSale: Contract | null = getCrowdsaleContract(library, account);
+
+  if (!contract) {
+    throw new Error('Failed to get a crowdsale contract');
+  }
+
   useEffect(() => {
 
     if (!account) {
+      setTotalAcquired(0);
+      setTotalAcquiredInDAI(0);
       setAvailableToCollect(0);
       setFrozenTokens(0);
       setNextUnlockAmount(0);
@@ -64,22 +76,29 @@ export default function useAccountInfo(): EarningActionHandlers {
           
           setAvailableToCollect(parseFloat(unlockedBalanceAmount));
           setFrozenTokens(parseFloat(balanceAmount) - parseFloat(unlockedBalanceAmount));
-        });
-        contract.getNextUnlock().then((result: BigNumber[]) => {
-          console.log("getNextUnlock result: ", result);
-          
-          const unlockTime = BigNumber.from(result[0]).isZero() ? "" : new Date(BigNumber.from(result[0]).mul(1000).toNumber()).toDateString();
-          const lockAmount = bn2num(result[1]);
-          setNextUnlockAmount(lockAmount);
-          setNextUnlockDate(unlockTime);
+
+          contract.getNextUnlock().then((result: BigNumber[]) => {
+            console.log("getNextUnlock result: ", result);
+            
+            const unlockTime = BigNumber.from(result[0]).isZero() ? "" : new Date(BigNumber.from(result[0]).mul(1000).toNumber()).toDateString();
+            const lockAmount = bn2num(result[1]);
+            setNextUnlockAmount(lockAmount);
+            setNextUnlockDate(unlockTime);
+            contractCrowdSale.coinRate(1).then((result: BigNumber) => {
+              const rate = bn2num(result);
+              console.log("rate: ",rate);
+              setTotalAcquired(parseFloat(balanceAmount));
+              setTotalAcquiredInDAI(parseFloat(balanceAmount) * rate);
+            });
+          });
         });
       });
-      
-      
     }
-  }, [account, contract]);
+  }, [account, contract, contractCrowdSale]);
 
   return { 
+    totalAcquired,
+    totalAcquiredInDAI,
     availableToCollect, 
     frozenTokens, 
     nextUnlockAmount, 
