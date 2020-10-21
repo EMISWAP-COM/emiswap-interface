@@ -2,7 +2,7 @@ name: Release
 on:
   push:
     branches:
-      - deploy
+      - CrowdSale
 
   # manual trigger
   workflow_dispatch:
@@ -23,7 +23,7 @@ jobs:
         uses: mathieudutour/github-tag-action@v4.5
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          release_branches: deploy
+          release_branches: master
 
   create_release:
     name: Create Release
@@ -62,8 +62,8 @@ jobs:
       - name: Update DNS with new IPFS hash
         env:
           CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_TOKEN }}
-          RECORD_DOMAIN: 'emiswap.emirex.co'
-          RECORD_NAME: '_dnslink'
+          RECORD_DOMAIN: 'emidao.org'
+          RECORD_NAME: '_dnslink.emiswap'
           CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
         uses: textileio/cloudflare-update-dnslink@0fe7b7a1ffc865db3a4da9773f0f987447ad5848
         with:
@@ -78,7 +78,7 @@ jobs:
       #   env:
       #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       #    AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #    AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+      #    AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }} 
 
       - name: Create GitHub Release
         id: create_release
@@ -93,12 +93,12 @@ jobs:
             - CIDv0: `${{ steps.upload.outputs.hash }}`
             - CIDv1: `${{ steps.convert_cidv0.outputs.cidv1 }}`
 
-            The latest release is always accessible via our alias to the Cloudflare IPFS gateway at [emiswap.emirex.co](https://emiswap.emirex.co).
+            The latest release is always accessible via our alias to the Cloudflare IPFS gateway at [emiswap.emidao.org](https://emiswap.emidao.org).
 
-            You can also access the EmiSwap Interface directly from an IPFS gateway.
-            The EmiSwap interface uses [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) to store your settings.
-            **Beware** that other sites you access via the _same_ IPFS gateway can read and modify your settings on the EmiSwap interface without your permission.
-            You can avoid this issue by using a subdomain IPFS gateway, or our alias to the latest release at [emiswap.emirex.co](https://emiswap.emirex.co).
+            You can also access the Emiswap Interface directly from an IPFS gateway.
+            The Emiswap interface uses [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) to store your settings.
+            **Beware** that other sites you access via the _same_ IPFS gateway can read and modify your settings on the Emiswap interface without your permission.
+            You can avoid this issue by using a subdomain IPFS gateway, or our alias to the latest release at [emiswap.emidao.org](https://emiswap.emidao.org).
             The preferred URLs below are safe to use to access this specific release.
 
             Preferred URLs:

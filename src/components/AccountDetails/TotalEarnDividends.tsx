@@ -186,19 +186,11 @@ export default function TotalEarnDividends({ availableToCollect, frozenTokens, n
           </AccountSectionTable>
         </AccountSectionBodyPart>
         <Divider />
+        {availableToCollect>0 &&
         <AccountSectionBodyPart>
-          <AccountGroupingInfoColumn>
-            <div>
-              <span>ESWc on Smark Contract</span>
-              <span>100</span>
-            </div>
-            <AccountButtonSecondary>Collect to my wallet</AccountButtonSecondary>
-          </AccountGroupingInfoColumn>
-          <AccountGroupingInfoRow>
-            <span>Total ESWc</span>
-            <span>280</span>
-          </AccountGroupingInfoRow>
+          <AccountButtonSecondary >Collect to my wallet</AccountButtonSecondary>
         </AccountSectionBodyPart>
+        }
       </AccountSectionBody>
     </>
   );

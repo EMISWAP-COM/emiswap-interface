@@ -240,14 +240,18 @@ export default function AccountDetails({
   const allTokens = useAllCoins();
   const allTokenBalances = useAllCoinBalances();
   const { 
+    totalAcquired,
+    totalAcquiredInDAI,
     availableToCollect, 
     frozenTokens, 
     nextUnlockAmount, 
     nextUnlockDate, 
+    crowdSaleAcquired,
     crowdSaleAlreadyMinted, 
     crowdSaleAvailableForMinting, 
-    crowdSaleReferalRewardAlreadyMinted,
-    crowdSaleReferalRewardAvailableForMinting 
+    crowdSaleReferralRewardAcquired,
+    crowdSaleReferralRewardAlreadyMinted,
+    crowdSaleReferralRewardAvailableForMinting 
   } = useAccountInfo();
 
   function formatConnectorName() {
@@ -421,12 +425,15 @@ export default function AccountDetails({
                 {/* {formatConnectorName()} */}
               </AccountGroupingRow>
             </InfoCard>
-
             <SourcesList 
+              totalAcquired={totalAcquired}
+              totalAcquiredInDAI={totalAcquiredInDAI}
+              crowdSaleAcquired={crowdSaleAcquired}
               crowdSaleAlreadyMinted={crowdSaleAlreadyMinted} 
               crowdSaleAvailableForMinting={crowdSaleAvailableForMinting}
-              crowdSaleReferalRewardAlreadyMinted={crowdSaleReferalRewardAlreadyMinted}
-              crowdSaleReferalRewardAvailableForMinting={crowdSaleReferalRewardAvailableForMinting}
+              crowdSaleReferralRewardAcquired={crowdSaleReferralRewardAcquired}
+              crowdSaleReferralRewardAlreadyMinted={crowdSaleReferralRewardAlreadyMinted}
+              crowdSaleReferralRewardAvailableForMinting={crowdSaleReferralRewardAvailableForMinting}
             />
             <TotalEarnDividends availableToCollect={availableToCollect} frozenTokens={frozenTokens} nextUnlockAmount={nextUnlockAmount} nextUnlockDate={nextUnlockDate} />
           </YourAccount>

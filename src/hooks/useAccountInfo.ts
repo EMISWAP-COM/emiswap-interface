@@ -7,6 +7,11 @@ import { getCrowdsaleContract, getVestingContract } from '../utils';
 const bn2num = (value: BigNumber): number => {
   return (BigNumber.from(value).div(BigNumber.from('100000000000000')).toNumber()/10000);
 }
+
+const roundToAny = (value: number, places: number): number => {
+  return parseFloat(value.toFixed(places))
+}
+
 export type EarningActionHandlers = {
   totalAcquired: number;
   totalAcquiredInDAI: number;
@@ -14,10 +19,12 @@ export type EarningActionHandlers = {
   frozenTokens: number;
   nextUnlockAmount: number;
   nextUnlockDate: string;
+  crowdSaleAcquired: number;
   crowdSaleAlreadyMinted: number;
   crowdSaleAvailableForMinting: number;
-  crowdSaleReferalRewardAlreadyMinted: number;
-  crowdSaleReferalRewardAvailableForMinting: number;
+  crowdSaleReferralRewardAcquired: number;
+  crowdSaleReferralRewardAlreadyMinted: number;
+  crowdSaleReferralRewardAvailableForMinting: number;
 };
 
 export default function useAccountInfo(): EarningActionHandlers {
@@ -28,10 +35,12 @@ export default function useAccountInfo(): EarningActionHandlers {
   const [frozenTokens, setFrozenTokens] = useState(0);
   const [nextUnlockAmount, setNextUnlockAmount] = useState(0);
   const [nextUnlockDate, setNextUnlockDate] = useState("");
+  const [crowdSaleAcquired, setCrowdSaleAcquired] = useState(0);
   const [crowdSaleAlreadyMinted, setCrowdSaleAlreadyMinted] = useState(0);
   const [crowdSaleAvailableForMinting, setCrowdSaleAvailableForMinting] = useState(0);
-  const [crowdSaleReferalRewardAlreadyMinted, setCrowdSaleReferalRewardAlreadyMinted] = useState(0);
-  const [crowdSaleReferalRewardAvailableForMinting, setCrowdSaleReferalRewardAvailableForMinting] = useState(0);
+  const [crowdSaleReferralRewardAcquired, setCrowdSaleReferralRewardAcquired] = useState(0);
+  const [crowdSaleReferralRewardAlreadyMinted, setCrowdSaleReferralRewardAlreadyMinted] = useState(0);
+  const [crowdSaleReferralRewardAvailableForMinting, setCrowdSaleReferralRewardAvailableForMinting] = useState(0);
 
   if (!library) {
     throw new Error('Failed to get a library');
@@ -61,34 +70,58 @@ export default function useAccountInfo(): EarningActionHandlers {
       setFrozenTokens(0);
       setNextUnlockAmount(0);
       setNextUnlockDate("");
+      setCrowdSaleAcquired(0);
       setCrowdSaleAlreadyMinted(0);
       setCrowdSaleAvailableForMinting(0);
-      setCrowdSaleReferalRewardAlreadyMinted(0);
-      setCrowdSaleReferalRewardAvailableForMinting(0);
+      setCrowdSaleReferralRewardAcquired(0);
+      setCrowdSaleReferralRewardAlreadyMinted(0);
+      setCrowdSaleReferralRewardAvailableForMinting(0);
     } else {
-      contract.balanceOf(account).then((result: BigNumber) => {
-        const balanceAmount = bn2num(result).toString();
-        console.log("balanceOf: ", balanceAmount);
-        
-        contract.unlockedBalanceOf(account).then((result: BigNumber) => {
-          const unlockedBalanceAmount = bn2num(result).toString();
-          console.log("unlockedBalanceOf: ",unlockedBalanceAmount);
-          
-          setAvailableToCollect(parseFloat(unlockedBalanceAmount));
-          setFrozenTokens(parseFloat(balanceAmount) - parseFloat(unlockedBalanceAmount));
+      contract.getMyStats(1).then((result: BigNumber[]) => {
+        const crowdSaleAcquired = bn2num(result[0]);
+        const crowdSaleAlreadyMinted = bn2num(result[1]);
+        const crowdSaleAvailableForMinting = bn2num(result[2]);
+        console.log("getMyStats(1): ", result, crowdSaleAlreadyMinted, crowdSaleAvailableForMinting);
+        setCrowdSaleAcquired(crowdSaleAcquired);
+        setCrowdSaleAlreadyMinted(crowdSaleAlreadyMinted);
+        setCrowdSaleAvailableForMinting(crowdSaleAvailableForMinting);
 
-          contract.getNextUnlock().then((result: BigNumber[]) => {
-            console.log("getNextUnlock result: ", result);
+        contract.getMyStats(2).then((result: BigNumber[]) => {
+          console.log("getMyStats(2): ", result);
+          const crowdSaleReferralRewardAcquired = bn2num(result[0]);
+          const crowdSaleReferralRewardAlreadyMinted = bn2num(result[1]);
+          const crowdSaleReferralRewardAvailableForMinting = bn2num(result[2]);
+          setCrowdSaleReferralRewardAcquired(crowdSaleReferralRewardAcquired);
+          setCrowdSaleReferralRewardAlreadyMinted(crowdSaleReferralRewardAlreadyMinted);
+          setCrowdSaleReferralRewardAvailableForMinting(crowdSaleReferralRewardAvailableForMinting);
+          /* ----------- */
+          contract.balanceOf(account).then((result: BigNumber) => {
+
+            const balanceAmount = bn2num(result).toString();
+            console.log("balanceOf: ", balanceAmount);
             
-            const unlockTime = BigNumber.from(result[0]).isZero() ? "" : new Date(BigNumber.from(result[0]).mul(1000).toNumber()).toDateString();
-            const lockAmount = bn2num(result[1]);
-            setNextUnlockAmount(lockAmount);
-            setNextUnlockDate(unlockTime);
-            contractCrowdSale.coinRate(1).then((result: BigNumber) => {
-              const rate = bn2num(result);
-              console.log("rate: ",rate);
-              setTotalAcquired(parseFloat(balanceAmount));
-              setTotalAcquiredInDAI(parseFloat(balanceAmount) * rate);
+            contract.unlockedBalanceOf(account).then((result: BigNumber) => {
+              const unlockedBalanceAmount = bn2num(result).toString();
+              console.log("unlockedBalanceOf: ",unlockedBalanceAmount);
+              
+              setAvailableToCollect(parseFloat(unlockedBalanceAmount));
+              setFrozenTokens(parseFloat(balanceAmount) - parseFloat(unlockedBalanceAmount));
+    
+              contract.getNextUnlock().then((result: BigNumber[]) => {
+                console.log("getNextUnlock result: ", result);
+                
+                const unlockTime = BigNumber.from(result[0]).isZero() ? "" : new Date(BigNumber.from(result[0]).mul(1000).toNumber()).toDateString();
+                const lockAmount = bn2num(result[1]);
+                setNextUnlockAmount(lockAmount);
+                setNextUnlockDate(unlockTime);
+                
+                contractCrowdSale.coinRate(1).then((result: BigNumber) => {
+                  const rate = BigNumber.from(result).toNumber()/10000;
+                  console.log("rate: ",rate);
+                  setTotalAcquired(parseFloat(balanceAmount));
+                  setTotalAcquiredInDAI(roundToAny(parseFloat(balanceAmount) * rate, 4));
+                });
+              });
             });
           });
         });
@@ -103,9 +136,11 @@ export default function useAccountInfo(): EarningActionHandlers {
     frozenTokens, 
     nextUnlockAmount, 
     nextUnlockDate, 
+    crowdSaleAcquired,
     crowdSaleAlreadyMinted, 
     crowdSaleAvailableForMinting, 
-    crowdSaleReferalRewardAlreadyMinted,
-    crowdSaleReferalRewardAvailableForMinting
+    crowdSaleReferralRewardAcquired,
+    crowdSaleReferralRewardAlreadyMinted,
+    crowdSaleReferralRewardAvailableForMinting
   };
 }
