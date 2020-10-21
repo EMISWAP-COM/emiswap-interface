@@ -240,6 +240,14 @@
           "internalType": "uint256",
           "name": "",
           "type": "uint256"
+<<<<<<< HEAD
+=======
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+>>>>>>> CrowdSale
         }
       ],
       "stateMutability": "view",
@@ -267,6 +275,49 @@
       "constant": true
     },
     {
+<<<<<<< HEAD
+=======
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "beneficiary",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "category",
+          "type": "uint256"
+        }
+      ],
+      "name": "getStats",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+>>>>>>> CrowdSale
       "inputs": [],
       "name": "getNextUnlock",
       "outputs": [
@@ -304,6 +355,14 @@
           "internalType": "uint256",
           "name": "",
           "type": "uint256"
+<<<<<<< HEAD
+=======
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+>>>>>>> CrowdSale
         }
       ],
       "stateMutability": "view",
@@ -327,6 +386,44 @@
     {
       "inputs": [
         {
+<<<<<<< HEAD
+=======
+          "internalType": "uint256",
+          "name": "category",
+          "type": "uint256"
+        }
+      ],
+      "name": "getMyStats",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+>>>>>>> CrowdSale
           "internalType": "address",
           "name": "beneficiary",
           "type": "address"
@@ -375,6 +472,14 @@
           "internalType": "uint256",
           "name": "tokens",
           "type": "uint256"
+<<<<<<< HEAD
+=======
+        },
+        {
+          "internalType": "uint256",
+          "name": "category",
+          "type": "uint256"
+>>>>>>> CrowdSale
         }
       ],
       "name": "freeze",
@@ -404,6 +509,14 @@
           "internalType": "uint256",
           "name": "tokens",
           "type": "uint256"
+<<<<<<< HEAD
+=======
+        },
+        {
+          "internalType": "uint256",
+          "name": "category",
+          "type": "uint256"
+>>>>>>> CrowdSale
         }
       ],
       "name": "freeze",

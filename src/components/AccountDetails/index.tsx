@@ -1,32 +1,33 @@
 import React, { useCallback, useContext, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { ExternalLink as LinkIcon } from 'react-feather';
 import styled, { ThemeContext } from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { Token } from '@uniswap/sdk';
 import { useActiveWeb3React } from '../../hooks';
 import { useAllCoinBalances } from '../../state/wallet/hooks';
+import useAccountInfo from '../../hooks/useAccountInfo';
+import { useAllCoins } from '../../hooks/Coins';
 import { AppDispatch } from '../../state';
 import { clearAllTransactions } from '../../state/transactions/actions';
 import { shortenAddress, getEtherscanLink } from '../../utils';
+import Identicon from '../Identicon';
+import { ButtonSecondary } from '../Button';
 import { AutoRow } from '../Row';
 import Copy from './Copy';
 import Transaction from './Transaction';
+import TotalEarnDividends from './TotalEarnDividends';
+import SourcesList from './SourcesList';
+import TotalNotEarnDividends from './TotalNotEarnDividends';
 
 import { SUPPORTED_WALLETS } from '../../constants';
-import { ReactComponent as Close } from '../../assets/images/x.svg';
 import { injected, walletconnect, walletlink, fortmatic, portis } from '../../connectors';
+import { ReactComponent as Close } from '../../assets/images/x.svg';
 import CoinbaseWalletIcon from '../../assets/images/coinbaseWalletIcon.svg';
 import WalletConnectIcon from '../../assets/images/walletConnectIcon.svg';
 import FortmaticIcon from '../../assets/images/fortmaticIcon.png';
 import PortisIcon from '../../assets/images/portisIcon.png';
-import Identicon from '../Identicon';
-import { ButtonSecondary } from '../Button';
-import { ExternalLink as LinkIcon } from 'react-feather';
 import { ExternalLink, LinkStyledButton, TYPE } from '../../theme';
-import { useAllCoins } from '../../hooks/Coins';
-import TotalEarnDividends from './TotalEarnDividends';
-import SourcesList from './SourcesList';
-import TotalNotEarnDividends from './TotalNotEarnDividends';
 
 const HeaderRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
@@ -238,6 +239,20 @@ export default function AccountDetails({
   const { t } = useTranslation();
   const allTokens = useAllCoins();
   const allTokenBalances = useAllCoinBalances();
+  const { 
+    totalAcquired,
+    totalAcquiredInDAI,
+    availableToCollect, 
+    frozenTokens, 
+    nextUnlockAmount, 
+    nextUnlockDate, 
+    crowdSaleAcquired,
+    crowdSaleAlreadyMinted, 
+    crowdSaleAvailableForMinting, 
+    crowdSaleReferralRewardAcquired,
+    crowdSaleReferralRewardAlreadyMinted,
+    crowdSaleReferralRewardAvailableForMinting 
+  } = useAccountInfo();
 
   function formatConnectorName() {
     const { ethereum } = window;
@@ -410,10 +425,17 @@ export default function AccountDetails({
                 {/* {formatConnectorName()} */}
               </AccountGroupingRow>
             </InfoCard>
-
-            <TotalEarnDividends />
-            <SourcesList />
-            <TotalNotEarnDividends />
+            <SourcesList 
+              totalAcquired={totalAcquired}
+              totalAcquiredInDAI={totalAcquiredInDAI}
+              crowdSaleAcquired={crowdSaleAcquired}
+              crowdSaleAlreadyMinted={crowdSaleAlreadyMinted} 
+              crowdSaleAvailableForMinting={crowdSaleAvailableForMinting}
+              crowdSaleReferralRewardAcquired={crowdSaleReferralRewardAcquired}
+              crowdSaleReferralRewardAlreadyMinted={crowdSaleReferralRewardAlreadyMinted}
+              crowdSaleReferralRewardAvailableForMinting={crowdSaleReferralRewardAvailableForMinting}
+            />
+            <TotalEarnDividends availableToCollect={availableToCollect} frozenTokens={frozenTokens} nextUnlockAmount={nextUnlockAmount} nextUnlockDate={nextUnlockDate} />
           </YourAccount>
           {!!pendingTransactions.length || !!confirmedTransactions.length ? (
             <LowerSection>

@@ -96,7 +96,7 @@ export default function MigrateV1() {
 
           <TYPE.body style={{ marginBottom: 8, fontWeight: 400 }}>
             For each pool shown below, click migrate to remove your liquidity from Uniswap V2 and
-            deposit it into Emiswap.
+            deposit it into EmiSwap.
           </TYPE.body>
 
           {!account ? (

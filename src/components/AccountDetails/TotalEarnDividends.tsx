@@ -129,54 +129,68 @@ const AccountButtonSecondary = styled(ButtonSecondary)`
   }
 `;
 
-export default function TotalEarnDividends() {
+export default function TotalEarnDividends({ availableToCollect, frozenTokens, nextUnlockAmount, nextUnlockDate }) {
   return (
     <>
       <AccountSectionHeader>
-        <TYPE.mediumHeader>Total ESW that earn dividends</TYPE.mediumHeader>
+        <TYPE.mediumHeader>Total ESWc</TYPE.mediumHeader>
       </AccountSectionHeader>
       <AccountSectionBody>
         <AccountSectionBodyPart>
           <AccountGroupingInfoTitleRow>
-            <span>Available on smart-contract</span>
+            <span>&nbsp;</span>
           </AccountGroupingInfoTitleRow>
           <AccountSectionTable>
             <div>
-              <span>Total</span>
-              <span>180</span>
+              <span>Total ESWc amount</span>
             </div>
             <div>
-              <span>Available for collecting</span>
-              <span>150</span>
+              <span>Available to collect</span>
             </div>
             <div>
-              <span>Frozen</span>
-              <span>30</span>
+              <span>Frozen tokens</span>
             </div>
             <div>
-              <span>Next unfreezing amount</span>
-              <span>10</span>
+              <span>Next unlock amount</span>
             </div>
             <div>
-              <span>Next unfreezing date</span>
-              <span>15/10/2020</span>
+              <span>Date of next unlock</span>
+            </div>
+          </AccountSectionTable>
+        </AccountSectionBodyPart>
+        <AccountSectionBodyPart>
+          <AccountGroupingInfoTitleRow>
+            <span>ESWc on Smart Contract</span>
+          </AccountGroupingInfoTitleRow>
+          <AccountSectionTable>
+            <div>
+              <span>Total ESWc amount</span>
+              <span>{availableToCollect + frozenTokens}</span>
+            </div>
+            <div>
+              <span>Available to collect</span>
+              <span>{availableToCollect}</span>
+            </div>
+            <div>
+              <span>Frozen tokens</span>
+              <span>{frozenTokens}</span>
+            </div>
+            <div>
+              <span>Next unlock amount</span>
+              <span>{nextUnlockAmount}</span>
+            </div>
+            <div>
+              <span>Date of next unlock</span>
+              <span>{nextUnlockDate}</span>
             </div>
           </AccountSectionTable>
         </AccountSectionBodyPart>
         <Divider />
+        {availableToCollect>0 &&
         <AccountSectionBodyPart>
-          <AccountGroupingInfoColumn>
-            <div>
-              <span>ESW available in wallet</span>
-              <span>100</span>
-            </div>
-            <AccountButtonSecondary>Collect to my wallet</AccountButtonSecondary>
-          </AccountGroupingInfoColumn>
-          <AccountGroupingInfoRow>
-            <span>Total ESW</span>
-            <span>280</span>
-          </AccountGroupingInfoRow>
+          <AccountButtonSecondary >Collect to my wallet</AccountButtonSecondary>
         </AccountSectionBodyPart>
+        }
       </AccountSectionBody>
     </>
   );

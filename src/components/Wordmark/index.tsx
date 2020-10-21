@@ -69,7 +69,7 @@ const WordmarkStyled = styled.div`
 export default function Wordmark() {
   return (
     <WordmarkStyled>
-      <h1 className="mainWordmark">Emiswap</h1>
+      <h1 className="mainWordmark">EmiSwap</h1>
       <h4 className="mainHeader">Cutting-edge AMM decentralized exchange</h4>
     </WordmarkStyled>
   );

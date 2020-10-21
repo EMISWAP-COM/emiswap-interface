@@ -249,7 +249,7 @@ function V1PairMigration({
   return (
     <AutoColumn gap="20px">
       <TYPE.body my={9} style={{ fontWeight: 400 }}>
-        This tool will safely migrate your Uniswap V2 liquidity to Emiswap with minimal price risk .
+        This tool will safely migrate your Uniswap V2 liquidity to EmiSwap with minimal price risk .
       </TYPE.body>
 
       {!isFirstLiquidityProvider && largePriceDifference ? (
@@ -269,7 +269,7 @@ function V1PairMigration({
             </RowBetween>
 
             <RowBetween>
-              <TYPE.body>Emiswap Price:</TYPE.body>
+              <TYPE.body>EmiSwap Price:</TYPE.body>
               <TYPE.black>
                 {mooniswapSpotPrice?.toSignificant(6)} {token0.symbol.replace('WETH', 'ETH')}/
                 {token1.symbol.replace('WETH', 'ETH')}
@@ -287,7 +287,7 @@ function V1PairMigration({
               <TYPE.body color="inherit">
                 Price Difference:{' '}
                 <QuestionHelper
-                  text={`It's best to deposit liquidity into Emiswap at a price you believe is correct. If the Emiswap price seems
+                  text={`It's best to deposit liquidity into EmiSwap at a price you believe is correct. If the EmiSwap price seems
                 incorrect, you can either make a swap to move the price or wait for someone else to do so.`}
                 />
               </TYPE.body>
@@ -300,7 +300,7 @@ function V1PairMigration({
       {isFirstLiquidityProvider && (
         <PinkCard>
           <TYPE.body style={{ marginBottom: 8, fontWeight: 400 }}>
-            Emiswap POOL for {mooniswapTokens[0].symbol}/{mooniswapTokens[1].symbol} hasn't created
+            EmiSwap POOL for {mooniswapTokens[0].symbol}/{mooniswapTokens[1].symbol} hasn't created
             yet. First you need to create a pool
           </TYPE.body>
 

@@ -91,125 +91,171 @@ const AccountSectionTable = styled.div`
   `};
 `;
 
-export default function SourcesList() {
+
+const AccountTotalSectionBody = styled.div`
+  display: grid;
+  margin-bottom: 1.5rem;
+  font-size: 1 rem;
+  color: ${({ theme }) => theme.text3};
+  > div:first-of-type > div > div > span:first-of-type {
+    display: inline;
+  }
+`;
+const AccountTotalSectionTable = styled.div`
+  display: flex;
+  flex: 5;
+  flex-wrap: wrap;
+  position: relative;
+  flex-direction: row;
+  > div {
+    ${({ theme }) => theme.flexRowNoWrap};
+    justify-content: space-between;
+    flex: 1;
+    flex-grow: 1;
+    padding: 0.5em 0.25em;
+    overflow: hidden;
+    flex-direction: column;
+    text-align: center;
+    
+    > span:first-of-type {
+      display: none;
+    }
+  }
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    display: block;
+    flex-direction: column;
+    > div {
+      width: 100% !important;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 0.25em 0.5em;
+      &:first-of-type {
+        padding: 0.5em 0.5em 0.25em;
+      }
+      &:last-of-type {
+        padding: 0.25em 0.5em 0.5em;
+      }
+      > span:first-of-type {
+        display: inline;
+      }
+    }
+  `};
+`;
+
+export default function SourcesList({
+  totalAcquired, 
+  totalAcquiredInDAI, 
+  crowdSaleAcquired,
+  crowdSaleAlreadyMinted, 
+  crowdSaleAvailableForMinting, 
+  crowdSaleReferralRewardAcquired,
+  crowdSaleReferralRewardAlreadyMinted, 
+  crowdSaleReferralRewardAvailableForMinting
+}) {
   return (
     <>
+      <AccountTotalSectionBody>
+        <AccountSectionBodyPart>
+          <AccountGroupingInfoTitleRow>
+            <AccountTotalSectionTable>
+              <div>
+                <span>Total ESWc aquired</span>
+                <span>Total ESWc aquired<br />{totalAcquired}</span>
+              </div>
+              <div>
+                <span>Value in DAI</span>
+                <span>Value in DAI<br />{totalAcquiredInDAI}</span>
+              </div>
+            </AccountTotalSectionTable>
+          </AccountGroupingInfoTitleRow>
+          {/* <AccountSectionTable> */}
+            {/* <div>
+              <span>Total ESWc aquired</span>
+              <span>{totalAcquired}</span>
+            </div>
+            <div>
+              <span>Value in DAI</span>
+              <span>{totalAcquiredInDAI}</span>
+            </div> */}
+          {/* </AccountSectionTable> */}
+        </AccountSectionBodyPart>
+      </AccountTotalSectionBody>
       <AccountSectionHeader>
-        <TYPE.mediumHeader>Sources of received ESW</TYPE.mediumHeader>
+        <TYPE.mediumHeader>ESWc sources</TYPE.mediumHeader>
       </AccountSectionHeader>
       <AccountSectionBody>
         <AccountSectionBodyPart>
           <AccountGroupingInfoTitleRow>
-            <span>Bought on crowdsale</span>
+            <span>ESWc source</span>
           </AccountGroupingInfoTitleRow>
           <AccountSectionTable>
             <div>
-              <span>Total acquired (available + minted)</span>
-              <span>10000</span>
+              <span>ESWc acquired</span>
             </div>
             <div>
-              <span>Already minted</span>
-              <span>10000</span>
+              <span>Minted</span>
             </div>
-            <div>
+            {/* <div>
               <span>Available for minting</span>
-              <span>-</span>
-            </div>
+            </div> */}
           </AccountSectionTable>
         </AccountSectionBodyPart>
         <AccountSectionBodyPart>
           <AccountGroupingInfoTitleRow>
-            <span>Swapping</span>
+            <span>Crowdsale</span>
           </AccountGroupingInfoTitleRow>
           <AccountSectionTable>
             <div>
-              <span>Total acquired (available + minted)</span>
-              <span>25</span>
+              <span>ESWc acquired</span>
+              <span>{crowdSaleAcquired}</span>
             </div>
             <div>
-              <span>Already minted</span>
-              <span>5</span>
+              <span>Minted</span>
+              <span>{crowdSaleAlreadyMinted}</span>
             </div>
-            <div>
+            {/* <div>
               <span>Available for minting</span>
-              <span>20</span>
+              <span>{crowdSaleAvailableForMinting}</span>
+            </div> */}
+          </AccountSectionTable>
+        </AccountSectionBodyPart>
+        
+        <AccountSectionBodyPart>
+          <AccountGroupingInfoTitleRow>
+            <span>Crowdsale referral reward</span>
+          </AccountGroupingInfoTitleRow>
+          <AccountSectionTable>
+            <div>
+              <span>ESWc acquired</span>
+              <span>{crowdSaleReferralRewardAcquired}</span>
             </div>
+            <div>
+              <span>Minted</span>
+              <span>{crowdSaleReferralRewardAlreadyMinted}</span>
+            </div>
+            {/* <div>
+              <span>Available for minting</span>
+              <span>{crowdSaleReferralRewardAvailableForMinting}</span>
+            </div> */}
           </AccountSectionTable>
         </AccountSectionBodyPart>
         <AccountSectionBodyPart>
           <AccountGroupingInfoTitleRow>
-            <span>Providing liquidity</span>
+            <span>Total</span>
           </AccountGroupingInfoTitleRow>
           <AccountSectionTable>
             <div>
-              <span>Total acquired (available + minted)</span>
-              <span>25</span>
+              <span>ESWc acquired</span>
+              <span>{crowdSaleAcquired + crowdSaleReferralRewardAcquired}</span>
             </div>
             <div>
-              <span>Already minted</span>
-              <span>5</span>
+              <span>Minted</span>
+              <span>{crowdSaleAlreadyMinted + crowdSaleReferralRewardAlreadyMinted}</span>
             </div>
-            <div>
+            {/* <div>
               <span>Available for minting</span>
-              <span>20</span>
-            </div>
-          </AccountSectionTable>
-        </AccountSectionBodyPart>
-        <AccountSectionBodyPart>
-          <AccountGroupingInfoTitleRow>
-            <span>Bonus ESW for being crowdsale referral</span>
-          </AccountGroupingInfoTitleRow>
-          <AccountSectionTable>
-            <div>
-              <span>Total acquired (available + minted)</span>
-              <span>30</span>
-            </div>
-            <div>
-              <span>Already minted</span>
-              <span>10</span>
-            </div>
-            <div>
-              <span>Available for minting</span>
-              <span>20</span>
-            </div>
-          </AccountSectionTable>
-        </AccountSectionBodyPart>
-        <AccountSectionBodyPart>
-          <AccountGroupingInfoTitleRow>
-            <span>Bonus ESW for being swap referral</span>
-          </AccountGroupingInfoTitleRow>
-          <AccountSectionTable>
-            <div>
-              <span>Total acquired (available + minted)</span>
-              <span>25</span>
-            </div>
-            <div>
-              <span>Already minted</span>
-              <span>5</span>
-            </div>
-            <div>
-              <span>Available for minting</span>
-              <span>20</span>
-            </div>
-          </AccountSectionTable>
-        </AccountSectionBodyPart>
-        <AccountSectionBodyPart>
-          <AccountGroupingInfoTitleRow>
-            <span>Bonus ESW for being ambassador</span>
-          </AccountGroupingInfoTitleRow>
-          <AccountSectionTable>
-            <div>
-              <span>Total acquired (available + minted)</span>
-              <span>30</span>
-            </div>
-            <div>
-              <span>Already minted</span>
-              <span>10</span>
-            </div>
-            <div>
-              <span>Available for minting</span>
-              <span>0</span>
-            </div>
+              <span>{crowdSaleAvailableForMinting + crowdSaleReferralRewardAvailableForMinting}</span>
+            </div> */}
           </AccountSectionTable>
         </AccountSectionBodyPart>
       </AccountSectionBody>
