@@ -37,10 +37,9 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '12'
-          check-latest: true
       
       - name: Upgrade yarn
-        run: yarn self-update && yarn -v 
+        run: npm update --global yarn && yarn -v 
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
