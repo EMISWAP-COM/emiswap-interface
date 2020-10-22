@@ -40,7 +40,7 @@ jobs:
           check-latest: true
       
       - name: Upgrade yarn
-        run: npm upgrade --global yarn 
+        run: npm upgrade yarn 
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
