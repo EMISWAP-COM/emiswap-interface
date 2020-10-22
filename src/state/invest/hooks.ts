@@ -59,7 +59,7 @@ export function useInvestActionHandlers(): InvestActionHandlers {
       );
       executeBuyCoinAmount(currency, parseFloat(amount));
     },
-    [dispatch],
+    [dispatch, executeBuyCoinAmount],
   );
 
   const onOutputValue = useCallback(
@@ -84,7 +84,7 @@ export function useInvestActionHandlers(): InvestActionHandlers {
       dispatch(receiveOutputAmount({ outputAmount: '' }));
       executeBuyCoinAmount(currency, inputAmount);
     },
-    [dispatch],
+    [dispatch, executeBuyCoinAmount],
   );
 
   return {

@@ -1,11 +1,10 @@
 import React, { useRef, useEffect } from 'react';
 // import { Info, BookOpen, Code, PieChart, MessageCircle } from 'react-feather'
-import { BookOpen, Code, Info, MessageCircle, PieChart, DollarSign } from 'react-feather';
+import { BookOpen, Code, Info, MessageCircle } from 'react-feather';
 import styled from 'styled-components';
 import { ReactComponent as MenuIcon } from '../../assets/images/menu.svg';
 import useToggle from '../../hooks/useToggle';
 import { ExternalLink } from '../../theme';
-import { Link as HistoryLink } from 'react-router-dom';
 
 const StyledMenuIcon = styled(MenuIcon)`
   path {
@@ -63,20 +62,6 @@ const MenuFlyout = styled.span`
   z-index: 100;
 `;
 
-const MenuItemHistory = styled(HistoryLink)`
-  flex: 1;
-  padding: 0.5rem 0.5rem;
-  color: ${({ theme }) => theme.text2};
-  text-decoration: none;
-  :hover {
-    color: ${({ theme }) => theme.text1};
-    cursor: pointer;
-    text-decoration: none;
-  }
-  > svg {
-    margin-right: 8px;
-  }
-`;
 
 const MenuItem = styled(ExternalLink)`
   flex: 1;

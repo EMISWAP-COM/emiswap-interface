@@ -67,7 +67,10 @@ const Invest = () => {
     (value: string) => {
       onUserInput(Field.INPUT, value, currencies[Field.INPUT]);
     },
-    [Field.INPUT, onUserInput, currencies[Field.INPUT]],
+    [
+      onUserInput, 
+      currencies, 
+    ],
   );
 
   // modal and loading
