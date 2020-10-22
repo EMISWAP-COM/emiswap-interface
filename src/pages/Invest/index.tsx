@@ -292,7 +292,7 @@ const Invest = () => {
                   error={!!error}
                 >
                   <Text fontSize={16} fontWeight={450}>
-                    {error ? error : notEnoughBalance ? `Not enough balance` : `Invest@`}
+                    {error ? error : notEnoughBalance ? `Not enough balance` : `Invest`}
                   </Text>
                 </ButtonError>
               )}
