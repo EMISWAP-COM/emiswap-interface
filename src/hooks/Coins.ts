@@ -121,5 +121,5 @@ export function useDefaultCoin(address?: string): Token | undefined {
       return defaultCoin[0];
     }
     return undefined;
-  }, [address, chainId, defaultCoin]);
+  }, [defaultCoin]);
 }

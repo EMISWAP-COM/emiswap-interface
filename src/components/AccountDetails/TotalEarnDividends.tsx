@@ -16,28 +16,6 @@ const AccountGroupingRow = styled.div`
   }
 `;
 
-const AccountGroupingInfoRow = styled.div`
-  ${({ theme }) => theme.flexRowNoWrap};
-  flex-direction: row;
-  border-right: 1px solid #edeef2;
-  padding: 0.5rem 1rem;
-  justify-content: space-between;
-  flex: 1 1 auto;
-`;
-
-const AccountGroupingInfoColumn = styled.div`
-  ${({ theme }) => theme.flexRowNoWrap};
-  flex-direction: column;
-  border-right: 1px solid #edeef2;
-  padding: 0.5rem 1rem;
-  flex: 1 1 auto;
-  div {
-    ${({ theme }) => theme.flexRowNoWrap};
-    justify-content: space-between;
-    flex: 1 1 auto;
-  }
-`;
-
 const AccountGroupingInfoTitleRow = styled.div`
   flex: 1;
   justify-content: center;

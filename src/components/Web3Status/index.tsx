@@ -18,16 +18,9 @@ import CoinbaseWalletIcon from '../../assets/images/coinbaseWalletIcon.svg';
 import { RowBetween } from '../Row';
 import { shortenAddress } from '../../utils';
 import { useAllTransactions } from '../../state/transactions/hooks';
-import { CHI, NetworkContextName } from '../../constants';
+import { NetworkContextName } from '../../constants';
 import { injected, walletconnect, walletlink, fortmatic, portis } from '../../connectors';
 import Loader from '../Loader';
-import ChiIcon from '../../assets/images/chi.png';
-import { MouseoverTooltip } from '../Tooltip';
-import { MIN_CHI_BALANCE, useHasChi } from '../../hooks/useChi';
-import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback';
-import { TokenAmount } from '@uniswap/sdk';
-import { ONE_SPLIT_ADDRESSES } from '../../constants/one-split';
-import JSBI from 'jsbi';
 
 const IconWrapper = styled.div<{ size?: number }>`
   ${({ theme }) => theme.flexColumnNoWrap};

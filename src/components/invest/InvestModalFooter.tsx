@@ -1,16 +1,12 @@
-import { TokenAmount, Percent, Trade, Token } from '@uniswap/sdk';
+import { TokenAmount, Token } from '@uniswap/sdk';
 import React, { useContext } from 'react';
 import { Repeat } from 'react-feather';
 import { Text } from 'rebass';
 import { ThemeContext } from 'styled-components';
 import { Field } from '../../state/invest/actions';
-import { TYPE } from '../../theme';
-import { formatExecutionPrice } from '../../utils/prices';
 import { ButtonError } from '../Button';
 import { AutoColumn } from '../Column';
-import QuestionHelper from '../QuestionHelper';
-import { AutoRow, RowBetween, RowFixed } from '../Row';
-import FormattedPriceImpact from './FormattedPriceImpact';
+import { AutoRow, RowBetween } from '../Row';
 import { StyledBalanceMaxMini } from './styleds';
 
 export default function InvestModalFooter({

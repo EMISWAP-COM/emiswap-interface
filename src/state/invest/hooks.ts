@@ -356,7 +356,7 @@ export function useBuyCoinAmount() {
         });
       }
     },
-    [dispatch],
+    [dispatch, contract],
   );
   return { executeBuyCoinAmount };
 }
