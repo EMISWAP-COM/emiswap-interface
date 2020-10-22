@@ -38,6 +38,9 @@ jobs:
         with:
           node-version: '12'
           check-latest: true
+      
+      - name: Upgrade yarn
+        run: npm upgrade --global yarn 
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
