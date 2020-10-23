@@ -4,7 +4,11 @@ import { Trade, TokenAmount, ETHER, ChainId } from '@uniswap/sdk';
 import { useCallback, useMemo } from 'react';
 import { useTokenAllowance } from '../data/Allowances';
 import { Field } from '../state/swap/actions';
-import { useTransactionAdder, useHasPendingApproval } from '../state/transactions/hooks';
+import {
+  useTransactionAdder,
+  useHasPendingApproval,
+  useAllTransactions,
+} from '../state/transactions/hooks';
 import { computeSlippageAdjustedAmounts } from '../utils/prices';
 import { calculateGasMargin, isUseOneSplitContract } from '../utils';
 import { useTokenContract } from './useContract';
@@ -26,6 +30,7 @@ export function useApproveCallback(
 ): [ApprovalState, () => Promise<void>] {
   const { account } = useActiveWeb3React();
   const token = amountToApprove instanceof TokenAmount ? amountToApprove.token : undefined;
+  const allTransactions = useAllTransactions();
   const currentAllowance = useTokenAllowance(
     token?.isEther ? undefined : token,
     account ?? undefined,
@@ -47,7 +52,7 @@ export function useApproveCallback(
         ? ApprovalState.PENDING
         : ApprovalState.NOT_APPROVED
       : ApprovalState.APPROVED;
-  }, [amountToApprove, currentAllowance, pendingApproval, spender]);
+  }, [amountToApprove, currentAllowance, pendingApproval, spender, allTransactions]);
 
   const tokenContract = useTokenContract(token?.isEther ? undefined : token?.address);
   const addTransaction = useTransactionAdder();
