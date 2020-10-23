@@ -51,7 +51,7 @@ export function useApproveCallback(
         ? ApprovalState.PENDING
         : ApprovalState.NOT_APPROVED
       : ApprovalState.APPROVED;
-  }, [amountToApprove, currentAllowance, pendingApproval, spender]);
+  }, [amountToApprove, currentAllowance, pendingApproval, spender, transactions]);
 
   const tokenContract = useTokenContract(token?.isEther ? undefined : token?.address);
   const addTransaction = useTransactionAdder();
