@@ -123,7 +123,7 @@ export default function Menu() {
             <MessageCircle size={14} />
             Discord
           </MenuItem>
-          <MenuItem id="link" href={process.env.PUBLIC_URL + '/docs/MooniswapWhitePaper-v1.0.pdf'}>
+          <MenuItem id="link" href={process.env.PUBLIC_URL + '/docs/EmiSwap_WP_EN_v2.0.pdf'}>
             <BookOpen size={14} />
             Whitepaper
           </MenuItem>
