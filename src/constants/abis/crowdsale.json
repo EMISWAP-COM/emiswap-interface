@@ -3,7 +3,7 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "ESWtoken",
+          "name": "eswToken",
           "type": "address"
         },
         {
@@ -22,13 +22,8 @@
           "type": "address"
         },
         {
-          "internalType": "address",
+          "internalType": "address payable",
           "name": "_foundationWallet",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "_securityWallet",
           "type": "address"
         },
         {
@@ -57,9 +52,9 @@
         },
         {
           "indexed": false,
-          "internalType": "uint32",
+          "internalType": "uint256",
           "name": "coinId",
-          "type": "uint32"
+          "type": "uint256"
         },
         {
           "indexed": false,
@@ -88,9 +83,9 @@
         },
         {
           "indexed": false,
-          "internalType": "uint32",
+          "internalType": "uint256",
           "name": "coinId",
-          "type": "uint32"
+          "type": "uint256"
         },
         {
           "indexed": false,
@@ -113,9 +108,9 @@
       "name": "coinIndex",
       "outputs": [
         {
-          "internalType": "uint16",
+          "internalType": "uint256",
           "name": "",
-          "type": "uint16"
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -127,7 +122,7 @@
       "name": "foundationWallet",
       "outputs": [
         {
-          "internalType": "address",
+          "internalType": "address payable",
           "name": "",
           "type": "address"
         }
@@ -139,20 +134,6 @@
     {
       "inputs": [],
       "name": "referralStore",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function",
-      "constant": true
-    },
-    {
-      "inputs": [],
-      "name": "securityWallet",
       "outputs": [
         {
           "internalType": "address",
@@ -188,9 +169,9 @@
       "name": "coinCounter",
       "outputs": [
         {
-          "internalType": "uint16",
+          "internalType": "uint256",
           "name": "",
-          "type": "uint16"
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -200,9 +181,9 @@
     {
       "inputs": [
         {
-          "internalType": "uint16",
+          "internalType": "uint256",
           "name": "index",
-          "type": "uint16"
+          "type": "uint256"
         }
       ],
       "name": "coin",
@@ -218,9 +199,9 @@
           "type": "string"
         },
         {
-          "internalType": "uint8",
+          "internalType": "uint256",
           "name": "decimals",
-          "type": "uint8"
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -238,9 +219,9 @@
       "name": "coinRatebyAddress",
       "outputs": [
         {
-          "internalType": "uint32",
+          "internalType": "uint256",
           "name": "rate",
-          "type": "uint32"
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -250,17 +231,17 @@
     {
       "inputs": [
         {
-          "internalType": "uint16",
+          "internalType": "uint256",
           "name": "index",
-          "type": "uint16"
+          "type": "uint256"
         }
       ],
       "name": "coinRate",
       "outputs": [
         {
-          "internalType": "uint32",
+          "internalType": "uint256",
           "name": "rate",
-          "type": "uint32"
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -270,37 +251,17 @@
     {
       "inputs": [
         {
-          "internalType": "uint16",
+          "internalType": "uint256",
           "name": "index",
-          "type": "uint16"
-        }
-      ],
-      "name": "coinGetRate",
-      "outputs": [
-        {
-          "internalType": "uint32",
-          "name": "",
-          "type": "uint32"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function",
-      "constant": true
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint16",
-          "name": "index",
-          "type": "uint16"
+          "type": "uint256"
         }
       ],
       "name": "coinGetStatus",
       "outputs": [
         {
-          "internalType": "uint8",
+          "internalType": "uint256",
           "name": "",
-          "type": "uint8"
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -310,9 +271,9 @@
     {
       "inputs": [
         {
-          "internalType": "uint16",
+          "internalType": "uint256",
           "name": "index",
-          "type": "uint16"
+          "type": "uint256"
         }
       ],
       "name": "coinData",
@@ -323,9 +284,9 @@
           "type": "address"
         },
         {
-          "internalType": "uint8",
+          "internalType": "uint256",
           "name": "status",
-          "type": "uint8"
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -335,9 +296,9 @@
     {
       "inputs": [
         {
-          "internalType": "uint16",
+          "internalType": "uint256",
           "name": "coinId",
-          "type": "uint16"
+          "type": "uint256"
         },
         {
           "internalType": "uint256",
@@ -365,14 +326,14 @@
           "type": "address"
         },
         {
-          "internalType": "uint32",
+          "internalType": "uint256",
           "name": "rate",
-          "type": "uint32"
+          "type": "uint256"
         },
         {
-          "internalType": "uint8",
+          "internalType": "uint256",
           "name": "status",
-          "type": "uint8"
+          "type": "uint256"
         }
       ],
       "name": "fetchCoin",
@@ -389,14 +350,14 @@
     {
       "inputs": [
         {
-          "internalType": "uint16",
+          "internalType": "uint256",
           "name": "coinId",
-          "type": "uint16"
+          "type": "uint256"
         },
         {
-          "internalType": "uint8",
+          "internalType": "uint256",
           "name": "status",
-          "type": "uint8"
+          "type": "uint256"
         }
       ],
       "name": "setStatusByID",
@@ -413,14 +374,14 @@
     {
       "inputs": [
         {
-          "internalType": "uint16",
+          "internalType": "uint256",
           "name": "coinId",
-          "type": "uint16"
+          "type": "uint256"
         },
         {
-          "internalType": "uint32",
+          "internalType": "uint256",
           "name": "rate",
-          "type": "uint32"
+          "type": "uint256"
         }
       ],
       "name": "setRateByID",
@@ -442,9 +403,9 @@
           "type": "address"
         },
         {
-          "internalType": "uint32",
+          "internalType": "uint256",
           "name": "rate",
-          "type": "uint32"
+          "type": "uint256"
         }
       ],
       "name": "setRateByAddress",
@@ -479,9 +440,9 @@
           "type": "uint256"
         },
         {
-          "internalType": "uint16",
+          "internalType": "uint256",
           "name": "coinId",
-          "type": "uint16"
+          "type": "uint256"
         },
         {
           "internalType": "uint256",
