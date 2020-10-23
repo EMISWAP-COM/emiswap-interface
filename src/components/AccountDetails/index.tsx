@@ -239,19 +239,19 @@ export default function AccountDetails({
   const { t } = useTranslation();
   const allTokens = useAllCoins();
   const allTokenBalances = useAllCoinBalances();
-  const { 
+  const {
     totalAcquired,
     totalAcquiredInDAI,
-    availableToCollect, 
-    frozenTokens, 
-    nextUnlockAmount, 
-    nextUnlockDate, 
+    availableToCollect,
+    frozenTokens,
+    nextUnlockAmount,
+    nextUnlockDate,
     crowdSaleAcquired,
-    crowdSaleAlreadyMinted, 
-    crowdSaleAvailableForMinting, 
+    crowdSaleAlreadyMinted,
+    crowdSaleAvailableForMinting,
     crowdSaleReferralRewardAcquired,
     crowdSaleReferralRewardAlreadyMinted,
-    crowdSaleReferralRewardAvailableForMinting 
+    crowdSaleReferralRewardAvailableForMinting
   } = useAccountInfo();
 
   function formatConnectorName() {
@@ -425,11 +425,11 @@ export default function AccountDetails({
                 {/* {formatConnectorName()} */}
               </AccountGroupingRow>
             </InfoCard>
-            <SourcesList 
+            <SourcesList
               totalAcquired={totalAcquired}
               totalAcquiredInDAI={totalAcquiredInDAI}
               crowdSaleAcquired={crowdSaleAcquired}
-              crowdSaleAlreadyMinted={crowdSaleAlreadyMinted} 
+              crowdSaleAlreadyMinted={crowdSaleAlreadyMinted}
               crowdSaleAvailableForMinting={crowdSaleAvailableForMinting}
               crowdSaleReferralRewardAcquired={crowdSaleReferralRewardAcquired}
               crowdSaleReferralRewardAlreadyMinted={crowdSaleReferralRewardAlreadyMinted}
