@@ -1,4 +1,3 @@
-import { useSelector } from 'react-redux';
 import { useCallback, useMemo } from 'react';
 import { MaxUint256 } from '@ethersproject/constants';
 import { TransactionResponse } from '@ethersproject/providers';
@@ -6,13 +5,16 @@ import { Trade, TokenAmount, ETHER, ChainId } from '@uniswap/sdk';
 import { BigNumber } from '@ethersproject/bignumber';
 import { useTokenAllowance } from '../data/Allowances';
 import { Field } from '../state/swap/actions';
-import { useTransactionAdder, useHasPendingApproval } from '../state/transactions/hooks';
+import {
+  useTransactionAdder,
+  useHasPendingApproval,
+  useAllTransactions,
+} from '../state/transactions/hooks';
 import { computeSlippageAdjustedAmounts } from '../utils/prices';
 import { calculateGasMargin, isUseOneSplitContract } from '../utils';
 import { useTokenContract } from './useContract';
 import { useActiveWeb3React } from './index';
 import { ONE_SPLIT_ADDRESSES } from '../constants/one-split';
-import { AppState } from '../state';
 
 export enum ApprovalState {
   UNKNOWN,
@@ -26,10 +28,9 @@ export function useApproveCallback(
   amountToApprove?: TokenAmount,
   spender?: string,
 ): [ApprovalState, () => Promise<void>] {
-  const { chainId, account } = useActiveWeb3React();
-  const state = useSelector<AppState, AppState['transactions']>(state => state.transactions);
-  const transactions = chainId ? state[chainId] ?? {} : {};
+  const { account } = useActiveWeb3React();
   const token = amountToApprove instanceof TokenAmount ? amountToApprove.token : undefined;
+  const allTransactions = useAllTransactions();
   const currentAllowance = useTokenAllowance(
     token?.isEther ? undefined : token,
     account ?? undefined,
@@ -51,7 +52,7 @@ export function useApproveCallback(
         ? ApprovalState.PENDING
         : ApprovalState.NOT_APPROVED
       : ApprovalState.APPROVED;
-  }, [amountToApprove, currentAllowance, pendingApproval, spender, transactions]);
+  }, [amountToApprove, currentAllowance, pendingApproval, spender, allTransactions]);
 
   const tokenContract = useTokenContract(token?.isEther ? undefined : token?.address);
   const addTransaction = useTransactionAdder();
@@ -105,7 +106,7 @@ export function useApproveCallback(
         console.debug('Failed to approve token', error);
         throw error;
       });
-  }, [approvalState, token, tokenContract, amountToApprove, spender, addTransaction, transactions]);
+  }, [approvalState, token, tokenContract, amountToApprove, spender, addTransaction]);
 
   return [approvalState, approve];
 }
