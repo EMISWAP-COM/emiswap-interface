@@ -1,6 +1,7 @@
 import { parseUnits } from '@ethersproject/units';
 import { Contract } from '@ethersproject/contracts';
 import { ChainId, ETHER, JSBI, Token, TokenAmount, ZERO_ADDRESS } from '@uniswap/sdk';
+import { BigNumber } from '@ethersproject/bignumber';
 import { ParsedQs } from 'qs';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,7 +22,7 @@ import {
 } from './actions';
 import { InvestState } from './reducer';
 import { TokenAddressMap, WrappedTokenInfo } from '../lists/hooks';
-import { BigNumber } from '@ethersproject/bignumber';
+import { ESW } from '../../constants';
 
 /**
  * An empty result, useful as a default.
@@ -330,7 +331,7 @@ export function useCoin(index: number) {
 
 export function useBuyCoinAmount() {
   const dispatch = useDispatch<AppDispatch>();
-  const { account, library } = useActiveWeb3React();
+  const { chainId, account, library } = useActiveWeb3React();
   const contract: Contract | null = getCrowdsaleContract(library, account);
 
   const executeBuyCoinAmount = useCallback(
@@ -345,13 +346,15 @@ export function useBuyCoinAmount() {
       if (isETH) {
         return contract.buyWithETHView(coinAmountBN).then((response: any) => {
           const outputAmount = BigNumber.from(response.currentTokenAmount).toString();
-          const test = (parseFloat(outputAmount) / Math.pow(10, currency.decimals)).toString();
+          const test = (parseFloat(outputAmount) / Math.pow(10, ETHER.decimals)).toString();
           dispatch(receiveOutputAmount({ outputAmount: test }));
         });
       } else {
         return contract.buyView(currency.address, coinAmountBN).then((response: any) => {
           const outputAmount = BigNumber.from(response.currentTokenAmount).toString();
-          const test = (parseFloat(outputAmount) / Math.pow(10, currency.decimals)).toString();
+          const test = (
+            parseFloat(outputAmount) / Math.pow(10, ESW[chainId][0].decimals)
+          ).toString();
           dispatch(receiveOutputAmount({ outputAmount: test }));
         });
       }
