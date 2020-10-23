@@ -359,7 +359,7 @@ export function useBuyCoinAmount() {
         });
       }
     },
-    [dispatch],
+    [dispatch, chainId],
   );
   return { executeBuyCoinAmount };
 }

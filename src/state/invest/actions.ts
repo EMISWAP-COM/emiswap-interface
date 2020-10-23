@@ -33,6 +33,7 @@ async function useCoinList(
   const contract: Contract | null = getCrowdsaleContract(library, account);
 
   const counter = await contract.coinCounter();
+  console.log('--counter---', counter, process.env.REACT_APP_EMISWAP_CROWDSALE_ADDRESS)
   let coins: any[] = [];
   for (let i = 1; i < counter; i++) {
     const coin = await contract.coin(i);
@@ -45,6 +46,7 @@ async function useCoinList(
       name: coin.name,
     };
   }
+  console.log('--coins---', coins)
   return coins;
 }
 
