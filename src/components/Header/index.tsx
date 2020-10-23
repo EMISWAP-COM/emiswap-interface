@@ -2,7 +2,6 @@ import { ChainId } from '@uniswap/sdk';
 import React from 'react';
 import { isMobile } from 'react-device-detect';
 import { Text } from 'rebass';
-import { Image } from 'react-feather';
 
 import styled from 'styled-components';
 
@@ -177,7 +176,6 @@ export default function Header() {
                     fontWeight={450}
                   >
                     {userEthBalance?.toSignificant(4)} ETH
-                    <Image size={30} style={{ paddingLeft: 12 }} />
                   </BalanceText>
                 </>
               ) : null}
