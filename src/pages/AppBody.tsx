@@ -3,6 +3,7 @@ import Wordmark from '../components/Wordmark';
 import Logo from '../components/Logo';
 import styled from 'styled-components';
 import PolygonSvg from '../assets/images/polygon.svg';
+import BonusProgram from '../components/BonusProgram';
 
 export const HeadersPlusBodyWrapper = styled.div<{ disabled?: boolean }>`
   position: relative;
@@ -51,7 +52,7 @@ export const BodyWrapper = styled.div<{ disabled?: boolean }>`
  */
 export default function AppBody({
   children,
-  disabled,
+  disabled
 }: {
   children: React.ReactNode;
   disabled?: boolean;
@@ -63,6 +64,7 @@ export default function AppBody({
         <Wordmark />
       </div>
       <BodyWrapper disabled={disabled}>{children}</BodyWrapper>
+      <BonusProgram />
     </HeadersPlusBodyWrapper>
   );
 }
