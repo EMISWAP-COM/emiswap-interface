@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { TYPE } from '../../theme';
+import Question from '../../components/QuestionHelper';
 
 const AccountGroupingRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
@@ -36,9 +37,21 @@ const AccountSectionBody = styled.div`
   font-size: 0.825rem;
   overflow: hidden;
   color: ${({ theme }) => theme.text3};
-  > div:first-of-type > div > div > span:first-of-type {
-    display: inline;
+  > div > div > div > span:first-of-type {
+    display: none;
   }
+  > div:first-of-type > div > div > span:first-of-type {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+  > div > div > div > span:first-of-type {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    }
+  `};
 `;
 
 const AccountSectionBodyPart = styled.div`
@@ -67,9 +80,6 @@ const AccountSectionTable = styled.div`
     flex-direction: column;
     text-align: center;
     background-color: ${({ theme }) => theme.bg2};
-    > span:first-of-type {
-      display: none;
-    }
   }
   ${({ theme }) => theme.mediaWidth.upToMedium`
     display: block;
@@ -84,9 +94,6 @@ const AccountSectionTable = styled.div`
       }
       &:last-of-type {
         padding: 0.25em 0.5em 0.5em;
-      }
-      > span:first-of-type {
-        display: inline;
       }
     }
   `};
@@ -117,10 +124,6 @@ const AccountTotalSectionTable = styled.div`
     overflow: hidden;
     flex-direction: column;
     text-align: center;
-    
-    > span:first-of-type {
-      display: none;
-    }
   }
   ${({ theme }) => theme.mediaWidth.upToMedium`
     display: block;
@@ -161,11 +164,11 @@ export default function SourcesList({
             <AccountTotalSectionTable>
               <div>
                 <span>Total ESWc aquired</span>
-                <span>Total ESWc aquired<br />{totalAcquired}</span>
+                <span>{totalAcquired}</span>
               </div>
               <div>
                 <span>Value in DAI</span>
-                <span>Value in DAI<br />{totalAcquiredInDAI}</span>
+                <span>{totalAcquiredInDAI}</span>
               </div>
             </AccountTotalSectionTable>
           </AccountGroupingInfoTitleRow>
@@ -194,7 +197,10 @@ export default function SourcesList({
               <span>ESWc acquired</span>
             </div>
             <div>
-              <span>Minted</span>
+              <span>
+                <span>Minted</span> 
+                <Question isSetting text="These are already minted ESW tokens that earn you profit." />
+              </span>
             </div>
             {/* <div>
               <span>Available for minting</span>
@@ -211,7 +217,10 @@ export default function SourcesList({
               <span>{crowdSaleAcquired}</span>
             </div>
             <div>
-              <span>Minted</span>
+              <span>
+                <span>Minted</span> 
+                <Question isSetting text="These are already minted ESW tokens that earn you profit." />
+              </span>
               <span>{crowdSaleAlreadyMinted}</span>
             </div>
             {/* <div>
@@ -231,7 +240,10 @@ export default function SourcesList({
               <span>{crowdSaleReferralRewardAcquired}</span>
             </div>
             <div>
-              <span>Minted</span>
+              <span>
+                <span>Minted</span> 
+                <Question isSetting text="These are already minted ESW tokens that earn you profit." />
+              </span>
               <span>{crowdSaleReferralRewardAlreadyMinted}</span>
             </div>
             {/* <div>
@@ -250,7 +262,10 @@ export default function SourcesList({
               <span>{crowdSaleAcquired + crowdSaleReferralRewardAcquired}</span>
             </div>
             <div>
-              <span>Minted</span>
+              <span>
+                <span>Minted</span> 
+                <Question isSetting text="These are already minted ESW tokens that earn you profit." />
+              </span>
               <span>{crowdSaleAlreadyMinted + crowdSaleReferralRewardAlreadyMinted}</span>
             </div>
             {/* <div>
