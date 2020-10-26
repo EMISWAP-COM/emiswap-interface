@@ -340,8 +340,10 @@ export function useBuyCoinAmount() {
         dispatch(receiveOutputAmount({ outputAmount: '' }));
         return;
       }
-      const coinAmount = parseInt(String(amount * Math.pow(10, currency.decimals)));
-      const coinAmountBN = BigNumber.from(String(coinAmount));
+      const coinAmount = (amount * Math.pow(10, currency.decimals)).toLocaleString('fullwide', {
+        useGrouping: false,
+      });
+      const coinAmountBN = BigNumber.from(coinAmount);
       const isETH = currency.address?.toUpperCase() === ETHER.address.toUpperCase();
       if (isETH) {
         return contract.buyWithETHView(coinAmountBN).then((response: any) => {
