@@ -58,7 +58,16 @@ export function useInvestActionHandlers(): InvestActionHandlers {
           currencyId: currency.address,
         }),
       );
-      executeBuyCoinAmount(currency, parseFloat(amount));
+      const minValue = 1 / Math.pow(10, currency.decimals);
+      if (Number(amount) > 0 && Number(amount) < minValue) {
+        amount = minValue.toLocaleString('fullwide', {
+          useGrouping: false,
+          maximumFractionDigits: currency.decimals,
+        });
+        dispatch(typeInput({ field, typedValue: amount }));
+      }
+      dispatch(receiveOutputAmount({ outputAmount: '' }));
+      executeBuyCoinAmount(currency, Number(amount));
     },
     [dispatch],
   );
@@ -80,10 +89,16 @@ export function useInvestActionHandlers(): InvestActionHandlers {
 
   const onUserInput = useCallback(
     (field: Field, typedValue: string, currency: Token) => {
-      const inputAmount = parseFloat(typedValue);
+      const minValue = 1 / Math.pow(10, currency.decimals);
+      if (Number(typedValue) > 0 && Number(typedValue) < minValue) {
+        typedValue = minValue.toLocaleString('fullwide', {
+          useGrouping: false,
+          maximumFractionDigits: currency.decimals,
+        });
+      }
       dispatch(typeInput({ field, typedValue }));
       dispatch(receiveOutputAmount({ outputAmount: '' }));
-      executeBuyCoinAmount(currency, inputAmount);
+      executeBuyCoinAmount(currency, Number(typedValue));
     },
     [dispatch],
   );
@@ -181,6 +196,10 @@ export function useDerivedInvestInfo(): {
 
   if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
     error = 'Insufficient ' + amountIn.token.symbol + ' balance';
+  }
+
+  if (parsedAmount && !parsedOutputAmount) {
+    error = 'Something went wrong. Please, try another amount';
   }
 
   return {
@@ -342,6 +361,7 @@ export function useBuyCoinAmount() {
       }
       const coinAmount = (amount * Math.pow(10, currency.decimals)).toLocaleString('fullwide', {
         useGrouping: false,
+        maximumFractionDigits: 0,
       });
       const coinAmountBN = BigNumber.from(coinAmount);
       const isETH = currency.address?.toUpperCase() === ETHER.address.toUpperCase();
@@ -350,7 +370,7 @@ export function useBuyCoinAmount() {
           const outputAmount = BigNumber.from(response.currentTokenAmount).toString();
           const test = (Number(outputAmount) / Math.pow(10, ETHER.decimals)).toLocaleString('fullwide', {
             useGrouping: false,
-            maximumSignificantDigits: ETHER.decimals,
+            maximumFractionDigits: ETHER.decimals,
           });
           dispatch(receiveOutputAmount({ outputAmount: test }));
         });
@@ -361,7 +381,7 @@ export function useBuyCoinAmount() {
             Number(outputAmount) / Math.pow(10, ESW[chainId][0].decimals)
           ).toLocaleString('fullwide', {
             useGrouping: false,
-            maximumSignificantDigits: ESW[chainId][0].decimals,
+            maximumFractionDigits: ESW[chainId][0].decimals,
           });
           dispatch(receiveOutputAmount({ outputAmount: test }));
         });
