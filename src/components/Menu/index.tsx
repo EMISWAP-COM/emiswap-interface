@@ -1,6 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-// import { Info, BookOpen, Code, PieChart, MessageCircle } from 'react-feather'
-import { BookOpen, Code, Info, MessageCircle, PieChart, DollarSign } from 'react-feather';
+import { BookOpen, Code, Info, MessageCircle, BarChart, DollarSign } from 'react-feather';
 import styled from 'styled-components';
 import { ReactComponent as MenuIcon } from '../../assets/images/menu.svg';
 import useToggle from '../../hooks/useToggle';
@@ -126,9 +125,9 @@ export default function Menu() {
             <Info size={14} />
             About
           </MenuItem>
-          <MenuItem id="link" href="https://emiswap.medium.com/emiswap-amm-exchange-to-perfect-the-defi-market-d13e74dc6e14">
-            <Info size={14} />
-            About
+          <MenuItem id="link" href="https://mooniswap.info/">
+            <BarChart size={14} />
+            Analytics
           </MenuItem>
           <MenuItem id="link" href={process.env.REACT_APP_CODE_LINK}>
             <Code size={14} />
