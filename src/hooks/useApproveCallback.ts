@@ -52,6 +52,7 @@ export function useApproveCallback(
         ? ApprovalState.PENDING
         : ApprovalState.NOT_APPROVED
       : ApprovalState.APPROVED;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [amountToApprove, currentAllowance, pendingApproval, spender, allTransactions]);
 
   const tokenContract = useTokenContract(token?.isEther ? undefined : token?.address);
