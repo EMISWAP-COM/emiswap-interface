@@ -1,6 +1,6 @@
 import { Token } from '@uniswap/sdk';
 import { transparentize } from 'polished';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react'
 import styled from 'styled-components';
 import { useActiveWeb3React } from '../../hooks';
 import { useAllTokens } from '../../hooks/Tokens';
@@ -107,8 +107,21 @@ export function TokenWarningCards({ currencies }: { currencies: { [field in Fiel
     currencies[Field.OUTPUT],
   );
 
+  const blockRef = React.useRef();
+  useEffect(() => {
+    if (blockRef.current !== undefined) {
+      setTimeout(() => {
+        // @ts-ignore
+        blockRef.current.parentElement.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        });
+      }, 500);
+    }
+  }, [blockRef]);
+
   return (
-    <WarningContainer className="token-warning-container">
+    <WarningContainer className="token-warning-container" ref={blockRef}>
       <AutoColumn gap="lg">
         <AutoRow gap="6px">
           <StyledWarningIcon />
