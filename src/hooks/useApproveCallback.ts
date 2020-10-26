@@ -7,6 +7,7 @@ import { Field } from '../state/swap/actions';
 import {
   useTransactionAdder,
   useHasPendingApproval,
+  useAllTransactions,
 } from '../state/transactions/hooks';
 import { computeSlippageAdjustedAmounts } from '../utils/prices';
 import { calculateGasMargin, isUseOneSplitContract } from '../utils';
@@ -29,6 +30,7 @@ export function useApproveCallback(
 ): [ApprovalState, () => Promise<void>] {
   const { account } = useActiveWeb3React();
   const token = amountToApprove instanceof TokenAmount ? amountToApprove.token : undefined;
+  const allTransactions = useAllTransactions();
   const currentAllowance = useTokenAllowance(
     token?.isEther ? undefined : token,
     account ?? undefined,
@@ -50,7 +52,8 @@ export function useApproveCallback(
         ? ApprovalState.PENDING
         : ApprovalState.NOT_APPROVED
       : ApprovalState.APPROVED;
-  }, [amountToApprove, currentAllowance, pendingApproval, spender]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [amountToApprove, currentAllowance, pendingApproval, spender, allTransactions]);
 
   const tokenContract = useTokenContract(token?.isEther ? undefined : token?.address);
   const addTransaction = useTransactionAdder();
