@@ -115,7 +115,7 @@ export default function Menu() {
             <Code size={14} />
             Code
           </MenuItem>
-          <MenuItem id="link" href="https://crowdsale.emidao.org" target="_blank">
+          <MenuItem id="link" href="https://crowdsale.emidao.org/en" target="_blank">
             <BookOpen size={14} />
             Crowdsale Info
           </MenuItem>
