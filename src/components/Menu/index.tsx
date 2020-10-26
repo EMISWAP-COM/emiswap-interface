@@ -1,10 +1,9 @@
 import React, { useRef, useEffect } from 'react';
-import { BookOpen, Code, Info, MessageCircle, BarChart, DollarSign } from 'react-feather';
+import { BookOpen, Code, Info, MessageCircle, BarChart } from 'react-feather';
 import styled from 'styled-components';
 import { ReactComponent as MenuIcon } from '../../assets/images/menu.svg';
 import useToggle from '../../hooks/useToggle';
 import { ExternalLink } from '../../theme';
-import { Link as HistoryLink } from 'react-router-dom';
 
 const StyledMenuIcon = styled(MenuIcon)`
   path {
@@ -62,21 +61,6 @@ const MenuFlyout = styled.span`
   z-index: 100;
 `;
 
-const MenuItemHistory = styled(HistoryLink)`
-  flex: 1;
-  padding: 0.5rem 0.5rem;
-  color: ${({ theme }) => theme.text2};
-  text-decoration: none;
-  :hover {
-    color: ${({ theme }) => theme.text1};
-    cursor: pointer;
-    text-decoration: none;
-  }
-  > svg {
-    margin-right: 8px;
-  }
-`;
-
 const MenuItem = styled(ExternalLink)`
   flex: 1;
   padding: 0.5rem 0.5rem;
@@ -125,7 +109,7 @@ export default function Menu() {
             <Info size={14} />
             About
           </MenuItem>
-          <MenuItem id="link" href="https://mooniswap.info/">
+          <MenuItem id="link" href={process.env.REACT_APP_ANALYTICS_URL}>
             <BarChart size={14} />
             Analytics
           </MenuItem>

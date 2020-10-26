@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import styled, { css } from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { useWeb3React, UnsupportedChainIdError } from '@web3-react/core';
+import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import { darken } from 'polished';
 import { Activity } from 'react-feather';
 import useENSName from '../../hooks/useENSName';
@@ -18,16 +18,9 @@ import CoinbaseWalletIcon from '../../assets/images/coinbaseWalletIcon.svg';
 import { RowBetween } from '../Row';
 import { shortenAddress } from '../../utils';
 import { useAllTransactions } from '../../state/transactions/hooks';
-import { CHI, NetworkContextName } from '../../constants';
-import { injected, walletconnect, walletlink, fortmatic, portis } from '../../connectors';
+import { NetworkContextName } from '../../constants';
+import { fortmatic, injected, portis, walletconnect, walletlink } from '../../connectors';
 import Loader from '../Loader';
-import ChiIcon from '../../assets/images/chi.png';
-import { MouseoverTooltip } from '../Tooltip';
-import { MIN_CHI_BALANCE, useHasChi } from '../../hooks/useChi';
-import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback';
-import { TokenAmount } from '@uniswap/sdk';
-import { ONE_SPLIT_ADDRESSES } from '../../constants/one-split';
-import JSBI from 'jsbi';
 
 const IconWrapper = styled.div<{ size?: number }>`
   ${({ theme }) => theme.flexColumnNoWrap};
