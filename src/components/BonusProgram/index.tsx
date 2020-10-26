@@ -64,7 +64,8 @@ export default function BonusProgram(props) {
       <ButtonPrimary
         onClick={() => {
           //FIXMI Поправить
-          window.location.href = process.env.PUBLIC_URL + '/docs/NFT_Magic_EmiCards.pdf';
+          window.open(process.env.PUBLIC_URL + '/docs/NFT_Magic_EmiCards.pdf', '_blank');
+          // window.location.href = process.env.PUBLIC_URL + '/docs/NFT_Magic_EmiCards.pdf';
         }}
         id="nft-button"
         style={{ margin: '10px 0 0 0' }}

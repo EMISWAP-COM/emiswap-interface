@@ -127,8 +127,10 @@ export function useInvestCallback(
           .then(onSuccess)
           .catch(onError);
       } else {
+        console.log("buy: ",inputCurrency?.address, amount, referralAddress);
+        
         return contract
-          .buy(inputCurrency?.address, amount, referralAddress)
+          .buy(inputCurrency?.address, BigNumber.from(amount), referralAddress)
           .then(onSuccess)
           .catch(onError);
       }
