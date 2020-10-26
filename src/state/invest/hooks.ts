@@ -340,21 +340,19 @@ export function useBuyCoinAmount() {
         dispatch(receiveOutputAmount({ outputAmount: '' }));
         return;
       }
-      const coinAmount = (amount * Math.pow(10, currency.decimals)).toString();
-      const coinAmountBN = BigNumber.from(coinAmount);
+      const coinAmount = parseInt(String(amount * Math.pow(10, currency.decimals)));
+      const coinAmountBN = BigNumber.from(String(coinAmount));
       const isETH = currency.address?.toUpperCase() === ETHER.address.toUpperCase();
       if (isETH) {
         return contract.buyWithETHView(coinAmountBN).then((response: any) => {
           const outputAmount = BigNumber.from(response.currentTokenAmount).toString();
-          const test = (parseFloat(outputAmount) / Math.pow(10, ETHER.decimals)).toString();
+          const test = (Number(outputAmount) / Math.pow(10, ETHER.decimals)).toString();
           dispatch(receiveOutputAmount({ outputAmount: test }));
         });
       } else {
         return contract.buyView(currency.address, coinAmountBN).then((response: any) => {
           const outputAmount = BigNumber.from(response.currentTokenAmount).toString();
-          const test = (
-            parseFloat(outputAmount) / Math.pow(10, ESW[chainId][0].decimals)
-          ).toString();
+          const test = (Number(outputAmount) / Math.pow(10, ESW[chainId][0].decimals)).toString();
           dispatch(receiveOutputAmount({ outputAmount: test }));
         });
       }
