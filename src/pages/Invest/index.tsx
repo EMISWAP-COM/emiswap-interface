@@ -29,6 +29,7 @@ import { maxAmountSpend } from '../../utils/maxAmountSpend';
 import AppBody from '../AppBody';
 import ReferralLink from '../../components/RefferalLink';
 import { SwapPoolTabs } from '../../components/NavigationTabs';
+import { EMISWAP_CROWDSALE_ADDRESS } from '../../constants/abis/crowdsale';
 
 const Invest = () => {
   useDefaultsFromURLSearch();
@@ -86,7 +87,7 @@ const Invest = () => {
   // check whether the user has approved the router on the input token
   const [approval, approveCallback] = useApproveCallback(
     parsedAmount,
-    currencies[Field.INPUT]?.address,
+    EMISWAP_CROWDSALE_ADDRESS,
   );
 
   // check if user has gone through approval process, used to show two step buttons, reset on token change
