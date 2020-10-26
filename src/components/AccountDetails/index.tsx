@@ -28,6 +28,7 @@ import WalletConnectIcon from '../../assets/images/walletConnectIcon.svg';
 import FortmaticIcon from '../../assets/images/fortmaticIcon.png';
 import PortisIcon from '../../assets/images/portisIcon.png';
 import { ExternalLink, LinkStyledButton, TYPE } from '../../theme';
+import { EmiVaultShare } from './EmiVaultShare';
 
 const HeaderRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
@@ -436,6 +437,7 @@ export default function AccountDetails({
               crowdSaleReferralRewardAvailableForMinting={crowdSaleReferralRewardAvailableForMinting}
             />
             <TotalEarnDividends availableToCollect={availableToCollect} frozenTokens={frozenTokens} nextUnlockAmount={nextUnlockAmount} nextUnlockDate={nextUnlockDate} />
+            <EmiVaultShare/>
           </YourAccount>
           {!!pendingTransactions.length || !!confirmedTransactions.length ? (
             <LowerSection>

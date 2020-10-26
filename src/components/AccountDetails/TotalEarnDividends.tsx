@@ -57,6 +57,7 @@ const AccountSectionBody = styled.div`
   border: 1px solid ${({ theme }) => theme.bg3};
   border-radius: 20px;
   font-size: 0.825rem;
+  overflow: hidden;
   color: ${({ theme }) => theme.text3};
   > div:first-of-type > div > div > span:first-of-type {
     display: inline;
