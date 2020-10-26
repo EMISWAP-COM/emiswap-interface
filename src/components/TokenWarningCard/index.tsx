@@ -31,6 +31,10 @@ const WarningContainer = styled.div`
   box-sizing: border-box;
   border-radius: 20px;
   margin-bottom: 2rem;
+  margin-top: 30px;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    margin-top: 0px;
+  `};
 `;
 
 const StyledWarningIcon = styled(AlertTriangle)`
