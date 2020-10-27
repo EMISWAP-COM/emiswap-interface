@@ -18,12 +18,20 @@ const roundToAny = (value: number, places: number): number => {
 
 export type ClaimCallback = null | (() => Promise<void>);
 
-export type TokenListVault = {
+export type profitInfo = {
+  collectedTokens: number;
+  availableTokens: number;
+  availableDAI: number;
+};
+
+export type TokenVault = {
   address: string;
   collectedTokens: number;
   availableTokens: number;
   availableDAI: number;
 };
+
+export type TokenListVault = TokenVault[] | null;
 
 export type EarningActionHandlers = {
   totalAcquired: number;
@@ -38,7 +46,7 @@ export type EarningActionHandlers = {
   crowdSaleReferralRewardAcquired: number;
   crowdSaleReferralRewardAlreadyMinted: number;
   crowdSaleReferralRewardAvailableForMinting: number;
-  tokenList: TokenListVault[] | null;
+  tokenList: TokenListVault;
 };
 
 export default function useAccountInfo(): EarningActionHandlers {
@@ -60,7 +68,7 @@ export default function useAccountInfo(): EarningActionHandlers {
     crowdSaleReferralRewardAvailableForMinting,
     setCrowdSaleReferralRewardAvailableForMinting,
   ] = useState(0);
-  const [tokenList, setTokenList] = useState(null);
+  const [tokenList, setTokenList] = useState<TokenListVault>(null);
 
   if (!library) {
     throw new Error('Failed to get a library');
@@ -168,15 +176,14 @@ export default function useAccountInfo(): EarningActionHandlers {
       //     tokenListResult.map((address: string) => contractVault.getProfitbyToken(address)),
       //   ).then(profitResult => {
       //     console.log('--profitResult--', profitResult);
-      //     const tokenList = tokenListResult.map((address: string, index) => {
+      //     const tokenListArr: TokenListVault[] = tokenListResult.map((address: string, index) => {
       //       return {
       //         address,
-      //         collectedTokens: profitResult[index][0],
-      //         availableTokens: profitResult[index][1],
-      //         availableDAI: profitResult[index][2],
+      //         ...profitResult[index],
       //       };
       //     });
-      //     console.log('--tokenList--', tokenList);
+      //     console.log('--tokenListArr--', tokenListArr);
+      //     setTokenList(tokenListArr);
       //   });
       // });
 
@@ -184,17 +191,19 @@ export default function useAccountInfo(): EarningActionHandlers {
       //   '0x8D71af014cD98344dfab1d56e48f21C44C17Ed0C',
       //   '0x48454087c643A471b2637Fa93550CD560A2CF712',
       // ];
-      // const resultProfitbyToken = [1, 2, 3];
+      // const resultProfitbyToken = {
+      //   collectedTokens: 15,
+      //   availableTokens: 5,
+      //   availableDAI: 20,
+      // };
       // Promise.all(
       //   tokenListResult.map((address: string) => Promise.resolve(resultProfitbyToken)),
-      // ).then(profitResult => {
+      // ).then((profitResult: profitInfo[]) => {
       //   console.log('--profitResult--', profitResult);
-      //   const tokenListArr: TokenListVault[] = tokenListResult.map((address: string, index) => {
+      //   const tokenListArr = tokenListResult.map((address: string, index) => {
       //     return {
       //       address,
-      //       collectedTokens: profitResult[index][0],
-      //       availableTokens: profitResult[index][1],
-      //       availableDAI: profitResult[index][2],
+      //       ...profitResult[index],
       //     };
       //   });
       //   console.log('--tokenListArr--', tokenListArr);
