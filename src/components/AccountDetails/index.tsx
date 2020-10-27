@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { ExternalLink as LinkIcon } from 'react-feather';
 import styled, { ThemeContext } from 'styled-components';
 import { useActiveWeb3React } from '../../hooks';
-import useAccountInfo from '../../hooks/useAccountInfo';
+import { useAccountInfo } from '../../hooks/useAccountInfo';
 import { useAllCoins } from '../../hooks/Coins';
 import { AppDispatch } from '../../state';
 import { clearAllTransactions } from '../../state/transactions/actions';

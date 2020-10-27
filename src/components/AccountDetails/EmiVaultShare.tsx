@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { TYPE } from '../../theme';
 import { ButtonSecondary } from '../Button';
+import { useClaimProfit } from '../../hooks/useAccountInfo';
 
 const AccountSectionHeader = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
@@ -107,6 +108,7 @@ const AccountSectionFooter = styled.div`
 
 export const EmiVaultShare = ({ tokenList }) => {
   const [selectedTokenList, setSelectedTokenList] = useState([]);
+  const [claimProfitTokensCallback, claimProfitDAICallback] = useClaimProfit(selectedTokenList);
 
   const getTotalSum = (data, key) => {
     return Object.values(data).reduce((sum, token) => (sum += token[key]), 0);
@@ -118,6 +120,16 @@ export const EmiVaultShare = ({ tokenList }) => {
       selectedList = selectedList.filter(key => key !== e.target.id);
     }
     setSelectedTokenList(selectedList);
+  };
+
+  const handleClaimProfitTokens = () => {
+    console.log('--selectedTokenList--', selectedTokenList);
+    claimProfitTokensCallback(selectedTokenList);
+  };
+
+  const handleClaimProfitDAI = () => {
+    console.log('--selectedTokenList--', selectedTokenList);
+    claimProfitDAICallback(selectedTokenList);
   };
 
   return (
@@ -197,10 +209,20 @@ export const EmiVaultShare = ({ tokenList }) => {
         </AccountSectionBodyPart>
       </AccountSectionBody>
       <AccountSectionFooter>
-        <ButtonSecondary padding="4px" width="auto" margin="0px 10px 10px 0px">
+        <ButtonSecondary
+          padding="4px"
+          width="auto"
+          margin="0px 10px 10px 0px"
+          onClick={handleClaimProfitTokens}
+        >
           Collect Profit in Tokens
         </ButtonSecondary>
-        <ButtonSecondary padding="4px" width="auto" margin="0px 10px 10px 0px">
+        <ButtonSecondary
+          padding="4px"
+          width="auto"
+          margin="0px 10px 10px 0px"
+          onClick={handleClaimProfitDAI}
+        >
           Collect Profit in DAI
         </ButtonSecondary>
       </AccountSectionFooter>
