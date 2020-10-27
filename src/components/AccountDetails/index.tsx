@@ -1,16 +1,13 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import { ExternalLink as LinkIcon } from 'react-feather';
 import styled, { ThemeContext } from 'styled-components';
-import { useTranslation } from 'react-i18next';
-import { Token } from '@uniswap/sdk';
 import { useActiveWeb3React } from '../../hooks';
-import { useAllCoinBalances } from '../../state/wallet/hooks';
 import useAccountInfo from '../../hooks/useAccountInfo';
 import { useAllCoins } from '../../hooks/Coins';
 import { AppDispatch } from '../../state';
 import { clearAllTransactions } from '../../state/transactions/actions';
-import { shortenAddress, getEtherscanLink } from '../../utils';
+import { getEtherscanLink, shortenAddress } from '../../utils';
 import Identicon from '../Identicon';
 import { ButtonSecondary } from '../Button';
 import { AutoRow } from '../Row';
@@ -18,10 +15,9 @@ import Copy from './Copy';
 import Transaction from './Transaction';
 import TotalEarnDividends from './TotalEarnDividends';
 import SourcesList from './SourcesList';
-import TotalNotEarnDividends from './TotalNotEarnDividends';
 
 import { SUPPORTED_WALLETS } from '../../constants';
-import { injected, walletconnect, walletlink, fortmatic, portis } from '../../connectors';
+import { fortmatic, injected, portis, walletconnect, walletlink } from '../../connectors';
 import { ReactComponent as Close } from '../../assets/images/x.svg';
 import CoinbaseWalletIcon from '../../assets/images/coinbaseWalletIcon.svg';
 import WalletConnectIcon from '../../assets/images/walletConnectIcon.svg';
@@ -233,13 +229,10 @@ export default function AccountDetails({
   ENSName,
   openOptions,
 }: AccountDetailsProps) {
-  const [selectedCurrencies, onSelectCurrencies] = useState<Token[]>([]);
   const { chainId, account, connector } = useActiveWeb3React();
   const theme = useContext(ThemeContext);
   const dispatch = useDispatch<AppDispatch>();
-  const { t } = useTranslation();
   const allTokens = useAllCoins();
-  const allTokenBalances = useAllCoinBalances();
   const {
     totalAcquired,
     totalAcquiredInDAI,
@@ -318,20 +311,6 @@ export default function AccountDetails({
     },
     [dispatch, chainId],
   );
-
-  const filteredTokens: Token[] = Object.values(allTokens);
-
-  const handleSelectCurrencies = (currency: Token): void => {
-    const isCurrencySelected: boolean = selectedCurrencies.some(
-      ({ address }) => address === currency.address,
-    );
-
-    onSelectCurrencies(selectedCurrencies =>
-      isCurrencySelected
-        ? [...selectedCurrencies].filter(({ address }) => address !== currency.address)
-        : [...selectedCurrencies, currency],
-    );
-  };
 
   return (
     <>

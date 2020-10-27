@@ -20,7 +20,6 @@ import { Text } from 'rebass';
 import Modal from '../Modal';
 import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg';
 import Option from '../WalletModal/Option';
-import { ChiRow } from './ChiRow';
 
 const StyledMenuIcon = styled(Settings)`
   height: 20px;
