@@ -1,7 +1,8 @@
+import { useCallback, useMemo } from 'react';
 import { MaxUint256 } from '@ethersproject/constants';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trade, TokenAmount, ETHER, ChainId } from '@uniswap/sdk';
-import { useCallback, useMemo } from 'react';
+import { BigNumber } from '@ethersproject/bignumber';
 import { useTokenAllowance } from '../data/Allowances';
 import { Field } from '../state/swap/actions';
 import {
@@ -13,7 +14,6 @@ import { computeSlippageAdjustedAmounts } from '../utils/prices';
 import { calculateGasMargin, isUseOneSplitContract } from '../utils';
 import { useTokenContract } from './useContract';
 import { useActiveWeb3React } from './index';
-import { BigNumber } from '@ethersproject/bignumber';
 import { ONE_SPLIT_ADDRESSES } from '../constants/one-split';
 
 export enum ApprovalState {

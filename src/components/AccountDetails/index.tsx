@@ -24,6 +24,7 @@ import FortmaticIcon from '../../assets/images/fortmaticIcon.png';
 import PortisIcon from '../../assets/images/portisIcon.png';
 import { ExternalLink, LinkStyledButton, TYPE } from '../../theme';
 
+
 const HeaderRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
   padding: 1rem 1rem;
@@ -230,19 +231,20 @@ export default function AccountDetails({
   const { chainId, account, connector } = useActiveWeb3React();
   const theme = useContext(ThemeContext);
   const dispatch = useDispatch<AppDispatch>();
-  const { 
+
+  const {
     totalAcquired,
     totalAcquiredInDAI,
-    availableToCollect, 
-    frozenTokens, 
-    nextUnlockAmount, 
-    nextUnlockDate, 
+    availableToCollect,
+    frozenTokens,
+    nextUnlockAmount,
+    nextUnlockDate,
     crowdSaleAcquired,
-    crowdSaleAlreadyMinted, 
-    crowdSaleAvailableForMinting, 
+    crowdSaleAlreadyMinted,
+    crowdSaleAvailableForMinting,
     crowdSaleReferralRewardAcquired,
     crowdSaleReferralRewardAlreadyMinted,
-    crowdSaleReferralRewardAvailableForMinting 
+    crowdSaleReferralRewardAvailableForMinting
   } = useAccountInfo();
 
   function formatConnectorName() {
@@ -404,11 +406,11 @@ export default function AccountDetails({
                 {/* {formatConnectorName()} */}
               </AccountGroupingRow>
             </InfoCard>
-            <SourcesList 
+            <SourcesList
               totalAcquired={totalAcquired}
               totalAcquiredInDAI={totalAcquiredInDAI}
               crowdSaleAcquired={crowdSaleAcquired}
-              crowdSaleAlreadyMinted={crowdSaleAlreadyMinted} 
+              crowdSaleAlreadyMinted={crowdSaleAlreadyMinted}
               crowdSaleAvailableForMinting={crowdSaleAvailableForMinting}
               crowdSaleReferralRewardAcquired={crowdSaleReferralRewardAcquired}
               crowdSaleReferralRewardAlreadyMinted={crowdSaleReferralRewardAlreadyMinted}

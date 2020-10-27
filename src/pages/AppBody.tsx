@@ -15,10 +15,10 @@ export const HeadersPlusBodyWrapper = styled.div<{ disabled?: boolean }>`
     content: '';
     background: center / contain no-repeat url('${PolygonSvg}');
     position: absolute;
-    top: 55%;
+    top: -5px;
     left: 50%;
     margin-right: -50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, 0%);
     width: 875px;
     height: 857px;
     z-index: -1;

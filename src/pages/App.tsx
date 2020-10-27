@@ -57,13 +57,13 @@ const BodyWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   align-items: center;
-  padding-top: 30px;
+  padding-top: 65px;
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
   z-index: 10;
 
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+  ${({ theme }) => theme.mediaWidth.upToSmall`
       padding: 16px;
   `};
 
