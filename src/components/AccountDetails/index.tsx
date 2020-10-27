@@ -252,7 +252,7 @@ export default function AccountDetails({
     crowdSaleAvailableForMinting,
     crowdSaleReferralRewardAcquired,
     crowdSaleReferralRewardAlreadyMinted,
-    crowdSaleReferralRewardAvailableForMinting
+    crowdSaleReferralRewardAvailableForMinting,
   } = useAccountInfo();
 
   function formatConnectorName() {
@@ -434,10 +434,17 @@ export default function AccountDetails({
               crowdSaleAvailableForMinting={crowdSaleAvailableForMinting}
               crowdSaleReferralRewardAcquired={crowdSaleReferralRewardAcquired}
               crowdSaleReferralRewardAlreadyMinted={crowdSaleReferralRewardAlreadyMinted}
-              crowdSaleReferralRewardAvailableForMinting={crowdSaleReferralRewardAvailableForMinting}
+              crowdSaleReferralRewardAvailableForMinting={
+                crowdSaleReferralRewardAvailableForMinting
+              }
             />
-            <TotalEarnDividends availableToCollect={availableToCollect} frozenTokens={frozenTokens} nextUnlockAmount={nextUnlockAmount} nextUnlockDate={nextUnlockDate} />
-            <EmiVaultShare/>
+            <TotalEarnDividends
+              availableToCollect={availableToCollect}
+              frozenTokens={frozenTokens}
+              nextUnlockAmount={nextUnlockAmount}
+              nextUnlockDate={nextUnlockDate}
+            />
+            <EmiVaultShare tokenList={allTokens} />
           </YourAccount>
           {!!pendingTransactions.length || !!confirmedTransactions.length ? (
             <LowerSection>
