@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { TYPE } from '../../theme';
 import { ButtonSecondary } from '../Button';
@@ -105,51 +105,21 @@ const AccountSectionFooter = styled.div`
   }
 `;
 
-const TABLE_DATA = [
-  {
-    id: 1,
-    name: 'Token A',
-    cellected: true,
-    collect_token: 10,
-    collect_dai: 100,
-    slected: true,
-  },
-  {
-    id: 2,
-    name: 'Token B',
-    cellected: true,
-    collect_token: 5,
-    collect_dai: 0.5,
-    slected: true,
-  },
-  {
-    id: 3,
-    name: 'Token C',
-    cellected: true,
-    collect_token: 12.567,
-    collect_dai: 33.45,
-    slected: true,
-  },
-  {
-    id: 4,
-    name: 'Token D',
-    cellected: true,
-    collect_token: 0.133,
-    collect_dai: 0.2666,
-    slected: true,
-  },
-  {
-    id: 5,
-    name: 'Token E',
-    cellected: true,
-    collect_token: 120,
-    collect_dai: 0.000001,
-    slected: true,
-  },
-];
+export const EmiVaultShare = ({ tokenList }) => {
+  const [selectedTokenList, setSelectedTokenList] = useState([]);
 
-export const EmiVaultShare = () => {
-  const getTotalSum = (data, key) => data.reduce((sum, elem) => sum + elem[key], 0);
+  const getTotalSum = (data, key) => {
+    return Object.values(data).reduce((sum, token) => (sum += token[key]), 0);
+  };
+
+  const handleSelectedEmiToken = e => {
+    let selectedList = [...selectedTokenList, e.target.id];
+    if (selectedTokenList.includes(e.target.id)) {
+      selectedList = selectedList.filter(key => key !== e.target.id);
+    }
+    setSelectedTokenList(selectedList);
+  };
+
   return (
     <>
       <AccountSectionHeader>
@@ -175,29 +145,33 @@ export const EmiVaultShare = () => {
             </div>
           </AccountSectionTable>
         </AccountSectionBodyPart>
-        {TABLE_DATA.map((token, index) => (
-          <AccountSectionBodyPart key={token.name + index}>
+        {Object.keys(tokenList).map((token, index) => (
+          <AccountSectionBodyPart key={token}>
             <AccountGroupingInfoTitleRow>
               <span></span>
-              <span>{token.name}</span>
+              <span>{tokenList[token].symbol}</span>
             </AccountGroupingInfoTitleRow>
             <AccountSectionTable>
               <div>
                 <span>Collected</span>
-                <span>{token.cellected}</span>
+                <span>{(index += 1)}</span>
               </div>
               <div>
                 <span>Available to collect in tokens</span>
-                <span>{token.collect_token}</span>
+                <span>{tokenList[token].decimals}</span>
               </div>
               <div>
                 <span>Available to collect in DAI</span>
-                <span>{token.collect_dai}</span>
+                <span>{tokenList[token].decimals}</span>
               </div>
               <div>
                 <span>Slected</span>
                 <span>
-                  <input type={'checkbox'} />
+                  <input
+                    type={'checkbox'}
+                    id={tokenList[token].address}
+                    onChange={handleSelectedEmiToken}
+                  />
                 </span>
               </div>
             </AccountSectionTable>
@@ -208,15 +182,15 @@ export const EmiVaultShare = () => {
           <AccountSectionTable>
             <div>
               <span>Collected</span>
-              <span></span>
+              <span>-</span>
             </div>
             <div>
               <span>Available to collect in tokens</span>
-              <span></span>
+              <span>-</span>
             </div>
             <div>
               <span>Available to collect in DAI</span>
-              <span>{getTotalSum(TABLE_DATA, 'collect_dai')}</span>
+              <span>{getTotalSum(tokenList, 'decimals')}</span>
             </div>
             <div></div>
           </AccountSectionTable>
@@ -232,4 +206,4 @@ export const EmiVaultShare = () => {
       </AccountSectionFooter>
     </>
   );
-}
+};
