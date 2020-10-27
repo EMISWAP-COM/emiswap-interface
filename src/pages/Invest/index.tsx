@@ -30,6 +30,11 @@ import AppBody from '../AppBody';
 import ReferralLink from '../../components/RefferalLink';
 import { SwapPoolTabs } from '../../components/NavigationTabs';
 import { EMISWAP_CROWDSALE_ADDRESS } from '../../constants/abis/crowdsale';
+import { Redirect, RouteComponentProps } from 'react-router-dom';
+
+export function RedirectPathToInvestOnly({ location }: RouteComponentProps) {
+  return <Redirect to={{ ...location, pathname: '/invest' }} />;
+}
 
 const Invest = () => {
   useDefaultsFromURLSearch();
@@ -208,6 +213,15 @@ const Invest = () => {
               currency={currencies[Field.INPUT]}
               onUserInput={handleTypeInput}
               onMax={() => {
+                console.log("maxAmountInput: ", maxAmountInput);
+                try{
+                  console.log("maxAmountInput.toExact(): ", maxAmountInput.toExact());
+                }catch(e){
+                  console.log(e)
+                
+
+                }
+                
                 maxAmountInput &&
                   onUserInput(Field.INPUT, maxAmountInput.toExact(), currencies[Field.INPUT]);
               }}

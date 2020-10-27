@@ -20,7 +20,7 @@ import PoolFinder from './PoolFinder';
 import RemoveLiquidity from './RemoveLiquidity';
 import { RedirectOldRemoveLiquidityPathStructure } from './RemoveLiquidity/redirects';
 import Swap from './Swap';
-import Invest from './Invest';
+import Invest, { RedirectPathToInvestOnly } from './Invest';
 import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects';
 import ReferralUrlParser from '../referral-url-parser';
 import MigrateV1 from './MigrateV1';
@@ -122,7 +122,7 @@ export default function App() {
                   />
                   <Route exact strict path="/migrate" component={MigrateV1} />
                   <Route exact strict path="/migrate/:address" component={MigrateV1Exchange} />
-                  <Route component={RedirectPathToSwapOnly} />
+                  <Route component={RedirectPathToInvestOnly} />
                 </Switch>
               </Web3ReactManager>
             </BodyWrapper>

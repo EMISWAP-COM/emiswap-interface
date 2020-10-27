@@ -70,7 +70,7 @@ export function useTokenBalancesWithLoadingIndicator(
   const anyLoading: boolean = useMemo(() => balances.some(callState => callState.loading), [
     balances,
   ]);
-
+    
   return [
     useMemo(
       () =>
@@ -80,7 +80,14 @@ export function useTokenBalancesWithLoadingIndicator(
                 const value = balances?.[i]?.result?.[0];
                 const amount = value ? JSBI.BigInt(value.toString()) : undefined;
                 if (amount) {
-                  memo[token.address] = new TokenAmount(token, amount);
+                  try{
+                    memo[token.address] = new TokenAmount(token, amount);
+                  }catch(e) {
+                    memo[token.address] = new TokenAmount(token, "0");
+                    console.log("token: ", token)
+                    console.log("amount: ", amount)
+                    console.log("value: ", value)
+                  }
                 }
                 return memo;
               },

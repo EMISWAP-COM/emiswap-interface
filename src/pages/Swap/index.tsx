@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Text } from 'rebass';
 import { ThemeContext } from 'styled-components';
 import { SwapPoolTabs } from '../../components/NavigationTabs';
-import AdvancedSwapDetailsDropdown from '../../components/swap/AdvancedSwapDetailsDropdown';
 import { Wrapper } from '../../components/swap/styleds';
 import { TokenWarningCards } from '../../components/TokenWarningCard';
 import { useActiveWeb3React } from '../../hooks';
@@ -150,7 +149,6 @@ export default function Swap() {
           </Text>
         </Wrapper>
       </AppBody>
-      <AdvancedSwapDetailsDropdown trade={trade} />
     </>
   );
 }
