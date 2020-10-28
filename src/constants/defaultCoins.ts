@@ -4484,6 +4484,13 @@ export default {
       chainId: 42,
       name: 'EMRX',
       symbol: 'EMRX',
+      decimals: 8,
+    },
+    {
+      chainId: 42,
+      address: '0x6d1a403E147369A6a7B5F63Ef11cEeb1faB5002f',
+      decimals: 6,
+      symbol: 'USDC',
       name: 'USDC',
     },
     {
@@ -4499,12 +4506,12 @@ export default {
       decimals: 8,
       symbol: 'WBTC',
       name: 'WBTC wraped bitcoin',
->>>>>>> 5c251b4... Update default coins list
     },
     // MockUSDX_deployed
     // MockEMRX_deployed
     // MockUSDC_deployed
     // MockWETH_deployed
     // MockWBTC_deployed
+  ],
   logoURI: 'https://1inch.exchange/assets/logo.png',
 };
