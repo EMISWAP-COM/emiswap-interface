@@ -59,7 +59,7 @@ export function useInvestActionHandlers(): InvestActionHandlers {
         }),
       );
     },
-    [dispatch, executeBuyCoinAmount],
+    [dispatch],
   );
 
   const onOutputValue = useCallback(
