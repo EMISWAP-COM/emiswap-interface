@@ -155,11 +155,30 @@
       "type": "function"
     },
     {
+      "inputs": [],
+      "name": "version",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
       "inputs": [
         {
           "internalType": "address",
           "name": "_ESW",
           "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_version",
+          "type": "uint256"
         }
       ],
       "name": "initialize",
@@ -175,9 +194,9 @@
           "type": "address"
         },
         {
-          "internalType": "uint8",
+          "internalType": "uint32",
           "name": "idx",
-          "type": "uint8"
+          "type": "uint32"
         }
       ],
       "name": "getLock",
@@ -230,9 +249,9 @@
           "type": "address"
         },
         {
-          "internalType": "uint256",
+          "internalType": "uint32",
           "name": "category",
-          "type": "uint256"
+          "type": "uint32"
         }
       ],
       "name": "getStats",
@@ -279,9 +298,9 @@
     {
       "inputs": [
         {
-          "internalType": "uint8",
+          "internalType": "uint256",
           "name": "idx",
-          "type": "uint8"
+          "type": "uint256"
         }
       ],
       "name": "getMyLock",
@@ -429,13 +448,7 @@
         }
       ],
       "name": "freeze",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
+      "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
     },
@@ -462,14 +475,8 @@
           "type": "uint256"
         }
       ],
-      "name": "freeze",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
+      "name": "freeze2",
+      "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
     },
@@ -497,13 +504,7 @@
         }
       ],
       "name": "freezeBulk",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
+      "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
     },
@@ -516,8 +517,31 @@
         },
         {
           "internalType": "uint256",
+          "name": "tokens",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "category",
+          "type": "uint256"
+        }
+      ],
+      "name": "freezeVirtual",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "beneficiary",
+          "type": "address"
+        },
+        {
+          "internalType": "uint32",
           "name": "sinceDate",
-          "type": "uint256"
+          "type": "uint32"
         },
         {
           "internalType": "uint256",
@@ -530,43 +554,8 @@
           "type": "uint256"
         }
       ],
-      "name": "freezeVirtual",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "beneficiary",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "tokens",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "category",
-          "type": "uint256"
-        }
-      ],
-      "name": "freezeVirtual",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
+      "name": "freezeVirtual2",
+      "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
     },
@@ -631,4 +620,4 @@
       "stateMutability": "nonpayable",
       "type": "function"
     }
-  ]
+]

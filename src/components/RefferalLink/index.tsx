@@ -40,7 +40,7 @@ export default function ReferralLink() {
           </RowFixed>
           <RowFixed style={{ marginTop: '10px' }}>
             <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
-              <ExternalLink  href="https://crowdsale.emidao.org" style={{ color: theme.text1  }}>
+              <ExternalLink  href="https://crowdsale.emidao.org/en" style={{ color: theme.text1  }}>
               Discover EmiSwap Crowdsale Terms
               </ExternalLink>
             </TYPE.black>
