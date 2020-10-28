@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import styled, { css } from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { useWeb3React, UnsupportedChainIdError } from '@web3-react/core';
+import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import { darken } from 'polished';
 import { Activity } from 'react-feather';
 import useENSName from '../../hooks/useENSName';
@@ -19,7 +19,7 @@ import { RowBetween } from '../Row';
 import { shortenAddress } from '../../utils';
 import { useAllTransactions } from '../../state/transactions/hooks';
 import { NetworkContextName } from '../../constants';
-import { injected, walletconnect, walletlink, fortmatic, portis } from '../../connectors';
+import { fortmatic, injected, portis, walletconnect, walletlink } from '../../connectors';
 import Loader from '../Loader';
 
 const IconWrapper = styled.div<{ size?: number }>`

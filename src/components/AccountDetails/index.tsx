@@ -3,10 +3,10 @@ import { useDispatch } from 'react-redux';
 import { ExternalLink as LinkIcon } from 'react-feather';
 import styled, { ThemeContext } from 'styled-components';
 import { useActiveWeb3React } from '../../hooks';
-import useAccountInfo from '../../hooks/useAccountInfo';
+import { useAccountInfo } from '../../hooks/useAccountInfo';
 import { AppDispatch } from '../../state';
 import { clearAllTransactions } from '../../state/transactions/actions';
-import { shortenAddress, getEtherscanLink } from '../../utils';
+import { getEtherscanLink, shortenAddress } from '../../utils';
 import Identicon from '../Identicon';
 import { ButtonSecondary } from '../Button';
 import { AutoRow } from '../Row';
@@ -16,7 +16,7 @@ import TotalEarnDividends from './TotalEarnDividends';
 import SourcesList from './SourcesList';
 
 import { SUPPORTED_WALLETS } from '../../constants';
-import { injected, walletconnect, walletlink, fortmatic, portis } from '../../connectors';
+import { fortmatic, injected, portis, walletconnect, walletlink } from '../../connectors';
 import { ReactComponent as Close } from '../../assets/images/x.svg';
 import CoinbaseWalletIcon from '../../assets/images/coinbaseWalletIcon.svg';
 import WalletConnectIcon from '../../assets/images/walletConnectIcon.svg';
@@ -231,7 +231,6 @@ export default function AccountDetails({
   const { chainId, account, connector } = useActiveWeb3React();
   const theme = useContext(ThemeContext);
   const dispatch = useDispatch<AppDispatch>();
-
   const {
     totalAcquired,
     totalAcquiredInDAI,
@@ -244,7 +243,7 @@ export default function AccountDetails({
     crowdSaleAvailableForMinting,
     crowdSaleReferralRewardAcquired,
     crowdSaleReferralRewardAlreadyMinted,
-    crowdSaleReferralRewardAvailableForMinting
+    crowdSaleReferralRewardAvailableForMinting,
   } = useAccountInfo();
 
   function formatConnectorName() {
@@ -414,7 +413,15 @@ export default function AccountDetails({
               crowdSaleAvailableForMinting={crowdSaleAvailableForMinting}
               crowdSaleReferralRewardAcquired={crowdSaleReferralRewardAcquired}
               crowdSaleReferralRewardAlreadyMinted={crowdSaleReferralRewardAlreadyMinted}
-              crowdSaleReferralRewardAvailableForMinting={crowdSaleReferralRewardAvailableForMinting}
+              crowdSaleReferralRewardAvailableForMinting={
+                crowdSaleReferralRewardAvailableForMinting
+              }
+            />
+            <TotalEarnDividends
+              availableToCollect={availableToCollect}
+              frozenTokens={frozenTokens}
+              nextUnlockAmount={nextUnlockAmount}
+              nextUnlockDate={nextUnlockDate}
             />
             <TotalEarnDividends availableToCollect={availableToCollect} frozenTokens={frozenTokens} nextUnlockAmount={nextUnlockAmount} nextUnlockDate={nextUnlockDate} />
           </YourAccount>

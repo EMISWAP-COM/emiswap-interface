@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import ERC20_INTERFACE from '../../constants/abis/erc20';
 import { useAllTokens } from '../../hooks/Tokens';
 import { useActiveWeb3React } from '../../hooks';
-import { useMulticallContract } from '../../hooks/useContract';
+import { useESWContract, useMulticallContract } from '../../hooks/useContract';
 import { useAllCoins } from '../../hooks/Coins';
 import { isAddress } from '../../utils';
 import { useSingleContractMultipleData, useMultipleContractSingleData } from '../multicall/hooks';
@@ -30,6 +30,39 @@ export function useETHBalances(
   const results = useSingleContractMultipleData(
     multicallContract,
     'getEthBalance',
+    addresses.map(address => [address]),
+  );
+
+  return useMemo(
+    () =>
+      addresses.reduce<{ [address: string]: TokenAmount }>((memo, address, i) => {
+        const value = results?.[i]?.result?.[0];
+        if (value) memo[address] = new TokenAmount(ETHER, JSBI.BigInt(value.toString()));
+        return memo;
+      }, {}),
+    [addresses, results],
+  );
+}
+
+export function useESWBalances(
+  uncheckedAddresses?: (string | undefined)[],
+): { [address: string]: TokenAmount | undefined } {
+  const eswContract = useESWContract();
+
+  const addresses: string[] = useMemo(
+    () =>
+      uncheckedAddresses
+        ? uncheckedAddresses
+            .map(isAddress)
+            .filter((a): a is string => a !== false)
+            .sort()
+        : [],
+    [uncheckedAddresses],
+  );
+
+  const results = useSingleContractMultipleData(
+    eswContract,
+    'balanceOf2',
     addresses.map(address => [address]),
   );
 
@@ -167,14 +200,21 @@ export function useCurrencyBalances(
   );
   const ethBalance = useETHBalances(containsETH ? [account] : []);
 
+  const containsESW: boolean = useMemo(
+    () => currencies?.some(currency => currency?.address === process.env.REACT_APP_ESW_ID) ?? false,
+    [currencies],
+  );
+  const eswBalance = useESWBalances(containsESW ? [account] : []);
+
   return useMemo(
     () =>
       currencies?.map(currency => {
         if (!account || !currency) return;
         if (currency.isEther) return ethBalance[account];
+        if (currency.address === process.env.REACT_APP_ESW_ID) return eswBalance[account];
         return tokenBalances[currency.address];
       }) ?? [],
-    [account, currencies, ethBalance, tokenBalances],
+    [account, currencies, ethBalance, tokenBalances, eswBalance],
   );
 }
 

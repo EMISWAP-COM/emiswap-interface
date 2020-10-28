@@ -1,4 +1,4 @@
-import { TokenAmount, Token } from '@uniswap/sdk';
+import { Token, TokenAmount } from '@uniswap/sdk';
 import React, { useContext } from 'react';
 import { Repeat } from 'react-feather';
 import { Text } from 'rebass';

@@ -31,10 +31,12 @@ import ReferralLink from '../../components/RefferalLink';
 import { SwapPoolTabs } from '../../components/NavigationTabs';
 import { EMISWAP_CROWDSALE_ADDRESS } from '../../constants/abis/crowdsale';
 import { Redirect, RouteComponentProps } from 'react-router-dom';
+import { MAX_SIGNIFICANT_DECIMALS } from '../../constants';
 
 export function RedirectPathToInvestOnly({ location }: RouteComponentProps) {
   return <Redirect to={{ ...location, pathname: '/invest' }} />;
 }
+
 
 const Invest = () => {
   useDefaultsFromURLSearch();
@@ -86,7 +88,7 @@ const Invest = () => {
 
   const formattedAmounts = {
     [Field.INPUT]: typedValue,
-    [Field.OUTPUT]: parsedAmounts[Field.OUTPUT]?.toSignificant(6) ?? '',
+    [Field.OUTPUT]: parsedAmounts[Field.OUTPUT]?.toSignificant(MAX_SIGNIFICANT_DECIMALS) ?? '',
   };
 
   // check whether the user has approved the router on the input token

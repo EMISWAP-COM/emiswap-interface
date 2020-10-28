@@ -387,7 +387,7 @@ export function useBuyCoinAmount() {
         });
       }
     },
-    [dispatch, contract, chainId],
+    [dispatch, chainId, contract],
   );
   return { executeBuyCoinAmount };
 }

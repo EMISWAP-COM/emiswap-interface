@@ -62,7 +62,6 @@ const MenuFlyout = styled.span`
   z-index: 100;
 `;
 
-
 const MenuItem = styled(ExternalLink)`
   flex: 1;
   padding: 0.5rem 0.5rem;
@@ -127,7 +126,7 @@ export default function Menu() {
             <MessageCircle size={14} />
             NFT Magic EmiCards
           </MenuItem>
-          <MenuItem id="link" href={process.env.PUBLIC_URL + '/docs/EmiSwap_WP_EN_v2.0.pdf'} target="_blank">
+          <MenuItem id="link" href="https://crowdsale.emidao.org/whitepaper" target="_blank">
             <BookOpen size={14} />
             Whitepaper
           </MenuItem>

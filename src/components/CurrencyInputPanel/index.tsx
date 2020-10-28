@@ -14,6 +14,7 @@ import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg';
 import { useActiveWeb3React } from '../../hooks';
 import { useTranslation } from 'react-i18next';
 import CrowdsaleCurrencySearchModal from '../SearchModal/CrowdsaleCurrencySearchModal';
+import { MAX_SIGNIFICANT_DECIMALS } from '../../constants';
 
 const InputRow = styled.div<{ selected: boolean }>`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -189,7 +190,7 @@ export default function CurrencyInputPanel({
                     style={{ display: 'inline' }}
                   >
                     {!hideBalance && !!currency && selectedCurrencyBalance
-                      ? 'Balance: ' + selectedCurrencyBalance?.toSignificant(6)
+                      ? 'Balance: ' + selectedCurrencyBalance?.toSignificant(MAX_SIGNIFICANT_DECIMALS)
                       : ' '}
                   </TYPE.body>
                 </CursorPointer>
