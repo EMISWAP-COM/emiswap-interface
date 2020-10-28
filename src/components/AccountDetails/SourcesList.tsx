@@ -181,12 +181,12 @@ export default function SourcesList({
         </AccountSectionBodyPart>
       </AccountTotalSectionBody>
       <AccountSectionHeader>
-        <TYPE.mediumHeader>ESWc sources</TYPE.mediumHeader>
+        <TYPE.mediumHeader>Sources of ESWc</TYPE.mediumHeader>
       </AccountSectionHeader>
       <AccountSectionBody>
         <AccountSectionBodyPart>
           <AccountGroupingInfoTitleRow>
-            <span>ESWc source</span>
+            <span>Source of ESWc</span>
           </AccountGroupingInfoTitleRow>
           <AccountSectionTable>
             <div>
