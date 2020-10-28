@@ -87,8 +87,9 @@ export function useInvestActionHandlers(): InvestActionHandlers {
         });
       }
       dispatch(typeInput({ field, typedValue }));
-      dispatch(receiveOutputAmount({ outputAmount: '' }));
-      executeBuyCoinAmount(currency, Number(typedValue));
+      if (Number(typedValue) > 0) {
+        executeBuyCoinAmount(currency, Number(typedValue));
+      }
     },
     [dispatch, executeBuyCoinAmount],
   );
