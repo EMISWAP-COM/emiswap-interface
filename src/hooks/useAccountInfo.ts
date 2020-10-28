@@ -17,7 +17,7 @@ const bn2num = (value: BigNumber): number => {
 
 const bn2str = (value: BigNumber, token: Token): string => {
   const valueStr = BigNumber.from(value).toString();
-  return (Number(valueStr) / Math.pow(10, token.decimals)).toLocaleString('fullwide', {
+  return (Number(valueStr) / Math.pow(10, token.decimals)).toLocaleString('en', {
     useGrouping: false,
     maximumFractionDigits: token.decimals,
   });

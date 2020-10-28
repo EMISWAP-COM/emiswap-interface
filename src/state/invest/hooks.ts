@@ -24,6 +24,13 @@ import { InvestState } from './reducer';
 import { TokenAddressMap, WrappedTokenInfo } from '../lists/hooks';
 import { ESW } from '../../constants';
 
+const num2str = (value: number, decimals: number): string => {
+  return value.toLocaleString('en', {
+    useGrouping: false,
+    maximumFractionDigits: decimals,
+  });
+};
+
 /**
  * An empty result, useful as a default.
  */
@@ -82,10 +89,7 @@ export function useInvestActionHandlers(): InvestActionHandlers {
       if (currency) {
         const minValue = 1 / Math.pow(10, currency.decimals);
         if (Number(typedValue) > 0 && Number(typedValue) < minValue) {
-          typedValue = minValue.toLocaleString('fullwide', {
-            useGrouping: false,
-            maximumFractionDigits: currency.decimals,
-          });
+          typedValue = num2str(minValue, currency.decimals);
         }
       }
       dispatch(typeInput({ field, typedValue }));
@@ -352,30 +356,22 @@ export function useBuyCoinAmount() {
         dispatch(receiveOutputAmount({ outputAmount: '' }));
         return;
       }
-      const coinAmount = (amount * Math.pow(10, currency.decimals)).toLocaleString('fullwide', {
-        useGrouping: false,
-        maximumFractionDigits: 0,
-      });
+      const coinAmount = num2str(amount * Math.pow(10, currency.decimals), 0);
       const coinAmountBN = BigNumber.from(coinAmount);
       const isETH = currency.address?.toUpperCase() === ETHER.address.toUpperCase();
       if (isETH) {
         return contract.buyWithETHView(coinAmountBN).then((response: any) => {
           const outputAmount = BigNumber.from(response.currentTokenAmount).toString();
-          const test = (Number(outputAmount) / Math.pow(10, ETHER.decimals)).toLocaleString('fullwide', {
-            useGrouping: false,
-            maximumFractionDigits: ETHER.decimals,
-          });
+          const test = num2str(Number(outputAmount) / Math.pow(10, ETHER.decimals), ETHER.decimals);
           dispatch(receiveOutputAmount({ outputAmount: test }));
         });
       } else {
         return contract.buyView(currency.address, coinAmountBN).then((response: any) => {
           const outputAmount = BigNumber.from(response.currentTokenAmount).toString();
-          const test = (
-            Number(outputAmount) / Math.pow(10, ESW[chainId][0].decimals)
-          ).toLocaleString('fullwide', {
-            useGrouping: false,
-            maximumFractionDigits: ESW[chainId][0].decimals,
-          });
+          const test = num2str(
+            Number(outputAmount) / Math.pow(10, ESW[chainId][0].decimals),
+            ESW[chainId][0].decimals,
+          );
           dispatch(receiveOutputAmount({ outputAmount: test }));
         });
       }
