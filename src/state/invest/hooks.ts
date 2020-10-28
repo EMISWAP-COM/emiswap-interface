@@ -79,12 +79,14 @@ export function useInvestActionHandlers(): InvestActionHandlers {
 
   const onUserInput = useCallback(
     (field: Field, typedValue: string, currency: Token) => {
-      const minValue = 1 / Math.pow(10, currency.decimals);
-      if (Number(typedValue) > 0 && Number(typedValue) < minValue) {
-        typedValue = minValue.toLocaleString('fullwide', {
-          useGrouping: false,
-          maximumFractionDigits: currency.decimals,
-        });
+      if (currency) {
+        const minValue = 1 / Math.pow(10, currency.decimals);
+        if (Number(typedValue) > 0 && Number(typedValue) < minValue) {
+          typedValue = minValue.toLocaleString('fullwide', {
+            useGrouping: false,
+            maximumFractionDigits: currency.decimals,
+          });
+        }
       }
       dispatch(typeInput({ field, typedValue }));
       if (Number(typedValue) > 0) {
