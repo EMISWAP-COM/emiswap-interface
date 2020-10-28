@@ -4473,33 +4473,45 @@ export default {
         'https://1inch.exchange/assets/tokens/0x0000852600ceb001e08e00bc008be620d60031f2.png',
     },
     {
-      address: '0x8D71af014cD98344dfab1d56e48f21C44C17Ed0C',
+      address: '0xEe6CE89559d68719366C1a8150C9227910CA8B2F',
       chainId: 42,
       name: 'USDX stable coin',
       symbol: 'USDX',
       decimals: 18,
     },
     {
-      address: '0x48454087c643A471b2637Fa93550CD560A2CF712',
+      address: '0x685E323f912C1a5FE2Ae089D1a743942C458A9E3',
       chainId: 42,
-      name: 'USDY stable coin',
-      symbol: 'USDY',
+      name: 'EMRX',
+      symbol: 'EMRX',
       decimals: 8,
     },
-    // {
-    //   address: '0x6A9606c910D1D84420B2C1bf938050E46C23343C',
-    //   chainId: 42,
-    //   name: 'USDZ stable coin',
-    //   symbol: 'USDZ',
-    //   decimals: 6,
-    // },
     {
       chainId: 42,
-      address: '0x041d28579b0543e9929029f2952cdE816f9E95C8',
+      address: '0x6d1a403E147369A6a7B5F63Ef11cEeb1faB5002f',
+      decimals: 6,
+      symbol: 'USDC',
+      name: 'USDC',
+    },
+    {
+      chainId: 42,
+      address: '0x55f4C14f5837f1775E665Ca7ebd7457E8549050d',
+      decimals: 18,
+      symbol: 'WETH',
+      name: 'WETH',
+    },
+    {
+      chainId: 42,
+      address: '0xCfC833888943EC8d4b31bCCDe4d235368014161b',
       decimals: 8,
       symbol: 'WBTC',
       name: 'WBTC wraped bitcoin',
     },
+    // MockUSDX_deployed
+    // MockEMRX_deployed
+    // MockUSDC_deployed
+    // MockWETH_deployed
+    // MockWBTC_deployed
   ],
   logoURI: 'https://1inch.exchange/assets/logo.png',
 };
