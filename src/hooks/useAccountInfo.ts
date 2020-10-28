@@ -2,9 +2,9 @@ import { Contract } from '@ethersproject/contracts';
 import { BigNumber } from '@ethersproject/bignumber';
 import { useEffect, useMemo, useState } from 'react';
 import { useActiveWeb3React } from './index';
-import { getCrowdsaleContract, getVestingContract, getVaultContract } from '../utils'
-import { useTokenContract } from './useContract'
-import { NEVER_RELOAD, useSingleCallResult } from '../state/multicall/hooks'
+import { getCrowdsaleContract, getVaultContract, getVestingContract } from '../utils';
+import { useAllTokens } from './Tokens';
+import { useTransactionAdder } from '../state/transactions/hooks'
 
 const bn2num = (value: BigNumber): number => {
   return (
@@ -20,9 +20,7 @@ const roundToAny = (value: number, places: number): number => {
 
 export type ClaimCallback = null | (() => Promise<void>);
 
-export type tokenListResult = {
-  tokenList: string[];
-};
+export type tokenListResult = string[];
 
 export type profitInfo = {
   collectedTokens: number;
@@ -35,6 +33,9 @@ export type TokenVault = {
   collectedTokens: number;
   availableTokens: number;
   availableDAI: number;
+  symbol?: string;
+  name?: string;
+  decimals?: number;
 };
 
 export type TokenListVault = TokenVault[] | null;
@@ -52,7 +53,6 @@ export type EarningActionHandlers = {
   crowdSaleReferralRewardAcquired: number;
   crowdSaleReferralRewardAlreadyMinted: number;
   crowdSaleReferralRewardAvailableForMinting: number;
-  tokenList: TokenListVault;
 };
 
 export function useAccountInfo(): EarningActionHandlers {
@@ -74,7 +74,6 @@ export function useAccountInfo(): EarningActionHandlers {
     crowdSaleReferralRewardAvailableForMinting,
     setCrowdSaleReferralRewardAvailableForMinting,
   ] = useState(0);
-  const [tokenList, setTokenList] = useState<TokenListVault>(null);
 
   if (!library) {
     throw new Error('Failed to get a library');
@@ -95,12 +94,6 @@ export function useAccountInfo(): EarningActionHandlers {
     throw new Error('Failed to get a crowdsale contract');
   }
 
-  const contractVault: Contract | null = getVaultContract(library, account);
-
-  if (!contractVault) {
-    throw new Error('Failed to get a vault contract');
-  }
-
   useEffect(() => {
     if (!account) {
       setTotalAcquired(0);
@@ -115,7 +108,6 @@ export function useAccountInfo(): EarningActionHandlers {
       setCrowdSaleReferralRewardAcquired(0);
       setCrowdSaleReferralRewardAlreadyMinted(0);
       setCrowdSaleReferralRewardAvailableForMinting(0);
-      setTokenList(null);
     } else {
       contract.getMyStats(1).then((result: BigNumber[]) => {
         const crowdSaleAcquired = bn2num(result[0]);
@@ -176,45 +168,6 @@ export function useAccountInfo(): EarningActionHandlers {
           });
         });
       });
-      // contractVault.getTokenList().then((tokenListResult: string[]) => {
-      //   console.log('--tokenListResult---', tokenListResult);
-      //   Promise.all(
-      //     tokenListResult.map((address: string) => contractVault.getProfitbyToken(address)),
-      //   ).then(profitResult => {
-      //     console.log('--profitResult--', profitResult);
-      //     const tokenListArr: TokenListVault[] = tokenListResult.map((address: string, index) => {
-      //       return {
-      //         address,
-      //         ...profitResult[index],
-      //       };
-      //     });
-      //     console.log('--tokenListArr--', tokenListArr);
-      //     setTokenList(tokenListArr);
-      //   });
-      // });
-
-      // const tokenListResult = [
-      //   '0x8D71af014cD98344dfab1d56e48f21C44C17Ed0C',
-      //   '0x48454087c643A471b2637Fa93550CD560A2CF712',
-      // ];
-      // const resultProfitbyToken = {
-      //   collectedTokens: 15,
-      //   availableTokens: 5,
-      //   availableDAI: 20,
-      // };
-      // Promise.all(
-      //   tokenListResult.map((address: string) => Promise.resolve(resultProfitbyToken)),
-      // ).then((profitResult: profitInfo[]) => {
-      //   console.log('--profitResult--', profitResult);
-      //   const tokenListArr = tokenListResult.map((address: string, index) => {
-      //     return {
-      //       address,
-      //       ...profitResult[index],
-      //     };
-      //   });
-      //   console.log('--tokenListArr--', tokenListArr);
-      //   setTokenList(tokenListArr);
-      // });
     }
   }, [account, contract, contractCrowdSale]);
 
@@ -231,78 +184,64 @@ export function useAccountInfo(): EarningActionHandlers {
     crowdSaleReferralRewardAcquired,
     crowdSaleReferralRewardAlreadyMinted,
     crowdSaleReferralRewardAvailableForMinting,
-    tokenList,
   };
 }
 
 export function useAccountVaultInfo() {
   const { library, account } = useActiveWeb3React();
   const contractVault: Contract | null = getVaultContract(library, account);
+  const [tokenList, setTokenList] = useState(null);
+  const allTokens = useAllTokens();
 
   if (!contractVault) {
     throw new Error('Failed to get a vault contract');
   }
 
-  const tokenContract = useTokenContract('0x8D71af014cD98344dfab1d56e48f21C44C17Ed0C', false);
-
-  const tokenName = useSingleCallResult(
-    tokenContract,
-    'name',
-    undefined,
-    NEVER_RELOAD,
-  );
-  console.log('--tokenName--', tokenName)
-
-  // contractVault.getTokenList().then((tokenListResult: tokenListResult) => {
-  //   console.log('--tokenListResult---', tokenListResult);
-  //   Promise.all(
-  //     tokenListResult.tokenList.map((address: string) =>
-  //       contractVault.getProfitbyToken(address),
-  //     ),
-  //   ).then((profitResult: profitInfo[]) => {
-  //     console.log('--profitResult--', profitResult);
-  //     const tokenListArr: TokenListVault = tokenListResult.tokenList.map(
-  //       (address: string, index) => {
-  //         return {
-  //           address,
-  //           ...profitResult[index],
-  //         };
-  //       },
-  //     );
-  //     console.log('--tokenListArr--', tokenListArr);
-  //     setTokenList(tokenListArr);
-  //   });
-  // });
-
-  // const tokenListResult = {
-  //   tokenList: [
-  //     '0x8D71af014cD98344dfab1d56e48f21C44C17Ed0C',
-  //     '0x48454087c643A471b2637Fa93550CD560A2CF712',
-  //   ],
-  // };
-  // const resultProfitbyToken = {
-  //   collectedTokens: 15,
-  //   availableTokens: 5,
-  //   availableDAI: 20,
-  // };
-
-  // Promise.all(
-  //   tokenListResult.tokenList.map((address: string) => Promise.resolve(resultProfitbyToken)),
-  // ).then((profitResult: profitInfo[]) => {
-  //   console.log('--profitResult--', profitResult);
-  //   const tokenProfitList: TokenListVault = tokenListResult.tokenList.map(
-  //     (address: string, index) => {
-  //       // const tokenInfo = useToken(address);
-  //       return {
-  //         address,
-  //         ...profitResult[index],
-  //         // ...tokenInfo,
-  //       };
-  //     },
-  //   );
-  //   console.log('--tokenProfitList--', tokenProfitList);
-  //   setTokentProfitList(tokenProfitList);
-  // });
+  useMemo(() => {
+    if (!allTokens || !!allTokens.length) {
+      return;
+    }
+    return contractVault.getTokenList().then((tokenListResult: tokenListResult) => {
+      return Promise.all(
+        tokenListResult.map((address: string) => contractVault.getProfitbyToken(address)),
+      ).then((profitResult: profitInfo[]) => {
+        const tokenListArr = tokenListResult.map((address: string, index) => {
+          const token = allTokens['0x8D71af014cD98344dfab1d56e48f21C44C17Ed0C'];
+          const collectedTokensStr = BigNumber.from(profitResult[index].collectedTokens).toString();
+          const collectedTokens = (
+            Number(collectedTokensStr) / Math.pow(10, token.decimals)
+          ).toLocaleString('fullwide', {
+            useGrouping: false,
+            maximumFractionDigits: token.decimals,
+          });
+          const availableTokensStr = BigNumber.from(profitResult[index].availableTokens).toString();
+          const availableTokens = (
+            Number(availableTokensStr) / Math.pow(10, token.decimals)
+          ).toLocaleString('fullwide', {
+            useGrouping: false,
+            maximumFractionDigits: token.decimals,
+          });
+          const availableDAIStr = BigNumber.from(profitResult[index].availableDAI).toString();
+          const availableDAI = (
+            Number(availableDAIStr) / Math.pow(10, token.decimals)
+          ).toLocaleString('fullwide', {
+            useGrouping: false,
+            maximumFractionDigits: token.decimals,
+          });
+          return {
+            address,
+            collectedTokens,
+            availableTokens,
+            availableDAI,
+            ...allTokens[address],
+          };
+        });
+        setTokenList(tokenListArr);
+      });
+    });
+  }, [allTokens]);
+  console.log('---tokenList---', tokenList);
+  return { tokenList };
 }
 
 export function useClaimProfit(tokenList: string[]): any {
@@ -313,6 +252,7 @@ export function useClaimProfit(tokenList: string[]): any {
 
 export function useClaimProfitTokensCallback(tokenList: string[]): ClaimCallback {
   const { library, account } = useActiveWeb3React();
+  const addTransaction = useTransactionAdder();
 
   return useMemo(() => {
     return async function onClaimProfitTokens() {
@@ -328,6 +268,13 @@ export function useClaimProfitTokensCallback(tokenList: string[]): ClaimCallback
 
       const onSuccess = (response: any) => {
         console.log('--ClaimProfitTokens onSuccess--', response);
+        const withVersion = `Collect profit in Tokens`;
+
+        addTransaction(response, {
+          summary: withVersion,
+        });
+
+        return response.hash;
       };
 
       const onError = (error: any) => {
@@ -339,11 +286,12 @@ export function useClaimProfitTokensCallback(tokenList: string[]): ClaimCallback
         .then(onSuccess)
         .catch(onError);
     };
-  }, [library, account, tokenList]);
+  }, [library, account, tokenList, addTransaction]);
 }
 
 export function useClaimProfitDAICallback(tokenList: string[]): ClaimCallback {
   const { library, account } = useActiveWeb3React();
+  const addTransaction = useTransactionAdder();
 
   return useMemo(() => {
     return async function onClaimProfitDAI() {
@@ -359,6 +307,13 @@ export function useClaimProfitDAICallback(tokenList: string[]): ClaimCallback {
 
       const onSuccess = (response: any) => {
         console.log('--ClaimProfitDAI onSuccess--', response);
+        const withVersion = `Collect profit in DAI`;
+
+        addTransaction(response, {
+          summary: withVersion,
+        });
+
+        return response.hash;
       };
 
       const onError = (error: any) => {
@@ -370,5 +325,5 @@ export function useClaimProfitDAICallback(tokenList: string[]): ClaimCallback {
         .then(onSuccess)
         .catch(onError);
     };
-  }, [library, account, tokenList]);
+  }, [library, account, tokenList, addTransaction]);
 }

@@ -137,6 +137,8 @@ export const EmiVaultShare = ({ tokenList }) => {
       <AccountSectionHeader>
         <TYPE.mediumHeader>EmiVaultShare</TYPE.mediumHeader>
       </AccountSectionHeader>
+      {tokenList && (
+        <>
       <AccountSectionBody>
         <AccountSectionBodyPart>
           <AccountGroupingInfoTitleRow>
@@ -153,37 +155,33 @@ export const EmiVaultShare = ({ tokenList }) => {
               <span>Available to collect in DAI</span>
             </div>
             <div>
-              <span>Slected</span>
+              <span>Selected</span>
             </div>
           </AccountSectionTable>
         </AccountSectionBodyPart>
-        {Object.keys(tokenList).map((token, index) => (
-          <AccountSectionBodyPart key={token}>
+        {tokenList.map((token, index) => (
+          <AccountSectionBodyPart key={index}>
             <AccountGroupingInfoTitleRow>
               <span></span>
-              <span>{tokenList[token].symbol}</span>
+              <span>{token.symbol}</span>
             </AccountGroupingInfoTitleRow>
             <AccountSectionTable>
               <div>
                 <span>Collected</span>
-                <span>{(index += 1)}</span>
+                <span>{token.collectedTokens}</span>
               </div>
               <div>
                 <span>Available to collect in tokens</span>
-                <span>{tokenList[token].decimals}</span>
+                <span>{token.availableTokens}</span>
               </div>
               <div>
                 <span>Available to collect in DAI</span>
-                <span>{tokenList[token].decimals}</span>
+                <span>{token.availableDAI}</span>
               </div>
               <div>
-                <span>Slected</span>
+                <span>Selected</span>
                 <span>
-                  <input
-                    type={'checkbox'}
-                    id={tokenList[token].address}
-                    onChange={handleSelectedEmiToken}
-                  />
+                  <input type={'checkbox'} id={token.address} onChange={handleSelectedEmiToken} />
                 </span>
               </div>
             </AccountSectionTable>
@@ -226,6 +224,8 @@ export const EmiVaultShare = ({ tokenList }) => {
           Collect Profit in DAI
         </ButtonSecondary>
       </AccountSectionFooter>
+        </>
+        )}
     </>
   );
 };
