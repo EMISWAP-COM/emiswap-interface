@@ -1,46 +1,5 @@
 [
     {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "ESWtoken",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "uniswapFactory",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "referralStoreInput",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "wethToken",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "_foundationWallet",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "_securityWallet",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "_teamWallet",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "constructor"
-    },
-    {
       "anonymous": false,
       "inputs": [
         {
@@ -75,32 +34,74 @@
       "anonymous": false,
       "inputs": [
         {
-          "indexed": false,
+          "indexed": true,
           "internalType": "address",
-          "name": "account",
+          "name": "admin",
           "type": "address"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "amount",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint32",
-          "name": "coinId",
-          "type": "uint32"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "coinAmount",
-          "type": "uint256"
         }
       ],
-      "name": "Sell",
+      "name": "PriviledgeGranted",
       "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "admin",
+          "type": "address"
+        }
+      ],
+      "name": "PriviledgeRevoked",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "_uniswapFactory",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "_wethToken",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_admin",
+          "type": "address"
+        }
+      ],
+      "name": "addAdmin",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
     },
     {
       "inputs": [
@@ -127,9 +128,29 @@
       "name": "foundationWallet",
       "outputs": [
         {
-          "internalType": "address",
+          "internalType": "address payable",
           "name": "",
           "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_who",
+          "type": "address"
+        }
+      ],
+      "name": "isAdmin",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
         }
       ],
       "stateMutability": "view",
@@ -151,18 +172,23 @@
       "constant": true
     },
     {
-      "inputs": [],
-      "name": "securityWallet",
-      "outputs": [
+      "inputs": [
         {
           "internalType": "address",
-          "name": "",
+          "name": "_admin",
           "type": "address"
         }
       ],
-      "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "name": "removeAdmin",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
     },
     {
       "inputs": [],
@@ -182,6 +208,44 @@
       "stateMutability": "payable",
       "type": "receive",
       "payable": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "eswToken",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "uniswapFactory",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "referralStoreInput",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "wethToken",
+          "type": "address"
+        },
+        {
+          "internalType": "address payable",
+          "name": "_foundationWallet",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_teamWallet",
+          "type": "address"
+        }
+      ],
+      "name": "initialize",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
     },
     {
       "inputs": [],
@@ -238,9 +302,9 @@
       "name": "coinRatebyAddress",
       "outputs": [
         {
-          "internalType": "uint32",
+          "internalType": "uint256",
           "name": "rate",
-          "type": "uint32"
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -260,26 +324,6 @@
         {
           "internalType": "uint32",
           "name": "rate",
-          "type": "uint32"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function",
-      "constant": true
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint16",
-          "name": "index",
-          "type": "uint16"
-        }
-      ],
-      "name": "coinGetRate",
-      "outputs": [
-        {
-          "internalType": "uint32",
-          "name": "",
           "type": "uint32"
         }
       ],
