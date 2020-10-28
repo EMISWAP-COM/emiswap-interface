@@ -115,9 +115,11 @@ export const EmiVaultShare = ({ tokenList }) => {
   };
 
   const handleSelectedEmiToken = e => {
-    let selectedList = [...selectedTokenList, e.target.id];
-    if (selectedTokenList.includes(e.target.id)) {
+    let selectedList = selectedTokenList;
+    if (selectedList.includes(e.target.id)) {
       selectedList = selectedList.filter(key => key !== e.target.id);
+    } else {
+      selectedList = [...selectedTokenList, e.target.id];
     }
     setSelectedTokenList(selectedList);
   };

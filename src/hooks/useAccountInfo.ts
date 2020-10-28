@@ -1,10 +1,11 @@
 import { Contract } from '@ethersproject/contracts';
 import { BigNumber } from '@ethersproject/bignumber';
-import { useEffect, useMemo, useState } from 'react';
+import { Token, ZERO_ADDRESS } from '@uniswap/sdk';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useActiveWeb3React } from './index';
 import { getCrowdsaleContract, getVaultContract, getVestingContract } from '../utils';
 import { useAllTokens } from './Tokens';
-import { useTransactionAdder } from '../state/transactions/hooks'
+import { useTransactionAdder } from '../state/transactions/hooks';
 
 const bn2num = (value: BigNumber): number => {
   return (
@@ -12,6 +13,14 @@ const bn2num = (value: BigNumber): number => {
       .div(BigNumber.from('100000000000000'))
       .toNumber() / 10000
   );
+};
+
+const bn2str = (value: BigNumber, token: Token): string => {
+  const valueStr = BigNumber.from(value).toString();
+  return (Number(valueStr) / Math.pow(10, token.decimals)).toLocaleString('fullwide', {
+    useGrouping: false,
+    maximumFractionDigits: token.decimals,
+  });
 };
 
 const roundToAny = (value: number, places: number): number => {
@@ -23,16 +32,16 @@ export type ClaimCallback = null | (() => Promise<void>);
 export type tokenListResult = string[];
 
 export type profitInfo = {
-  collectedTokens: number;
-  availableTokens: number;
-  availableDAI: number;
+  collectedTokens: BigNumber;
+  availableTokens: BigNumber;
+  availableDAI: BigNumber;
 };
 
 export type TokenVault = {
   address: string;
-  collectedTokens: number;
-  availableTokens: number;
-  availableDAI: number;
+  collectedTokens: string;
+  availableTokens: string;
+  availableDAI: string;
   symbol?: string;
   name?: string;
   decimals?: number;
@@ -188,59 +197,59 @@ export function useAccountInfo(): EarningActionHandlers {
 }
 
 export function useAccountVaultInfo() {
-  const { library, account } = useActiveWeb3React();
+  const { chainId, library, account } = useActiveWeb3React();
   const contractVault: Contract | null = getVaultContract(library, account);
-  const [tokenList, setTokenList] = useState(null);
+  const [tokenList, setTokenList] = useState<TokenListVault>(null);
   const allTokens = useAllTokens();
 
   if (!contractVault) {
     throw new Error('Failed to get a vault contract');
   }
 
-  useMemo(() => {
-    if (!allTokens || !!allTokens.length) {
-      return;
-    }
-    return contractVault.getTokenList().then((tokenListResult: tokenListResult) => {
-      return Promise.all(
-        tokenListResult.map((address: string) => contractVault.getProfitbyToken(address)),
-      ).then((profitResult: profitInfo[]) => {
-        const tokenListArr = tokenListResult.map((address: string, index) => {
-          const token = allTokens['0x8D71af014cD98344dfab1d56e48f21C44C17Ed0C'];
-          const collectedTokensStr = BigNumber.from(profitResult[index].collectedTokens).toString();
-          const collectedTokens = (
-            Number(collectedTokensStr) / Math.pow(10, token.decimals)
-          ).toLocaleString('fullwide', {
-            useGrouping: false,
-            maximumFractionDigits: token.decimals,
+  const getTokenList = useCallback(
+    () =>
+      contractVault.getTokenList().then((tokenListResult: tokenListResult) => {
+        return Promise.all(
+          tokenListResult.map((address: string) => contractVault.getProfitbyToken(address)),
+        ).then((profitResult: profitInfo[]) => {
+          const tokenListArr: TokenListVault = tokenListResult.map((address: string, index) => {
+            let token = allTokens[address];
+            if (!token) {
+              token = new Token(chainId, ZERO_ADDRESS, 18, 'ZERO');
+            }
+            const collectedTokens = bn2str(profitResult[index].collectedTokens, token);
+            const availableTokens = bn2str(profitResult[index].availableTokens, token);
+            const availableDAI = bn2str(profitResult[index].availableDAI, token);
+            return {
+              address,
+              collectedTokens,
+              availableTokens,
+              availableDAI,
+              decimals: token.decimals,
+              symbol: token.symbol,
+            };
           });
-          const availableTokensStr = BigNumber.from(profitResult[index].availableTokens).toString();
-          const availableTokens = (
-            Number(availableTokensStr) / Math.pow(10, token.decimals)
-          ).toLocaleString('fullwide', {
-            useGrouping: false,
-            maximumFractionDigits: token.decimals,
-          });
-          const availableDAIStr = BigNumber.from(profitResult[index].availableDAI).toString();
-          const availableDAI = (
-            Number(availableDAIStr) / Math.pow(10, token.decimals)
-          ).toLocaleString('fullwide', {
-            useGrouping: false,
-            maximumFractionDigits: token.decimals,
-          });
-          return {
-            address,
-            collectedTokens,
-            availableTokens,
-            availableDAI,
-            ...allTokens[address],
-          };
+          return tokenListArr;
         });
-        setTokenList(tokenListArr);
-      });
-    });
-  }, [allTokens]);
-  console.log('---tokenList---', tokenList);
+      }),
+    [allTokens, chainId, contractVault],
+  );
+
+  let myExpensiveResultObject = useMemo(async () => {
+    return await getTokenList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const getResult = async () => {
+    if (!allTokens || !!allTokens.length) {
+      setTokenList(null);
+    } else {
+      const result = await myExpensiveResultObject;
+      setTokenList(result);
+    }
+  };
+
+  getResult();
   return { tokenList };
 }
 

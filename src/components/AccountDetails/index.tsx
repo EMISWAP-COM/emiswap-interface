@@ -232,7 +232,6 @@ export default function AccountDetails({
   const theme = useContext(ThemeContext);
   const dispatch = useDispatch<AppDispatch>();
   const { tokenList } = useAccountVaultInfo();
-  console.log('----tokenList---', tokenList);
   const {
     totalAcquired,
     totalAcquiredInDAI,
