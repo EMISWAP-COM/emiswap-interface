@@ -30,6 +30,7 @@ import AppBody from '../AppBody';
 import ReferralLink from '../../components/RefferalLink';
 import { SwapPoolTabs } from '../../components/NavigationTabs';
 import { EMISWAP_CROWDSALE_ADDRESS } from '../../constants/abis/crowdsale';
+<<<<<<< HEAD
 import { Redirect, RouteComponentProps } from 'react-router-dom';
 import { MAX_SIGNIFICANT_DECIMALS } from '../../constants';
 
@@ -37,6 +38,9 @@ export function RedirectPathToInvestOnly({ location }: RouteComponentProps) {
   return <Redirect to={{ ...location, pathname: '/invest' }} />;
 }
 
+=======
+import { MAX_SIGNIFICANT_DECIMALS } from '../../constants';
+>>>>>>> 12f2a0d... Fix output round
 
 const Invest = () => {
   useDefaultsFromURLSearch();
