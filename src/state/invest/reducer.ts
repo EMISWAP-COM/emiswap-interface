@@ -62,7 +62,8 @@ export default createReducer<InvestState>(initialState, builder =>
         // the case where we have to invest the order
         return {
           ...state,
-          // independentField: state.independentField === Field.INPUT ? Field.OUTPUT : Field.INPUT,
+          typedValue: '',
+          outputAmount: '',
           independentField: Field.INPUT,
           [field]: { currencyId: currencyId },
           [otherField]: { currencyId: state[field].currencyId },
@@ -71,6 +72,8 @@ export default createReducer<InvestState>(initialState, builder =>
         // the normal case
         return {
           ...state,
+          typedValue: '',
+          outputAmount: '',
           [field]: { currencyId: currencyId },
         };
       }
