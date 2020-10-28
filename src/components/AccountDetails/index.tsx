@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { ExternalLink as LinkIcon } from 'react-feather';
 import styled, { ThemeContext } from 'styled-components';
 import { useActiveWeb3React } from '../../hooks';
-import useAccountInfo from '../../hooks/useAccountInfo';
+import { useAccountInfo, useAccountVaultInfo } from '../../hooks/useAccountInfo';
 import { AppDispatch } from '../../state';
 import { clearAllTransactions } from '../../state/transactions/actions';
 import { getEtherscanLink, shortenAddress } from '../../utils';
@@ -231,6 +231,7 @@ export default function AccountDetails({
   const { chainId, account, connector } = useActiveWeb3React();
   const theme = useContext(ThemeContext);
   const dispatch = useDispatch<AppDispatch>();
+  const { tokenList } = useAccountVaultInfo();
   const {
     totalAcquired,
     totalAcquiredInDAI,
@@ -421,7 +422,7 @@ export default function AccountDetails({
               nextUnlockAmount={nextUnlockAmount}
               nextUnlockDate={nextUnlockDate}
             />
-            <EmiVaultShare />
+            <EmiVaultShare tokenList={tokenList} />
           </YourAccount>
           {!!pendingTransactions.length || !!confirmedTransactions.length ? (
             <LowerSection>

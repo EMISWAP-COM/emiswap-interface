@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { TYPE } from '../../theme';
 import { ButtonSecondary } from '../Button';
+import { useClaimProfit } from '../../hooks/useAccountInfo';
 
 const AccountSectionHeader = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
@@ -105,56 +106,41 @@ const AccountSectionFooter = styled.div`
   }
 `;
 
-const TABLE_DATA = [
-  {
-    id: 1,
-    name: 'Token A',
-    cellected: true,
-    collect_token: 10,
-    collect_dai: 100,
-    slected: true,
-  },
-  {
-    id: 2,
-    name: 'Token B',
-    cellected: true,
-    collect_token: 5,
-    collect_dai: 0.5,
-    slected: true,
-  },
-  {
-    id: 3,
-    name: 'Token C',
-    cellected: true,
-    collect_token: 12.567,
-    collect_dai: 33.45,
-    slected: true,
-  },
-  {
-    id: 4,
-    name: 'Token D',
-    cellected: true,
-    collect_token: 0.133,
-    collect_dai: 0.2666,
-    slected: true,
-  },
-  {
-    id: 5,
-    name: 'Token E',
-    cellected: true,
-    collect_token: 120,
-    collect_dai: 0.000001,
-    slected: true,
-  },
-];
+export const EmiVaultShare = ({ tokenList }) => {
+  const [selectedTokenList, setSelectedTokenList] = useState([]);
+  const [claimProfitTokensCallback, claimProfitDAICallback] = useClaimProfit(selectedTokenList);
 
-export const EmiVaultShare = () => {
-  const getTotalSum = (data, key) => data.reduce((sum, elem) => sum + elem[key], 0);
+  const getTotalSum = (data, key) => {
+    return Object.values(data).reduce((sum, token) => (sum += token[key]), 0);
+  };
+
+  const handleSelectedEmiToken = e => {
+    let selectedList = selectedTokenList;
+    if (selectedList.includes(e.target.id)) {
+      selectedList = selectedList.filter(key => key !== e.target.id);
+    } else {
+      selectedList = [...selectedTokenList, e.target.id];
+    }
+    setSelectedTokenList(selectedList);
+  };
+
+  const handleClaimProfitTokens = () => {
+    console.log('--selectedTokenList--', selectedTokenList);
+    claimProfitTokensCallback(selectedTokenList);
+  };
+
+  const handleClaimProfitDAI = () => {
+    console.log('--selectedTokenList--', selectedTokenList);
+    claimProfitDAICallback(selectedTokenList);
+  };
+
   return (
     <>
       <AccountSectionHeader>
         <TYPE.mediumHeader>EmiVaultShare</TYPE.mediumHeader>
       </AccountSectionHeader>
+      {tokenList && (
+        <>
       <AccountSectionBody>
         <AccountSectionBodyPart>
           <AccountGroupingInfoTitleRow>
@@ -171,33 +157,33 @@ export const EmiVaultShare = () => {
               <span>Available to collect in DAI</span>
             </div>
             <div>
-              <span>Slected</span>
+              <span>Selected</span>
             </div>
           </AccountSectionTable>
         </AccountSectionBodyPart>
-        {TABLE_DATA.map((token, index) => (
-          <AccountSectionBodyPart key={token.name + index}>
+        {tokenList.map((token, index) => (
+          <AccountSectionBodyPart key={index}>
             <AccountGroupingInfoTitleRow>
               <span></span>
-              <span>{token.name}</span>
+              <span>{token.symbol}</span>
             </AccountGroupingInfoTitleRow>
             <AccountSectionTable>
               <div>
                 <span>Collected</span>
-                <span>{token.cellected}</span>
+                <span>{token.collectedTokens}</span>
               </div>
               <div>
                 <span>Available to collect in tokens</span>
-                <span>{token.collect_token}</span>
+                <span>{token.availableTokens}</span>
               </div>
               <div>
                 <span>Available to collect in DAI</span>
-                <span>{token.collect_dai}</span>
+                <span>{token.availableDAI}</span>
               </div>
               <div>
-                <span>Slected</span>
+                <span>Selected</span>
                 <span>
-                  <input type={'checkbox'} />
+                  <input type={'checkbox'} id={token.address} onChange={handleSelectedEmiToken} />
                 </span>
               </div>
             </AccountSectionTable>
@@ -208,28 +194,40 @@ export const EmiVaultShare = () => {
           <AccountSectionTable>
             <div>
               <span>Collected</span>
-              <span></span>
+              <span>-</span>
             </div>
             <div>
               <span>Available to collect in tokens</span>
-              <span></span>
+              <span>-</span>
             </div>
             <div>
               <span>Available to collect in DAI</span>
-              <span>{getTotalSum(TABLE_DATA, 'collect_dai')}</span>
+              <span>{getTotalSum(tokenList, 'decimals')}</span>
             </div>
             <div></div>
           </AccountSectionTable>
         </AccountSectionBodyPart>
       </AccountSectionBody>
       <AccountSectionFooter>
-        <ButtonSecondary padding="4px" width="auto" margin="0px 10px 10px 0px">
+        <ButtonSecondary
+          padding="4px"
+          width="auto"
+          margin="0px 10px 10px 0px"
+          onClick={handleClaimProfitTokens}
+        >
           Collect Profit in Tokens
         </ButtonSecondary>
-        <ButtonSecondary padding="4px" width="auto" margin="0px 10px 10px 0px">
+        <ButtonSecondary
+          padding="4px"
+          width="auto"
+          margin="0px 10px 10px 0px"
+          onClick={handleClaimProfitDAI}
+        >
           Collect Profit in DAI
         </ButtonSecondary>
       </AccountSectionFooter>
+        </>
+        )}
     </>
   );
-}
+};
