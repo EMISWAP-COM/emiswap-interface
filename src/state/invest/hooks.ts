@@ -58,16 +58,6 @@ export function useInvestActionHandlers(): InvestActionHandlers {
           currencyId: currency.address,
         }),
       );
-      const minValue = 1 / Math.pow(10, currency.decimals);
-      if (Number(amount) > 0 && Number(amount) < minValue) {
-        amount = minValue.toLocaleString('fullwide', {
-          useGrouping: false,
-          maximumFractionDigits: currency.decimals,
-        });
-        dispatch(typeInput({ field, typedValue: amount }));
-      }
-      dispatch(receiveOutputAmount({ outputAmount: '' }));
-      executeBuyCoinAmount(currency, Number(amount));
     },
     [dispatch, executeBuyCoinAmount],
   );
