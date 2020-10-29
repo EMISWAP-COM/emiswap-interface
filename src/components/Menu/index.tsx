@@ -110,21 +110,21 @@ export default function Menu() {
             <Info size={14} />
             About
           </MenuItem>
-          <MenuItem id="link" href={process.env.REACT_APP_CODE_LINK} target="_blank">
-            <Code size={14} />
-            Code
-          </MenuItem>
           <MenuItem id="link" href="https://crowdsale.emidao.org/en" target="_blank">
             <BookOpen size={14} />
             Crowdsale Info
           </MenuItem>
+          <MenuItem id="link" href="https://crowdsale.emidao.org/magic-nft" target="_blank">
+            <MessageCircle size={14} />
+            NFT Magic EmiCards
+          </MenuItem>
+          <MenuItem id="link" href={process.env.REACT_APP_CODE_LINK} target="_blank">
+            <Code size={14} />
+            Code
+          </MenuItem>
           <MenuItem id="link" href="https://discord.gg/vUGBEun" target="_blank">
             <MessageCircle size={14} />
             Discord
-          </MenuItem>
-          <MenuItem id="link" href={process.env.PUBLIC_URL + '/docs/NFT_Magic_EmiCards.pdf'} target="_blank">
-            <MessageCircle size={14} />
-            NFT Magic EmiCards
           </MenuItem>
           <MenuItem id="link" href="https://crowdsale.emidao.org/whitepaper" target="_blank">
             <BookOpen size={14} />

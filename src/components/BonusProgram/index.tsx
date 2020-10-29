@@ -64,8 +64,7 @@ export default function BonusProgram(props) {
       <ButtonPrimary
         onClick={() => {
           //FIXMI Поправить
-          window.open(process.env.PUBLIC_URL + '/docs/NFT_Magic_EmiCards.pdf', '');
-          // window.location.href = process.env.PUBLIC_URL + '/docs/NFT_Magic_EmiCards.pdf';
+          window.open('https://crowdsale.emidao.org/magic-nft', '');
         }}
         id="nft-button"
         style={{ margin: '10px 0 0 0' }}
