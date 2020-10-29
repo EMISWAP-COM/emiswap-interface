@@ -7,6 +7,7 @@ import { AutoRow } from '../../components/Row';
 import { ONE_BIPS } from '../../constants';
 import { Field } from '../../state/mint/actions';
 import { TYPE } from '../../theme';
+import { tokenAmountToString } from '../../utils/formats';
 
 export const PoolPriceBar = ({
   currencies,
@@ -24,13 +25,13 @@ export const PoolPriceBar = ({
     <AutoColumn gap="md">
       <AutoRow justify="space-around" gap="4px">
         <AutoColumn justify="center">
-          <TYPE.black>{price?.toSignificant(6) ?? '0'}</TYPE.black>
+          <TYPE.black>{tokenAmountToString(price) ?? '0'}</TYPE.black>
           <Text fontWeight={500} fontSize={14} color={theme.text2} pt={1}>
             {currencies[Field.CURRENCY_B]?.symbol} per {currencies[Field.CURRENCY_A]?.symbol}
           </Text>
         </AutoColumn>
         <AutoColumn justify="center">
-          <TYPE.black>{price?.invert().toSignificant(6) ?? '0'}</TYPE.black>
+          <TYPE.black>{tokenAmountToString(price?.invert()) ?? '0'}</TYPE.black>
           <Text fontWeight={500} fontSize={14} color={theme.text2} pt={1}>
             {currencies[Field.CURRENCY_A]?.symbol} per {currencies[Field.CURRENCY_B]?.symbol}
           </Text>

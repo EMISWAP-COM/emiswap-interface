@@ -11,6 +11,7 @@ import { RowBetween, RowFixed } from '../Row';
 import FormattedPriceImpact from './FormattedPriceImpact';
 import { SectionBreak } from './styleds';
 import SwapRoute from './SwapRoute';
+import { tokenAmountToString } from '../../utils/formats';
 
 function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippage: number }) {
   const theme = useContext(ThemeContext);
@@ -30,7 +31,7 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
           </RowFixed>
           <RowFixed>
             <TYPE.black color={theme.text1} fontSize={14}>
-              {`${slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(4)} ${
+              {`${tokenAmountToString(slippageAdjustedAmounts[Field.OUTPUT], 4)} ${
                 trade.outputAmount.token.symbol
               }` ?? '-'}
             </TYPE.black>

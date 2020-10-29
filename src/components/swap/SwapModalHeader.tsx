@@ -10,6 +10,7 @@ import { AutoColumn } from '../Column';
 import { RowBetween, RowFixed } from '../Row';
 import CurrencyLogo from '../CurrencyLogo';
 import { TruncatedText } from './styleds';
+import { tokenAmountToString } from '../../utils/formats';
 
 export default function SwapModalHeader({
   currencies,
@@ -64,7 +65,7 @@ export default function SwapModalHeader({
           <TYPE.italic textAlign="left" style={{ width: '100%' }}>
             {`Output is estimated. You will receive at least `}
             <b>
-              {slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(6)}{' '}
+              {tokenAmountToString(slippageAdjustedAmounts[Field.OUTPUT])}{' '}
               {currencies[Field.OUTPUT]?.symbol}
             </b>
             {' or the transaction will revert.'}
@@ -73,7 +74,7 @@ export default function SwapModalHeader({
           <TYPE.italic textAlign="left" style={{ width: '100%' }}>
             {`Input is estimated. You will sell at most `}
             <b>
-              {slippageAdjustedAmounts[Field.INPUT]?.toSignificant(6)}{' '}
+              {tokenAmountToString(slippageAdjustedAmounts[Field.INPUT])}{' '}
               {currencies[Field.INPUT]?.symbol}
             </b>
             {' or the transaction will revert.'}

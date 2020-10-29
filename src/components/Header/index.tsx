@@ -19,6 +19,7 @@ import Menu from '../Menu';
 
 import Row, { RowBetween } from '../Row';
 import Web3Status from '../Web3Status';
+import { tokenAmountToString } from '../../utils/formats';
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -175,7 +176,7 @@ export default function Header() {
                     pr="1.125rem"
                     fontWeight={450}
                   >
-                    {userEthBalance?.toSignificant(4)} ETH
+                    {tokenAmountToString(userEthBalance, 4)} ETH
                   </BalanceText>
                 </>
               ) : null}

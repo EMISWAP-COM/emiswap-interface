@@ -5,6 +5,7 @@ import { Repeat } from 'react-feather';
 import { Text } from 'rebass';
 import { ThemeContext } from 'styled-components';
 import { StyledBalanceMaxMini } from './styleds';
+import { tokenAmountToString } from '../../utils/formats';
 
 interface TradePriceProps {
   price?: Price;
@@ -23,7 +24,7 @@ export default function TradePrice({
 }: TradePriceProps) {
   const theme = useContext(ThemeContext);
 
-  const formattedPrice = showInverted ? price?.toSignificant(6) : price?.invert()?.toSignificant(6);
+  const formattedPrice = showInverted ? tokenAmountToString(price) : tokenAmountToString(price?.invert());
 
   const show = Boolean(inputCurrency && outputCurrency);
   const label = showInverted

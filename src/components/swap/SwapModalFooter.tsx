@@ -12,6 +12,7 @@ import QuestionHelper from '../QuestionHelper';
 import { AutoRow, RowBetween, RowFixed } from '../Row';
 import FormattedPriceImpact from './FormattedPriceImpact';
 import { StyledBalanceMaxMini } from './styleds';
+import { tokenAmountToString } from '../../utils/formats';
 
 export default function SwapModalFooter({
   trade,
@@ -77,7 +78,7 @@ export default function SwapModalFooter({
           </RowFixed>
           <RowFixed>
             <TYPE.black fontSize={14}>
-              {slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(4) ?? '-'}
+              {tokenAmountToString(slippageAdjustedAmounts[Field.OUTPUT], 4) ?? '-'}
             </TYPE.black>
             {parsedAmounts[Field.OUTPUT] && parsedAmounts[Field.INPUT] && (
               <TYPE.black fontSize={14} marginLeft={'4px'}>

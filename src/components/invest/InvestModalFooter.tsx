@@ -8,6 +8,7 @@ import { ButtonError } from '../Button';
 import { AutoColumn } from '../Column';
 import { AutoRow, RowBetween } from '../Row';
 import { StyledBalanceMaxMini } from './styleds';
+import { tokenAmountToString } from '../../utils/formats';
 
 export default function InvestModalFooter({
   showInverted,
@@ -30,12 +31,12 @@ export default function InvestModalFooter({
   let price;
   if (!showInverted) {
     rate = parsedAmounts[Field.OUTPUT]
-      ? parsedAmounts[Field.INPUT]?.divide(parsedAmounts[Field.OUTPUT]).toSignificant(6)
+      ? tokenAmountToString(parsedAmounts[Field.INPUT]?.divide(parsedAmounts[Field.OUTPUT]))
       : null;
     price = `${rate} ${currencies[Field.INPUT]?.symbol} / ${currencies[Field.OUTPUT]?.symbol}`;
   } else {
     rate = parsedAmounts[Field.INPUT]
-      ? parsedAmounts[Field.OUTPUT]?.divide(parsedAmounts[Field.INPUT]).toSignificant(6)
+      ? tokenAmountToString(parsedAmounts[Field.OUTPUT]?.divide(parsedAmounts[Field.INPUT]))
       : null;
     price = `${rate} ${currencies[Field.OUTPUT]?.symbol} / ${currencies[Field.INPUT]?.symbol}`;
   }

@@ -6,6 +6,7 @@ import { Text } from 'rebass';
 import { ThemeContext } from 'styled-components';
 import { StyledBalanceMaxMini } from './styleds';
 import { Field } from '../../state/invest/actions';
+import { tokenAmountToString } from '../../utils/formats';
 
 interface TradePriceProps {
   parsedAmounts?: { [field in Field]?: TokenAmount };
@@ -27,11 +28,11 @@ export default function TradePrice({
   let formattedPrice;
   if (!showInverted) {
     formattedPrice = parsedAmounts[Field.OUTPUT]
-      ? parsedAmounts[Field.INPUT]?.divide(parsedAmounts[Field.OUTPUT]).toSignificant(6)
+      ? tokenAmountToString(parsedAmounts[Field.INPUT]?.divide(parsedAmounts[Field.OUTPUT]))
       : null;
   } else {
     formattedPrice = parsedAmounts[Field.INPUT]
-      ? parsedAmounts[Field.OUTPUT]?.divide(parsedAmounts[Field.INPUT]).toSignificant(6)
+      ? tokenAmountToString(parsedAmounts[Field.OUTPUT]?.divide(parsedAmounts[Field.INPUT]))
       : null;
   }
 

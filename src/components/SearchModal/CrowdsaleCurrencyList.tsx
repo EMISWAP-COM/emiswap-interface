@@ -10,7 +10,7 @@ import { RowFixed } from '../Row';
 import CurrencyLogo from '../CurrencyLogo';
 import { StyledFixedSizeList, StyledMenuItem } from './styleds';
 import Loader from '../Loader';
-import { MAX_SIGNIFICANT_DECIMALS } from '../../constants';
+import { tokenAmountToString } from '../../utils/formats';
 
 function currencyKey(currency: Token): string {
   return currency instanceof Token ? currency.address : currency === ETHER ? 'ETHER' : '';
@@ -70,7 +70,7 @@ export default function CrowdsaleCurrencyList({
                     </Text>
                   </ButtonSecondary>
                 ) : balance ? (
-                  balance.toSignificant(MAX_SIGNIFICANT_DECIMALS)
+                  tokenAmountToString(balance)
                 ) : (
                   '-'
                 )}

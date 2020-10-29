@@ -7,6 +7,7 @@ import {
 } from '../constants';
 import { Field } from '../state/swap/actions';
 import { basisPointsToPercent } from './index';
+import { tokenAmountToString } from './formats';
 
 const BASE_FEE = new Percent(JSBI.BigInt(30), JSBI.BigInt(10000));
 const ONE_HUNDRED_PERCENT = new Percent(JSBI.BigInt(10000), JSBI.BigInt(10000));
@@ -79,10 +80,10 @@ export function formatExecutionPrice(trade?: Trade, inverted?: boolean): string 
     return '';
   }
   return inverted
-    ? `${trade.executionPrice.invert().toSignificant(6)} ${trade.inputAmount.token.symbol} / ${
+    ? `${tokenAmountToString(trade.executionPrice.invert())} ${trade.inputAmount.token.symbol} / ${
         trade.outputAmount.token.symbol
       }`
-    : `${trade.executionPrice.toSignificant(6)} ${trade.outputAmount.token.symbol} / ${
+    : `${tokenAmountToString(trade.executionPrice)} ${trade.outputAmount.token.symbol} / ${
         trade.inputAmount.token.symbol
       }`;
 }

@@ -16,6 +16,7 @@ import { FadedSpan, StyledFixedSizeList, StyledMenuItem } from './styleds';
 import Loader from '../Loader';
 import { isDefaultToken } from '../../utils';
 import { currencyKey } from '../../utils/currencyId';
+import { tokenAmountToString } from '../../utils/formats';
 
 export default function CurrencyList({
   currencies,
@@ -107,7 +108,7 @@ export default function CurrencyList({
                     </Text>
                   </ButtonSecondary>
                 ) : balance ? (
-                  balance.toSignificant(6)
+                  tokenAmountToString(balance)
                 ) : (
                   '-'
                 )}

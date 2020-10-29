@@ -34,6 +34,7 @@ import { Field } from '../../state/burn/actions';
 import { useWalletModalToggle } from '../../state/application/hooks';
 import { useUserSlippageTolerance } from '../../state/user/hooks';
 import { BigNumber } from '@ethersproject/bignumber';
+import { tokenAmountToString } from '../../utils/formats';
 
 export default function RemoveLiquidity({
   history,
@@ -79,15 +80,15 @@ export default function RemoveLiquidity({
     [Field.LIQUIDITY]:
       independentField === Field.LIQUIDITY
         ? typedValue
-        : parsedAmounts[Field.LIQUIDITY]?.toSignificant(6) ?? '',
+        : tokenAmountToString(parsedAmounts[Field.LIQUIDITY]) ?? '',
     [Field.CURRENCY_A]:
       independentField === Field.CURRENCY_A
         ? typedValue
-        : parsedAmounts[Field.CURRENCY_A]?.toSignificant(6) ?? '',
+        : tokenAmountToString(parsedAmounts[Field.CURRENCY_A]) ?? '',
     [Field.CURRENCY_B]:
       independentField === Field.CURRENCY_B
         ? typedValue
-        : parsedAmounts[Field.CURRENCY_B]?.toSignificant(6) ?? '',
+        : tokenAmountToString(parsedAmounts[Field.CURRENCY_B]) ?? '',
   };
 
   const atMaxAmount = parsedAmounts[Field.LIQUIDITY_PERCENT]?.equalTo(new Percent('1'));
@@ -251,11 +252,11 @@ export default function RemoveLiquidity({
           addTransaction(response, {
             summary:
               'Remove ' +
-              parsedAmounts[Field.CURRENCY_A]?.toSignificant(3) +
+              tokenAmountToString(parsedAmounts[Field.CURRENCY_A], 3) +
               ' ' +
               currencyA?.symbol +
               ' and ' +
-              parsedAmounts[Field.CURRENCY_B]?.toSignificant(3) +
+              tokenAmountToString(parsedAmounts[Field.CURRENCY_B], 3) +
               ' ' +
               currencyB?.symbol,
           });
@@ -281,7 +282,7 @@ export default function RemoveLiquidity({
       <AutoColumn gap={'md'} style={{ marginTop: '20px' }}>
         <RowBetween align="flex-end">
           <Text fontSize={24} fontWeight={500}>
-            {parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)}
+            {tokenAmountToString(parsedAmounts[Field.CURRENCY_A])}
           </Text>
           <RowFixed gap="4px">
             <CurrencyLogo currency={currencyA} size={'24px'} />
@@ -295,7 +296,7 @@ export default function RemoveLiquidity({
         </RowFixed>
         <RowBetween align="flex-end">
           <Text fontSize={24} fontWeight={500}>
-            {parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)}
+            {tokenAmountToString(parsedAmounts[Field.CURRENCY_B])}
           </Text>
           <RowFixed gap="4px">
             <CurrencyLogo currency={currencyB} size={'24px'} />
@@ -323,7 +324,7 @@ export default function RemoveLiquidity({
           <RowFixed>
             <DoubleCurrencyLogo currency0={currencyA} currency1={currencyB} margin={true} />
             <Text fontWeight={500} fontSize={16}>
-              {parsedAmounts[Field.LIQUIDITY]?.toSignificant(6)}
+              {tokenAmountToString(parsedAmounts[Field.LIQUIDITY])}
             </Text>
           </RowFixed>
         </RowBetween>
@@ -334,14 +335,14 @@ export default function RemoveLiquidity({
                 Price
               </Text>
               <Text fontWeight={500} fontSize={16} color={theme.text1}>
-                1 {currencyA?.symbol} = {tokenA ? pair.priceOf(tokenA).toSignificant(6) : '-'}{' '}
+                1 {currencyA?.symbol} = {tokenA ? tokenAmountToString(pair.priceOf(tokenA)) : '-'}{' '}
                 {currencyB?.symbol}
               </Text>
             </RowBetween>
             <RowBetween>
               <div />
               <Text fontWeight={500} fontSize={16} color={theme.text1}>
-                1 {currencyB?.symbol} = {tokenB ? pair.priceOf(tokenB).toSignificant(6) : '-'}{' '}
+                1 {currencyB?.symbol} = {tokenB ? tokenAmountToString(pair.priceOf(tokenB)) : '-'}{' '}
                 {currencyA?.symbol}
               </Text>
             </RowBetween>
@@ -357,9 +358,9 @@ export default function RemoveLiquidity({
     );
   }
 
-  const pendingText = `Removing ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)} ${
+  const pendingText = `Removing ${tokenAmountToString(parsedAmounts[Field.CURRENCY_A])} ${
     currencyA?.symbol
-  } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)} ${currencyB?.symbol}`;
+  } and ${tokenAmountToString(parsedAmounts[Field.CURRENCY_B])} ${currencyB?.symbol}`;
 
   const liquidityPercentChangeCallback = useCallback(
     (value: number) => {
@@ -567,7 +568,7 @@ export default function RemoveLiquidity({
                 <RowBetween>
                   Price:
                   <div>
-                    1 {currencyA?.symbol} = {tokenA ? pair.priceOf(tokenA).toSignificant(6) : '-'}{' '}
+                    1 {currencyA?.symbol} = {tokenA ? tokenAmountToString(pair.priceOf(tokenA)) : '-'}{' '}
                     {currencyB?.symbol}
                   </div>
                 </RowBetween>
@@ -575,12 +576,7 @@ export default function RemoveLiquidity({
                   <div />
                   <div>
                     1 {currencyB?.symbol} ={' '}
-                    {tokenB
-                      ? pair
-                          .priceOf(tokenB)
-                          .invert()
-                          .toSignificant(6)
-                      : '-'}{' '}
+                    {tokenB ? tokenAmountToString(pair.priceOf(tokenB).invert()) : '-'}{' '}
                     {currencyA?.symbol}
                   </div>
                 </RowBetween>
