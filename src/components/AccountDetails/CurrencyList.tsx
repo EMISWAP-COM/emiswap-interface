@@ -13,6 +13,7 @@ import CurrencyLogo from '../CurrencyLogo';
 import Loader from '../Loader';
 
 import { StyledFixedSizeList, StyledMenuItem } from './styleds';
+import { tokenAmountToString } from '../../utils/formats';
 
 type CurrencyListProps = {
   currencies: Token[];
@@ -81,7 +82,7 @@ const CurrencyList = ({
                       </Text>
                     </ButtonSecondary>
                   ) : balance ? (
-                    balance.toSignificant(6)
+                    tokenAmountToString(balance)
                   ) : (
                     '-'
                   )}

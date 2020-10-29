@@ -20,6 +20,7 @@ import CurrencyLogo from '../CurrencyLogo';
 import DoubleCurrencyLogo from '../DoubleLogo';
 import { AutoRow, RowBetween, RowFixed } from '../Row';
 import { Dots } from '../swap/styleds';
+import { tokenAmountToString } from '../../utils/formats';
 
 export const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -87,7 +88,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
               </RowFixed>
               <RowFixed>
                 <Text fontWeight={500} fontSize={20}>
-                  {userPoolBalance ? userPoolBalance.toSignificant(4) : '-'}
+                  {userPoolBalance ? tokenAmountToString(userPoolBalance, 4) : '-'}
                 </Text>
               </RowFixed>
             </FixedHeightRow>
@@ -99,7 +100,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
                 {token0Deposited ? (
                   <RowFixed>
                     <Text color="#888D9B" fontSize={16} fontWeight={500} marginLeft={'6px'}>
-                      {token0Deposited?.toSignificant(6)}
+                      {tokenAmountToString(token0Deposited)}
                     </Text>
                   </RowFixed>
                 ) : (
@@ -113,7 +114,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
                 {token1Deposited ? (
                   <RowFixed>
                     <Text color="#888D9B" fontSize={16} fontWeight={500} marginLeft={'6px'}>
-                      {token1Deposited?.toSignificant(6)}
+                      {tokenAmountToString(token1Deposited)}
                     </Text>
                   </RowFixed>
                 ) : (
@@ -196,7 +197,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
               {token0Deposited ? (
                 <RowFixed>
                   <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
-                    {token0Deposited?.toSignificant(6)}
+                    {tokenAmountToString(token0Deposited)}
                   </Text>
                   <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={currency0} />
                 </RowFixed>
@@ -214,7 +215,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
               {token1Deposited ? (
                 <RowFixed>
                   <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
-                    {token1Deposited?.toSignificant(6)}
+                    {tokenAmountToString(token1Deposited)}
                   </Text>
                   <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={currency1} />
                 </RowFixed>
@@ -227,7 +228,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
                 Your pool tokens:
               </Text>
               <Text fontSize={16} fontWeight={500}>
-                {userPoolBalance ? userPoolBalance.toSignificant(4) : '-'}
+                {userPoolBalance ? tokenAmountToString(userPoolBalance, 4) : '-'}
               </Text>
             </FixedHeightRow>
             <FixedHeightRow>

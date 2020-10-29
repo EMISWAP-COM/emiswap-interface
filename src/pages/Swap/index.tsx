@@ -18,7 +18,11 @@ import SwapModalFooter from '../../components/swap/SwapModalFooter';
 import SwapModalHeader from '../../components/swap/SwapModalHeader';
 import TradePrice from '../../components/swap/TradePrice';
 import { TokenWarningCards } from '../../components/TokenWarningCard';
-import { BETTER_TRADE_LINK_THRESHOLD, INITIAL_ALLOWED_SLIPPAGE } from '../../constants';
+import {
+  BETTER_TRADE_LINK_THRESHOLD,
+  INITIAL_ALLOWED_SLIPPAGE,
+  MAX_NUM_DECIMALS,
+} from '../../constants';
 import { isTradeBetter } from '../../data/V1';
 import { useActiveWeb3React } from '../../hooks';
 import { ApprovalState, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback';
@@ -50,6 +54,7 @@ import { ClickableText } from '../Pool/styleds';
 import { isUseOneSplitContract } from '../../utils';
 import ReferralLink from '../../components/RefferalLink';
 import GasConsumption from '../../components/swap/GasConsumption';
+import { tokenAmountToString } from '../../utils/formats';
 
 export default function Swap() {
   useDefaultsFromURLSearch();
@@ -136,7 +141,7 @@ export default function Swap() {
     [independentField]: typedValue,
     [dependentField]: showWrap
       ? parsedAmounts[independentField]?.toExact() ?? ''
-      : parsedAmounts[dependentField]?.toSignificant(6) ?? '',
+      : tokenAmountToString(parsedAmounts[dependentField], MAX_NUM_DECIMALS) ?? '',
   };
 
   const route = trade?.route;
@@ -297,9 +302,9 @@ export default function Swap() {
   }
 
   // text to show while loading
-  const pendingText = `Swapping ${parsedAmounts[Field.INPUT]?.toSignificant(6)} ${
+  const pendingText = `Swapping ${tokenAmountToString(parsedAmounts[Field.INPUT])} ${
     currencies[Field.INPUT]?.symbol
-  } for ${parsedAmounts[Field.OUTPUT]?.toSignificant(6)} ${currencies[Field.OUTPUT]?.symbol}`;
+  } for ${tokenAmountToString(parsedAmounts[Field.OUTPUT])} ${currencies[Field.OUTPUT]?.symbol}`;
 
   const [dismissedToken0] = useTokenWarningDismissal(chainId, currencies[Field.INPUT]);
   const [dismissedToken1] = useTokenWarningDismissal(chainId, currencies[Field.OUTPUT]);

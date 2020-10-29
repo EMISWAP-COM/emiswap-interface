@@ -30,7 +30,8 @@ import AppBody from '../AppBody';
 import ReferralLink from '../../components/RefferalLink';
 import { SwapPoolTabs } from '../../components/NavigationTabs';
 import { EMISWAP_CROWDSALE_ADDRESS } from '../../constants/abis/crowdsale';
-import { MAX_SIGNIFICANT_DECIMALS } from '../../constants';
+import { MAX_NUM_DECIMALS } from '../../constants';
+import { tokenAmountToString } from '../../utils/formats';
 
 const Invest = () => {
   useDefaultsFromURLSearch();
@@ -79,7 +80,7 @@ const Invest = () => {
 
   const formattedAmounts = {
     [Field.INPUT]: typedValue,
-    [Field.OUTPUT]: parsedAmounts[Field.OUTPUT]?.toSignificant(MAX_SIGNIFICANT_DECIMALS) ?? '',
+    [Field.OUTPUT]: tokenAmountToString(parsedAmounts[Field.OUTPUT], MAX_NUM_DECIMALS) ?? '',
   };
 
   // check whether the user has approved the router on the input token
@@ -158,9 +159,9 @@ const Invest = () => {
   }
 
   // text to show while loading
-  const pendingText = `Investing ${parsedAmounts[Field.INPUT]?.toSignificant(6)} ${
+  const pendingText = `Investing ${tokenAmountToString(parsedAmounts[Field.INPUT])} ${
     currencies[Field.INPUT]?.symbol
-  } for ${parsedAmounts[Field.OUTPUT]?.toSignificant(6)} ${currencies[Field.OUTPUT]?.symbol}`;
+  } for ${tokenAmountToString(parsedAmounts[Field.OUTPUT])} ${currencies[Field.OUTPUT]?.symbol}`;
 
   const [dismissedToken0] = useTokenWarningDismissal(chainId, currencies[Field.INPUT]);
   const [dismissedToken1] = useTokenWarningDismissal(chainId, currencies[Field.OUTPUT]);

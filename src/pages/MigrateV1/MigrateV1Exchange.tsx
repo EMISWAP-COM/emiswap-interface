@@ -31,6 +31,7 @@ import { Link } from 'react-router-dom';
 import { useUserSlippageTolerance } from '../../state/user/hooks';
 import Logo from '../../components/Logo';
 import Wordmark from '../../components/Wordmark';
+import { tokenAmountToString } from '../../utils/formats';
 
 const POOL_CURRENCY_AMOUNT_MIN = new Fraction(JSBI.BigInt(1), JSBI.BigInt(1000000));
 const ZERO = JSBI.BigInt(0);
@@ -48,8 +49,8 @@ function FormattedPoolCurrencyAmount({ currencyAmount }: { currencyAmount: Token
       {currencyAmount.equalTo(JSBI.BigInt(0))
         ? '0'
         : currencyAmount.greaterThan(POOL_CURRENCY_AMOUNT_MIN)
-        ? currencyAmount.toSignificant(4)
-        : `<${POOL_CURRENCY_AMOUNT_MIN.toSignificant(1)}`}
+        ? tokenAmountToString(currencyAmount, 4)
+        : `<${tokenAmountToString(POOL_CURRENCY_AMOUNT_MIN, 1)}`}
     </>
   );
 }
@@ -87,7 +88,7 @@ export function V1LiquidityInfo({
         </Text>
         <RowFixed>
           <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
-            {token0Worth.toSignificant(4)}
+            {tokenAmountToString(token0Worth, 4)}
           </Text>
           <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={token0} />
         </RowFixed>
@@ -258,27 +259,27 @@ function V1PairMigration({
             <RowBetween>
               <TYPE.body>Mooniswap V2 Price:</TYPE.body>
               <TYPE.black>
-                {uniswapSpotPrice?.toSignificant(6)} {token0.symbol}/{token1.symbol}
+                {tokenAmountToString(uniswapSpotPrice)} {token0.symbol}/{token1.symbol}
               </TYPE.black>
             </RowBetween>
             <RowBetween>
               <div />
               <TYPE.black>
-                {uniswapSpotPrice?.invert()?.toSignificant(6)} {token1.symbol}/{token0.symbol}
+                {tokenAmountToString(uniswapSpotPrice?.invert())} {token1.symbol}/{token0.symbol}
               </TYPE.black>
             </RowBetween>
 
             <RowBetween>
               <TYPE.body>EmiSwap Price:</TYPE.body>
               <TYPE.black>
-                {mooniswapSpotPrice?.toSignificant(6)} {token0.symbol.replace('WETH', 'ETH')}/
+                {tokenAmountToString(mooniswapSpotPrice)} {token0.symbol.replace('WETH', 'ETH')}/
                 {token1.symbol.replace('WETH', 'ETH')}
               </TYPE.black>
             </RowBetween>
             <RowBetween>
               <div />
               <TYPE.black>
-                {mooniswapSpotPrice?.invert()?.toSignificant(6)}{' '}
+                {tokenAmountToString(mooniswapSpotPrice?.invert())}{' '}
                 {token1.symbol.replace('WETH', 'ETH')}/{token0.symbol.replace('WETH', 'ETH')}
               </TYPE.black>
             </RowBetween>
@@ -291,7 +292,7 @@ function V1PairMigration({
                 incorrect, you can either make a swap to move the price or wait for someone else to do so.`}
                 />
               </TYPE.body>
-              <TYPE.black color="inherit">{priceDifferenceAbs.toSignificant(4)}%</TYPE.black>
+              <TYPE.black color="inherit">{tokenAmountToString(priceDifferenceAbs, 4)}%</TYPE.black>
             </RowBetween>
           </AutoColumn>
         </YellowCard>
@@ -308,13 +309,13 @@ function V1PairMigration({
             <RowBetween>
               <TYPE.body>Mooniswap V2 Price:</TYPE.body>
               <TYPE.black>
-                {uniswapSpotPrice?.toSignificant(6)} {token0.symbol}/{token1.symbol}
+                {tokenAmountToString(uniswapSpotPrice)} {token0.symbol}/{token1.symbol}
               </TYPE.black>
             </RowBetween>
             <RowBetween>
               <div />
               <TYPE.black>
-                {uniswapSpotPrice?.invert()?.toSignificant(6)} {token1.symbol}/{token0.symbol}
+                {tokenAmountToString(uniswapSpotPrice?.invert())} {token1.symbol}/{token0.symbol}
               </TYPE.black>
             </RowBetween>
           </AutoColumn>

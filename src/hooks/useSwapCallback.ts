@@ -24,6 +24,7 @@ import {
 import { MIN_CHI_BALANCE, useHasChi, useIsChiApproved } from './useChi';
 import { ApprovalState } from './useApproveCallback';
 import { getAddress } from '@ethersproject/address';
+import { tokenAmountToString } from '../utils/formats';
 
 // function isZero(hexNumber: string) {
 //   return /^0x0*$/.test(hexNumber)
@@ -233,8 +234,8 @@ export function useSwapCallback(
       const onSuccess = (response: any): string => {
         const inputSymbol = trade.inputAmount.token.symbol;
         const outputSymbol = trade.outputAmount.token.symbol;
-        const inputAmount = trade.inputAmount.toSignificant(3);
-        const outputAmount = trade.outputAmount.toSignificant(3);
+        const inputAmount = tokenAmountToString(trade.inputAmount, 3);
+        const outputAmount = tokenAmountToString(trade.outputAmount, 3);
 
         const withRecipient = `Swap ${inputAmount} ${inputSymbol} for ${outputAmount} ${outputSymbol}`;
 

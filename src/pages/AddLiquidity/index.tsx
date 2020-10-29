@@ -41,6 +41,7 @@ import { Dots, Wrapper } from '../Pool/styleds';
 import { ConfirmAddModalBottom } from './ConfirmAddModalBottom';
 import { currencyId } from '../../utils/currencyId';
 import { PoolPriceBar } from './PoolPriceBar';
+import { tokenAmountToString } from '../../utils/formats';
 
 export default function AddLiquidity({
   match: {
@@ -91,7 +92,7 @@ export default function AddLiquidity({
     [independentField]: typedValue,
     [dependentField]: noLiquidity
       ? otherTypedValue
-      : parsedAmounts[dependentField]?.toSignificant(6) ?? '',
+      : tokenAmountToString(parsedAmounts[dependentField]) ?? '',
   };
 
   // get the max amounts user can add
@@ -213,11 +214,11 @@ export default function AddLiquidity({
           addTransaction(response, {
             summary:
               'Add ' +
-              parsedAmounts[Field.CURRENCY_A]?.toSignificant(3) +
+              tokenAmountToString(parsedAmounts[Field.CURRENCY_A], 3) +
               ' ' +
               currencies[Field.CURRENCY_A]?.symbol +
               ' and ' +
-              parsedAmounts[Field.CURRENCY_B]?.toSignificant(3) +
+              tokenAmountToString(parsedAmounts[Field.CURRENCY_B], 3) +
               ' ' +
               currencies[Field.CURRENCY_B]?.symbol,
           });
@@ -263,7 +264,7 @@ export default function AddLiquidity({
       <AutoColumn gap="20px">
         <RowFlat style={{ marginTop: '20px' }}>
           <Text fontSize="48px" fontWeight={500} lineHeight="42px" marginRight={10}>
-            {liquidityMinted?.toSignificant(6)}
+            {tokenAmountToString(liquidityMinted)}
           </Text>
           <DoubleCurrencyLogo
             currency0={currencies[Field.CURRENCY_A]}
@@ -300,9 +301,9 @@ export default function AddLiquidity({
     );
   };
 
-  const pendingText = `Supplying ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)} ${
+  const pendingText = `Supplying ${tokenAmountToString(parsedAmounts[Field.CURRENCY_A])} ${
     currencies[Field.CURRENCY_A]?.symbol
-  } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)} ${
+  } and ${tokenAmountToString(parsedAmounts[Field.CURRENCY_B])} ${
     currencies[Field.CURRENCY_B]?.symbol
   }`;
 

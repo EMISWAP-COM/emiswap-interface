@@ -10,6 +10,7 @@ import { useActiveWeb3React } from './index';
 import { getAddress } from '@ethersproject/address';
 import { Field } from '../state/invest/actions';
 import { toHex } from '../utils/v1SwapArguments';
+import { tokenAmountToString } from '../utils/formats';
 
 export type InvestCallback = null | (() => Promise<string>);
 export type EstimateCallback = null | (() => Promise<Array<number | undefined> | undefined>);
@@ -80,8 +81,8 @@ export function useInvestCallback(
         console.log('--onSuccess--', response);
         const inputSymbol = inputCurrency?.symbol;
         const outputSymbol = currencies[Field.OUTPUT]?.symbol;
-        const inputAmount = inputParseAmount?.toSignificant(3);
-        const outputAmount = parsedAmounts[Field.OUTPUT]?.toSignificant(3);
+        const inputAmount = tokenAmountToString(inputParseAmount, 3);
+        const outputAmount = tokenAmountToString(parsedAmounts[Field.OUTPUT], 3);
 
         const withVersion = `Invest ${inputAmount} ${inputSymbol} for ${outputAmount} ${outputSymbol}`;
 
