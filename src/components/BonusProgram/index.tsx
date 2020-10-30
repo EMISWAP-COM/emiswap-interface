@@ -37,11 +37,10 @@ const BonusProgramStyled = styled.div`
 
   @media (max-width: ${(MEDIA_WIDTHS as any)['upToSmall']}px) {
     .mainHeader {
-      text-align: left;
+      text-align: center;
       font-size: 12px;
       margin-top: 7px;
       margin-bottom: 7px;
-      width: 160px;
     }
 
     @media (max-width: ${(MEDIA_WIDTHS as any)['upToTheSmallest']}px) {

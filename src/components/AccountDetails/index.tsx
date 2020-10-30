@@ -423,7 +423,6 @@ export default function AccountDetails({
               nextUnlockAmount={nextUnlockAmount}
               nextUnlockDate={nextUnlockDate}
             />
-            <TotalEarnDividends availableToCollect={availableToCollect} frozenTokens={frozenTokens} nextUnlockAmount={nextUnlockAmount} nextUnlockDate={nextUnlockDate} />
           </YourAccount>
           {!!pendingTransactions.length || !!confirmedTransactions.length ? (
             <LowerSection>

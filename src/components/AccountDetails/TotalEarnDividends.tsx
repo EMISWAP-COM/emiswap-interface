@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { TYPE } from '../../theme';
-import { ButtonSecondary } from '../Button';
+import { ButtonPrimary } from '../Button';
 
 const AccountGroupingRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
@@ -39,10 +39,6 @@ const AccountSectionBody = styled.div`
   > div:first-of-type > div > div > span:first-of-type {
     display: inline;
   }
-`;
-
-const Divider = styled.div`
-  border-bottom: 1px solid ${({ theme }) => theme.bg3};
 `;
 
 const AccountSectionBodyPart = styled.div`
@@ -96,11 +92,11 @@ const AccountSectionTable = styled.div`
   `};
 `;
 
-const AccountButtonSecondary = styled(ButtonSecondary)`
+const AccountButtonPrimary = styled(ButtonPrimary)`
   width: fit-content;
   font-size: 0.825rem;
   padding: 4px 6px;
-  margin-top: 1rem;
+  margin-top: 0rem;
   :hover {
     cursor: pointer;
     text-decoration: none;
@@ -163,13 +159,10 @@ export default function TotalEarnDividends({ availableToCollect, frozenTokens, n
             </div>
           </AccountSectionTable>
         </AccountSectionBodyPart>
-        <Divider />
-        {availableToCollect>0 &&
-        <AccountSectionBodyPart>
-          <AccountButtonSecondary >Collect to my wallet</AccountButtonSecondary>
-        </AccountSectionBodyPart>
-        }
       </AccountSectionBody>
+      <AccountSectionHeader>
+        <AccountButtonPrimary disabled={availableToCollect === 0} >Collect to my wallet</AccountButtonPrimary>
+      </AccountSectionHeader>
     </>
   );
 }

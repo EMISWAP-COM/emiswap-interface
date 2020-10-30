@@ -156,7 +156,7 @@ export function useAccountInfo(): EarningActionHandlers {
                 setNextUnlockAmount(lockAmount);
                 setNextUnlockDate(unlockTime);
                 
-                contractCrowdSale.coinRate(1).then((result: BigNumber) => {
+                contractCrowdSale.coinRate(0).then((result: BigNumber) => {
                   const rate = BigNumber.from(result).toNumber() / 10000;
                   console.log('rate: ', rate);
                   setTotalAcquired(parseFloat(balanceAmount));
