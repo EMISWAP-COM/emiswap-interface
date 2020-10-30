@@ -4495,23 +4495,27 @@ export default {
     },
     {
       chainId: 42,
-      address: '0x55f4C14f5837f1775E665Ca7ebd7457E8549050d',
-      decimals: 18,
+      address: '0xBef02946e3cC640532C15b3917801AD3D38c4a51',
+      name: 'WrappedEther',
       symbol: 'WETH',
-      name: 'WETH',
+      decimals: 18,
+      logoURI:
+        'https://1inch.exchange/assets/tokens/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png',
     },
     {
       chainId: 42,
       address: '0xCfC833888943EC8d4b31bCCDe4d235368014161b',
       decimals: 8,
       symbol: 'WBTC',
-      name: 'WBTC wraped bitcoin',
+      name: 'WrappedBTC',
     },
-    // MockUSDX_deployed
-    // MockEMRX_deployed
-    // MockUSDC_deployed
-    // MockWETH_deployed
-    // MockWBTC_deployed
+    {
+      chainId: 42,
+      address: '0x58CC0Fb38Fe53919Ca6d1402dC66ed04d02FB6Ad',
+      decimals: 18,
+      symbol: 'DAI',
+      name: 'DAI',
+    },
   ],
   logoURI: 'https://1inch.exchange/assets/logo.png',
 };
