@@ -205,7 +205,7 @@ export default function SourcesList({
             <div>
               <span>
                 <span>Minted</span>
-                <Question isSetting text="These are already minted ESW tokens that earn you profit." />
+                {/* <Question isSetting text="These are already minted ESW tokens that earn you profit." /> */}
               </span>
             </div>
             {/* <div>
@@ -225,7 +225,7 @@ export default function SourcesList({
             <div>
               <span>
                 <span>Minted</span>
-                <Question isSetting text="These are already minted ESW tokens that earn you profit." />
+                {/* <Question isSetting text="These are already minted ESW tokens that earn you profit." /> */}
               </span>
               <span>{crowdSaleAlreadyMinted}</span>
             </div>
@@ -248,7 +248,7 @@ export default function SourcesList({
             <div>
               <span>
                 <span>Minted</span>
-                <Question isSetting text="These are already minted ESW tokens that earn you profit." />
+                {/* <Question isSetting text="These are already minted ESW tokens that earn you profit." /> */}
               </span>
               <span>{crowdSaleReferralRewardAlreadyMinted}</span>
             </div>
@@ -270,7 +270,7 @@ export default function SourcesList({
             <div>
               <span>
                 <span>Minted</span>
-                <Question isSetting text="These are already minted ESW tokens that earn you profit." />
+                {/* <Question isSetting text="These are already minted ESW tokens that earn you profit." /> */}
               </span>
               <span>{crowdSaleAlreadyMinted + crowdSaleReferralRewardAlreadyMinted}</span>
             </div>
