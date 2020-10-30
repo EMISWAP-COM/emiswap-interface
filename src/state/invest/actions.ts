@@ -34,10 +34,10 @@ async function useCoinList(
 
   const counter = await contract.coinCounter();
   let coins: any[] = [];
-  for (let i = 1; i < counter; i++) {
+  for (let i = 0; i < counter; i++) {
     const coin = await contract.coin(i);
     const coinData = await contract.coinData(i);
-    coins[i - 1] = {
+    coins[i] = {
       chainId,
       address: coinData.coinAddress,
       decimals: coin.decimals,
