@@ -39,6 +39,11 @@ const AccountSectionBody = styled.div`
   > div:first-of-type > div > div > span:first-of-type {
     display: inline;
   }
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+  > div:first-of-type {
+    display: none;
+  }
+  `};
 `;
 
 const AccountSectionBodyPart = styled.div`
