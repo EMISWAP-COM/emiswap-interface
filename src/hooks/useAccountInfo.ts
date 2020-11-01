@@ -112,18 +112,12 @@ export function useAccountInfo(): EarningActionHandlers {
         const crowdSaleAcquired = bn2num(result[0]);
         const crowdSaleAlreadyMinted = bn2num(result[1]);
         const crowdSaleAvailableForMinting = bn2num(result[2]);
-        console.log(
-          'getMyStats(1): ',
-          result,
-          crowdSaleAlreadyMinted,
-          crowdSaleAvailableForMinting,
-        );
+
         setCrowdSaleAcquired(crowdSaleAcquired);
         setCrowdSaleAlreadyMinted(crowdSaleAlreadyMinted);
         setCrowdSaleAvailableForMinting(crowdSaleAvailableForMinting);
 
         contract.getMyStats(2).then((result: BigNumber[]) => {
-          console.log('getMyStats(2): ', result);
           const crowdSaleReferralRewardAcquired = bn2num(result[0]);
           const crowdSaleReferralRewardAlreadyMinted = bn2num(result[1]);
           const crowdSaleReferralRewardAvailableForMinting = bn2num(result[2]);
@@ -133,18 +127,14 @@ export function useAccountInfo(): EarningActionHandlers {
           /* ----------- */
           contract.balanceOf(account).then((result: BigNumber) => {
             const balanceAmount = bn2num(result).toString();
-            console.log('balanceOf: ', balanceAmount);
 
             contract.unlockedBalanceOf(account).then((result: BigNumber) => {
               const unlockedBalanceAmount = bn2num(result).toString();
-              console.log('unlockedBalanceOf: ', unlockedBalanceAmount);
 
               setAvailableToCollect(parseFloat(unlockedBalanceAmount));
               setFrozenTokens(parseFloat(balanceAmount) - parseFloat(unlockedBalanceAmount));
     
               contract.getNextUnlock().then((result: BigNumber[]) => {
-                console.log('getNextUnlock result: ', result);
-
                 const unlockTime = BigNumber.from(result[0]).isZero()
                   ? ''
                   : new Date(
@@ -158,7 +148,6 @@ export function useAccountInfo(): EarningActionHandlers {
                 
                 contractCrowdSale.coinRate(0).then((result: BigNumber) => {
                   const rate = BigNumber.from(result).toNumber() / 10000;
-                  console.log('rate: ', rate);
                   setTotalAcquired(parseFloat(balanceAmount));
                   setTotalAcquiredInDAI(roundToAny(parseFloat(balanceAmount) * rate, 4));
                 });

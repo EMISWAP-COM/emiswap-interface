@@ -78,7 +78,6 @@ export function useInvestCallback(
       }
 
       const onSuccess = (response: any): string => {
-        console.log('--onSuccess--', response);
         const inputSymbol = inputCurrency?.symbol;
         const outputSymbol = currencies[Field.OUTPUT]?.symbol;
         const inputAmount = tokenAmountToString(inputParseAmount, 3);
@@ -128,8 +127,6 @@ export function useInvestCallback(
           .then(onSuccess)
           .catch(onError);
       } else {
-        console.log("buy: ",inputCurrency?.address, amount, referralAddress);
-        
         return contract
           .buy(inputCurrency?.address, BigNumber.from(amount), referralAddress)
           .then(onSuccess)

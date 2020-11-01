@@ -25,7 +25,7 @@ import {
   useInvestState,
 } from '../../state/invest/hooks';
 import { useExpertModeManager, useTokenWarningDismissal } from '../../state/user/hooks';
-import { maxAmountSpend } from '../../utils/maxAmountSpend';
+import { maxAmountSpendInvest } from '../../utils/maxAmountSpend';
 import AppBody from '../AppBody';
 import ReferralLink from '../../components/RefferalLink';
 import { SwapPoolTabs } from '../../components/NavigationTabs';
@@ -108,7 +108,7 @@ const Invest = () => {
   // the callback to execute the invest
   const [investCallback] = useInvest(chainId, currencies, parsedAmounts);
 
-  const maxAmountInput: TokenAmount | undefined = maxAmountSpend(currencyBalances[Field.INPUT]);
+  const maxAmountInput: TokenAmount | undefined = maxAmountSpendInvest(currencyBalances[Field.INPUT]);
   const atMaxAmountInput = Boolean(
     maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput),
   );
@@ -213,15 +213,6 @@ const Invest = () => {
               currency={currencies[Field.INPUT]}
               onUserInput={handleTypeInput}
               onMax={() => {
-                console.log("maxAmountInput: ", maxAmountInput);
-                try{
-                  console.log("maxAmountInput.toExact(): ", maxAmountInput.toExact());
-                }catch(e){
-                  console.log(e)
-                
-
-                }
-                
                 maxAmountInput &&
                   onUserInput(Field.INPUT, maxAmountInput.toExact(), currencies[Field.INPUT]);
               }}

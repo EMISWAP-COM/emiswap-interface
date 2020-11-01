@@ -222,7 +222,6 @@ export function toV2LiquidityToken([tokenA, tokenB]: [Token, Token]): Token {
 export function useTrackedTokenPairs(): [Token, Token][] {
   const { chainId } = useActiveWeb3React();
   const tokens = useAllTokens();
-  console.log("tokens: ", tokens);
   
 
   // pinned pairs

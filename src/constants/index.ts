@@ -223,6 +223,12 @@ export const MIN_ETH: JSBI = JSBI.multiply(
   JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(9)),
   JSBI.BigInt(1_000_000 * 60),
 ); // 60GWei * 1_000_000
+
+export const MIN_ETH_INVEST: JSBI = JSBI.multiply(
+  JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(9)),
+  JSBI.BigInt(8_000_000),
+); // 8MWei * 1_000_000
+
 export const BETTER_TRADE_LINK_THRESHOLD = new Percent(JSBI.BigInt(75), JSBI.BigInt(10000));
 
 // the Uniswap Default token list lives here

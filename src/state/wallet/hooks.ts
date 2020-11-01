@@ -117,9 +117,6 @@ export function useTokenBalancesWithLoadingIndicator(
                     memo[token.address] = new TokenAmount(token, amount);
                   }catch(e) {
                     memo[token.address] = new TokenAmount(token, "0");
-                    console.log("token: ", token)
-                    console.log("amount: ", amount)
-                    console.log("value: ", value)
                   }
                 }
                 return memo;
