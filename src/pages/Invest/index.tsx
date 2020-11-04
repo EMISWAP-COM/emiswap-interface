@@ -92,6 +92,7 @@ const Invest = () => {
     [Field.OUTPUT]: tokenAmountToString(parsedAmounts[Field.OUTPUT], MAX_NUM_DECIMALS) ?? '',
   };
 
+  console.info("EMISWAP_CROWDSALE_ADDRESS: ", EMISWAP_CROWDSALE_ADDRESS);
   // check whether the user has approved the router on the input token
   const [approval, approveCallback] = useApproveCallback(parsedAmount, EMISWAP_CROWDSALE_ADDRESS);
 
