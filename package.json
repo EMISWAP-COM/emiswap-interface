@@ -88,6 +88,7 @@
   "scripts": {
     "start": "PORT=4202 react-scripts start",
     "build": "react-scripts build && REACTBUILDVERSION=$(date +%Y-%m-%d)-$(date +%T) && sed -i -- 's/%REACTBUILDVERSION%/'$REACTBUILDVERSION'/g' build/docs/version.txt && echo React Build Version = $REACTBUILDVERSION",
+    "build:stage": "rm -r ./build && REACT_APP_STAGE=stage react-scripts build && REACTBUILDVERSION=$(date +%Y-%m-%d)-$(date +%T) && sed -i -- 's/%REACTBUILDVERSION%/'$REACTBUILDVERSION'/g' build/docs/version.txt && echo React Build Version = $REACTBUILDVERSION",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "lint": "eslint '{cypress,src}/**/*.{ts,tsx}'",
