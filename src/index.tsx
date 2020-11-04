@@ -33,7 +33,13 @@ function getLibrary(provider: any): Web3Provider {
 
 const GOOGLE_ANALYTICS_ID: string | undefined = process.env.REACT_APP_GOOGLE_ANALYTICS_ID;
 if (typeof GOOGLE_ANALYTICS_ID === 'string') {
-  ReactGA.initialize(GOOGLE_ANALYTICS_ID);
+  ReactGA.initialize(GOOGLE_ANALYTICS_ID, {
+    gaOptions: {
+      allowLinker: true
+    },
+  });
+  ReactGA.ga('require', 'linker');
+  ReactGA.ga('linker:autoLink', ['crowdsale.emidao.org']);
   ReactGA.set({
     customBrowserType: !isMobile
       ? 'desktop'
