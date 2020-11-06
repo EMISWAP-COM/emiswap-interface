@@ -60,19 +60,6 @@ export default function BonusProgram(props) {
         <path d="M7 6C6.73478 6 6.48043 6.0878 6.29289 6.24408C6.10536 6.40036 6 6.61232 6 6.83333V9.16667C6 9.38768 6.10536 9.59964 6.29289 9.75592C6.48043 9.9122 6.73478 10 7 10C7.26522 10 7.51957 9.9122 7.70711 9.75592C7.89464 9.59964 8 9.38768 8 9.16667V6.83333C8 6.61232 7.89464 6.40036 7.70711 6.24408C7.51957 6.0878 7.26522 6 7 6Z" fill="#BA946B"/>
         <path d="M3.84818 27.1001L6.94922 30.2012L10.0503 27.1001" stroke="#BA946B" strokeWidth="2" strokeLinecap="round"/>
       </svg>
-      <ButtonPrimary
-        onClick={() => {
-          //FIXMI Поправить
-          window.open('https://crowdsale.emidao.org/magic-nft', '');
-        }}
-        id="nft-button"
-        style={{ margin: '10px 0 0 0' }}
-      >
-        <Text fontSize={16} fontWeight={450}>
-          NFT Magic EmiCards
-        </Text>
-      </ButtonPrimary>
-
     </BonusProgramStyled>
   );
 }

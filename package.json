@@ -120,8 +120,11 @@
   "license": "GPL-3.0-or-later",
   "dependencies": {
     "env-cmd": "^10.1.0",
+    "@rebass/preset": "^4.0.5",
+    "emotion-theming": "^10.0.27",
     "promise-hook": "^0.1.4",
     "react-async-hook": "^3.6.1",
+    "react-minimal-pie-chart": "^8.0.1",
     "react-use-promise": "^0.3.1"
   }
 }

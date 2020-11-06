@@ -4,6 +4,8 @@ import Logo from '../components/Logo';
 import styled from 'styled-components';
 import PolygonSvg from '../assets/images/polygon.svg';
 import BonusProgram from '../components/BonusProgram';
+import { ThemeProvider } from 'emotion-theming';
+import theme from '@rebass/preset';
 
 export const HeadersPlusBodyWrapper = styled.div<{ disabled?: boolean }>`
   position: relative;
@@ -52,19 +54,21 @@ export const BodyWrapper = styled.div<{ disabled?: boolean }>`
  */
 export default function AppBody({
   children,
-  disabled
+  disabled,
 }: {
   children: React.ReactNode;
   disabled?: boolean;
 }) {
   return (
-    <HeadersPlusBodyWrapper>
-      <div className="onlyDesktop">
-        <Logo />
-        <Wordmark />
-      </div>
-      <BodyWrapper disabled={disabled}>{children}</BodyWrapper>
-      <BonusProgram />
-    </HeadersPlusBodyWrapper>
+    <ThemeProvider theme={theme}>
+      <HeadersPlusBodyWrapper>
+        <div className="onlyDesktop">
+          <Logo />
+          <Wordmark />
+        </div>
+        <BodyWrapper disabled={disabled}>{children}</BodyWrapper>
+        <BonusProgram />
+      </HeadersPlusBodyWrapper>
+    </ThemeProvider>
   );
 }

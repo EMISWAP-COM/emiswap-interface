@@ -2,7 +2,7 @@ import { TokenAmount, JSBI } from '@uniswap/sdk';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
 import { Text } from 'rebass';
-import { ThemeContext } from 'styled-components';
+import styled, { ThemeContext } from 'styled-components';
 import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button';
 import Card from '../../components/Card';
 import { AutoColumn } from '../../components/Column';
@@ -34,12 +34,240 @@ import { EMISWAP_CROWDSALE_ADDRESS } from '../../constants/abis/crowdsale';
 import { Redirect, RouteComponentProps } from 'react-router-dom';
 import { MAX_NUM_DECIMALS } from '../../constants';
 import { tokenAmountToString } from '../../utils/formats';
+import OrdinaryIcon from '../../assets/svg/CardIcon/ordinary.svg';
+import CommonIcon from '../../assets/svg/CardIcon/common.svg';
+import UnusualIcon from '../../assets/svg/CardIcon/unusual.svg';
+import RareIcon from '../../assets/svg/CardIcon/rare.svg';
+import LegendaryIcon from '../../assets/svg/CardIcon/legendary.svg';
+import Question from '../../assets/svg/FAQIcon/question.svg';
+import FAQInfo from '../../components/FAQInfo';
+import { ThemeProvider } from 'emotion-theming';
+
+const EmiCard = styled.div`
+  .block-with-cards {
+    position: absolute;
+    width: 440px;
+    height: 553px;
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 32px 40px;
+    left: 0;
+    top: 120px;
+    bottom: 0;
+    right: -210%;
+    margin: auto;
+    border: 1px solid #ecceff;
+
+    .arrow-left {
+      width: 0;
+      height: 0;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      border-right: 10px solid #ecceff;
+      position: absolute;
+      left: -10px;
+      top: 185px;
+    }
+
+    &__header {
+      font-family: IBM Plex Sans;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 26px;
+      display: flex;
+      align-items: center;
+      color: #24272c;
+      margin-bottom: 24px;
+    }
+
+    &__cards {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      .block-with-current-cards {
+        width: 100%;
+        display: flex;
+        margin-bottom: 32px;
+        padding-bottom: 32px;
+        border-bottom: 1px solid #eaeeee;
+
+        &__img {
+          width: 80px;
+          margin-right: 24px;
+        }
+
+        &__info {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: flex-start;
+        }
+
+        &__title {
+          font-family: IBM Plex Sans;
+          font-style: normal;
+          font-weight: 600;
+          font-size: 36px;
+          line-height: 47px;
+          display: flex;
+          align-items: center;
+          text-align: center;
+          color: #11b382;
+        }
+
+        &__text {
+          font-family: IBM Plex Sans;
+          font-style: normal;
+          font-weight: 500;
+          font-size: 20px;
+          line-height: 32px;
+          display: flex;
+          align-items: center;
+          text-align: center;
+          letter-spacing: -0.01em;
+          color: #24272c;
+        }
+      }
+
+      .emicard {
+        width: 100%;
+        display: flex;
+        margin-bottom: 16px;
+
+        &__info {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+        }
+
+        &__img {
+          margin-right: 24px;
+        }
+
+        &__title {
+          font-family: IBM Plex Sans;
+          font-style: normal;
+          font-weight: 500;
+          font-size: 18px;
+          line-height: 23px;
+          display: flex;
+          align-items: center;
+          letter-spacing: -0.01em;
+          color: #24272c;
+        }
+
+        &__description {
+          font-family: IBM Plex Sans;
+          font-style: normal;
+          font-weight: normal;
+          font-size: 13px;
+          line-height: 17px;
+          display: flex;
+          align-items: center;
+          letter-spacing: -0.01em;
+          color: #89919a;
+        }
+
+        &__description-card {
+          font-family: IBM Plex Sans;
+          font-style: normal;
+          font-weight: normal;
+          font-size: 16px;
+          line-height: 160%;
+          display: flex;
+          align-items: center;
+          color: #24272c;
+        }
+
+        .green-color {
+          color: #11b382;
+        }
+
+        .ml-5 {
+          margin-left: 5px;
+        }
+
+        .mr-5 {
+          margin-right: 5px;
+        }
+      }
+    }
+
+    &__footer {
+      font-family: IBM Plex Sans;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 170%;
+      display: flex;
+      align-items: center;
+      color: #24272c;
+      margin-top: 20px;
+    }
+
+    &__btn {
+      background: #e8f8f3;
+      border-radius: 8px;
+      margin-top: 16px;
+      width: 360px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      cursor: pointer;
+      text-decoration: none;
+
+      font-family: IBM Plex Sans;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 170%;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      color: #11b382;
+    }
+
+    &__btn-img {
+      position: absolute;
+      left: 60px;
+    }
+  }
+
+  .elem2 {
+    height: 520px;
+    top: 86px;
+  }
+
+  .elem1 {
+    height: 460px;
+    top: 26px;
+  }
+`;
+
+const FAQWrapper = styled.div`
+  max-width: 1200px;
+  margin-top: 70px;
+
+  @media screen and (max-width: 1300px) {
+    max-width: 960px;
+  }
+
+  @media screen and (max-width: 1000px) {
+    max-width: calc(100% - 20px);
+  }
+
+  @media screen and (max-width: 600px) {
+    max-width: 100%;
+  }
+`;
 
 export function RedirectPathToInvestOnly({ location }: RouteComponentProps) {
   return <Redirect to={{ ...location, pathname: '/invest' }} />;
 }
-
-
 const Invest = () => {
   useDefaultsFromURLSearch();
 
@@ -77,10 +305,7 @@ const Invest = () => {
     (value: string) => {
       onUserInput(Field.INPUT, value, currencies[Field.INPUT]);
     },
-    [
-      onUserInput, 
-      currencies, 
-    ],
+    [onUserInput, currencies],
   );
 
   // modal and loading
@@ -173,6 +398,293 @@ const Invest = () => {
     );
   }
 
+  const generateEmiCardBlock = (num: Number) => {
+    const ESWc = Number(num.toFixed(3));
+    let rare = '';
+    let NunOfCard = 0;
+    if (ESWc > 0 && ESWc < 2500) {
+      rare = 'Ordinary';
+      NunOfCard = Math.floor(ESWc / 500);
+    }
+    if (ESWc >= 2500 && ESWc < 12500) {
+      rare = 'Common';
+      NunOfCard = Math.floor(ESWc / 2500);
+    }
+    if (ESWc >= 12500 && ESWc < 62500) {
+      rare = 'Unusual';
+      NunOfCard = Math.floor(ESWc / 12500);
+    }
+    if (ESWc >= 62500 && ESWc < 312500) {
+      rare = 'Rare';
+      NunOfCard = Math.floor(ESWc / 62500);
+    }
+    if (ESWc >= 312500) {
+      rare = 'Legendary';
+      NunOfCard = Math.floor(ESWc / 312500);
+    }
+
+    let bodyNode = (
+      <div className="block-with-cards__cards">
+        <div className="emicard">
+          <img className="emicard__img" src={OrdinaryIcon} alt="Ordinary" />
+          <div className="emicard__info">
+            <div className="emicard__title">Ordinary</div>
+            <div className="emicard__description">Non less than 500 ESW</div>
+          </div>
+        </div>
+        <div className="emicard">
+          <img className="emicard__img" src={CommonIcon} alt="Common" />
+          <div className="emicard__info">
+            <div className="emicard__title">Common</div>
+            <div className="emicard__description">Non less than 2 500 ESW</div>
+          </div>
+        </div>
+        <div className="emicard">
+          <img className="emicard__img" src={UnusualIcon} alt="Unusual" />
+          <div className="emicard__info">
+            <div className="emicard__title">Unusual</div>
+            <div className="emicard__description">Non less than 12 500 ESW</div>
+          </div>
+        </div>
+        <div className="emicard">
+          <img className="emicard__img" src={RareIcon} alt="Rare" />
+          <div className="emicard__info">
+            <div className="emicard__title">Rare</div>
+            <div className="emicard__description">Non less than 62 500 ESW</div>
+          </div>
+        </div>
+        <div className="emicard">
+          <img className="emicard__img" src={LegendaryIcon} alt="Legendary" />
+          <div className="emicard__info">
+            <div className="emicard__title">Legendary</div>
+            <div className="emicard__description">Non less than 312 500 ESW</div>
+          </div>
+        </div>
+      </div>
+    );
+
+    if (rare === 'Ordinary') {
+      const NumByGetMoreCard = (NunOfCard + 1) * 500;
+      bodyNode = (
+        <div className="block-with-cards__cards">
+          <div className="block-with-current-cards">
+            <img className="block-with-current-cards__img" src={OrdinaryIcon} alt="Ordinary" />
+            <div className="block-with-current-cards__info">
+              <div className="block-with-current-cards__title">
+                {NunOfCard} {'Ordinary'}
+              </div>
+              <div className="block-with-current-cards__text">Card</div>
+            </div>
+          </div>
+          {NunOfCard < 4 && (
+            <div className="emicard">
+              <img className="emicard__img" src={OrdinaryIcon} alt="Ordinary" />
+              <div className="emicard__info">
+                <div className="emicard__description-card">
+                  Make purchase of <b className="green-color ml-5">{NumByGetMoreCard} ESWc</b>
+                </div>
+                <div className="emicard__description-card">
+                  to get <b className="ml-5 mr-5">1</b> more <b className="ml-5">Ordinary card</b>
+                </div>
+              </div>
+            </div>
+          )}
+          <div className="emicard">
+            <img className="emicard__img" src={CommonIcon} alt="Common" />
+            <div className="emicard__info">
+              <div className="emicard__description-card">
+                Make purchase of <b className="green-color ml-5">2500 ESWc</b>
+              </div>
+              <div className="emicard__description-card">
+                to get <b className="ml-5">a Common card</b>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    if (rare === 'Common') {
+      const NumByGetMoreCard = (NunOfCard + 1) * 2500;
+      bodyNode = (
+        <div className="block-with-cards__cards">
+          <div className="block-with-current-cards">
+            <img className="block-with-current-cards__img" src={CommonIcon} alt="Common" />
+            <div className="block-with-current-cards__info">
+              <div className="block-with-current-cards__title">
+                {NunOfCard} {'Common'}
+              </div>
+              <div className="block-with-current-cards__text">Card</div>
+            </div>
+          </div>
+          {NunOfCard < 4 && (
+            <div className="emicard">
+              <img className="emicard__img" src={CommonIcon} alt="Common" />
+              <div className="emicard__info">
+                <div className="emicard__description-card">
+                  Make purchase of <b className="green-color ml-5">{NumByGetMoreCard} ESWc</b>
+                </div>
+                <div className="emicard__description-card">
+                  to get <b className="ml-5 mr-5">1</b> more <b className="ml-5">Common card</b>
+                </div>
+              </div>
+            </div>
+          )}
+          <div className="emicard">
+            <img className="emicard__img" src={UnusualIcon} alt="Unusual" />
+            <div className="emicard__info">
+              <div className="emicard__description-card">
+                Make purchase of <b className="green-color ml-5">12500 ESWc</b>
+              </div>
+              <div className="emicard__description-card">
+                to get <b className="ml-5">a Unusual card</b>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    if (rare === 'Unusual') {
+      const NumByGetMoreCard = (NunOfCard + 1) * 12500;
+      bodyNode = (
+        <div className="block-with-cards__cards">
+          <div className="block-with-current-cards">
+            <img className="block-with-current-cards__img" src={UnusualIcon} alt="Unusual" />
+            <div className="block-with-current-cards__info">
+              <div className="block-with-current-cards__title">
+                {NunOfCard} {'Unusual'}
+              </div>
+              <div className="block-with-current-cards__text">Card</div>
+            </div>
+          </div>
+          {NunOfCard < 4 && (
+            <div className="emicard">
+              <img className="emicard__img" src={UnusualIcon} alt="Ordinary" />
+              <div className="emicard__info">
+                <div className="emicard__description-card">
+                  Make purchase of <b className="green-color ml-5">{NumByGetMoreCard} ESWc</b>
+                </div>
+                <div className="emicard__description-card">
+                  to get <b className="ml-5 mr-5">1</b> more <b className="ml-5">Unusual card</b>
+                </div>
+              </div>
+            </div>
+          )}
+          <div className="emicard">
+            <img className="emicard__img" src={RareIcon} alt="Rare" />
+            <div className="emicard__info">
+              <div className="emicard__description-card">
+                Make purchase of <b className="green-color ml-5">62500 ESWc</b>
+              </div>
+              <div className="emicard__description-card">
+                to get <b className="ml-5">a Rare card</b>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    if (rare === 'Rare') {
+      const NumByGetMoreCard = (NunOfCard + 1) * 62500;
+      bodyNode = (
+        <div className="block-with-cards__cards">
+          <div className="block-with-current-cards">
+            <img className="block-with-current-cards__img" src={RareIcon} alt="Rare" />
+            <div className="block-with-current-cards__info">
+              <div className="block-with-current-cards__title">
+                {NunOfCard} {'Rare'}
+              </div>
+              <div className="block-with-current-cards__text">Card</div>
+            </div>
+          </div>
+          {NunOfCard < 4 && (
+            <div className="emicard">
+              <img className="emicard__img" src={RareIcon} alt="Ordinary" />
+              <div className="emicard__info">
+                <div className="emicard__description-card">
+                  Make purchase of <b className="green-color ml-5">{NumByGetMoreCard} ESWc</b>
+                </div>
+                <div className="emicard__description-card">
+                  to get <b className="ml-5 mr-5">1</b> more <b className="ml-5">Rare card</b>
+                </div>
+              </div>
+            </div>
+          )}
+          <div className="emicard">
+            <img className="emicard__img" src={LegendaryIcon} alt="Legendary" />
+            <div className="emicard__info">
+              <div className="emicard__description-card">
+                Make purchase of <b className="green-color ml-5">312500 ESWc</b>
+              </div>
+              <div className="emicard__description-card">
+                to get <b className="ml-5">a Legendary card</b>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    if (rare === 'Legendary') {
+      const NumByGetMoreCard = (NunOfCard + 1) * 312500;
+      bodyNode = (
+        <div className="block-with-cards__cards">
+          <div className="block-with-current-cards">
+            <img className="block-with-current-cards__img" src={LegendaryIcon} alt="Legendary" />
+            <div className="block-with-current-cards__info">
+              <div className="block-with-current-cards__title">
+                {NunOfCard} {'Legendary'}
+              </div>
+              <div className="block-with-current-cards__text">Card</div>
+            </div>
+          </div>
+          <div className="emicard">
+            <img className="emicard__img" src={LegendaryIcon} alt="Ordinary" />
+            <div className="emicard__info">
+              <div className="emicard__description-card">
+                Make purchase of <b className="green-color ml-5">{NumByGetMoreCard} ESWc</b>
+              </div>
+              <div className="emicard__description-card">
+                to get <b className="ml-5 mr-5">1</b> more <b className="ml-5">Legendary card</b>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    const getClassToEmiCardsBlock = (ESWc: Number) => {
+      if (ESWc >= 312500 || NunOfCard === 4) {
+        return 'block-with-cards elem1';
+      }
+      if (ESWc > 0 && ESWc < 312500) {
+        return 'block-with-cards elem2';
+      }
+
+      return 'block-with-cards';
+    };
+
+    return (
+      <div className={getClassToEmiCardsBlock(ESWc)}>
+        <div className="block-with-cards__header">
+          {ESWc > 0 ? 'You will get:' : 'Buy ESWc to get Magic NFT EmiCards'}
+        </div>
+        {bodyNode}
+        <div className="block-with-cards__footer">
+          Fill the amount of ESWc for purchase to see the NFT cards you will get
+        </div>
+        <a
+          href="https://crowdsale.emidao.org/magic-nft"
+          target="_blank"
+          className="block-with-cards__btn"
+        >
+          <img className="block-with-cards__btn-img" src={Question} alt="Question" />
+          What is NFT Magic Card?
+        </a>
+        <div className="arrow-left" />
+      </div>
+    );
+  };
+
   // text to show while loading
   const pendingText = `Investing ${tokenAmountToString(parsedAmounts[Field.INPUT])} ${
     currencies[Field.INPUT]?.symbol
@@ -210,7 +722,6 @@ const Invest = () => {
             bottomContent={modalBottom}
             pendingText={pendingText}
           />
-
           <AutoColumn gap={'md'}>
             <CurrencyInputPanel
               label={independentField === Field.OUTPUT ? 'From (estimated)' : 'From'}
@@ -259,7 +770,6 @@ const Invest = () => {
               </AutoColumn>
             </Card>
           </AutoColumn>
-
           <AutoColumn gap={'md'}>
             <BottomGrouping>
               {!account ? (
@@ -312,7 +822,11 @@ const Invest = () => {
           </AutoColumn>
           {account ? <ReferralLink /> : ''}
         </Wrapper>
+        <EmiCard>{generateEmiCardBlock(Number(formattedAmounts[Field.OUTPUT]))}</EmiCard>
       </AppBody>
+      <FAQWrapper>
+        <FAQInfo />
+      </FAQWrapper>
     </>
   );
 };
