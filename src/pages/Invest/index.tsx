@@ -41,7 +41,6 @@ import RareIcon from '../../assets/svg/CardIcon/rare.svg';
 import LegendaryIcon from '../../assets/svg/CardIcon/legendary.svg';
 import Question from '../../assets/svg/FAQIcon/question.svg';
 import FAQInfo from '../../components/FAQInfo';
-import { ThemeProvider } from 'emotion-theming';
 
 const EmiCard = styled.div`
   .block-with-cards {
@@ -675,6 +674,7 @@ const Invest = () => {
         <a
           href="https://crowdsale.emidao.org/magic-nft"
           target="_blank"
+          rel="noopener noreferrer"
           className="block-with-cards__btn"
         >
           <img className="block-with-cards__btn-img" src={Question} alt="Question" />
