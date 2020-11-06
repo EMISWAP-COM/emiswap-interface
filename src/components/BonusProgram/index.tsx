@@ -1,8 +1,6 @@
 import React from 'react';
 import { MEDIA_WIDTHS } from '../../theme';
 import styled from 'styled-components';
-import { ButtonPrimary } from '../../components/Button';
-import { Text } from 'rebass';
 
 const BonusProgramStyled = styled.div`
   @font-face {
