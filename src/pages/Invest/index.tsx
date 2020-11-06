@@ -1,5 +1,6 @@
 import { TokenAmount, JSBI } from '@uniswap/sdk';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
+import ReactGA from 'react-ga';
 import { Text } from 'rebass';
 import { ThemeContext } from 'styled-components';
 import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button';
@@ -92,7 +93,6 @@ const Invest = () => {
     [Field.OUTPUT]: tokenAmountToString(parsedAmounts[Field.OUTPUT], MAX_NUM_DECIMALS) ?? '',
   };
 
-  console.info("EMISWAP_CROWDSALE_ADDRESS: ", EMISWAP_CROWDSALE_ADDRESS);
   // check whether the user has approved the router on the input token
   const [approval, approveCallback] = useApproveCallback(parsedAmount, EMISWAP_CROWDSALE_ADDRESS);
 
@@ -123,6 +123,11 @@ const Invest = () => {
       .then((hash: string) => {
         setAttemptingTxn(false);
         setTxHash(hash);
+        ReactGA.event({
+          category: 'Crowdsale',
+          action: 'Invest',
+          label: 'buy',
+        });
       })
       .catch((error: any) => {
         setAttemptingTxn(false);
