@@ -95,6 +95,8 @@ export function useInvestActionHandlers(): InvestActionHandlers {
       dispatch(typeInput({ field, typedValue }));
       if (Number(typedValue) > 0) {
         executeBuyCoinAmount(currency, Number(typedValue));
+      } else {
+        dispatch(receiveOutputAmount({ outputAmount: '' }));
       }
     },
     [dispatch, executeBuyCoinAmount],

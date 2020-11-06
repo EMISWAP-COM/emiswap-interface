@@ -93,7 +93,6 @@ export default createReducer<InvestState>(initialState, builder =>
         ...state,
         independentField: field,
         typedValue,
-        outputAmount: '',
       };
     })
     .addCase(receiveOutputAmount, (state, { payload: { outputAmount } }) => {
