@@ -60,4 +60,4 @@ Copyright © 2020, 1inch limited.
 
 Copyright © 2020, [Uniswap](https://uniswap.org/).
 
-Released under GNU General Public License v3.0
+Released under GNU General Public License v3.0 
