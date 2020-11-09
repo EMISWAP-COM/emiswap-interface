@@ -1,6 +1,6 @@
 import { Contract } from '@ethersproject/contracts';
 import { TransactionResponse } from '@ethersproject/providers';
-import { ETHER, Percent, Token } from '@uniswap/sdk';
+import { Percent, Token } from '@uniswap/sdk';
 import React, { useCallback, useContext, useMemo, useState } from 'react';
 import { ArrowDown, Plus } from 'react-feather';
 import ReactGA from 'react-ga';
@@ -35,6 +35,7 @@ import { useWalletModalToggle } from '../../state/application/hooks';
 import { useUserSlippageTolerance } from '../../state/user/hooks';
 import { BigNumber } from '@ethersproject/bignumber';
 import { tokenAmountToString } from '../../utils/formats';
+import { ETH_ONLY } from '../../constants'
 
 export default function RemoveLiquidity({
   history,
@@ -369,7 +370,7 @@ export default function RemoveLiquidity({
     [onUserInput],
   );
 
-  const oneCurrencyIsETH = currencyA === ETHER || currencyB === ETHER;
+  const oneCurrencyIsETH = currencyA === ETH_ONLY[chainId][0] || currencyB === ETH_ONLY[chainId][0];
 
   const handleSelectCurrencyA = useCallback(
     (currency: Token) => {

@@ -51,7 +51,7 @@ export default function CurrencyLogo({
 }) {
   const [, refresh] = useState<number>(0);
 
-  if (currency === ETHER) {
+  if (currency.address === ETHER.address) {
     return <StyledEthereumLogo src={EthereumLogo} size={size} {...rest} />;
   }
 

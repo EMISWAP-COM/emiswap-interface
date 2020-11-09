@@ -1,4 +1,4 @@
-import { Token, ETHER, JSBI, TokenAmount } from '@uniswap/sdk';
+import { Token, JSBI, TokenAmount } from '@uniswap/sdk';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Plus } from 'react-feather';
 import { Text } from 'rebass';
@@ -18,6 +18,7 @@ import { StyledButtonNavigation, StyledInternalLink } from '../../theme';
 import { currencyId } from '../../utils/currencyId';
 import AppBody from '../AppBody';
 import { Dots } from '../Pool/styleds';
+import { ETH_ONLY } from '../../constants'
 
 enum Fields {
   TOKEN0 = 0,
@@ -25,12 +26,12 @@ enum Fields {
 }
 
 export default function PoolFinder() {
-  const { account } = useActiveWeb3React();
+  const { chainId, account } = useActiveWeb3React();
 
   const [showSearch, setShowSearch] = useState<boolean>(false);
   const [activeField, setActiveField] = useState<number>(Fields.TOKEN1);
 
-  const [currency0, setCurrency0] = useState<Token | null>(ETHER);
+  const [currency0, setCurrency0] = useState<Token | null>(ETH_ONLY[chainId][0]);
   const [currency1, setCurrency1] = useState<Token | null>(null);
 
   const [pairState, pair] = usePair(currency0 ?? undefined, currency1 ?? undefined);

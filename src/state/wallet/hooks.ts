@@ -1,4 +1,4 @@
-import { Token, TokenAmount, ETHER, JSBI } from '@uniswap/sdk';
+import { Token, TokenAmount, JSBI } from '@uniswap/sdk';
 import { useMemo } from 'react';
 import ERC20_INTERFACE from '../../constants/abis/erc20';
 import { useAllTokens } from '../../hooks/Tokens';
@@ -7,6 +7,7 @@ import { useESWContract, useMulticallContract } from '../../hooks/useContract';
 import { useAllCoins } from '../../hooks/Coins';
 import { isAddress } from '../../utils';
 import { useSingleContractMultipleData, useMultipleContractSingleData } from '../multicall/hooks';
+import { ETH_ONLY } from '../../constants';
 
 /**
  * Returns a map of the given addresses to their eventually consistent ETH balances.
@@ -14,6 +15,7 @@ import { useSingleContractMultipleData, useMultipleContractSingleData } from '..
 export function useETHBalances(
   uncheckedAddresses?: (string | undefined)[],
 ): { [address: string]: TokenAmount | undefined } {
+  const { chainId } = useActiveWeb3React();
   const multicallContract = useMulticallContract();
 
   const addresses: string[] = useMemo(
@@ -37,16 +39,17 @@ export function useETHBalances(
     () =>
       addresses.reduce<{ [address: string]: TokenAmount }>((memo, address, i) => {
         const value = results?.[i]?.result?.[0];
-        if (value) memo[address] = new TokenAmount(ETHER, JSBI.BigInt(value.toString()));
+        if (value) memo[address] = new TokenAmount(ETH_ONLY[chainId][0], JSBI.BigInt(value.toString()));
         return memo;
       }, {}),
-    [addresses, results],
+    [addresses, results, chainId],
   );
 }
 
 export function useESWBalances(
   uncheckedAddresses?: (string | undefined)[],
 ): { [address: string]: TokenAmount | undefined } {
+  const { chainId } = useActiveWeb3React();
   const eswContract = useESWContract();
 
   const addresses: string[] = useMemo(
@@ -70,10 +73,10 @@ export function useESWBalances(
     () =>
       addresses.reduce<{ [address: string]: TokenAmount }>((memo, address, i) => {
         const value = results?.[i]?.result?.[0];
-        if (value) memo[address] = new TokenAmount(ETHER, JSBI.BigInt(value.toString()));
+        if (value) memo[address] = new TokenAmount(ETH_ONLY[chainId][0], JSBI.BigInt(value.toString()));
         return memo;
       }, {}),
-    [addresses, results],
+    [addresses, results, chainId],
   );
 }
 

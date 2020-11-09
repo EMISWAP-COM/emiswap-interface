@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { MaxUint256 } from '@ethersproject/constants';
 import { TransactionResponse } from '@ethersproject/providers';
-import { Trade, TokenAmount, ETHER, ChainId } from '@uniswap/sdk';
+import { Trade, TokenAmount, ChainId } from '@uniswap/sdk';
 import { BigNumber } from '@ethersproject/bignumber';
 import { useTokenAllowance } from '../data/Allowances';
 import { Field } from '../state/swap/actions';
@@ -15,6 +15,7 @@ import { calculateGasMargin, isUseOneSplitContract } from '../utils';
 import { useTokenContract } from './useContract';
 import { useActiveWeb3React } from './index';
 import { ONE_SPLIT_ADDRESSES } from '../constants/one-split';
+import { ETH_ONLY } from '../constants'
 
 export enum ApprovalState {
   UNKNOWN,
@@ -28,7 +29,7 @@ export function useApproveCallback(
   amountToApprove?: TokenAmount,
   spender?: string,
 ): [ApprovalState, () => Promise<void>] {
-  const { account } = useActiveWeb3React();
+  const { chainId, account } = useActiveWeb3React();
   const token = amountToApprove instanceof TokenAmount ? amountToApprove.token : undefined;
   const allTransactions = useAllTransactions();
   const currentAllowance = useTokenAllowance(
@@ -41,7 +42,7 @@ export function useApproveCallback(
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
     if (!amountToApprove || !spender) return ApprovalState.UNKNOWN;
-    if (amountToApprove.token.equals(ETHER)) return ApprovalState.APPROVED;
+    if (amountToApprove.token.equals(ETH_ONLY[chainId][0])) return ApprovalState.APPROVED;
     // we might not have enough data to know whether or not we need to approve
     if (!currentAllowance) return ApprovalState.UNKNOWN;
     if (!spender) return ApprovalState.UNKNOWN;

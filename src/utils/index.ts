@@ -9,12 +9,16 @@ import MooniswapFactoryABI from '../constants/v1-mooniswap/v1_mooniswap_factory.
 import { ROUTER_ADDRESS } from '../constants';
 import { ChainId, JSBI, Percent, Token, TokenAmount, ETHER } from '@uniswap/sdk';
 import { TokenAddressMap } from '../state/lists/hooks';
-import { V1_MOONISWAP_FACTORY_ADDRESSES } from '../constants/v1-mooniswap';
+import {
+  V1_MOONISWAP_FACTORY_ADDRESSES,
+  V1_MOONISWAP_HELPER_ADDRESSES
+} from '../constants/v1-mooniswap'
 import { ONE_SPLIT_ABI, ONE_SPLIT_ADDRESSES } from '../constants/one-split';
 import { MIGRATOR_ABI, MIGRATOR_ADDRESS } from '../constants/abis/migrator';
 import { EMISWAP_CROWDSALE_ABI, EMISWAP_CROWDSALE_ADDRESS } from '../constants/abis/crowdsale';
 import { EMISWAP_VESTING_ABI, EMISWAP_VESTING_ADDRESS } from '../constants/abis/emiswap-vesting';
 import { EMISWAP_VAULT_ABI, EMISWAP_VAULT_ADDRESS } from '../constants/abis/emiswap-vault';
+import MooniswapHelperABI from '../constants/v1-mooniswap/MooniswapHelper.json'
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
@@ -162,12 +166,25 @@ export function getMooniswapFactoryContract(
   );
 }
 
+export function getMooniswapV1HelperContract(
+  chainId: ChainId,
+  library: Web3Provider,
+  account?: string,
+) {
+  return getContract(
+    V1_MOONISWAP_HELPER_ADDRESSES[chainId],
+    MooniswapHelperABI,
+    library,
+    account,
+  );
+}
+
 export function escapeRegExp(string: string): string {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }
 
 export function isDefaultToken(defaultTokens: TokenAddressMap, currency?: Token): boolean {
-  if (currency === ETHER) return true;
+  if (currency?.address === ETHER.address) return true;
   return Boolean(currency instanceof Token && defaultTokens[currency.chainId]?.[currency.address]);
 }
 

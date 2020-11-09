@@ -2,7 +2,7 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { Contract } from '@ethersproject/contracts';
 import { ETHER, JSBI, Token, TokenAmount, Trade } from '@uniswap/sdk';
 import { useMemo } from 'react';
-import { REFERRAL_ADDRESS_STORAGE_KEY } from '../constants';
+import { ETH_ONLY, REFERRAL_ADDRESS_STORAGE_KEY } from '../constants'
 import { getTradeVersion } from '../data/V1';
 import { useTransactionAdder } from '../state/transactions/hooks';
 import { getCrowdsaleContract, isAddress } from '../utils';
@@ -122,7 +122,7 @@ export function useInvestCallback(
       const isETH = inputCurrency?.address.toUpperCase() === ETHER.address.toUpperCase();
 
       if (isETH) {
-        const amountETH = toHex(new TokenAmount(ETHER, JSBI.BigInt(amount)));
+        const amountETH = toHex(new TokenAmount(ETH_ONLY[chainId][0], JSBI.BigInt(amount)));
         return contract
           .buyWithETH(referralAddress, { value: amountETH })
           .then(onSuccess)

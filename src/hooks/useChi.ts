@@ -34,12 +34,12 @@ export function useHasChi(minAmount: number): boolean | undefined {
 
 export function useIsChiApproved(chainId: ChainId): [ApprovalState, () => Promise<void>] {
   const [approvalState] = useApproveCallback(
-    new TokenAmount(CHI, JSBI.BigInt(MIN_CHI_BALANCE)),
+    new TokenAmount(CHI[chainId][0], JSBI.BigInt(MIN_CHI_BALANCE)),
     ONE_SPLIT_ADDRESSES[chainId],
   );
 
   const [, approve] = useApproveCallback(
-    new TokenAmount(CHI, JSBI.BigInt(MaxUint256)),
+    new TokenAmount(CHI[chainId][0], JSBI.BigInt(MaxUint256)),
     ONE_SPLIT_ADDRESSES[chainId],
   );
 

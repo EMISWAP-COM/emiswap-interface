@@ -32,7 +32,7 @@ import {
 } from '../constants/one-split';
 import { usePair } from './Reserves';
 import { BigNumber } from '@ethersproject/bignumber';
-import { DAI, USDC } from '../constants';
+import { DAI, ETH_ONLY, USDC } from '../constants';
 
 export function useV1ExchangeAddress(tokenAddress?: string): string | undefined {
   const contract = useV1FactoryContract();
@@ -114,8 +114,8 @@ export function useV1Trade(
   const inputPair = useMockV1Pair(inputCurrency);
   const outputPair = useMockV1Pair(outputCurrency);
 
-  const inputIsETH = inputCurrency === ETHER;
-  const outputIsETH = outputCurrency === ETHER;
+  const inputIsETH = inputCurrency?.address === ETHER.address;
+  const outputIsETH = outputCurrency?.address === ETHER.address;
 
   // construct a direct or through ETH v1 route
   let pairs: Pair[] = [];
@@ -198,6 +198,7 @@ export function useMooniswapTrade(
   outputCurrency?: Token,
   parseAmount?: TokenAmount,
 ): [Trade, BigNumber[]] | [undefined, undefined] | undefined {
+  const { chainId } = useActiveWeb3React();
   let mooniswapTrade: Trade | undefined;
 
   const amount =
@@ -228,13 +229,13 @@ export function useMooniswapTrade(
 
   const poolPair = usePair(inputCurrency, outputCurrency);
 
-  const poolPairOverEth = usePair(inputCurrency, ETHER);
-  const poolPairOverDai = usePair(inputCurrency, DAI);
-  const poolPairOverUsdc = usePair(inputCurrency, USDC);
+  const poolPairOverEth = usePair(inputCurrency, ETH_ONLY[chainId][0]);
+  const poolPairOverDai = usePair(inputCurrency, DAI[chainId][0]);
+  const poolPairOverUsdc = usePair(inputCurrency, USDC[chainId][0]);
 
-  const poolPairUsdcToDest = usePair(USDC, outputCurrency);
-  const poolPairDaiToDest = usePair(DAI, outputCurrency);
-  const poolPairEthToDest = usePair(ETHER, outputCurrency);
+  const poolPairUsdcToDest = usePair(USDC[chainId][0], outputCurrency);
+  const poolPairDaiToDest = usePair(DAI[chainId][0], outputCurrency);
+  const poolPairEthToDest = usePair(ETH_ONLY[chainId][0], outputCurrency);
 
   const results = useSingleCallResult(useOneSplit(), 'getExpectedReturn', params);
   if (!inputCurrency || !outputCurrency || !parseAmount || !results.result) {

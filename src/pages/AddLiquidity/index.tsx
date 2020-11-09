@@ -1,5 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import { ETHER, Token, TokenAmount, ZERO_ADDRESS } from '@uniswap/sdk';
+import { Token, TokenAmount, ZERO_ADDRESS } from '@uniswap/sdk';
 import React, { useCallback, useContext, useState } from 'react';
 import { Plus } from 'react-feather';
 import ReactGA from 'react-ga';
@@ -42,6 +42,7 @@ import { ConfirmAddModalBottom } from './ConfirmAddModalBottom';
 import { currencyId } from '../../utils/currencyId';
 import { PoolPriceBar } from './PoolPriceBar';
 import { tokenAmountToString } from '../../utils/formats';
+import { ETH_ONLY } from '../../constants';
 
 export default function AddLiquidity({
   match: {
@@ -195,8 +196,8 @@ export default function AddLiquidity({
       amounts.map(x => calculateSlippageAmount(x, allowedSlippage)[0].toString()),
     ];
 
-    if (currencyA === ETHER || currencyB === ETHER) {
-      const tokenBIsETH = currencyB === ETHER;
+    if (currencyA === ETH_ONLY[chainId][0] || currencyB === ETH_ONLY[chainId][0]) {
+      const tokenBIsETH = currencyB === ETH_ONLY[chainId][0];
       value = BigNumber.from((tokenBIsETH ? parsedAmountB : parsedAmountA).raw.toString());
     } else {
       value = null;

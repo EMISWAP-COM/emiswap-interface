@@ -1,9 +1,9 @@
 import React from 'react';
 import { Text } from 'rebass';
-import { ChainId, Token, currencyEquals, ETHER } from '@uniswap/sdk';
+import { ChainId, Token, currencyEquals } from '@uniswap/sdk';
 import styled from 'styled-components';
 
-import { SUGGESTED_BASES } from '../../constants';
+import { ETH_ONLY, SUGGESTED_BASES } from '../../constants';
 import { AutoColumn } from '../Column';
 import QuestionHelper from '../QuestionHelper';
 import { AutoRow } from '../Row';
@@ -46,10 +46,10 @@ export default function CommonBases({
       </AutoRow>
       <AutoRow gap="4px">
         <BaseWrapper
-          onClick={() => !currencyEquals(selectedCurrency, ETHER) && onSelect(ETHER)}
-          disable={selectedCurrency === ETHER}
+          onClick={() => !currencyEquals(selectedCurrency, ETH_ONLY[chainId][0]) && onSelect(ETH_ONLY[chainId][0])}
+          disable={selectedCurrency === ETH_ONLY[chainId][0]}
         >
-          <CurrencyLogo currency={ETHER} style={{ marginRight: 8 }} />
+          <CurrencyLogo currency={ETH_ONLY[chainId][0]} style={{ marginRight: 8 }} />
           <Text fontWeight={500} fontSize={16}>
             ETH
           </Text>

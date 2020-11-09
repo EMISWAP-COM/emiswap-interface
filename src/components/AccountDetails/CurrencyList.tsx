@@ -1,6 +1,6 @@
 import React, { CSSProperties, memo, useContext, useMemo } from 'react';
 import { ThemeContext } from 'styled-components';
-import { Token, TokenAmount, ETHER, JSBI } from '@uniswap/sdk';
+import { Token, TokenAmount, JSBI } from '@uniswap/sdk';
 import { Text } from 'rebass';
 
 import { currencyKey } from '../../utils/currencyId';
@@ -14,6 +14,7 @@ import Loader from '../Loader';
 
 import { StyledFixedSizeList, StyledMenuItem } from './styleds';
 import { tokenAmountToString } from '../../utils/formats';
+import { ETH_ONLY } from '../../constants';
 
 type CurrencyListProps = {
   currencies: Token[];
@@ -35,16 +36,16 @@ const CurrencyList = ({
   selectedCurrencies,
   showSendWithSwap,
 }: CurrencyListProps) => {
-  const { account } = useActiveWeb3React();
+  const { chainId, account } = useActiveWeb3React();
   const theme = useContext(ThemeContext);
   const ETHBalance = useETHBalances([account])[account];
 
   const CurrencyRow = useMemo(
     () =>
       memo(({ index, style }: CurrencyRowProps) => {
-        const currency = index === 0 ? ETHER : currencies[index - 1];
+        const currency = index === 0 ? ETH_ONLY[chainId][0] : currencies[index - 1];
         const key = currencyKey(currency);
-        const balance = currency === ETHER ? ETHBalance : allBalances[key];
+        const balance = currency === ETH_ONLY[chainId][0] ? ETHBalance : allBalances[key];
 
         const zeroBalance = balance && JSBI.equal(JSBI.BigInt(0), balance.raw);
 

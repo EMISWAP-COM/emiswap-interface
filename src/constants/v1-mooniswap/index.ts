@@ -16,7 +16,7 @@ const V1_MOONISWAP_HELPER_ADDRESSES: { [chainId in ChainId]: string } = {
   [ChainId.ROPSTEN]: '0xe5c8e363de97840d5996e1e8db8b5facda0f1e21',
   [ChainId.RINKEBY]: '0xe5c8e363de97840d5996e1e8db8b5facda0f1e21',
   [ChainId.GÖRLI]: '0xe5c8e363de97840d5996e1e8db8b5facda0f1e21',
-  [ChainId.KOVAN]: '0xe5c8e363de97840d5996e1e8db8b5facda0f1e21',
+  [ChainId.KOVAN]: '0xBE570bBF230623E5C86172F8CD0321a7248BDCe4',
 };
 
 const V1_FACTORY_INTERFACE = new Interface(V1_MOONISWAP_FACTORY_ABI);

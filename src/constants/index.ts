@@ -1,4 +1,5 @@
 import { ChainId, ETHER, JSBI, Percent, Token } from '@uniswap/sdk';
+import { ZERO_ADDRESS } from '@uniswap/sdk/src/constants';
 
 import { fortmatic, injected, portis, walletconnect, walletlink } from '../connectors';
 
@@ -10,48 +11,53 @@ type ChainTokenList = {
   readonly [chainId in ChainId]: Token[];
 };
 
-export const DAI = new Token(
-  ChainId.MAINNET,
-  '0x6B175474E89094C44Da98b954EedeAC495271d0F',
-  18,
-  'DAI',
-  'Dai Stablecoin',
-);
-export const USDC = new Token(
-  ChainId.MAINNET,
-  '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-  6,
-  'USDC',
-  'USD//C',
-);
-export const USDT = new Token(
-  ChainId.MAINNET,
-  '0xdAC17F958D2ee523a2206206994597C13D831ec7',
-  6,
-  'USDT',
-  'Tether USD',
-);
-export const COMP = new Token(
-  ChainId.MAINNET,
-  '0xc00e94Cb662C3520282E6f5717214004A7f26888',
-  18,
-  'COMP',
-  'Compound',
-);
-export const MKR = new Token(
-  ChainId.MAINNET,
-  '0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2',
-  18,
-  'MKR',
-  'Maker',
-);
-export const CHI = new Token(
-  ChainId.MAINNET,
-  '0x0000000000004946c0e9F43F4Dee607b0eF1fA1c',
-  0,
-  'CHI',
-  'Chi Gastoken by 1inch',
-);
+export const DAI: ChainTokenList = {
+  [ChainId.MAINNET]: [new Token(ChainId.MAINNET, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'Dai Stablecoin')],
+  [ChainId.ROPSTEN]: [new Token(ChainId.ROPSTEN, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'Dai Stablecoin')],
+  [ChainId.RINKEBY]: [new Token(ChainId.RINKEBY, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'Dai Stablecoin')],
+  [ChainId.GÖRLI]: [new Token(ChainId.GÖRLI, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'Dai Stablecoin')],
+  [ChainId.KOVAN]: [new Token(ChainId.KOVAN, '0x58CC0Fb38Fe53919Ca6d1402dC66ed04d02FB6Ad', 18, 'DAI', 'Dai Stablecoin')],
+};
+
+export const USDC: ChainTokenList = {
+  [ChainId.MAINNET]: [new Token(ChainId.MAINNET, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USDC')],
+  [ChainId.ROPSTEN]: [new Token(ChainId.ROPSTEN, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USDC')],
+  [ChainId.RINKEBY]: [new Token(ChainId.RINKEBY, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USDC')],
+  [ChainId.GÖRLI]: [new Token(ChainId.GÖRLI, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USDC')],
+  [ChainId.KOVAN]: [new Token(ChainId.KOVAN, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USDC')],
+};
+
+export const USDT: ChainTokenList = {
+  [ChainId.MAINNET]: [new Token(ChainId.MAINNET, '0xdAC17F958D2ee523a2206206994597C13D831ec7', 6, 'USDT', 'Tether USD')],
+  [ChainId.ROPSTEN]: [new Token(ChainId.ROPSTEN, '0xdAC17F958D2ee523a2206206994597C13D831ec7', 6, 'USDT', 'Tether USD')],
+  [ChainId.RINKEBY]: [new Token(ChainId.RINKEBY, '0xdAC17F958D2ee523a2206206994597C13D831ec7', 6, 'USDT', 'Tether USD')],
+  [ChainId.GÖRLI]: [new Token(ChainId.GÖRLI, '0xdAC17F958D2ee523a2206206994597C13D831ec7', 6, 'USDT', 'Tether USD')],
+  [ChainId.KOVAN]: [new Token(ChainId.KOVAN, '0xdAC17F958D2ee523a2206206994597C13D831ec7', 6, 'USDT', 'Tether USD')],
+};
+
+export const COMP: ChainTokenList = {
+  [ChainId.MAINNET]: [new Token(ChainId.MAINNET, '0xc00e94Cb662C3520282E6f5717214004A7f26888', 18, 'COMP', 'Compound')],
+  [ChainId.ROPSTEN]: [new Token(ChainId.ROPSTEN, '0xc00e94Cb662C3520282E6f5717214004A7f26888', 18, 'COMP', 'Compound')],
+  [ChainId.RINKEBY]: [new Token(ChainId.RINKEBY, '0xc00e94Cb662C3520282E6f5717214004A7f26888', 18, 'COMP', 'Compound')],
+  [ChainId.GÖRLI]: [new Token(ChainId.GÖRLI, '0xc00e94Cb662C3520282E6f5717214004A7f26888', 18, 'COMP', 'Compound')],
+  [ChainId.KOVAN]: [new Token(ChainId.KOVAN, '0xc00e94Cb662C3520282E6f5717214004A7f26888', 18, 'COMP', 'Compound')],
+};
+
+export const MKR: ChainTokenList = {
+  [ChainId.MAINNET]: [new Token(ChainId.MAINNET, '0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2', 18, 'MKR', 'Maker')],
+  [ChainId.ROPSTEN]: [new Token(ChainId.ROPSTEN, '0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2', 18, 'MKR', 'Maker')],
+  [ChainId.RINKEBY]: [new Token(ChainId.RINKEBY, '0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2', 18, 'MKR', 'Maker')],
+  [ChainId.GÖRLI]: [new Token(ChainId.GÖRLI, '0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2', 18, 'MKR', 'Maker')],
+  [ChainId.KOVAN]: [new Token(ChainId.KOVAN, '0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2', 18, 'MKR', 'Maker')],
+};
+
+export const CHI: ChainTokenList = {
+  [ChainId.MAINNET]: [new Token(ChainId.MAINNET, '0x0000000000004946c0e9F43F4Dee607b0eF1fA1c', 0, 'CHI', 'Chi Gastoken by 1inch')],
+  [ChainId.ROPSTEN]: [new Token(ChainId.ROPSTEN, '0x0000000000004946c0e9F43F4Dee607b0eF1fA1c', 0, 'CHI', 'Chi Gastoken by 1inch')],
+  [ChainId.RINKEBY]: [new Token(ChainId.RINKEBY, '0x0000000000004946c0e9F43F4Dee607b0eF1fA1c', 0, 'CHI', 'Chi Gastoken by 1inch')],
+  [ChainId.GÖRLI]: [new Token(ChainId.GÖRLI, '0x0000000000004946c0e9F43F4Dee607b0eF1fA1c', 0, 'CHI', 'Chi Gastoken by 1inch')],
+  [ChainId.KOVAN]: [new Token(ChainId.KOVAN, '0x0000000000004946c0e9F43F4Dee607b0eF1fA1c', 0, 'CHI', 'Chi Gastoken by 1inch')],
+};
 
 export const ESW: ChainTokenList = {
   [ChainId.MAINNET]: [
@@ -71,30 +77,37 @@ export const ESW: ChainTokenList = {
   ],
 };
 
-const ETH_ONLY: ChainTokenList = {
+export const ETH_ONLY: ChainTokenList = {
   [ChainId.MAINNET]: [ETHER],
-  [ChainId.ROPSTEN]: [ETHER],
-  [ChainId.RINKEBY]: [ETHER],
-  [ChainId.GÖRLI]: [ETHER],
-  [ChainId.KOVAN]: [ETHER],
+  [ChainId.ROPSTEN]: [new Token(ChainId.ROPSTEN, ZERO_ADDRESS, 18, 'ETH', 'Ethereum')],
+  [ChainId.RINKEBY]: [new Token(ChainId.RINKEBY, ZERO_ADDRESS, 18, 'ETH', 'Ethereum')],
+  [ChainId.GÖRLI]: [new Token(ChainId.GÖRLI, ZERO_ADDRESS, 18, 'ETH', 'Ethereum')],
+  [ChainId.KOVAN]: [new Token(ChainId.KOVAN, ZERO_ADDRESS, 18, 'ETH', 'Ethereum')],
 };
 
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ...ETH_ONLY,
-  [ChainId.MAINNET]: [DAI, USDC, USDT, COMP, MKR, CHI],
+  [ChainId.MAINNET]: [DAI[ChainId.MAINNET][0], USDC[ChainId.MAINNET][0], USDT[ChainId.MAINNET][0], COMP[ChainId.MAINNET][0], MKR[ChainId.MAINNET][0], CHI[ChainId.MAINNET][0]],
+  [ChainId.KOVAN]: [DAI[ChainId.KOVAN][0], new Token(ChainId.KOVAN, '0xBef02946e3cC640532C15b3917801AD3D38c4a51', 18, 'WETH', 'WrappedEther',),],
 };
 
 // used for display in the default list when adding liquidity
 export const SUGGESTED_BASES: ChainTokenList = {
   ...ETH_ONLY,
-  [ChainId.MAINNET]: [DAI, USDC, USDT, CHI],
+  [ChainId.MAINNET]: [DAI[ChainId.MAINNET][0], USDC[ChainId.MAINNET][0], USDT[ChainId.MAINNET][0], CHI[ChainId.MAINNET][0]],
+  [ChainId.KOVAN]: [DAI[ChainId.KOVAN][0]],
 };
 
 // used to construct the list of all pairs we consider by default in the frontend
 export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   ...ETH_ONLY,
-  [ChainId.MAINNET]: [ETHER, DAI, USDC, USDT, CHI],
+  [ChainId.MAINNET]: [ETHER, DAI[ChainId.MAINNET][0], USDC[ChainId.MAINNET][0], USDT[ChainId.MAINNET][0], CHI[ChainId.MAINNET][0]],
+  [ChainId.KOVAN]: [
+    DAI[ChainId.KOVAN][0],
+    new Token(ChainId.KOVAN, ZERO_ADDRESS, 18, 'ETH', 'Ethereum'),
+    new Token(ChainId.KOVAN, '0xBef02946e3cC640532C15b3917801AD3D38c4a51', 18, 'WETH', 'WrappedEther')
+  ],
 };
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
@@ -115,11 +128,33 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
         'Compound USD Coin',
       ),
     ],
-    [USDC, USDT],
-    [DAI, USDT],
-    [ETHER, CHI],
-    [USDC, CHI],
-    [ETHER, USDC],
+    [USDC[ChainId.MAINNET][0], USDT[ChainId.MAINNET][0]],
+    [DAI[ChainId.MAINNET][0], USDT[ChainId.MAINNET][0]],
+    [ETHER, CHI[ChainId.MAINNET][0]],
+    [USDC[ChainId.MAINNET][0], CHI[ChainId.MAINNET][0]],
+    [ETHER, USDC[ChainId.MAINNET][0]],
+  ],
+  [ChainId.KOVAN]: [
+    [
+      DAI[ChainId.KOVAN][0],
+      new Token(
+        ChainId.KOVAN,
+        '0xBef02946e3cC640532C15b3917801AD3D38c4a51',
+        18,
+        'WETH',
+        'WrappedEther',
+      ),
+    ],
+    [
+      new Token(
+        ChainId.KOVAN,
+        '0xBef02946e3cC640532C15b3917801AD3D38c4a51',
+        18,
+        'WETH',
+        'WrappedEther',
+      ),
+      DAI[ChainId.KOVAN][0],
+    ],
   ],
 };
 

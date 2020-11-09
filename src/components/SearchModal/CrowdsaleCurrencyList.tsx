@@ -11,6 +11,7 @@ import CurrencyLogo from '../CurrencyLogo';
 import { StyledFixedSizeList, StyledMenuItem } from './styleds';
 import Loader from '../Loader';
 import { tokenAmountToString } from '../../utils/formats';
+import { ETH_ONLY } from '../../constants';
 
 function currencyKey(currency: Token): string {
   return currency instanceof Token ? currency.address : currency === ETHER ? 'ETHER' : '';
@@ -31,15 +32,15 @@ export default function CrowdsaleCurrencyList({
   otherCurrency: Token;
   showSendWithSwap?: boolean;
 }) {
-  const { account } = useActiveWeb3React();
+  const { chainId, account } = useActiveWeb3React();
   const theme = useContext(ThemeContext);
   const ETHBalance = useETHBalances([account])[account];
 
   const CurrencyRow = useMemo(() => {
     return memo(function CurrencyRow({ index, style }: { index: number; style: CSSProperties }) {
-      const currency = index === 0 ? ETHER : currencies[index - 1];
+      const currency = index === 0 ? ETH_ONLY[chainId][0] : currencies[index - 1];
       const key = currencyKey(currency);
-      const balance = currency === ETHER ? ETHBalance : allBalances[key];
+      const balance = currency === ETH_ONLY[chainId][0] ? ETHBalance : allBalances[key];
 
       const zeroBalance = balance && JSBI.equal(JSBI.BigInt(0), balance.raw);
 
@@ -94,6 +95,7 @@ export default function CrowdsaleCurrencyList({
     selectedCurrency,
     showSendWithSwap,
     theme.primary1,
+    chainId,
   ]);
 
   return (

@@ -1,6 +1,8 @@
-import { ETHER, Token, TokenAmount } from '@uniswap/sdk';
+import { Token, TokenAmount } from '@uniswap/sdk';
 import { useMemo } from 'react';
 import { useAllTokenBalances } from '../../state/wallet/hooks';
+import { useActiveWeb3React } from '../../hooks';
+import { ETH_ONLY } from '../../constants';
 
 // compare two token amounts with highest one coming first
 function balanceComparator(balanceA?: TokenAmount, balanceB?: TokenAmount) {
@@ -41,9 +43,9 @@ function getTokenComparator(
 }
 
 export function useTokenComparator(inverted: boolean): (tokenA: Token, tokenB: Token) => number {
-  // const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveWeb3React();
   const balances = useAllTokenBalances();
-  const comparator = useMemo(() => getTokenComparator(ETHER, balances ?? {}), [balances]);
+  const comparator = useMemo(() => getTokenComparator(ETH_ONLY[chainId][0], balances ?? {}), [balances, chainId]);
   return useMemo(() => {
     if (inverted) {
       return (tokenA: Token, tokenB: Token) => comparator(tokenA, tokenB) * -1;

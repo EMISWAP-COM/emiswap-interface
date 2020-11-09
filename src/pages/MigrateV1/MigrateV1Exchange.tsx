@@ -1,6 +1,6 @@
 import { TransactionResponse } from '@ethersproject/abstract-provider';
 import { AddressZero } from '@ethersproject/constants';
-import { Token, TokenAmount, Fraction, JSBI, Percent, ETHER } from '@uniswap/sdk';
+import { Token, TokenAmount, Fraction, JSBI, Percent } from '@uniswap/sdk';
 import React, { useCallback, useMemo, useState } from 'react';
 import ReactGA from 'react-ga';
 import { Redirect, RouteComponentProps } from 'react-router';
@@ -32,6 +32,7 @@ import { useUserSlippageTolerance } from '../../state/user/hooks';
 import Logo from '../../components/Logo';
 import Wordmark from '../../components/Wordmark';
 import { tokenAmountToString } from '../../utils/formats';
+import { ETH_ONLY } from '../../constants'
 
 const POOL_CURRENCY_AMOUNT_MIN = new Fraction(JSBI.BigInt(1), JSBI.BigInt(1000000));
 const ZERO = JSBI.BigInt(0);
@@ -124,9 +125,9 @@ function V1PairMigration({
 
   let mooniswapTokens = [];
   if (token0.address === weth) {
-    mooniswapTokens = [ETHER, token1];
+    mooniswapTokens = [ETH_ONLY[chainId][0], token1];
   } else if (token1.address === weth) {
-    mooniswapTokens = [ETHER, token0];
+    mooniswapTokens = [ETH_ONLY[chainId][0], token0];
   } else {
     mooniswapTokens = [token0, token1];
   }

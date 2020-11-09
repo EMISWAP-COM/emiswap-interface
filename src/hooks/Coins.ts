@@ -1,12 +1,12 @@
 import { parseBytes32String } from '@ethersproject/strings';
-import { Token, ETHER } from '@uniswap/sdk';
+import { Token } from '@uniswap/sdk';
 import { useMemo } from 'react';
 import { NEVER_RELOAD, useSingleCallResult } from '../state/multicall/hooks';
 import { useCoinList } from '../state/invest/hooks';
 import { isAddress } from '../utils';
 import { useActiveWeb3React } from './index';
 import { useBytes32TokenContract, useTokenContract } from './useContract';
-import { ESW } from '../constants';
+import { ESW, ETH_ONLY } from '../constants'
 
 export function useAllCoins(): { [address: string]: Token } {
   const { chainId } = useActiveWeb3React();
@@ -106,11 +106,12 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
 }
 
 export function useCurrency(currencyId: string | undefined): Token | null | undefined {
+  const { chainId } = useActiveWeb3React();
   const isESW = currencyId?.toUpperCase() === process.env.REACT_APP_ESW_ID?.toUpperCase();
   const defaultCoin = useDefaultCoin(currencyId);
-  const isETH = currencyId?.toUpperCase() === ETHER.address.toUpperCase();
+  const isETH = currencyId?.toUpperCase() === ETH_ONLY[chainId][0].address.toUpperCase();
   const token = useToken(isESW || isETH ? undefined : currencyId);
-  return isESW ? defaultCoin : isETH ? ETHER : token;
+  return isESW ? defaultCoin : isETH ? ETH_ONLY[chainId][0] : token;
 }
 
 export function useDefaultCoin(address?: string): Token | undefined {
