@@ -41,34 +41,43 @@ import RareIcon from '../../assets/svg/CardIcon/rare.svg';
 import LegendaryIcon from '../../assets/svg/CardIcon/legendary.svg';
 import Question from '../../assets/svg/FAQIcon/question.svg';
 import FAQInfo from '../../components/FAQInfo';
-import { ThemeProvider } from 'emotion-theming';
 
 const EmiCard = styled.div`
-  .block-with-cards {
+  position: absolute;
+  width: 440px;
+  height: 553px;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 32px 40px;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: -210%;
+  margin: 0 auto;
+  border: 1px solid #ecceff;
+  .arrow-left {
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid #ecceff;
     position: absolute;
-    width: 440px;
-    height: 553px;
-    background: #ffffff;
-    border-radius: 24px;
-    padding: 32px 40px;
-    left: 0;
-    top: 120px;
-    bottom: 0;
-    right: -210%;
-    margin: auto;
-    border: 1px solid #ecceff;
-
-    .arrow-left {
-      width: 0;
-      height: 0;
-      border-top: 10px solid transparent;
-      border-bottom: 10px solid transparent;
-      border-right: 10px solid #ecceff;
-      position: absolute;
-      left: -10px;
-      top: 185px;
-    }
-
+    left: -10px;
+    top: 185px;
+    z-index: 100;
+  }
+  .arrow-left-white {
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid #fff;
+    position: absolute;
+    left: -8px;
+    top: 185px;
+    z-index: 110;
+  }
+  .block-with-cards {
     &__header {
       font-family: IBM Plex Sans;
       font-style: normal;
@@ -334,7 +343,9 @@ const Invest = () => {
   // the callback to execute the invest
   const [investCallback] = useInvest(chainId, currencies, parsedAmounts);
 
-  const maxAmountInput: TokenAmount | undefined = maxAmountSpendInvest(currencyBalances[Field.INPUT]);
+  const maxAmountInput: TokenAmount | undefined = maxAmountSpendInvest(
+    currencyBalances[Field.INPUT],
+  );
   const atMaxAmountInput = Boolean(
     maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput),
   );
@@ -664,7 +675,7 @@ const Invest = () => {
     };
 
     return (
-      <div className={getClassToEmiCardsBlock(ESWc)}>
+      <EmiCard className={getClassToEmiCardsBlock(ESWc)}>
         <div className="block-with-cards__header">
           {ESWc > 0 ? 'You will get:' : 'Buy ESWc to get Magic NFT EmiCards'}
         </div>
@@ -681,7 +692,8 @@ const Invest = () => {
           What is NFT Magic Card?
         </a>
         <div className="arrow-left" />
-      </div>
+        <div className="arrow-left-white" />
+      </EmiCard>
     );
   };
 
@@ -822,7 +834,7 @@ const Invest = () => {
           </AutoColumn>
           {account ? <ReferralLink /> : ''}
         </Wrapper>
-        <EmiCard>{generateEmiCardBlock(Number(formattedAmounts[Field.OUTPUT]))}</EmiCard>
+        {generateEmiCardBlock(Number(formattedAmounts[Field.OUTPUT]))}
       </AppBody>
       <FAQWrapper>
         <FAQInfo />

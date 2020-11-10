@@ -31,7 +31,7 @@ export const HeadersPlusBodyWrapper = styled.div<{ disabled?: boolean }>`
   }
 `;
 
-export const BodyWrapper = styled.div<{ disabled?: boolean }>`
+export const BodyWrapper = styled.div<{ disabled?: boolean; data?: string }>`
   position: relative;
   max-width: 440px;
   width: 100%;
@@ -66,7 +66,7 @@ export default function AppBody({
           <Logo />
           <Wordmark />
         </div>
-        <BodyWrapper disabled={disabled}>{children}</BodyWrapper>
+        <BodyWrapper data="test" disabled={disabled}>{children}</BodyWrapper>
         <BonusProgram />
       </HeadersPlusBodyWrapper>
     </ThemeProvider>
