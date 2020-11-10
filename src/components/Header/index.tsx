@@ -191,6 +191,7 @@ export default function Header() {
               className="white-btn"
               href="http://emirex.com/?refid=ID0A9FBA8B3E&utm_source=emiswap_website&utm_medium=main&utm_campaign=button"
               target="_blank"
+              rel="noopener noreferrer"
             >
               Buy Crypto with fiat
             </a>
