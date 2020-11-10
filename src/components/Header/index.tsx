@@ -38,6 +38,31 @@ const HeaderFrame = styled.div`
 const HeaderElement = styled.div`
   display: flex;
   align-items: center;
+
+  .white-btn {
+    width: 250px;
+    height: 41px;
+    background-color: white;
+    margin-right: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    user-select: none;
+    cursor: pointer;
+
+    font-family: IBM Plex Sans;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 17px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    letter-spacing: 0.02em;
+    color: #11b382;
+  }
 `;
 
 const HeaderElementWrap = styled.div`
@@ -162,6 +187,13 @@ export default function Header() {
         </HeaderElement>
         <HeaderControls>
           <HeaderElement>
+            <a
+              className="white-btn"
+              href="http://emirex.com/?refid=ID0A9FBA8B3E&utm_source=emiswap_website&utm_medium=main&utm_campaign=button"
+              target="_blank"
+            >
+              Buy Crypto with fiat
+            </a>
             {!isMobile && NETWORK_LABELS[chainId] && (
               <TestnetWrapper>
                 <NetworkCard>{NETWORK_LABELS[chainId]}</NetworkCard>

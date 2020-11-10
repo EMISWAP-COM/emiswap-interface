@@ -408,17 +408,20 @@ const defaultLabelStyle = {
 };
 const shiftSize = 7;
 
-export default (props) => {
+export default () => {
   const btnClick1 = () => {
     const win = window.open('https://crowdsale.emidao.org/whitepaper', '_blank');
     win.focus();
+  };
+  const btnClick2 = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const btnClick3 = () => {
     const win = window.open('https://crowdsale.emidao.org/presentation', '_blank');
     win.focus();
   };
   return (
-    <div>
+    <div className="for-scroll-faq">
       <Accordion
         header="Introduction to EmiSwap"
         btnText="Read White Paper"
@@ -496,6 +499,8 @@ export default (props) => {
       </Accordion>
       <Accordion
         header="Crowdsale Information"
+        btnText="Participate in crowdsale"
+        btnClick={btnClick2}
         openClass="isOpen2"
       >
         <Body>

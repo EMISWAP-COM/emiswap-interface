@@ -834,6 +834,7 @@ const Invest = () => {
             </BottomGrouping>
           </AutoColumn>
           {account ? <ReferralLink /> : ''}
+
         </Wrapper>
         {generateEmiCardBlock(Number(formattedAmounts[Field.OUTPUT]))}
       </AppBody>

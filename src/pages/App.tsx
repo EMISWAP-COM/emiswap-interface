@@ -32,7 +32,7 @@ const AppWrapper = styled.div`
   flex-flow: column;
   align-items: flex-start;
   overflow-x: hidden;
-  height: 100vh;
+  // height: 100vh;
   background: center / cover no-repeat url('${UnicornSvg}');
 `;
 
