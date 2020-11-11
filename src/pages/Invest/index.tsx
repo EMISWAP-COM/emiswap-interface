@@ -40,7 +40,9 @@ import UnusualIcon from '../../assets/svg/CardIcon/unusual.svg';
 import RareIcon from '../../assets/svg/CardIcon/rare.svg';
 import LegendaryIcon from '../../assets/svg/CardIcon/legendary.svg';
 import Question from '../../assets/svg/FAQIcon/question.svg';
+import EmiMagicBackground from '../../assets/svg/EmiMagicBackground.svg';
 import FAQInfo from '../../components/FAQInfo';
+import EmiMagicCardModal from '../../components/EmiMagicCardModal';
 
 const EmiCard = styled.div`
   position: absolute;
@@ -63,7 +65,7 @@ const EmiCard = styled.div`
     border-right: 10px solid #ecceff;
     position: absolute;
     left: -10px;
-    top: 185px;
+    top: 130px;
     z-index: 100;
   }
   .arrow-left-white {
@@ -73,13 +75,13 @@ const EmiCard = styled.div`
     border-bottom: 10px solid transparent;
     border-right: 10px solid #fff;
     position: absolute;
-    left: -8px;
-    top: 185px;
+    left: -9px;
+    top: 130px;
     z-index: 110;
   }
   .block-with-cards {
     &__header {
-      font-family: IBM Plex Sans;
+      font-family: 'IBM Plex Sans';
       font-style: normal;
       font-weight: 500;
       font-size: 20px;
@@ -115,7 +117,7 @@ const EmiCard = styled.div`
         }
 
         &__title {
-          font-family: IBM Plex Sans;
+          font-family: 'IBM Plex Sans';
           font-style: normal;
           font-weight: 600;
           font-size: 36px;
@@ -127,7 +129,7 @@ const EmiCard = styled.div`
         }
 
         &__text {
-          font-family: IBM Plex Sans;
+          font-family: 'IBM Plex Sans';
           font-style: normal;
           font-weight: 500;
           font-size: 20px;
@@ -156,7 +158,7 @@ const EmiCard = styled.div`
         }
 
         &__title {
-          font-family: IBM Plex Sans;
+          font-family: 'IBM Plex Sans';
           font-style: normal;
           font-weight: 500;
           font-size: 18px;
@@ -168,7 +170,7 @@ const EmiCard = styled.div`
         }
 
         &__description {
-          font-family: IBM Plex Sans;
+          font-family: 'IBM Plex Sans';
           font-style: normal;
           font-weight: normal;
           font-size: 13px;
@@ -180,7 +182,7 @@ const EmiCard = styled.div`
         }
 
         &__description-card {
-          font-family: IBM Plex Sans;
+          font-family: 'IBM Plex Sans';
           font-style: normal;
           font-weight: normal;
           font-size: 16px;
@@ -205,7 +207,7 @@ const EmiCard = styled.div`
     }
 
     &__footer {
-      font-family: IBM Plex Sans;
+      font-family: 'IBM Plex Sans';
       font-style: normal;
       font-weight: normal;
       font-size: 16px;
@@ -229,7 +231,7 @@ const EmiCard = styled.div`
       cursor: pointer;
       text-decoration: none;
 
-      font-family: IBM Plex Sans;
+      font-family: 'IBM Plex Sans';
       font-style: normal;
       font-weight: 500;
       font-size: 16px;
@@ -272,6 +274,19 @@ const FAQWrapper = styled.div`
   @media screen and (max-width: 600px) {
     max-width: 100%;
   }
+`;
+
+const EmiMagicBtn = styled.div`
+  background: url('${EmiMagicBackground}');
+  border-radius: 8px;
+  height: 56px;
+  color: #FFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  margin-top: 10px;
 `;
 
 export function RedirectPathToInvestOnly({ location }: RouteComponentProps) {
@@ -376,7 +391,9 @@ const Invest = () => {
 
   // errors
   const [showInverted, setShowInverted] = useState<boolean>(false);
-
+  const [showEmiCardModal, setShowEmiCardModal] = useState<boolean>(false);
+  const openEmiCardModal = () => setShowEmiCardModal(true);
+  const closeEmiCardModal = () => setShowEmiCardModal(false);
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
   // never show if price impact is above threshold in non expert mode
   const showApproveFlow =
@@ -514,7 +531,6 @@ const Invest = () => {
         </div>
       );
     }
-
     if (rare === 'Common') {
       const NumByGetMoreCard = (NunOfCard + 1) * 2500;
       bodyNode = (
@@ -834,7 +850,10 @@ const Invest = () => {
             </BottomGrouping>
           </AutoColumn>
           {account ? <ReferralLink /> : ''}
-
+          <EmiMagicBtn onClick={openEmiCardModal}>NFT EmiMagic Cards</EmiMagicBtn>
+          {showEmiCardModal && (
+            <EmiMagicCardModal isOpen={showEmiCardModal} onDismiss={closeEmiCardModal} />
+          )}
         </Wrapper>
         {generateEmiCardBlock(Number(formattedAmounts[Field.OUTPUT]))}
       </AppBody>

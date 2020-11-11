@@ -25,7 +25,7 @@ const Body = styled.div`
   }
 
   .h4 {
-    font-family: IBM Plex Sans;
+    font-family: 'IBM Plex Sans';
     font-style: normal;
     font-weight: 500;
     font-size: 20px;
@@ -79,7 +79,7 @@ const Body = styled.div`
       }
 
       &__description {
-        font-family: IBM Plex Sans;
+        font-family: 'IBM Plex Sans';
         font-style: normal;
         font-weight: normal;
         font-size: 18px;
@@ -144,7 +144,7 @@ const Body = styled.div`
       border-radius: 4px;
 
       .card-title {
-        font-family: IBM Plex Sans;
+        font-family: 'IBM Plex Sans';
         font-style: normal;
         font-weight: 500;
         font-size: 16px;
@@ -245,7 +245,7 @@ const Body = styled.div`
   }
 
   .grey-text {
-    font-family: IBM Plex Sans;
+    font-family: 'IBM Plex Sans';
     font-style: normal;
     font-weight: normal;
     font-size: 20px;

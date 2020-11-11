@@ -52,7 +52,7 @@ const HeaderElement = styled.div`
     user-select: none;
     cursor: pointer;
 
-    font-family: IBM Plex Sans;
+    font-family: 'IBM Plex Sans';
     font-style: normal;
     font-weight: 500;
     font-size: 13px;

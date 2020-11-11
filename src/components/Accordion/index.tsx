@@ -34,7 +34,7 @@ const Body = styled.div`
   }
 
   .h4 {
-    font-family: IBM Plex Sans;
+    font-family: 'IBM Plex Sans';
     font-style: normal;
     font-weight: 500;
     font-size: 20px;
@@ -172,7 +172,7 @@ const Body = styled.div`
       align-items: center;
       cursor: pointer;
       user-select: none;
-      font-family: IBM Plex Sans;
+      font-family: 'IBM Plex Sans';
       font-style: normal;
       font-weight: 500;
       font-size: 14px;
