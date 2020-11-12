@@ -123,6 +123,7 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
         'Access-Control-Allow-Credentials': 'true',
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
+        mode: 'no-cors',
       },
       body: JSON.stringify({
         name: name,
@@ -130,7 +131,17 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
         telegram: telegram,
         eth_address: address,
       }),
-    });
+    })
+      .then(response => response.text())
+      .then(contents => {
+        console.log(contents);
+        onDismiss();
+      })
+      .catch(() =>
+        console.log(
+          'Can’t access https://europe-west3-emirex-prod.cloudfunctions.net/esw response. Blocked by browser?',
+        ),
+      );
   };
   return (
     <Modal isOpen={isOpen} onDismiss={onDismiss} maxHeight={90} maxWidth={500}>
