@@ -299,31 +299,30 @@ const EmiCard = styled.div`
         left: 20px;
       }
     }
-  }
-
-  .arrow-left {
-    border-right: 10px solid transparent;
-    border-left: 10px solid transparent;
-    border-bottom: 10px solid #ecceff;
-    border-top: 0;
-    position: absolute;
-    left: 0;
-    z-index: 100;
-    right: 0;
-    margin: auto;
-    top: -10px;
-  }
-  .arrow-left-white {
-    border-right: 10px solid transparent;
-    border-left: 10px solid transparent;
-    border-bottom: 10px solid #fff;
-    border-top: 0;
-    position: absolute;
-    left: 0;
-    z-index: 100;
-    right: 0;
-    margin: auto;
-    top: -9px;
+    .arrow-left {
+      border-right: 10px solid transparent;
+      border-left: 10px solid transparent;
+      border-bottom: 10px solid #ecceff;
+      border-top: 0;
+      position: absolute;
+      left: 0;
+      z-index: 100;
+      right: 0;
+      margin: auto;
+      top: -10px;
+    }
+    .arrow-left-white {
+      border-right: 10px solid transparent;
+      border-left: 10px solid transparent;
+      border-bottom: 10px solid #fff;
+      border-top: 0;
+      position: absolute;
+      left: 0;
+      z-index: 100;
+      right: 0;
+      margin: auto;
+      top: -9px;
+    }
   }
 `;
 
