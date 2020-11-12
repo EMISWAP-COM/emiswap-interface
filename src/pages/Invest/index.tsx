@@ -47,16 +47,20 @@ import EmiMagicCardModal from '../../components/EmiMagicCardModal';
 const EmiCard = styled.div`
   position: absolute;
   width: 440px;
-  height: 553px;
+  height: 100%;
   background: #ffffff;
   border-radius: 24px;
-  padding: 32px 40px;
+  padding: 32px 40px 20px;
   left: 0;
   top: 0;
   bottom: 0;
   right: -210%;
   margin: 0 auto;
   border: 1px solid #ecceff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
   .arrow-left {
     width: 0;
     height: 0;
@@ -65,7 +69,6 @@ const EmiCard = styled.div`
     border-right: 10px solid #ecceff;
     position: absolute;
     left: -10px;
-    top: 130px;
     z-index: 100;
   }
   .arrow-left-white {
@@ -76,8 +79,16 @@ const EmiCard = styled.div`
     border-right: 10px solid #fff;
     position: absolute;
     left: -9px;
-    top: 130px;
     z-index: 110;
+  }
+
+  .arrow-position {
+    &-1 {
+      top: 130px;
+    }
+    &-2 {
+      top: 225px;
+    }
   }
   .block-with-cards {
     &__header {
@@ -89,7 +100,7 @@ const EmiCard = styled.div`
       display: flex;
       align-items: center;
       color: #24272c;
-      margin-bottom: 24px;
+      margin-bottom: 14px;
     }
 
     &__cards {
@@ -145,7 +156,7 @@ const EmiCard = styled.div`
       .emicard {
         width: 100%;
         display: flex;
-        margin-bottom: 16px;
+        margin-bottom: 10px;
 
         &__info {
           display: flex;
@@ -210,12 +221,12 @@ const EmiCard = styled.div`
       font-family: 'IBM Plex Sans';
       font-style: normal;
       font-weight: normal;
-      font-size: 16px;
+      font-size: 14px;
       line-height: 170%;
       display: flex;
       align-items: center;
       color: #24272c;
-      margin-top: 20px;
+      margin-top: 10px;
     }
 
     &__btn {
@@ -689,7 +700,10 @@ const Invest = () => {
 
       return 'block-with-cards';
     };
-
+    console.log(
+      '.....Number(formattedAmounts[Field.INPUT])',
+      Number(formattedAmounts[Field.INPUT]),
+    );
     return (
       <EmiCard className={getClassToEmiCardsBlock(ESWc)}>
         <div className="block-with-cards__header">
@@ -708,8 +722,16 @@ const Invest = () => {
           <img className="block-with-cards__btn-img" src={Question} alt="Question" />
           What is NFT Magic Card?
         </a>
-        <div className="arrow-left" />
-        <div className="arrow-left-white" />
+        <div
+          className={`arrow-left arrow-position-${
+            Number(formattedAmounts[Field.INPUT]) > 0 ? 2 : 1
+          }`}
+        />
+        <div
+          className={`arrow-left-white arrow-position-${
+            Number(formattedAmounts[Field.INPUT]) > 0 ? 2 : 1
+          }`}
+        />
       </EmiCard>
     );
   };
@@ -852,7 +874,7 @@ const Invest = () => {
           {account ? <ReferralLink /> : ''}
           <EmiMagicBtn onClick={openEmiCardModal}>NFT EmiMagic Cards</EmiMagicBtn>
           {showEmiCardModal && (
-            <EmiMagicCardModal isOpen={showEmiCardModal} onDismiss={closeEmiCardModal} />
+            <EmiMagicCardModal isOpen={showEmiCardModal} onDismiss={closeEmiCardModal} walletID={account} />
           )}
         </Wrapper>
         {generateEmiCardBlock(Number(formattedAmounts[Field.OUTPUT]))}

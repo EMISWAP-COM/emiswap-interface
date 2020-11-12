@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import Modal from '../Modal';
 import EmiCardHeaderImg from '../../assets/images/EmiCardHeaderImg.jpg';
@@ -107,15 +107,29 @@ interface EmiMagicCardModalProps {
 }
 
 export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMagicCardModalProps) {
+  const nameRef = useRef(null);
+  const emailRef = useRef(null);
+  const telegramRef = useRef(null);
+  const addressRef = useRef(null);
   const sendForm = () => {
-    fetch('https://storage.googleapis.com/storage/v1/b/BUCKET_NAME/o/OBJECT_NAME', {
-      method: 'PATH',
+    const name = nameRef && nameRef.current.value;
+    const email = emailRef && emailRef.current.value;
+    const telegram = telegramRef && telegramRef.current.value;
+    const address = addressRef && addressRef.current.value;
+    fetch('https://europe-west3-emirex-prod.cloudfunctions.net/esw', {
+      method: 'POST',
       headers: {
-        Authorization: 'Bearer AIzaSyAuM4sQ2LprkFF7kfQ7DI1yDtkLtaHwXUc',
+        'Access-Control-Allow-Methods': 'OPTIONS,POST',
+        'Access-Control-Allow-Headers': '*',
+        'Access-Control-Allow-Credentials': 'true',
+        'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        metadata: { test: { test: 1, test2: 2, test3: 3 } },
+        name: name,
+        email: email,
+        telegram: telegram,
+        eth_address: address,
       }),
     });
   };
@@ -131,19 +145,35 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
           </div>
           <div className="modal-body__input-block">
             <div className="modal-body__input-label">Name</div>
-            <input className="modal-body__input" type="text" placeholder="Bob" />
+            <input ref={nameRef} className="modal-body__input" type="text" placeholder="Bob" />
           </div>
           <div className="modal-body__input-block">
             <div className="modal-body__input-label">Your Email</div>
-            <input className="modal-body__input" type="text" placeholder="email@email.com" />
+            <input
+              ref={emailRef}
+              className="modal-body__input"
+              type="text"
+              placeholder="email@email.com"
+            />
           </div>
           <div className="modal-body__input-block">
             <div className="modal-body__input-label">Your Telegram</div>
-            <input className="modal-body__input" type="text" placeholder="@telegram" />
+            <input
+              ref={telegramRef}
+              className="modal-body__input"
+              type="text"
+              placeholder="@telegram"
+            />
           </div>
           <div className="modal-body__input-block">
             <div className="modal-body__input-label">Ethereum Address Used to Buy ESWc</div>
-            <input className="modal-body__input" type="text" placeholder="0x3f4..." />
+            <input
+              ref={addressRef}
+              className="modal-body__input"
+              defaultValue={walletID}
+              type="text"
+              placeholder="0x3f4..."
+            />
           </div>
           <div className="modal-body__btn" onClick={sendForm}>
             Register for a whitelist

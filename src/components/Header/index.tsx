@@ -168,10 +168,8 @@ const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
 
 export default function Header() {
   const { account, chainId } = useActiveWeb3React();
-
   const userEthBalance = useETHBalances([account])[account];
   const [isDark] = useDarkModeManager();
-
   return (
     <HeaderFrame>
       <RowBetweenStyled>
