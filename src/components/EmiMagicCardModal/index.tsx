@@ -119,8 +119,7 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
     fetch('https://europe-west3-emirex-prod.cloudfunctions.net/esw', {
       method: 'POST',
       headers: {
-        'Access-Control-Allow-Methods': 'OPTIONS,POST',
-        'Access-Control-Allow-Headers': '*',
+        'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
         'Access-Control-Allow-Credentials': 'true',
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
