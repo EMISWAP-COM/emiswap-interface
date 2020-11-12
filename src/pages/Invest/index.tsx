@@ -268,6 +268,63 @@ const EmiCard = styled.div`
     height: 460px;
     top: 26px;
   }
+
+  @media screen and (max-width: 1400px) {
+    width: 340px;
+    right: -185%;
+    padding: 20px;
+
+    .block-with-cards {
+      &__btn {
+        width: 100%;
+      }
+
+      &__btn-img {
+        left: 20px;
+      }
+    }
+  }
+
+  @media screen and (max-width: 1200px) {
+    width: 100%;
+    right: 0;
+    top: 103%;
+
+    .block-with-cards {
+      &__btn {
+        width: 100%;
+      }
+
+      &__btn-img {
+        left: 20px;
+      }
+    }
+  }
+
+  .arrow-left {
+    border-right: 10px solid transparent;
+    border-left: 10px solid transparent;
+    border-bottom: 10px solid #ecceff;
+    border-top: 0;
+    position: absolute;
+    left: 0;
+    z-index: 100;
+    right: 0;
+    margin: auto;
+    top: -10px;
+  }
+  .arrow-left-white {
+    border-right: 10px solid transparent;
+    border-left: 10px solid transparent;
+    border-bottom: 10px solid #fff;
+    border-top: 0;
+    position: absolute;
+    left: 0;
+    z-index: 100;
+    right: 0;
+    margin: auto;
+    top: -9px;
+  }
 `;
 
 const FAQWrapper = styled.div`
@@ -289,6 +346,9 @@ const FAQWrapper = styled.div`
 
 const EmiMagicBtn = styled.div`
   background: url('${EmiMagicBackground}');
+  background-repeat: no-repeat;
+  width: 100%;
+  background-size: cover;
   border-radius: 8px;
   height: 56px;
   color: #FFF;
@@ -753,7 +813,7 @@ const Invest = () => {
   return (
     <>
       {showWarning && <TokenWarningCards currencies={currencies} />}
-      <AppBody disabled={!!showWarning}>
+      <AppBody disabled={!!showWarning} className={'invest-mobile'}>
         <SwapPoolTabs active={'invest'} />
         <Wrapper id="invest-page">
           <ConfirmationModal
@@ -874,7 +934,11 @@ const Invest = () => {
           {account ? <ReferralLink /> : ''}
           <EmiMagicBtn onClick={openEmiCardModal}>NFT EmiMagic Cards</EmiMagicBtn>
           {showEmiCardModal && (
-            <EmiMagicCardModal isOpen={showEmiCardModal} onDismiss={closeEmiCardModal} walletID={account} />
+            <EmiMagicCardModal
+              isOpen={showEmiCardModal}
+              onDismiss={closeEmiCardModal}
+              walletID={account}
+            />
           )}
         </Wrapper>
         {generateEmiCardBlock(Number(formattedAmounts[Field.OUTPUT]))}

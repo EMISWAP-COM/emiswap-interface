@@ -1,6 +1,6 @@
 import { ChainId } from '@uniswap/sdk';
 import React from 'react';
-import { isMobile } from 'react-device-detect';
+import { isMobile, isTablet } from 'react-device-detect';
 import { Text } from 'rebass';
 
 import styled from 'styled-components';
@@ -62,6 +62,15 @@ const HeaderElement = styled.div`
     text-align: center;
     letter-spacing: 0.02em;
     color: #11b382;
+  }
+
+  @media screen and (max-width: 768px) {
+    flex-wrap: wrap;
+    .white-btn {
+      width: 100%;
+      margin-right: 0;
+      margin-bottom: 10px;
+    }
   }
 `;
 
@@ -193,7 +202,7 @@ export default function Header() {
             >
               Buy Crypto with fiat
             </a>
-            {!isMobile && NETWORK_LABELS[chainId] && (
+            {!isMobile && !isTablet && NETWORK_LABELS[chainId] && (
               <TestnetWrapper>
                 <NetworkCard>{NETWORK_LABELS[chainId]}</NetworkCard>
               </TestnetWrapper>

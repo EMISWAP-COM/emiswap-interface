@@ -12,7 +12,7 @@ export const HeadersPlusBodyWrapper = styled.div<{ disabled?: boolean }>`
   max-width: 440px;
   width: 100%;
   text-align: center;
-
+  
   :after {
     content: '';
     background: center / contain no-repeat url('${PolygonSvg}');
@@ -29,6 +29,7 @@ export const HeadersPlusBodyWrapper = styled.div<{ disabled?: boolean }>`
       display: none;
     `};
   }
+  
 `;
 
 export const BodyWrapper = styled.div<{ disabled?: boolean; data?: string }>`
@@ -47,6 +48,12 @@ export const BodyWrapper = styled.div<{ disabled?: boolean; data?: string }>`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     padding: 1rem;
   `};
+
+  &.invest-mobile {
+    @media screen and (max-width: 1200px) {
+      margin-bottom: 650px;
+    }
+  }
 `;
 
 /**
@@ -55,9 +62,11 @@ export const BodyWrapper = styled.div<{ disabled?: boolean; data?: string }>`
 export default function AppBody({
   children,
   disabled,
+  className,
 }: {
   children: React.ReactNode;
   disabled?: boolean;
+  className?: string;
 }) {
   return (
     <ThemeProvider theme={theme}>
@@ -66,7 +75,9 @@ export default function AppBody({
           <Logo />
           <Wordmark />
         </div>
-        <BodyWrapper data="test" disabled={disabled}>{children}</BodyWrapper>
+        <BodyWrapper className={className} data="test" disabled={disabled}>
+          {children}
+        </BodyWrapper>
         <BonusProgram />
       </HeadersPlusBodyWrapper>
     </ThemeProvider>
