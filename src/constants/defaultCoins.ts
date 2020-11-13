@@ -4495,7 +4495,7 @@ export default {
     },
     {
       chainId: 42,
-      address: '0xBef02946e3cC640532C15b3917801AD3D38c4a51',
+      address: '0x55f4C14f5837f1775E665Ca7ebd7457E8549050d',
       name: 'WrappedEther',
       symbol: 'WETH',
       decimals: 18,
