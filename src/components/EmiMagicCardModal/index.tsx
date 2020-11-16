@@ -148,10 +148,11 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
       <ModalBody>
         <img src={EmiCardHeaderImg} alt="EmiCardHeaderImg" />
         <div className="modal-body">
-          <div className="modal-body__header">EmiSwap Crowdsale is Coming Soon!</div>
+          <div className="modal-body__header">EmiSwap Crowdsale Started</div>
           <div className="modal-body__description">
-            Register for the whitelist to reserve a ESW allocation and get unique bonuses for early
-            participants
+            The number of cards is limited, don't miss your chance to become one of the first owners
+            of amazing Magic NFT Cards! Whitelist application alone is not enough to get the bonus,
+            you need to be among the first 1000 people to purchase more than 500 ESW to be eligible!
           </div>
           <div className="modal-body__input-block">
             <div className="modal-body__input-label">Name</div>
