@@ -41,7 +41,6 @@ import RareIcon from '../../assets/svg/CardIcon/rare.svg';
 import LegendaryIcon from '../../assets/svg/CardIcon/legendary.svg';
 import Question from '../../assets/svg/FAQIcon/question.svg';
 import EmiMagicBackground from '../../assets/svg/EmiMagicBackground.svg';
-import FAQInfo from '../../components/FAQInfo';
 import EmiMagicCardModal from '../../components/EmiMagicCardModal';
 
 const EmiCard = styled.div`
@@ -326,22 +325,7 @@ const EmiCard = styled.div`
   }
 `;
 
-const FAQWrapper = styled.div`
-  max-width: 1200px;
-  margin-top: 70px;
 
-  @media screen and (max-width: 1300px) {
-    max-width: 960px;
-  }
-
-  @media screen and (max-width: 1000px) {
-    max-width: calc(100% - 20px);
-  }
-
-  @media screen and (max-width: 600px) {
-    max-width: 100%;
-  }
-`;
 
 const EmiMagicBtn = styled.div`
   background: url('${EmiMagicBackground}');
@@ -942,9 +926,6 @@ const Invest = () => {
         </Wrapper>
         {generateEmiCardBlock(Number(formattedAmounts[Field.OUTPUT]))}
       </AppBody>
-      <FAQWrapper>
-        <FAQInfo />
-      </FAQWrapper>
     </>
   );
 };

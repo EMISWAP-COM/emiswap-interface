@@ -6,6 +6,7 @@ import PolygonSvg from '../assets/images/polygon.svg';
 import BonusProgram from '../components/BonusProgram';
 import { ThemeProvider } from 'emotion-theming';
 import theme from '@rebass/preset';
+import FAQInfo from '../components/FAQInfo';
 
 export const HeadersPlusBodyWrapper = styled.div<{ disabled?: boolean }>`
   position: relative;
@@ -56,6 +57,23 @@ export const BodyWrapper = styled.div<{ disabled?: boolean; data?: string }>`
   }
 `;
 
+const FAQWrapper = styled.div`
+  max-width: 1200px;
+  margin-top: 70px;
+
+  @media screen and (max-width: 1300px) {
+    max-width: 960px;
+  }
+
+  @media screen and (max-width: 1000px) {
+    max-width: calc(100% - 20px);
+  }
+
+  @media screen and (max-width: 600px) {
+    max-width: 100%;
+  }
+`;
+
 /**
  * The styled container element that wraps the content of most pages and the tabs.
  */
@@ -80,6 +98,9 @@ export default function AppBody({
         </BodyWrapper>
         <BonusProgram />
       </HeadersPlusBodyWrapper>
+      <FAQWrapper>
+        <FAQInfo />
+      </FAQWrapper>
     </ThemeProvider>
   );
 }
