@@ -447,7 +447,7 @@ const Invest = () => {
         ReactGA.event({
           category: 'Crowdsale',
           action: 'Invest',
-          label: 'buy',
+          label: `buy ${formattedAmounts[Field.INPUT]} ${currencies[Field.INPUT]?.symbol}`,
         });
       })
       .catch((error: any) => {
@@ -931,7 +931,7 @@ const Invest = () => {
             </BottomGrouping>
           </AutoColumn>
           {account ? <ReferralLink /> : ''}
-          <EmiMagicBtn onClick={openEmiCardModal}>NFT EmiMagic Cards</EmiMagicBtn>
+          <EmiMagicBtn onClick={openEmiCardModal}>Get Magic NFT Cards</EmiMagicBtn>
           {showEmiCardModal && (
             <EmiMagicCardModal
               isOpen={showEmiCardModal}
