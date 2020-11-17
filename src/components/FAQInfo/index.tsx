@@ -10,7 +10,7 @@ import YellowCircle from '../../assets/svg/FAQIcon/yellowCircle.svg';
 
 const Body = styled.div`
   .title {
-    font-family: Roboto Light;
+    font-family: Roboto;
     font-style: normal;
     font-weight: 300;
     font-size: 18px;
