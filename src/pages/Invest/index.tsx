@@ -359,7 +359,7 @@ const Invest = () => {
   const [expertMode] = useExpertModeManager();
 
   // invest state
-  const { independentField, typedValue } = useInvestState();
+  const { independentField, typedValue, outputAmount } = useInvestState();
 
   const { onCurrencySelection, onUserInput } = useInvestActionHandlers();
   const {
@@ -377,11 +377,18 @@ const Invest = () => {
 
   const isValid = !error;
 
-  const handleNothing = () => {};
+  // const handleNothing = () => {};
 
   const handleTypeInput = useCallback(
     (value: string) => {
       onUserInput(Field.INPUT, value, currencies[Field.INPUT]);
+    },
+    [onUserInput, currencies],
+  );
+
+  const handleTypeInputOUTPUT = useCallback(
+    (value: string) => {
+      onUserInput(Field.OUTPUT, value, currencies[Field.INPUT]);
     },
     [onUserInput, currencies],
   );
@@ -391,11 +398,18 @@ const Invest = () => {
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false); // waiting for user confirmaion/rejection
   const [txHash, setTxHash] = useState<string>('');
 
-  const formattedAmounts = {
-    [Field.INPUT]: typedValue,
-    [Field.OUTPUT]: tokenAmountToString(parsedAmounts[Field.OUTPUT], MAX_NUM_DECIMALS) ?? '',
+  const returnFormatedAmount = (bool: boolean, field: Field) => {
+    if (bool) {
+      return typedValue;
+    } else {
+      return outputAmount;
+    }
   };
 
+  const formattedAmounts = {
+    [Field.INPUT]: returnFormatedAmount(independentField === Field.INPUT, Field.INPUT),
+    [Field.OUTPUT]: returnFormatedAmount(independentField === Field.OUTPUT, Field.OUTPUT),
+  };
   // check whether the user has approved the router on the input token
   const [approval, approveCallback] = useApproveCallback(parsedAmount, EMISWAP_CROWDSALE_ADDRESS);
 
@@ -743,10 +757,6 @@ const Invest = () => {
 
       return 'block-with-cards';
     };
-    console.log(
-      '.....Number(formattedAmounts[Field.INPUT])',
-      Number(formattedAmounts[Field.INPUT]),
-    );
     return (
       <EmiCard className={getClassToEmiCardsBlock(ESWc)}>
         <div className="block-with-cards__header">
@@ -838,12 +848,11 @@ const Invest = () => {
 
             <CurrencyInputPanel
               value={formattedAmounts[Field.OUTPUT]}
-              onUserInput={handleNothing}
+              onUserInput={handleTypeInputOUTPUT}
               label={independentField === Field.INPUT ? 'To (estimated)' : 'To'}
               showMaxButton={false}
               currency={currencies[Field.OUTPUT]}
               id="swap-currency-output"
-              disableCurrencySelect
               isCrowdsale
             />
 

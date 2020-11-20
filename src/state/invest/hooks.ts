@@ -14,11 +14,11 @@ import { useCurrencyBalances } from '../wallet/hooks';
 import {
   Field,
   receiveOutput,
+  receiveOutputAmount,
   replaceInvestState,
   selectCurrency,
   switchCurrencies,
   typeInput,
-  receiveOutputAmount,
 } from './actions';
 import { InvestState } from './reducer';
 import { TokenAddressMap, WrappedTokenInfo } from '../lists/hooks';
@@ -94,7 +94,7 @@ export function useInvestActionHandlers(): InvestActionHandlers {
       }
       dispatch(typeInput({ field, typedValue }));
       if (Number(typedValue) > 0) {
-        executeBuyCoinAmount(currency, Number(typedValue));
+        executeBuyCoinAmount(field, currency, Number(typedValue));
       } else {
         dispatch(receiveOutputAmount({ outputAmount: '' }));
       }
@@ -353,7 +353,7 @@ export function useBuyCoinAmount() {
   const contract: Contract | null = getCrowdsaleContract(library, account);
 
   const executeBuyCoinAmount = useCallback(
-    (currency?: Token, amount?: number) => {
+    (field: Field, currency?: Token, amount?: number) => {
       if (!currency || !amount) {
         dispatch(receiveOutputAmount({ outputAmount: '' }));
         return;
@@ -368,14 +368,16 @@ export function useBuyCoinAmount() {
           dispatch(receiveOutputAmount({ outputAmount: test }));
         });
       } else {
-        return contract.buyView(currency.address, coinAmountBN).then((response: any) => {
-          const outputAmount = BigNumber.from(response.currentTokenAmount).toString();
-          const test = num2str(
-            Number(outputAmount) / Math.pow(10, ESW[chainId][0].decimals),
-            ESW[chainId][0].decimals,
-          );
-          dispatch(receiveOutputAmount({ outputAmount: test }));
-        });
+        return contract
+          .buyView(currency.address, coinAmountBN, field === Field.OUTPUT)
+          .then((response: any) => {
+            const outputAmount = BigNumber.from(response.currentTokenAmount).toString();
+            const test = num2str(
+              Number(outputAmount) / Math.pow(10, ESW[chainId][0].decimals),
+              ESW[chainId][0].decimals,
+            );
+            dispatch(receiveOutputAmount({ outputAmount: test }));
+          });
       }
     },
     [dispatch, chainId, contract],
