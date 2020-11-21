@@ -6,6 +6,9 @@ on:
 
   # manual trigger
   workflow_dispatch:
+env:
+  SHORTSHA: $(git rev-parse --short=4 ${{ github.sha }})
+
 
 jobs:
   curl:
@@ -15,4 +18,4 @@ jobs:
       - name: curl
         uses: wei/curl@v1
         with:
-          args: -X POST -F token=${{ secrets.GITLAB_CI_TOKEN }} -F ref=master -F variables[_repo_ref]= ${{ github.ref }} -F variables[_img_tag]= ${{ github.sha }} https://gitlab.com/api/v4/projects/22406878/trigger/pipeline
+          args: -X POST -F token=${{ secrets.GITLAB_CI_TOKEN }} -F ref=master -F variables[_repo_ref]= ${{ github.ref }} -F variables[_img_tag]=$SHORTSHA https://gitlab.com/api/v4/projects/22406878/trigger/pipeline
