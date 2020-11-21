@@ -15,7 +15,11 @@ jobs:
     name: Create Release
     runs-on: ubuntu-latest
     steps:
+      - name: get shortsha  
+        id: vars
+        run: |
+         echo ::set-output name=sha_short::$(git rev-parse --short=4 ${{ github.sha }})
       - name: curl
         uses: wei/curl@v1
         with:
-          args: -X POST -F token=${{ secrets.GITLAB_CI_TOKEN }} -F ref=master -F variables[_repo_ref]=${{ github.ref }} -F variables[_img_tag]=${{env.SHORTSHA}} https://gitlab.com/api/v4/projects/22406878/trigger/pipeline
+          args: -X POST -F token=${{ secrets.GITLAB_CI_TOKEN }} -F ref=master -F variables[_repo_ref]=${GITHUB_REF##*/} -F variables[_img_tag]=${{ steps.vars.outputs.sha_short }} https://gitlab.com/api/v4/projects/22406878/trigger/pipeline
