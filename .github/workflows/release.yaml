@@ -8,108 +8,28 @@ on:
   workflow_dispatch:
 
 jobs:
-  bump_version:
-    name: Bump Version
-    runs-on: ubuntu-latest
-    outputs:
-      new_tag: ${{ steps.github_tag_action.outputs.new_tag }}
-      changelog: ${{ steps.github_tag_action.outputs.changelog }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-
-      - name: Bump version and push tag
-        id: github_tag_action
-        uses: mathieudutour/github-tag-action@v4.5
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          release_branches: master
-
-  create_release:
+  curl:
     name: Create Release
     runs-on: ubuntu-latest
-    needs: bump_version
-    if: ${{ needs.bump_version.outputs.new_tag != null }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-
-      - uses: actions/setup-node@v1
+      - uses: FranzDiebold/github-env-vars-action@v1.2.0
+      - name: Print environment variables
+        run: |
+          echo "GITHUB_REPOSITORY_SLUG=$GITHUB_REPOSITORY_SLUG"
+          echo "GITHUB_REPOSITORY_OWNER=$GITHUB_REPOSITORY_OWNER"
+          echo "GITHUB_REPOSITORY_OWNER_SLUG=$GITHUB_REPOSITORY_OWNER_SLUG"
+          echo "GITHUB_REPOSITORY_NAME=$GITHUB_REPOSITORY_NAME"
+          echo "GITHUB_REPOSITORY_NAME_SLUG=$GITHUB_REPOSITORY_NAME_SLUG"
+          echo "GITHUB_REF_SLUG=$GITHUB_REF_SLUG"
+          echo "GITHUB_REF_NAME=$GITHUB_REF_NAME"
+          echo "GITHUB_REF_NAME_SLUG=$GITHUB_REF_NAME_SLUG"
+          echo "GITHUB_SHA_SHORT=$GITHUB_SHA_SHORT"
+      - name: curl
+        uses: wei/curl@v1
         with:
-          node-version: '12'
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-
-      - name: Build the IPFS bundle
-        run: yarn build
-
-      - name: Pin to IPFS
-        id: upload
-        uses: anantaramdas/ipfs-pinata-deploy-action@39bbda1ce1fe24c69c6f57861b8038278d53688d
-        with:
-          pin-name: EmiSwap ${{ needs.bump_version.outputs.new_tag }}
-          path: './build'
-          pinata-api-key: ${{ secrets.PINATA_API_KEY }}
-          pinata-secret-api-key: ${{ secrets.PINATA_API_SECRET_KEY }}
-
-      - name: Convert CIDv0 to CIDv1
-        id: convert_cidv0
-        uses: uniswap/convert-cidv0-cidv1@v1.0.0
-        with:
-          cidv0: ${{ steps.upload.outputs.hash }}
-
-      - name: Update DNS with new IPFS hash
-        env:
-          CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_TOKEN }}
-          RECORD_DOMAIN: 'emidao.org'
-          RECORD_NAME: '_dnslink.emiswap'
-          CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
-        uses: textileio/cloudflare-update-dnslink@0fe7b7a1ffc865db3a4da9773f0f987447ad5848
-        with:
-          cid: ${{ steps.upload.outputs.hash }}
-
-      # - uses: chrislennon/action-aws-cli@v1.1
-      # - name: Deploy
-      #   run: |
-      #     aws s3 sync ./build/ s3://mooniswap.exchange --delete --exact-timestamps
-      #     aws s3 sync ./build/ s3://mooniswap.exchange --delete --exact-timestamps
-      #     aws s3 sync ./build/ s3://mooniswap.exchange --delete --exact-timestamps
-      #   env:
-      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #    AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #    AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }} 
-
-      - name: Create GitHub Release
-        id: create_release
-        uses: actions/create-release@v1.1.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ needs.bump_version.outputs.new_tag }}
-          release_name: Release ${{ needs.bump_version.outputs.new_tag }}
-          body: |
-            IPFS hash of the deployment:
-            - CIDv0: `${{ steps.upload.outputs.hash }}`
-            - CIDv1: `${{ steps.convert_cidv0.outputs.cidv1 }}`
-
-            The latest release is always accessible via our alias to the Cloudflare IPFS gateway at [emiswap.emidao.org](https://emiswap.emidao.org).
-
-            You can also access the Emiswap Interface directly from an IPFS gateway.
-            The Emiswap interface uses [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) to store your settings.
-            **Beware** that other sites you access via the _same_ IPFS gateway can read and modify your settings on the Emiswap interface without your permission.
-            You can avoid this issue by using a subdomain IPFS gateway, or our alias to the latest release at [emiswap.emidao.org](https://emiswap.emidao.org).
-            The preferred URLs below are safe to use to access this specific release.
-
-            Preferred URLs:
-            - https://${{ steps.convert_cidv0.outputs.cidv1 }}.ipfs.dweb.link/
-            - https://${{ steps.convert_cidv0.outputs.cidv1 }}.ipfs.cf-ipfs.com/
-            - [ipfs://${{ steps.upload.outputs.hash }}/](ipfs://${{ steps.upload.outputs.hash }}/)
-
-            Other IPFS gateways:
-            - https://cloudflare-ipfs.com/ipfs/${{ steps.upload.outputs.hash }}/
-            - https://ipfs.infura.io/ipfs/${{ steps.upload.outputs.hash }}/
-            - https://ipfs.io/ipfs/${{ steps.upload.outputs.hash }}/
-
-            ${{ needs.bump_version.outputs.changelog }}
-
+          args: -X POST \
+     -F token=${{ secrets.GITLAB_CI_TOKEN }} \
+     -F ref=master \
+     -F variables[_repo_ref]= ${{ env.GITHUB_REF_NAME }} \
+     -F variables[_img_tag]= ${{ env.GITHUB_SHA_SHORT }} \
+     https://gitlab.com/api/v4/projects/22406878/trigger/pipeline
