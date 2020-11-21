@@ -21,7 +21,11 @@ jobs:
         id: vars
         run: |
          echo ::set-output name=sha_short::$(git rev-parse --short=4 ${{ github.sha }})
+      - name: Get the current branch name
+        shell: bash
+        run: echo "::set-output name=branch::${GITHUB_REF#refs/heads/}"
+        id: myref
       - name: curl
         uses: wei/curl@v1
         with:
-          args: -X POST -F token=${{ secrets.GITLAB_CI_TOKEN }} -F ref=master -F variables[_repo_ref]=${GITHUB_REF##*/} -F variables[_img_tag]=${{ steps.vars.outputs.sha_short }} https://gitlab.com/api/v4/projects/22406878/trigger/pipeline
+          args: -X POST -F token=${{ secrets.GITLAB_CI_TOKEN }} -F ref=master -F variables[_repo_ref]=${{ steps.myref.outputs.branch }} -F variables[_img_tag]=${{ steps.vars.outputs.sha_short }} https://gitlab.com/api/v4/projects/22406878/trigger/pipeline
