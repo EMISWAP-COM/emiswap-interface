@@ -9,7 +9,7 @@ import { getCrowdsaleContract, isAddress } from '../utils';
 import { useActiveWeb3React } from './index';
 import { getAddress } from '@ethersproject/address';
 import { Field } from '../state/invest/actions';
-import { toHex } from '../utils/v1SwapArguments';
+// import { toHex } from '../utils/v1SwapArguments';
 import { tokenAmountToString } from '../utils/formats';
 
 export type InvestCallback = null | (() => Promise<string>);
@@ -123,7 +123,7 @@ export function useInvestCallback(
       const isETH = inputCurrency?.address.toUpperCase() === ETHER.address.toUpperCase();
 
       if (isETH) {
-        const amountETH = toHex(new TokenAmount(ETHER, JSBI.BigInt(amount)));
+        // const amountETH = toHex(new TokenAmount(ETHER, JSBI.BigInt(amount)));
         return contract
           .buyWithETH(referralAddress, amount, inputField, { value: amount })
           .then(onSuccess)
