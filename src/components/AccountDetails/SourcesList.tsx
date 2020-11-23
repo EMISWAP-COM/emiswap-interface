@@ -243,14 +243,14 @@ export default function SourcesList({
           <AccountSectionTable>
             <div>
               <span>ESWc acquired</span>
-              <span>{crowdSaleReferralRewardAcquired}</span>
+              <span>coming soon</span>
             </div>
             <div>
               <span>
                 <span>Minted</span>
                 {/* <Question isSetting text="These are already minted ESW tokens that earn you profit." /> */}
               </span>
-              <span>{crowdSaleReferralRewardAlreadyMinted}</span>
+              <span>coming soon</span>
             </div>
             {/* <div>
               <span>Available for minting</span>
