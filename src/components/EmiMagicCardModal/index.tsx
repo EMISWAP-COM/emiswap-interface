@@ -37,6 +37,7 @@ const ModalBody = styled.div`
 
     &__input-block {
       margin-bottom: 25px;
+      position: relative;
     }
 
     &__input-label {
@@ -101,6 +102,16 @@ const ModalBody = styled.div`
 
     &__error {
       border: 1px solid red;
+    }
+
+    &__error-text {
+      color: red;
+      position: absolute;
+      bottom: -21px;
+      left: 120px;
+      right: 0;
+      margin: auto 0;
+      font-size: 12px;
     }
   }
 `;
@@ -204,6 +215,9 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
               type="text"
               placeholder="Bob"
             />
+            {validation.name && (
+              <span className="modal-body__error-text">Please enter the correct value</span>
+            )}
           </div>
           <div className="modal-body__input-block">
             <div className="modal-body__input-label">Your Email</div>
@@ -213,6 +227,9 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
               type="text"
               placeholder="email@email.com"
             />
+            {validation.email && (
+              <span className="modal-body__error-text">Please enter the correct value</span>
+            )}
           </div>
           <div className="modal-body__input-block">
             <div className="modal-body__input-label">Your Telegram</div>
@@ -222,6 +239,9 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
               type="text"
               placeholder="@telegram"
             />
+            {validation.telegram && (
+              <span className="modal-body__error-text">Please enter the correct value</span>
+            )}
           </div>
           <div className="modal-body__input-block">
             <div className="modal-body__input-label">Ethereum Address Used to Buy ESWc</div>
@@ -232,6 +252,9 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
               type="text"
               placeholder="0x3f4..."
             />
+            {validation.address && (
+              <span className="modal-body__error-text">Please enter the correct value</span>
+            )}
           </div>
           <div className="modal-body__btn" onClick={sendForm}>
             Register for a whitelist
