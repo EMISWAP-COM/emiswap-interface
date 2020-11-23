@@ -77,6 +77,7 @@ declare module 'styled-components' {
       upToTheSmallest: ThemedCssFunction<DefaultTheme>;
       upToExtraSmall: ThemedCssFunction<DefaultTheme>;
       upToSmall: ThemedCssFunction<DefaultTheme>;
+      upToTabletop: ThemedCssFunction<DefaultTheme>;
       upToMedium: ThemedCssFunction<DefaultTheme>;
       upToLarge: ThemedCssFunction<DefaultTheme>;
     };

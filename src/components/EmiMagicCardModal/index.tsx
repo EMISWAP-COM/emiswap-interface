@@ -1,5 +1,6 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
+import WAValidator from 'wallet-address-validator';
 import Modal from '../Modal';
 import EmiCardHeaderImg from '../../assets/images/EmiCardHeaderImg.jpg';
 
@@ -97,6 +98,10 @@ const ModalBody = styled.div`
       border-bottom-color: rgb(17, 179, 130);
       text-decoration: none;
     }
+
+    &__error {
+      border: 1px solid red;
+    }
   }
 `;
 
@@ -106,42 +111,79 @@ interface EmiMagicCardModalProps {
   walletID?: string;
 }
 
+const defaultValidation = { name: false, email: false, telegram: false, address: false };
+
 export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMagicCardModalProps) {
   const nameRef = useRef(null);
   const emailRef = useRef(null);
   const telegramRef = useRef(null);
   const addressRef = useRef(null);
+  const [validation, setValidation] = useState(defaultValidation);
+  const validateForm = (name = '', email = '', telegram = '', address = '') => {
+    let isValid = false;
+    const newValidator = { ...defaultValidation };
+    const emailRegexp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const telegramRegexp = /^@[a-z0-9_]+$/;
+    if (name.replace(/[^A-Za-z0-9_'-]/gi, '').length === 0) {
+      newValidator.name = true;
+      isValid = true;
+    }
+    if (!emailRegexp.test(email)) {
+      newValidator.email = true;
+      isValid = true;
+    }
+
+    if (!telegramRegexp.test(telegram)) {
+      newValidator.telegram = true;
+      isValid = true;
+    }
+
+    if (!WAValidator.validate(address, 'ETH')) {
+      newValidator.address = true;
+      isValid = true;
+    }
+    if (isValid) {
+      setValidation(newValidator);
+    } else {
+      setValidation(defaultValidation);
+    }
+    return isValid;
+  };
+
   const sendForm = () => {
     const name = nameRef && nameRef.current.value;
     const email = emailRef && emailRef.current.value;
     const telegram = telegramRef && telegramRef.current.value;
     const address = addressRef && addressRef.current.value;
-    fetch('https://europe-west3-emirex-prod.cloudfunctions.net/esw', {
-      method: 'POST',
-      headers: {
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Origin, Content-Type, Accept',
-        'Access-Control-Allow-Credentials': 'true',
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: name,
-        email: email,
-        telegram: telegram,
-        eth_address: address,
-      }),
-    })
-      .then(response => response.text())
-      .then(contents => {
-        console.log(contents);
-        onDismiss();
+    if (!validateForm(name, email, telegram, address)) {
+      setValidation(defaultValidation);
+      fetch('https://europe-west3-emirex-prod.cloudfunctions.net/esw', {
+        method: 'POST',
+        headers: {
+          'Access-Control-Allow-Methods': 'POST, OPTIONS',
+          'Access-Control-Allow-Headers': 'Origin, Content-Type, Accept',
+          'Access-Control-Allow-Credentials': 'true',
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          telegram: telegram,
+          eth_address: address,
+        }),
       })
-      .catch(() =>
-        console.log(
-          'Can’t access https://europe-west3-emirex-prod.cloudfunctions.net/esw response. Blocked by browser?',
-        ),
-      );
+        .then(response => response.text())
+        .then(contents => {
+          console.log(contents);
+          onDismiss();
+        })
+        .catch(() =>
+          console.log(
+            'Can’t access https://europe-west3-emirex-prod.cloudfunctions.net/esw response. Blocked by browser?',
+          ),
+        );
+    }
   };
   return (
     <Modal isOpen={isOpen} onDismiss={onDismiss} maxHeight={90} maxWidth={500}>
@@ -156,13 +198,18 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
           </div>
           <div className="modal-body__input-block">
             <div className="modal-body__input-label">Name</div>
-            <input ref={nameRef} className="modal-body__input" type="text" placeholder="Bob" />
+            <input
+              ref={nameRef}
+              className={`modal-body__input${validation.name ? ' modal-body__error' : ''}`}
+              type="text"
+              placeholder="Bob"
+            />
           </div>
           <div className="modal-body__input-block">
             <div className="modal-body__input-label">Your Email</div>
             <input
               ref={emailRef}
-              className="modal-body__input"
+              className={`modal-body__input${validation.email ? ' modal-body__error' : ''}`}
               type="text"
               placeholder="email@email.com"
             />
@@ -171,7 +218,7 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
             <div className="modal-body__input-label">Your Telegram</div>
             <input
               ref={telegramRef}
-              className="modal-body__input"
+              className={`modal-body__input${validation.telegram ? ' modal-body__error' : ''}`}
               type="text"
               placeholder="@telegram"
             />
@@ -180,7 +227,7 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
             <div className="modal-body__input-label">Ethereum Address Used to Buy ESWc</div>
             <input
               ref={addressRef}
-              className="modal-body__input"
+              className={`modal-body__input${validation.address ? ' modal-body__error' : ''}`}
               defaultValue={walletID}
               type="text"
               placeholder="0x3f4..."
