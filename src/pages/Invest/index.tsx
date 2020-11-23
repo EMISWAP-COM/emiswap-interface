@@ -325,8 +325,6 @@ const EmiCard = styled.div`
   }
 `;
 
-
-
 const EmiMagicBtn = styled.div`
   background: url('${EmiMagicBackground}');
   background-repeat: no-repeat;
@@ -424,7 +422,12 @@ const Invest = () => {
   }, [approval, approvalSubmitted]);
 
   // the callback to execute the invest
-  const [investCallback] = useInvest(chainId, currencies, parsedAmounts);
+  const [investCallback] = useInvest(
+    chainId,
+    currencies,
+    parsedAmounts,
+    independentField === Field.OUTPUT,
+  );
 
   const maxAmountInput: TokenAmount | undefined = maxAmountSpendInvest(
     currencyBalances[Field.INPUT],
@@ -440,12 +443,13 @@ const Invest = () => {
     setAttemptingTxn(true);
     investCallback()
       .then((hash: string) => {
+        const isBuyESW = independentField === Field.OUTPUT;
         setAttemptingTxn(false);
         setTxHash(hash);
         ReactGA.event({
           category: 'Crowdsale',
           action: 'Invest',
-          label: `buy ${formattedAmounts[Field.INPUT]} ${currencies[Field.INPUT]?.symbol}`,
+          label: `buy ${formattedAmounts[Field[isBuyESW ? 'OUTPUT' : 'INPUT']]} ${currencies[Field[isBuyESW ? 'OUTPUT' : 'INPUT']]?.symbol}`,
         });
       })
       .catch((error: any) => {
@@ -790,9 +794,10 @@ const Invest = () => {
   };
 
   // text to show while loading
+  const isBuyESW = independentField === Field.INPUT;
   const pendingText = `Investing ${tokenAmountToString(parsedAmounts[Field.INPUT])} ${
-    currencies[Field.INPUT]?.symbol
-  } for ${tokenAmountToString(parsedAmounts[Field.OUTPUT])} ${currencies[Field.OUTPUT]?.symbol}`;
+    currencies[isBuyESW ? Field.INPUT : Field.OUTPUT]?.symbol
+  } for ${tokenAmountToString(parsedAmounts[Field.OUTPUT])} ${currencies[!isBuyESW ? Field.INPUT : Field.OUTPUT]?.symbol}`;
 
   const [dismissedToken0] = useTokenWarningDismissal(chainId, currencies[Field.INPUT]);
   const [dismissedToken1] = useTokenWarningDismissal(chainId, currencies[Field.OUTPUT]);

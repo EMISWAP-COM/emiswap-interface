@@ -3,21 +3,35 @@ import styled from 'styled-components';
 import WAValidator from 'wallet-address-validator';
 import Modal from '../Modal';
 import EmiCardHeaderImg from '../../assets/images/EmiCardHeaderImg.jpg';
+import CloseIcon from '../../assets/images/close-white.svg';
 
 const ModalBody = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
+
+  .close-icon {
+    position: absolute;
+    width: 25px;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+  }
 
   img {
     width: 100%;
     margin-bottom: 30px;
+    ${({ theme }) => theme.mediaWidth.upToTabletop`
+      margin-bottom: 10px;
+    `};
   }
 
   .modal-body {
     padding: 0 45px 40px;
     overflow-y: auto;
+    width: 100%;
 
     &__header {
       font-family: 'IBM Plex Sans', Arial, sans-serif;
@@ -113,6 +127,14 @@ const ModalBody = styled.div`
       margin: auto 0;
       font-size: 12px;
     }
+
+    ${({ theme }) => theme.mediaWidth.upToTabletop`
+    padding: 0 25px 20px;
+    
+    &__header {
+      font-size: 22px;
+    }
+  `};
   }
 `;
 
@@ -199,13 +221,15 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
   return (
     <Modal isOpen={isOpen} onDismiss={onDismiss} maxHeight={90} maxWidth={500}>
       <ModalBody>
+        <img className="close-icon" src={CloseIcon} alt="EmiCardHeaderImg" onClick={onDismiss} />
         <img src={EmiCardHeaderImg} alt="EmiCardHeaderImg" />
         <div className="modal-body">
-          <div className="modal-body__header">EmiSwap Crowdsale Started</div>
+          <div className="modal-body__header">
+            Fill in this form and get Magic NFT Bonus at EmiSwap Crowdsale
+          </div>
           <div className="modal-body__description">
-            The number of cards is limited, don't miss your chance to become one of the first owners
-            of amazing Magic NFT Cards! Whitelist application alone is not enough to get the bonus,
-            you need to be among the first 1000 people to purchase more than 500 ESW to be eligible!
+            Only the first 1,000 Crowdsale participants with 500 or more ESW, who fill this form
+            will receive the bonus!
           </div>
           <div className="modal-body__input-block">
             <div className="modal-body__input-label">Name</div>

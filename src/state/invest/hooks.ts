@@ -362,11 +362,16 @@ export function useBuyCoinAmount() {
       const coinAmountBN = BigNumber.from(coinAmount);
       const isETH = currency.address?.toUpperCase() === ETHER.address.toUpperCase();
       if (isETH) {
-        return contract.buyWithETHView(coinAmountBN).then((response: any) => {
-          const outputAmount = BigNumber.from(response.currentTokenAmount).toString();
-          const test = num2str(Number(outputAmount) / Math.pow(10, ETHER.decimals), ETHER.decimals);
-          dispatch(receiveOutputAmount({ outputAmount: test }));
-        });
+        return contract
+          .buyWithETHView(coinAmountBN, field === Field.OUTPUT)
+          .then((response: any) => {
+            const outputAmount = BigNumber.from(response.currentTokenAmount).toString();
+            const test = num2str(
+              Number(outputAmount) / Math.pow(10, ETHER.decimals),
+              ETHER.decimals,
+            );
+            dispatch(receiveOutputAmount({ outputAmount: test }));
+          });
       } else {
         return contract
           .buyView(currency.address, coinAmountBN, field === Field.OUTPUT)

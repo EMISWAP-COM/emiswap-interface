@@ -21,8 +21,9 @@ export function useInvest(
   chainId: number | undefined,
   currencies: { [field in Field]?: Token },
   parsedAmounts: { [field in Field]?: TokenAmount },
+  inputField: boolean,
 ): any {
-  const InvestCallback = useInvestCallback(currencies, parsedAmounts);
+  const InvestCallback = useInvestCallback(currencies, parsedAmounts, inputField);
   return [InvestCallback, null];
 }
 
@@ -57,6 +58,7 @@ export function useEstimateCallback(
 export function useInvestCallback(
   currencies?: { [field in Field]?: Token },
   parsedAmounts?: { [field in Field]?: TokenAmount },
+  inputField?: boolean,
 ): InvestCallback {
   const { account, chainId, library } = useActiveWeb3React();
   const addTransaction = useTransactionAdder();
@@ -123,12 +125,12 @@ export function useInvestCallback(
       if (isETH) {
         const amountETH = toHex(new TokenAmount(ETHER, JSBI.BigInt(amount)));
         return contract
-          .buyWithETH(referralAddress, { value: amountETH })
+          .buyWithETH(referralAddress, amount, inputField, { value: amount })
           .then(onSuccess)
           .catch(onError);
       } else {
         return contract
-          .buy(inputCurrency?.address, BigNumber.from(amount), referralAddress)
+          .buy(inputCurrency?.address, BigNumber.from(amount), referralAddress, inputField)
           .then(onSuccess)
           .catch(onError);
       }
