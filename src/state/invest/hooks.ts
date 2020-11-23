@@ -362,6 +362,7 @@ export function useBuyCoinAmount() {
       const coinAmountBN = BigNumber.from(coinAmount);
       const isETH = currency.address?.toUpperCase() === ETHER.address.toUpperCase();
       if (isETH) {
+        console.log('.....buyWithETHView....  coinAmountBN:', coinAmountBN, 'bool:', field === Field.OUTPUT);
         return contract
           .buyWithETHView(coinAmountBN, field === Field.OUTPUT)
           .then((response: any) => {
