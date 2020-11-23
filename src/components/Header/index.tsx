@@ -2,21 +2,17 @@ import { ChainId } from '@uniswap/sdk';
 import React from 'react';
 import { isMobile, isTablet } from 'react-device-detect';
 import { Text } from 'rebass';
-
 import styled from 'styled-components';
-
 import Logo from '../../assets/svg/logo.svg';
 import LogoDark from '../../assets/svg/logo_dark.svg';
-// import Wordmark from '../../assets/svg/wordmark.svg'
-// import WordmarkDark from '../../assets/svg/wordmark_white.svg'
+// import Wordmark from '../../assets/svg/wordmark.svg';
+// import WordmarkDark from '../../assets/svg/wordmark_white.svg';
 import { useActiveWeb3React } from '../../hooks';
 import { useDarkModeManager } from '../../state/user/hooks';
 import { useETHBalances } from '../../state/wallet/hooks';
-
 import { YellowCard } from '../Card';
 import Settings from '../Settings';
 import Menu from '../Menu';
-
 import Row, { RowBetween } from '../Row';
 import Web3Status from '../Web3Status';
 import { tokenAmountToString } from '../../utils/formats';
@@ -28,7 +24,7 @@ const HeaderFrame = styled.div`
   flex-direction: column;
   width: 100%;
   top: 0;
-  position: absolute;
+  position: relative;
   z-index: 2;
   ${({ theme }) => theme.mediaWidth.upToSmall`
     position: relative;
@@ -64,19 +60,25 @@ const HeaderElement = styled.div`
     color: #11b382;
   }
 
-  @media screen and (max-width: 768px) {
-    flex-wrap: wrap;
+  ${({ theme }) => theme.mediaWidth.upToTabletop`
+    width: 100%;
+    padding: 18px 21px;
+    background-color: white;
+    justify-content: space-between;
     .white-btn {
       width: 100%;
-      margin-right: 0;
-      margin-bottom: 10px;
+      margin-right: 10px;
+      margin-bottom: 0;
     }
-  }
+  `};
 `;
 
 const HeaderElementWrap = styled.div`
   display: flex;
   align-items: center;
+  ${({ theme }) => theme.mediaWidth.upToTabletop`
+    width: auto;
+  `};
 `;
 
 const Title = styled.a`
@@ -142,6 +144,22 @@ const HeaderControls = styled.div`
   :last-child {
     margin-left: auto;
   }
+
+  ${({ theme }) => theme.mediaWidth.upToTabletop`
+  :last-child {
+    margin-left: 0;
+    width: 100%;
+    background: transparent;
+    
+    & > div:first-child {
+      background: transparent;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+  `};
 `;
 
 const BalanceText = styled(Text)`
@@ -152,7 +170,7 @@ const BalanceText = styled(Text)`
   display: flex;
   align-items: center;
 
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+  ${({ theme }) => theme.mediaWidth.upToTabletop`
     display: none;
   `};
 `;
@@ -161,10 +179,24 @@ const RowBetweenStyled = styled(RowBetween)`
   padding: 1rem 1rem 0 1rem;
   align-items: flex-start;
 
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-      padding: 1rem 1rem 0.5rem 1rem;
+  ${({ theme }) => theme.mediaWidth.upToTabletop`
+      padding: 0;
       flex-wrap: wrap;
   `};
+`;
+
+const OnlyMobileWrap = styled(RowBetween)`
+  display: none;
+  @media screen and (max-width: 768px) {
+    display: inline-block;
+    width: 88px;
+  }
+`;
+
+const WithoutMobileWrap = styled(RowBetween)`
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
@@ -191,6 +223,13 @@ export default function Header() {
               {/*<img style={{ marginLeft: '4px', marginTop: '4px' }} src={isDark ? WordmarkDark : Wordmark} alt="logo" width="160px"/>*/}
             </TitleText>
           </Title>
+          <OnlyMobileWrap>
+            <HeaderElementWrap>
+              {/*<VersionSwitch />*/}
+              <Settings />
+              <Menu />
+            </HeaderElementWrap>
+          </OnlyMobileWrap>
         </HeaderElement>
         <HeaderControls>
           <HeaderElement>
@@ -223,11 +262,13 @@ export default function Header() {
               <Web3Status />
             </AccountElement>
           </HeaderElement>
-          <HeaderElementWrap>
-            {/*<VersionSwitch />*/}
-            <Settings />
-            <Menu />
-          </HeaderElementWrap>
+          <WithoutMobileWrap>
+            <HeaderElementWrap>
+              {/*<VersionSwitch />*/}
+              <Settings />
+              <Menu />
+            </HeaderElementWrap>
+          </WithoutMobileWrap>
         </HeaderControls>
       </RowBetweenStyled>
     </HeaderFrame>

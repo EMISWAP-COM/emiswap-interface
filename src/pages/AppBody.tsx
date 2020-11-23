@@ -54,6 +54,9 @@ export const BodyWrapper = styled.div<{ disabled?: boolean; data?: string }>`
     @media screen and (max-width: 1200px) {
       margin-bottom: 650px;
     }
+    @media screen and (max-width: 500px) {
+      margin-bottom: 580px;
+    }
   }
 `;
 
@@ -71,6 +74,7 @@ const FAQWrapper = styled.div`
 
   @media screen and (max-width: 600px) {
     max-width: 100%;
+    margin-top: 10px;
   }
 `;
 
