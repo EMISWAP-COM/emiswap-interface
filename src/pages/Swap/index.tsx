@@ -25,6 +25,7 @@ import { ApprovalState, useApproveCallbackFromTrade } from '../../hooks/useAppro
 import { useSwap } from '../../hooks/useSwapCallback';
 import useToggledVersion, { Version } from '../../hooks/useToggledVersion';
 import useWrapCallback, { WrapType } from '../../hooks/useWrapCallback';
+import { useTradeExactIn } from '../../hooks/Trades';
 import { useToggleSettingsMenu, useWalletModalToggle } from '../../state/application/hooks';
 import { Field } from '../../state/swap/actions';
 import {
@@ -309,7 +310,7 @@ export default function Swap() {
 
   const notEnoughBalance =
     maxAmountInput && parsedAmount && JSBI.lessThan(maxAmountInput.raw, parsedAmount.raw);
-
+  console.log('.....useTradeExactIn', useTradeExactIn(parsedAmounts[Field.INPUT], currencies[Field.OUTPUT]))
   return (
     <>
       {showWarning && <TokenWarningCards currencies={currencies} />}

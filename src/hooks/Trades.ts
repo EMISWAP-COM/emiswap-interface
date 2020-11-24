@@ -57,7 +57,9 @@ function useAllCommonPairs(currencyA?: Token, currencyB?: Token): Pair[] {
  */
 export function useTradeExactIn(currencyAmountIn?: TokenAmount, currencyOut?: Token): Trade | null {
   const allowedPairs = useAllCommonPairs(currencyAmountIn?.token, currencyOut);
-
+  console.log('.....allowedPairs', allowedPairs)
+  console.log('.....currencyAmountIn', currencyAmountIn)
+  console.log('.....currencyAmountIn', currencyOut)
   return useMemo(() => {
     if (currencyAmountIn && currencyOut && allowedPairs.length > 0) {
       return (

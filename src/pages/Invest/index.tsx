@@ -807,7 +807,6 @@ const Invest = () => {
 
   const notEnoughBalance =
     maxAmountInput && parsedAmount && JSBI.lessThan(maxAmountInput.raw, parsedAmount.raw);
-
   return (
     <>
       {showWarning && <TokenWarningCards currencies={currencies} />}

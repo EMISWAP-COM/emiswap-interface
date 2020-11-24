@@ -23,17 +23,17 @@ export default function InvestModalHeader({
   recipient: string | null;
 }) {
   const theme = useContext(ThemeContext);
-  const isBuyESW = independentField === Field.INPUT;
+
   return (
     <AutoColumn gap={'md'} style={{ marginTop: '20px' }}>
       <RowBetween align="flex-end">
         <TruncatedText fontSize={24} fontWeight={500}>
-          {formattedAmounts[Field[isBuyESW ? 'INPUT' : 'OUTPUT']]}
+          {formattedAmounts[Field.INPUT]}
         </TruncatedText>
         <RowFixed gap="4px">
-          <CurrencyLogo currency={currencies[Field[isBuyESW ? 'INPUT' : 'OUTPUT']]} size={'24px'} />
+          <CurrencyLogo currency={currencies[Field.INPUT]} size={'24px'} />
           <Text fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
-            {currencies[Field[isBuyESW ? 'INPUT' : 'OUTPUT']]?.symbol}
+            {currencies[Field.INPUT]?.symbol}
           </Text>
         </RowFixed>
       </RowBetween>
@@ -42,12 +42,12 @@ export default function InvestModalHeader({
       </RowFixed>
       <RowBetween align="flex-end">
         <TruncatedText fontSize={24} fontWeight={500}>
-          {formattedAmounts[Field[!isBuyESW ? 'INPUT' : 'OUTPUT']]}
+          {formattedAmounts[Field.OUTPUT]}
         </TruncatedText>
         <RowFixed gap="4px">
-          <CurrencyLogo currency={currencies[Field[!isBuyESW ? 'INPUT' : 'OUTPUT']]} size={'24px'} />
+          <CurrencyLogo currency={currencies[Field.OUTPUT]} size={'24px'} />
           <Text fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
-            {currencies[Field[!isBuyESW ? 'INPUT' : 'OUTPUT']]?.symbol}
+            {currencies[Field.OUTPUT]?.symbol}
           </Text>
         </RowFixed>
       </RowBetween>
