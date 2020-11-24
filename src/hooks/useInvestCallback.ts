@@ -70,6 +70,7 @@ export function useInvestCallback(
     }
 
     const inputCurrency = !inputField ? currencies[Field.INPUT] : currencies[Field.OUTPUT];
+    const outputCurrency = inputField ? currencies[Field.INPUT] : currencies[Field.OUTPUT];
     const inputParseAmount = !inputField ? parsedAmounts[Field.INPUT] : parsedAmounts[Field.OUTPUT];
 
     return async function onInvest() {
@@ -131,7 +132,7 @@ export function useInvestCallback(
           .catch(onError);
       } else {
         return contract
-          .buy(inputCurrency?.address, BigNumber.from(amount), referralAddress, inputField)
+          .buy(inputField ? outputCurrency?.address : inputCurrency?.address, BigNumber.from(amount), referralAddress, inputField)
           .then(onSuccess)
           .catch(onError);
       }
