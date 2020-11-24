@@ -396,7 +396,7 @@ const Invest = () => {
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false); // waiting for user confirmaion/rejection
   const [txHash, setTxHash] = useState<string>('');
 
-  const returnFormatedAmount = (bool: boolean, field: Field) => {
+  const returnFormatedAmount = (bool: boolean) => {
     if (bool) {
       return typedValue;
     } else {
@@ -405,8 +405,8 @@ const Invest = () => {
   };
 
   const formattedAmounts = {
-    [Field.INPUT]: returnFormatedAmount(independentField === Field.INPUT, Field.INPUT),
-    [Field.OUTPUT]: returnFormatedAmount(independentField === Field.OUTPUT, Field.OUTPUT),
+    [Field.INPUT]: returnFormatedAmount(independentField === Field.INPUT),
+    [Field.OUTPUT]: returnFormatedAmount(independentField === Field.OUTPUT),
   };
   // check whether the user has approved the router on the input token
   const [approval, approveCallback] = useApproveCallback(parsedAmount, EMISWAP_CROWDSALE_ADDRESS);
@@ -806,7 +806,7 @@ const Invest = () => {
     (!dismissedToken1 && !!currencies[Field.OUTPUT]);
 
   const notEnoughBalance =
-    maxAmountInput && parsedAmount && JSBI.lessThan(maxAmountInput.raw, parsedAmount.raw);
+    maxAmountInput && parsedAmount && (independentField === Field.INPUT ? JSBI.lessThan(maxAmountInput.raw, parsedAmount.raw) : JSBI.greaterThan(maxAmountInput.raw, parsedAmount.raw));
   return (
     <>
       {showWarning && <TokenWarningCards currencies={currencies} />}

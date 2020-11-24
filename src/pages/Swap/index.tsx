@@ -310,7 +310,6 @@ export default function Swap() {
 
   const notEnoughBalance =
     maxAmountInput && parsedAmount && JSBI.lessThan(maxAmountInput.raw, parsedAmount.raw);
-  console.log('.....useTradeExactIn', useTradeExactIn(parsedAmounts[Field.INPUT], currencies[Field.OUTPUT]))
   return (
     <>
       {showWarning && <TokenWarningCards currencies={currencies} />}
