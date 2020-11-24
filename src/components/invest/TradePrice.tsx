@@ -24,7 +24,6 @@ export default function TradePrice({
   setShowInverted,
 }: TradePriceProps) {
   const theme = useContext(ThemeContext);
-  console.log('.....showInverted', showInverted)
   let formattedPrice;
   if (!showInverted) {
     formattedPrice = parsedAmounts[Field.OUTPUT]

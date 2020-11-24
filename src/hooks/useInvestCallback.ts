@@ -122,10 +122,8 @@ export function useInvestCallback(
           : inputParseAmount?.toFixed(0)) || '';
 
       const isETH = inputCurrency?.address.toUpperCase() === ETHER.address.toUpperCase();
-    console.log('.....amount', amount)
       if (isETH) {
         // const amountETH = toHex(new TokenAmount(ETHER, JSBI.BigInt(amount)));
-        console.log('.....buyWithETH... referralAddress:', referralAddress, 'amount:', amount, 'inputField:', inputField )
         return contract
           .buyWithETH(referralAddress, amount, inputField, { value: amount })
           .then(onSuccess)

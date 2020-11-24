@@ -794,10 +794,9 @@ const Invest = () => {
   };
 
   // text to show while loading
-  const isBuyESW = independentField === Field.INPUT;
   const pendingText = `Investing ${tokenAmountToString(parsedAmounts[Field.INPUT])} ${
-    currencies[isBuyESW ? Field.INPUT : Field.OUTPUT]?.symbol
-  } for ${tokenAmountToString(parsedAmounts[Field.OUTPUT])} ${currencies[!isBuyESW ? Field.INPUT : Field.OUTPUT]?.symbol}`;
+    currencies[Field.INPUT]?.symbol
+  } for ${tokenAmountToString(parsedAmounts[Field.OUTPUT])} ${currencies[Field.OUTPUT]?.symbol}`;
 
   const [dismissedToken0] = useTokenWarningDismissal(chainId, currencies[Field.INPUT]);
   const [dismissedToken1] = useTokenWarningDismissal(chainId, currencies[Field.OUTPUT]);
