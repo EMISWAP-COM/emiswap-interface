@@ -69,8 +69,8 @@ export function useInvestCallback(
       return null;
     }
 
-    const inputCurrency = currencies[Field.INPUT];
-    const inputParseAmount = parsedAmounts[Field.INPUT];
+    const inputCurrency = !inputField ? currencies[Field.INPUT] : currencies[Field.OUTPUT];
+    const inputParseAmount = !inputField ? parsedAmounts[Field.INPUT] : parsedAmounts[Field.OUTPUT];
 
     return async function onInvest() {
       const contract: Contract | null = getCrowdsaleContract(library, account);
@@ -121,7 +121,7 @@ export function useInvestCallback(
           : inputParseAmount?.toFixed(0)) || '';
 
       const isETH = inputCurrency?.address.toUpperCase() === ETHER.address.toUpperCase();
-
+    console.log('.....amount', amount)
       if (isETH) {
         // const amountETH = toHex(new TokenAmount(ETHER, JSBI.BigInt(amount)));
         console.log('.....buyWithETH... referralAddress:', referralAddress, 'amount:', amount, 'inputField:', inputField )
