@@ -360,7 +360,7 @@ export function useBuyCoinAmount() {
       }
       console.log('.....currency.decimals', currency.decimals)
       console.log('.....amount', amount)
-      const coinAmount = num2str(amount * Math.pow(10, field === Field.OUTPUT ? 18 : currency.decimals), 0);
+      const coinAmount = num2str(amount * Math.pow(10, field === Field.OUTPUT ? ESW[chainId][0].decimals : currency.decimals), 0);
       const coinAmountBN = BigNumber.from(coinAmount);
       const isETH = currency.address?.toUpperCase() === ETHER.address.toUpperCase();
       if (isETH) {
@@ -380,11 +380,11 @@ export function useBuyCoinAmount() {
         return contract
           .buyView(currency.address, coinAmountBN, field === Field.OUTPUT)
           .then((response: any) => {
-            console.log('.....response', response)
+            console.log('.....response', response[0].toString())
             const outputAmount = BigNumber.from(response.currentTokenAmount).toString();
             const test = num2str(
-              Number(outputAmount) / Math.pow(10, ESW[chainId][0].decimals),
-              ESW[chainId][0].decimals,
+              Number(outputAmount) / Math.pow(10, field === Field.INPUT ? ESW[chainId][0].decimals : currency.decimals),
+              field === Field.INPUT ? ESW[chainId][0].decimals : currency.decimals,
             );
             dispatch(receiveOutputAmount({ outputAmount: test }));
           });
