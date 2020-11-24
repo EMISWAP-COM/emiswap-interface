@@ -386,7 +386,7 @@ const Invest = () => {
 
   const handleTypeInputOUTPUT = useCallback(
     (value: string) => {
-      onUserInput(Field.OUTPUT, value, currencies[Field.INPUT]);
+      onUserInput(Field.OUTPUT, value, currencies[Field.OUTPUT]);
     },
     [onUserInput, currencies],
   );
