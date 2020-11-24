@@ -360,7 +360,7 @@ export function useBuyCoinAmount() {
       }
       console.log('.....currency.decimals', currency.decimals)
       console.log('.....amount', amount)
-      const coinAmount = num2str(amount * Math.pow(10, currency.decimals), 0);
+      const coinAmount = num2str(amount * Math.pow(10, field === Field.OUTPUT ? 18 : currency.decimals), 0);
       const coinAmountBN = BigNumber.from(coinAmount);
       const isETH = currency.address?.toUpperCase() === ETHER.address.toUpperCase();
       if (isETH) {
