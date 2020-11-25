@@ -45,6 +45,7 @@ async function useCoinList(
       name: coin.name,
     };
   }
+  console.debug("useCoinList: coins = ", coins)
   return coins;
 }
 

@@ -171,6 +171,7 @@ export function isDefaultToken(defaultTokens: TokenAddressMap, currency?: Token)
 }
 
 export function getCrowdsaleContract(library: Web3Provider, account: string) {
+  console.debug("EMISWAP_CROWDSALE_ADDRESS = ", EMISWAP_CROWDSALE_ADDRESS)
   return getContract(EMISWAP_CROWDSALE_ADDRESS, EMISWAP_CROWDSALE_ABI, library, account);
 }
 

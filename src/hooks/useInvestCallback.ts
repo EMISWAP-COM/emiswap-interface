@@ -135,5 +135,5 @@ export function useInvestCallback(
           .catch(onError);
       }
     };
-  }, [recipient, library, account, chainId, addTransaction, parsedAmounts, currencies]);
+  }, [recipient, library, account, chainId, addTransaction, parsedAmounts, currencies, inputField]);
 }
