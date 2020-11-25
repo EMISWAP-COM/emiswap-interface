@@ -803,7 +803,6 @@ const Invest = () => {
   const showWarning =
     (!dismissedToken0 && !!currencies[Field.INPUT]) ||
     (!dismissedToken1 && !!currencies[Field.OUTPUT]);
-
   const notEnoughBalance =
     maxAmountInput && parsedAmount && (independentField === Field.INPUT ? JSBI.lessThan(maxAmountInput.raw, parsedAmount.raw) : JSBI.greaterThan(maxAmountInput.raw, parsedAmount.raw));
   return (

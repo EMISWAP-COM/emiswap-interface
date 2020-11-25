@@ -125,7 +125,7 @@ export function useInvestCallback(
       if (isETH) {
         // const amountETH = toHex(new TokenAmount(ETHER, JSBI.BigInt(amount)));
         return contract
-          .buyWithETH(referralAddress, amount, inputField, { value: amount })
+          .buyWithETH(referralAddress, amount, inputField, { value: BigNumber.from(amount) })
           .then(onSuccess)
           .catch(onError);
       } else {
