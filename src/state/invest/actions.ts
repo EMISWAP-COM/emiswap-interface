@@ -37,13 +37,16 @@ async function useCoinList(
   for (let i = 0; i < counter; i++) {
     const coin = await contract.coin(i);
     const coinData = await contract.coinData(i);
+    if (coin.status === 3) {
     coins[i] = {
       chainId,
       address: coinData.coinAddress,
       decimals: coin.decimals,
       symbol: coin.symbol,
       name: coin.name,
+      status: coin.status
     };
+  }
   }
   console.debug("useCoinList: coins = ", coins)
   return coins;
