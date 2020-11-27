@@ -84,7 +84,6 @@ export default function CrowdsaleCurrencySearchModal({
       .split(/\s+/)
       .filter(s => s.length > 0);
     if (symbolMatch.length > 1) return sorted;
-
     return [
       ...(searchToken ? [searchToken] : []),
       // sort any exact symbol matches first

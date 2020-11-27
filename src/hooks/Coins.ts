@@ -11,7 +11,6 @@ import { ESW } from '../constants';
 export function useAllCoins(): { [address: string]: Token } {
   const { chainId } = useActiveWeb3React();
   const allCoins = useCoinList();
-
   return useMemo(() => {
     if (!chainId) return {};
     return { ...allCoins[chainId] };

@@ -234,7 +234,7 @@ export default function SettingsTab() {
 
   useEffect(() => {
     const handleClickOutside = e => {
-      if (node.current?.contains(e.target) ?? false) {
+      if (node.current?.contains(e.target)) {
         return;
       }
       toggle();

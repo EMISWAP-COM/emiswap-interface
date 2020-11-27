@@ -63,7 +63,6 @@ const HeaderElement = styled.div`
   ${({ theme }) => theme.mediaWidth.upToTabletop`
     width: 100%;
     padding: 18px 21px;
-    background-color: white;
     justify-content: space-between;
     .white-btn {
       width: 100%;
@@ -73,11 +72,28 @@ const HeaderElement = styled.div`
   `};
 `;
 
+const LogoElem = styled(HeaderElement)`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    order: 1;
+    width: calc(100% - 100px);
+  `};
+  ${({ theme }) => theme.mediaWidth.upToTabletop`
+    background-color: white;
+  `};
+`;
+
 const HeaderElementWrap = styled.div`
   display: flex;
   align-items: center;
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    order: 2;
+  `};
   ${({ theme }) => theme.mediaWidth.upToTabletop`
     width: auto;
+    padding: 18px 0;
+    height: 55px;
+    box-sizing: content-box;
+    background-color: white;
   `};
 `;
 
@@ -145,6 +161,12 @@ const HeaderControls = styled.div`
     margin-left: auto;
   }
 
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    order: 3;
+    width: 100%;
+    justify-content: center;
+  `};
+
   ${({ theme }) => theme.mediaWidth.upToTabletop`
   :last-child {
     margin-left: 0;
@@ -179,24 +201,14 @@ const RowBetweenStyled = styled(RowBetween)`
   padding: 1rem 1rem 0 1rem;
   align-items: flex-start;
 
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+      flex-wrap: wrap;
+  `};
+
   ${({ theme }) => theme.mediaWidth.upToTabletop`
       padding: 0;
       flex-wrap: wrap;
   `};
-`;
-
-const OnlyMobileWrap = styled(RowBetween)`
-  display: none;
-  @media screen and (max-width: 768px) {
-    display: inline-block;
-    width: 88px;
-  }
-`;
-
-const WithoutMobileWrap = styled(RowBetween)`
-  @media screen and (max-width: 768px) {
-    display: none;
-  }
 `;
 
 const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
@@ -214,7 +226,7 @@ export default function Header() {
   return (
     <HeaderFrame>
       <RowBetweenStyled>
-        <HeaderElement>
+        <LogoElem>
           <Title href=".">
             <UniIcon>
               <img src={isDark ? LogoDark : Logo} alt="logo" />
@@ -223,14 +235,7 @@ export default function Header() {
               {/*<img style={{ marginLeft: '4px', marginTop: '4px' }} src={isDark ? WordmarkDark : Wordmark} alt="logo" width="160px"/>*/}
             </TitleText>
           </Title>
-          <OnlyMobileWrap>
-            <HeaderElementWrap>
-              {/*<VersionSwitch />*/}
-              <Settings />
-              <Menu />
-            </HeaderElementWrap>
-          </OnlyMobileWrap>
-        </HeaderElement>
+        </LogoElem>
         <HeaderControls>
           <HeaderElement>
             <a
@@ -262,14 +267,12 @@ export default function Header() {
               <Web3Status />
             </AccountElement>
           </HeaderElement>
-          <WithoutMobileWrap>
-            <HeaderElementWrap>
-              {/*<VersionSwitch />*/}
-              <Settings />
-              <Menu />
-            </HeaderElementWrap>
-          </WithoutMobileWrap>
         </HeaderControls>
+        <HeaderElementWrap>
+          {/*<VersionSwitch />*/}
+          <Settings />
+          <Menu />
+        </HeaderElementWrap>
       </RowBetweenStyled>
     </HeaderFrame>
   );

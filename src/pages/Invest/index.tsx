@@ -372,7 +372,6 @@ const Invest = () => {
     [Field.INPUT]: parsedAmount,
     [Field.OUTPUT]: parsedOutputAmount,
   };
-
   const isValid = !error;
 
   // const handleNothing = () => {};
@@ -449,7 +448,9 @@ const Invest = () => {
         ReactGA.event({
           category: 'Crowdsale',
           action: 'Invest',
-          label: `buy ${formattedAmounts[Field[isBuyESW ? 'OUTPUT' : 'INPUT']]} ${currencies[Field[isBuyESW ? 'OUTPUT' : 'INPUT']]?.symbol}`,
+          label: `buy ${formattedAmounts[Field[isBuyESW ? 'OUTPUT' : 'INPUT']]} ${
+            currencies[Field[isBuyESW ? 'OUTPUT' : 'INPUT']]?.symbol
+          }`,
         });
       })
       .catch((error: any) => {
@@ -804,7 +805,11 @@ const Invest = () => {
     (!dismissedToken0 && !!currencies[Field.INPUT]) ||
     (!dismissedToken1 && !!currencies[Field.OUTPUT]);
   const notEnoughBalance =
-    maxAmountInput && parsedAmount && (independentField === Field.INPUT ? JSBI.lessThan(maxAmountInput.raw, parsedAmount.raw) : JSBI.greaterThan(maxAmountInput.raw, parsedAmount.raw));
+    independentField === Field.INPUT
+      ? maxAmountInput && parsedAmount && JSBI.lessThan(maxAmountInput.raw, parsedAmount.raw)
+      : maxAmountInput &&
+        parsedOutputAmount &&
+        JSBI.lessThan(maxAmountInput.raw, parsedOutputAmount.raw);
   return (
     <>
       {showWarning && <TokenWarningCards currencies={currencies} />}
