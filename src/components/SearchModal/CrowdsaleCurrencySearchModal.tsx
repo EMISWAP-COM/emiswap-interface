@@ -89,7 +89,7 @@ export default function CrowdsaleCurrencySearchModal({
       // sort any exact symbol matches first
       ...sorted.filter(token => token.symbol.toLowerCase() === symbolMatch[0]),
       ...sorted.filter(token => token.symbol.toLowerCase() !== symbolMatch[0]),
-    ].filter(token => token.symbol !== 'USDY');
+    ];
   }, [filteredTokens, searchQuery, searchToken, tokenComparator]);
 
   const handleCurrencySelect = useCallback(
