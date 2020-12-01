@@ -507,21 +507,21 @@ const Invest = () => {
       rare = 'Ordinary';
       NunOfCard = Math.floor(ESWc / 500);
     }
-    if (ESWc >= 2500 && ESWc < 12500) {
+    if (ESWc >= 2500 && ESWc < 7500) {
       rare = 'Common';
       NunOfCard = Math.floor(ESWc / 2500);
     }
-    if (ESWc >= 12500 && ESWc < 62500) {
+    if (ESWc >= 7500 && ESWc < 20000) {
       rare = 'Unusual';
-      NunOfCard = Math.floor(ESWc / 12500);
+      NunOfCard = Math.floor(ESWc / 7500);
     }
-    if (ESWc >= 62500 && ESWc < 312500) {
+    if (ESWc >= 20000 && ESWc < 50000) {
       rare = 'Rare';
-      NunOfCard = Math.floor(ESWc / 62500);
+      NunOfCard = Math.floor(ESWc / 20000);
     }
-    if (ESWc >= 312500) {
+    if (ESWc >= 50000) {
       rare = 'Legendary';
-      NunOfCard = Math.floor(ESWc / 312500);
+      NunOfCard = Math.floor(ESWc / 50000);
     }
 
     let bodyNode = (
@@ -544,21 +544,21 @@ const Invest = () => {
           <img className="emicard__img" src={UnusualIcon} alt="Unusual" />
           <div className="emicard__info">
             <div className="emicard__title">Unusual</div>
-            <div className="emicard__description">Non less than 12 500 ESW</div>
+            <div className="emicard__description">Non less than 7 500 ESW</div>
           </div>
         </div>
         <div className="emicard">
           <img className="emicard__img" src={RareIcon} alt="Rare" />
           <div className="emicard__info">
             <div className="emicard__title">Rare</div>
-            <div className="emicard__description">Non less than 62 500 ESW</div>
+            <div className="emicard__description">Non less than 20 000 ESW</div>
           </div>
         </div>
         <div className="emicard">
           <img className="emicard__img" src={LegendaryIcon} alt="Legendary" />
           <div className="emicard__info">
             <div className="emicard__title">Legendary</div>
-            <div className="emicard__description">Non less than 312 500 ESW</div>
+            <div className="emicard__description">Non less than 50 000 ESW</div>
           </div>
         </div>
       </div>

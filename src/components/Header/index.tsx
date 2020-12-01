@@ -272,8 +272,8 @@ export default function Header() {
         </HeaderControls>
         <HeaderElementWrap>
           {/*<VersionSwitch />*/}
-          <Settings />
           <Menu />
+          <Settings />
         </HeaderElementWrap>
       </RowBetweenStyled>
     </HeaderFrame>
