@@ -156,6 +156,8 @@ const HeaderControls = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  width: calc(100% - 285px);
+  justify-content: flex-end;
 
   :last-child {
     margin-left: auto;

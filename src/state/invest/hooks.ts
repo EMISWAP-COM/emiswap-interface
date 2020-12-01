@@ -303,9 +303,12 @@ const listCache: WeakMap<Token[], TokenAddressMap> | null =
 export function listToTokenMap(list: Token[]): TokenAddressMap {
   const result = listCache?.get(list);
   if (result) return result;
-
+  console.log('.....list', list);
   const map = list.reduce<TokenAddressMap>(
     (tokenMap, tokenInfo) => {
+      if (!tokenInfo) {
+        return { ...tokenMap };
+      }
       const token = new WrappedTokenInfo(tokenInfo);
       if (tokenMap[token.chainId][token.address] !== undefined) throw Error('Duplicate tokens.');
       if (token.address === '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE') {
