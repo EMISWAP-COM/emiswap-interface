@@ -293,7 +293,8 @@ export function useCoinList(): TokenAddressMap {
   const list = useSelector<AppState, AppState['invest']['coins']>(state => state.invest.coins);
   return useMemo(() => {
     if (!list) return EMPTY_LIST;
-    return listToTokenMap(list);
+    // @ts-ignore
+    return listToTokenMap(list.filter(coin => coin?.status));
   }, [list]);
 }
 
@@ -303,7 +304,6 @@ const listCache: WeakMap<Token[], TokenAddressMap> | null =
 export function listToTokenMap(list: Token[]): TokenAddressMap {
   const result = listCache?.get(list);
   if (result) return result;
-  console.log('.....list', list);
   const map = list.reduce<TokenAddressMap>(
     (tokenMap, tokenInfo) => {
       if (!tokenInfo) {
