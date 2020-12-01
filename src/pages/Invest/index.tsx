@@ -645,7 +645,7 @@ const Invest = () => {
       );
     }
     if (rare === 'Unusual') {
-      const NumByGetMoreCard = (NunOfCard + 1) * 12500;
+      const NumByGetMoreCard = (NunOfCard + 1) * 7500;
       bodyNode = (
         <div className="block-with-cards__cards">
           <div className="block-with-current-cards">
@@ -685,7 +685,7 @@ const Invest = () => {
       );
     }
     if (rare === 'Rare') {
-      const NumByGetMoreCard = (NunOfCard + 1) * 62500;
+      const NumByGetMoreCard = (NunOfCard + 1) * 20000;
       bodyNode = (
         <div className="block-with-cards__cards">
           <div className="block-with-current-cards">
@@ -725,7 +725,7 @@ const Invest = () => {
       );
     }
     if (rare === 'Legendary') {
-      const NumByGetMoreCard = (NunOfCard + 1) * 312500;
+      const NumByGetMoreCard = (NunOfCard + 1) * 50000;
       bodyNode = (
         <div className="block-with-cards__cards">
           <div className="block-with-current-cards">
@@ -753,10 +753,10 @@ const Invest = () => {
     }
 
     const getClassToEmiCardsBlock = (ESWc: Number) => {
-      if (ESWc >= 312500 || NunOfCard === 4) {
+      if (ESWc >= 50000 || NunOfCard === 4) {
         return 'block-with-cards elem1';
       }
-      if (ESWc > 0 && ESWc < 312500) {
+      if (ESWc > 0 && ESWc < 50000) {
         return 'block-with-cards elem2';
       }
 
