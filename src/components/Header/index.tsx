@@ -62,7 +62,7 @@ const HeaderElement = styled.div`
 
   ${({ theme }) => theme.mediaWidth.upToTabletop`
     width: 100%;
-    padding: 18px 21px;
+    padding: 18px 16px;
     justify-content: space-between;
     .white-btn {
       width: 100%;
@@ -79,7 +79,7 @@ const LogoElem = styled(HeaderElement)`
   `};
   ${({ theme }) => theme.mediaWidth.upToTabletop`
     background-color: white;
-    width: calc(100% - 120px);
+    width: calc(100% - 116px);
     padding-right: 0px;
   `};
 `;
@@ -92,7 +92,8 @@ const HeaderElementWrap = styled.div`
   `};
   ${({ theme }) => theme.mediaWidth.upToTabletop`
     width: auto;
-    padding: 18px 10px;
+    padding: 18px 0;
+    padding-right: 16px;
     height: 55px;
     box-sizing: content-box;
     background-color: white;
