@@ -79,6 +79,8 @@ const LogoElem = styled(HeaderElement)`
   `};
   ${({ theme }) => theme.mediaWidth.upToTabletop`
     background-color: white;
+    width: calc(100% - 120px);
+    padding-right: 0px;
   `};
 `;
 
@@ -90,7 +92,7 @@ const HeaderElementWrap = styled.div`
   `};
   ${({ theme }) => theme.mediaWidth.upToTabletop`
     width: auto;
-    padding: 18px 0;
+    padding: 18px 10px;
     height: 55px;
     box-sizing: content-box;
     background-color: white;

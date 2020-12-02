@@ -35,9 +35,9 @@ import { Redirect, RouteComponentProps } from 'react-router-dom';
 import { MAX_NUM_DECIMALS } from '../../constants';
 import { tokenAmountToString } from '../../utils/formats';
 import OrdinaryIcon from '../../assets/svg/CardIcon/ordinary.svg';
-import CommonIcon from '../../assets/svg/CardIcon/common.svg';
-import UnusualIcon from '../../assets/svg/CardIcon/unusual.svg';
-import RareIcon from '../../assets/svg/CardIcon/rare.svg';
+import UncommonIcon from '../../assets/svg/CardIcon/common.svg';
+import RareIcon from '../../assets/svg/CardIcon/unusual.svg';
+import EpicIcon from '../../assets/svg/CardIcon/rare.svg';
 import LegendaryIcon from '../../assets/svg/CardIcon/legendary.svg';
 import Question from '../../assets/svg/FAQIcon/question.svg';
 import EmiMagicBackground from '../../assets/svg/EmiMagicBackground.svg';
@@ -508,11 +508,11 @@ const Invest = () => {
       NunOfCard = Math.floor(ESWc / 500);
     }
     if (ESWc >= 2500 && ESWc < 7500) {
-      rare = 'Common';
+      rare = 'Uncommon';
       NunOfCard = Math.floor(ESWc / 2500);
     }
     if (ESWc >= 7500 && ESWc < 20000) {
-      rare = 'Unusual';
+      rare = 'Rare';
       NunOfCard = Math.floor(ESWc / 7500);
     }
     if (ESWc >= 20000 && ESWc < 50000) {
@@ -534,23 +534,23 @@ const Invest = () => {
           </div>
         </div>
         <div className="emicard">
-          <img className="emicard__img" src={CommonIcon} alt="Common" />
+          <img className="emicard__img" src={UncommonIcon} alt="Uncommon" />
           <div className="emicard__info">
-            <div className="emicard__title">Common</div>
+            <div className="emicard__title">Uncommon</div>
             <div className="emicard__description">Non less than 2 500 ESW</div>
-          </div>
-        </div>
-        <div className="emicard">
-          <img className="emicard__img" src={UnusualIcon} alt="Unusual" />
-          <div className="emicard__info">
-            <div className="emicard__title">Unusual</div>
-            <div className="emicard__description">Non less than 7 500 ESW</div>
           </div>
         </div>
         <div className="emicard">
           <img className="emicard__img" src={RareIcon} alt="Rare" />
           <div className="emicard__info">
             <div className="emicard__title">Rare</div>
+            <div className="emicard__description">Non less than 7 500 ESW</div>
+          </div>
+        </div>
+        <div className="emicard">
+          <img className="emicard__img" src={EpicIcon} alt="Epic" />
+          <div className="emicard__info">
+            <div className="emicard__title">Epic</div>
             <div className="emicard__description">Non less than 20 000 ESW</div>
           </div>
         </div>
@@ -591,81 +591,41 @@ const Invest = () => {
             </div>
           )}
           <div className="emicard">
-            <img className="emicard__img" src={CommonIcon} alt="Common" />
+            <img className="emicard__img" src={UncommonIcon} alt="Uncommon" />
             <div className="emicard__info">
               <div className="emicard__description-card">
                 Make purchase of <b className="green-color ml-5">2500 ESWc</b>
               </div>
               <div className="emicard__description-card">
-                to get <b className="ml-5">a Common card</b>
+                to get <b className="ml-5">a Uncommon card</b>
               </div>
             </div>
           </div>
         </div>
       );
     }
-    if (rare === 'Common') {
+    if (rare === 'Uncommon') {
       const NumByGetMoreCard = (NunOfCard + 1) * 2500;
       bodyNode = (
         <div className="block-with-cards__cards">
           <div className="block-with-current-cards">
-            <img className="block-with-current-cards__img" src={CommonIcon} alt="Common" />
+            <img className="block-with-current-cards__img" src={UncommonIcon} alt="Uncommon" />
             <div className="block-with-current-cards__info">
               <div className="block-with-current-cards__title">
-                {NunOfCard} {'Common'}
+                {NunOfCard} {'Uncommon'}
               </div>
               <div className="block-with-current-cards__text">Card</div>
             </div>
           </div>
           {NunOfCard < 4 && (
             <div className="emicard">
-              <img className="emicard__img" src={CommonIcon} alt="Common" />
+              <img className="emicard__img" src={UncommonIcon} alt="Uncommon" />
               <div className="emicard__info">
                 <div className="emicard__description-card">
                   Make purchase of <b className="green-color ml-5">{NumByGetMoreCard} ESWc</b>
                 </div>
                 <div className="emicard__description-card">
-                  to get <b className="ml-5 mr-5">1</b> more <b className="ml-5">Common card</b>
-                </div>
-              </div>
-            </div>
-          )}
-          <div className="emicard">
-            <img className="emicard__img" src={UnusualIcon} alt="Unusual" />
-            <div className="emicard__info">
-              <div className="emicard__description-card">
-                Make purchase of <b className="green-color ml-5">12500 ESWc</b>
-              </div>
-              <div className="emicard__description-card">
-                to get <b className="ml-5">a Unusual card</b>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-    }
-    if (rare === 'Unusual') {
-      const NumByGetMoreCard = (NunOfCard + 1) * 7500;
-      bodyNode = (
-        <div className="block-with-cards__cards">
-          <div className="block-with-current-cards">
-            <img className="block-with-current-cards__img" src={UnusualIcon} alt="Unusual" />
-            <div className="block-with-current-cards__info">
-              <div className="block-with-current-cards__title">
-                {NunOfCard} {'Unusual'}
-              </div>
-              <div className="block-with-current-cards__text">Card</div>
-            </div>
-          </div>
-          {NunOfCard < 4 && (
-            <div className="emicard">
-              <img className="emicard__img" src={UnusualIcon} alt="Ordinary" />
-              <div className="emicard__info">
-                <div className="emicard__description-card">
-                  Make purchase of <b className="green-color ml-5">{NumByGetMoreCard} ESWc</b>
-                </div>
-                <div className="emicard__description-card">
-                  to get <b className="ml-5 mr-5">1</b> more <b className="ml-5">Unusual card</b>
+                  to get <b className="ml-5 mr-5">1</b> more <b className="ml-5">Uncommon card</b>
                 </div>
               </div>
             </div>
@@ -674,7 +634,7 @@ const Invest = () => {
             <img className="emicard__img" src={RareIcon} alt="Rare" />
             <div className="emicard__info">
               <div className="emicard__description-card">
-                Make purchase of <b className="green-color ml-5">62500 ESWc</b>
+                Make purchase of <b className="green-color ml-5">12500 ESWc</b>
               </div>
               <div className="emicard__description-card">
                 to get <b className="ml-5">a Rare card</b>
@@ -685,7 +645,7 @@ const Invest = () => {
       );
     }
     if (rare === 'Rare') {
-      const NumByGetMoreCard = (NunOfCard + 1) * 20000;
+      const NumByGetMoreCard = (NunOfCard + 1) * 7500;
       bodyNode = (
         <div className="block-with-cards__cards">
           <div className="block-with-current-cards">
@@ -706,6 +666,46 @@ const Invest = () => {
                 </div>
                 <div className="emicard__description-card">
                   to get <b className="ml-5 mr-5">1</b> more <b className="ml-5">Rare card</b>
+                </div>
+              </div>
+            </div>
+          )}
+          <div className="emicard">
+            <img className="emicard__img" src={EpicIcon} alt="Epic" />
+            <div className="emicard__info">
+              <div className="emicard__description-card">
+                Make purchase of <b className="green-color ml-5">62500 ESWc</b>
+              </div>
+              <div className="emicard__description-card">
+                to get <b className="ml-5">a Epic card</b>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    if (rare === 'Epic') {
+      const NumByGetMoreCard = (NunOfCard + 1) * 20000;
+      bodyNode = (
+        <div className="block-with-cards__cards">
+          <div className="block-with-current-cards">
+            <img className="block-with-current-cards__img" src={EpicIcon} alt="Epic" />
+            <div className="block-with-current-cards__info">
+              <div className="block-with-current-cards__title">
+                {NunOfCard} {'Epic'}
+              </div>
+              <div className="block-with-current-cards__text">Card</div>
+            </div>
+          </div>
+          {NunOfCard < 4 && (
+            <div className="emicard">
+              <img className="emicard__img" src={EpicIcon} alt="Ordinary" />
+              <div className="emicard__info">
+                <div className="emicard__description-card">
+                  Make purchase of <b className="green-color ml-5">{NumByGetMoreCard} ESWc</b>
+                </div>
+                <div className="emicard__description-card">
+                  to get <b className="ml-5 mr-5">1</b> more <b className="ml-5">Epic card</b>
                 </div>
               </div>
             </div>
