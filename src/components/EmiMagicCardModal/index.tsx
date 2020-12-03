@@ -190,7 +190,8 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
     const address = addressRef && addressRef.current.value;
     if (!validateForm(name, email, telegram, address)) {
       setValidation(defaultValidation);
-      fetch('https://europe-west3-emirex-prod.cloudfunctions.net/esw', {
+      const utm = localStorage.getItem('UTMMarks');
+      fetch(`https://europe-west3-emirex-prod.cloudfunctions.net/esw${utm || ''}`, {
         method: 'POST',
         headers: {
           'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -209,6 +210,7 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
         .then(response => response.text())
         .then(contents => {
           console.log(contents);
+          localStorage.removeItem('UTMMarks');
           onDismiss();
         })
         .catch(() =>

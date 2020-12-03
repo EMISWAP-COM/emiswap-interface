@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { useEffect, Suspense } from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 import Wordmark from '../components/Wordmark';
 import Logo from '../components/Logo';
@@ -71,6 +71,12 @@ const BodyWrapper = styled.div`
 `;
 
 export default function App() {
+  useEffect(() => {
+    const search = window.location.hash.split('?');
+    if (search[1] && search[1].length) {
+      localStorage.setItem('UTMMarks', `?${search[1]}`);
+    }
+  }, []);
   return (
     <Suspense fallback={null}>
       <HashRouter>
