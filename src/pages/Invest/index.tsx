@@ -501,27 +501,32 @@ const Invest = () => {
 
   const generateEmiCardBlock = (num: Number) => {
     const ESWc = Number(num.toFixed(3));
+    const ordinaryCount = 500;
+    const uncommonCount = 2500;
+    const rareCount = 7500;
+    const epicCount = 20000;
+    const legendaryCount = 50000;
     let rare = '';
     let NunOfCard = 0;
-    if (ESWc > 0 && ESWc < 2500) {
+    if (ESWc > 0 && ESWc < uncommonCount) {
       rare = 'Ordinary';
-      NunOfCard = Math.floor(ESWc / 500);
+      NunOfCard = Math.floor(ESWc / ordinaryCount);
     }
-    if (ESWc >= 2500 && ESWc < 7500) {
+    if (ESWc >= uncommonCount && ESWc < rareCount) {
       rare = 'Uncommon';
-      NunOfCard = Math.floor(ESWc / 2500);
+      NunOfCard = Math.floor(ESWc / uncommonCount);
     }
-    if (ESWc >= 7500 && ESWc < 20000) {
+    if (ESWc >= rareCount && ESWc < epicCount) {
       rare = 'Rare';
-      NunOfCard = Math.floor(ESWc / 7500);
+      NunOfCard = Math.floor(ESWc / rareCount);
     }
-    if (ESWc >= 20000 && ESWc < 50000) {
-      rare = 'Rare';
-      NunOfCard = Math.floor(ESWc / 20000);
+    if (ESWc >= epicCount && ESWc < legendaryCount) {
+      rare = 'Epic';
+      NunOfCard = Math.floor(ESWc / epicCount);
     }
-    if (ESWc >= 50000) {
+    if (ESWc >= legendaryCount) {
       rare = 'Legendary';
-      NunOfCard = Math.floor(ESWc / 50000);
+      NunOfCard = Math.floor(ESWc / legendaryCount);
     }
 
     let bodyNode = (
@@ -530,42 +535,42 @@ const Invest = () => {
           <img className="emicard__img" src={OrdinaryIcon} alt="Ordinary" />
           <div className="emicard__info">
             <div className="emicard__title">Ordinary</div>
-            <div className="emicard__description">Non less than 500 ESW</div>
+            <div className="emicard__description">Non less than {ordinaryCount} ESW</div>
           </div>
         </div>
         <div className="emicard">
           <img className="emicard__img" src={UncommonIcon} alt="Uncommon" />
           <div className="emicard__info">
             <div className="emicard__title">Uncommon</div>
-            <div className="emicard__description">Non less than 2 500 ESW</div>
+            <div className="emicard__description">Non less than {uncommonCount} ESW</div>
           </div>
         </div>
         <div className="emicard">
           <img className="emicard__img" src={RareIcon} alt="Rare" />
           <div className="emicard__info">
             <div className="emicard__title">Rare</div>
-            <div className="emicard__description">Non less than 7 500 ESW</div>
+            <div className="emicard__description">Non less than {rareCount} ESW</div>
           </div>
         </div>
         <div className="emicard">
           <img className="emicard__img" src={EpicIcon} alt="Epic" />
           <div className="emicard__info">
             <div className="emicard__title">Epic</div>
-            <div className="emicard__description">Non less than 20 000 ESW</div>
+            <div className="emicard__description">Non less than {epicCount} ESW</div>
           </div>
         </div>
         <div className="emicard">
           <img className="emicard__img" src={LegendaryIcon} alt="Legendary" />
           <div className="emicard__info">
             <div className="emicard__title">Legendary</div>
-            <div className="emicard__description">Non less than 50 000 ESW</div>
+            <div className="emicard__description">Non less than {legendaryCount} ESW</div>
           </div>
         </div>
       </div>
     );
 
     if (rare === 'Ordinary') {
-      const NumByGetMoreCard = (NunOfCard + 1) * 500;
+      const NumByGetMoreCard = (NunOfCard + 1) * ordinaryCount;
       bodyNode = (
         <div className="block-with-cards__cards">
           <div className="block-with-current-cards">
@@ -594,7 +599,7 @@ const Invest = () => {
             <img className="emicard__img" src={UncommonIcon} alt="Uncommon" />
             <div className="emicard__info">
               <div className="emicard__description-card">
-                Make purchase of <b className="green-color ml-5">2500 ESWc</b>
+                Make purchase of <b className="green-color ml-5">{uncommonCount} ESWc</b>
               </div>
               <div className="emicard__description-card">
                 to get <b className="ml-5">a Uncommon card</b>
@@ -605,7 +610,7 @@ const Invest = () => {
       );
     }
     if (rare === 'Uncommon') {
-      const NumByGetMoreCard = (NunOfCard + 1) * 2500;
+      const NumByGetMoreCard = (NunOfCard + 1) * uncommonCount;
       bodyNode = (
         <div className="block-with-cards__cards">
           <div className="block-with-current-cards">
@@ -634,7 +639,7 @@ const Invest = () => {
             <img className="emicard__img" src={RareIcon} alt="Rare" />
             <div className="emicard__info">
               <div className="emicard__description-card">
-                Make purchase of <b className="green-color ml-5">12500 ESWc</b>
+                Make purchase of <b className="green-color ml-5">{rareCount} ESWc</b>
               </div>
               <div className="emicard__description-card">
                 to get <b className="ml-5">a Rare card</b>
@@ -645,7 +650,7 @@ const Invest = () => {
       );
     }
     if (rare === 'Rare') {
-      const NumByGetMoreCard = (NunOfCard + 1) * 7500;
+      const NumByGetMoreCard = (NunOfCard + 1) * rareCount;
       bodyNode = (
         <div className="block-with-cards__cards">
           <div className="block-with-current-cards">
@@ -674,7 +679,7 @@ const Invest = () => {
             <img className="emicard__img" src={EpicIcon} alt="Epic" />
             <div className="emicard__info">
               <div className="emicard__description-card">
-                Make purchase of <b className="green-color ml-5">62500 ESWc</b>
+                Make purchase of <b className="green-color ml-5">{epicCount} ESWc</b>
               </div>
               <div className="emicard__description-card">
                 to get <b className="ml-5">a Epic card</b>
@@ -685,7 +690,7 @@ const Invest = () => {
       );
     }
     if (rare === 'Epic') {
-      const NumByGetMoreCard = (NunOfCard + 1) * 20000;
+      const NumByGetMoreCard = (NunOfCard + 1) * epicCount;
       bodyNode = (
         <div className="block-with-cards__cards">
           <div className="block-with-current-cards">
@@ -714,7 +719,7 @@ const Invest = () => {
             <img className="emicard__img" src={LegendaryIcon} alt="Legendary" />
             <div className="emicard__info">
               <div className="emicard__description-card">
-                Make purchase of <b className="green-color ml-5">312500 ESWc</b>
+                Make purchase of <b className="green-color ml-5">{legendaryCount} ESWc</b>
               </div>
               <div className="emicard__description-card">
                 to get <b className="ml-5">a Legendary card</b>
@@ -725,7 +730,7 @@ const Invest = () => {
       );
     }
     if (rare === 'Legendary') {
-      const NumByGetMoreCard = (NunOfCard + 1) * 50000;
+      const NumByGetMoreCard = (NunOfCard + 1) * legendaryCount;
       bodyNode = (
         <div className="block-with-cards__cards">
           <div className="block-with-current-cards">
@@ -753,10 +758,10 @@ const Invest = () => {
     }
 
     const getClassToEmiCardsBlock = (ESWc: Number) => {
-      if (ESWc >= 50000 || NunOfCard === 4) {
+      if (ESWc >= legendaryCount || NunOfCard === 4) {
         return 'block-with-cards elem1';
       }
-      if (ESWc > 0 && ESWc < 50000) {
+      if (ESWc > 0 && ESWc < legendaryCount) {
         return 'block-with-cards elem2';
       }
 
