@@ -37,10 +37,12 @@ export default function CrowdsaleCurrencyList({
 
   const CurrencyRow = useMemo(() => {
     return memo(function CurrencyRow({ index, style }: { index: number; style: CSSProperties }) {
+      console.log('.....ETHER', ETHER);
       const currency = index === 0 ? ETHER : currencies[index - 1];
+      console.log('.....currency', currency);
       const key = currencyKey(currency);
       const balance = currency === ETHER ? ETHBalance : allBalances[key];
-
+      console.log('.....currency', currency);
       const zeroBalance = balance && JSBI.equal(JSBI.BigInt(0), balance.raw);
 
       const isSelected = Boolean(selectedCurrency && currencyEquals(currency, selectedCurrency));
