@@ -366,8 +366,7 @@ export function useBuyCoinAmount() {
       if (isETH) {
         console.log('.....coinAmountBN', coinAmountBN);
         console.log('.....field === Field.OUTPUT', field === Field.OUTPUT);
-        console.log('.....field', field);
-        console.log('.....Field.OUTPUT', Field.OUTPUT);
+        console.log('.....field', field, Field.OUTPUT);
         return contract
           .buyWithETHView(coinAmountBN, field === Field.OUTPUT)
           .then((response: any) => {
