@@ -1,11 +1,11 @@
-import React, { useContext, useCallback } from 'react'
-import styled, { ThemeContext } from 'styled-components'
-import useENS from '../../hooks/useENS'
-import { useActiveWeb3React } from '../../hooks'
-import { ExternalLink, TYPE } from '../../theme'
-import { AutoColumn } from '../Column'
-import { RowBetween } from '../Row'
-import { getEtherscanLink } from '../../utils'
+import React, { useContext, useCallback } from 'react';
+import styled, { ThemeContext } from 'styled-components';
+import useENS from '../../hooks/useENS';
+import { useActiveWeb3React } from '../../hooks';
+import { ExternalLink, TYPE } from '../../theme';
+import { AutoColumn } from '../Column';
+import { RowBetween } from '../Row';
+import { getEtherscanLink } from '../../utils';
 
 const InputPanel = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap}
@@ -14,7 +14,7 @@ const InputPanel = styled.div`
   background-color: ${({ theme }) => theme.bg1};
   z-index: 1;
   width: 100%;
-`
+`;
 
 const ContainerRow = styled.div<{ error: boolean }>`
   display: flex;
@@ -25,12 +25,12 @@ const ContainerRow = styled.div<{ error: boolean }>`
   transition: border-color 300ms ${({ error }) => (error ? 'step-end' : 'step-start')},
     color 500ms ${({ error }) => (error ? 'step-end' : 'step-start')};
   background-color: ${({ theme }) => theme.bg1};
-`
+`;
 
 const InputContainer = styled.div`
   flex: 1;
   padding: 1rem;
-`
+`;
 
 const Input = styled.input<{ error?: boolean }>`
   font-size: 1.25rem;
@@ -63,39 +63,39 @@ const Input = styled.input<{ error?: boolean }>`
   ::placeholder {
     color: ${({ theme }) => theme.text4};
   }
-`
+`;
 
 interface Value {
-  address: string
-  name?: string
+  address: string;
+  name?: string;
 }
 
 export default function AddressInputPanel({
   id,
   value,
-  onChange
+  onChange,
 }: {
-  id?: string
+  id?: string;
   // the typed string value
-  value: string
+  value: string;
   // triggers whenever the typed value changes
-  onChange: (value: string) => void
+  onChange: (value: string) => void;
 }) {
-  const { chainId } = useActiveWeb3React()
-  const theme = useContext(ThemeContext)
+  const { chainId } = useActiveWeb3React();
+  const theme = useContext(ThemeContext);
 
-  const { address, loading, name } = useENS(value)
+  const { address, loading, name } = useENS(value);
 
   const handleInput = useCallback(
     event => {
-      const input = event.target.value
-      const withoutSpaces = input.replace(/\s+/g, '')
-      onChange(withoutSpaces)
+      const input = event.target.value;
+      const withoutSpaces = input.replace(/\s+/g, '');
+      onChange(withoutSpaces);
     },
-    [onChange]
-  )
+    [onChange],
+  );
 
-  const error = Boolean(value.length > 0 && !loading && !address)
+  const error = Boolean(value.length > 0 && !loading && !address);
 
   return (
     <InputPanel id={id}>
@@ -107,7 +107,10 @@ export default function AddressInputPanel({
                 Recipient
               </TYPE.black>
               {address && (
-                <ExternalLink href={getEtherscanLink(chainId, name ?? address, 'address')} style={{ fontSize: '14px' }}>
+                <ExternalLink
+                  href={getEtherscanLink(chainId, name ?? address, 'address')}
+                  style={{ fontSize: '14px' }}
+                >
                   (View on Etherscan)
                 </ExternalLink>
               )}
@@ -129,5 +132,5 @@ export default function AddressInputPanel({
         </InputContainer>
       </ContainerRow>
     </InputPanel>
-  )
+  );
 }

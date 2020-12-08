@@ -1,6 +1,18 @@
 [
   {
-    "constant": true,
+    "inputs": [],
+    "name": "factory",
+    "outputs": [
+      {
+        "internalType": "contract IUniswapV2Factory",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -48,7 +60,6 @@
         "type": "tuple[]"
       }
     ],
-    "payable": false,
     "stateMutability": "view",
     "type": "function"
   }

@@ -1,11 +1,11 @@
-import React, { useCallback, useContext, useState } from 'react'
-import { X } from 'react-feather'
-import styled, { ThemeContext } from 'styled-components'
-import useInterval from '../../hooks/useInterval'
-import { PopupContent } from '../../state/application/actions'
-import { useRemovePopup } from '../../state/application/hooks'
-import ListUpdatePopup from './ListUpdatePopup'
-import TxnPopup from './TxnPopup'
+import React, { useCallback, useContext, useState } from 'react';
+import { X } from 'react-feather';
+import styled, { ThemeContext } from 'styled-components';
+import useInterval from '../../hooks/useInterval';
+import { PopupContent } from '../../state/application/actions';
+import { useRemovePopup } from '../../state/application/hooks';
+import ListUpdatePopup from './ListUpdatePopup';
+import TxnPopup from './TxnPopup';
 
 export const StyledClose = styled(X)`
   position: absolute;
@@ -15,7 +15,7 @@ export const StyledClose = styled(X)`
   :hover {
     cursor: pointer;
   }
-`
+`;
 export const Popup = styled.div`
   display: inline-block;
   width: 100%;
@@ -31,8 +31,8 @@ export const Popup = styled.div`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     min-width: 290px;
   `}
-`
-const DELAY = 100
+`;
+const DELAY = 100;
 const Fader = styled.div<{ count: number }>`
   position: absolute;
   bottom: 0px;
@@ -41,39 +41,47 @@ const Fader = styled.div<{ count: number }>`
   height: 2px;
   background-color: ${({ theme }) => theme.bg3};
   transition: width 100ms linear;
-`
+`;
 
 export default function PopupItem({ content, popKey }: { content: PopupContent; popKey: string }) {
-  const [count, setCount] = useState(1)
+  const [count, setCount] = useState(1);
 
-  const [isRunning, setIsRunning] = useState(true)
-  const removePopup = useRemovePopup()
+  const [isRunning, setIsRunning] = useState(true);
+  const removePopup = useRemovePopup();
 
-  const removeThisPopup = useCallback(() => removePopup(popKey), [popKey, removePopup])
+  const removeThisPopup = useCallback(() => removePopup(popKey), [popKey, removePopup]);
 
   useInterval(
     () => {
-      count > 150 ? removeThisPopup() : setCount(count + 1)
+      count > 150 ? removeThisPopup() : setCount(count + 1);
     },
-    isRunning ? DELAY : null
-  )
+    isRunning ? DELAY : null,
+  );
 
-  const theme = useContext(ThemeContext)
+  const theme = useContext(ThemeContext);
 
-  const handleMouseEnter = useCallback(() => setIsRunning(false), [])
-  const handleMouseLeave = useCallback(() => setIsRunning(true), [])
+  const handleMouseEnter = useCallback(() => setIsRunning(false), []);
+  const handleMouseLeave = useCallback(() => setIsRunning(true), []);
 
-  let popupContent
+  let popupContent;
   if ('txn' in content) {
     const {
-      txn: { hash, success, summary }
-    } = content
-    popupContent = <TxnPopup hash={hash} success={success} summary={summary} />
+      txn: { hash, success, summary },
+    } = content;
+    popupContent = <TxnPopup hash={hash} success={success} summary={summary} />;
   } else if ('listUpdate' in content) {
     const {
-      listUpdate: { listUrl, oldList, newList, auto }
-    } = content
-    popupContent = <ListUpdatePopup popKey={popKey} listUrl={listUrl} oldList={oldList} newList={newList} auto={auto} />
+      listUpdate: { listUrl, oldList, newList, auto },
+    } = content;
+    popupContent = (
+      <ListUpdatePopup
+        popKey={popKey}
+        listUrl={listUrl}
+        oldList={oldList}
+        newList={newList}
+        auto={auto}
+      />
+    );
   }
 
   return (
@@ -82,5 +90,5 @@ export default function PopupItem({ content, popKey }: { content: PopupContent; 
       {popupContent}
       <Fader count={count} />
     </Popup>
-  )
+  );
 }

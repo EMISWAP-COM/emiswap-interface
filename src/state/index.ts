@@ -1,18 +1,19 @@
-import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
-import { save, load } from 'redux-localstorage-simple'
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+import { save, load } from 'redux-localstorage-simple';
 
-import application from './application/reducer'
-import user from './user/reducer'
-import transactions from './transactions/reducer'
-import swap from './swap/reducer'
-import mint from './mint/reducer'
-import lists from './lists/reducer'
-import burn from './burn/reducer'
-import multicall from './multicall/reducer'
+import application from './application/reducer';
+import user from './user/reducer';
+import transactions from './transactions/reducer';
+import swap from './swap/reducer';
+import mint from './mint/reducer';
+import lists from './lists/reducer';
+import burn from './burn/reducer';
+import multicall from './multicall/reducer';
+import invest from './invest/reducer';
 
-import { updateVersion } from './user/actions'
+import { updateVersion } from './user/actions';
 
-const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists', 'swap']
+const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists', 'swap', 'invest'];
 
 const store = configureStore({
   reducer: {
@@ -23,15 +24,19 @@ const store = configureStore({
     mint,
     burn,
     multicall,
-    lists
+    lists,
+    invest,
   },
-  middleware: [...getDefaultMiddleware(), save({ states: PERSISTED_KEYS })],
-  preloadedState: load({ states: PERSISTED_KEYS })
-})
+  middleware: [
+    ...getDefaultMiddleware({ serializableCheck: false }),
+    save({ states: PERSISTED_KEYS }),
+  ],
+  preloadedState: load({ states: PERSISTED_KEYS }),
+});
 
-store.dispatch(updateVersion())
+store.dispatch(updateVersion());
 
-export default store
+export default store;
 
-export type AppState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+export type AppState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
