@@ -32,7 +32,7 @@ import ReferralLink from '../../components/RefferalLink';
 import { SwapPoolTabs } from '../../components/NavigationTabs';
 import { EMISWAP_CROWDSALE_ADDRESS } from '../../constants/abis/crowdsale';
 import { Redirect, RouteComponentProps } from 'react-router-dom';
-import { MAX_NUM_DECIMALS } from '../../constants';
+// import { MAX_NUM_DECIMALS } from '../../constants';
 import { tokenAmountToString } from '../../utils/formats';
 import OrdinaryIcon from '../../assets/svg/CardIcon/ordinary.svg';
 import UncommonIcon from '../../assets/svg/CardIcon/common.svg';

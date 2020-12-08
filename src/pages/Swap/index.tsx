@@ -25,7 +25,7 @@ import { ApprovalState, useApproveCallbackFromTrade } from '../../hooks/useAppro
 import { useSwap } from '../../hooks/useSwapCallback';
 import useToggledVersion, { Version } from '../../hooks/useToggledVersion';
 import useWrapCallback, { WrapType } from '../../hooks/useWrapCallback';
-import { useTradeExactIn } from '../../hooks/Trades';
+// import { useTradeExactIn } from '../../hooks/Trades';
 import { useToggleSettingsMenu, useWalletModalToggle } from '../../state/application/hooks';
 import { Field } from '../../state/swap/actions';
 import {
