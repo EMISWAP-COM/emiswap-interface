@@ -2,7 +2,8 @@ name: Release
 on:
   push:
     branches:
-      - CrowdSale
+      - development
+      - production
 
   # manual trigger
   workflow_dispatch:
