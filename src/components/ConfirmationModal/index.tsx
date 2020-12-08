@@ -1,49 +1,49 @@
-import React, { useContext } from 'react'
-import styled, { ThemeContext } from 'styled-components'
-import Modal from '../Modal'
-import { ExternalLink } from '../../theme'
-import { Text } from 'rebass'
-import { CloseIcon, Spinner } from '../../theme/components'
-import { RowBetween } from '../Row'
-import { ArrowUpCircle } from 'react-feather'
-import { ButtonPrimary } from '../Button'
-import { AutoColumn, ColumnCenter } from '../Column'
-import Circle from '../../assets/images/blue-loader.svg'
+import React, { useContext } from 'react';
+import styled, { ThemeContext } from 'styled-components';
+import Modal from '../Modal';
+import { ExternalLink } from '../../theme';
+import { Text } from 'rebass';
+import { CloseIcon, Spinner } from '../../theme/components';
+import { RowBetween } from '../Row';
+import { ArrowUpCircle } from 'react-feather';
+import { ButtonPrimary } from '../Button';
+import { AutoColumn, ColumnCenter } from '../Column';
+import Circle from '../../assets/images/blue-loader.svg';
 
-import { getEtherscanLink } from '../../utils'
-import { useActiveWeb3React } from '../../hooks'
+import { getEtherscanLink } from '../../utils';
+import { useActiveWeb3React } from '../../hooks';
 
 const Wrapper = styled.div`
   width: 100%;
-`
+`;
 const Section = styled(AutoColumn)`
   padding: 24px;
-`
+`;
 
 const BottomSection = styled(Section)`
   background-color: ${({ theme }) => theme.bg2};
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-`
+`;
 
 const ConfirmedIcon = styled(ColumnCenter)`
   padding: 60px 0;
-`
+`;
 
 const CustomLightSpinner = styled(Spinner)<{ size: string }>`
   height: ${({ size }) => size};
   width: ${({ size }) => size};
-`
+`;
 
 interface ConfirmationModalProps {
-  isOpen: boolean
-  onDismiss: () => void
-  hash: string
-  topContent: () => React.ReactChild
-  bottomContent: () => React.ReactChild
-  attemptingTxn: boolean
-  pendingText: string
-  title?: string
+  isOpen: boolean;
+  onDismiss: () => void;
+  hash: string;
+  topContent: () => React.ReactChild;
+  bottomContent: () => React.ReactChild;
+  attemptingTxn: boolean;
+  pendingText: string;
+  title?: string;
 }
 
 export default function ConfirmationModal({
@@ -54,12 +54,12 @@ export default function ConfirmationModal({
   attemptingTxn,
   hash,
   pendingText,
-  title = ''
+  title = '',
 }: ConfirmationModalProps) {
-  const { chainId } = useActiveWeb3React()
-  const theme = useContext(ThemeContext)
+  const { chainId } = useActiveWeb3React();
+  const theme = useContext(ThemeContext);
 
-  const transactionBroadcast = !!hash
+  const transactionBroadcast = !!hash;
 
   // waiting for user to confirm/reject tx _or_ showing info on a tx that has been broadcast
   if (attemptingTxn || transactionBroadcast) {
@@ -110,7 +110,7 @@ export default function ConfirmationModal({
           </Section>
         </Wrapper>
       </Modal>
-    )
+    );
   }
 
   // confirmation screen
@@ -129,5 +129,5 @@ export default function ConfirmationModal({
         <BottomSection gap="12px">{bottomContent()}</BottomSection>
       </Wrapper>
     </Modal>
-  )
+  );
 }

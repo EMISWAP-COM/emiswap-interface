@@ -1,9 +1,9 @@
-import React from 'react'
-import styled from 'styled-components'
-import { useMediaLayout } from 'use-media'
-import { useActivePopups } from '../../state/application/hooks'
-import { AutoColumn } from '../Column'
-import PopupItem from './PopupItem'
+import React from 'react';
+import styled from 'styled-components';
+import { useMediaLayout } from 'use-media';
+import { useActivePopups } from '../../state/application/hooks';
+import { AutoColumn } from '../Column';
+import PopupItem from './PopupItem';
 
 const MobilePopupWrapper = styled.div<{ height: string | number }>`
   position: relative;
@@ -11,7 +11,7 @@ const MobilePopupWrapper = styled.div<{ height: string | number }>`
   height: ${({ height }) => height};
   margin: ${({ height }) => (height ? '0 auto;' : 0)};
   margin-bottom: ${({ height }) => (height ? '20px' : 0)}};
-`
+`;
 
 const MobilePopupInner = styled.div`
   height: 99%;
@@ -23,7 +23,7 @@ const MobilePopupInner = styled.div`
   ::-webkit-scrollbar {
     display: none;
   }
-`
+`;
 
 const FixedPopupColumn = styled(AutoColumn)`
   position: absolute;
@@ -35,14 +35,14 @@ const FixedPopupColumn = styled(AutoColumn)`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     display: none;
   `};
-`
+`;
 
 export default function Popups() {
   // get all popups
-  const activePopups = useActivePopups()
+  const activePopups = useActivePopups();
 
   // switch view settings on mobile
-  const isMobile = useMediaLayout({ maxWidth: '600px' })
+  const isMobile = useMediaLayout({ maxWidth: '600px' });
 
   if (!isMobile) {
     return (
@@ -51,7 +51,7 @@ export default function Popups() {
           <PopupItem key={item.key} content={item.content} popKey={item.key} />
         ))}
       </FixedPopupColumn>
-    )
+    );
   }
   //mobile
   else
@@ -66,5 +66,5 @@ export default function Popups() {
             ))}
         </MobilePopupInner>
       </MobilePopupWrapper>
-    )
+    );
 }

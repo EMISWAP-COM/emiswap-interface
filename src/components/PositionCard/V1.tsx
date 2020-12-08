@@ -1,23 +1,23 @@
-import React, { useContext } from 'react'
-import { Link, RouteComponentProps, withRouter } from 'react-router-dom'
-import { Token, TokenAmount } from '@uniswap/sdk'
+import React, { useContext } from 'react';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import { Token, TokenAmount } from '@uniswap/sdk';
 
-import { Text } from 'rebass'
-import { AutoColumn } from '../Column'
-import { ButtonSecondary } from '../Button'
-import { RowBetween, RowFixed } from '../Row'
-import { FixedHeightRow, HoverCard } from './index'
-import DoubleCurrencyLogo from '../DoubleLogo'
-import { ThemeContext } from 'styled-components'
+import { Text } from 'rebass';
+import { AutoColumn } from '../Column';
+import { ButtonSecondary } from '../Button';
+import { RowBetween, RowFixed } from '../Row';
+import { FixedHeightRow, HoverCard } from './index';
+import DoubleCurrencyLogo from '../DoubleLogo';
+import { ThemeContext } from 'styled-components';
 
 interface PositionCardProps extends RouteComponentProps<{}> {
-  token0: Token
-  token1: Token
-  V1LiquidityBalance: TokenAmount
+  token0: Token;
+  token1: Token;
+  V1LiquidityBalance: TokenAmount;
 }
 
 function UniV2PositionCard({ token0, token1, V1LiquidityBalance }: PositionCardProps) {
-  const theme = useContext(ThemeContext)
+  const theme = useContext(ThemeContext);
 
   return (
     <HoverCard>
@@ -45,7 +45,11 @@ function UniV2PositionCard({ token0, token1, V1LiquidityBalance }: PositionCardP
 
         <AutoColumn gap="8px">
           <RowBetween marginTop="10px">
-            <ButtonSecondary width="100%" as={Link} to={`/migrate/${V1LiquidityBalance.token.address}`}>
+            <ButtonSecondary
+              width="100%"
+              as={Link}
+              to={`/migrate/${V1LiquidityBalance.token.address}`}
+            >
               Migrate
             </ButtonSecondary>
 
@@ -61,7 +65,7 @@ function UniV2PositionCard({ token0, token1, V1LiquidityBalance }: PositionCardP
         </AutoColumn>
       </AutoColumn>
     </HoverCard>
-  )
+  );
 }
 
-export default withRouter(UniV2PositionCard)
+export default withRouter(UniV2PositionCard);

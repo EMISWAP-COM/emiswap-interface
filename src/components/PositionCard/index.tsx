@@ -1,53 +1,54 @@
-import { JSBI, Pair, Percent } from '@uniswap/sdk'
-import { darken } from 'polished'
-import React, { useState } from 'react'
-import { ChevronDown, ChevronUp } from 'react-feather'
-import { Link } from 'react-router-dom'
-import { Text } from 'rebass'
-import styled from 'styled-components'
-import { useTotalSupply } from '../../data/TotalSupply'
+import { JSBI, Pair, Percent } from '@uniswap/sdk';
+import { darken } from 'polished';
+import React, { useState } from 'react';
+import { ChevronDown, ChevronUp } from 'react-feather';
+import { Link } from 'react-router-dom';
+import { Text } from 'rebass';
+import styled from 'styled-components';
+import { useTotalSupply } from '../../data/TotalSupply';
 
-import { useActiveWeb3React } from '../../hooks'
-import { useTokenBalance } from '../../state/wallet/hooks'
-import { ExternalLink } from '../../theme'
-import { currencyId } from '../../utils/currencyId'
-import { unwrappedToken } from '../../utils/wrappedCurrency'
-import { ButtonSecondary } from '../Button'
+import { useActiveWeb3React } from '../../hooks';
+import { useTokenBalance } from '../../state/wallet/hooks';
+import { ExternalLink } from '../../theme';
+import { currencyId } from '../../utils/currencyId';
+import { unwrappedToken } from '../../utils/wrappedCurrency';
+import { ButtonSecondary } from '../Button';
 
-import Card, { GreyCard } from '../Card'
-import { AutoColumn } from '../Column'
-import CurrencyLogo from '../CurrencyLogo'
-import DoubleCurrencyLogo from '../DoubleLogo'
-import { AutoRow, RowBetween, RowFixed } from '../Row'
-import { Dots } from '../swap/styleds'
+import Card, { GreyCard } from '../Card';
+import { AutoColumn } from '../Column';
+import CurrencyLogo from '../CurrencyLogo';
+import DoubleCurrencyLogo from '../DoubleLogo';
+import { AutoRow, RowBetween, RowFixed } from '../Row';
+import { Dots } from '../swap/styleds';
+import { tokenAmountToString } from '../../utils/formats';
 
 export const FixedHeightRow = styled(RowBetween)`
   height: 24px;
-`
+`;
 
 export const HoverCard = styled(Card)`
   border: 1px solid ${({ theme }) => theme.bg2};
   :hover {
     border: 1px solid ${({ theme }) => darken(0.06, theme.bg2)};
   }
-`
+`;
 
 interface PositionCardProps {
-  pair: Pair
-  showUnwrapped?: boolean
-  border?: string
+  pair: Pair;
+  showUnwrapped?: boolean;
+  border?: string;
 }
 
 export function MinimalPositionCard({ pair, showUnwrapped = false, border }: PositionCardProps) {
-  const { account } = useActiveWeb3React()
+  const { account } = useActiveWeb3React();
 
-  const currency0 = showUnwrapped ? pair.token0 : unwrappedToken(pair.token0)
-  const currency1 = showUnwrapped ? pair.token1 : unwrappedToken(pair.token1)
+  const currency0 = showUnwrapped ? pair.token0 : unwrappedToken(pair.token0);
+  const currency1 = showUnwrapped ? pair.token1 : unwrappedToken(pair.token1);
 
-  const [showMore, setShowMore] = useState(false)
+  const [showMore, setShowMore] = useState(false);
 
-  const userPoolBalance = useTokenBalance(account, pair.liquidityToken)
-  const totalPoolTokens = useTotalSupply(pair.liquidityToken)
+  const userPoolBalance = useTokenBalance(account, pair.liquidityToken);
+  const totalPoolTokens = useTotalSupply(pair.liquidityToken);
 
   const [token0Deposited, token1Deposited] =
     !!pair &&
@@ -57,9 +58,9 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
     JSBI.greaterThanOrEqual(totalPoolTokens.raw, userPoolBalance.raw)
       ? [
           pair.getLiquidityValue(pair.token0, totalPoolTokens, userPoolBalance, false),
-          pair.getLiquidityValue(pair.token1, totalPoolTokens, userPoolBalance, false)
+          pair.getLiquidityValue(pair.token1, totalPoolTokens, userPoolBalance, false),
         ]
-      : [undefined, undefined]
+      : [undefined, undefined];
 
   return (
     <>
@@ -75,14 +76,19 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
             </FixedHeightRow>
             <FixedHeightRow onClick={() => setShowMore(!showMore)}>
               <RowFixed>
-                <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={20} />
+                <DoubleCurrencyLogo
+                  currency0={currency0}
+                  currency1={currency1}
+                  margin={true}
+                  size={20}
+                />
                 <Text fontWeight={500} fontSize={20}>
                   {currency0.symbol}/{currency1.symbol}
                 </Text>
               </RowFixed>
               <RowFixed>
                 <Text fontWeight={500} fontSize={20}>
-                  {userPoolBalance ? userPoolBalance.toSignificant(4) : '-'}
+                  {userPoolBalance ? tokenAmountToString(userPoolBalance, 4) : '-'}
                 </Text>
               </RowFixed>
             </FixedHeightRow>
@@ -94,7 +100,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
                 {token0Deposited ? (
                   <RowFixed>
                     <Text color="#888D9B" fontSize={16} fontWeight={500} marginLeft={'6px'}>
-                      {token0Deposited?.toSignificant(6)}
+                      {tokenAmountToString(token0Deposited)}
                     </Text>
                   </RowFixed>
                 ) : (
@@ -108,7 +114,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
                 {token1Deposited ? (
                   <RowFixed>
                     <Text color="#888D9B" fontSize={16} fontWeight={500} marginLeft={'6px'}>
-                      {token1Deposited?.toSignificant(6)}
+                      {tokenAmountToString(token1Deposited)}
                     </Text>
                   </RowFixed>
                 ) : (
@@ -120,24 +126,26 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
         </GreyCard>
       )}
     </>
-  )
+  );
 }
 
 export default function FullPositionCard({ pair, border }: PositionCardProps) {
-  const { account } = useActiveWeb3React()
+  const { account } = useActiveWeb3React();
 
-  const currency0 = unwrappedToken(pair.token0)
-  const currency1 = unwrappedToken(pair.token1)
+  const currency0 = unwrappedToken(pair.token0);
+  const currency1 = unwrappedToken(pair.token1);
 
-  const [showMore, setShowMore] = useState(false)
+  const [showMore, setShowMore] = useState(false);
 
-  const userPoolBalance = useTokenBalance(account, pair.liquidityToken)
-  const totalPoolTokens = useTotalSupply(pair.liquidityToken)
+  const userPoolBalance = useTokenBalance(account, pair.liquidityToken);
+  const totalPoolTokens = useTotalSupply(pair.liquidityToken);
 
   const poolTokenPercentage =
-    !!userPoolBalance && !!totalPoolTokens && JSBI.greaterThanOrEqual(totalPoolTokens.raw, userPoolBalance.raw)
+    !!userPoolBalance &&
+    !!totalPoolTokens &&
+    JSBI.greaterThanOrEqual(totalPoolTokens.raw, userPoolBalance.raw)
       ? new Percent(userPoolBalance.raw, totalPoolTokens.raw)
-      : undefined
+      : undefined;
 
   const [token0Deposited, token1Deposited] =
     !!pair &&
@@ -147,18 +155,27 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
     JSBI.greaterThanOrEqual(totalPoolTokens.raw, userPoolBalance.raw)
       ? [
           pair.getLiquidityValue(pair.token0, totalPoolTokens, userPoolBalance, false),
-          pair.getLiquidityValue(pair.token1, totalPoolTokens, userPoolBalance, false)
+          pair.getLiquidityValue(pair.token1, totalPoolTokens, userPoolBalance, false),
         ]
-      : [undefined, undefined]
+      : [undefined, undefined];
 
   return (
     <HoverCard border={border}>
       <AutoColumn gap="12px">
         <FixedHeightRow onClick={() => setShowMore(!showMore)} style={{ cursor: 'pointer' }}>
           <RowFixed>
-            <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin={true} size={20} />
+            <DoubleCurrencyLogo
+              currency0={currency0}
+              currency1={currency1}
+              margin={true}
+              size={20}
+            />
             <Text fontWeight={500} fontSize={20}>
-              {!currency0 || !currency1 ? <Dots>Loading</Dots> : `${currency0.symbol}/${currency1.symbol}`}
+              {!currency0 || !currency1 ? (
+                <Dots>Loading</Dots>
+              ) : (
+                `${currency0.symbol}/${currency1.symbol}`
+              )}
             </Text>
           </RowFixed>
           <RowFixed>
@@ -180,7 +197,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
               {token0Deposited ? (
                 <RowFixed>
                   <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
-                    {token0Deposited?.toSignificant(6)}
+                    {tokenAmountToString(token0Deposited)}
                   </Text>
                   <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={currency0} />
                 </RowFixed>
@@ -198,7 +215,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
               {token1Deposited ? (
                 <RowFixed>
                   <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
-                    {token1Deposited?.toSignificant(6)}
+                    {tokenAmountToString(token1Deposited)}
                   </Text>
                   <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={currency1} />
                 </RowFixed>
@@ -211,7 +228,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
                 Your pool tokens:
               </Text>
               <Text fontSize={16} fontWeight={500}>
-                {userPoolBalance ? userPoolBalance.toSignificant(4) : '-'}
+                {userPoolBalance ? tokenAmountToString(userPoolBalance, 4) : '-'}
               </Text>
             </FixedHeightRow>
             <FixedHeightRow>
@@ -229,10 +246,18 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
               </ExternalLink>
             </AutoRow>
             <RowBetween marginTop="10px">
-              <ButtonSecondary as={Link} to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`} width="48%">
+              <ButtonSecondary
+                as={Link}
+                to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
+                width="48%"
+              >
                 Add
               </ButtonSecondary>
-              <ButtonSecondary as={Link} width="48%" to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`}>
+              <ButtonSecondary
+                as={Link}
+                width="48%"
+                to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`}
+              >
                 Remove
               </ButtonSecondary>
             </RowBetween>
@@ -240,5 +265,5 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
         )}
       </AutoColumn>
     </HoverCard>
-  )
+  );
 }

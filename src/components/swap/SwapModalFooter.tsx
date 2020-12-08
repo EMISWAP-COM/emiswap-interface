@@ -1,17 +1,18 @@
-import { TokenAmount, Percent, Trade } from '@uniswap/sdk'
-import React, { useContext } from 'react'
-import { Repeat } from 'react-feather'
-import { Text } from 'rebass'
-import { ThemeContext } from 'styled-components'
-import { Field } from '../../state/swap/actions'
-import { TYPE } from '../../theme'
-import { formatExecutionPrice } from '../../utils/prices'
-import { ButtonError } from '../Button'
-import { AutoColumn } from '../Column'
-import QuestionHelper from '../QuestionHelper'
-import { AutoRow, RowBetween, RowFixed } from '../Row'
-import FormattedPriceImpact from './FormattedPriceImpact'
-import { StyledBalanceMaxMini } from './styleds'
+import { TokenAmount, Percent, Trade } from '@uniswap/sdk';
+import React, { useContext } from 'react';
+import { Repeat } from 'react-feather';
+import { Text } from 'rebass';
+import { ThemeContext } from 'styled-components';
+import { Field } from '../../state/swap/actions';
+import { TYPE } from '../../theme';
+import { formatExecutionPrice } from '../../utils/prices';
+import { ButtonError } from '../Button';
+import { AutoColumn } from '../Column';
+import QuestionHelper from '../QuestionHelper';
+import { AutoRow, RowBetween, RowFixed } from '../Row';
+import FormattedPriceImpact from './FormattedPriceImpact';
+import { StyledBalanceMaxMini } from './styleds';
+import { tokenAmountToString } from '../../utils/formats';
 
 export default function SwapModalFooter({
   trade,
@@ -23,23 +24,23 @@ export default function SwapModalFooter({
   parsedAmounts,
   realizedLPFee,
   priceImpactWithoutFee,
-  confirmText
+  confirmText,
 }: {
-  trade?: Trade
-  showInverted: boolean
-  setShowInverted: (inverted: boolean) => void
-  severity: number
-  slippageAdjustedAmounts?: { [field in Field]?: TokenAmount }
-  onSwap: () => any
-  parsedAmounts?: { [field in Field]?: TokenAmount }
-  realizedLPFee?: TokenAmount
-  priceImpactWithoutFee?: Percent
-  confirmText: string
+  trade?: Trade;
+  showInverted: boolean;
+  setShowInverted: (inverted: boolean) => void;
+  severity: number;
+  slippageAdjustedAmounts?: { [field in Field]?: TokenAmount };
+  onSwap: () => any;
+  parsedAmounts?: { [field in Field]?: TokenAmount };
+  realizedLPFee?: TokenAmount;
+  priceImpactWithoutFee?: Percent;
+  confirmText: string;
 }) {
-  const theme = useContext(ThemeContext)
+  const theme = useContext(ThemeContext);
 
   if (!trade) {
-    return null
+    return null;
   }
 
   return (
@@ -58,7 +59,7 @@ export default function SwapModalFooter({
               alignItems: 'center',
               display: 'flex',
               textAlign: 'right',
-              paddingLeft: '10px'
+              paddingLeft: '10px',
             }}
           >
             {formatExecutionPrice(trade, showInverted)}
@@ -77,14 +78,14 @@ export default function SwapModalFooter({
           </RowFixed>
           <RowFixed>
             <TYPE.black fontSize={14}>
-                {slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(4) ?? '-'}
+              {tokenAmountToString(slippageAdjustedAmounts[Field.OUTPUT], 4) ?? '-'}
             </TYPE.black>
             {parsedAmounts[Field.OUTPUT] && parsedAmounts[Field.INPUT] && (
               <TYPE.black fontSize={14} marginLeft={'4px'}>
                 {parsedAmounts[Field.OUTPUT]?.token?.symbol}
-                  {/*{trade?.tradeType === TradeType.EXACT_INPUT*/}
-                  {/*? parsedAmounts[Field.OUTPUT]?.token?.symbol*/}
-                  {/*: parsedAmounts[Field.INPUT]?.token?.symbol}*/}
+                {/*{trade?.tradeType === TradeType.EXACT_INPUT*/}
+                {/*? parsedAmounts[Field.OUTPUT]?.token?.symbol*/}
+                {/*: parsedAmounts[Field.INPUT]?.token?.symbol}*/}
               </TYPE.black>
             )}
           </RowFixed>
@@ -112,12 +113,17 @@ export default function SwapModalFooter({
       </AutoColumn>
 
       <AutoRow>
-        <ButtonError onClick={onSwap} error={severity > 2} style={{ margin: '10px 0 0 0' }} id="confirm-swap-or-send">
+        <ButtonError
+          onClick={onSwap}
+          error={severity > 2}
+          style={{ margin: '10px 0 0 0' }}
+          id="confirm-swap-or-send"
+        >
           <Text fontSize={20} fontWeight={500}>
             {confirmText}
           </Text>
         </ButtonError>
       </AutoRow>
     </>
-  )
+  );
 }

@@ -17,11 +17,18 @@
     }
   },
   "extends": [
+    "prettier"
+  ],
+  "plugins": [
+    "prettier",
+    "react-hooks",
+    "@typescript-eslint"
   ],
   "rules": {
     "@typescript-eslint/explicit-function-return-type": "off",
     "prettier/prettier": "error",
     "@typescript-eslint/no-explicit-any": "off",
-    "semicolon": 0
+    "semi": ["error", "always"],
+    "semi-spacing": ["error", { "before": false, "after": true }]
   }
 }
