@@ -1,16 +1,10 @@
-# Mooniswap Interface 
+# EmiSwap Interface 
 
-[![Tests](https://github.com/CryptoManiacsZone/mooniswap-interface/workflows/Tests/badge.svg)](https://github.com/CryptoManiacsZone/mooniswap-interface/actions?query=workflow%3ATests)
-[![Styled With Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://prettier.io/)
 
-Mooniswap is next generation AMM (Automated Market Maker) protocol.
+This repository contains EmiSwap Interface originally forked from Mooniswap.
 
-This repository contains Mooniswap Interface originally forked from Uniswap.
-
-## Accessing the Mooniswap Interface
-To access the Mooniswap Interface, use an IPFS gateway link from the
-[latest release](https://github.com/CryptoManiacsZone/mooniswap-interface/releases/latest), 
-or visit [mooniswap.exchange](https://mooniswap.exchange/).
+## Accessing the EmiSwap Interface
+To access the EmiSwap Interface visit [emiswap.com](https://emiswap.com/).
 
 
 ## Development
@@ -54,9 +48,6 @@ See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 #### Contact us
-- info@1inch.exchange
-
-Copyright © 2020, 1inch limited.
 
 Copyright © 2020, [Uniswap](https://uniswap.org/).
 
