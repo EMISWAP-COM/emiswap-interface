@@ -875,6 +875,7 @@ const Invest = () => {
               currency={currencies[Field.OUTPUT]}
               id="swap-currency-output"
               isCrowdsale
+              disableCurrencySelect
             />
 
             <Card padding={'.25rem .75rem 0 .75rem'} borderRadius={'20px'}>
