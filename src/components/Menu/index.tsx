@@ -98,7 +98,6 @@ export default function Menu() {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [open, toggle]);
-
   return (
     <StyledMenu ref={node}>
       <StyledMenuButton onClick={toggle}>
@@ -118,7 +117,7 @@ export default function Menu() {
             <MessageCircle size={14} />
             NFT Magic EmiCards
           </MenuItem>
-          <MenuItem id="link" href={window.env.REACT_APP_CODE_LINK} target="_blank">
+          <MenuItem id="link" href={window['env'].REACT_APP_CODE_LINK} target="_blank">
             <Code size={14} />
             Code
           </MenuItem>

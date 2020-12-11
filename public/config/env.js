@@ -1,4 +1,4 @@
-window.env = {
+window['env'] = {
   REACT_APP_CHAIN_ID: '1',
   REACT_APP_NETWORK_URL: 'https://kovan.infura.io/v3/dafe89711f744e67bb9512403729c726',
   '#REACT_APP_PORTIS_ID': '48915ae1-5e75-4eef-85c0-a2586d8b1ef5',
