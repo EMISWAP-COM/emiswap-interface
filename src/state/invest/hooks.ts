@@ -155,8 +155,6 @@ export function useDerivedInvestInfo(): {
     inputCurrency ?? undefined,
     outputCurrency ?? undefined,
   ]);
-  console.log('.....inputCurrency', inputCurrency)
-  console.log('.....outputCurrency', outputCurrency)
   const isExactIn: boolean = independentField === Field.INPUT;
   const parsedAmount = tryParseAmount(
     isExactIn ? typedValue : outputAmount,
