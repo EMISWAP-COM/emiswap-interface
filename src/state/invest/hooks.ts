@@ -365,6 +365,7 @@ export function useBuyCoinAmount() {
       const isETH = currency.address?.toUpperCase() === ETHER.address.toUpperCase();
       if (isETH) {
         console.log('.....coinAmountBN', coinAmountBN)
+        console.log('.....coinAmountBN', coinAmountBN.toString())
         console.log('.....field', field)
         console.log('.....contract', contract)
         return contract
