@@ -866,7 +866,6 @@ const Invest = () => {
               id="invest-currency-input"
               isCrowdsale
             />
-
             <CurrencyInputPanel
               value={formattedAmounts[Field.OUTPUT]}
               onUserInput={handleTypeInputOUTPUT}
