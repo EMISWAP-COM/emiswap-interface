@@ -809,12 +809,7 @@ const Invest = () => {
   const showWarning =
     (!dismissedToken0 && !!currencies[Field.INPUT]) ||
     (!dismissedToken1 && !!currencies[Field.OUTPUT]);
-  const notEnoughBalance =
-    independentField === Field.INPUT
-      ? maxAmountInput && parsedAmount && JSBI.lessThan(maxAmountInput.raw, parsedAmount.raw)
-      : maxAmountInput &&
-        parsedOutputAmount &&
-        JSBI.lessThan(maxAmountInput.raw, parsedOutputAmount.raw);
+  const notEnoughBalance = maxAmountInput && parsedAmount && JSBI.lessThan(maxAmountInput.raw, parsedAmount.raw);
   const getErrorText = (error, notEnoughBalance) => {
     if (Number(typedValue) > 0 && Number(outputAmount) === 0) {
       return 'Sorry, you are reaching the limits of our crowdsale. Please try to buy less ESW';

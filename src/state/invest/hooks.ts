@@ -155,13 +155,14 @@ export function useDerivedInvestInfo(): {
     inputCurrency ?? undefined,
     outputCurrency ?? undefined,
   ]);
-
+  console.log('.....inputCurrency', inputCurrency)
+  console.log('.....outputCurrency', outputCurrency)
   const isExactIn: boolean = independentField === Field.INPUT;
   const parsedAmount = tryParseAmount(
     isExactIn ? typedValue : outputAmount,
-    (isExactIn ? inputCurrency : outputCurrency) ?? undefined,
+    inputCurrency ?? undefined,
   );
-  const parsedOutputAmount = tryParseAmount(!isExactIn ? typedValue : outputAmount, !isExactIn ? inputCurrency : outputCurrency ?? undefined);
+  const parsedOutputAmount = tryParseAmount(!isExactIn ? typedValue : outputAmount, outputCurrency ?? undefined);
   const currencyBalances = {
     [Field.INPUT]: relevantTokenBalances[0],
     [Field.OUTPUT]: relevantTokenBalances[1],
@@ -364,10 +365,6 @@ export function useBuyCoinAmount() {
       const coinAmountBN = BigNumber.from(coinAmount);
       const isETH = currency.address?.toUpperCase() === ETHER.address.toUpperCase();
       if (isETH) {
-        console.log('.....coinAmountBN', coinAmountBN)
-        console.log('.....coinAmountBN', coinAmountBN.toString())
-        console.log('.....field', field)
-        console.log('.....contract', contract)
         return contract
           .buyWithETHView(coinAmountBN, field === Field.OUTPUT)
           .then((response: any) => {

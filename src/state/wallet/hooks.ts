@@ -99,7 +99,6 @@ export function useTokenBalancesWithLoadingIndicator(
     'balanceOf',
     [address],
   );
-
   const anyLoading: boolean = useMemo(() => balances.some(callState => callState.loading), [
     balances,
   ]);
@@ -196,7 +195,6 @@ export function useCurrencyBalances(
     [currencies],
   );
   const ethBalance = useETHBalances(containsETH ? [account] : []);
-  console.log('.....window[\'env\'].REACT_APP_ESW_ID', window['env'].REACT_APP_ESW_ID)
   const containsESW: boolean = useMemo(
     () => currencies?.some(currency => currency?.address === window['env'].REACT_APP_ESW_ID) ?? false,
     [currencies],
