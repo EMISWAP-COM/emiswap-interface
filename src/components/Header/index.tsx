@@ -60,6 +60,25 @@ const HeaderElement = styled.div`
     color: #11b382;
   }
 
+  .purple-btn {
+    width: 180px;
+    height: 40px;
+    padding: 12px 22px;
+    text-decoration: none;
+    background: #9a56d1;
+    border-radius: 4px;
+    font-family: IBM Plex Sans;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 17px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    letter-spacing: 0.02em;
+    color: #ffffff;
+  }
+
   ${({ theme }) => theme.mediaWidth.upToTabletop`
     width: 100%;
     padding: 18px 16px;
@@ -68,6 +87,9 @@ const HeaderElement = styled.div`
       width: 100%;
       margin-right: 10px;
       margin-bottom: 0;
+    }
+    .purple-btn {
+      display: none;
     }
   `};
 `;
@@ -250,6 +272,9 @@ export default function Header() {
               rel="noopener noreferrer"
             >
               Buy Crypto with fiat
+            </a>
+            <a className="purple-btn" href={`${window.location.origin}/magic_cards/`}>
+              Magic Hall
             </a>
             {!isMobile && !isTablet && NETWORK_LABELS[chainId] && (
               <TestnetWrapper>
