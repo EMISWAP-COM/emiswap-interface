@@ -33,7 +33,7 @@ const initialState: InvestState = {
     currencyId: '',
   },
   [Field.OUTPUT]: {
-    currencyId: process.env.REACT_APP_ESW_ID,
+    currencyId: window.env.REACT_APP_ESW_ID,
   },
   coins: [],
 };

@@ -31,7 +31,7 @@ function getLibrary(provider: any): Web3Provider {
   return library;
 }
 
-const GOOGLE_ANALYTICS_ID: string | undefined = process.env.REACT_APP_GOOGLE_ANALYTICS_ID;
+const GOOGLE_ANALYTICS_ID: string | undefined = window.env.REACT_APP_GOOGLE_ANALYTICS_ID;
 if (typeof GOOGLE_ANALYTICS_ID === 'string') {
   ReactGA.initialize(GOOGLE_ANALYTICS_ID, {
     gaOptions: {
