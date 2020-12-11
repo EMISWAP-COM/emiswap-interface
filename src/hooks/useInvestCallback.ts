@@ -124,9 +124,15 @@ export function useInvestCallback(
       const isETH = (inputCurrency?.address.toUpperCase() === ETHER.address.toUpperCase()) || (outputCurrency?.address.toUpperCase() === ETHER.address.toUpperCase());
       if (isETH) {
         // const amountETH = toHex(new TokenAmount(ETHER, JSBI.BigInt(amount)));
-        console.log('.....referralAddress, amount, inputField, { value: amount.toString() }', referralAddress, amount, inputField, { value: amount.toString() })
+        const valueAmount: string =
+          (currencies[Field.INPUT]?.decimals && currencies[Field.INPUT]?.decimals !== 0
+            ? parsedAmounts[Field.INPUT]
+              ?.multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(currencies[Field.INPUT]?.decimals)))
+              .toFixed(0)
+            : parsedAmounts[Field.INPUT]?.toFixed(0)) || '';
+
         return contract
-          .buyWithETH(referralAddress, amount, inputField, { value: amount.toString() })
+          .buyWithETH(referralAddress, amount, inputField, { value: BigNumber.from(valueAmount) })
           .then(onSuccess)
           .catch(onError);
       } else {
