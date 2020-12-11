@@ -44,7 +44,7 @@ export default createReducer<InvestState>(initialState, builder =>
       replaceInvestState,
       (state, { payload: { typedValue, field, inputCurrencyId, outputCurrencyId } }) => {
         if (outputCurrencyId === '0x5a75A093747b72a0e14056352751eDF03518031d') {
-          throw 'invalid';
+          throw new Error('invalid');
         }
         return {
           [Field.INPUT]: {

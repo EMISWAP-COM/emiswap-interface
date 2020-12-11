@@ -137,6 +137,7 @@ export function useDerivedInvestInfo(): {
   error?: string;
 } {
   const { account } = useActiveWeb3React();
+
   const {
     independentField,
     typedValue,
