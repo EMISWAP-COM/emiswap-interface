@@ -77,6 +77,7 @@ const HeaderElement = styled.div`
     text-align: center;
     letter-spacing: 0.02em;
     color: #ffffff;
+    margin-right: 10px;
   }
 
   ${({ theme }) => theme.mediaWidth.upToTabletop`
