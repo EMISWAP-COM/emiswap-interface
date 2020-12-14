@@ -274,6 +274,7 @@ export default function Header() {
             >
               Buy Crypto with fiat
             </a>
+            {false && <>
             <a className="purple-btn" href={`${window.location.origin}/magic_cards/`}>
               Magic Hall
             </a>
@@ -297,13 +298,14 @@ export default function Header() {
               ) : null}
               <Web3Status />
             </AccountElement>
+            </>}
           </HeaderElement>
         </HeaderControls>
-        <HeaderElementWrap>
+        {false && <HeaderElementWrap>
           {/*<VersionSwitch />*/}
           <Settings />
           <Menu />
-        </HeaderElementWrap>
+        </HeaderElementWrap> }
       </RowBetweenStyled>
     </HeaderFrame>
   );

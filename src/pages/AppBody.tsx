@@ -98,13 +98,19 @@ export default function AppBody({
           <Wordmark />
         </div>
         <BodyWrapper className={className} data="test" disabled={disabled}>
-          {children}
+          {/*{children}*/}
+          <h3>Hello.</h3>
+          <h3>We are currently in maintenance mode.</h3>
+          <h3>We are adding some new and exciting functions
+            for you to try out.</h3>
+          <h3>We are planning to finish the works by 20:00 GMT+3 14.12.2020.</h3>
+          <h3>Thanks, see you soon!</h3>
         </BodyWrapper>
-        <BonusProgram />
+        {/*<BonusProgram />*/}
       </HeadersPlusBodyWrapper>
-      <FAQWrapper>
-        <FAQInfo />
-      </FAQWrapper>
+      {/*<FAQWrapper>*/}
+      {/*  <FAQInfo />*/}
+      {/*</FAQWrapper>*/}
     </ThemeProvider>
   );
 }
