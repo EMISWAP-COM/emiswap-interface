@@ -106,11 +106,11 @@ export default function AppBody({
           <h3>We are planning to finish the works by 20:00 GMT+3 14.12.2020.</h3>
           <h3>Thanks, see you soon!</h3>
         </BodyWrapper>
-        {/*<BonusProgram />*/}
+        {false && <BonusProgram />}
       </HeadersPlusBodyWrapper>
-      {/*<FAQWrapper>*/}
-      {/*  <FAQInfo />*/}
-      {/*</FAQWrapper>*/}
+      {false && <FAQWrapper>
+        <FAQInfo />
+      </FAQWrapper>}
     </ThemeProvider>
   );
 }
