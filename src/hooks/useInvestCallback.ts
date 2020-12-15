@@ -130,7 +130,7 @@ export function useInvestCallback(
               ?.multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(currencies[Field.INPUT]?.decimals)))
               .toFixed(0)
             : parsedAmounts[Field.INPUT]?.toFixed(0)) || '';
-
+        console.log('.....referralAddress, amount, inputField, valueAmount', referralAddress, amount, inputField, valueAmount.toString())
         return contract
           .buyWithETH(referralAddress, amount, inputField, { value: BigNumber.from(valueAmount) })
           .then(onSuccess)
