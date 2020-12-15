@@ -103,7 +103,7 @@ export default function AppBody({
           <h3>We are currently in maintenance mode.</h3>
           <h3>We are adding some new and exciting functions
             for you to try out.</h3>
-          <h3>We are planning to finish the works by 12:30 GMT+3 15.12.2020.</h3>
+          <h3>We are planning to finish the works by 13:00 GMT+3 15.12.2020.</h3>
           <h3>Thanks, see you soon!</h3>
         </BodyWrapper>
         {false && <BonusProgram />}
