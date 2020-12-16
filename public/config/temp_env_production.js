@@ -1,4 +1,5 @@
 window['env'] = {
+  /* production */
   REACT_APP_CHAIN_ID: '1',
   REACT_APP_NETWORK_URL: 'https://mainnet.infura.io/v3/2b7c5bba80094418abf5e746ba10dac0',
   '#RREACT_APP_PORTIS_ID': '48915ae1-5e75-4eef-85c0-a2586d8b1ef5',
