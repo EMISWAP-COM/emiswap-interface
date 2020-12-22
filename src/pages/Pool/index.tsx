@@ -82,6 +82,7 @@ export default function Pool() {
       <AppBody>
         <SwapPoolTabs active={'pool'} />
         <AutoColumn gap="lg" justify="center">
+          {false && <>
           <ButtonPrimary
             id="join-pool-button"
             as={Link}
@@ -92,7 +93,6 @@ export default function Pool() {
               Add Liquidity
             </Text>
           </ButtonPrimary>
-
           <AutoColumn gap="12px" style={{ width: '100%' }}>
             <RowBetween padding={'0 8px'}>
               <Text color={theme.text1} fontWeight={500}>
@@ -138,14 +138,19 @@ export default function Pool() {
               {account ? <ReferralLink /> : ''}
             </div>
           </AutoColumn>
+          </>}
+          <Text fontWeight={500} fontSize={20} color={theme.text2}>
+            Coming soon!
+          </Text>
         </AutoColumn>
       </AppBody>
 
-      <div style={{ display: 'flex', alignItems: 'center', marginTop: '1.5rem' }}>
+      {false && <div style={{ display: 'flex', alignItems: 'center', marginTop: '1.5rem' }}>
         <ButtonSecondary as={Link} style={{ width: 'initial' }} to="/migrate">
           <ButtonText>Migrate Liquidity to Emiswap</ButtonText>
         </ButtonSecondary>
-      </div>
+      </div>}
+
     </>
   );
 }

@@ -105,7 +105,7 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
 }
 
 export function useCurrency(currencyId: string | undefined): Token | null | undefined {
-  const isESW = currencyId?.toUpperCase() === process.env.REACT_APP_ESW_ID?.toUpperCase();
+  const isESW = currencyId?.toUpperCase() === window['env'].REACT_APP_ESW_ID?.toUpperCase();
   const defaultCoin = useDefaultCoin(currencyId);
   const isETH = currencyId?.toUpperCase() === ETHER.address.toUpperCase();
   const token = useToken(isESW || isETH ? undefined : currencyId);
@@ -114,7 +114,7 @@ export function useCurrency(currencyId: string | undefined): Token | null | unde
 
 export function useDefaultCoin(address?: string): Token | undefined {
   const { chainId } = useActiveWeb3React();
-  const defaultCoin = address === process.env.REACT_APP_ESW_ID ? ESW[chainId] : undefined;
+  const defaultCoin = address === window['env'].REACT_APP_ESW_ID ? ESW[chainId] : undefined;
   return useMemo(() => {
     if (defaultCoin) {
       return defaultCoin[0];

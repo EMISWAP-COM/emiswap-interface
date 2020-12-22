@@ -92,14 +92,12 @@ export function useTokenBalancesWithLoadingIndicator(
   const validatedTokenAddresses = useMemo(() => validatedTokens.map(vt => vt.address), [
     validatedTokens,
   ]);
-
   const balances = useMultipleContractSingleData(
     validatedTokenAddresses,
     ERC20_INTERFACE,
     'balanceOf',
     [address],
   );
-
   const anyLoading: boolean = useMemo(() => balances.some(callState => callState.loading), [
     balances,
   ]);
@@ -196,9 +194,8 @@ export function useCurrencyBalances(
     [currencies],
   );
   const ethBalance = useETHBalances(containsETH ? [account] : []);
-
   const containsESW: boolean = useMemo(
-    () => currencies?.some(currency => currency?.address === process.env.REACT_APP_ESW_ID) ?? false,
+    () => currencies?.some(currency => currency?.address === window['env'].REACT_APP_ESW_ID) ?? false,
     [currencies],
   );
   const eswBalance = useESWBalances(containsESW ? [account] : []);
@@ -208,7 +205,7 @@ export function useCurrencyBalances(
       currencies?.map(currency => {
         if (!account || !currency) return;
         if (currency.isEther) return ethBalance[account];
-        if (currency.address === process.env.REACT_APP_ESW_ID) return eswBalance[account];
+        if (currency.address === window['env'].REACT_APP_ESW_ID) return eswBalance[account];
         return tokenBalances[currency.address];
       }) ?? [],
     [account, currencies, ethBalance, tokenBalances, eswBalance],

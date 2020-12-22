@@ -155,13 +155,12 @@ export function useDerivedInvestInfo(): {
     inputCurrency ?? undefined,
     outputCurrency ?? undefined,
   ]);
-
   const isExactIn: boolean = independentField === Field.INPUT;
   const parsedAmount = tryParseAmount(
     isExactIn ? typedValue : outputAmount,
-    (isExactIn ? inputCurrency : outputCurrency) ?? undefined,
+    inputCurrency ?? undefined,
   );
-  const parsedOutputAmount = tryParseAmount(!isExactIn ? typedValue : outputAmount, !isExactIn ? inputCurrency : outputCurrency ?? undefined);
+  const parsedOutputAmount = tryParseAmount(!isExactIn ? typedValue : outputAmount, outputCurrency ?? undefined);
   const currencyBalances = {
     [Field.INPUT]: relevantTokenBalances[0],
     [Field.OUTPUT]: relevantTokenBalances[1],

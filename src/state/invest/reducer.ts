@@ -33,7 +33,7 @@ const initialState: InvestState = {
     currencyId: '',
   },
   [Field.OUTPUT]: {
-    currencyId: process.env.REACT_APP_ESW_ID,
+    currencyId: window['env'].REACT_APP_ESW_ID,
   },
   coins: [],
 };
@@ -43,6 +43,7 @@ export default createReducer<InvestState>(initialState, builder =>
     .addCase(
       replaceInvestState,
       (state, { payload: { typedValue, field, inputCurrencyId, outputCurrencyId } }) => {
+
         return {
           [Field.INPUT]: {
             currencyId: inputCurrencyId,

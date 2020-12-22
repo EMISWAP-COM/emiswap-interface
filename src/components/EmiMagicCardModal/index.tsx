@@ -191,20 +191,17 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
     if (!validateForm(name, email, telegram, address)) {
       setValidation(defaultValidation);
       const utm = localStorage.getItem('UTMMarks');
-      fetch(`https://europe-west3-emirex-prod.cloudfunctions.net/esw${utm || ''}`, {
+      fetch(`/v1/public/whitelist${utm || ''}`, {
         method: 'POST',
         headers: {
-          'Access-Control-Allow-Methods': 'POST, OPTIONS',
-          'Access-Control-Allow-Headers': 'Origin, Content-Type, Accept',
-          'Access-Control-Allow-Credentials': 'true',
-          'Access-Control-Allow-Origin': '*',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           name: name,
           email: email,
           telegram: telegram,
-          eth_address: address,
+          address: address,
+          created_at: new Date().toString()
         }),
       })
         .then(response => response.text())
@@ -215,7 +212,7 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
         })
         .catch(() =>
           console.log(
-            'Can’t access https://europe-west3-emirex-prod.cloudfunctions.net/esw response. Blocked by browser?',
+            'Can’t access /v1/public/whitelist response. Blocked by browser?',
           ),
         );
     }
