@@ -939,7 +939,7 @@ const Invest = () => {
               )}
             </BottomGrouping>
           </AutoColumn>
-          {account ? <ReferralLink /> : ''}
+          {/*{account ? <ReferralLink /> : ''}*/}
           <EmiMagicBtn onClick={openEmiCardModal}>Get Magic NFT Cards</EmiMagicBtn>
           {showEmiCardModal && (
             <EmiMagicCardModal
