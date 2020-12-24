@@ -40,7 +40,6 @@ export function usePairs(
   const callDataList = [];
   for (let i = 0; i < batches; i++) {
     const inputs = [
-      V1_MOONISWAP_FACTORY_ADDRESSES[chainId || 1],
       tokenAList.splice(0, pairsPerReq),
       tokenBList.splice(0, pairsPerReq),
     ];
