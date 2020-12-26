@@ -111,6 +111,11 @@ export const ButtonGray = styled(Base)`
   }
 `;
 
+export const ButtonGreen = styled(Base)`
+  background-color: ${({ theme }) => theme.green1};
+  color: ${({ theme }) => theme.white};
+`;
+
 export const ButtonSecondary = styled(Base)`
   background-color: ${({ theme }) => theme.primary1};
   color: ${({ theme }) => theme.primaryText1};
