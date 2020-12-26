@@ -53,6 +53,21 @@ export const CHI = new Token(
   'Chi Gastoken by 1inch',
 );
 
+export const KOVAN_DAI = new Token(
+  ChainId.KOVAN,
+  '0x1cC52216E4037BB55dCD950E6ed97aa15C8a4b66',
+  18,
+  'DAI',
+  'Dai Stablecoin',
+);
+export const KOVAN_USDC = new Token(
+  ChainId.KOVAN,
+  '0xB88Df205f2a93993d5d0CEC1BB476D77115a858c',
+  6,
+  'USDC',
+  'USD//C',
+);
+
 export const ESW: ChainTokenList = {
   [ChainId.MAINNET]: [
     new Token(ChainId.MAINNET, window['env'].REACT_APP_ESW_ID, 18, 'ESWc', 'EmiDAO Token'),
@@ -94,6 +109,7 @@ export const SUGGESTED_BASES: ChainTokenList = {
 // used to construct the list of all pairs we consider by default in the frontend
 export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   ...ETH_ONLY,
+  [ChainId.KOVAN]: [KOVAN_DAI, KOVAN_USDC],
   [ChainId.MAINNET]: [ETHER, DAI, USDC, USDT, CHI],
 };
 
