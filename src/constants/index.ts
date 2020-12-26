@@ -67,6 +67,41 @@ export const KOVAN_USDC = new Token(
   'USDC',
   'USD//C',
 );
+export const KOVAN_WETH = new Token(
+  ChainId.KOVAN,
+  '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+  18,
+  'WETH',
+  'WrappedEther',
+);
+export const KOVAN_USDT = new Token(
+  ChainId.KOVAN,
+  '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+  6,
+  'USDT',
+  'Tether USD',
+);
+export const KOVAN_COMP = new Token(
+  ChainId.KOVAN,
+  '0xc00e94Cb662C3520282E6f5717214004A7f26888',
+  18,
+  'COMP',
+  'Compound',
+);
+export const KOVAN_MKR = new Token(
+  ChainId.KOVAN,
+  '0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2',
+  18,
+  'MKR',
+  'Maker',
+);
+export const KOVAN_CHI = new Token(
+  ChainId.KOVAN,
+  '0x0000000000004946c0e9F43F4Dee607b0eF1fA1c',
+  0,
+  'CHI',
+  'Chi Gastoken by 1inch',
+);
 
 export const ESW: ChainTokenList = {
   [ChainId.MAINNET]: [
@@ -97,6 +132,7 @@ const ETH_ONLY: ChainTokenList = {
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ...ETH_ONLY,
+  [ChainId.KOVAN]: [KOVAN_DAI, KOVAN_USDC, KOVAN_WETH],
   [ChainId.MAINNET]: [DAI, USDC, USDT, COMP, MKR, CHI],
 };
 
@@ -109,7 +145,7 @@ export const SUGGESTED_BASES: ChainTokenList = {
 // used to construct the list of all pairs we consider by default in the frontend
 export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   ...ETH_ONLY,
-  [ChainId.KOVAN]: [KOVAN_DAI, KOVAN_USDC],
+  [ChainId.KOVAN]: [KOVAN_DAI, KOVAN_USDC, KOVAN_WETH],
   [ChainId.MAINNET]: [ETHER, DAI, USDC, USDT, CHI],
 };
 

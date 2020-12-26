@@ -316,7 +316,7 @@ export default function Swap() {
       <AppBody disabled={!!showWarning}>
         <SwapPoolTabs active={'swap'} />
         <Wrapper id="swap-page">
-          {false && <>
+          {true && <>
             <ConfirmationModal
               isOpen={showConfirm}
               title="Confirm Swap"
@@ -528,9 +528,6 @@ export default function Swap() {
 
             {account ? <ReferralLink /> : ''}
           </>}
-          <Text fontWeight={500} fontSize={20} color={theme.text2}>
-            Coming soon!
-          </Text>
         </Wrapper>
       </AppBody>
       <AdvancedSwapDetailsDropdown trade={trade} />

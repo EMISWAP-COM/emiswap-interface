@@ -18,7 +18,7 @@ import {
 } from '../constants/v1-mooniswap';
 import { getContract } from '../utils';
 import { useActiveWeb3React } from './index';
-import { ONE_SPLIT_ABI, ONE_SPLIT_ADDRESSES } from '../constants/one-split';
+import { ONE_SPLIT_ABI, EMI_ROUTER_ABI, ONE_SPLIT_ADDRESSES } from '../constants/one-split';
 import {
   UNISWAP_V2_HELPER_ABI,
   UNISWAP_V2_HELPER_ADDRESS,
@@ -142,6 +142,11 @@ export function useMooniswapContract(
 export function useOneSplit(): Contract | null {
   const { chainId } = useActiveWeb3React();
   return useContract(chainId && ONE_SPLIT_ADDRESSES[chainId], ONE_SPLIT_ABI, false);
+}
+
+export function useEmiRouter(): Contract | null {
+  const { chainId } = useActiveWeb3React();
+  return useContract(chainId && V1_EMIROUTER_HELPER_ADDRESSES[chainId], EMI_ROUTER_ABI, false);
 }
 
 export function useChiController(): Contract | null {
