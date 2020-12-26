@@ -15,7 +15,7 @@ import {
 import { useMemo } from 'react';
 import { useActiveWeb3React } from '../hooks';
 import { useAllTokens } from '../hooks/Tokens';
-import { useOneSplit, useV1FactoryContract } from '../hooks/useContract';
+import { useEmiRouter, useV1FactoryContract } from '../hooks/useContract';
 import { Version } from '../hooks/useToggledVersion';
 import {
   NEVER_RELOAD,
@@ -219,11 +219,6 @@ export function useMooniswapTrade(
         : ETH_ADDRESS
       : ETH_ADDRESS,
     amount,
-    1,
-    JSBI.add(
-      FLAG_DISABLE_ALL_WRAP_SOURCES,
-      JSBI.add(FLAG_DISABLE_ALL_SPLIT_SOURCES, FLAG_DISABLE_MOONISWAP_ALL),
-    ).toString(),
   ];
 
   const poolPair = usePair(inputCurrency, outputCurrency);
@@ -236,28 +231,31 @@ export function useMooniswapTrade(
   const poolPairDaiToDest = usePair(DAI, outputCurrency);
   const poolPairEthToDest = usePair(ETHER, outputCurrency);
 
-  const results = useSingleCallResult(useOneSplit(), 'getExpectedReturn', params);
+  const results = useSingleCallResult(useEmiRouter(), 'getExpectedReturn', params);
   if (!inputCurrency || !outputCurrency || !parseAmount || !results.result) {
     return;
   }
 
-  const distribution = results.result.distribution;
+  const distribution = results.result?.distribution;
 
   const pairs: Pair[] = [];
-  if (!distribution[31].isZero() && poolPairOverEth[1] && poolPairEthToDest[1]) {
-    pairs.push(poolPairOverEth[1]);
-    pairs.push(poolPairEthToDest[1]);
-  }
-  if (!distribution[32].isZero() && poolPairOverDai[1] && poolPairDaiToDest[1]) {
-    pairs.push(poolPairOverDai[1]);
-    pairs.push(poolPairDaiToDest[1]);
-  }
-  if (!distribution[33].isZero() && poolPairOverUsdc[1] && poolPairUsdcToDest[1]) {
-    pairs.push(poolPairOverUsdc[1]);
-    pairs.push(poolPairUsdcToDest[1]);
-  }
-  if (!distribution[12].isZero() && poolPair[1]) {
-    pairs.push(poolPair[1]);
+
+  if (distribution) {
+    if (!distribution[31].isZero() && poolPairOverEth[1] && poolPairEthToDest[1]) {
+      pairs.push(poolPairOverEth[1]);
+      pairs.push(poolPairEthToDest[1]);
+    }
+    if (!distribution[32].isZero() && poolPairOverDai[1] && poolPairDaiToDest[1]) {
+      pairs.push(poolPairOverDai[1]);
+      pairs.push(poolPairDaiToDest[1]);
+    }
+    if (!distribution[33].isZero() && poolPairOverUsdc[1] && poolPairUsdcToDest[1]) {
+      pairs.push(poolPairOverUsdc[1]);
+      pairs.push(poolPairUsdcToDest[1]);
+    }
+    if (!distribution[12].isZero() && poolPair[1]) {
+      pairs.push(poolPair[1]);
+    }
   }
 
   if (pairs.length === 0) {
