@@ -35,6 +35,13 @@ const StyledHr = styled.hr`
   height: 1px;
 `;
 
+const StyledHr = styled.hr`
+  width: 100%;
+  background: #eaeeee;
+  border: none;
+  height: 1px;
+`;
+
 export default function Pool() {
   const theme = useContext(ThemeContext);
   const { account } = useActiveWeb3React();
