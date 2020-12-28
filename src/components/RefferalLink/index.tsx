@@ -53,5 +53,5 @@ export default function ReferralLink() {
         </ReferralLinkBox>
       </Text>
     </div>
-  );
+  )
 }
