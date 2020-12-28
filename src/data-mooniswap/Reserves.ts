@@ -1,6 +1,5 @@
 import { Pair, Token, TokenAmount } from '@uniswap/sdk';
 import { useMemo } from 'react';
-import { useActiveWeb3React } from '../hooks';
 
 import { useSingleContractMultipleData } from '../state/multicall/hooks';
 import { useMooniswapV1HelperContract } from '../hooks/useContract';
@@ -19,8 +18,6 @@ export enum PairState {
 export function usePairs(
   currencies: [Token | undefined, Token | undefined][],
 ): [PairState, Pair | null][] {
-  const { chainId } = useActiveWeb3React();
-
   const tokenAList: string[] = [];
   const tokenBList: string[] = [];
   const allTokenAList: (Token | undefined)[] = [];

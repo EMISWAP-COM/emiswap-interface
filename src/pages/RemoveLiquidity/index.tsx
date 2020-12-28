@@ -505,10 +505,6 @@ export default function RemoveLiquidity({
                           <StyledInternalLink to={`/remove/${currencyIdA}/${currencyIdB}`}>
                             Receive WETH
                           </StyledInternalLink>
-                        ) : false ? (
-                          <StyledInternalLink to={`/remove/${currencyIdA}/${currencyIdB}`}>
-                            Receive ETH
-                          </StyledInternalLink>
                         ) : null}
                       </RowBetween>
                     ) : null}

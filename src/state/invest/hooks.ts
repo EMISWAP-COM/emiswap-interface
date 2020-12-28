@@ -58,7 +58,7 @@ export function useInvestActionHandlers(): InvestActionHandlers {
   const { executeBuyCoinAmount } = useBuyCoinAmount();
 
   const onCurrencySelection = useCallback(
-    (field: Field, currency: Token, amount: string) => {
+    (field: Field, currency: Token) => {
       dispatch(
         selectCurrency({
           field,

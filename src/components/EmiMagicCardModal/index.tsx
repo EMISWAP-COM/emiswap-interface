@@ -68,7 +68,7 @@ const ModalBody = styled.div`
       border: 1px solid #c9c9c9;
       border-radius: 8px;
       height: 60px;
-      padding: 0px 20px;
+      padding: 0 20px;
       font-size: 16px;
       line-height: 1.33;
       width: 100%;
@@ -130,7 +130,7 @@ const ModalBody = styled.div`
 
     ${({ theme }) => theme.mediaWidth.upToTabletop`
     padding: 0 25px 20px;
-    
+
     &__header {
       font-size: 22px;
     }

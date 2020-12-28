@@ -16,8 +16,7 @@ const Body = styled.div`
   background: #ffffff;
   border: 1px solid #eaeeee;
   box-sizing: border-box;
-  box-shadow: 0px 2px 10px -2px rgba(231, 215, 175, 0.3),
-    0px 21px 20px -15px rgba(140, 125, 85, 0.05);
+  box-shadow: 0 2px 10px -2px rgba(231, 215, 175, 0.3), 0px 21px 20px -15px rgba(140, 125, 85, 0.05);
   border-radius: 12px;
   padding: 27px 30px;
   margin-bottom: 8px;
@@ -34,7 +33,7 @@ const Body = styled.div`
   }
 
   .h4 {
-    font-family: 'IBM Plex Sans';
+    font-family: 'IBM Plex Sans', sans-serif;
     font-style: normal;
     font-weight: 500;
     font-size: 20px;
@@ -172,13 +171,11 @@ const Body = styled.div`
       align-items: center;
       cursor: pointer;
       user-select: none;
-      font-family: 'IBM Plex Sans';
+      font-family: 'IBM Plex Sans', Arial, sans-serif;
       font-style: normal;
       font-weight: 500;
       font-size: 14px;
       line-height: 18px;
-      display: flex;
-      align-items: center;
       text-align: center;
       letter-spacing: 0.02em;
       color: #141717;
