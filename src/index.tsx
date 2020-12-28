@@ -35,7 +35,7 @@ const GOOGLE_ANALYTICS_ID: string | undefined = window['env'].REACT_APP_GOOGLE_A
 if (typeof GOOGLE_ANALYTICS_ID === 'string') {
   ReactGA.initialize(GOOGLE_ANALYTICS_ID, {
     gaOptions: {
-      allowLinker: true
+      allowLinker: true,
     },
   });
   ReactGA.ga('require', 'linker');

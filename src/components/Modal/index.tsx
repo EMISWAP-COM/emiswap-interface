@@ -44,9 +44,9 @@ const StyledDialogOverlay = styled(({ mobile, ...rest }) => <AnimatedDialogOverl
 
 // destructure to not pass custom props to Dialog DOM element
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const StyledDialogContent = styled(({ minHeight, maxHeight, maxWidth, mobile, isOpen, ...rest }) => (
-  <DialogContent {...rest} />
-)).attrs({
+const StyledDialogContent = styled(
+  ({ minHeight, maxHeight, maxWidth, mobile, isOpen, ...rest }) => <DialogContent {...rest} />,
+).attrs({
   'aria-label': 'dialog',
 })`
   &[data-reach-dialog-content] {

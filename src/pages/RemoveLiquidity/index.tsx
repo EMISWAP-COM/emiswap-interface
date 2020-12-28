@@ -568,8 +568,8 @@ export default function RemoveLiquidity({
                 <RowBetween>
                   Price:
                   <div>
-                    1 {currencyA?.symbol} = {tokenA ? tokenAmountToString(pair.priceOf(tokenA)) : '-'}{' '}
-                    {currencyB?.symbol}
+                    1 {currencyA?.symbol} ={' '}
+                    {tokenA ? tokenAmountToString(pair.priceOf(tokenA)) : '-'} {currencyB?.symbol}
                   </div>
                 </RowBetween>
                 <RowBetween>

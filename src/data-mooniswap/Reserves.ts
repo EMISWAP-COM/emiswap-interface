@@ -39,10 +39,7 @@ export function usePairs(
   const batches = Math.ceil(tokenAList.length / pairsPerReq);
   const callDataList = [];
   for (let i = 0; i < batches; i++) {
-    const inputs = [
-      tokenAList.splice(0, pairsPerReq),
-      tokenBList.splice(0, pairsPerReq),
-    ];
+    const inputs = [tokenAList.splice(0, pairsPerReq), tokenBList.splice(0, pairsPerReq)];
     callDataList.push(inputs);
   }
 

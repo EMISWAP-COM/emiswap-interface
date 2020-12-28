@@ -105,7 +105,10 @@ export default function Menu() {
       </StyledMenuButton>
       {open && (
         <MenuFlyout>
-          <MenuItem id="link" href="https://emiswap.medium.com/emiswap-amm-exchange-to-perfect-the-defi-market-d13e74dc6e14">
+          <MenuItem
+            id="link"
+            href="https://emiswap.medium.com/emiswap-amm-exchange-to-perfect-the-defi-market-d13e74dc6e14"
+          >
             <Info size={14} />
             About
           </MenuItem>

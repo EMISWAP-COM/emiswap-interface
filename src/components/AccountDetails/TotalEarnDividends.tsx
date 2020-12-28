@@ -108,7 +108,12 @@ const AccountButtonPrimary = styled(ButtonPrimary)`
   }
 `;
 
-export default function TotalEarnDividends({ availableToCollect, frozenTokens, nextUnlockAmount, nextUnlockDate }) {
+export default function TotalEarnDividends({
+  availableToCollect,
+  frozenTokens,
+  nextUnlockAmount,
+  nextUnlockDate,
+}) {
   return (
     <>
       <AccountSectionHeader>
@@ -166,7 +171,9 @@ export default function TotalEarnDividends({ availableToCollect, frozenTokens, n
         </AccountSectionBodyPart>
       </AccountSectionBody>
       <AccountSectionHeader>
-        <AccountButtonPrimary disabled={availableToCollect === 0} >Collect to my wallet</AccountButtonPrimary>
+        <AccountButtonPrimary disabled={availableToCollect === 0}>
+          Collect to my wallet
+        </AccountButtonPrimary>
       </AccountSectionHeader>
     </>
   );

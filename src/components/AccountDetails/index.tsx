@@ -24,7 +24,6 @@ import FortmaticIcon from '../../assets/images/fortmaticIcon.png';
 import PortisIcon from '../../assets/images/portisIcon.png';
 import { ExternalLink, LinkStyledButton, TYPE } from '../../theme';
 
-
 const HeaderRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
   padding: 1rem 1rem;
@@ -309,8 +308,6 @@ export default function AccountDetails({
     },
     [dispatch, chainId],
   );
-
-
 
   return (
     <>
