@@ -10,7 +10,7 @@ import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks';
 import { ExternalLink, StyledInternalLink, TYPE } from '../../theme';
 import { Text } from 'rebass';
 import { LightCard } from '../../components/Card';
-import { RowBetween, RowFixed } from '../../components/Row';
+import { RowBetween } from '../../components/Row';
 import { ButtonPrimary, ButtonGreen } from '../../components/Button';
 import { AutoColumn } from '../../components/Column';
 
@@ -20,7 +20,6 @@ import { useTrackedTokenPairs } from '../../state/user/hooks';
 import AppBody from '../AppBody';
 import { Dots } from '../../components/swap/styleds';
 import ReferralLink from '../../components/RefferalLink';
-import { ButtonText } from './styleds';
 
 const StyledHr = styled.hr`
   width: 100%;

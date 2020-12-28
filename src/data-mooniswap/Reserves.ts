@@ -3,8 +3,6 @@ import { useMemo } from 'react';
 
 import { useSingleContractMultipleData } from '../state/multicall/hooks';
 import { useMooniswapV1HelperContract } from '../hooks/useContract';
-// @ts-ignore
-import { V1_MOONISWAP_FACTORY_ADDRESSES } from '../constants/v1-mooniswap';
 
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 
