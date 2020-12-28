@@ -101,11 +101,10 @@ const AccountSectionTable = styled.div`
   `};
 `;
 
-
 const AccountTotalSectionBody = styled.div`
   display: grid;
   margin-bottom: 1.5rem;
-  font-size: 1 rem;
+  font-size: 1rem;
   color: ${({ theme }) => theme.text3};
   > div:first-of-type > div > div > span:first-of-type {
     display: inline;
@@ -126,7 +125,7 @@ const AccountTotalSectionTable = styled.div`
     overflow: hidden;
     flex-direction: column;
     text-align: center;
-    
+
     > span:first-of-type {
       display: none;
     }
@@ -160,7 +159,7 @@ export default function SourcesList({
   crowdSaleAvailableForMinting,
   crowdSaleReferralRewardAcquired,
   crowdSaleReferralRewardAlreadyMinted,
-  crowdSaleReferralRewardAvailableForMinting
+  crowdSaleReferralRewardAvailableForMinting,
 }) {
   return (
     <>
@@ -170,16 +169,24 @@ export default function SourcesList({
             <AccountTotalSectionTable>
               <div>
                 <span>Total ESWc aquired</span>
-                <span>Total ESWc aquired<br />{totalAcquired}</span>
+                <span>
+                  Total ESWc aquired
+                  <br />
+                  {totalAcquired}
+                </span>
               </div>
               <div>
                 <span>Value in DAI</span>
-                <span>Value in DAI<br />{totalAcquiredInDAI}</span>
+                <span>
+                  Value in DAI
+                  <br />
+                  {totalAcquiredInDAI}
+                </span>
               </div>
             </AccountTotalSectionTable>
           </AccountGroupingInfoTitleRow>
           {/* <AccountSectionTable> */}
-            {/* <div>
+          {/* <div>
               <span>Total ESWc aquired</span>
               <span>{totalAcquired}</span>
             </div>

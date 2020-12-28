@@ -66,7 +66,6 @@ const AccountSectionTable = styled.div`
     ${({ theme }) => theme.flexRowNoWrap};
     justify-content: space-between;
     flex: 1;
-    flex-grow: 1;
     padding: 0.5em 0.25em;
     overflow: hidden;
     flex-direction: column;
@@ -101,14 +100,19 @@ const AccountButtonPrimary = styled(ButtonPrimary)`
   width: fit-content;
   font-size: 0.825rem;
   padding: 4px 6px;
-  margin-top: 0rem;
+  margin-top: 0;
   :hover {
     cursor: pointer;
     text-decoration: none;
   }
 `;
 
-export default function TotalEarnDividends({ availableToCollect, frozenTokens, nextUnlockAmount, nextUnlockDate }) {
+export default function TotalEarnDividends({
+  availableToCollect,
+  frozenTokens,
+  nextUnlockAmount,
+  nextUnlockDate,
+}) {
   return (
     <>
       <AccountSectionHeader>
@@ -166,7 +170,9 @@ export default function TotalEarnDividends({ availableToCollect, frozenTokens, n
         </AccountSectionBodyPart>
       </AccountSectionBody>
       <AccountSectionHeader>
-        <AccountButtonPrimary disabled={availableToCollect === 0} >Collect to my wallet</AccountButtonPrimary>
+        <AccountButtonPrimary disabled={availableToCollect === 0}>
+          Collect to my wallet
+        </AccountButtonPrimary>
       </AccountSectionHeader>
     </>
   );

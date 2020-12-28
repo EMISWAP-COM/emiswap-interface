@@ -28,7 +28,7 @@ import {
   UNISWAP_V2_FACTORY_ABI,
   UNISWAP_V2_FACTORY_ADDRESS,
 } from '../constants/abis/uniswap-v2-factory';
-import { ESW_ABI, ESW_ADDRESS } from '../constants/abis/esw'
+import { ESW_ABI, ESW_ADDRESS } from '../constants/abis/esw';
 
 // returns null on errors
 function useContract(address?: string, ABI?: any, withSignerIfPossible = true): Contract | null {
