@@ -23,13 +23,7 @@ import {
   useSingleContractMultipleData,
 } from '../state/multicall/hooks';
 import { useTokenBalances } from '../state/wallet/hooks';
-import {
-  ETH_ADDRESS,
-  FLAG_DISABLE_ALL_SPLIT_SOURCES,
-  FLAG_DISABLE_ALL_WRAP_SOURCES,
-  FLAG_DISABLE_MOONISWAP_ALL,
-  ZERO_ADDRESS,
-} from '../constants/one-split';
+import { ETH_ADDRESS, ZERO_ADDRESS } from '../constants/one-split';
 import { usePair } from './Reserves';
 import { BigNumber } from '@ethersproject/bignumber';
 import { DAI, USDC } from '../constants';

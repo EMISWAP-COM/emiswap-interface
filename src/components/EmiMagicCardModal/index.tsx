@@ -68,7 +68,7 @@ const ModalBody = styled.div`
       border: 1px solid #c9c9c9;
       border-radius: 8px;
       height: 60px;
-      padding: 0px 20px;
+      padding: 0 20px;
       font-size: 16px;
       line-height: 1.33;
       width: 100%;
@@ -130,7 +130,7 @@ const ModalBody = styled.div`
 
     ${({ theme }) => theme.mediaWidth.upToTabletop`
     padding: 0 25px 20px;
-    
+
     &__header {
       font-size: 22px;
     }
@@ -201,7 +201,7 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
           email: email,
           telegram: telegram,
           address: address,
-          created_at: new Date().toString()
+          created_at: new Date().toString(),
         }),
       })
         .then(response => response.text())
@@ -211,9 +211,7 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
           onDismiss();
         })
         .catch(() =>
-          console.log(
-            'Can’t access /v1/public/whitelist response. Blocked by browser?',
-          ),
+          console.log('Can’t access /v1/public/whitelist response. Blocked by browser?'),
         );
     }
   };

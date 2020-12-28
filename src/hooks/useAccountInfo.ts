@@ -12,7 +12,6 @@ const bn2num = (value: BigNumber): number => {
   );
 };
 
-
 const roundToAny = (value: number, places: number): number => {
   return parseFloat(value.toFixed(places));
 };
@@ -133,7 +132,7 @@ export function useAccountInfo(): EarningActionHandlers {
 
               setAvailableToCollect(parseFloat(unlockedBalanceAmount));
               setFrozenTokens(parseFloat(balanceAmount) - parseFloat(unlockedBalanceAmount));
-    
+
               contract.getNextUnlock().then((result: BigNumber[]) => {
                 const unlockTime = BigNumber.from(result[0]).isZero()
                   ? ''
@@ -145,7 +144,7 @@ export function useAccountInfo(): EarningActionHandlers {
                 const lockAmount = bn2num(result[1]);
                 setNextUnlockAmount(lockAmount);
                 setNextUnlockDate(unlockTime);
-                
+
                 contractCrowdSale.coinRate(0).then((result: BigNumber) => {
                   const rate = BigNumber.from(result).toNumber() / 10000;
                   setTotalAcquired(parseFloat(balanceAmount));
@@ -159,16 +158,16 @@ export function useAccountInfo(): EarningActionHandlers {
     }
   }, [account, contract, contractCrowdSale]);
 
-  return { 
+  return {
     totalAcquired,
     totalAcquiredInDAI,
-    availableToCollect, 
-    frozenTokens, 
-    nextUnlockAmount, 
-    nextUnlockDate, 
+    availableToCollect,
+    frozenTokens,
+    nextUnlockAmount,
+    nextUnlockDate,
     crowdSaleAcquired,
-    crowdSaleAlreadyMinted, 
-    crowdSaleAvailableForMinting, 
+    crowdSaleAlreadyMinted,
+    crowdSaleAvailableForMinting,
     crowdSaleReferralRewardAcquired,
     crowdSaleReferralRewardAlreadyMinted,
     crowdSaleReferralRewardAvailableForMinting,

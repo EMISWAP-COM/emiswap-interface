@@ -284,7 +284,7 @@ export const MIN_ETH_INVEST: JSBI = JSBI.multiply(
 export const BETTER_TRADE_LINK_THRESHOLD = new Percent(JSBI.BigInt(75), JSBI.BigInt(10000));
 
 // the Uniswap Default token list lives here
-export const DEFAULT_TOKEN_LIST_URL =
-  'https://gateway.ipfs.io/ipfs/test';
+
+export const DEFAULT_TOKEN_LIST_URL = 'https://gateway.ipfs.io/ipfs/test';
 
 export const REFERRAL_ADDRESS_STORAGE_KEY = 'referral-address';

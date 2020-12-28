@@ -58,7 +58,7 @@ export function useInvestActionHandlers(): InvestActionHandlers {
   const { executeBuyCoinAmount } = useBuyCoinAmount();
 
   const onCurrencySelection = useCallback(
-    (field: Field, currency: Token, amount: string) => {
+    (field: Field, currency: Token) => {
       dispatch(
         selectCurrency({
           field,
@@ -160,7 +160,10 @@ export function useDerivedInvestInfo(): {
     isExactIn ? typedValue : outputAmount,
     inputCurrency ?? undefined,
   );
-  const parsedOutputAmount = tryParseAmount(!isExactIn ? typedValue : outputAmount, outputCurrency ?? undefined);
+  const parsedOutputAmount = tryParseAmount(
+    !isExactIn ? typedValue : outputAmount,
+    outputCurrency ?? undefined,
+  );
   const currencyBalances = {
     [Field.INPUT]: relevantTokenBalances[0],
     [Field.OUTPUT]: relevantTokenBalances[1],
@@ -359,7 +362,11 @@ export function useBuyCoinAmount() {
         dispatch(receiveOutputAmount({ outputAmount: '' }));
         return;
       }
-      const coinAmount = num2str(amount * Math.pow(10, field === Field.OUTPUT ? ESW[chainId][0].decimals : currency.decimals), 0);
+      const coinAmount = num2str(
+        amount *
+          Math.pow(10, field === Field.OUTPUT ? ESW[chainId][0].decimals : currency.decimals),
+        0,
+      );
       const coinAmountBN = BigNumber.from(coinAmount);
       const isETH = currency.address?.toUpperCase() === ETHER.address.toUpperCase();
       if (isETH) {
@@ -379,7 +386,8 @@ export function useBuyCoinAmount() {
           .then((response: any) => {
             const outputAmount = BigNumber.from(response.currentTokenAmount).toString();
             const test = num2str(
-              Number(outputAmount) / Math.pow(10, field === Field.INPUT ? ESW[chainId][0].decimals : currency.decimals),
+              Number(outputAmount) /
+                Math.pow(10, field === Field.INPUT ? ESW[chainId][0].decimals : currency.decimals),
               field === Field.INPUT ? ESW[chainId][0].decimals : currency.decimals,
             );
             dispatch(receiveOutputAmount({ outputAmount: test }));

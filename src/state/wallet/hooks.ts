@@ -111,10 +111,10 @@ export function useTokenBalancesWithLoadingIndicator(
                 const value = balances?.[i]?.result?.[0];
                 const amount = value ? JSBI.BigInt(value.toString()) : undefined;
                 if (amount) {
-                  try{
+                  try {
                     memo[token.address] = new TokenAmount(token, amount);
-                  }catch(e) {
-                    memo[token.address] = new TokenAmount(token, "0");
+                  } catch (e) {
+                    memo[token.address] = new TokenAmount(token, '0');
                   }
                 }
                 return memo;
@@ -195,7 +195,8 @@ export function useCurrencyBalances(
   );
   const ethBalance = useETHBalances(containsETH ? [account] : []);
   const containsESW: boolean = useMemo(
-    () => currencies?.some(currency => currency?.address === window['env'].REACT_APP_ESW_ID) ?? false,
+    () =>
+      currencies?.some(currency => currency?.address === window['env'].REACT_APP_ESW_ID) ?? false,
     [currencies],
   );
   const eswBalance = useESWBalances(containsESW ? [account] : []);

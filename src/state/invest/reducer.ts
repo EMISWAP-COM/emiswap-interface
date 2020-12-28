@@ -42,8 +42,7 @@ export default createReducer<InvestState>(initialState, builder =>
   builder
     .addCase(
       replaceInvestState,
-      (state, { payload: { typedValue, field, inputCurrencyId, outputCurrencyId } }) => {
-
+      (state, { payload: { typedValue, inputCurrencyId, outputCurrencyId } }) => {
         return {
           [Field.INPUT]: {
             currencyId: inputCurrencyId,

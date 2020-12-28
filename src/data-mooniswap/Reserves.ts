@@ -1,11 +1,8 @@
 import { Pair, Token, TokenAmount } from '@uniswap/sdk';
 import { useMemo } from 'react';
-import { useActiveWeb3React } from '../hooks';
 
 import { useSingleContractMultipleData } from '../state/multicall/hooks';
 import { useMooniswapV1HelperContract } from '../hooks/useContract';
-// @ts-ignore
-import { V1_MOONISWAP_FACTORY_ADDRESSES } from '../constants/v1-mooniswap';
 
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 
@@ -19,8 +16,6 @@ export enum PairState {
 export function usePairs(
   currencies: [Token | undefined, Token | undefined][],
 ): [PairState, Pair | null][] {
-  const { chainId } = useActiveWeb3React();
-
   const tokenAList: string[] = [];
   const tokenBList: string[] = [];
   const allTokenAList: (Token | undefined)[] = [];
@@ -39,10 +34,7 @@ export function usePairs(
   const batches = Math.ceil(tokenAList.length / pairsPerReq);
   const callDataList = [];
   for (let i = 0; i < batches; i++) {
-    const inputs = [
-      tokenAList.splice(0, pairsPerReq),
-      tokenBList.splice(0, pairsPerReq),
-    ];
+    const inputs = [tokenAList.splice(0, pairsPerReq), tokenBList.splice(0, pairsPerReq)];
     callDataList.push(inputs);
   }
 

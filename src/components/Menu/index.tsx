@@ -14,11 +14,8 @@ const StyledMenuIcon = styled(MenuIcon)`
 
 const StyledMenuButton = styled.button`
   width: 100%;
-  height: 100%;
   border: none;
-  background-color: transparent;
   margin: 0;
-  padding: 0;
   height: 40px;
   background-color: ${({ theme }) => theme.green2};
   display: flex;
@@ -49,8 +46,8 @@ const StyledMenu = styled.div`
 const MenuFlyout = styled.span`
   min-width: 13.025rem;
   background-color: ${({ theme }) => theme.bg3};
-  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04),
-    0px 16px 24px rgba(0, 0, 0, 0.04), 0px 24px 32px rgba(0, 0, 0, 0.01);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.01), 0 4px 8px rgba(0, 0, 0, 0.04),
+    0 16px 24px rgba(0, 0, 0, 0.04), 0 24px 32px rgba(0, 0, 0, 0.01);
   border-radius: 0.5rem;
   padding: 0.5rem;
   display: flex;
@@ -58,7 +55,7 @@ const MenuFlyout = styled.span`
   font-size: 1rem;
   position: absolute;
   top: 3rem;
-  right: 0rem;
+  right: 0;
   z-index: 100;
 `;
 
@@ -105,7 +102,10 @@ export default function Menu() {
       </StyledMenuButton>
       {open && (
         <MenuFlyout>
-          <MenuItem id="link" href="https://emiswap.medium.com/emiswap-amm-exchange-to-perfect-the-defi-market-d13e74dc6e14">
+          <MenuItem
+            id="link"
+            href="https://emiswap.medium.com/emiswap-amm-exchange-to-perfect-the-defi-market-d13e74dc6e14"
+          >
             <Info size={14} />
             About
           </MenuItem>

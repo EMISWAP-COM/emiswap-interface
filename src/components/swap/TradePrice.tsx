@@ -24,7 +24,9 @@ export default function TradePrice({
 }: TradePriceProps) {
   const theme = useContext(ThemeContext);
 
-  const formattedPrice = showInverted ? tokenAmountToString(price) : tokenAmountToString(price?.invert());
+  const formattedPrice = showInverted
+    ? tokenAmountToString(price)
+    : tokenAmountToString(price?.invert());
 
   const show = Boolean(inputCurrency && outputCurrency);
   const label = showInverted

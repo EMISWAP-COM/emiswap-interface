@@ -24,7 +24,6 @@ import FortmaticIcon from '../../assets/images/fortmaticIcon.png';
 import PortisIcon from '../../assets/images/portisIcon.png';
 import { ExternalLink, LinkStyledButton, TYPE } from '../../theme';
 
-
 const HeaderRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
   padding: 1rem 1rem;
@@ -46,7 +45,7 @@ const UpperSection = styled.div`
   }
 
   h5:last-child {
-    margin-bottom: 0px;
+    margin-bottom: 0;
   }
 
   h4 {
@@ -138,7 +137,6 @@ const AddressLink = styled(ExternalLink)<{ hasENS: boolean; isENS: boolean }>`
   font-size: 0.825rem;
   color: ${({ theme }) => theme.text3};
   margin-left: 1rem;
-  font-size: 0.825rem;
   display: flex;
   :hover {
     color: ${({ theme }) => theme.text2};
@@ -309,8 +307,6 @@ export default function AccountDetails({
     },
     [dispatch, chainId],
   );
-
-
 
   return (
     <>
