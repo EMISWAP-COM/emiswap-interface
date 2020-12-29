@@ -13,6 +13,18 @@ export enum PairState {
   INVALID,
 }
 
+const isPairDuplicated = (pairs: Pair[], tokenA: Token, tokenB: Token): boolean => {
+  for (const pair of pairs) {
+    const pairAddresses: string[] = [pair.token0.address, pair.token1.address];
+
+    if (pairAddresses.includes(tokenA.address) && pairAddresses.includes(tokenB.address)) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
 export function usePairs(
   currencies: [Token | undefined, Token | undefined][],
 ): [PairState, Pair | null][] {
@@ -68,6 +80,15 @@ export function usePairs(
 
       const poolAddress = poolData.pool;
       if (poolAddress === ZERO_ADDRESS) {
+        pairStates.push([PairState.NOT_EXISTS, null]);
+        continue;
+      }
+
+      const pairs: Pair[] = pairStates
+        .filter(pairState => pairState[1] !== null)
+        .map(pairState => pairState[1]);
+
+      if (isPairDuplicated(pairs, tokenA, tokenB)) {
         pairStates.push([PairState.NOT_EXISTS, null]);
         continue;
       }
