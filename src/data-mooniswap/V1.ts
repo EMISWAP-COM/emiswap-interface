@@ -4,7 +4,7 @@ import {
   Token,
   TokenAmount,
   currencyEquals,
-  ETHER,
+  ChainId,
   JSBI,
   Pair,
   Percent,
@@ -36,7 +36,8 @@ export function useV1ExchangeAddress(tokenAddress?: string): string | undefined 
 }
 
 export class MockV1Pair extends Pair {
-  constructor(etherAmount: BigintIsh, tokenAmount: TokenAmount) {
+  constructor(etherAmount: BigintIsh, tokenAmount: TokenAmount, chainId: ChainId) {
+    const ETHER = new Token(chainId || ChainId.KOVAN, ZERO_ADDRESS, 18, 'ETH', 'Ethereum');
     super(tokenAmount, new TokenAmount(ETHER, etherAmount), '0x0001');
   }
 }
@@ -105,6 +106,10 @@ export function useV1Trade(
   exactAmount?: TokenAmount,
 ): Trade | undefined {
   // get the mock v1 pairs
+  const { chainId } = useActiveWeb3React();
+
+  const ETHER = new Token(chainId || ChainId.KOVAN, ZERO_ADDRESS, 18, 'ETH', 'Ethereum');
+
   const inputPair = useMockV1Pair(inputCurrency);
   const outputPair = useMockV1Pair(outputCurrency);
 
@@ -192,6 +197,10 @@ export function useMooniswapTrade(
   outputCurrency?: Token,
   parseAmount?: TokenAmount,
 ): [Trade, BigNumber[]] | [undefined, undefined] | undefined {
+  const { chainId } = useActiveWeb3React();
+
+  const ETHER = new Token(chainId || ChainId.KOVAN, ZERO_ADDRESS, 18, 'ETH', 'Ethereum');
+
   let mooniswapTrade: Trade | undefined;
 
   const amount =
