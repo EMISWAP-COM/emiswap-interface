@@ -69,7 +69,7 @@ export default function Pool() {
     fetchingV2PairBalances ||
     pairs?.length < liquidityTokensWithBalances.length ||
     pairs?.some(pair => !pair);
-
+  console.log('@@@ pairs -> ', pairs)
   const allV2PairsWithLiquidity = pairs
     .map(([, pair]) => pair)
     .filter((pair): pair is Pair => {
@@ -82,7 +82,7 @@ export default function Pool() {
         }) !== -1
       );
     });
-
+  console.log('@@@ allV2PairsWithLiquidity -> ', allV2PairsWithLiquidity)
   return (
     <>
       <AppBody>

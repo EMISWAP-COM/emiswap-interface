@@ -26,7 +26,7 @@ import { useTokenBalances } from '../state/wallet/hooks';
 import { ETH_ADDRESS, ZERO_ADDRESS } from '../constants/one-split';
 import { usePair } from './Reserves';
 import { BigNumber } from '@ethersproject/bignumber';
-import { DAI, USDC } from '../constants';
+import { KOVAN_DAI, KOVAN_USDC } from '../constants';
 
 export function useV1ExchangeAddress(tokenAddress?: string): string | undefined {
   const contract = useV1FactoryContract();
@@ -209,36 +209,45 @@ export function useMooniswapTrade(
           ?.multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(inputCurrency?.decimals)))
           .toFixed(0)
       : parseAmount?.toFixed(0);
-
+  console.log('@@@ inputCurrency -> ', inputCurrency)
+  console.log('@@@ outputCurrency -> ', outputCurrency)
   const params = [
     inputCurrency?.address
       ? inputCurrency.address !== ZERO_ADDRESS
         ? inputCurrency.address
-        : ETH_ADDRESS
+        : ZERO_ADDRESS
       : ETH_ADDRESS,
     outputCurrency?.address
       ? outputCurrency.address !== ZERO_ADDRESS
         ? outputCurrency.address
-        : ETH_ADDRESS
+        : ZERO_ADDRESS
       : ETH_ADDRESS,
     amount,
   ];
-
+  console.log('@@@ params -> ', params)
+  console.log('@@@ inputCurrency -> ', inputCurrency)
   const poolPair = usePair(inputCurrency, outputCurrency);
 
   const poolPairOverEth = usePair(inputCurrency, ETHER);
-  const poolPairOverDai = usePair(inputCurrency, DAI);
-  const poolPairOverUsdc = usePair(inputCurrency, USDC);
+  const poolPairOverDai = usePair(inputCurrency, KOVAN_DAI);
+  const poolPairOverUsdc = usePair(inputCurrency, KOVAN_USDC);
 
-  const poolPairUsdcToDest = usePair(USDC, outputCurrency);
-  const poolPairDaiToDest = usePair(DAI, outputCurrency);
+  const poolPairUsdcToDest = usePair(KOVAN_USDC, outputCurrency);
+  const poolPairDaiToDest = usePair(KOVAN_DAI, outputCurrency);
   const poolPairEthToDest = usePair(ETHER, outputCurrency);
-
+  console.log('@@@ useEmiRouter() -> ', useEmiRouter())
   const results = useSingleCallResult(useEmiRouter(), 'getExpectedReturn', params);
+  console.log('@@@ 1412results -> ', results)
   if (!inputCurrency || !outputCurrency || !parseAmount || !results.result) {
     return;
   }
-
+  console.log('@@@ poolPair -> ', poolPair)
+  console.log('@@@ poolPairOverEth -> ', poolPairOverEth)
+  console.log('@@@ poolPairOverDai -> ', poolPairOverDai)
+  console.log('@@@ poolPairOverUsdc -> ', poolPairOverUsdc)
+  console.log('@@@ poolPairUsdcToDest -> ', poolPairUsdcToDest)
+  console.log('@@@ poolPairDaiToDest -> ', poolPairDaiToDest)
+  console.log('@@@ poolPairEthToDest -> ', poolPairEthToDest)
   const distribution = results.result?.distribution;
 
   const pairs: Pair[] = [];
@@ -270,6 +279,8 @@ export function useMooniswapTrade(
   const route =
     inputCurrency && pairs && pairs.length > 0 && new Route(pairs, inputCurrency, outputCurrency);
   try {
+    console.log('@@@ route -> ', route)
+    console.log('@@@ exactAmount -> ', exactAmount)
     mooniswapTrade =
       route && exactAmount ? new Trade(route, exactAmount, TradeType.EXACT_OUTPUT) : undefined;
   } catch (error) {

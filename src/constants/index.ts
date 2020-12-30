@@ -139,6 +139,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
 // used for display in the default list when adding liquidity
 export const SUGGESTED_BASES: ChainTokenList = {
   ...ETH_ONLY,
+  [ChainId.KOVAN]: [KOVAN_DAI, KOVAN_USDC, KOVAN_WETH],
   [ChainId.MAINNET]: [DAI, USDC, USDT, CHI],
 };
 

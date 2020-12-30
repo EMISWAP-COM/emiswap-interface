@@ -1,34 +1,36 @@
-import { Contract } from '@ethersproject/contracts';
-import { ChainId } from '@uniswap/sdk';
-import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.json';
-import MooniswapABI from '../constants/v1-mooniswap/v1_mooniswap_exchange.json';
-import MooniswapFactoryABI from '../constants/v1-mooniswap/v1_mooniswap_factory.json';
-import MooniswapHelperABI from '../constants/v1-mooniswap/MooniswapHelper.json';
-import { useMemo } from 'react';
-import { ERC20_BYTES32_ABI } from '../constants/abis/erc20';
-import CHI_ABI from '../constants/abis/chi.json';
-import UNISOCKS_ABI from '../constants/abis/unisocks.json';
-import ERC20_ABI from '../constants/abis/erc20.json';
-import { MIGRATOR_ABI, MIGRATOR_ADDRESS } from '../constants/abis/migrator';
-import { MULTICALL_ABI, MULTICALL_NETWORKS } from '../constants/multicall';
-import { V1_EXCHANGE_ABI, V1_FACTORY_ABI, V1_FACTORY_ADDRESSES } from '../constants/v1';
+import { Contract } from '@ethersproject/contracts'
+import { ChainId } from '@uniswap/sdk'
+import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.json'
+import MooniswapABI from '../constants/v1-mooniswap/v1_mooniswap_exchange.json'
+import MooniswapFactoryABI from '../constants/v1-mooniswap/v1_mooniswap_factory.json'
+import MooniswapHelperABI from '../constants/v1-mooniswap/MooniswapHelper.json'
+import { useMemo } from 'react'
+import { ERC20_BYTES32_ABI } from '../constants/abis/erc20'
+import CHI_ABI from '../constants/abis/chi.json'
+import UNISOCKS_ABI from '../constants/abis/unisocks.json'
+import ERC20_ABI from '../constants/abis/erc20.json'
+import { MIGRATOR_ABI, MIGRATOR_ADDRESS } from '../constants/abis/migrator'
+import { MULTICALL_ABI, MULTICALL_NETWORKS } from '../constants/multicall'
+import { V1_EXCHANGE_ABI, V1_FACTORY_ABI, V1_FACTORY_ADDRESSES } from '../constants/v1'
 import {
-  V1_MOONISWAP_FACTORY_ADDRESSES,
   V1_EMIROUTER_HELPER_ADDRESSES,
-} from '../constants/v1-mooniswap';
-import { getContract } from '../utils';
-import { useActiveWeb3React } from './index';
-import { ONE_SPLIT_ABI, EMI_ROUTER_ABI, ONE_SPLIT_ADDRESSES } from '../constants/one-split';
+  V1_MOONISWAP_FACTORY_ADDRESSES
+} from '../constants/v1-mooniswap'
+import { getContract, getProviderOrSigner, isAddress } from '../utils'
+import { useActiveWeb3React } from './index'
+import { EMI_ROUTER_ABI, ONE_SPLIT_ABI, ONE_SPLIT_ADDRESSES } from '../constants/one-split'
 import {
   UNISWAP_V2_HELPER_ABI,
-  UNISWAP_V2_HELPER_ADDRESS,
-} from '../constants/abis/uniswap-v2-helper';
-import { UNISWAP_V2_PAIR } from '../constants/abis/uniswap-v2-pair';
+  UNISWAP_V2_HELPER_ADDRESS
+} from '../constants/abis/uniswap-v2-helper'
+import { UNISWAP_V2_PAIR } from '../constants/abis/uniswap-v2-pair'
 import {
   UNISWAP_V2_FACTORY_ABI,
-  UNISWAP_V2_FACTORY_ADDRESS,
-} from '../constants/abis/uniswap-v2-factory';
-import { ESW_ABI, ESW_ADDRESS } from '../constants/abis/esw';
+  UNISWAP_V2_FACTORY_ADDRESS
+} from '../constants/abis/uniswap-v2-factory'
+import { ESW_ABI, ESW_ADDRESS } from '../constants/abis/esw'
+import { Web3Provider } from '@ethersproject/providers'
+import { AddressZero } from '@ethersproject/constants'
 
 // returns null on errors
 function useContract(address?: string, ABI?: any, withSignerIfPossible = true): Contract | null {
@@ -147,6 +149,18 @@ export function useOneSplit(): Contract | null {
 export function useEmiRouter(): Contract | null {
   const { chainId } = useActiveWeb3React();
   return useContract(chainId && V1_EMIROUTER_HELPER_ADDRESSES[chainId], EMI_ROUTER_ABI, false);
+}
+
+export function useSwapEmiRouter(
+  library: Web3Provider,
+): Contract | null {
+  const { chainId } = useActiveWeb3React();
+
+  return new Contract(
+    V1_EMIROUTER_HELPER_ADDRESSES[chainId || ChainId.KOVAN],
+    EMI_ROUTER_ABI,
+    getProviderOrSigner(library) as any,
+  );
 }
 
 export function useChiController(): Contract | null {
