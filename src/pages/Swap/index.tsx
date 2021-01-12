@@ -132,7 +132,9 @@ export default function Swap() {
   const [showConfirm, setShowConfirm] = useState<boolean>(false); // show confirmation modal
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false); // waiting for user confirmaion/rejection
   const [txHash, setTxHash] = useState<string>('');
-
+console.log(`==========>parsedAmounts[independentField]?.toExact()`, parsedAmounts[independentField]?.toExact())
+  console.log(`==========>parsedAmounts[dependentField]?.toSignificant(6)`, parsedAmounts[dependentField]?.toSignificant(6))
+  console.log(`==========>parsedAmounts1`, parsedAmounts)
   const formattedAmounts = {
     [independentField]: typedValue,
     [dependentField]: showWrap
@@ -149,6 +151,7 @@ export default function Swap() {
   const noRoute = !route;
 
   // check whether the user has approved the router on the input token
+  console.log(`==========>trade111`, trade)
   const [approval, approveCallback] = useApproveCallbackFromTrade(
     trade,
     distribution,
@@ -175,6 +178,7 @@ export default function Swap() {
     trade,
     distribution,
     allowedSlippage,
+    formattedAmounts,
   );
 
   const srcAmount = trade?.inputAmount?.toExact();
@@ -221,6 +225,7 @@ export default function Swap() {
   const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown(trade);
 
   function onSwap() {
+    console.log('onSwap')
     if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee)) {
       return;
     }
@@ -231,6 +236,7 @@ export default function Swap() {
     swapCallback()
       .then(hash => {
         setAttemptingTxn(false);
+        console.log('@@@ hash -> ', hash)
         setTxHash(hash);
 
         // ReactGA.event({
@@ -260,13 +266,15 @@ export default function Swap() {
 
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
   // never show if price impact is above threshold in non expert mode
+  console.log(`==========>error`, error)
+  console.log(`==========>approval111`, approval)
   const showApproveFlow =
     !error &&
     (approval === ApprovalState.NOT_APPROVED ||
       approval === ApprovalState.PENDING ||
       (approvalSubmitted && approval === ApprovalState.APPROVED)) &&
     !(priceImpactSeverity > 3 && !expertMode);
-
+console.log(`==========>showApproveFlow`, showApproveFlow)
   function modalHeader() {
     return (
       <SwapModalHeader

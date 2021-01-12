@@ -356,7 +356,7 @@ export function useSingleCallResult(
         ]
       : [];
   }, [contract, fragment, inputs]);
-
+  console.log('@@@ calls -> ', calls)
   const result = useCallsData(calls, options)[0];
   const latestBlockNumber = useBlockNumber();
 
