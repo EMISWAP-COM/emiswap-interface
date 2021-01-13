@@ -8,6 +8,7 @@ import { isAddress } from '../utils';
 import { useActiveWeb3React } from './index';
 import { useBytes32TokenContract, useTokenContract } from './useContract';
 import { useDefaultCoin } from './Coins';
+import { ZERO_ADDRESS } from '@uniswap/sdk/src/constants';
 
 export function useAllTokens(): { [address: string]: Token } {
   const { chainId } = useActiveWeb3React();
@@ -120,9 +121,14 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
 }
 
 export function useCurrency(currencyId: string | undefined): Token | null | undefined {
+  const { chainId } = useActiveWeb3React();
+
   const isESW = currencyId?.toUpperCase() === window['env'].REACT_APP_ESW_ID?.toUpperCase();
   const defaultCoin = useDefaultCoin(currencyId);
   const isETH = currencyId?.toUpperCase() === ETHER.address.toUpperCase();
   const token = useToken(isESW || isETH ? undefined : currencyId);
-  return isESW ? defaultCoin : isETH ? ETHER : token;
+
+  const ether = new Token(chainId || 1, ZERO_ADDRESS, 18, 'ETH', 'Ethereum');
+
+  return isESW ? defaultCoin : isETH ? ether : token;
 }

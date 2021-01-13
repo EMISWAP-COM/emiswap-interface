@@ -40,8 +40,14 @@ const Web3StatusGeneric = styled(ButtonSecondary)`
   border-radius: 4px;
   cursor: pointer;
   user-select: none;
+  height: 40px;
+
   :focus {
     outline: none;
+  }
+
+  > p {
+    width: 50px;
   }
 `;
 const Web3StatusError = styled(Web3StatusGeneric)`

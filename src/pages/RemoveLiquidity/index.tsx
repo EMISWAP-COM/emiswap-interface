@@ -505,10 +505,6 @@ export default function RemoveLiquidity({
                           <StyledInternalLink to={`/remove/${currencyIdA}/${currencyIdB}`}>
                             Receive WETH
                           </StyledInternalLink>
-                        ) : false ? (
-                          <StyledInternalLink to={`/remove/${currencyIdA}/${currencyIdB}`}>
-                            Receive ETH
-                          </StyledInternalLink>
                         ) : null}
                       </RowBetween>
                     ) : null}
@@ -568,8 +564,8 @@ export default function RemoveLiquidity({
                 <RowBetween>
                   Price:
                   <div>
-                    1 {currencyA?.symbol} = {tokenA ? tokenAmountToString(pair.priceOf(tokenA)) : '-'}{' '}
-                    {currencyB?.symbol}
+                    1 {currencyA?.symbol} ={' '}
+                    {tokenA ? tokenAmountToString(pair.priceOf(tokenA)) : '-'} {currencyB?.symbol}
                   </div>
                 </RowBetween>
                 <RowBetween>

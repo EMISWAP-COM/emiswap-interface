@@ -1,11 +1,8 @@
 import { Pair, Token, TokenAmount } from '@uniswap/sdk';
 import { useMemo } from 'react';
-import { useActiveWeb3React } from '../hooks';
 
 import { useSingleContractMultipleData } from '../state/multicall/hooks';
 import { useMooniswapV1HelperContract } from '../hooks/useContract';
-// @ts-ignore
-import { V1_MOONISWAP_FACTORY_ADDRESSES } from '../constants/v1-mooniswap';
 
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 
@@ -16,11 +13,21 @@ export enum PairState {
   INVALID,
 }
 
+const isPairDuplicated = (pairs: Pair[], tokenA: Token, tokenB: Token): boolean => {
+  for (const pair of pairs) {
+    const pairAddresses: string[] = [pair.token0.address, pair.token1.address];
+
+    if (pairAddresses.includes(tokenA.address) && pairAddresses.includes(tokenB.address)) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
 export function usePairs(
   currencies: [Token | undefined, Token | undefined][],
 ): [PairState, Pair | null][] {
-  const { chainId } = useActiveWeb3React();
-
   const tokenAList: string[] = [];
   const tokenBList: string[] = [];
   const allTokenAList: (Token | undefined)[] = [];
@@ -39,11 +46,7 @@ export function usePairs(
   const batches = Math.ceil(tokenAList.length / pairsPerReq);
   const callDataList = [];
   for (let i = 0; i < batches; i++) {
-    const inputs = [
-      V1_MOONISWAP_FACTORY_ADDRESSES[chainId || 1],
-      tokenAList.splice(0, pairsPerReq),
-      tokenBList.splice(0, pairsPerReq),
-    ];
+    const inputs = [tokenAList.splice(0, pairsPerReq), tokenBList.splice(0, pairsPerReq)];
     callDataList.push(inputs);
   }
 
@@ -77,6 +80,15 @@ export function usePairs(
 
       const poolAddress = poolData.pool;
       if (poolAddress === ZERO_ADDRESS) {
+        pairStates.push([PairState.NOT_EXISTS, null]);
+        continue;
+      }
+
+      const pairs: Pair[] = pairStates
+        .filter(pairState => pairState[1] !== null)
+        .map(pairState => pairState[1]);
+
+      if (isPairDuplicated(pairs, tokenA, tokenB)) {
         pairStates.push([PairState.NOT_EXISTS, null]);
         continue;
       }

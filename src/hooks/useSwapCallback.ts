@@ -330,10 +330,11 @@ export function useSwapCallback(
           trade.outputAmount.token.address,
           fromAmount?.raw.toString(),
           minReturn.toString(),
+          account,
           referalAddress,
         ];
 
-        return contract.estimateGas['swap'](...args, value && !value.isZero() ? { value } : {})
+        return contract.estimateGas['swap'](...args /*, value && !value.isZero() ? { value } : {}*/)
           .then(result => {
             // if (BigNumber.isBigNumber(safeGasEstimate) && !BigNumber.isBigNumber(safeGasEstimate)) {
             //   throw new Error(

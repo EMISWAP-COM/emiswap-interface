@@ -49,9 +49,10 @@ export function ConfirmAddModalBottom({
       </RowBetween>
       <RowBetween style={{ justifyContent: 'flex-end' }}>
         <TYPE.body>
-          {`1 ${currencies[Field.CURRENCY_B]?.symbol} = ${tokenAmountToString(price?.invert(), 4)} ${
-            currencies[Field.CURRENCY_A]?.symbol
-          }`}
+          {`1 ${currencies[Field.CURRENCY_B]?.symbol} = ${tokenAmountToString(
+            price?.invert(),
+            4,
+          )} ${currencies[Field.CURRENCY_A]?.symbol}`}
         </TYPE.body>
       </RowBetween>
       <RowBetween>

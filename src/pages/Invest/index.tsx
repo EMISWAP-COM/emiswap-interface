@@ -28,7 +28,6 @@ import {
 import { useExpertModeManager, useTokenWarningDismissal } from '../../state/user/hooks';
 import { maxAmountSpendInvest } from '../../utils/maxAmountSpend';
 import AppBody from '../AppBody';
-import ReferralLink from '../../components/RefferalLink';
 import { SwapPoolTabs } from '../../components/NavigationTabs';
 import { EMISWAP_CROWDSALE_ADDRESS } from '../../constants/abis/crowdsale';
 import { Redirect, RouteComponentProps } from 'react-router-dom';
@@ -91,7 +90,7 @@ const EmiCard = styled.div`
   }
   .block-with-cards {
     &__header {
-      font-family: 'IBM Plex Sans';
+      font-family: 'IBM Plex Sans', Arial, sans-serif;
       font-style: normal;
       font-weight: 500;
       font-size: 20px;
@@ -127,7 +126,7 @@ const EmiCard = styled.div`
         }
 
         &__title {
-          font-family: 'IBM Plex Sans';
+          font-family: 'IBM Plex Sans', Arial, sans-serif;
           font-style: normal;
           font-weight: 600;
           font-size: 36px;
@@ -139,7 +138,7 @@ const EmiCard = styled.div`
         }
 
         &__text {
-          font-family: 'IBM Plex Sans';
+          font-family: 'IBM Plex Sans', Arial, sans-serif;
           font-style: normal;
           font-weight: 500;
           font-size: 20px;
@@ -168,7 +167,7 @@ const EmiCard = styled.div`
         }
 
         &__title {
-          font-family: 'IBM Plex Sans';
+          font-family: 'IBM Plex Sans', Arial, sans-serif;
           font-style: normal;
           font-weight: 500;
           font-size: 18px;
@@ -180,7 +179,7 @@ const EmiCard = styled.div`
         }
 
         &__description {
-          font-family: 'IBM Plex Sans';
+          font-family: 'IBM Plex Sans', Arial, sans-serif;
           font-style: normal;
           font-weight: normal;
           font-size: 13px;
@@ -192,7 +191,7 @@ const EmiCard = styled.div`
         }
 
         &__description-card {
-          font-family: 'IBM Plex Sans';
+          font-family: 'IBM Plex Sans', Arial, sans-serif;
           font-style: normal;
           font-weight: normal;
           font-size: 16px;
@@ -217,7 +216,7 @@ const EmiCard = styled.div`
     }
 
     &__footer {
-      font-family: 'IBM Plex Sans';
+      font-family: 'IBM Plex Sans', Arial, sans-serif;
       font-style: normal;
       font-weight: normal;
       font-size: 14px;
@@ -241,13 +240,11 @@ const EmiCard = styled.div`
       cursor: pointer;
       text-decoration: none;
 
-      font-family: 'IBM Plex Sans';
+      font-family: 'IBM Plex Sans', Arial, sans-serif;
       font-style: normal;
       font-weight: 500;
       font-size: 16px;
       line-height: 170%;
-      display: flex;
-      align-items: center;
       text-align: center;
       color: #11b382;
     }
@@ -809,7 +806,8 @@ const Invest = () => {
   const showWarning =
     (!dismissedToken0 && !!currencies[Field.INPUT]) ||
     (!dismissedToken1 && !!currencies[Field.OUTPUT]);
-  const notEnoughBalance = maxAmountInput && parsedAmount && JSBI.lessThan(maxAmountInput.raw, parsedAmount.raw);
+  const notEnoughBalance =
+    maxAmountInput && parsedAmount && JSBI.lessThan(maxAmountInput.raw, parsedAmount.raw);
   const getErrorText = (error, notEnoughBalance) => {
     if (Number(typedValue) > 0 && Number(outputAmount) === 0) {
       return 'Sorry, you are reaching the limits of our crowdsale. Please try to buy less ESW';
@@ -822,7 +820,7 @@ const Invest = () => {
   return (
     <>
       {showWarning && <TokenWarningCards currencies={currencies} />}
-      <AppBody disabled={!!showWarning} className={'invest-mobile'}>
+      <AppBody disabled={showWarning} className={'invest-mobile'}>
         <SwapPoolTabs active={'invest'} />
         <Wrapper id="invest-page">
           <ConfirmationModal
@@ -933,13 +931,13 @@ const Invest = () => {
                   error={!!error}
                 >
                   <Text fontSize={16} fontWeight={450}>
-                    {(error || notEnoughBalance) ? getErrorText(error, notEnoughBalance) : `Invest`}
+                    {error || notEnoughBalance ? getErrorText(error, notEnoughBalance) : `Invest`}
                   </Text>
                 </ButtonError>
               )}
             </BottomGrouping>
           </AutoColumn>
-          {account ? <ReferralLink /> : ''}
+          {/*{account ? <ReferralLink /> : ''}*/}
           <EmiMagicBtn onClick={openEmiCardModal}>Get Magic NFT Cards</EmiMagicBtn>
           {showEmiCardModal && (
             <EmiMagicCardModal

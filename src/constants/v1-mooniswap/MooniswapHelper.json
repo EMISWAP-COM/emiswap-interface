@@ -67,11 +67,6 @@
   {
     "inputs": [
       {
-        "internalType": "contract IMooniFactory",
-        "name": "factory",
-        "type": "address"
-      },
-      {
         "internalType": "contract IERC20[]",
         "name": "tokenAList",
         "type": "address[]"

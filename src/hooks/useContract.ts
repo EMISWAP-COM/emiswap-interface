@@ -14,11 +14,11 @@ import { MULTICALL_ABI, MULTICALL_NETWORKS } from '../constants/multicall';
 import { V1_EXCHANGE_ABI, V1_FACTORY_ABI, V1_FACTORY_ADDRESSES } from '../constants/v1';
 import {
   V1_MOONISWAP_FACTORY_ADDRESSES,
-  V1_MOONISWAP_HELPER_ADDRESSES,
+  V1_EMIROUTER_HELPER_ADDRESSES,
 } from '../constants/v1-mooniswap';
 import { getContract } from '../utils';
 import { useActiveWeb3React } from './index';
-import { ONE_SPLIT_ABI, ONE_SPLIT_ADDRESSES } from '../constants/one-split';
+import { ONE_SPLIT_ABI, EMI_ROUTER_ABI, ONE_SPLIT_ADDRESSES } from '../constants/one-split';
 import {
   UNISWAP_V2_HELPER_ABI,
   UNISWAP_V2_HELPER_ADDRESS,
@@ -28,7 +28,7 @@ import {
   UNISWAP_V2_FACTORY_ABI,
   UNISWAP_V2_FACTORY_ADDRESS,
 } from '../constants/abis/uniswap-v2-factory';
-import { ESW_ABI, ESW_ADDRESS } from '../constants/abis/esw'
+import { ESW_ABI, ESW_ADDRESS } from '../constants/abis/esw';
 
 // returns null on errors
 function useContract(address?: string, ABI?: any, withSignerIfPossible = true): Contract | null {
@@ -129,7 +129,7 @@ export function useMooniswapV1FactoryContract(): Contract | null {
 
 export function useMooniswapV1HelperContract(): Contract | null {
   const { chainId } = useActiveWeb3React();
-  return useContract(chainId && V1_MOONISWAP_HELPER_ADDRESSES[chainId], MooniswapHelperABI, false);
+  return useContract(chainId && V1_EMIROUTER_HELPER_ADDRESSES[chainId], MooniswapHelperABI, false);
 }
 
 export function useMooniswapContract(
@@ -142,6 +142,11 @@ export function useMooniswapContract(
 export function useOneSplit(): Contract | null {
   const { chainId } = useActiveWeb3React();
   return useContract(chainId && ONE_SPLIT_ADDRESSES[chainId], ONE_SPLIT_ABI, false);
+}
+
+export function useEmiRouter(): Contract | null {
+  const { chainId } = useActiveWeb3React();
+  return useContract(chainId && V1_EMIROUTER_HELPER_ADDRESSES[chainId], EMI_ROUTER_ABI, false);
 }
 
 export function useChiController(): Contract | null {

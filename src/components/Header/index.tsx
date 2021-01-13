@@ -16,6 +16,7 @@ import Menu from '../Menu';
 import Row, { RowBetween } from '../Row';
 import Web3Status from '../Web3Status';
 import { tokenAmountToString } from '../../utils/formats';
+import { ReactComponent as MagicIcon } from '../../assets/images/magic_icon.svg';
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -37,7 +38,7 @@ const HeaderElement = styled.div`
 
   .white-btn {
     width: 250px;
-    height: 41px;
+    height: 40px;
     background-color: white;
     margin-right: 10px;
     border-radius: 5px;
@@ -80,7 +81,12 @@ const HeaderElement = styled.div`
     margin-right: 10px;
   }
 
+  .purple-btn > span {
+    width: 100%;
+  }
+
   ${({ theme }) => theme.mediaWidth.upToTabletop`
+    border-radius: 0.5rem;
     width: 100%;
     padding: 18px 16px;
     justify-content: space-between;
@@ -96,14 +102,37 @@ const HeaderElement = styled.div`
 `;
 
 const LogoElem = styled(HeaderElement)`
-  ${({ theme }) => theme.mediaWidth.upToLarge`
+  ${({ theme }) => theme.mediaWidth.upToMedium`
     order: 1;
-    width: calc(100% - 100px);
+    width: calc(100% - 124px);
   `};
   ${({ theme }) => theme.mediaWidth.upToTabletop`
     background-color: white;
-    width: calc(100% - 116px);
+    width: calc(100% - 156px);
     padding-right: 0px;
+  `};
+`;
+
+const StyledMagicButton = styled.a`
+  display: none;
+  position: relative;
+  border: none;
+  height: 40px;
+  background-color: #9a56d1;
+  align-items: center;
+  transition: all 0.3s ease-in-out;
+
+  padding: 0.15rem 0.625rem;
+  border-radius: 0.5rem;
+
+  svg {
+    margin-top: 6px;
+    height: 20px;
+    width: 20px;
+  }
+
+  ${({ theme }) => theme.mediaWidth.upToTabletop`
+    display: inline-block;
   `};
 `;
 
@@ -189,7 +218,7 @@ const HeaderControls = styled.div`
     margin-left: auto;
   }
 
-  ${({ theme }) => theme.mediaWidth.upToLarge`
+  ${({ theme }) => theme.mediaWidth.upToMedium`
     order: 3;
     width: 100%;
     justify-content: center;
@@ -200,7 +229,7 @@ const HeaderControls = styled.div`
     margin-left: 0;
     width: 100%;
     background: transparent;
-    
+
     & > div:first-child {
       background: transparent;
       width: 100%;
@@ -275,7 +304,7 @@ export default function Header() {
               Buy Crypto with fiat
             </a>
             <a className="purple-btn" href={`${window.location.origin}/magic_cards/`}>
-              Magic Hall
+              <span>Magic Hall</span>
             </a>
             {!isMobile && !isTablet && NETWORK_LABELS[chainId] && (
               <TestnetWrapper>
@@ -300,7 +329,9 @@ export default function Header() {
           </HeaderElement>
         </HeaderControls>
         <HeaderElementWrap>
-          {/*<VersionSwitch />*/}
+          <StyledMagicButton href={`${window.location.origin}/magic_cards/`}>
+            <MagicIcon />
+          </StyledMagicButton>
           <Settings />
           <Menu />
         </HeaderElementWrap>

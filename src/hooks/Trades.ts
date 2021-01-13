@@ -3,7 +3,7 @@ import flatMap from 'lodash.flatmap';
 import { useMemo } from 'react';
 
 import { BASES_TO_CHECK_TRADES_AGAINST } from '../constants';
-import { PairState, usePairs } from '../data/Reserves';
+import { PairState, usePairs } from '../data-mooniswap/Reserves';
 import { wrappedCurrency } from '../utils/wrappedCurrency';
 
 import { useActiveWeb3React } from './index';

@@ -1,6 +1,7 @@
 import { Interface } from '@ethersproject/abi';
 import { ChainId, JSBI } from '@uniswap/sdk';
 import ONE_SPLIT_ABI from './one_split.json';
+import EMI_ROUTER_ABI from '../abis/EmiRouter.json';
 
 const FLAG_DISABLE_ALL_SPLIT_SOURCES = JSBI.BigInt(0x20000000);
 const FLAG_DISABLE_ALL_WRAP_SOURCES = JSBI.BigInt(0x40000000);
@@ -24,9 +25,13 @@ const ONE_SPLIT_ADDRESSES: { [chainId in ChainId]: string } = {
 
 const ONE_SPLIT_ABI_INTERFACE = new Interface(ONE_SPLIT_ABI);
 
+const EMI_ROUTER_ABI_INTERFACE = new Interface(EMI_ROUTER_ABI);
+
 export {
   ONE_SPLIT_ABI_INTERFACE,
+  EMI_ROUTER_ABI_INTERFACE,
   ONE_SPLIT_ABI,
+  EMI_ROUTER_ABI,
   ONE_SPLIT_ADDRESSES,
   FLAG_DISABLE_ALL_SPLIT_SOURCES,
   FLAG_DISABLE_ALL_WRAP_SOURCES,

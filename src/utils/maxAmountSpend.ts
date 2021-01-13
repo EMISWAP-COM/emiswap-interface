@@ -32,4 +32,3 @@ export function maxAmountSpendInvest(currencyAmount?: TokenAmount): TokenAmount 
   }
   return currencyAmount;
 }
-
