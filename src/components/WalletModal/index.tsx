@@ -19,6 +19,7 @@ import { injected, fortmatic, portis } from '../../connectors';
 import { OVERLAY_READY } from '../../connectors/Fortmatic';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
+import { Distributor } from '../AccountDetails/Distributor'
 
 const CloseIcon = styled.div`
   position: absolute;
@@ -345,6 +346,19 @@ export default function WalletModal({
       );
     }
     if (account && walletView === WALLET_VIEWS.ACCOUNT) {
+      const role = 'distributor'
+      if (
+        // role === 'distributor'
+      false
+      ) {
+         return (
+           <Distributor
+             ENSName={ENSName}
+             openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}
+           />
+         )
+
+      }
       return (
         <AccountDetails
           toggleWalletModal={toggleWalletModal}
@@ -433,13 +447,16 @@ export default function WalletModal({
 
   return (
     <Modal
-      isOpen={walletModalOpen}
+      isOpen={true}
+      // isOpen={walletModalOpen}
       onDismiss={toggleWalletModal}
       minHeight={null}
       maxHeight={90}
       maxWidth={720}
     >
-      <Wrapper>{getModalContent()}</Wrapper>
+      <Wrapper>
+        {getModalContent()}
+      </Wrapper>
     </Modal>
   );
 }
