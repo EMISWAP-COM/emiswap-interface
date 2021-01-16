@@ -348,8 +348,8 @@ export default function WalletModal({
     if (account && walletView === WALLET_VIEWS.ACCOUNT) {
       const role = 'distributor'
       if (
-        // role === 'distributor'
-      false
+        role === 'distributor'
+      // false
       ) {
          return (
            <Distributor
