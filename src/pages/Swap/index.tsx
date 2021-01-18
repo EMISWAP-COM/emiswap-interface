@@ -221,6 +221,7 @@ export default function Swap() {
   const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown(trade);
 
   function onSwap() {
+    console.log('onSwap')
     if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee)) {
       return;
     }
@@ -231,6 +232,7 @@ export default function Swap() {
     swapCallback()
       .then(hash => {
         setAttemptingTxn(false);
+        console.log('@@@ hash -> ', hash)
         setTxHash(hash);
 
         // ReactGA.event({
@@ -257,7 +259,7 @@ export default function Swap() {
 
   // warnings on slippage
   const priceImpactSeverity = warningSeverity(priceImpactWithoutFee);
-
+  console.log('@@@ trade -> ', trade)
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
   // never show if price impact is above threshold in non expert mode
   const showApproveFlow =
