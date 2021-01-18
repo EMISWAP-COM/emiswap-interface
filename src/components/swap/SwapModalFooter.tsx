@@ -38,11 +38,9 @@ export default function SwapModalFooter({
   confirmText: string;
 }) {
   const theme = useContext(ThemeContext);
-  console.log(`==========>trade123`, trade)
   if (!trade) {
     return null;
   }
-  console.log(`==========>1parsedAmounts`, parsedAmounts)
   return (
     <>
       <AutoColumn gap="0px">

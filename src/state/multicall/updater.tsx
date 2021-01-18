@@ -31,7 +31,9 @@ async function fetchChunk(
   minBlockNumber: number,
 ): Promise<{ results: string[]; blockNumber: number }> {
   const [resultsBlockNumber, returnData] = await multicallContract.aggregate(
-    chunk.map(obj => [obj.address, obj.callData]),
+    chunk.map((obj, idx) => {
+      return [obj.address, obj.callData];
+    }),
   );
   if (resultsBlockNumber.toNumber() < minBlockNumber) {
     throw new Error('Fetched for old block number');
@@ -142,10 +144,9 @@ export default function Updater() {
         fetchingBlockNumber: latestBlockNumber,
       }),
     );
-
-    chunkedCalls.forEach((chunk, index) =>
+    chunkedCalls.map((chunk, index) => {
       // todo: cancel retries when the block number updates
-      retry(() => fetchChunk(multicallContract, chunk, latestBlockNumber), {
+      return retry(() => fetchChunk(multicallContract, chunk, latestBlockNumber), {
         n: 10,
         minWait: 2500,
         maxWait: 5000,
@@ -156,7 +157,6 @@ export default function Updater() {
             .slice(0, index)
             .reduce<number>((memo, curr) => memo + curr.length, 0);
           const lastCallKeyIndex = firstCallKeyIndex + returnData.length;
-
           dispatch(
             updateMulticallResults({
               chainId,
@@ -171,7 +171,7 @@ export default function Updater() {
           );
         })
         .catch((error: any) => {
-          // console.error('Failed to fetch multicall chunk', chunk, chainId, error);
+          console.error('Failed to fetch multicall chunk', { chunk, chainId, error });
           dispatch(
             errorFetchingMulticallResults({
               calls: chunk,
@@ -179,8 +179,8 @@ export default function Updater() {
               fetchingBlockNumber: latestBlockNumber,
             }),
           );
-        }),
-    );
+        });
+    });
   }, [chainId, multicallContract, dispatch, serializedOutdatedCallKeys, latestBlockNumber]);
 
   return null;

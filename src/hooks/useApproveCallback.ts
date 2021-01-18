@@ -11,7 +11,7 @@ import {
   useAllTransactions,
 } from '../state/transactions/hooks';
 import { computeSlippageAdjustedAmounts } from '../utils/prices';
-import { calculateGasMargin, isUseOneSplitContract } from '../utils';
+import { calculateGasMargin } from '../utils';
 import { useTokenContract } from './useContract';
 import { useActiveWeb3React } from './index';
 import { ONE_SPLIT_ADDRESSES } from '../constants/one-split';
@@ -31,7 +31,6 @@ export function useApproveCallback(
   const { account } = useActiveWeb3React();
   const token = amountToApprove instanceof TokenAmount ? amountToApprove.token : undefined;
   const allTransactions = useAllTransactions();
-  console.log(`==========>111token`, token)
   const currentAllowance = useTokenAllowance(
     token?.isEther ? undefined : token,
     account ?? undefined,
@@ -48,9 +47,6 @@ export function useApproveCallback(
     if (!spender) return ApprovalState.UNKNOWN;
 
     // amountToApprove will be defined if currentAllowance is
-    console.log(`==========>currentAllowance111`, currentAllowance)
-    console.log(`==========>currentAllowance`, currentAllowance.toSignificant(6))
-    console.log(`==========>amountToApprove`, amountToApprove.toSignificant(6))
     return currentAllowance.lessThan(amountToApprove)
       ? pendingApproval
         ? ApprovalState.PENDING
@@ -58,7 +54,6 @@ export function useApproveCallback(
       : ApprovalState.APPROVED;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [amountToApprove, currentAllowance, pendingApproval, spender, allTransactions]);
-console.log(`==========>approvalState, amountToApprove`, approvalState, amountToApprove)
   const tokenContract = useTokenContract(token?.isEther ? undefined : token?.address);
   const addTransaction = useTransactionAdder();
 
@@ -129,20 +124,6 @@ export function useApproveCallbackFromTrade(
   // const tradeIsV1 = getTradeVersion(trade) === Version.v1
   // const v1ExchangeAddress = useV1TradeExchangeAddress(trade)
 
-
-  let spenderAddress = '';
-
-  if (trade?.inputAmount?.token?.isEther || trade?.outputAmount?.token?.isEther)  {
-    spenderAddress = ONE_SPLIT_ADDRESSES[ChainId.KOVAN]
-  } else {
-    console.log('123123123123123')
-    console.log(`==========>123123123trade`, trade)
-    spenderAddress = trade?.route.pairs[0].liquidityToken.address;
-  }
-
-
-console.log(`==========>trade?.route.pairs[0].liquidityToken.address`, trade?.route.pairs[0].liquidityToken.address)
-console.log(`==========>1111222amountToApprove`, amountToApprove)
-  console.log(`==========>2323spenderAddress`, spenderAddress)
+  let spenderAddress = ONE_SPLIT_ADDRESSES[ChainId.KOVAN];
   return useApproveCallback(amountToApprove, spenderAddress);
 }

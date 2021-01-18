@@ -1,14 +1,14 @@
 import { AddressZero } from '@ethersproject/constants';
 import {
   BigintIsh,
-  Token,
-  TokenAmount,
-  currencyEquals,
   ChainId,
+  currencyEquals,
   JSBI,
   Pair,
   Percent,
   Route,
+  Token,
+  TokenAmount,
   Trade,
   TradeType,
 } from '@uniswap/sdk';
@@ -27,6 +27,8 @@ import { ETH_ADDRESS, ZERO_ADDRESS } from '../constants/one-split';
 import { usePair } from './Reserves';
 import { BigNumber } from '@ethersproject/bignumber';
 import { KOVAN_DAI, KOVAN_USDC } from '../constants';
+import { useSwapState } from '../state/swap/hooks';
+import { Field } from '../state/swap/actions';
 
 export function useV1ExchangeAddress(tokenAddress?: string): string | undefined {
   const contract = useV1FactoryContract();
@@ -198,6 +200,7 @@ export function useMooniswapTrade(
   parseAmount?: TokenAmount,
 ): [Trade, BigNumber[]] | [undefined, undefined] | undefined {
   const { chainId } = useActiveWeb3React();
+  const { independentField } = useSwapState();
 
   const ETHER = new Token(chainId || ChainId.KOVAN, ZERO_ADDRESS, 18, 'ETH', 'Ethereum');
 
@@ -209,8 +212,6 @@ export function useMooniswapTrade(
           ?.multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(inputCurrency?.decimals)))
           .toFixed(0)
       : parseAmount?.toFixed(0);
-  console.log('@@@ inputCurrency -> ', inputCurrency)
-  console.log('@@@ outputCurrency -> ', outputCurrency)
   const params = [
     inputCurrency?.address
       ? inputCurrency.address !== ZERO_ADDRESS
@@ -224,10 +225,11 @@ export function useMooniswapTrade(
       : ETH_ADDRESS,
     amount,
   ];
-  console.log('@@@ params -> ', params)
-  console.log('@@@ inputCurrency -> ', inputCurrency)
+  // const trackedTokenPairs = useTrackedTokenPairs()
+  // const pairsusePairs = usePairs(trackedTokenPairs)
   const poolPair = usePair(inputCurrency, outputCurrency);
 
+  // const tokenToWeth = usePair(inputCurrency, KOVAN_WETH)
   const poolPairOverEth = usePair(inputCurrency, ETHER);
   const poolPairOverDai = usePair(inputCurrency, KOVAN_DAI);
   const poolPairOverUsdc = usePair(inputCurrency, KOVAN_USDC);
@@ -235,21 +237,11 @@ export function useMooniswapTrade(
   const poolPairUsdcToDest = usePair(KOVAN_USDC, outputCurrency);
   const poolPairDaiToDest = usePair(KOVAN_DAI, outputCurrency);
   const poolPairEthToDest = usePair(ETHER, outputCurrency);
-  console.log('@@@ useEmiRouter() -> ', useEmiRouter())
   const results = useSingleCallResult(useEmiRouter(), 'getExpectedReturn', params);
-  console.log('@@@ 1412results -> ', results)
   if (!inputCurrency || !outputCurrency || !parseAmount || !results.result) {
     return;
   }
-  console.log('@@@ poolPair -> ', poolPair)
-  console.log('@@@ poolPairOverEth -> ', poolPairOverEth)
-  console.log('@@@ poolPairOverDai -> ', poolPairOverDai)
-  console.log('@@@ poolPairOverUsdc -> ', poolPairOverUsdc)
-  console.log('@@@ poolPairUsdcToDest -> ', poolPairUsdcToDest)
-  console.log('@@@ poolPairDaiToDest -> ', poolPairDaiToDest)
-  console.log('@@@ poolPairEthToDest -> ', poolPairEthToDest)
   const distribution = results.result?.distribution;
-
   const pairs: Pair[] = [];
 
   if (distribution) {
@@ -274,15 +266,21 @@ export function useMooniswapTrade(
     return;
   }
 
-  const exactAmount = new TokenAmount(outputCurrency, JSBI.BigInt(results.result.returnAmount));
-
+  const exactAmount = new TokenAmount(
+    independentField === Field.INPUT ? outputCurrency : inputCurrency,
+    JSBI.BigInt(results.result.returnAmount),
+  );
   const route =
     inputCurrency && pairs && pairs.length > 0 && new Route(pairs, inputCurrency, outputCurrency);
   try {
-    console.log('@@@ route -> ', route)
-    console.log('@@@ exactAmount -> ', exactAmount)
     mooniswapTrade =
-      route && exactAmount ? new Trade(route, exactAmount, TradeType.EXACT_OUTPUT) : undefined;
+      route && exactAmount
+        ? new Trade(
+            route,
+            exactAmount,
+            TradeType[independentField === Field.INPUT ? 'EXACT_OUTPUT' : 'EXACT_INPUT'],
+          )
+        : undefined;
   } catch (error) {
     console.error('Failed to create mooniswapTrade trade', error);
   }
