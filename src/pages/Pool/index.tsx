@@ -1,6 +1,6 @@
 import React, { useContext, useMemo } from 'react';
 import styled, { ThemeContext } from 'styled-components';
-import { Pair, ZERO_ADDRESS } from '@uniswap/sdk';
+import { Pair, ZERO_ADDRESS } from '@uniswap/sdk'
 import { Link } from 'react-router-dom';
 import { SwapPoolTabs } from '../../components/NavigationTabs';
 
@@ -69,7 +69,6 @@ export default function Pool() {
     fetchingV2PairBalances ||
     pairs?.length < liquidityTokensWithBalances.length ||
     pairs?.some(pair => !pair);
-
   const allV2PairsWithLiquidity = pairs
     .map(([, pair]) => pair)
     .filter((pair): pair is Pair => {
@@ -82,7 +81,6 @@ export default function Pool() {
         }) !== -1
       );
     });
-
   return (
     <>
       <AppBody>
