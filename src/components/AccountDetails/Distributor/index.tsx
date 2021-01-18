@@ -1,14 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ExternalLink, TYPE } from '../../theme';
-import { injected, walletlink } from '../../connectors';
-import { getEtherscanLink, shortenAddress } from '../../utils';
+import { ExternalLink } from '../../../theme';
+import { injected, walletlink } from '../../../connectors';
+import { getEtherscanLink, shortenAddress } from '../../../utils';
 import { ExternalLink as LinkIcon } from 'react-feather';
-import { ButtonSecondary } from '../Button';
-import { formatConnectorName } from './uitls';
-import { useActiveWeb3React } from '../../hooks';
-import Copy from './Copy';
-import { StatusIcon } from './StatusIcon';
+import { formatConnectorName } from '../uitls';
+import { useActiveWeb3React } from '../../../hooks';
+import Copy from '../Copy';
+import { StatusIcon } from '../StatusIcon';
+import { PurchaseHistory } from './PurchaseHistory'
+import { ReferalPerformance } from './ReferalPerformance'
+import { WalletAction, StatusAction} from '../styleds'
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -18,7 +20,7 @@ const Wrapper = styled.div`
 const InfoCard = styled.div`
   width: 100%;
   padding: 1rem;
-  border: 1px solid ${({ theme }) => theme.bg3};
+  border: 1px solid #707070;
   border-radius: 20px;
   position: relative;
   display: grid;
@@ -71,23 +73,6 @@ const BalanceWrapper = styled.div`
   }
 `;
 
-const WalletAction = styled(ButtonSecondary)`
-  width: fit-content;
-  font-weight: 400;
-  margin-left: 8px;
-  font-size: 0.825rem;
-  padding: 4px 6px;
-  :hover {
-    cursor: pointer;
-    text-decoration: underline;
-  }
-  @media screen and (max-width: 1200px) {
-    margin-left: auto;
-  }
-
-  
-`;
-
 const AccountControl = styled.div`
   display: flex;
   min-width: 0;
@@ -122,34 +107,29 @@ const TableWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  
 `;
 
-const SpanTwoCols = styled.div`
-  grid-column: span 2;
-`;
-
-const ReferalPerformanceTable = styled.div`
-  display: grid;
-  grid-template-columns: 13rem repeat(4, 1fr);
-  width: 100%;
-  grid-row-gap: 12px;
-  grid-column-gap: 3px;
-
-  padding: 1rem;
-  border: 1px solid ${({ theme }) => theme.bg3};
-  border-radius: 20px;
-  position: relative;
-  margin-bottom: 20px;
-
-  > div {
-    background: lightblue;
+const ProfileStatus = styled.div`
+  display: flex;
+  justify-content: space-between;
+  text-transform: capitalize;
+  padding: 0 1rem 1rem 1rem;
+  span {
+    color: #000000;
+    font-weight: 700;
+    text-transform: uppercase;
   }
 `;
 
+const Package = styled.div`
+  display: flex;
+  align-items: center;
+`
+
 interface Props {
   // toggleWalletModal: () => void;
-  // pendingTransactions: any[];
-  // confirmedTransactions: any[];
+  // pendingTransad
   ENSName?: string;
   openOptions: () => void;
 }
@@ -159,6 +139,15 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
 
   return (
     <Wrapper>
+      <ProfileStatus>
+        <div>Status: <span>Distributor</span></div>
+        <Package>
+          <div>
+            Package: <span>Basic+</span>
+          </div>
+          <StatusAction>Upgrade</StatusAction>
+        </Package>
+      </ProfileStatus>
       <TableWrapper>
         <InfoCard>
           <div>
@@ -216,26 +205,9 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
             </AccountControl>
           </AccountGroupingRow>
         </InfoCard>
+        <ReferalPerformance/>
+        <PurchaseHistory/>
 
-        <TYPE.mediumHeader>Total Referral Performance</TYPE.mediumHeader>
-
-        <ReferalPerformanceTable>
-          <div>Total Referral reward</div>
-          <SpanTwoCols>1200 ESW Claim</SpanTwoCols>
-          <SpanTwoCols>200 DAI Claim</SpanTwoCols>
-
-          <div>Total Referrals</div>
-          <div>21</div>
-          <div>6 3[v]</div>
-          <div>2</div>
-          <div>3 2[v]</div>
-
-          <div>Total Ref. Purchases, ESW</div>
-          <div>999 000.3</div>
-          <div>740 999.0</div>
-          <div>100 000.0</div>
-          <div>159 000.8</div>
-        </ReferalPerformanceTable>
       </TableWrapper>
     </Wrapper>
   );
