@@ -1,9 +1,10 @@
-import { Token, TokenAmount, Pair, Trade } from '@uniswap/sdk';
+import { Pair, Token, TokenAmount, Trade } from '@uniswap/sdk';
 import flatMap from 'lodash.flatmap';
 import { useMemo } from 'react';
 
-import { BASES_TO_CHECK_TRADES_AGAINST } from '../constants';
-import { PairState, usePairs } from '../data-mooniswap/Reserves';
+import { BASES_TO_CHECK_TRADES_AGAINST, KOVAN_WETH } from '../constants';
+import { PairState } from '../data-mooniswap/Reserves'; // usePairs
+import { usePairs } from '../data/Reserves'; // usePairs
 import { wrappedCurrency } from '../utils/wrappedCurrency';
 
 import { useActiveWeb3React } from './index';
@@ -12,10 +13,12 @@ function useAllCommonPairs(currencyA?: Token, currencyB?: Token): Pair[] {
   const { chainId } = useActiveWeb3React();
 
   const bases: Token[] = chainId ? BASES_TO_CHECK_TRADES_AGAINST[chainId] : [];
-
-  const [tokenA, tokenB] = chainId
+  let [tokenA, tokenB] = chainId
     ? [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)]
     : [undefined, undefined];
+  if (tokenA?.isEther) {
+    tokenA = KOVAN_WETH;
+  }
 
   const allPairCombinations: [Token | undefined, Token | undefined][] = useMemo(
     () => [
@@ -30,8 +33,8 @@ function useAllCommonPairs(currencyA?: Token, currencyB?: Token): Pair[] {
     ],
     [tokenA, tokenB, bases],
   );
-
-  const allPairs = usePairs(allPairCombinations);
+  // all_exist
+  let allPairs = usePairs(allPairCombinations);
 
   // only pass along valid pairs, non-duplicated pairs
   return useMemo(
@@ -39,9 +42,9 @@ function useAllCommonPairs(currencyA?: Token, currencyB?: Token): Pair[] {
       Object.values(
         allPairs
           // filter out invalid pairs
-          .filter((result): result is [PairState.EXISTS, Pair] =>
-            Boolean(result[0] === PairState.EXISTS && result[1]),
-          )
+          .filter((result): result is [PairState.EXISTS, Pair] => {
+            return Boolean(result[0] === PairState.EXISTS && result[1]);
+          })
           // filter out duplicated pairs
           .reduce<{ [pairAddress: string]: Pair }>((memo, [, curr]) => {
             memo[curr.liquidityToken.address] = memo[curr.liquidityToken.address] ?? curr;

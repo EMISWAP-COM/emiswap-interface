@@ -69,7 +69,7 @@ export const KOVAN_USDC = new Token(
 );
 export const KOVAN_WETH = new Token(
   ChainId.KOVAN,
-  '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+  '0x436A822ed52422ed1759DCE74e2cf3f89Ce81Be0',
   18,
   'WETH',
   'WrappedEther',
@@ -139,6 +139,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
 // used for display in the default list when adding liquidity
 export const SUGGESTED_BASES: ChainTokenList = {
   ...ETH_ONLY,
+  [ChainId.KOVAN]: [KOVAN_DAI, KOVAN_USDC, KOVAN_WETH],
   [ChainId.MAINNET]: [DAI, USDC, USDT, CHI],
 };
 
@@ -288,3 +289,7 @@ export const BETTER_TRADE_LINK_THRESHOLD = new Percent(JSBI.BigInt(75), JSBI.Big
 export const DEFAULT_TOKEN_LIST_URL = 'https://gateway.ipfs.io/ipfs/test';
 
 export const REFERRAL_ADDRESS_STORAGE_KEY = 'referral-address';
+
+export const INIT_CODE_HASH = '0x96e8ac4277198ff8b6f785478aa9a39f403cb768dd02cbee326c3e7da348845f'
+
+export const FACTORY_ADDRESS = '0x7De3bdEb85ffCD205C7A63c8a4E0c18DbAa26C20'

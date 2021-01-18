@@ -11,7 +11,7 @@ import {
   useAllTransactions,
 } from '../state/transactions/hooks';
 import { computeSlippageAdjustedAmounts } from '../utils/prices';
-import { calculateGasMargin, isUseOneSplitContract } from '../utils';
+import { calculateGasMargin } from '../utils';
 import { useTokenContract } from './useContract';
 import { useActiveWeb3React } from './index';
 import { ONE_SPLIT_ADDRESSES } from '../constants/one-split';
@@ -54,7 +54,6 @@ export function useApproveCallback(
       : ApprovalState.APPROVED;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [amountToApprove, currentAllowance, pendingApproval, spender, allTransactions]);
-
   const tokenContract = useTokenContract(token?.isEther ? undefined : token?.address);
   const addTransaction = useTransactionAdder();
 
@@ -125,9 +124,6 @@ export function useApproveCallbackFromTrade(
   // const tradeIsV1 = getTradeVersion(trade) === Version.v1
   // const v1ExchangeAddress = useV1TradeExchangeAddress(trade)
 
-  const spenderAddress = isUseOneSplitContract(distribution)
-    ? ONE_SPLIT_ADDRESSES[ChainId.MAINNET]
-    : trade?.route.pairs[0].liquidityToken.address;
-
+  let spenderAddress = ONE_SPLIT_ADDRESSES[ChainId.KOVAN];
   return useApproveCallback(amountToApprove, spenderAddress);
 }

@@ -3802,7 +3802,7 @@ export default {
       name: 'DaiStablecoin',
       symbol: 'DAI',
       decimals: 18,
-      logoURI: 'https://tokens.1inch.exchange/0x6b175474e89094c44da98b954eedeac495271d0f.png',
+      logoURI: 'https://tokConens.1inch.exchange/0x6b175474e89094c44da98b954eedeac495271d0f.png',
     },
     {
       address: '0xB88Df205f2a93993d5d0CEC1BB476D77115a858c',
@@ -3820,6 +3820,22 @@ export default {
       decimals: 8,
       logoURI: 'https://tokens.1inch.exchange/0x2260fac5e5542a773aa44fbcfedf7c193bc2c599.png',
     },
+    {
+      address: '0x436A822ed52422ed1759DCE74e2cf3f89Ce81Be0',
+      chainId: 42,
+      name: 'WrappedEther',
+      symbol: 'WETH',
+      decimals: 18,
+      logoURI: 'https://tokens.1inch.exchange/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png',
+    },
+    // {
+    //   address: '0x0000000000000000000000000000000000000000',
+    //   chainId: 42,
+    //   name: 'Ethereum',
+    //   symbol: 'ETH',
+    //   decimals: 18,
+    //   logoURI: 'https://tokens.1inch.exchange/0x2260fac5e5542a773aa44fbcfedf7c193bc2c599.png',
+    // },
   ],
   logoURI: 'https://1inch.exchange/assets/images/logo.png',
 };

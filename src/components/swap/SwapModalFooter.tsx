@@ -38,11 +38,9 @@ export default function SwapModalFooter({
   confirmText: string;
 }) {
   const theme = useContext(ThemeContext);
-
   if (!trade) {
     return null;
   }
-
   return (
     <>
       <AutoColumn gap="0px">
