@@ -41,8 +41,6 @@ export function usePairs(
     tokenAList.push(tokenA.address);
     tokenBList.push(tokenB.address);
   }
-  console.log('@@@ allTokenAList -> ', allTokenAList)
-  console.log('@@@ allTokenBList -> ', allTokenBList)
 
   const pairsPerReq = 50;
   const batches = Math.ceil(tokenAList.length / pairsPerReq);
@@ -52,31 +50,24 @@ export function usePairs(
     callDataList.push(inputs);
   }
 
-  console.log('@@@ callDataList -> ', callDataList)
-
   const res = useSingleContractMultipleData(
     useMooniswapV1HelperContract(),
     'getPoolDataList',
     callDataList,
   );
 
-  console.log('@@@ res -> ', res)
-
   return useMemo(() => {
     // if (res.findIndex((x) => x.loading) !== -1) return [[PairState.LOADING, null]]
 
     const poolDataList = res.map(x => x.result?.[0])?.flat() || [];
     let counter = 0;
-    console.log('@@@ poolDataList -> ', poolDataList)
+
     const pairStates: [PairState, Pair | null][] = [];
     for (let i = 0; i < poolDataList.length; i++) {
       const tokenA = allTokenAList[i];
       const tokenB = allTokenBList[i];
       if (!tokenA || !tokenB || tokenA.equals(tokenB)) {
         pairStates.push([PairState.INVALID, null]);
-        console.log('@@@ allTokenAList -> ', allTokenAList)
-        console.log('@@@ allTokenBList -> ', allTokenBList)
-        console.log('invaliddddddd')
         continue;
       }
 
@@ -93,16 +84,15 @@ export function usePairs(
         continue;
       }
 
-      // const pairs: Pair[] = pairStates
-      //   .filter(pairState => pairState[1] !== null)
-      //   .map(pairState => pairState[1]);
-      //
-      // if (isPairDuplicated(pairs, tokenA, tokenB)) {
-      //   pairStates.push([PairState.NOT_EXISTS, null]);
-      //   continue;
-      // }
-      console.log('@@@ tokenA -> ', tokenA)
-      console.log('@@@ tokenB -> ', tokenB)
+      const pairs: Pair[] = pairStates
+        .filter(pairState => pairState[1] !== null)
+        .map(pairState => pairState[1]);
+
+      if (isPairDuplicated(pairs, tokenA, tokenB)) {
+        pairStates.push([PairState.NOT_EXISTS, null]);
+        continue;
+      }
+
       pairStates.push([
         PairState.EXISTS,
         new Pair(
@@ -117,7 +107,5 @@ export function usePairs(
 }
 
 export function usePair(tokenA?: Token, tokenB?: Token): [PairState, Pair | null] {
-  const pairs = usePairs([[tokenA, tokenB]])[0];
-  console.log('@@@2 2222pairs -> ', pairs)
-  return pairs
+  return usePairs([[tokenA, tokenB]])[0];
 }
