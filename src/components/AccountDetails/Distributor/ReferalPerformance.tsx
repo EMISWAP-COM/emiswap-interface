@@ -49,7 +49,7 @@ const Title = styled(Cell)`
   font-weight: normal;
   padding-left: 1rem;
   color: #000000;
-  background: none;
+  
 `
 
 
@@ -75,7 +75,6 @@ const Table = styled.div`
     
     > div:first-child {
       color: #707070;
-      font-size: 1rem;
     }
     
   }

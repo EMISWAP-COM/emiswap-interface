@@ -55,8 +55,13 @@ const StyledDialogContent = styled(
     background-color: ${({ theme }) => theme.bg1};
     box-shadow: 0 4px 8px 0 ${({ theme }) => transparentize(0.95, theme.shadow1)};
     padding: 0;
-    width: 50vw;
-    overflow: hidden;
+    width: 54vw;
+    overflow: scroll;
+    
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
     ${({ maxWidth }) =>
       maxWidth &&
       css`

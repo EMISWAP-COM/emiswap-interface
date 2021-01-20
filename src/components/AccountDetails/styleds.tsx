@@ -5,6 +5,7 @@ import { RowBetween } from '../Row';
 import { ButtonSecondary } from '../Button'
 
 export const Level = styled.div`
+  width: 1.5rem;
   background: #6E6E6E;
   border-radius: .4rem;
   color: #ffffff;

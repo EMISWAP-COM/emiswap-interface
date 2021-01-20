@@ -9,6 +9,7 @@ const TableWrapper = styled.div`
   border-radius: 20px;
   overflow-y: hidden;
   margin-bottom: 20px;
+  
   width: 100%;
   
   @media screen and (max-width: 1200px) {
@@ -20,28 +21,21 @@ const TableWrapper = styled.div`
 `;
 
 const Table = styled.div`
-  display: grid;
-  grid-template-columns: 10rem 2rem 1fr 3fr;
-  // grid-template-columns: repeat(auto-fill, minmax(10rem, auto));
+  height: 105px;
 
-  width: 100%;
-  grid-row-gap: 2px;
-  font-size: 0.8rem;
-  height: 108px;
   overflow-y: scroll;
-    align-items: center;
-
-  @media screen and (max-width: 1200px) {
-      grid-template-columns: 10rem 1fr auto;
-      > div {background: none !important}
-  }
+  align-items: center;
+  
+    @media screen and (max-width: 1200px) {
+    height: 210px;
+}
 
   &::-webkit-scrollbar {
     width: 8px;
     height: 8px;
     background: none;
   }
-  //
+
   &::-webkit-scrollbar-track {
     width: 2px;
     background: #707070;
@@ -54,38 +48,44 @@ const Table = styled.div`
     border-radius: 20px;
   }
 
-  > div {
-    height: 35px;
-    display: flex;
-    align-items: center;
-  }
-  > div:nth-child(8n + 1) {
-    background: #e4e5e7;
-  }
-  > div:nth-child(8n + 2) {
-    background: #e4e5e7;
-  }
-  > div:nth-child(8n + 3) {
-    background: #e4e5e7;
-  }
-  > div:nth-child(8n + 4) {
-    background: #e4e5e7;
-  }
 `;
 
+const TableRow = styled.div`
+  height: 35px;
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+  padding: 0 1rem;
+
+  &:nth-child(2n - 1) {
+    background: #E4E5E7;
+  }
+  
+  @media screen and (max-width: 1200px) {
+    height: 70px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+`
+
 const Date = styled.div`
-    padding-left: 1rem;
+    min-width: 8.5rem;
 `
 
 const LevelWrapper = styled.div`
-  @media screen and (max-width: 1200px) {
-    justify-self: end;
-  }
+  min-width: 1.5rem;
+  align-self: center;
 `
 
 const Cost = styled.div`
+  min-width: 8rem;
+  text-align: right;
+  margin-right: 1rem;
+  
   @media screen and (max-width: 1200px) {
-    justify-self: end;
+    margin-right: 0;
+
   }
 
   > span {
@@ -97,9 +97,9 @@ const Cost = styled.div`
 const Wallet = styled.div`
   font-weight: 600;
   color: #000000;
-  padding-right: 1rem;
   @media screen and (max-width: 1200px) {
-    grid-column: span 3;
+    font-weight: 500;
+    font-size: .75rem;
   }
 
 `;
@@ -144,14 +144,14 @@ export const PurchaseHistory = () => {
       <TableWrapper>
         <Table id={'test'} className="mostly-customized-scrollbar">
           {purchaseList.map(purchase => (
-            <>
+            <TableRow>
               <Date>{purchase.date}</Date>
               <LevelWrapper />
               <Cost>
                 <span>{purchase.value}</span>&nbsp; ESW
               </Cost>
               <Wallet>{purchase.wallet}</Wallet>
-            </>
+            </TableRow>
           ))}
         </Table>
       </TableWrapper>
@@ -160,7 +160,7 @@ export const PurchaseHistory = () => {
       <TableWrapper>
         <Table>
           {purchaseList.map(purchase => (
-            <>
+            <TableRow>
               <Date>{purchase.date}</Date>
               <LevelWrapper>
                 <Level>1lvl</Level>
@@ -169,7 +169,7 @@ export const PurchaseHistory = () => {
                 <span>{purchase.value}</span>&nbsp; ESW
               </Cost>
               <Wallet>{purchase.wallet}</Wallet>
-            </>
+            </TableRow>
           ))}
         </Table>
       </TableWrapper>

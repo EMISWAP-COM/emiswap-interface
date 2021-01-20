@@ -9,7 +9,7 @@ import { useActiveWeb3React } from '../../../hooks';
 import Copy from '../Copy';
 import { StatusIcon } from '../StatusIcon';
 import { PurchaseHistory } from './PurchaseHistory'
-// import { ReferalPerformance } from './ReferalPerformance'
+import { ReferalPerformance } from './ReferalPerformance'
 import { WalletAction, StatusAction} from '../styleds'
 import { loadPerformance } from '../../../state/cabinets/actions'
 import { useDispatch } from 'react-redux'
@@ -30,6 +30,10 @@ const InfoCard = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   grid-gap: 12px;
   margin-bottom: 20px;
+  
+    @media screen and (max-width: 1200px) {
+    border-radius: 5px;
+}
 `;
 
 const AccountGroupingRow = styled.div`
@@ -228,7 +232,7 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
             </AccountControl>
           </AccountGroupingRow>
         </InfoCard>
-        {/*<ReferalPerformance/>*/}
+        <ReferalPerformance/>
         <PurchaseHistory/>
 
       </TableWrapper>
