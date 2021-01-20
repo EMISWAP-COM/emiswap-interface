@@ -10,11 +10,20 @@ const TableWrapper = styled.div`
   overflow-y: hidden;
   margin-bottom: 20px;
   width: 100%;
+  
+  @media screen and (max-width: 1200px) {
+    border: none;
+      border-radius: 5px;
+        background: #F7F8FA;
+
+  }
 `;
 
 const Table = styled.div`
   display: grid;
   grid-template-columns: 10rem 2rem 1fr 3fr;
+  // grid-template-columns: repeat(auto-fill, minmax(10rem, auto));
+
   width: 100%;
   grid-row-gap: 2px;
   font-size: 0.8rem;
@@ -22,6 +31,10 @@ const Table = styled.div`
   overflow-y: scroll;
     align-items: center;
 
+  @media screen and (max-width: 1200px) {
+      grid-template-columns: 10rem 1fr auto;
+      > div {background: none !important}
+  }
 
   &::-webkit-scrollbar {
     width: 8px;
@@ -64,7 +77,17 @@ const Date = styled.div`
     padding-left: 1rem;
 `
 
+const LevelWrapper = styled.div`
+  @media screen and (max-width: 1200px) {
+    justify-self: end;
+  }
+`
+
 const Cost = styled.div`
+  @media screen and (max-width: 1200px) {
+    justify-self: end;
+  }
+
   > span {
     font-weight: 600;
     color: #000000;
@@ -75,6 +98,9 @@ const Wallet = styled.div`
   font-weight: 600;
   color: #000000;
   padding-right: 1rem;
+  @media screen and (max-width: 1200px) {
+    grid-column: span 3;
+  }
 
 `;
 
@@ -120,7 +146,7 @@ export const PurchaseHistory = () => {
           {purchaseList.map(purchase => (
             <>
               <Date>{purchase.date}</Date>
-              <div />
+              <LevelWrapper />
               <Cost>
                 <span>{purchase.value}</span>&nbsp; ESW
               </Cost>
@@ -136,9 +162,9 @@ export const PurchaseHistory = () => {
           {purchaseList.map(purchase => (
             <>
               <Date>{purchase.date}</Date>
-              <div>
+              <LevelWrapper>
                 <Level>1lvl</Level>
-              </div>
+              </LevelWrapper>
               <Cost>
                 <span>{purchase.value}</span>&nbsp; ESW
               </Cost>

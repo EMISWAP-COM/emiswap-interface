@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react'
 import styled from 'styled-components';
 import { ExternalLink } from '../../../theme';
 import { injected, walletlink } from '../../../connectors';
@@ -9,8 +9,11 @@ import { useActiveWeb3React } from '../../../hooks';
 import Copy from '../Copy';
 import { StatusIcon } from '../StatusIcon';
 import { PurchaseHistory } from './PurchaseHistory'
-import { ReferalPerformance } from './ReferalPerformance'
+// import { ReferalPerformance } from './ReferalPerformance'
 import { WalletAction, StatusAction} from '../styleds'
+import { loadPerformance } from '../../../state/cabinets/actions'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from '../../../state'
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -113,8 +116,18 @@ const TableWrapper = styled.div`
 const ProfileStatus = styled.div`
   display: flex;
   justify-content: space-between;
+  width: 100%;
   text-transform: capitalize;
   padding: 0 1rem 1rem 1rem;
+  flex-wrap: wrap;
+  align-items: 
+  background: lightgreen;
+  gap: 12px;
+  
+  @media screen and (max-width: 1200px) {
+    padding: 0 0 1rem 0;
+  }
+  
   span {
     color: #000000;
     font-weight: 700;
@@ -125,7 +138,10 @@ const ProfileStatus = styled.div`
 const Package = styled.div`
   display: flex;
   align-items: center;
-`
+  justify-content: space-between;
+  min-width: 300px;
+  width: 100%;
+`;
 
 interface Props {
   // toggleWalletModal: () => void;
@@ -135,7 +151,14 @@ interface Props {
 }
 
 const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
+  const dispatch = useDispatch<AppDispatch>();
+
   const { chainId, account, connector } = useActiveWeb3React();
+  // const [referalPerformance, setReferalPerformance] = useState(null)
+
+  useEffect(() => {
+    dispatch(loadPerformance() as any)
+  }, [dispatch])
 
   return (
     <Wrapper>
@@ -205,7 +228,7 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
             </AccountControl>
           </AccountGroupingRow>
         </InfoCard>
-        <ReferalPerformance/>
+        {/*<ReferalPerformance/>*/}
         <PurchaseHistory/>
 
       </TableWrapper>
