@@ -129,7 +129,7 @@ export function useEstimateCallback(
       ];
 
       // estimate
-      return contract.estimateGas['swapTokensForExactETH'](
+      return contract.estimateGas['swap'](
         ...args,
         value && !value.isZero() ? { value, from: account } : { from: account },
       )
