@@ -51,6 +51,7 @@ import { ClickableText } from '../Pool/styleds';
 import { isUseOneSplitContract } from '../../utils';
 import ReferralLink from '../../components/RefferalLink';
 import GasConsumption from '../../components/swap/GasConsumption';
+import { BigNumber } from '@ethersproject/bignumber';
 
 export default function Swap() {
   useDefaultsFromURLSearch();
@@ -82,7 +83,16 @@ export default function Swap() {
     error,
   } = useDerivedSwapInfo();
 
-  const distribution = mooniswapTrade?.[1];
+  console.log(`==========>mooniswapTrade`, mooniswapTrade);
+  let distribution: any[] = [];
+  // mcck distibution
+  if (mooniswapTrade?.[1]) {
+    distribution = mooniswapTrade[1];
+  } else {
+    for (let i = 0; i < 35; i++) {
+      distribution.push(BigNumber.from(i === 11 ? '100000000000000': '000000000000000'));
+    }
+  }
 
   const { wrapType, execute: onWrap, error: wrapError } = useWrapCallback();
   // currencies[Field.INPUT],
