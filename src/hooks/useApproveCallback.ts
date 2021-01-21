@@ -29,6 +29,7 @@ export enum ApprovalState {
 export function useApproveCallback(
   amountToApprove?: TokenAmount,
   spender?: string,
+  isPool?: boolean,
 ): [ApprovalState, () => Promise<void>] {
   const { account } = useActiveWeb3React();
   const token = amountToApprove instanceof TokenAmount ? amountToApprove.token : undefined;
@@ -43,7 +44,10 @@ export function useApproveCallback(
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
     if (!amountToApprove || !spender) return ApprovalState.UNKNOWN;
-    if (amountToApprove.token.equals(ETHER) || swapState[Field.INPUT].currencyId === ZERO_ADDRESS)
+    if (
+      (amountToApprove.token.equals(ETHER) || swapState[Field.INPUT].currencyId === ZERO_ADDRESS) &&
+      !isPool
+    )
       return ApprovalState.APPROVED;
     // we might not have enough data to know whether or not we need to approve
     if (!currentAllowance) return ApprovalState.UNKNOWN;
