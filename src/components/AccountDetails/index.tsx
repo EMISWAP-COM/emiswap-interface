@@ -7,7 +7,6 @@ import { useAccountInfo } from '../../hooks/useAccountInfo';
 import { AppDispatch } from '../../state';
 import { clearAllTransactions } from '../../state/transactions/actions';
 import { getEtherscanLink, shortenAddress } from '../../utils';
-import Identicon from '../Identicon';
 import { ButtonSecondary } from '../Button';
 import { AutoRow } from '../Row';
 import Copy from './Copy';
@@ -15,14 +14,11 @@ import Transaction from './Transaction';
 import TotalEarnDividends from './TotalEarnDividends';
 import SourcesList from './SourcesList';
 
-import { SUPPORTED_WALLETS } from '../../constants';
-import { fortmatic, injected, portis, walletconnect, walletlink } from '../../connectors';
+import { injected, walletlink } from '../../connectors';
 import { ReactComponent as Close } from '../../assets/images/x.svg';
-import CoinbaseWalletIcon from '../../assets/images/coinbaseWalletIcon.svg';
-import WalletConnectIcon from '../../assets/images/walletConnectIcon.svg';
-import FortmaticIcon from '../../assets/images/fortmaticIcon.png';
-import PortisIcon from '../../assets/images/portisIcon.png';
 import { ExternalLink, LinkStyledButton, TYPE } from '../../theme';
+import { formatConnectorName } from './uitls';
+import { StatusIcon } from './StatusIcon'
 
 const HeaderRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
@@ -166,21 +162,6 @@ const WalletName = styled.div`
   color: ${({ theme }) => theme.text3};
 `;
 
-const IconWrapper = styled.div<{ size?: number }>`
-  ${({ theme }) => theme.flexColumnNoWrap};
-  align-items: center;
-  justify-content: center;
-  margin-right: 8px;
-  & > img,
-  span {
-    height: ${({ size }) => (size ? size + 'px' : '32px')};
-    width: ${({ size }) => (size ? size + 'px' : '32px')};
-  }
-  ${({ theme }) => theme.mediaWidth.upToMedium`
-    align-items: flex-end;
-  `};
-`;
-
 const TransactionListWrapper = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap};
 `;
@@ -195,10 +176,6 @@ const WalletAction = styled(ButtonSecondary)`
     cursor: pointer;
     text-decoration: underline;
   }
-`;
-
-const MainWalletAction = styled(WalletAction)`
-  color: ${({ theme }) => theme.primary1};
 `;
 
 function renderTransactions(transactions) {
@@ -244,61 +221,7 @@ export default function AccountDetails({
     crowdSaleReferralRewardAvailableForMinting,
   } = useAccountInfo();
 
-  function formatConnectorName() {
-    const { ethereum } = window;
-    const isMetaMask = !!(ethereum && ethereum.isMetaMask);
-    const name = Object.keys(SUPPORTED_WALLETS)
-      .filter(
-        k =>
-          SUPPORTED_WALLETS[k].connector === connector &&
-          (connector !== injected || isMetaMask === (k === 'METAMASK')),
-      )
-      .map(k => SUPPORTED_WALLETS[k].name)[0];
-    return <WalletName>Connected with {name}</WalletName>;
-  }
 
-  function getStatusIcon() {
-    if (connector === injected) {
-      return (
-        <IconWrapper size={16}>
-          <Identicon />
-        </IconWrapper>
-      );
-    } else if (connector === walletconnect) {
-      return (
-        <IconWrapper size={16}>
-          <img src={WalletConnectIcon} alt={''} />
-        </IconWrapper>
-      );
-    } else if (connector === walletlink) {
-      return (
-        <IconWrapper size={16}>
-          <img src={CoinbaseWalletIcon} alt={''} />
-        </IconWrapper>
-      );
-    } else if (connector === fortmatic) {
-      return (
-        <IconWrapper size={16}>
-          <img src={FortmaticIcon} alt={''} />
-        </IconWrapper>
-      );
-    } else if (connector === portis) {
-      return (
-        <>
-          <IconWrapper size={16}>
-            <img src={PortisIcon} alt={''} />
-            <MainWalletAction
-              onClick={() => {
-                portis.portis.showPortis();
-              }}
-            >
-              Show Portis
-            </MainWalletAction>
-          </IconWrapper>
-        </>
-      );
-    }
-  }
 
   const clearAllTransactionsCallback = useCallback(
     (event: React.MouseEvent) => {
@@ -319,7 +242,7 @@ export default function AccountDetails({
           <YourAccount>
             <InfoCard>
               <AccountGroupingRow>
-                {formatConnectorName()}
+                <WalletName>Connected with {formatConnectorName(connector)}</WalletName>
                 <div>
                   {connector !== injected && connector !== walletlink && (
                     <WalletAction
@@ -346,14 +269,14 @@ export default function AccountDetails({
                   {ENSName ? (
                     <>
                       <div>
-                        {getStatusIcon()}
+                        <StatusIcon connectorName={connector} />
                         <p> {ENSName}</p>
                       </div>
                     </>
                   ) : (
                     <>
                       <div>
-                        {getStatusIcon()}
+                        <StatusIcon connectorName={connector} />
                         <p> {shortenAddress(account)}</p>
                       </div>
                     </>
