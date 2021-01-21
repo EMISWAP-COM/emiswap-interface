@@ -1,6 +1,8 @@
 import { ChainId, ETHER, JSBI, Percent, Token } from '@uniswap/sdk';
 
 import { fortmatic, injected, portis, walletconnect, walletlink } from '../connectors';
+import { keccak256 } from '@ethersproject/solidity';
+import { bytecode } from './abis/Emiswap.json';
 
 export const MAX_NUM_DECIMALS = 18;
 export const ROUTER_ADDRESS = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D';
@@ -55,21 +57,21 @@ export const CHI = new Token(
 
 export const KOVAN_DAI = new Token(
   ChainId.KOVAN,
-  '0x1cC52216E4037BB55dCD950E6ed97aa15C8a4b66',
+  '0xE380B174d75974Fd6f425b0A0E9c8489890Cd8F9',
   18,
   'DAI',
   'Dai Stablecoin',
 );
 export const KOVAN_USDC = new Token(
   ChainId.KOVAN,
-  '0xB88Df205f2a93993d5d0CEC1BB476D77115a858c',
+  '0x5a89AFefB5e3912d81F90Ea2c4844553e979bafF',
   6,
   'USDC',
   'USD//C',
 );
 export const KOVAN_WETH = new Token(
   ChainId.KOVAN,
-  '0x436A822ed52422ed1759DCE74e2cf3f89Ce81Be0',
+  '0x440eB39eCFE6df3A5dCAeC7D9D0A16C875eBD77F',
   18,
   'WETH',
   'WrappedEther',
@@ -290,6 +292,6 @@ export const DEFAULT_TOKEN_LIST_URL = 'https://gateway.ipfs.io/ipfs/test';
 
 export const REFERRAL_ADDRESS_STORAGE_KEY = 'referral-address';
 
-export const INIT_CODE_HASH = '0x96e8ac4277198ff8b6f785478aa9a39f403cb768dd02cbee326c3e7da348845f'
+export const INIT_CODE_HASH = keccak256(['bytes'], [bytecode]);
 
-export const FACTORY_ADDRESS = '0x7De3bdEb85ffCD205C7A63c8a4E0c18DbAa26C20'
+export const FACTORY_ADDRESS = '0xb9Cba89F4caFa60f9040D6d495a56344F37EBA23';

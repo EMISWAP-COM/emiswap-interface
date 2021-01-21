@@ -90,14 +90,14 @@ export default function Swap() {
   // typedValue
   const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE;
   const toggledVersion = useToggledVersion();
-  const trade = showWrap
-    ? undefined
-    : {
-        [Version.v1]: v1Trade,
-        [Version.v2]: v2Trade,
-        [Version.v3]: mooniswapTrade?.[0],
-      }[toggledVersion];
-
+  // const trade = showWrap
+  //   ? undefined
+  //   : {
+  //       [Version.v1]: v1Trade,
+  //       [Version.v2]: v2Trade,
+  //       [Version.v3]: mooniswapTrade?.[0],
+  //     }[toggledVersion];
+  const trade = v2Trade;
   const betterTradeLinkVersion: Version | undefined =
     toggledVersion === Version.v2 && isTradeBetter(v2Trade, v1Trade, BETTER_TRADE_LINK_THRESHOLD)
       ? Version.v1
@@ -221,7 +221,6 @@ export default function Swap() {
   const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown(trade);
 
   function onSwap() {
-    console.log('onSwap')
     if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee)) {
       return;
     }
@@ -232,7 +231,6 @@ export default function Swap() {
     swapCallback()
       .then(hash => {
         setAttemptingTxn(false);
-        console.log('@@@ hash -> ', hash)
         setTxHash(hash);
 
         // ReactGA.event({
@@ -259,7 +257,6 @@ export default function Swap() {
 
   // warnings on slippage
   const priceImpactSeverity = warningSeverity(priceImpactWithoutFee);
-  console.log('@@@ trade -> ', trade)
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
   // never show if price impact is above threshold in non expert mode
   const showApproveFlow =
