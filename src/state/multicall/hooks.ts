@@ -295,33 +295,47 @@ export function useMultipleContractSingleData(
   options?: ListenerOptions,
   tokenA?: string,
   tokenB?: string,
+  isMultyInputs?: boolean,
+  multyCallInputs?: (string | undefined)[][],
 ): CallState[] {
   const fragment = useMemo(() => contractInterface.getFunction(methodName), [
     contractInterface,
     methodName,
   ]);
-  const callData: string | undefined | [string] = useMemo(() => {
+  let calls;
+  if (multyCallInputs) {
+    const callData = multyCallInputs?.map(callInput => {
+      return fragment && isValidMethodArgs(callInputs)
+        ? contractInterface.encodeFunctionData(fragment, callInput)
+        : undefined;
+    });
+    calls =
+      fragment && addresses && addresses.length > 0 && callData
+        ? callData.map(el => {
+            return {
+              address: addresses[0],
+              callData: el,
+            };
+          })
+        : [];
+  } else {
+    const callData =
+      fragment && isValidMethodArgs(callInputs)
+        ? contractInterface.encodeFunctionData(fragment, callInputs)
+        : undefined;
 
-    // return callInputs?.map(callInput => {
-    return fragment && isValidMethodArgs(callInputs)
-      ? contractInterface.encodeFunctionData(fragment, callInputs)
-      : undefined;
-    // });
-  }, [callInputs, contractInterface, fragment]);
-
-  const calls = useMemo(() => {
-    if (fragment && addresses && addresses.length > 0 && callData) {
-      return addresses.map<Call | undefined>(address => {
-        return address && callData
-          ? {
-              address,
-              callData: callData,
-            }
-          : undefined;
-      });
-    }
-    return [];
-  }, [addresses, callData, fragment]);
+    calls =
+      fragment && addresses && addresses.length > 0 && callData
+        ? addresses.map<Call | undefined>(address => {
+            return address && callData
+              ? {
+                  address,
+                  callData: callData,
+                }
+              : undefined;
+          })
+        : [];
+  }
 
   const results = useCallsData(calls, options);
 

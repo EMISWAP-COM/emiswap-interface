@@ -20,22 +20,35 @@ function useAllCommonPairs(currencyA?: Token, currencyB?: Token): Pair[] {
     tokenA = KOVAN_WETH;
   }
 
-  const allPairCombinations: [Token | undefined, Token | undefined][] = useMemo(
-    () => [
-      // the direct pair
-      [tokenA, tokenB],
-      // token A against all bases
-      ...bases.map((base): [Token | undefined, Token | undefined] => [tokenA, base]),
-      // token B against all bases
-      ...bases.map((base): [Token | undefined, Token | undefined] => [tokenB, base]),
-      // each base against all bases
-      ...flatMap(bases, (base): [Token, Token][] => bases.map(otherBase => [base, otherBase])),
-    ],
-    [tokenA, tokenB, bases],
+  const basePairs: [Token, Token][] = useMemo(
+    () =>
+      flatMap(bases, (base): [Token, Token][] => bases.map(otherBase => [base, otherBase])).filter(
+        ([t0, t1]) => t0.address !== t1.address,
+      ),
+    [bases],
   );
+
+  const allPairCombinations: [Token, Token][] = useMemo(
+    () =>
+      tokenA && tokenB
+        ? [
+            // the direct pair
+            [tokenA, tokenB],
+            // token A against all bases
+            ...bases.map((base): [Token | undefined, Token] => [tokenA, base]),
+            // token B against all bases
+            ...bases.map((base): [Token | undefined, Token] => [tokenB, base]),
+            // each base against all bases
+            ...basePairs,
+          ]
+            .filter((tokens): tokens is [Token, Token] => Boolean(tokens[0] && tokens[1]))
+            .filter(([t0, t1]) => t0.address !== t1.address)
+        : [],
+    [tokenA, tokenB, bases, basePairs],
+  );
+
   // all_exist
   let allPairs = usePairs(allPairCombinations);
-
   // only pass along valid pairs, non-duplicated pairs
   return useMemo(
     () =>

@@ -2,6 +2,7 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { Contract } from '@ethersproject/contracts';
 import { JSBI, TokenAmount, Trade, ZERO_ADDRESS } from '@uniswap/sdk';
 import { useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import { INITIAL_ALLOWED_SLIPPAGE } from '../constants';
 import { getTradeVersion } from '../data/V1';
 import { useTransactionAdder } from '../state/transactions/hooks';
@@ -26,6 +27,8 @@ import { tokenAmountToString } from '../utils/formats';
 import { useSwapEmiRouter } from './useContract';
 import defaultCoins from '../constants/defaultCoins';
 import { Web3Provider } from '@ethersproject/providers';
+import { AppState } from '../state';
+import { Field } from '../state/swap/actions';
 // function isZero(hexNumber: string) {
 //   return /^0x0*$/.test(hexNumber)
 // }
@@ -186,7 +189,7 @@ export function useSwapCallback(
 ): SwapCallback {
   const { account, chainId, library } = useActiveWeb3React();
   const addTransaction = useTransactionAdder();
-
+  const swapState = useSelector<AppState, AppState['swap']>(state => state.swap);
   const recipient = account;
 
   const tradeVersion = getTradeVersion(trade);
@@ -211,8 +214,11 @@ export function useSwapCallback(
     return async function onSwap() {
       const contract: Contract | null = isOneSplit
         ? getOneSplit(chainId, library, account)
+        : trade.route.path.length <= 2 &&
+          swapState[Field.INPUT].currencyId !== ZERO_ADDRESS &&
+          swapState[Field.OUTPUT].currencyId !== ZERO_ADDRESS
+        ? getMooniswapContract(chainId, library, trade.route.pairs[0].poolAddress, account)
         : emiRouterContract;
-      getMooniswapContract(chainId, library, trade.route.pairs[0].poolAddress, account);
       if (!contract) {
         throw new Error('Failed to get a swap contract');
       }
@@ -323,12 +329,6 @@ export function useSwapCallback(
           .mul(String(10000 - allowedSlippage))
           .div(String(10000));
 
-        // const referalAddressStr = localStorage.getItem(REFERRAL_ADDRESS_STORAGE_KEY);
-        // let referalAddress = '0x68a17B587CAF4f9329f0e372e3A78D23A46De6b5';
-        // if (referalAddressStr && isAddress(referalAddressStr)) {
-        //   referalAddress = getAddress(referalAddressStr);
-        // }
-
         const WETH = defaultCoins.tokens.find(
           token => token.symbol === 'WETH' && token.chainId === chainId,
         );
@@ -337,20 +337,34 @@ export function useSwapCallback(
         let method = 'swap';
         let obj = {};
 
-        const addresses = [
-          trade?.inputAmount?.token?.isEther
-            ? WETH?.address?.toString()
-            : trade?.inputAmount?.token?.address?.toString(),
-          trade?.outputAmount?.token?.isEther
-            ? WETH?.address?.toString()
-            : trade?.outputAmount?.token?.address?.toString(),
-        ];
-
-        if (trade?.inputAmount?.token?.isEther || trade?.outputAmount?.token?.isEther) {
-          if (trade?.inputAmount?.token?.isEther) {
-            method = 'swapExactETHForTokens'; // при вводе вехрхнего // 'swapExactETHForTokens' 'swapETHForExactTokens'
+        const addresses = trade.route.path.map(el => el.address);
+        if (
+          trade.route.path.length <= 2 &&
+          swapState[Field.INPUT].currencyId !== ZERO_ADDRESS &&
+          swapState[Field.OUTPUT].currencyId !== ZERO_ADDRESS
+        ) {
+          method = 'swap';
+          args = [
+            ...addresses,
+            (+formattedAmounts.INPUT * 10 ** trade?.inputAmount?.token?.decimals).toString(),
+            minReturn.toString(),
+            account,
+            ZERO_ADDRESS,
+          ];
+          obj = {};
+        } else if (
+          trade?.inputAmount?.token?.isEther ||
+          trade?.outputAmount?.token?.isEther ||
+          swapState[Field.INPUT].currencyId === ZERO_ADDRESS ||
+          swapState[Field.OUTPUT].currencyId === ZERO_ADDRESS
+        ) {
+          if (
+            trade?.inputAmount?.token?.isEther ||
+            swapState[Field.INPUT].currencyId === ZERO_ADDRESS
+          ) {
+            method = 'swapExactETHForTokens';
             args = [
-              BigInt(+formattedAmounts.OUTPUT * 10 ** trade.outputAmount.token.decimals).toString(), //t3,
+              minReturn.toString(), //t3,
               addresses,
               account,
               ZERO_ADDRESS,
@@ -359,7 +373,7 @@ export function useSwapCallback(
               value: `0x${BigInt(+formattedAmounts.INPUT * 10 ** WETH!.decimals).toString(16)}`,
             };
           } else {
-            method = 'swapExactTokensForETH'; // при вводе нижнего //'swapTokensForExactETH'; 'swapExactTokensForETH' 'swapTokensForExactETH'
+            method = 'swapExactTokensForETH';
             args = [
               (+formattedAmounts.INPUT * 10 ** trade?.inputAmount?.token?.decimals).toString(),
               // t3,
@@ -415,7 +429,7 @@ export function useSwapCallback(
     isOneSplit,
     emiRouterContract,
     formattedAmounts.INPUT,
-    formattedAmounts.OUTPUT,
+    swapState,
     // useChi
   ]);
 }

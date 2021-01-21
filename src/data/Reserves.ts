@@ -4,10 +4,7 @@ import { useActiveWeb3React } from '../hooks';
 
 import { useMultipleContractSingleData } from '../state/multicall/hooks';
 import { wrappedCurrency } from '../utils/wrappedCurrency';
-import { useEmiRouter, useMooniswapV1FactoryContract } from '../hooks/useContract';
-import { Contract } from '@ethersproject/contracts';
-
-// const PAIR_INTERFACE = new Interface(IEmiswapABI);
+import { useEmiRouter } from '../hooks/useContract';
 
 export enum PairState {
   LOADING,
@@ -15,75 +12,79 @@ export enum PairState {
   EXISTS,
   INVALID,
 }
-let PAIR_ADDRESS_CACHE: { [token0Address: string]: { [token1Address: string]: string } } = {};
-const getAddress = (
-  tokenA: Token,
-  tokenB: Token,
-  factoryContract: Contract | null,
-  emirouter: Contract | null,
-): string => {
-  const tokens = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA];
-  if (PAIR_ADDRESS_CACHE?.[tokens[0].address]?.[tokens[1].address] === undefined) {
-    const token2Address = factoryContract === null ? '' : emirouter?.address;
-    PAIR_ADDRESS_CACHE = {
-      ...PAIR_ADDRESS_CACHE,
-      [tokens[0].address]: {
-        ...PAIR_ADDRESS_CACHE?.[tokens[0].address],
-        [tokens[1].address]: token2Address,
-      },
-    };
-  }
-  return PAIR_ADDRESS_CACHE[tokens[0].address][tokens[1].address];
-};
+// let PAIR_ADDRESS_CACHE: { [token0Address: string]: { [token1Address: string]: string } } = {};
+// const getAddress = (
+//   tokenA: Token,
+//   tokenB: Token,
+//   factoryContract: Contract | null,
+//   emirouter: Contract | null,
+// ): string => {
+//   const tokens = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA]; // does safety checks
+//
+//   if (PAIR_ADDRESS_CACHE?.[tokens[0].address]?.[tokens[1].address] === undefined) {
+//     PAIR_ADDRESS_CACHE = {
+//       ...PAIR_ADDRESS_CACHE,
+//       [tokens[0].address]: {
+//         ...PAIR_ADDRESS_CACHE?.[tokens[0].address],
+//         [tokens[1].address]: getCreate2Address(
+//           FACTORY_ADDRESS,
+//           keccak256(
+//             ['bytes'],
+//             [pack(['address', 'address'], [tokens[0].address, tokens[1].address])],
+//           ),
+//           INIT_CODE_HASH,
+//         ),
+//       },
+//     };
+//   }
+//   return PAIR_ADDRESS_CACHE[tokens[0].address][tokens[1].address];
+// };
 
 export function usePairs(
   currencies: [Token | undefined, Token | undefined][],
 ): [PairState, Pair | null][] {
   const { chainId } = useActiveWeb3React();
-  const factory = useMooniswapV1FactoryContract();
   const emirouter = useEmiRouter();
   const tokens = useMemo(
     () =>
-      currencies.map(([currencyA, currencyB]) => [
-        wrappedCurrency(currencyA, chainId),
-        wrappedCurrency(currencyB, chainId),
-      ]),
+      currencies.map(([currencyA, currencyB]) => {
+        return [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)];
+      }),
     [chainId, currencies],
   );
 
-  const pairAddresses = useMemo(() => {
-    return tokens.map(([tokenA, tokenB]) => {
-      return tokenA && tokenB && !tokenA.equals(tokenB)
-        ? getAddress(tokenA, tokenB, factory, emirouter)
-        : undefined;
-    });
-  }, [tokens, emirouter, factory]);
-  const existTokens = tokens.filter(([tokenA, tokenB]) => {
-    return tokenB && tokenA && !tokenB.equals(tokenA);
-  });
+  // const pairAddresses = useMemo(() => {
+  //   return tokens.map(([tokenA, tokenB]) => {
+  //     return tokenA && tokenB && !tokenA.equals(tokenB)
+  //       ? getAddress(tokenA, tokenB, factory, emirouter)
+  //       : undefined;
+  //   });
+  // }, [tokens]);
 
-  let [a, b] = existTokens[0];
-  // const newtokens = existTokens.map(([a,b]) => [a,b])
-  const tokenA = `${a?.address}`;
-  const tokenB = `${b?.address}`;
+  const newtokens = tokens.map(([a, b]) => [a, b]).map(([a, b]) => [a?.address, b?.address]);
   const results = useMultipleContractSingleData(
-    pairAddresses,
+    [emirouter?.address],
     emirouter!.interface,
     'getReserves',
-    [a?.address, b?.address],
     undefined,
-    tokenA,
-    tokenB,
+    undefined,
+    undefined,
+    undefined,
+    true,
+    newtokens,
   );
-  // 15.01
   return useMemo(() => {
     return results.map((result, i) => {
       const { result: reserves, loading } = result;
       const tokenA = tokens[i][0];
       const tokenB = tokens[i][1];
       if (loading) return [PairState.LOADING, null];
-      if (!tokenA || !tokenB || tokenA.equals(tokenB)) return [PairState.INVALID, null];
-      if (!reserves) return [PairState.NOT_EXISTS, null];
+      if (!tokenA || !tokenB || tokenA.equals(tokenB)) {
+        return [PairState.INVALID, null];
+      }
+      if (!reserves) {
+        return [PairState.NOT_EXISTS, null];
+      }
       const { _reserve0, _reserve1, poolAddresss } = reserves;
       if (_reserve0._hex === '0x00' || _reserve1._hex === '0x00') {
         return [PairState.NOT_EXISTS, null];

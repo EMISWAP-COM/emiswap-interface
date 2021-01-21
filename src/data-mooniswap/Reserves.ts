@@ -61,7 +61,6 @@ export function usePairs(
 
     const poolDataList = res.map(x => x.result?.[0])?.flat() || [];
     let counter = 0;
-
     const pairStates: [PairState, Pair | null][] = [];
     for (let i = 0; i < poolDataList.length; i++) {
       const tokenA = allTokenAList[i];
@@ -86,7 +85,7 @@ export function usePairs(
 
       const pairs: Pair[] = pairStates
         .filter(pairState => pairState[1] !== null)
-        .map(pairState => pairState[1]);
+        .map(pairState => pairState[1] as Pair);
 
       if (isPairDuplicated(pairs, tokenA, tokenB)) {
         pairStates.push([PairState.NOT_EXISTS, null]);
@@ -107,5 +106,6 @@ export function usePairs(
 }
 
 export function usePair(tokenA?: Token, tokenB?: Token): [PairState, Pair | null] {
-  return usePairs([[tokenA, tokenB]])[0];
+  const pairs = usePairs([[tokenA, tokenB]])[0];
+  return pairs;
 }

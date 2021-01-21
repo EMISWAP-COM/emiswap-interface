@@ -6,10 +6,14 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUniswapV2Router02.json';
 import MooniswapABI from '../constants/v1-mooniswap/v1_mooniswap_exchange.json';
 import MooniswapFactoryABI from '../constants/v1-mooniswap/v1_mooniswap_factory.json';
+import EmiRouterABI from '../constants/abis/EmiRouter.json';
 import { ROUTER_ADDRESS } from '../constants';
 import { ChainId, JSBI, Percent, Token, TokenAmount, ETHER } from '@uniswap/sdk';
 import { TokenAddressMap } from '../state/lists/hooks';
-import { V1_MOONISWAP_FACTORY_ADDRESSES } from '../constants/v1-mooniswap';
+import {
+  V1_EMIROUTER_HELPER_ADDRESSES,
+  V1_MOONISWAP_FACTORY_ADDRESSES,
+} from '../constants/v1-mooniswap';
 import { ONE_SPLIT_ABI, ONE_SPLIT_ADDRESSES } from '../constants/one-split';
 import { MIGRATOR_ABI, MIGRATOR_ADDRESS } from '../constants/abis/migrator';
 import { EMISWAP_CROWDSALE_ABI, EMISWAP_CROWDSALE_ADDRESS } from '../constants/abis/crowdsale';
@@ -159,6 +163,17 @@ export function getMooniswapFactoryContract(
     library,
     account,
   );
+}
+
+export function getEmiRouterContract(chainId: ChainId, library: Web3Provider, account?: string) {
+  return getContract(V1_EMIROUTER_HELPER_ADDRESSES[chainId], EmiRouterABI, library, account);
+}
+
+export function getMinReturn(allowedSlippage: number, amount: string | undefined) {
+  return BigNumber.from(amount)
+    .mul(String(10000 - allowedSlippage))
+    .div(String(10000))
+    .toString();
 }
 
 export function escapeRegExp(string: string): string {
