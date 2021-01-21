@@ -51,4 +51,4 @@ You should have received a copy of the GNU General Public License along with thi
 
 Copyright © 2020, [Uniswap](https://uniswap.org/).
 
-Released under GNU General Public License v3.0
+Released under GNU General Public License v3.0 
