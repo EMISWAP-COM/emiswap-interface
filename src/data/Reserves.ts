@@ -12,33 +12,6 @@ export enum PairState {
   EXISTS,
   INVALID,
 }
-// let PAIR_ADDRESS_CACHE: { [token0Address: string]: { [token1Address: string]: string } } = {};
-// const getAddress = (
-//   tokenA: Token,
-//   tokenB: Token,
-//   factoryContract: Contract | null,
-//   emirouter: Contract | null,
-// ): string => {
-//   const tokens = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA]; // does safety checks
-//
-//   if (PAIR_ADDRESS_CACHE?.[tokens[0].address]?.[tokens[1].address] === undefined) {
-//     PAIR_ADDRESS_CACHE = {
-//       ...PAIR_ADDRESS_CACHE,
-//       [tokens[0].address]: {
-//         ...PAIR_ADDRESS_CACHE?.[tokens[0].address],
-//         [tokens[1].address]: getCreate2Address(
-//           FACTORY_ADDRESS,
-//           keccak256(
-//             ['bytes'],
-//             [pack(['address', 'address'], [tokens[0].address, tokens[1].address])],
-//           ),
-//           INIT_CODE_HASH,
-//         ),
-//       },
-//     };
-//   }
-//   return PAIR_ADDRESS_CACHE[tokens[0].address][tokens[1].address];
-// };
 
 export function usePairs(
   currencies: [Token | undefined, Token | undefined][],
@@ -52,14 +25,6 @@ export function usePairs(
       }),
     [chainId, currencies],
   );
-
-  // const pairAddresses = useMemo(() => {
-  //   return tokens.map(([tokenA, tokenB]) => {
-  //     return tokenA && tokenB && !tokenA.equals(tokenB)
-  //       ? getAddress(tokenA, tokenB, factory, emirouter)
-  //       : undefined;
-  //   });
-  // }, [tokens]);
 
   const newtokens = tokens.map(([a, b]) => [a, b]).map(([a, b]) => [a?.address, b?.address]);
   const results = useMultipleContractSingleData(
