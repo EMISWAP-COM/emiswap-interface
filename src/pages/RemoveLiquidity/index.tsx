@@ -1,5 +1,5 @@
 import { TransactionResponse, Web3Provider } from '@ethersproject/providers';
-import { currencyEquals, ETHER, Percent, Token } from '@uniswap/sdk';
+import { currencyEquals, Percent, Token } from '@uniswap/sdk';
 import React, { useCallback, useContext, useMemo, useState } from 'react';
 import { ArrowDown, Plus } from 'react-feather';
 import ReactGA from 'react-ga';
@@ -86,10 +86,6 @@ export default function RemoveLiquidity({
           wethTokenInfo.name,
         )
       : KOVAN_WETH;
-  console.log(`==========>WETH`, WETH);
-  console.log(`==========>currencyA`, currencyA);
-  console.log(`==========>currencyB`, currencyB);
-  console.log(`==========>parsedAmounts`, parsedAmounts);
   const oneCurrencyIsWETH = Boolean(
     chainId &&
       ((currencyA && currencyEquals(WETH, currencyA)) ||
@@ -131,8 +127,9 @@ export default function RemoveLiquidity({
   const [approval, approveCallback] = useApproveCallback(
     parsedAmounts[Field.LIQUIDITY],
     emiRouter?.address,
+    true,
   );
-
+  console.log(`==========>approval`, approval);
   // async function onAttemptToApprove() {
   //   if (!emiRouter || !pair || !library) throw new Error('missing dependencies');
   //   const liquidityAmount = parsedAmounts[Field.LIQUIDITY];
@@ -231,7 +228,6 @@ export default function RemoveLiquidity({
     if (!currencyAmountA || !currencyAmountB || !emiRouter) {
       throw new Error('missing currency amounts');
     }
-    console.log(`==========>currencyAmountA`, currencyAmountA);
 
     const amountsMin = {
       [Field.CURRENCY_A]: calculateSlippageAmount(currencyAmountA, allowedSlippage)[0],
@@ -268,9 +264,6 @@ export default function RemoveLiquidity({
     //   liquidityAmount.raw.toString(),
     //   [amountsMin[Field.CURRENCY_A].toString(), amountsMin[Field.CURRENCY_B].toString()],
     // ];
-    console.log(`==========>args`, args);
-    console.log(`==========>methodNames`, methodNames);
-    console.log(`==========>emiRouter`, emiRouter);
     const safeGasEstimates = await Promise.all(
       methodNames.map(methodName =>
         emiRouter?.estimateGas[methodName](...args)
@@ -291,8 +284,10 @@ export default function RemoveLiquidity({
     } else {
       const methodName = methodNames[indexOfSuccessfulEstimation];
       const safeGasEstimate = safeGasEstimates[indexOfSuccessfulEstimation];
-      console.log(`==========1231231231231231>methodName`, methodName);
       setAttemptingTxn(true);
+      console.log(`==========>метод-removeLiquidity_вызов`, methodName)
+      console.log(`==========>контракт-removeLiquidity_вызов`, emiRouter);
+      console.log(`==========>агрументы-removeLiquidity_вызов`, args)
       await emiRouter[methodName](...args, {
         gasLimit: safeGasEstimate,
       })
@@ -418,7 +413,6 @@ export default function RemoveLiquidity({
     },
     [onUserInput],
   );
-  console.log(`==========>currencyA === ETHER`, currencyA === ETHER);
   const oneCurrencyIsETH = currencyA?.isEther || currencyB?.isEther;
 
   const handleSelectCurrencyA = useCallback(
@@ -682,7 +676,7 @@ export default function RemoveLiquidity({
                       setShowConfirm(true);
                     }}
                     // disabled={ !isValid || (signatureData === null) }
-                    disabled={!isValid}
+                    disabled={!isValid || approval !== ApprovalState.APPROVED}
                     error={
                       !isValid &&
                       !!parsedAmounts[Field.CURRENCY_A] &&

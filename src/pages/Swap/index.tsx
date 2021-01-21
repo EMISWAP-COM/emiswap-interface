@@ -83,7 +83,6 @@ export default function Swap() {
     error,
   } = useDerivedSwapInfo();
 
-  console.log(`==========>mooniswapTrade`, mooniswapTrade);
   let distribution: any[] = [];
   // mcck distibution
   if (mooniswapTrade?.[1]) {
