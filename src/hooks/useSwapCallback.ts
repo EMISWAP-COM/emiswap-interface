@@ -74,7 +74,6 @@ export function useSwap(
     formattedAmounts,
     //applyChi
   );
-  console.log(`==========>swapCallback`, swapCallback);
   return [applyChi, swapCallback, estimate];
 }
 
@@ -208,15 +207,6 @@ console.log(`==========>emiRouterContract`, emiRouterContract)
       !distribution ||
       !fromAmount
     ) {
-      console.log(`==========>trade`, trade)
-      console.log(`==========>recipient`, recipient)
-      console.log(`==========>library`, library)
-      console.log(`==========>account`, account)
-      console.log(`==========>tradeVersion`, tradeVersion)
-      console.log(`==========>chainId`, chainId)
-      console.log(`==========>distribution`, distribution)
-      console.log(`==========>fromAmount`, fromAmount)
-      console.log(`==========>1231231212`, 1231231212)
       return null;
     }
     return async function onSwap() {
@@ -236,8 +226,6 @@ console.log(`==========>emiRouterContract`, emiRouterContract)
         value = BigNumber.from(fromAmount.raw.toString());
       }
       const estimateSwap = (args: any[]) => {
-        console.log(`==========>contract`, contract)
-        console.log(`==========>args`, args)
         return contract.estimateGas['swapTokensForExactETH'](
           ...args,
           value && !value.isZero() ? { value, from: account } : { from: account },
@@ -334,7 +322,6 @@ console.log(`==========>emiRouterContract`, emiRouterContract)
           }
         });
       } else {
-        console.log(`==========>contract`, contract)
         const minReturn = BigNumber.from(trade.outputAmount.raw.toString())
           .mul(String(10000 - allowedSlippage))
           .div(String(10000));
@@ -403,10 +390,10 @@ console.log(`==========>emiRouterContract`, emiRouterContract)
           ];
           obj = {};
         }
-        console.log(`==========>entereed`);
-console.log(`==========>args`, args)
+        console.log(`==========>args`, args);
         console.log(`==========>method`, method)
         console.log(`==========>obj`, obj)
+        console.log(`==========>contract`, contract)
         return contract.estimateGas[method](...args, obj)
           .then(result => {
             // if (BigNumber.isBigNumber(safeGasEstimate) && !BigNumber.isBigNumber(safeGasEstimate)) {
@@ -414,7 +401,7 @@ console.log(`==========>args`, args)
             //     'An error occurred. Please try raising your slippage. If that does not work, contact support.'
             //   )
             // }
-            console.log(`==========>result`, result)
+            console.log(`==========>result of estimate`, result)
             const gasLimit = calculateGasMargin(BigNumber.from(result));
             contract[method](...args, {
               gasLimit,
