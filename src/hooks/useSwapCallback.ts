@@ -227,7 +227,6 @@ console.log(`==========>emiRouterContract`, emiRouterContract)
           swapState[Field.OUTPUT].currencyId !== ZERO_ADDRESS
         ? getMooniswapContract(chainId, library, trade.route.pairs[0].poolAddress, account)
         : emiRouterContract;
-      getMooniswapContract(chainId, library, trade.route.pairs[0].poolAddress, account);
       if (!contract) {
         throw new Error('Failed to get a swap contract');
       }
