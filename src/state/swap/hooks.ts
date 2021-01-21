@@ -24,6 +24,7 @@ import { SwapState } from './reducer';
 import { useUserSlippageTolerance } from '../user/hooks';
 import { computeSlippageAdjustedAmounts } from '../../utils/prices';
 import { BigNumber } from '@ethersproject/bignumber';
+import { KOVAN_WETH } from '../../constants';
 
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>(state => state.swap);
@@ -130,14 +131,15 @@ export function useDerivedSwapInfo(): {
   ]);
 
   const isExactIn: boolean = independentField === Field.INPUT;
+  const newInputCurrency = inputCurrency?.isEther ? KOVAN_WETH : inputCurrency;
+  const newOutputCurrency = outputCurrency?.isEther ? KOVAN_WETH : outputCurrency;
   const parsedAmount = tryParseAmount(
     typedValue,
-    (isExactIn ? inputCurrency : outputCurrency) ?? undefined,
+    (isExactIn ? newInputCurrency : outputCurrency) ?? undefined,
   );
-
   const bestTradeExactIn = useTradeExactIn(
     isExactIn ? parsedAmount : undefined,
-    outputCurrency ?? undefined,
+    newOutputCurrency ?? undefined,
   );
   const bestTradeExactOut = useTradeExactOut(
     inputCurrency ?? undefined,
@@ -188,7 +190,6 @@ export function useDerivedSwapInfo(): {
 
   const slippageAdjustedAmountsV1 =
     v1Trade && allowedSlippage && computeSlippageAdjustedAmounts(v1Trade, allowedSlippage);
-
   const mooniswapTrade = useMooniswapTrade(
     currencies[Field.INPUT],
     currencies[Field.OUTPUT],

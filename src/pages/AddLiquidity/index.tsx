@@ -1,5 +1,4 @@
-import { BigNumber } from '@ethersproject/bignumber';
-import { ETHER, Token, TokenAmount, ZERO_ADDRESS } from '@uniswap/sdk';
+import { Token, TokenAmount, ZERO_ADDRESS } from '@uniswap/sdk';
 import React, { useCallback, useContext, useState } from 'react';
 import { Plus } from 'react-feather';
 import ReactGA from 'react-ga';
@@ -28,13 +27,8 @@ import {
 } from '../../state/mint-mooniswap/hooks';
 import { useTransactionAdder } from '../../state/transactions/hooks';
 import { useIsExpertMode, useUserSlippageTolerance } from '../../state/user/hooks';
-import { TYPE, StyledButtonNavigation } from '../../theme';
-import {
-  calculateGasMargin,
-  calculateSlippageAmount,
-  getMooniswapContract,
-  getMooniswapFactoryContract,
-} from '../../utils';
+import { StyledButtonNavigation, TYPE } from '../../theme';
+import { calculateGasMargin, getEmiRouterContract, getMinReturn } from '../../utils';
 import { maxAmountSpend } from '../../utils/maxAmountSpend';
 import AppBody from '../AppBody';
 import { Dots, Wrapper } from '../Pool/styleds';
@@ -42,6 +36,7 @@ import { ConfirmAddModalBottom } from './ConfirmAddModalBottom';
 import { currencyId } from '../../utils/currencyId';
 import { PoolPriceBar } from './PoolPriceBar';
 import { tokenAmountToString } from '../../utils/formats';
+import { useEmiRouter } from '../../hooks/useContract';
 
 export default function AddLiquidity({
   match: {
@@ -75,10 +70,11 @@ export default function AddLiquidity({
     error,
   } = useDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined);
 
+  const emiRouter = useEmiRouter();
+
   const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity);
 
   const isValid = !error;
-
   // modal and loading
   const [showConfirm, setShowConfirm] = useState<boolean>(false);
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false); // clicked confirm
@@ -119,29 +115,66 @@ export default function AddLiquidity({
   // check whether the user has approved the router on the tokens
   const [approvalA, approveACallback] = useApproveCallback(
     parsedAmounts[Field.CURRENCY_A],
-    pair?.poolAddress,
+    emiRouter?.address,
   );
   const [approvalB, approveBCallback] = useApproveCallback(
     parsedAmounts[Field.CURRENCY_B],
-    pair?.poolAddress,
+    emiRouter?.address,
   );
 
   const addTransaction = useTransactionAdder();
+  const emiRouterContract = getEmiRouterContract(chainId, library, account);
+  const methodName = currencyA?.isEther || currencyB?.isEther ? 'addLiquidityETH' : 'addLiquidity';
+  const method = emiRouterContract[methodName];
 
   async function onPoolCreate() {
     if (!chainId || !library || !account || !currencyA || !currencyB) return;
-
-    const mooniswapFactory = getMooniswapFactoryContract(chainId, library, account);
-    const estimate = mooniswapFactory.estimateGas.deploy;
-    const method = mooniswapFactory.deploy;
-    const args = [currencyA.address, currencyB.address];
-
+    const estimate = emiRouterContract.estimateGas[methodName];
+    const minReturns = {
+      [Field.CURRENCY_A]: getMinReturn(
+        allowedSlippage,
+        parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
+      ),
+      [Field.CURRENCY_B]: getMinReturn(
+        allowedSlippage,
+        parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
+      ),
+    };
+    // BigNumber.from(trade.outputAmount.raw.toString())
+    // .mul(String(10000 - allowedSlippage))
+    // .div(String(10000));
+    let args: any[] = [];
+    let optionalArgs: any = {};
+    if (methodName === 'addLiquidity') {
+      args = [
+        currencyA.address,
+        currencyB.address,
+        parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
+        parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
+        ...Object.values(minReturns),
+      ];
+    } else {
+      const notEthValue = currencyA.isEther ? Field.CURRENCY_B : Field.CURRENCY_A;
+      args = [
+        currencyA.isEther ? currencyB.address : currencyA.address,
+        parsedAmounts[notEthValue]?.raw.toString(),
+        minReturns[notEthValue],
+        minReturns[notEthValue === Field.CURRENCY_A ? Field.CURRENCY_B : Field.CURRENCY_A],
+      ];
+      optionalArgs = {
+        value: `0x${BigInt(
+          parsedAmounts[
+            notEthValue === Field.CURRENCY_A ? Field.CURRENCY_B : Field.CURRENCY_A
+          ]?.raw.toString(),
+        ).toString(16)}`,
+      };
+    }
     setAttemptingTxn(true);
-
-    await estimate(...args, {})
-      .then(estimatedGasLimit =>
+    await estimate(...args, optionalArgs)
+      .then(estimatedGasLimit => {
         method(...args, {
           gasLimit: calculateGasMargin(estimatedGasLimit),
+          ...optionalArgs,
         }).then((response: any) => {
           setAttemptingTxn(false);
 
@@ -161,8 +194,8 @@ export default function AddLiquidity({
           });
 
           setShowConfirm(true);
-        }),
-      )
+        });
+      })
       .catch(error => {
         setAttemptingTxn(false);
         // we only care if the error is something _other_ than the user rejected the tx
@@ -176,37 +209,57 @@ export default function AddLiquidity({
 
   async function onAdd() {
     if (!chainId || !library || !account || !pair?.poolAddress) return;
-    const mooniswap = getMooniswapContract(chainId, library, pair.poolAddress, account);
-
     const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = parsedAmounts;
     if (!parsedAmountA || !parsedAmountB || !currencyA || !currencyB || !liquidityMinted) {
       return;
     }
 
-    let value: BigNumber | null;
-
-    const estimate = mooniswap.estimateGas.deposit;
-    const method = mooniswap.deposit;
-    const amounts = pair.token0.equals(parsedAmountA.token)
-      ? [parsedAmountA, parsedAmountB]
-      : [parsedAmountB, parsedAmountA];
-    const args = [
-      amounts.map(x => x.raw.toString()),
-      amounts.map(x => calculateSlippageAmount(x, allowedSlippage)[0].toString()),
-    ];
-
-    if (currencyA === ETHER || currencyB === ETHER) {
-      const tokenBIsETH = currencyB === ETHER;
-      value = BigNumber.from((tokenBIsETH ? parsedAmountB : parsedAmountA).raw.toString());
+    const estimate = emiRouterContract.estimateGas[methodName];
+    const minReturns = {
+      [Field.CURRENCY_A]: getMinReturn(
+        allowedSlippage,
+        parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
+      ),
+      [Field.CURRENCY_B]: getMinReturn(
+        allowedSlippage,
+        parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
+      ),
+    };
+    // BigNumber.from(trade.outputAmount.raw.toString())
+    // .mul(String(10000 - allowedSlippage))
+    // .div(String(10000));
+    let args: any[] = [];
+    let optionalArgs: any = {};
+    if (methodName === 'addLiquidity') {
+      args = [
+        currencyA.address,
+        currencyB.address,
+        parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
+        parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
+        ...Object.values(minReturns),
+      ];
     } else {
-      value = null;
+      const notEthValue = currencyA.isEther ? Field.CURRENCY_B : Field.CURRENCY_A;
+      args = [
+        currencyA.isEther ? currencyB.address : currencyA.address,
+        parsedAmounts[notEthValue]?.raw.toString(),
+        minReturns[notEthValue],
+        minReturns[notEthValue === Field.CURRENCY_A ? Field.CURRENCY_B : Field.CURRENCY_A],
+      ];
+      optionalArgs = {
+        value: `0x${BigInt(
+          parsedAmounts[
+            notEthValue === Field.CURRENCY_A ? Field.CURRENCY_B : Field.CURRENCY_A
+          ]?.raw.toString(),
+        ).toString(16)}`,
+      };
     }
-
     setAttemptingTxn(true);
-    await estimate(...args, value ? { value } : {})
-      .then(estimatedGasLimit =>
+
+    await estimate(...args, optionalArgs)
+      .then(estimatedGasLimit => {
         method(...args, {
-          ...(value ? { value } : {}),
+          ...optionalArgs,
           gasLimit: calculateGasMargin(estimatedGasLimit),
         }).then((response: any) => {
           setAttemptingTxn(false);
@@ -233,8 +286,8 @@ export default function AddLiquidity({
               currencies[Field.CURRENCY_B]?.symbol,
             ].join('/'),
           });
-        }),
-      )
+        });
+      })
       .catch(error => {
         setAttemptingTxn(false);
         // we only care if the error is something _other_ than the user rejected the tx
@@ -435,41 +488,46 @@ export default function AddLiquidity({
             ) : (
               <AutoColumn gap={'md'}>
                 {(approvalA === ApprovalState.NOT_APPROVED ||
+                  !currencies[Field.CURRENCY_A]?.isEther ||
                   approvalA === ApprovalState.PENDING ||
                   approvalB === ApprovalState.NOT_APPROVED ||
                   approvalB === ApprovalState.PENDING) &&
                   isValid && (
                     <RowBetween>
-                      {approvalA !== ApprovalState.APPROVED && (
-                        <ButtonPrimary
-                          onClick={approveACallback}
-                          disabled={approvalA === ApprovalState.PENDING}
-                          width={approvalB !== ApprovalState.APPROVED ? '48%' : '100%'}
-                        >
-                          {approvalA === ApprovalState.PENDING ? (
-                            <Dots>Approving {currencies[Field.CURRENCY_A]?.symbol}</Dots>
-                          ) : (
-                            'Approve ' + currencies[Field.CURRENCY_A]?.symbol
-                          )}
-                        </ButtonPrimary>
-                      )}
-                      {approvalB !== ApprovalState.APPROVED && (
-                        <ButtonPrimary
-                          onClick={approveBCallback}
-                          disabled={approvalB === ApprovalState.PENDING}
-                          width={approvalA !== ApprovalState.APPROVED ? '48%' : '100%'}
-                        >
-                          {approvalB === ApprovalState.PENDING ? (
-                            <Dots>Approving {currencies[Field.CURRENCY_B]?.symbol}</Dots>
-                          ) : (
-                            'Approve ' + currencies[Field.CURRENCY_B]?.symbol
-                          )}
-                        </ButtonPrimary>
-                      )}
+                      {approvalA !== ApprovalState.APPROVED &&
+                        !currencies[Field.CURRENCY_A]?.isEther && (
+                          <ButtonPrimary
+                            onClick={approveACallback}
+                            disabled={approvalA === ApprovalState.PENDING}
+                            width={approvalB !== ApprovalState.APPROVED ? '48%' : '100%'}
+                          >
+                            {approvalA === ApprovalState.PENDING ? (
+                              <Dots>Approving {currencies[Field.CURRENCY_A]?.symbol}</Dots>
+                            ) : (
+                              'Approve ' + currencies[Field.CURRENCY_A]?.symbol
+                            )}
+                          </ButtonPrimary>
+                        )}
+                      {approvalB !== ApprovalState.APPROVED &&
+                        !currencies[Field.CURRENCY_B]?.isEther && (
+                          <ButtonPrimary
+                            onClick={approveBCallback}
+                            disabled={approvalB === ApprovalState.PENDING}
+                            width={approvalA !== ApprovalState.APPROVED ? '48%' : '100%'}
+                          >
+                            {approvalB === ApprovalState.PENDING ? (
+                              <Dots>Approving {currencies[Field.CURRENCY_B]?.symbol}</Dots>
+                            ) : (
+                              'Approve ' + currencies[Field.CURRENCY_B]?.symbol
+                            )}
+                          </ButtonPrimary>
+                        )}
                     </RowBetween>
                   )}
 
-                {pairState === PairState.NOT_EXISTS ? (
+                {pairState === PairState.NOT_EXISTS &&
+                (approvalA === ApprovalState.APPROVED || currencies[Field.CURRENCY_A]?.isEther) &&
+                (approvalB === ApprovalState.APPROVED || currencies[Field.CURRENCY_B]?.isEther) ? (
                   <ButtonError
                     onClick={() => {
                       onPoolCreate();
@@ -492,8 +550,10 @@ export default function AddLiquidity({
                     }}
                     disabled={
                       !isValid ||
-                      approvalA !== ApprovalState.APPROVED ||
-                      approvalB !== ApprovalState.APPROVED
+                      (approvalA !== ApprovalState.APPROVED &&
+                        !currencies[Field.CURRENCY_A]?.isEther) ||
+                      (approvalB !== ApprovalState.APPROVED &&
+                        !currencies[Field.CURRENCY_B]?.isEther)
                     }
                     error={
                       !isValid &&

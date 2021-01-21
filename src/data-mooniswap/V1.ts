@@ -225,11 +225,8 @@ export function useMooniswapTrade(
       : ETH_ADDRESS,
     amount,
   ];
-  // const trackedTokenPairs = useTrackedTokenPairs()
-  // const pairsusePairs = usePairs(trackedTokenPairs)
   const poolPair = usePair(inputCurrency, outputCurrency);
 
-  // const tokenToWeth = usePair(inputCurrency, KOVAN_WETH)
   const poolPairOverEth = usePair(inputCurrency, ETHER);
   const poolPairOverDai = usePair(inputCurrency, KOVAN_DAI);
   const poolPairOverUsdc = usePair(inputCurrency, KOVAN_USDC);
