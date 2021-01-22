@@ -89,7 +89,7 @@ export default function Swap() {
     distribution = mooniswapTrade[1];
   } else {
     for (let i = 0; i < 35; i++) {
-      distribution.push(BigNumber.from(i === 11 ? '100000000000000': '000000000000000'));
+      distribution.push(BigNumber.from(i === 11 ? '100000000000000' : '000000000000000'));
     }
   }
 
@@ -176,6 +176,10 @@ export default function Swap() {
   const [gas, setGas] = useState(0);
   const [gasWhenUseChi, setGasWhenUseChi] = useState(0);
 
+  const onReject = () => {
+    setSwapErrorMessage('Transaction rejected.');
+  };
+
   // the callback to execute the swap
   const [isChiApplied, swapCallback, estimate] = useSwap(
     chainId,
@@ -184,6 +188,7 @@ export default function Swap() {
     distribution,
     allowedSlippage,
     formattedAmounts,
+    onReject,
   );
 
   const srcAmount = trade?.inputAmount?.toExact();
@@ -264,6 +269,7 @@ export default function Swap() {
   // errors
   const [showInverted, setShowInverted] = useState<boolean>(false);
 
+  const [swapErrorMessage, setSwapErrorMessage] = useState('');
   // warnings on slippage
   const priceImpactSeverity = warningSeverity(priceImpactWithoutFee);
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
@@ -328,6 +334,7 @@ export default function Swap() {
             title="Confirm Swap"
             onDismiss={() => {
               setShowConfirm(false);
+              setSwapErrorMessage('');
               // if there was a tx hash, we want to clear the input
               if (txHash) {
                 onUserInput(Field.INPUT, '');
@@ -339,6 +346,7 @@ export default function Swap() {
             topContent={modalHeader}
             bottomContent={modalBottom}
             pendingText={pendingText}
+            swapErrorMessage={swapErrorMessage}
           />
 
           <AutoColumn gap={'md'}>

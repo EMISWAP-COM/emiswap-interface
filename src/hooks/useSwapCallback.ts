@@ -6,11 +6,7 @@ import { useSelector } from 'react-redux';
 import { INITIAL_ALLOWED_SLIPPAGE } from '../constants';
 import { getTradeVersion } from '../data/V1';
 import { useTransactionAdder } from '../state/transactions/hooks';
-import {
-  calculateGasMargin,
-  getMooniswapContract,
-  getOneSplit,
-} from '../utils';
+import { calculateGasMargin, getMooniswapContract, getOneSplit } from '../utils';
 import { useActiveWeb3React } from './index';
 import { Version } from './useToggledVersion';
 import {
@@ -50,6 +46,7 @@ export function useSwap(
   distribution: BigNumber[] | undefined,
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   formattedAmounts: { [p: string]: string },
+  onReject?: () => void,
 ): useSwapResult {
   const isOneSplit = false;
   const [isChiApproved] = useIsChiApproved(chainId || 0);
@@ -72,6 +69,7 @@ export function useSwap(
     allowedSlippage,
     isOneSplit,
     formattedAmounts,
+    onReject,
     //applyChi
   );
   return [applyChi, swapCallback, estimate];
@@ -182,6 +180,7 @@ export function useSwapCallback(
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips,
   isOneSplit: boolean,
   formattedAmounts: { [p: string]: string },
+  onReject?: () => void,
   // TODO: should be taked into consideration
   //useChi: boolean | undefined
 ): SwapCallback {
@@ -262,6 +261,9 @@ console.log(`==========>emiRouterContract`, emiRouterContract)
 
       const onError = (error: any) => {
         // if the user rejected the tx, pass this along
+        if (onReject) {
+          onReject();
+        }
         if (error?.code === 4001) {
           throw error;
         }
@@ -403,7 +405,7 @@ console.log(`==========>emiRouterContract`, emiRouterContract)
             // }
             console.log(`==========>result of estimate`, result)
             const gasLimit = calculateGasMargin(BigNumber.from(result));
-            contract[method](...args, {
+            return contract[method](...args, {
               gasLimit,
               ...obj,
             })
@@ -431,6 +433,7 @@ console.log(`==========>emiRouterContract`, emiRouterContract)
     emiRouterContract,
     formattedAmounts.INPUT,
     swapState,
+    onReject,
     // useChi
   ]);
 }
