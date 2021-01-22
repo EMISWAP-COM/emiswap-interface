@@ -80,6 +80,7 @@ export default function CommonBases({
           const selected =
             (selectedCurrency instanceof Token && selectedCurrency.address === token.address) ||
             (token.equals(WETH) &&
+              otherSelectedCurrency &&
               (otherSelectedCurrency.isEther || otherSelectedCurrency.equals(WETH)));
           return (
             <BaseWrapper
