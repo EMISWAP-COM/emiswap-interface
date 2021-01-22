@@ -443,6 +443,8 @@ export default function AddLiquidity({
               currency={currencies[Field.CURRENCY_A]}
               id="add-liquidity-input-tokena"
               showCommonBases
+              otherCurrency={currencies[Field.CURRENCY_B]}
+              isMatchEth
             />
             <StyledButtonNavigation>
               <ColumnCenter>
@@ -460,6 +462,8 @@ export default function AddLiquidity({
               currency={currencies[Field.CURRENCY_B]}
               id="add-liquidity-input-tokenb"
               showCommonBases
+              otherCurrency={currencies[Field.CURRENCY_A]}
+              isMatchEth={true}
             />
             {currencies[Field.CURRENCY_A] &&
               currencies[Field.CURRENCY_B] &&

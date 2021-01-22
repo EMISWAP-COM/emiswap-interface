@@ -9,7 +9,6 @@ import { useTotalSupply } from '../../data/TotalSupply';
 
 import { useActiveWeb3React } from '../../hooks';
 import { useTokenBalance } from '../../state/wallet/hooks';
-import { ExternalLink } from '../../theme';
 import { currencyId } from '../../utils/currencyId';
 import { unwrappedToken } from '../../utils/wrappedCurrency';
 import { ButtonSecondary } from '../Button';
@@ -31,6 +30,11 @@ export const HoverCard = styled(Card)`
   :hover {
     border: 1px solid ${({ theme }) => darken(0.06, theme.bg2)};
   }
+`;
+
+const YellowText = styled.p`
+  color: ${({ theme }) => theme.primary1};
+  text-decoration: underline;
 `;
 
 interface PositionCardProps {
@@ -241,9 +245,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
             </FixedHeightRow>
 
             <AutoRow justify="center" marginTop={'10px'}>
-              <ExternalLink href={`https://mooniswap.info/pair/${pair.liquidityToken.address}`}>
-                View pool information ↗
-              </ExternalLink>
+              <YellowText>View pool information ↗ (Coming soon...)</YellowText>
             </AutoRow>
             <RowBetween marginTop="10px">
               <ButtonSecondary

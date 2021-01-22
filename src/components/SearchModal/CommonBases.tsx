@@ -3,12 +3,13 @@ import { Text } from 'rebass';
 import { ChainId, Token, currencyEquals, ETHER } from '@uniswap/sdk';
 import styled from 'styled-components';
 
-import { SUGGESTED_BASES } from '../../constants';
+import { KOVAN_WETH, SUGGESTED_BASES } from '../../constants';
 import { AutoColumn } from '../Column';
 import QuestionHelper from '../QuestionHelper';
 import { AutoRow } from '../Row';
 import CurrencyLogo from '../CurrencyLogo';
 import { darken } from 'polished';
+import defaultCoins from '../../constants/defaultCoins';
 
 const BaseWrapper = styled.div<{ disable?: boolean }>`
   border: 1px solid ${({ theme, disable }) => (disable ? 'transparent' : theme.bg3)};
@@ -31,11 +32,27 @@ export default function CommonBases({
   chainId,
   onSelect,
   selectedCurrency,
+  otherSelectedCurrency,
 }: {
   chainId?: ChainId;
   selectedCurrency?: Token;
   onSelect: (currency: Token) => void;
+  otherSelectedCurrency: Token | undefined;
 }) {
+  const wethTokenInfo = defaultCoins.tokens.find(
+    token => token.symbol === 'WETH' && token.chainId === chainId,
+  );
+
+  const WETH: Token =
+    wethTokenInfo && chainId
+      ? new Token(
+          chainId,
+          wethTokenInfo.address,
+          wethTokenInfo.decimals,
+          wethTokenInfo.symbol,
+          wethTokenInfo.name,
+        )
+      : KOVAN_WETH;
   return (
     <AutoColumn gap="md">
       <AutoRow>
@@ -47,7 +64,12 @@ export default function CommonBases({
       <AutoRow gap="4px">
         <BaseWrapper
           onClick={() => !currencyEquals(selectedCurrency, ETHER) && onSelect(ETHER)}
-          disable={selectedCurrency === ETHER}
+          disable={
+            selectedCurrency === ETHER ||
+            (selectedCurrency && selectedCurrency.isEther) ||
+            (otherSelectedCurrency &&
+              (otherSelectedCurrency.isEther || otherSelectedCurrency.equals(WETH)))
+          }
         >
           <CurrencyLogo currency={ETHER} style={{ marginRight: 8 }} />
           <Text fontWeight={500} fontSize={16}>
@@ -56,7 +78,9 @@ export default function CommonBases({
         </BaseWrapper>
         {(chainId ? SUGGESTED_BASES[chainId] : []).map((token: Token) => {
           const selected =
-            selectedCurrency instanceof Token && selectedCurrency.address === token.address;
+            (selectedCurrency instanceof Token && selectedCurrency.address === token.address) ||
+            (token.equals(WETH) &&
+              (otherSelectedCurrency.isEther || otherSelectedCurrency.equals(WETH)));
           return (
             <BaseWrapper
               onClick={() => !selected && onSelect(token)}

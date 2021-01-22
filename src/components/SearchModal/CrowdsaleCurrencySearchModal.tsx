@@ -183,6 +183,7 @@ export default function CrowdsaleCurrencySearchModal({
               chainId={chainId}
               onSelect={handleCurrencySelect}
               selectedCurrency={hiddenCurrency}
+              otherSelectedCurrency={undefined}
             />
           )}
           <RowBetween>
