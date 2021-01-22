@@ -140,6 +140,7 @@ interface CurrencyInputPanelProps {
   id: string;
   showCommonBases?: boolean;
   isCrowdsale?: boolean;
+  isMatchEth?: boolean;
 }
 
 export default function CurrencyInputPanel({
@@ -159,6 +160,7 @@ export default function CurrencyInputPanel({
   id,
   showCommonBases,
   isCrowdsale = false,
+  isMatchEth = false,
 }: CurrencyInputPanelProps) {
   const { t } = useTranslation();
 
@@ -276,6 +278,7 @@ export default function CurrencyInputPanel({
             hiddenCurrency={currency}
             otherSelectedCurrency={otherCurrency}
             showCommonBases={showCommonBases}
+            isMatchEth={isMatchEth}
           />
         ))}
     </InputPanel>

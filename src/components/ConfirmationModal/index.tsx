@@ -5,7 +5,7 @@ import { ExternalLink } from '../../theme';
 import { Text } from 'rebass';
 import { CloseIcon, Spinner } from '../../theme/components';
 import { RowBetween } from '../Row';
-import { ArrowUpCircle } from 'react-feather';
+import { AlertTriangle, ArrowUpCircle } from 'react-feather';
 import { ButtonPrimary } from '../Button';
 import { AutoColumn, ColumnCenter } from '../Column';
 import Circle from '../../assets/images/blue-loader.svg';
@@ -44,6 +44,7 @@ interface ConfirmationModalProps {
   attemptingTxn: boolean;
   pendingText: string;
   title?: string;
+  swapErrorMessage?: string | undefined;
 }
 
 export default function ConfirmationModal({
@@ -55,6 +56,7 @@ export default function ConfirmationModal({
   hash,
   pendingText,
   title = '',
+  swapErrorMessage = undefined,
 }: ConfirmationModalProps) {
   const { chainId } = useActiveWeb3React();
   const theme = useContext(ThemeContext);
@@ -113,6 +115,14 @@ export default function ConfirmationModal({
     );
   }
 
+  if (swapErrorMessage) {
+    return (
+      <Modal isOpen={isOpen} onDismiss={onDismiss} maxHeight={90}>
+        <TransactionErrorContent message={swapErrorMessage} onDismiss={onDismiss} />
+      </Modal>
+    );
+  }
+
   // confirmation screen
   return (
     <Modal isOpen={isOpen} onDismiss={onDismiss} maxHeight={90}>
@@ -129,5 +139,41 @@ export default function ConfirmationModal({
         <BottomSection gap="12px">{bottomContent()}</BottomSection>
       </Wrapper>
     </Modal>
+  );
+}
+
+export function TransactionErrorContent({
+  message,
+  onDismiss,
+}: {
+  message: string;
+  onDismiss: () => void;
+}) {
+  const theme = useContext(ThemeContext);
+  return (
+    <Wrapper>
+      <Section>
+        <RowBetween>
+          <Text fontWeight={500} fontSize={20}>
+            Error
+          </Text>
+          <CloseIcon onClick={onDismiss} />
+        </RowBetween>
+        <AutoColumn style={{ marginTop: 20, padding: '2rem 0' }} gap="24px" justify="center">
+          <AlertTriangle color={theme.red1} style={{ strokeWidth: 1.5 }} size={64} />
+          <Text
+            fontWeight={500}
+            fontSize={16}
+            color={theme.red1}
+            style={{ textAlign: 'center', width: '85%' }}
+          >
+            {message}
+          </Text>
+        </AutoColumn>
+      </Section>
+      <BottomSection gap="12px">
+        <ButtonPrimary onClick={onDismiss}>Dismiss</ButtonPrimary>
+      </BottomSection>
+    </Wrapper>
   );
 }

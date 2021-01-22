@@ -129,7 +129,6 @@ export default function RemoveLiquidity({
     emiRouter?.address,
     true,
   );
-  console.log(`==========>approval`, approval);
   // async function onAttemptToApprove() {
   //   if (!emiRouter || !pair || !library) throw new Error('missing dependencies');
   //   const liquidityAmount = parsedAmounts[Field.LIQUIDITY];
@@ -285,9 +284,6 @@ export default function RemoveLiquidity({
       const methodName = methodNames[indexOfSuccessfulEstimation];
       const safeGasEstimate = safeGasEstimates[indexOfSuccessfulEstimation];
       setAttemptingTxn(true);
-      console.log(`==========>метод-removeLiquidity_вызов`, methodName)
-      console.log(`==========>контракт-removeLiquidity_вызов`, emiRouter);
-      console.log(`==========>агрументы-removeLiquidity_вызов`, args)
       await emiRouter[methodName](...args, {
         gasLimit: safeGasEstimate,
       })
