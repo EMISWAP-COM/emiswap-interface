@@ -10,7 +10,6 @@ import ConfirmationModal from '../../components/ConfirmationModal';
 import CurrencyInputPanel from '../../components/CurrencyInputPanel';
 import { SwapPoolTabs } from '../../components/NavigationTabs';
 import { AutoRow, RowBetween } from '../../components/Row';
-import AdvancedSwapDetailsDropdown from '../../components/swap/AdvancedSwapDetailsDropdown';
 import BetterTradeLink from '../../components/swap/BetterTradeLink';
 import confirmPriceImpactWithoutFee from '../../components/swap/confirmPriceImpactWithoutFee';
 import { ArrowWrapper, BottomGrouping, Dots, Wrapper } from '../../components/swap/styleds';
@@ -52,6 +51,8 @@ import { isUseOneSplitContract } from '../../utils';
 import ReferralLink from '../../components/RefferalLink';
 import GasConsumption from '../../components/swap/GasConsumption';
 import { BigNumber } from '@ethersproject/bignumber';
+import { AdvancedSwapDetails } from '../../components/swap/AdvancedSwapDetails';
+import WarningBlock, { StyledButton } from '../../components/Warning/WarningBlock';
 
 export default function Swap() {
   useDefaultsFromURLSearch();
@@ -323,9 +324,35 @@ export default function Swap() {
 
   const notEnoughBalance =
     maxAmountInput && parsedAmount && JSBI.lessThan(maxAmountInput.raw, parsedAmount.raw);
+
+  const warningBottomContent = () => {
+    return (
+      <StyledButton href={'#'} target="_blank">
+        <span> READ MORE </span> {'>>'}
+      </StyledButton>
+    );
+  };
+
+  const warningContent = () => {
+    return (
+      <p>
+        The beta testing runs for about 2 weeks, and the users who join us within this period will
+        have 50,000 ESW distributed among the, during the first week after the official launch.
+      </p>
+    );
+  };
+
   return (
     <>
-      {showWarning && <TokenWarningCards currencies={currencies} />}
+      {showWarning ? (
+        <TokenWarningCards currencies={currencies} />
+      ) : (
+        <WarningBlock
+          title="EMISWAP soft launch"
+          content={warningContent}
+          bottomContent={warningBottomContent}
+        />
+      )}
       <AppBody disabled={showWarning}>
         <SwapPoolTabs active={'swap'} />
         <Wrapper id="swap-page">
@@ -542,8 +569,8 @@ export default function Swap() {
 
           {account ? <ReferralLink /> : ''}
         </Wrapper>
+        <AdvancedSwapDetails trade={trade} />
       </AppBody>
-      <AdvancedSwapDetailsDropdown trade={trade} />
     </>
   );
 }

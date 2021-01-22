@@ -168,9 +168,9 @@ export default function SourcesList({
           <AccountGroupingInfoTitleRow>
             <AccountTotalSectionTable>
               <div>
-                <span>Total ESWc aquired</span>
+                <span>Total ESW aquired</span>
                 <span>
-                  Total ESWc aquired
+                  Total ESW aquired
                   <br />
                   {totalAcquired}
                 </span>
@@ -198,16 +198,16 @@ export default function SourcesList({
         </AccountSectionBodyPart>
       </AccountTotalSectionBody>
       <AccountSectionHeader>
-        <TYPE.mediumHeader>Sources of ESWc</TYPE.mediumHeader>
+        <TYPE.mediumHeader>Sources of ESW</TYPE.mediumHeader>
       </AccountSectionHeader>
       <AccountSectionBody>
         <AccountSectionBodyPart>
           <AccountGroupingInfoTitleRow>
-            <span>Source of ESWc</span>
+            <span>Source of ESW</span>
           </AccountGroupingInfoTitleRow>
           <AccountSectionTable>
             <div>
-              <span>ESWc acquired</span>
+              <span>ESW acquired</span>
             </div>
             <div>
               <span>
@@ -226,7 +226,7 @@ export default function SourcesList({
           </AccountGroupingInfoTitleRow>
           <AccountSectionTable>
             <div>
-              <span>ESWc acquired</span>
+              <span>ESW acquired</span>
               <span>{crowdSaleAcquired}</span>
             </div>
             <div>
@@ -249,7 +249,7 @@ export default function SourcesList({
           </AccountGroupingInfoTitleRow>
           <AccountSectionTable>
             <div>
-              <span>ESWc acquired</span>
+              <span>ESW acquired</span>
               <span>coming soon</span>
             </div>
             <div>
@@ -271,7 +271,7 @@ export default function SourcesList({
           </AccountGroupingInfoTitleRow>
           <AccountSectionTable>
             <div>
-              <span>ESWc acquired</span>
+              <span>ESW acquired</span>
               <span>{crowdSaleAcquired + crowdSaleReferralRewardAcquired}</span>
             </div>
             <div>

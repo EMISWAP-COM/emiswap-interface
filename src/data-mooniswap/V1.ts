@@ -279,7 +279,7 @@ export function useMooniswapTrade(
           )
         : undefined;
   } catch (error) {
-    console.error('Failed to create mooniswapTrade trade', error);
+    console.error('Failed to create emiswapTrade trade', error);
   }
   return [mooniswapTrade, results.result.distribution];
 }

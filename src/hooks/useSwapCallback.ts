@@ -194,7 +194,6 @@ export function useSwapCallback(
     library as Web3Provider,
     account as string | undefined,
   );
-console.log(`==========>emiRouterContract`, emiRouterContract)
   return useMemo(() => {
     if (
       !trade ||
@@ -392,10 +391,6 @@ console.log(`==========>emiRouterContract`, emiRouterContract)
           ];
           obj = {};
         }
-        console.log(`==========>args`, args);
-        console.log(`==========>method`, method)
-        console.log(`==========>obj`, obj)
-        console.log(`==========>contract`, contract)
         return contract.estimateGas[method](...args, obj)
           .then(result => {
             // if (BigNumber.isBigNumber(safeGasEstimate) && !BigNumber.isBigNumber(safeGasEstimate)) {
@@ -403,7 +398,6 @@ console.log(`==========>emiRouterContract`, emiRouterContract)
             //     'An error occurred. Please try raising your slippage. If that does not work, contact support.'
             //   )
             // }
-            console.log(`==========>result of estimate`, result)
             const gasLimit = calculateGasMargin(BigNumber.from(result));
             return contract[method](...args, {
               gasLimit,

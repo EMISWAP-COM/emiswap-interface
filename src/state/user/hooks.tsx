@@ -211,8 +211,8 @@ export function useTokenWarningDismissal(
  * @param tokenB the other token
  */
 export function toV2LiquidityToken([tokenA, tokenB]: [Token, Token]): Token {
-  const symbol = 'MOON-V1' + tokenA.symbol + tokenB.symbol;
-  const name = `Mooniswap V1 (${tokenA.symbol}-${tokenB.symbol})`;
+  const symbol = 'EMI-V1' + tokenA.symbol + tokenB.symbol;
+  const name = `Emiswap V1 (${tokenA.symbol}-${tokenB.symbol})`;
   return new Token(tokenA.chainId, '0x000000001', 18, symbol, name);
 }
 
