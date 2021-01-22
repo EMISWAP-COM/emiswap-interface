@@ -6,11 +6,7 @@ import { useSelector } from 'react-redux';
 import { INITIAL_ALLOWED_SLIPPAGE } from '../constants';
 import { getTradeVersion } from '../data/V1';
 import { useTransactionAdder } from '../state/transactions/hooks';
-import {
-  calculateGasMargin,
-  getMooniswapContract,
-  getOneSplit,
-} from '../utils';
+import { calculateGasMargin, getMooniswapContract, getOneSplit } from '../utils';
 import { useActiveWeb3React } from './index';
 import { Version } from './useToggledVersion';
 import {
@@ -50,6 +46,7 @@ export function useSwap(
   distribution: BigNumber[] | undefined,
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   formattedAmounts: { [p: string]: string },
+  onReject?: () => void,
 ): useSwapResult {
   const isOneSplit = false;
   const [isChiApproved] = useIsChiApproved(chainId || 0);
@@ -72,6 +69,7 @@ export function useSwap(
     allowedSlippage,
     isOneSplit,
     formattedAmounts,
+    onReject,
     //applyChi
   );
   return [applyChi, swapCallback, estimate];
@@ -182,6 +180,7 @@ export function useSwapCallback(
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips,
   isOneSplit: boolean,
   formattedAmounts: { [p: string]: string },
+  onReject?: () => void,
   // TODO: should be taked into consideration
   //useChi: boolean | undefined
 ): SwapCallback {
@@ -195,7 +194,6 @@ export function useSwapCallback(
     library as Web3Provider,
     account as string | undefined,
   );
-console.log(`==========>emiRouterContract`, emiRouterContract)
   return useMemo(() => {
     if (
       !trade ||
@@ -262,6 +260,9 @@ console.log(`==========>emiRouterContract`, emiRouterContract)
 
       const onError = (error: any) => {
         // if the user rejected the tx, pass this along
+        if (onReject) {
+          onReject();
+        }
         if (error?.code === 4001) {
           throw error;
         }
@@ -390,10 +391,6 @@ console.log(`==========>emiRouterContract`, emiRouterContract)
           ];
           obj = {};
         }
-        console.log(`==========>args`, args);
-        console.log(`==========>method`, method)
-        console.log(`==========>obj`, obj)
-        console.log(`==========>contract`, contract)
         return contract.estimateGas[method](...args, obj)
           .then(result => {
             // if (BigNumber.isBigNumber(safeGasEstimate) && !BigNumber.isBigNumber(safeGasEstimate)) {
@@ -401,9 +398,8 @@ console.log(`==========>emiRouterContract`, emiRouterContract)
             //     'An error occurred. Please try raising your slippage. If that does not work, contact support.'
             //   )
             // }
-            console.log(`==========>result of estimate`, result)
             const gasLimit = calculateGasMargin(BigNumber.from(result));
-            contract[method](...args, {
+            return contract[method](...args, {
               gasLimit,
               ...obj,
             })
@@ -431,6 +427,7 @@ console.log(`==========>emiRouterContract`, emiRouterContract)
     emiRouterContract,
     formattedAmounts.INPUT,
     swapState,
+    onReject,
     // useChi
   ]);
 }

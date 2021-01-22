@@ -1,6 +1,6 @@
 import React, { useContext, useMemo } from 'react';
 import styled, { ThemeContext } from 'styled-components';
-import { Pair, ZERO_ADDRESS } from '@uniswap/sdk'
+import { Pair, ZERO_ADDRESS } from '@uniswap/sdk';
 import { Link } from 'react-router-dom';
 import { SwapPoolTabs } from '../../components/NavigationTabs';
 
@@ -20,6 +20,7 @@ import { useTrackedTokenPairs } from '../../state/user/hooks';
 import AppBody from '../AppBody';
 import { Dots } from '../../components/swap/styleds';
 import ReferralLink from '../../components/RefferalLink';
+import WarningBlock, { StyledButton } from '../../components/Warning/WarningBlock';
 
 const StyledHr = styled.hr`
   width: 100%;
@@ -81,8 +82,31 @@ export default function Pool() {
         }) !== -1
       );
     });
+
+  const warningBottomContent = () => {
+    return (
+      <StyledButton href={'#'} target="_blank">
+        <span> READ MORE </span> {'>>'}
+      </StyledButton>
+    );
+  };
+
+  const warningContent = () => {
+    return (
+      <p>
+        The beta testing runs for about 2 weeks, and the users who join us within this period will
+        have 50,000 ESW distributed among the, during the first week after the official launch.
+      </p>
+    );
+  };
+
   return (
     <>
+      <WarningBlock
+        title="EMISWAP soft launch"
+        content={warningContent}
+        bottomContent={warningBottomContent}
+      />
       <AppBody>
         <SwapPoolTabs active={'pool'} />
         <AutoColumn gap="lg" justify="center">
@@ -129,13 +153,9 @@ export default function Pool() {
                   Add Liquidity
                 </Text>
               </ButtonPrimary>
-              <ButtonGreen
-                as={Link}
-                style={{ width: 'initial', padding: '15px 16px' }}
-                to="/migrate"
-              >
+              <ButtonGreen style={{ width: 'initial', padding: '15px 16px' }}>
                 <Text fontWeight={500} fontSize={16}>
-                  Migrate Liquidity
+                  Migrate Liquidity (coming soon...)
                 </Text>
               </ButtonGreen>
               <div>{account ? <ReferralLink /> : ''}</div>

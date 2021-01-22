@@ -109,7 +109,7 @@ export default function Menu() {
             <Info size={14} />
             About
           </MenuItem>
-          <MenuItem id="link" href="https://crowdsale.emidao.org/en" target="_blank">
+          <MenuItem id="link" href="https://emiswap.com/info/" target="_blank">
             <BookOpen size={14} />
             Crowdsale Info
           </MenuItem>
