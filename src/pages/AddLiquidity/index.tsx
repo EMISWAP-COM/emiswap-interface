@@ -573,15 +573,14 @@ export default function AddLiquidity({
               </AutoColumn>
             )}
           </AutoColumn>
+          {pair && !noLiquidity && pairState !== PairState.INVALID ? (
+            <AutoColumn style={{ minWidth: '20rem', marginTop: '1rem' }}>
+              {/*<MinimalPositionCard showUnwrapped={oneCurrencyIsWETH} pair={pair} />*/}
+              <MinimalPositionCard showUnwrapped={false} pair={pair} />
+            </AutoColumn>
+          ) : null}
         </Wrapper>
       </AppBody>
-
-      {pair && !noLiquidity && pairState !== PairState.INVALID ? (
-        <AutoColumn style={{ minWidth: '20rem', marginTop: '1rem' }}>
-          {/*<MinimalPositionCard showUnwrapped={oneCurrencyIsWETH} pair={pair} />*/}
-          <MinimalPositionCard showUnwrapped={false} pair={pair} />
-        </AutoColumn>
-      ) : null}
     </>
   );
 }
