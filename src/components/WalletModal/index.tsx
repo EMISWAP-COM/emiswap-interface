@@ -19,7 +19,8 @@ import { injected, fortmatic, portis } from '../../connectors';
 import { OVERLAY_READY } from '../../connectors/Fortmatic';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
-import { Distributor } from '../AccountDetails/Distributor'
+// import { Distributor } from '../AccountDetails/Distributor'
+// import { useDispatch } from 'react-redux'
 
 const CloseIcon = styled.div`
   position: absolute;
@@ -176,6 +177,26 @@ export default function WalletModal({
   // close modal when a connection is successful
   const activePrevious = usePrevious(active);
   const connectorPrevious = usePrevious(connector);
+  // const dispatch = useDispatch()
+
+  // const initLogin = async () => {
+  //   console.log(account)
+  //   await fetch(`https://emiswap-oracle-development.emirex.co/v1/public/users`, {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({
+  //       address: account,
+  //       referalAddress: ''
+  //     }),
+  //   })
+  // }
+
+  // useEffect(() => {
+  //   initLogin()
+  // }, [account])
+
   useEffect(() => {
     if (
       walletModalOpen &&
@@ -346,19 +367,21 @@ export default function WalletModal({
       );
     }
     if (account && walletView === WALLET_VIEWS.ACCOUNT) {
-      const role = 'distributor'
-      if (
-        role === 'distributor'
-      // false
-      ) {
-         return (
-           <Distributor
-             ENSName={ENSName}
-             openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}
-           />
-         )
 
-      }
+
+      // const role = 'distributor'
+      // if (
+      //   role === 'distributor'
+      // // false
+      // ) {
+      //    return (
+      //      <Distributor
+      //        ENSName={ENSName}
+      //        openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}
+      //      />
+      //    )
+      //
+      // }
       return (
         <AccountDetails
           toggleWalletModal={toggleWalletModal}
