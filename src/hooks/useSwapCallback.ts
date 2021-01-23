@@ -391,10 +391,7 @@ export function useSwapCallback(
           ];
           obj = {};
         }
-        console.log(`==========>contract`, contract)
-        console.log(`==========>method`, method)
-        console.log(`==========>args`, args)
-        console.log(`==========>obj`, obj)
+
         return contract.estimateGas[method](...args, obj)
           .then(result => {
             // if (BigNumber.isBigNumber(safeGasEstimate) && !BigNumber.isBigNumber(safeGasEstimate)) {
