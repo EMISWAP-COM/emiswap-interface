@@ -3,6 +3,7 @@ import { ChainId, ETHER, JSBI, Percent, Token } from '@uniswap/sdk';
 import { fortmatic, injected, portis, walletconnect, walletlink } from '../connectors';
 import { keccak256 } from '@ethersproject/solidity';
 import { bytecode } from './abis/Emiswap.json';
+import { ESW_ABI } from './abis/esw';
 
 export const MAX_NUM_DECIMALS = 18;
 export const ROUTER_ADDRESS = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D';
@@ -105,6 +106,7 @@ export const KOVAN_CHI = new Token(
   'Chi Gastoken by 1inch',
 );
 
+
 export const ESW: ChainTokenList = {
   [ChainId.MAINNET]: [
     new Token(ChainId.MAINNET, window['env'].REACT_APP_ESW_ID, 18, 'ESW', 'EmiDAO Token'),
@@ -122,6 +124,8 @@ export const ESW: ChainTokenList = {
     new Token(ChainId.KOVAN, window['env'].REACT_APP_ESW_ID, 18, 'ESW', 'EmiDAO Token'),
   ],
 };
+
+
 
 const ETH_ONLY: ChainTokenList = {
   [ChainId.MAINNET]: [ETHER],
@@ -141,15 +145,15 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
 // used for display in the default list when adding liquidity
 export const SUGGESTED_BASES: ChainTokenList = {
   ...ETH_ONLY,
-  [ChainId.KOVAN]: [KOVAN_DAI, KOVAN_USDC, KOVAN_WETH],
-  [ChainId.MAINNET]: [DAI, USDC, USDT, CHI],
+  [ChainId.KOVAN]: [KOVAN_DAI, KOVAN_USDC, KOVAN_WETH, ESW[ChainId.KOVAN][0]],
+  [ChainId.MAINNET]: [DAI, USDC, USDT, CHI, ESW[ChainId.MAINNET][0]],
 };
 
 // used to construct the list of all pairs we consider by default in the frontend
 export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   ...ETH_ONLY,
-  [ChainId.KOVAN]: [KOVAN_DAI, KOVAN_USDC, KOVAN_WETH],
-  [ChainId.MAINNET]: [ETHER, DAI, USDC, USDT, CHI],
+  [ChainId.KOVAN]: [KOVAN_DAI, KOVAN_USDC, KOVAN_WETH, ESW[ChainId.KOVAN][0]],
+  [ChainId.MAINNET]: [ETHER, DAI, USDC, USDT, CHI, ESW[ChainId.MAINNET][0]],
 };
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
