@@ -14,7 +14,8 @@ import {
   updateUserExpertMode,
   updateUserSlippageTolerance,
   updateUserDeadline,
-} from './actions';
+  login
+} from './actions'
 
 const currentTimestamp = () => new Date().getTime();
 
@@ -54,6 +55,7 @@ export interface UserState {
   };
 
   timestamp: number;
+  info: {}
 }
 
 function pairKey(token0Address: string, token1Address: string) {
@@ -69,10 +71,14 @@ export const initialState: UserState = {
   tokens: {},
   pairs: {},
   timestamp: currentTimestamp(),
+  info: {},
 };
 
 export default createReducer(initialState, builder =>
   builder
+    .addCase(login, (state, action) => {
+      state.info = action.payload
+    })
     .addCase(updateVersion, state => {
       // slippage isnt being tracked in local storage, reset to default
       if (typeof state.userSlippageTolerance !== 'number') {
