@@ -41,6 +41,7 @@ import LegendaryIcon from '../../assets/svg/CardIcon/legendary.svg';
 import Question from '../../assets/svg/FAQIcon/question.svg';
 import EmiMagicBackground from '../../assets/svg/EmiMagicBackground.svg';
 import EmiMagicCardModal from '../../components/EmiMagicCardModal';
+import WarningBlock, { StyledButton } from '../../components/Warning/WarningBlock';
 
 const EmiCard = styled.div`
   position: absolute;
@@ -584,7 +585,7 @@ const Invest = () => {
               <img className="emicard__img" src={OrdinaryIcon} alt="Ordinary" />
               <div className="emicard__info">
                 <div className="emicard__description-card">
-                  Make purchase of <b className="green-color ml-5">{NumByGetMoreCard} ESWc</b>
+                  Make purchase of <b className="green-color ml-5">{NumByGetMoreCard} ESW</b>
                 </div>
                 <div className="emicard__description-card">
                   to get <b className="ml-5 mr-5">1</b> more <b className="ml-5">Ordinary card</b>
@@ -596,7 +597,7 @@ const Invest = () => {
             <img className="emicard__img" src={UncommonIcon} alt="Uncommon" />
             <div className="emicard__info">
               <div className="emicard__description-card">
-                Make purchase of <b className="green-color ml-5">{uncommonCount} ESWc</b>
+                Make purchase of <b className="green-color ml-5">{uncommonCount} ESW</b>
               </div>
               <div className="emicard__description-card">
                 to get <b className="ml-5">a Uncommon card</b>
@@ -624,7 +625,7 @@ const Invest = () => {
               <img className="emicard__img" src={UncommonIcon} alt="Uncommon" />
               <div className="emicard__info">
                 <div className="emicard__description-card">
-                  Make purchase of <b className="green-color ml-5">{NumByGetMoreCard} ESWc</b>
+                  Make purchase of <b className="green-color ml-5">{NumByGetMoreCard} ESW</b>
                 </div>
                 <div className="emicard__description-card">
                   to get <b className="ml-5 mr-5">1</b> more <b className="ml-5">Uncommon card</b>
@@ -636,7 +637,7 @@ const Invest = () => {
             <img className="emicard__img" src={RareIcon} alt="Rare" />
             <div className="emicard__info">
               <div className="emicard__description-card">
-                Make purchase of <b className="green-color ml-5">{rareCount} ESWc</b>
+                Make purchase of <b className="green-color ml-5">{rareCount} ESW</b>
               </div>
               <div className="emicard__description-card">
                 to get <b className="ml-5">a Rare card</b>
@@ -664,7 +665,7 @@ const Invest = () => {
               <img className="emicard__img" src={RareIcon} alt="Ordinary" />
               <div className="emicard__info">
                 <div className="emicard__description-card">
-                  Make purchase of <b className="green-color ml-5">{NumByGetMoreCard} ESWc</b>
+                  Make purchase of <b className="green-color ml-5">{NumByGetMoreCard} ESW</b>
                 </div>
                 <div className="emicard__description-card">
                   to get <b className="ml-5 mr-5">1</b> more <b className="ml-5">Rare card</b>
@@ -676,7 +677,7 @@ const Invest = () => {
             <img className="emicard__img" src={EpicIcon} alt="Epic" />
             <div className="emicard__info">
               <div className="emicard__description-card">
-                Make purchase of <b className="green-color ml-5">{epicCount} ESWc</b>
+                Make purchase of <b className="green-color ml-5">{epicCount} ESW</b>
               </div>
               <div className="emicard__description-card">
                 to get <b className="ml-5">a Epic card</b>
@@ -704,7 +705,7 @@ const Invest = () => {
               <img className="emicard__img" src={EpicIcon} alt="Ordinary" />
               <div className="emicard__info">
                 <div className="emicard__description-card">
-                  Make purchase of <b className="green-color ml-5">{NumByGetMoreCard} ESWc</b>
+                  Make purchase of <b className="green-color ml-5">{NumByGetMoreCard} ESW</b>
                 </div>
                 <div className="emicard__description-card">
                   to get <b className="ml-5 mr-5">1</b> more <b className="ml-5">Epic card</b>
@@ -716,7 +717,7 @@ const Invest = () => {
             <img className="emicard__img" src={LegendaryIcon} alt="Legendary" />
             <div className="emicard__info">
               <div className="emicard__description-card">
-                Make purchase of <b className="green-color ml-5">{legendaryCount} ESWc</b>
+                Make purchase of <b className="green-color ml-5">{legendaryCount} ESW</b>
               </div>
               <div className="emicard__description-card">
                 to get <b className="ml-5">a Legendary card</b>
@@ -743,7 +744,7 @@ const Invest = () => {
             <img className="emicard__img" src={LegendaryIcon} alt="Ordinary" />
             <div className="emicard__info">
               <div className="emicard__description-card">
-                Make purchase of <b className="green-color ml-5">{NumByGetMoreCard} ESWc</b>
+                Make purchase of <b className="green-color ml-5">{NumByGetMoreCard} ESW</b>
               </div>
               <div className="emicard__description-card">
                 to get <b className="ml-5 mr-5">1</b> more <b className="ml-5">Legendary card</b>
@@ -767,11 +768,11 @@ const Invest = () => {
     return (
       <EmiCard className={getClassToEmiCardsBlock(ESWc)}>
         <div className="block-with-cards__header">
-          {ESWc > 0 ? 'You will get:' : 'Buy ESWc to get Magic NFT EmiCards'}
+          {ESWc > 0 ? 'You will get:' : 'Buy ESW to get Magic NFT EmiCards'}
         </div>
         {bodyNode}
         <div className="block-with-cards__footer">
-          Fill the amount of ESWc for purchase to see the NFT cards you will get
+          Fill the amount of ESW for purchase to see the NFT cards you will get
         </div>
         <a
           href="https://crowdsale.emidao.org/magic-nft"
@@ -817,9 +818,35 @@ const Invest = () => {
     }
     return error;
   };
+
+  const warningBottomContent = () => {
+    return (
+      <StyledButton href={'#'} target="_blank">
+        <span> READ MORE </span> {'>>'}
+      </StyledButton>
+    );
+  };
+
+  const warningContent = () => {
+    return (
+      <p>
+        The beta testing runs for about 2 weeks, and the users who join us within this period will
+        have 50,000 ESW distributed among the, during the first week after the official launch.
+      </p>
+    );
+  };
+
   return (
     <>
-      {showWarning && <TokenWarningCards currencies={currencies} />}
+      {showWarning ? (
+        <TokenWarningCards currencies={currencies} />
+      ) : (
+        <WarningBlock
+          title="EMISWAP soft launch"
+          content={warningContent}
+          bottomContent={warningBottomContent}
+        />
+      )}
       <AppBody disabled={showWarning} className={'invest-mobile'}>
         <SwapPoolTabs active={'invest'} />
         <Wrapper id="invest-page">

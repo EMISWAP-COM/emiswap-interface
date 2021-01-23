@@ -39,6 +39,7 @@ interface CurrencySearchModalProps {
   onCurrencySelect?: (currency: Token) => void;
   otherSelectedCurrency?: Token;
   showCommonBases?: boolean;
+  isMatchEth?: boolean;
 }
 
 export default function CurrencySearchModal({
@@ -49,6 +50,7 @@ export default function CurrencySearchModal({
   showSendWithSwap,
   otherSelectedCurrency,
   showCommonBases = false,
+  isMatchEth = false,
 }: CurrencySearchModalProps) {
   const { t } = useTranslation();
   const { account, chainId } = useActiveWeb3React();
@@ -184,6 +186,7 @@ export default function CurrencySearchModal({
               chainId={chainId}
               onSelect={handleCurrencySelect}
               selectedCurrency={hiddenCurrency}
+              otherSelectedCurrency={otherSelectedCurrency}
             />
           )}
           <RowBetween>
@@ -203,6 +206,7 @@ export default function CurrencySearchModal({
           otherCurrency={otherSelectedCurrency}
           selectedCurrency={hiddenCurrency}
           showSendWithSwap={showSendWithSwap}
+          isMatchEth={isMatchEth}
         />
         <div style={{ height: '1px', backgroundColor: theme.bg2, margin: '0 30px' }} />
         <Card>

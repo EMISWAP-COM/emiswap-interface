@@ -116,7 +116,7 @@ export default function TotalEarnDividends({
   return (
     <>
       <AccountSectionHeader>
-        <TYPE.mediumHeader>Total ESWc</TYPE.mediumHeader>
+        <TYPE.mediumHeader>Total ESW</TYPE.mediumHeader>
       </AccountSectionHeader>
       <AccountSectionBody>
         <AccountSectionBodyPart>
@@ -125,7 +125,7 @@ export default function TotalEarnDividends({
           </AccountGroupingInfoTitleRow>
           <AccountSectionTable>
             <div>
-              <span>Total ESWc amount</span>
+              <span>Total ESW amount</span>
             </div>
             <div>
               <span>Available to collect</span>
@@ -143,11 +143,11 @@ export default function TotalEarnDividends({
         </AccountSectionBodyPart>
         <AccountSectionBodyPart>
           <AccountGroupingInfoTitleRow>
-            <span>ESWc on Smart Contract</span>
+            <span>ESW on Smart Contract</span>
           </AccountGroupingInfoTitleRow>
           <AccountSectionTable>
             <div>
-              <span>Total ESWc amount</span>
+              <span>Total ESW amount</span>
               <span>{availableToCollect + frozenTokens}</span>
             </div>
             <div>

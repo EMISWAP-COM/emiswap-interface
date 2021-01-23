@@ -67,7 +67,7 @@
   {
     "inputs": [
       {
-        "internalType": "address",
+        "internalType": "contract IERC20",
         "name": "_token",
         "type": "address"
       }
@@ -172,6 +172,11 @@
         "internalType": "uint256",
         "name": "_reserve1",
         "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "poolAddresss",
+        "type": "address"
       }
     ],
     "stateMutability": "view",
