@@ -107,19 +107,19 @@ export const KOVAN_CHI = new Token(
 
 export const ESW: ChainTokenList = {
   [ChainId.MAINNET]: [
-    new Token(ChainId.MAINNET, window['env'].REACT_APP_ESW_ID, 18, 'ESWc', 'EmiDAO Token'),
+    new Token(ChainId.MAINNET, window['env'].REACT_APP_ESW_ID, 18, 'ESW', 'EmiDAO Token'),
   ],
   [ChainId.ROPSTEN]: [
-    new Token(ChainId.ROPSTEN, window['env'].REACT_APP_ESW_ID, 18, 'ESWc', 'EmiDAO Token'),
+    new Token(ChainId.ROPSTEN, window['env'].REACT_APP_ESW_ID, 18, 'ESW', 'EmiDAO Token'),
   ],
   [ChainId.RINKEBY]: [
-    new Token(ChainId.RINKEBY, window['env'].REACT_APP_ESW_ID, 18, 'ESWc', 'EmiDAO Token'),
+    new Token(ChainId.RINKEBY, window['env'].REACT_APP_ESW_ID, 18, 'ESW', 'EmiDAO Token'),
   ],
   [ChainId.GÖRLI]: [
-    new Token(ChainId.GÖRLI, window['env'].REACT_APP_ESW_ID, 18, 'ESWc', 'EmiDAO Token'),
+    new Token(ChainId.GÖRLI, window['env'].REACT_APP_ESW_ID, 18, 'ESW', 'EmiDAO Token'),
   ],
   [ChainId.KOVAN]: [
-    new Token(ChainId.KOVAN, window['env'].REACT_APP_ESW_ID, 18, 'ESWc', 'EmiDAO Token'),
+    new Token(ChainId.KOVAN, window['env'].REACT_APP_ESW_ID, 18, 'ESW', 'EmiDAO Token'),
   ],
 };
 

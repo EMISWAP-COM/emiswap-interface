@@ -498,7 +498,7 @@ const Invest = () => {
   }
 
   const generateEmiCardBlock = (num: Number) => {
-    const ESWc = Number(num.toFixed(3));
+    const ESW = Number(num.toFixed(3));
     const ordinaryCount = 500;
     const uncommonCount = 2500;
     const rareCount = 7500;
@@ -506,25 +506,25 @@ const Invest = () => {
     const legendaryCount = 50000;
     let rare = '';
     let NunOfCard = 0;
-    if (ESWc > 0 && ESWc < uncommonCount) {
+    if (ESW > 0 && ESW < uncommonCount) {
       rare = 'Ordinary';
-      NunOfCard = Math.floor(ESWc / ordinaryCount);
+      NunOfCard = Math.floor(ESW / ordinaryCount);
     }
-    if (ESWc >= uncommonCount && ESWc < rareCount) {
+    if (ESW >= uncommonCount && ESW < rareCount) {
       rare = 'Uncommon';
-      NunOfCard = Math.floor(ESWc / uncommonCount);
+      NunOfCard = Math.floor(ESW / uncommonCount);
     }
-    if (ESWc >= rareCount && ESWc < epicCount) {
+    if (ESW >= rareCount && ESW < epicCount) {
       rare = 'Rare';
-      NunOfCard = Math.floor(ESWc / rareCount);
+      NunOfCard = Math.floor(ESW / rareCount);
     }
-    if (ESWc >= epicCount && ESWc < legendaryCount) {
+    if (ESW >= epicCount && ESW < legendaryCount) {
       rare = 'Epic';
-      NunOfCard = Math.floor(ESWc / epicCount);
+      NunOfCard = Math.floor(ESW / epicCount);
     }
-    if (ESWc >= legendaryCount) {
+    if (ESW >= legendaryCount) {
       rare = 'Legendary';
-      NunOfCard = Math.floor(ESWc / legendaryCount);
+      NunOfCard = Math.floor(ESW / legendaryCount);
     }
 
     let bodyNode = (
@@ -755,20 +755,20 @@ const Invest = () => {
       );
     }
 
-    const getClassToEmiCardsBlock = (ESWc: Number) => {
-      if (ESWc >= legendaryCount || NunOfCard === 4) {
+    const getClassToEmiCardsBlock = (ESW: Number) => {
+      if (ESW >= legendaryCount || NunOfCard === 4) {
         return 'block-with-cards elem1';
       }
-      if (ESWc > 0 && ESWc < legendaryCount) {
+      if (ESW > 0 && ESW < legendaryCount) {
         return 'block-with-cards elem2';
       }
 
       return 'block-with-cards';
     };
     return (
-      <EmiCard className={getClassToEmiCardsBlock(ESWc)}>
+      <EmiCard className={getClassToEmiCardsBlock(ESW)}>
         <div className="block-with-cards__header">
-          {ESWc > 0 ? 'You will get:' : 'Buy ESW to get Magic NFT EmiCards'}
+          {ESW > 0 ? 'You will get:' : 'Buy ESW to get Magic NFT EmiCards'}
         </div>
         {bodyNode}
         <div className="block-with-cards__footer">
