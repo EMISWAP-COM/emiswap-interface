@@ -17,6 +17,8 @@ import Loader from '../Loader';
 import { isDefaultToken } from '../../utils';
 import { currencyKey } from '../../utils/currencyId';
 import { tokenAmountToString } from '../../utils/formats';
+import defaultCoins from '../../constants/defaultCoins';
+import { KOVAN_WETH } from '../../constants';
 
 export default function CurrencyList({
   currencies,
@@ -25,6 +27,7 @@ export default function CurrencyList({
   onCurrencySelect,
   otherCurrency,
   showSendWithSwap,
+  isMatchEth = false,
 }: {
   currencies: Token[];
   selectedCurrency: Token;
@@ -32,6 +35,7 @@ export default function CurrencyList({
   onCurrencySelect: (currency: Token) => void;
   otherCurrency: Token;
   showSendWithSwap?: boolean;
+  isMatchEth?: boolean;
 }) {
   const { account, chainId } = useActiveWeb3React();
   const theme = useContext(ThemeContext);
@@ -52,8 +56,28 @@ export default function CurrencyList({
       const balance = currency === ETHER ? ETHBalance : allBalances[key];
 
       const zeroBalance = balance && JSBI.equal(JSBI.BigInt(0), balance.raw);
+      const wethTokenInfo = defaultCoins.tokens.find(
+        token => token.symbol === 'WETH' && token.chainId === chainId,
+      );
+      const WETH: Token =
+        wethTokenInfo && chainId
+          ? new Token(
+              chainId,
+              wethTokenInfo.address,
+              wethTokenInfo.decimals,
+              wethTokenInfo.symbol,
+              wethTokenInfo.name,
+            )
+          : KOVAN_WETH;
 
-      const isSelected = Boolean(selectedCurrency && currencyEquals(currency, selectedCurrency));
+      const isSelected = Boolean(
+        (selectedCurrency && currencyEquals(currency, selectedCurrency)) ||
+          (isMatchEth &&
+            ((otherCurrency &&
+              (otherCurrency.isEther || otherCurrency.equals(WETH)) &&
+              currency.isEther) ||
+              currency.equals(WETH))),
+      );
       const otherSelected = Boolean(otherCurrency && currencyEquals(otherCurrency, currency));
 
       return (
@@ -137,6 +161,7 @@ export default function CurrencyList({
     selectedCurrency,
     showSendWithSwap,
     theme.primary1,
+    isMatchEth,
   ]);
 
   return (

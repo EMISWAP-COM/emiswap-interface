@@ -1,9 +1,10 @@
-import { Token, TokenAmount, Pair, Trade } from '@uniswap/sdk';
+import { Pair, Token, TokenAmount, Trade } from '@uniswap/sdk';
 import flatMap from 'lodash.flatmap';
 import { useMemo } from 'react';
 
-import { BASES_TO_CHECK_TRADES_AGAINST } from '../constants';
-import { PairState, usePairs } from '../data-mooniswap/Reserves';
+import { BASES_TO_CHECK_TRADES_AGAINST, KOVAN_WETH } from '../constants';
+import { PairState } from '../data-mooniswap/Reserves'; // usePairs
+import { usePairs } from '../data/Reserves'; // usePairs
 import { wrappedCurrency } from '../utils/wrappedCurrency';
 
 import { useActiveWeb3React } from './index';
@@ -12,36 +13,51 @@ function useAllCommonPairs(currencyA?: Token, currencyB?: Token): Pair[] {
   const { chainId } = useActiveWeb3React();
 
   const bases: Token[] = chainId ? BASES_TO_CHECK_TRADES_AGAINST[chainId] : [];
-
-  const [tokenA, tokenB] = chainId
+  let [tokenA, tokenB] = chainId
     ? [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)]
     : [undefined, undefined];
+  if (tokenA?.isEther) {
+    tokenA = KOVAN_WETH;
+  }
 
-  const allPairCombinations: [Token | undefined, Token | undefined][] = useMemo(
-    () => [
-      // the direct pair
-      [tokenA, tokenB],
-      // token A against all bases
-      ...bases.map((base): [Token | undefined, Token | undefined] => [tokenA, base]),
-      // token B against all bases
-      ...bases.map((base): [Token | undefined, Token | undefined] => [tokenB, base]),
-      // each base against all bases
-      ...flatMap(bases, (base): [Token, Token][] => bases.map(otherBase => [base, otherBase])),
-    ],
-    [tokenA, tokenB, bases],
+  const basePairs: [Token, Token][] = useMemo(
+    () =>
+      flatMap(bases, (base): [Token, Token][] => bases.map(otherBase => [base, otherBase])).filter(
+        ([t0, t1]) => t0.address !== t1.address,
+      ),
+    [bases],
   );
 
-  const allPairs = usePairs(allPairCombinations);
+  const allPairCombinations: [Token, Token][] = useMemo(
+    () =>
+      tokenA && tokenB
+        ? [
+            // the direct pair
+            [tokenA, tokenB],
+            // token A against all bases
+            ...bases.map((base): [Token | undefined, Token] => [tokenA, base]),
+            // token B against all bases
+            ...bases.map((base): [Token | undefined, Token] => [tokenB, base]),
+            // each base against all bases
+            ...basePairs,
+          ]
+            .filter((tokens): tokens is [Token, Token] => Boolean(tokens[0] && tokens[1]))
+            .filter(([t0, t1]) => t0.address !== t1.address)
+        : [],
+    [tokenA, tokenB, bases, basePairs],
+  );
 
+  // all_exist
+  let allPairs = usePairs(allPairCombinations);
   // only pass along valid pairs, non-duplicated pairs
   return useMemo(
     () =>
       Object.values(
         allPairs
           // filter out invalid pairs
-          .filter((result): result is [PairState.EXISTS, Pair] =>
-            Boolean(result[0] === PairState.EXISTS && result[1]),
-          )
+          .filter((result): result is [PairState.EXISTS, Pair] => {
+            return Boolean(result[0] === PairState.EXISTS && result[1]);
+          })
           // filter out duplicated pairs
           .reduce<{ [pairAddress: string]: Pair }>((memo, [, curr]) => {
             memo[curr.liquidityToken.address] = memo[curr.liquidityToken.address] ?? curr;

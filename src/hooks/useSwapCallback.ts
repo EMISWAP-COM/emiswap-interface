@@ -1,17 +1,12 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { Contract } from '@ethersproject/contracts';
-import { JSBI, TokenAmount, Trade } from '@uniswap/sdk';
+import { JSBI, TokenAmount, Trade, ZERO_ADDRESS } from '@uniswap/sdk';
 import { useMemo } from 'react';
-import { INITIAL_ALLOWED_SLIPPAGE, REFERRAL_ADDRESS_STORAGE_KEY } from '../constants';
+import { useSelector } from 'react-redux';
+import { INITIAL_ALLOWED_SLIPPAGE } from '../constants';
 import { getTradeVersion } from '../data/V1';
 import { useTransactionAdder } from '../state/transactions/hooks';
-import {
-  calculateGasMargin,
-  getMooniswapContract,
-  getOneSplit,
-  isAddress,
-  isUseOneSplitContract,
-} from '../utils';
+import { calculateGasMargin, getMooniswapContract, getOneSplit } from '../utils';
 import { useActiveWeb3React } from './index';
 import { Version } from './useToggledVersion';
 import {
@@ -23,9 +18,12 @@ import {
 } from '../constants/one-split';
 import { MIN_CHI_BALANCE, useHasChi, useIsChiApproved } from './useChi';
 import { ApprovalState } from './useApproveCallback';
-import { getAddress } from '@ethersproject/address';
 import { tokenAmountToString } from '../utils/formats';
-
+import { useSwapEmiRouter } from './useContract';
+import defaultCoins from '../constants/defaultCoins';
+import { Web3Provider } from '@ethersproject/providers';
+import { AppState } from '../state';
+import { Field } from '../state/swap/actions';
 // function isZero(hexNumber: string) {
 //   return /^0x0*$/.test(hexNumber)
 // }
@@ -47,8 +45,10 @@ export function useSwap(
   trade: Trade | undefined, // trade to execute, required
   distribution: BigNumber[] | undefined,
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
+  formattedAmounts: { [p: string]: string },
+  onReject?: () => void,
 ): useSwapResult {
-  const isOneSplit = isUseOneSplitContract(distribution);
+  const isOneSplit = false;
   const [isChiApproved] = useIsChiApproved(chainId || 0);
   const hasEnoughChi = useHasChi(MIN_CHI_BALANCE);
 
@@ -68,9 +68,10 @@ export function useSwap(
     distribution,
     allowedSlippage,
     isOneSplit,
+    formattedAmounts,
+    onReject,
     //applyChi
   );
-
   return [applyChi, swapCallback, estimate];
 }
 
@@ -133,7 +134,7 @@ export function useEstimateCallback(
           return x.toNumber();
         })
         .catch(error => {
-          console.error(`estimateGas failed for ${'swap'}`, error);
+          console.error(`estimateGas failed for swap`, error);
           return undefined;
         });
     };
@@ -178,17 +179,21 @@ export function useSwapCallback(
   distribution: BigNumber[] | undefined,
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips,
   isOneSplit: boolean,
+  formattedAmounts: { [p: string]: string },
+  onReject?: () => void,
   // TODO: should be taked into consideration
   //useChi: boolean | undefined
 ): SwapCallback {
   const { account, chainId, library } = useActiveWeb3React();
   const addTransaction = useTransactionAdder();
-
+  const swapState = useSelector<AppState, AppState['swap']>(state => state.swap);
   const recipient = account;
-
   const tradeVersion = getTradeVersion(trade);
   // const v1Exchange = useV1ExchangeContract(useV1TradeExchangeAddress(trade), true)
-
+  const emiRouterContract = useSwapEmiRouter(
+    library as Web3Provider,
+    account as string | undefined,
+  );
   return useMemo(() => {
     if (
       !trade ||
@@ -199,25 +204,27 @@ export function useSwapCallback(
       !chainId ||
       !distribution ||
       !fromAmount
-    )
+    ) {
       return null;
-
+    }
     return async function onSwap() {
       const contract: Contract | null = isOneSplit
         ? getOneSplit(chainId, library, account)
-        : getMooniswapContract(chainId, library, trade.route.pairs[0].poolAddress, account);
-
+        : trade.route.path.length <= 2 &&
+          swapState[Field.INPUT].currencyId !== ZERO_ADDRESS &&
+          swapState[Field.OUTPUT].currencyId !== ZERO_ADDRESS
+        ? getMooniswapContract(chainId, library, trade.route.pairs[0].poolAddress, account)
+        : emiRouterContract;
+      getMooniswapContract(chainId, library, trade.route.pairs[0].poolAddress, account);
       if (!contract) {
         throw new Error('Failed to get a swap contract');
       }
-
       let value: BigNumber | undefined;
       if (trade.inputAmount.token.symbol === 'ETH') {
         value = BigNumber.from(fromAmount.raw.toString());
       }
-
       const estimateSwap = (args: any[]) => {
-        return contract.estimateGas['swap'](
+        return contract.estimateGas['swapTokensForExactETH'](
           ...args,
           value && !value.isZero() ? { value, from: account } : { from: account },
         )
@@ -226,7 +233,7 @@ export function useSwapCallback(
             return x.toNumber();
           })
           .catch(error => {
-            console.error(`estimateGas failed for ${'swap'}`, error);
+            console.error(`estimateGas failed for swap`, error);
             return undefined;
           });
       };
@@ -253,6 +260,9 @@ export function useSwapCallback(
 
       const onError = (error: any) => {
         // if the user rejected the tx, pass this along
+        if (onReject) {
+          onReject();
+        }
         if (error?.code === 4001) {
           throw error;
         }
@@ -269,7 +279,6 @@ export function useSwapCallback(
           FLAG_DISABLE_ALL_SPLIT_SOURCES,
           FLAG_DISABLE_MOONISWAP_ALL,
         ];
-
         // First attempt to estimate when CHI is set
         const args = [
           trade.inputAmount.token.address,
@@ -286,7 +295,6 @@ export function useSwapCallback(
             FLAG_ENABLE_CHI_BURN_BY_ORIGIN,
           ).toString(),
         ];
-
         return estimateSwap(args).then(result => {
           if (!result) {
             // If we aren't then estimate without CHI, change args
@@ -294,7 +302,7 @@ export function useSwapCallback(
             return estimateSwap(args)
               .then(result => {
                 const gasLimit = calculateGasMargin(BigNumber.from(result));
-                return contract['swap'](...args, {
+                return contract['swapTokensForExactETH'](...args, {
                   gasLimit,
                   ...(value && !value.isZero() ? { value } : {}),
                 });
@@ -306,7 +314,7 @@ export function useSwapCallback(
             const gasLimit = calculateGasMargin(BigNumber.from(result));
 
             // If we are good with CHI -> execute
-            return contract['swap'](...args, {
+            return contract['swapTokensForExactETH'](...args, {
               gasLimit,
               ...(value && !value.isZero() ? { value } : {}),
             })
@@ -319,22 +327,75 @@ export function useSwapCallback(
           .mul(String(10000 - allowedSlippage))
           .div(String(10000));
 
-        const referalAddressStr = localStorage.getItem(REFERRAL_ADDRESS_STORAGE_KEY);
-        let referalAddress = '0x68a17B587CAF4f9329f0e372e3A78D23A46De6b5';
-        if (referalAddressStr && isAddress(referalAddressStr)) {
-          referalAddress = getAddress(referalAddressStr);
+        const WETH = defaultCoins.tokens.find(
+          token => token.symbol === 'WETH' && token.chainId === chainId,
+        );
+
+        let args: any[] = [];
+        let method = 'swap';
+        let obj = {};
+
+        const addresses = trade.route.path.map(el => el.address);
+        if (
+          trade.route.path.length <= 2 &&
+          swapState[Field.INPUT].currencyId !== ZERO_ADDRESS &&
+          swapState[Field.OUTPUT].currencyId !== ZERO_ADDRESS
+        ) {
+          method = 'swap';
+          args = [
+            ...addresses,
+            (+formattedAmounts.INPUT * 10 ** trade?.inputAmount?.token?.decimals).toString(),
+            minReturn.toString(),
+            account,
+            ZERO_ADDRESS,
+          ];
+          obj = {};
+        } else if (
+          trade?.inputAmount?.token?.isEther ||
+          trade?.outputAmount?.token?.isEther ||
+          swapState[Field.INPUT].currencyId === ZERO_ADDRESS ||
+          swapState[Field.OUTPUT].currencyId === ZERO_ADDRESS
+        ) {
+          if (
+            trade?.inputAmount?.token?.isEther ||
+            swapState[Field.INPUT].currencyId === ZERO_ADDRESS
+          ) {
+            method = 'swapExactETHForTokens';
+            args = [
+              minReturn.toString(), //t3,
+              addresses,
+              account,
+              ZERO_ADDRESS,
+            ];
+            obj = {
+              value: `0x${BigInt(+formattedAmounts.INPUT * 10 ** WETH!.decimals).toString(16)}`,
+            };
+          } else {
+            method = 'swapExactTokensForETH';
+            args = [
+              (+formattedAmounts.INPUT * 10 ** trade?.inputAmount?.token?.decimals).toString(),
+              // t3,
+              addresses,
+              account,
+              ZERO_ADDRESS,
+            ];
+          }
+        } else {
+          method = 'swapExactTokensForTokens';
+          args = [
+            (+formattedAmounts.INPUT * 10 ** trade?.inputAmount?.token?.decimals).toString(),
+            minReturn.toString(),
+            addresses,
+            account,
+            ZERO_ADDRESS,
+          ];
+          obj = {};
         }
-
-        const args = [
-          trade.inputAmount.token.address,
-          trade.outputAmount.token.address,
-          fromAmount?.raw.toString(),
-          minReturn.toString(),
-          account,
-          referalAddress,
-        ];
-
-        return contract.estimateGas['swap'](...args /*, value && !value.isZero() ? { value } : {}*/)
+        console.log(`==========>contract`, contract)
+        console.log(`==========>method`, method)
+        console.log(`==========>args`, args)
+        console.log(`==========>obj`, obj)
+        return contract.estimateGas[method](...args, obj)
           .then(result => {
             // if (BigNumber.isBigNumber(safeGasEstimate) && !BigNumber.isBigNumber(safeGasEstimate)) {
             //   throw new Error(
@@ -342,9 +403,9 @@ export function useSwapCallback(
             //   )
             // }
             const gasLimit = calculateGasMargin(BigNumber.from(result));
-            return contract['swap'](...args, {
+            return contract[method](...args, {
               gasLimit,
-              ...(value && !value.isZero() ? { value } : {}),
+              ...obj,
             })
               .then(onSuccess)
               .catch(onError);
@@ -367,6 +428,10 @@ export function useSwapCallback(
     distribution,
     fromAmount,
     isOneSplit,
+    emiRouterContract,
+    formattedAmounts.INPUT,
+    swapState,
+    onReject,
     // useChi
   ]);
 }

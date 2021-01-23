@@ -265,7 +265,7 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
             )}
           </div>
           <div className="modal-body__input-block">
-            <div className="modal-body__input-label">Ethereum Address Used to Buy ESWc</div>
+            <div className="modal-body__input-label">Ethereum Address Used to Buy ESW</div>
             <input
               ref={addressRef}
               className={`modal-body__input${validation.address ? ' modal-body__error' : ''}`}
