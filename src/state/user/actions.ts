@@ -12,6 +12,7 @@ export interface SerializedPair {
   token0: SerializedToken;
   token1: SerializedToken;
 }
+export const login = createAction<{walletAccount: string, refferalWallet: string}>('user/login')
 
 export const updateVersion = createAction<void>('updateVersion');
 export const updateMatchesDarkMode = createAction<{ matchesDarkMode: boolean }>(
