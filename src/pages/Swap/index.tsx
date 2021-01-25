@@ -337,7 +337,7 @@ export default function Swap() {
     return (
       <p>
         The beta testing runs for about 2 weeks, and the users who join us within this period will
-        have 50,000 ESW distributed among the, during the first week after the official launch.
+        have 50,000 ESW distributed among them during the first week after the official launch.
       </p>
     );
   };
