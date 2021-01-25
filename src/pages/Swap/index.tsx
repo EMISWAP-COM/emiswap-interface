@@ -327,7 +327,7 @@ export default function Swap() {
 
   const warningBottomContent = () => {
     return (
-      <StyledButton href={'#'} target="_blank">
+      <StyledButton href={'https://link.medium.com/gNa3ztuvkdb'} target="_blank">
         <span> READ MORE </span> {'>>'}
       </StyledButton>
     );
