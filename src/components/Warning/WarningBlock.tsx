@@ -22,7 +22,7 @@ const StyledWarning = styled.div`
     margin: 0;
   }
 
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 600px) {
     margin: 30px 0;
   }
 `;

@@ -321,6 +321,10 @@ const EmiCard = styled.div`
       top: -9px;
     }
   }
+
+  @media screen and (max-width: 510px) {
+    height: 540px;
+  }
 `;
 
 const EmiMagicBtn = styled.div`
