@@ -42,6 +42,7 @@ import Question from '../../assets/svg/FAQIcon/question.svg';
 import EmiMagicBackground from '../../assets/svg/EmiMagicBackground.svg';
 import EmiMagicCardModal from '../../components/EmiMagicCardModal';
 import WarningBlock, { StyledButton } from '../../components/Warning/WarningBlock';
+import ReferralLink from '../../components/RefferalLink';
 
 const EmiCard = styled.div`
   position: absolute;
@@ -450,6 +451,11 @@ const Invest = () => {
             currencies[Field[isBuyESW ? 'OUTPUT' : 'INPUT']]?.symbol
           }`,
         });
+        ReactGA.event({
+          category: 'purchase',
+          action: 'invest',
+          value: Number(parsedAmounts[Field.OUTPUT]?.raw.toString()),
+        });
       })
       .catch((error: any) => {
         setAttemptingTxn(false);
@@ -463,7 +469,13 @@ const Invest = () => {
   // errors
   const [showInverted, setShowInverted] = useState<boolean>(false);
   const [showEmiCardModal, setShowEmiCardModal] = useState<boolean>(false);
-  const openEmiCardModal = () => setShowEmiCardModal(true);
+  const openEmiCardModal = () => {
+    ReactGA.event({
+      category: 'Magic_NFT',
+      action: 'click',
+    });
+    setShowEmiCardModal(true);
+  };
   const closeEmiCardModal = () => setShowEmiCardModal(false);
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
   // never show if price impact is above threshold in non expert mode
@@ -964,7 +976,7 @@ const Invest = () => {
               )}
             </BottomGrouping>
           </AutoColumn>
-          {/*{account ? <ReferralLink /> : ''}*/}
+          {account ? <ReferralLink /> : ''}
           <EmiMagicBtn onClick={openEmiCardModal}>Get Magic NFT Cards</EmiMagicBtn>
           {showEmiCardModal && (
             <EmiMagicCardModal

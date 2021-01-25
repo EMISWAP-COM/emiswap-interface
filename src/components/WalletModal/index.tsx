@@ -206,10 +206,59 @@ export default function WalletModal({
     }
   }, [setWalletView, active, error, connector, walletModalOpen, activePrevious, connectorPrevious]);
 
+  const getGAEvent = name => {
+    switch (name) {
+      case 'MetaMask':
+        return () => {
+          ReactGA.event({
+            category: 'wallet',
+            action: 'connect',
+            label: 'metamask',
+          });
+        };
+      case 'WalletConnect':
+        return () => {
+          ReactGA.event({
+            category: 'wallet',
+            action: 'connect',
+            label: 'walletconnect',
+          });
+        };
+      case 'Open in Coinbase Wallet':
+        return () => {
+          ReactGA.event({
+            category: 'wallet',
+            action: 'connect',
+            label: 'coinbasewallet',
+          });
+        };
+      case 'Fortmatic':
+        return () => {
+          ReactGA.event({
+            category: 'wallet',
+            action: 'connect',
+            label: 'fortmatic',
+          });
+        };
+      case 'Portis':
+        return () => {
+          ReactGA.event({
+            category: 'wallet',
+            action: 'connect',
+            label: 'portis',
+          });
+        };
+      default:
+        return () => {};
+    }
+  };
+
   const tryActivation = async connector => {
     let name = '';
     Object.keys(SUPPORTED_WALLETS).map(key => {
       if (connector === SUPPORTED_WALLETS[key].connector) {
+        const GAEvent = getGAEvent(SUPPORTED_WALLETS[key].name);
+        GAEvent && GAEvent();
         return (name = SUPPORTED_WALLETS[key].name);
       }
       return true;
@@ -228,13 +277,21 @@ export default function WalletModal({
       connector.walletConnectProvider = undefined;
     }
 
-    activate(connector, undefined, true).catch(error => {
-      if (error instanceof UnsupportedChainIdError) {
-        activate(connector); // a little janky...can't use setError because the connector isn't set
-      } else {
-        setPendingError(true);
-      }
-    });
+    activate(connector, undefined, true)
+      .then(() => {
+        ReactGA.event({
+          category: 'wallet',
+          action: 'connect',
+          label: 'success',
+        });
+      })
+      .catch(error => {
+        if (error instanceof UnsupportedChainIdError) {
+          activate(connector); // a little janky...can't use setError because the connector isn't set
+        } else {
+          setPendingError(true);
+        }
+      });
   };
 
   // close wallet modal if fortmatic modal is active
@@ -476,9 +533,7 @@ export default function WalletModal({
       maxHeight={90}
       maxWidth={720}
     >
-      <Wrapper>
-        {getModalContent()}
-      </Wrapper>
+      <Wrapper>{getModalContent()}</Wrapper>
     </Modal>
   );
 }
