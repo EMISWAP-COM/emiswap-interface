@@ -42,6 +42,8 @@ import Question from '../../assets/svg/FAQIcon/question.svg';
 import EmiMagicBackground from '../../assets/svg/EmiMagicBackground.svg';
 import EmiMagicCardModal from '../../components/EmiMagicCardModal';
 import WarningBlock, { StyledButton } from '../../components/Warning/WarningBlock';
+import useParsedQueryString from '../../hooks/useParsedQueryString'
+import ReferralLink from '../../components/RefferalLink';
 
 const EmiCard = styled.div`
   position: absolute;
@@ -321,6 +323,10 @@ const EmiCard = styled.div`
       top: -9px;
     }
   }
+
+  @media screen and (max-width: 510px) {
+    height: 540px;
+  }
 `;
 
 const EmiMagicBtn = styled.div`
@@ -343,6 +349,8 @@ export function RedirectPathToInvestOnly({ location }: RouteComponentProps) {
   return <Redirect to={{ ...location, pathname: '/invest' }} />;
 }
 const Invest = () => {
+  const { bonusform } = useParsedQueryString();
+
   useDefaultsFromURLSearch();
 
   const { account, chainId } = useActiveWeb3React();
@@ -450,6 +458,11 @@ const Invest = () => {
             currencies[Field[isBuyESW ? 'OUTPUT' : 'INPUT']]?.symbol
           }`,
         });
+        ReactGA.event({
+          category: 'purchase',
+          action: 'invest',
+          value: Number(parsedAmounts[Field.OUTPUT]?.raw.toString()),
+        });
       })
       .catch((error: any) => {
         setAttemptingTxn(false);
@@ -462,8 +475,14 @@ const Invest = () => {
 
   // errors
   const [showInverted, setShowInverted] = useState<boolean>(false);
-  const [showEmiCardModal, setShowEmiCardModal] = useState<boolean>(false);
-  const openEmiCardModal = () => setShowEmiCardModal(true);
+  const [showEmiCardModal, setShowEmiCardModal] = useState<boolean>(bonusform === 'open');
+  const openEmiCardModal = () => {
+    ReactGA.event({
+      category: 'Magic_NFT',
+      action: 'click',
+    });
+    setShowEmiCardModal(true);
+  };
   const closeEmiCardModal = () => setShowEmiCardModal(false);
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
   // never show if price impact is above threshold in non expert mode
@@ -796,7 +815,6 @@ const Invest = () => {
       </EmiCard>
     );
   };
-
   // text to show while loading
   const pendingText = `Investing ${tokenAmountToString(parsedAmounts[Field.INPUT])} ${
     currencies[Field.INPUT]?.symbol
@@ -821,7 +839,7 @@ const Invest = () => {
 
   const warningBottomContent = () => {
     return (
-      <StyledButton href={'#'} target="_blank">
+      <StyledButton href={'https://link.medium.com/gNa3ztuvkdb'} target="_blank">
         <span> READ MORE </span> {'>>'}
       </StyledButton>
     );
@@ -831,7 +849,7 @@ const Invest = () => {
     return (
       <p>
         The beta testing runs for about 2 weeks, and the users who join us within this period will
-        have 50,000 ESW distributed among the, during the first week after the official launch.
+        have 50,000 ESW distributed among them during the first week after the official launch.
       </p>
     );
   };
@@ -964,7 +982,7 @@ const Invest = () => {
               )}
             </BottomGrouping>
           </AutoColumn>
-          {/*{account ? <ReferralLink /> : ''}*/}
+          {account ? <ReferralLink /> : ''}
           <EmiMagicBtn onClick={openEmiCardModal}>Get Magic NFT Cards</EmiMagicBtn>
           {showEmiCardModal && (
             <EmiMagicCardModal
