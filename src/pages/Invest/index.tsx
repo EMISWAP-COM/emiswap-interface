@@ -323,6 +323,10 @@ const EmiCard = styled.div`
       top: -9px;
     }
   }
+
+  @media screen and (max-width: 510px) {
+    height: 540px;
+  }
 `;
 
 const EmiMagicBtn = styled.div`
@@ -472,8 +476,6 @@ const Invest = () => {
   // errors
   const [showInverted, setShowInverted] = useState<boolean>(false);
   const [showEmiCardModal, setShowEmiCardModal] = useState<boolean>(bonusform === 'open');
-  const openEmiCardModal = () => setShowEmiCardModal(true);
-  const [showEmiCardModal, setShowEmiCardModal] = useState<boolean>(false);
   const openEmiCardModal = () => {
     ReactGA.event({
       category: 'Magic_NFT',
