@@ -42,6 +42,7 @@ import Question from '../../assets/svg/FAQIcon/question.svg';
 import EmiMagicBackground from '../../assets/svg/EmiMagicBackground.svg';
 import EmiMagicCardModal from '../../components/EmiMagicCardModal';
 import WarningBlock, { StyledButton } from '../../components/Warning/WarningBlock';
+import useParsedQueryString from '../../hooks/useParsedQueryString'
 import ReferralLink from '../../components/RefferalLink';
 
 const EmiCard = styled.div`
@@ -344,6 +345,8 @@ export function RedirectPathToInvestOnly({ location }: RouteComponentProps) {
   return <Redirect to={{ ...location, pathname: '/invest' }} />;
 }
 const Invest = () => {
+  const { bonusform } = useParsedQueryString();
+
   useDefaultsFromURLSearch();
 
   const { account, chainId } = useActiveWeb3React();
@@ -468,6 +471,8 @@ const Invest = () => {
 
   // errors
   const [showInverted, setShowInverted] = useState<boolean>(false);
+  const [showEmiCardModal, setShowEmiCardModal] = useState<boolean>(bonusform === 'open');
+  const openEmiCardModal = () => setShowEmiCardModal(true);
   const [showEmiCardModal, setShowEmiCardModal] = useState<boolean>(false);
   const openEmiCardModal = () => {
     ReactGA.event({
@@ -808,7 +813,6 @@ const Invest = () => {
       </EmiCard>
     );
   };
-
   // text to show while loading
   const pendingText = `Investing ${tokenAmountToString(parsedAmounts[Field.INPUT])} ${
     currencies[Field.INPUT]?.symbol
