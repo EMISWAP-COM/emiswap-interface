@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import Accordion from '../Accordion';
 import Colon from '../../assets/svg/FAQIcon/colon.svg';
-import Pig from '../../assets/svg/FAQIcon/pig.svg';
 import Board from '../../assets/svg/FAQIcon/board.svg';
 import Coins from '../../assets/svg/FAQIcon/coins.svg';
 import YellowCircle from '../../assets/svg/FAQIcon/yellowCircle.svg';
