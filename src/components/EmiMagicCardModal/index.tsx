@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import WAValidator from 'wallet-address-validator';
+import ReactGA from 'react-ga';
 import Modal from '../Modal';
 import EmiCardHeaderImg from '../../assets/images/EmiCardHeaderImg.jpg';
 import CloseIcon from '../../assets/images/close-white.svg';
@@ -206,6 +207,10 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
       })
         .then(response => response.text())
         .then(contents => {
+          ReactGA.event({
+            category: 'whitelist',
+            action: 'register',
+          });
           console.log(contents);
           localStorage.removeItem('UTMMarks');
           onDismiss();
