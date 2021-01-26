@@ -400,16 +400,6 @@ const Body = styled.div`
   }
 `;
 
-const defaultLabelStyle = {
-  fontFamily: 'IBM Plex Sans',
-  fontStyle: 'normal',
-  fontWeight: 600,
-  fontSize: '7px',
-  lineHeight: '32px',
-  letterSpacing: '-0.01em',
-  fill: '#FFF',
-};
-const shiftSize = 7;
 
 export default () => {
   const btnClick1 = () => {
