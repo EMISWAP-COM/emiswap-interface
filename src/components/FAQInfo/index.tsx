@@ -56,7 +56,7 @@ const Body = styled.div`
 
   .InfoBlock {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     width: 100%;
     margin-bottom: 40px;
     &__block {
@@ -90,13 +90,19 @@ const Body = styled.div`
     }
 
     @media screen and (max-width: 1000px) {
-      flex-direction: column;
-
+      &__img {
+        margin-right: 0;
+      }
       &__block {
+        flex-direction: column;
+        align-items: center;
         width: 100%;
         display: flex;
-        align-items: flex-start;
-
+        .InfoBlockBody {
+          &__header {
+            text-align: center;
+          }
+        }
         &:nth-child(2n-1) {
           padding-right: 0;
           margin-bottom: 20px;
@@ -423,9 +429,9 @@ export default () => {
       >
         <Body>
           <div className="title">
-            EmiSwap (EmiDAO) is an open source, decentralized autonomous organization. The main
-            elements of the ecosystem are the EmiSwap decentralized exchange and the ecosystem's
-            internal tokens - ESW and ESD.
+            EmiSwap is an automated market maker exchange with an ESW voting token as well as
+            yield-increasing NFT Magic Cards mechanics. EmiSwap is the first project in the EmiDAO
+            ecosystem.
           </div>
           <div className="InfoBlock">
             <div className="InfoBlock__block">
@@ -439,21 +445,10 @@ export default () => {
                 </div>
               </div>
             </div>
-            <div className="InfoBlock__block">
-              <img className="InfoBlock__img" src={Pig} alt="" />
-              <div className="InfoBlockBody">
-                <div className="InfoBlockBody__header h4">ESD</div>
-                <div className="InfoBlockBody__description">
-                  is an internal token that gives the ESW holders a right to receive assets in the
-                  basket of the yield pool denominated in DAI proportionate to the share of ESW
-                  ownership.
-                </div>
-              </div>
-            </div>
           </div>
           <div className="h4 mb40">
-            EmiSwap is a fork of the decentralized AMM exchange Mooniswap and was created to solve
-            current problems of the DeFi industry.
+            EmiSwap is an open-source, decentralized platform, a fork of Uniswap V2 and Mooniswap
+            with increased performance and supplemented functionality.
           </div>
           <div className="card-blocks">
             <div className="card width1_3">
