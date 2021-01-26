@@ -13,7 +13,7 @@ export const HeadersPlusBodyWrapper = styled.div<{ disabled?: boolean }>`
   max-width: 440px;
   width: 100%;
   text-align: center;
-  
+
   :after {
     content: '';
     background: center / contain no-repeat url('${PolygonSvg}');
@@ -30,7 +30,7 @@ export const HeadersPlusBodyWrapper = styled.div<{ disabled?: boolean }>`
       display: none;
     `};
   }
-  
+
 `;
 
 export const BodyWrapper = styled.div<{ disabled?: boolean; data?: string }>`
@@ -62,7 +62,7 @@ export const BodyWrapper = styled.div<{ disabled?: boolean; data?: string }>`
 
 const FAQWrapper = styled.div`
   max-width: 1200px;
-  margin-top: 70px;
+  margin-top: 45px;
 
   @media screen and (max-width: 1300px) {
     max-width: 960px;
@@ -76,6 +76,26 @@ const FAQWrapper = styled.div`
     max-width: 100%;
     margin-top: 10px;
   }
+`;
+
+const CardsButton = styled.a`
+  background-color: ${({ theme }) => theme.yellow1};
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 10px 16px;
+  border-radius: 5px;
+  display: block;
+  width: 100%;
+  max-width: 96px;
+  margin: 0 auto 32px auto;
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: 500;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 12px;
+  line-height: 16px;
+  color: ${({ theme }) => theme.grey2};
 `;
 
 /**
@@ -103,6 +123,7 @@ export default function AppBody({
         <BonusProgram />
       </HeadersPlusBodyWrapper>
       <FAQWrapper>
+        <CardsButton>NFT CARDS</CardsButton>
         <FAQInfo />
       </FAQWrapper>
     </ThemeProvider>
