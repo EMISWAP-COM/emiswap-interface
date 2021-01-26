@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled, { ThemeContext } from 'styled-components';
+import ReactGA from 'react-ga';
 import { RowFixed } from '../Row';
 import { Text } from 'rebass';
 import { TYPE } from '../../theme';
@@ -35,6 +36,13 @@ export default function ReferralLink() {
     return `${window.location.origin}/#${location.pathname}?r=${currentUserAddress}`;
   }
 
+  const handleGA = () => {
+    ReactGA.event({
+      category: 'reflink',
+      action: 'copy',
+    });
+  };
+
   return (
     <div>
       <Text textAlign="center" fontSize={14} style={{ padding: '.5rem 0 .5rem 0' }}>
@@ -46,12 +54,12 @@ export default function ReferralLink() {
           {/*<QuestionHelper text="Your transaction will revert if there is a large, unfavorable price movement before it is confirmed." />*/}
           {/*</RowFixed>*/}
           <RowFixed style={{ marginTop: '10px', width: '100%' }}>
-            <ButtonLightGreen toCopy={getRefferalLink(account)}>
+            <ButtonLightGreen toCopy={getRefferalLink(account)} onClick={handleGA}>
               <span style={{ marginLeft: '4px' }}>Copy Referral Link</span>
             </ButtonLightGreen>
           </RowFixed>
         </ReferralLinkBox>
       </Text>
     </div>
-  )
+  );
 }

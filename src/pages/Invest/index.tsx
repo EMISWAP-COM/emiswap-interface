@@ -43,6 +43,7 @@ import EmiMagicBackground from '../../assets/svg/EmiMagicBackground.svg';
 import EmiMagicCardModal from '../../components/EmiMagicCardModal';
 import WarningBlock, { StyledButton } from '../../components/Warning/WarningBlock';
 import useParsedQueryString from '../../hooks/useParsedQueryString'
+import ReferralLink from '../../components/RefferalLink';
 
 const EmiCard = styled.div`
   position: absolute;
@@ -453,6 +454,11 @@ const Invest = () => {
             currencies[Field[isBuyESW ? 'OUTPUT' : 'INPUT']]?.symbol
           }`,
         });
+        ReactGA.event({
+          category: 'purchase',
+          action: 'invest',
+          value: Number(parsedAmounts[Field.OUTPUT]?.raw.toString()),
+        });
       })
       .catch((error: any) => {
         setAttemptingTxn(false);
@@ -467,6 +473,14 @@ const Invest = () => {
   const [showInverted, setShowInverted] = useState<boolean>(false);
   const [showEmiCardModal, setShowEmiCardModal] = useState<boolean>(bonusform === 'open');
   const openEmiCardModal = () => setShowEmiCardModal(true);
+  const [showEmiCardModal, setShowEmiCardModal] = useState<boolean>(false);
+  const openEmiCardModal = () => {
+    ReactGA.event({
+      category: 'Magic_NFT',
+      action: 'click',
+    });
+    setShowEmiCardModal(true);
+  };
   const closeEmiCardModal = () => setShowEmiCardModal(false);
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
   // never show if price impact is above threshold in non expert mode
@@ -501,7 +515,7 @@ const Invest = () => {
   }
 
   const generateEmiCardBlock = (num: Number) => {
-    const ESWc = Number(num.toFixed(3));
+    const ESW = Number(num.toFixed(3));
     const ordinaryCount = 500;
     const uncommonCount = 2500;
     const rareCount = 7500;
@@ -509,25 +523,25 @@ const Invest = () => {
     const legendaryCount = 50000;
     let rare = '';
     let NunOfCard = 0;
-    if (ESWc > 0 && ESWc < uncommonCount) {
+    if (ESW > 0 && ESW < uncommonCount) {
       rare = 'Ordinary';
-      NunOfCard = Math.floor(ESWc / ordinaryCount);
+      NunOfCard = Math.floor(ESW / ordinaryCount);
     }
-    if (ESWc >= uncommonCount && ESWc < rareCount) {
+    if (ESW >= uncommonCount && ESW < rareCount) {
       rare = 'Uncommon';
-      NunOfCard = Math.floor(ESWc / uncommonCount);
+      NunOfCard = Math.floor(ESW / uncommonCount);
     }
-    if (ESWc >= rareCount && ESWc < epicCount) {
+    if (ESW >= rareCount && ESW < epicCount) {
       rare = 'Rare';
-      NunOfCard = Math.floor(ESWc / rareCount);
+      NunOfCard = Math.floor(ESW / rareCount);
     }
-    if (ESWc >= epicCount && ESWc < legendaryCount) {
+    if (ESW >= epicCount && ESW < legendaryCount) {
       rare = 'Epic';
-      NunOfCard = Math.floor(ESWc / epicCount);
+      NunOfCard = Math.floor(ESW / epicCount);
     }
-    if (ESWc >= legendaryCount) {
+    if (ESW >= legendaryCount) {
       rare = 'Legendary';
-      NunOfCard = Math.floor(ESWc / legendaryCount);
+      NunOfCard = Math.floor(ESW / legendaryCount);
     }
 
     let bodyNode = (
@@ -758,20 +772,20 @@ const Invest = () => {
       );
     }
 
-    const getClassToEmiCardsBlock = (ESWc: Number) => {
-      if (ESWc >= legendaryCount || NunOfCard === 4) {
+    const getClassToEmiCardsBlock = (ESW: Number) => {
+      if (ESW >= legendaryCount || NunOfCard === 4) {
         return 'block-with-cards elem1';
       }
-      if (ESWc > 0 && ESWc < legendaryCount) {
+      if (ESW > 0 && ESW < legendaryCount) {
         return 'block-with-cards elem2';
       }
 
       return 'block-with-cards';
     };
     return (
-      <EmiCard className={getClassToEmiCardsBlock(ESWc)}>
+      <EmiCard className={getClassToEmiCardsBlock(ESW)}>
         <div className="block-with-cards__header">
-          {ESWc > 0 ? 'You will get:' : 'Buy ESW to get Magic NFT EmiCards'}
+          {ESW > 0 ? 'You will get:' : 'Buy ESW to get Magic NFT EmiCards'}
         </div>
         {bodyNode}
         <div className="block-with-cards__footer">
@@ -966,7 +980,7 @@ const Invest = () => {
               )}
             </BottomGrouping>
           </AutoColumn>
-          {/*{account ? <ReferralLink /> : ''}*/}
+          {account ? <ReferralLink /> : ''}
           <EmiMagicBtn onClick={openEmiCardModal}>Get Magic NFT Cards</EmiMagicBtn>
           {showEmiCardModal && (
             <EmiMagicCardModal

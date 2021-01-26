@@ -105,23 +105,26 @@ export const KOVAN_CHI = new Token(
   'Chi Gastoken by 1inch',
 );
 
+
 export const ESW: ChainTokenList = {
   [ChainId.MAINNET]: [
-    new Token(ChainId.MAINNET, window['env'].REACT_APP_ESW_ID, 18, 'ESWc', 'EmiDAO Token'),
+    new Token(ChainId.MAINNET, window['env'].REACT_APP_ESW_ID, 18, 'ESW', 'EmiDAO Token'),
   ],
   [ChainId.ROPSTEN]: [
-    new Token(ChainId.ROPSTEN, window['env'].REACT_APP_ESW_ID, 18, 'ESWc', 'EmiDAO Token'),
+    new Token(ChainId.ROPSTEN, window['env'].REACT_APP_ESW_ID, 18, 'ESW', 'EmiDAO Token'),
   ],
   [ChainId.RINKEBY]: [
-    new Token(ChainId.RINKEBY, window['env'].REACT_APP_ESW_ID, 18, 'ESWc', 'EmiDAO Token'),
+    new Token(ChainId.RINKEBY, window['env'].REACT_APP_ESW_ID, 18, 'ESW', 'EmiDAO Token'),
   ],
   [ChainId.GÖRLI]: [
-    new Token(ChainId.GÖRLI, window['env'].REACT_APP_ESW_ID, 18, 'ESWc', 'EmiDAO Token'),
+    new Token(ChainId.GÖRLI, window['env'].REACT_APP_ESW_ID, 18, 'ESW', 'EmiDAO Token'),
   ],
   [ChainId.KOVAN]: [
-    new Token(ChainId.KOVAN, window['env'].REACT_APP_ESW_ID, 18, 'ESWc', 'EmiDAO Token'),
+    new Token(ChainId.KOVAN, window['env'].REACT_APP_ESW_ID, 18, 'ESW', 'EmiDAO Token'),
   ],
 };
+
+
 
 const ETH_ONLY: ChainTokenList = {
   [ChainId.MAINNET]: [ETHER],
@@ -141,15 +144,15 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
 // used for display in the default list when adding liquidity
 export const SUGGESTED_BASES: ChainTokenList = {
   ...ETH_ONLY,
-  [ChainId.KOVAN]: [KOVAN_DAI, KOVAN_USDC, KOVAN_WETH],
-  [ChainId.MAINNET]: [DAI, USDC, USDT, CHI],
+  [ChainId.KOVAN]: [KOVAN_DAI, KOVAN_USDC, KOVAN_WETH, ESW[ChainId.KOVAN][0]],
+  [ChainId.MAINNET]: [DAI, USDC, USDT, CHI, ESW[ChainId.MAINNET][0]],
 };
 
 // used to construct the list of all pairs we consider by default in the frontend
 export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   ...ETH_ONLY,
-  [ChainId.KOVAN]: [KOVAN_DAI, KOVAN_USDC, KOVAN_WETH],
-  [ChainId.MAINNET]: [ETHER, DAI, USDC, USDT, CHI],
+  [ChainId.KOVAN]: [KOVAN_DAI, KOVAN_USDC, KOVAN_WETH, ESW[ChainId.KOVAN][0]],
+  [ChainId.MAINNET]: [ETHER, DAI, USDC, USDT, CHI, ESW[ChainId.MAINNET][0]],
 };
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
