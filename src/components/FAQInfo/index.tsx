@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import { PieChart } from 'react-minimal-pie-chart';
 import Accordion from '../Accordion';
 import Colon from '../../assets/svg/FAQIcon/colon.svg';
 import Pig from '../../assets/svg/FAQIcon/pig.svg';
 import Board from '../../assets/svg/FAQIcon/board.svg';
 import Coins from '../../assets/svg/FAQIcon/coins.svg';
 import YellowCircle from '../../assets/svg/FAQIcon/yellowCircle.svg';
+import PieChart from '../../assets/svg/pie_chart.svg';
 
 const Body = styled.div`
   .title {
@@ -304,6 +304,9 @@ const Body = styled.div`
       .chart-pie {
         width: 200px;
         margin: 0 auto 30px;
+        img {
+          width: 100%;
+        }
       }
     }
 
@@ -397,16 +400,6 @@ const Body = styled.div`
   }
 `;
 
-const defaultLabelStyle = {
-  fontFamily: 'IBM Plex Sans',
-  fontStyle: 'normal',
-  fontWeight: 600,
-  fontSize: '7px',
-  lineHeight: '32px',
-  letterSpacing: '-0.01em',
-  fill: '#FFF',
-};
-const shiftSize = 7;
 
 export default () => {
   const btnClick1 = () => {
@@ -589,22 +582,7 @@ export default () => {
               </div>
             </div>
             <div className="chart-pie">
-              <PieChart
-                data={[
-                  { title: 'One', value: 3, color: '#09CE95' },
-                  { title: 'Two', value: 5, color: '#58AE00' },
-                  { title: 'Three', value: 20, color: '#FFC925' },
-                  { title: 'Four', value: 22, color: '#074223' },
-                  { title: 'Five', value: 20, color: '#006450' },
-                  { title: 'Six', value: 30, color: '#C79D6A' },
-                ]}
-                animate
-                segmentsShift={index => (index === 0 ? shiftSize : 0.5)}
-                label={({ dataEntry }) => `${dataEntry.value}%`}
-                labelStyle={{
-                  ...defaultLabelStyle,
-                }}
-              />
+              <img src={PieChart} alt="PieChart" />
             </div>
           </div>
           <div className="chart-description">Learn more about ESW tokens vesting.</div>
