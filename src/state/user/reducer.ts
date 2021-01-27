@@ -1,28 +1,29 @@
-import { INITIAL_ALLOWED_SLIPPAGE, DEFAULT_DEADLINE_FROM_NOW } from '../../constants';
-import { createReducer } from '@reduxjs/toolkit';
+import { DEFAULT_DEADLINE_FROM_NOW, INITIAL_ALLOWED_SLIPPAGE } from '../../constants'
+import { createReducer } from '@reduxjs/toolkit'
 import {
   addSerializedPair,
   addSerializedToken,
   dismissTokenWarning,
+  login,
   removeSerializedPair,
   removeSerializedToken,
   SerializedPair,
   SerializedToken,
   updateMatchesDarkMode,
   updateUserDarkMode,
-  updateVersion,
+  updateUserDeadline,
   updateUserExpertMode,
   updateUserSlippageTolerance,
-  updateUserDeadline,
-  login
+  updateVersion
 } from './actions'
+import { UserRole } from '../../pages/Invest'
 
 const currentTimestamp = () => new Date().getTime();
 
 export interface UserInfo
 {
   address: string;
-  role: string;
+  role: UserRole;
   id: string;
   referral_id: string;
 }
@@ -83,7 +84,7 @@ export const initialState: UserState = {
   info: {
     id: '',
     address: '',
-    role: '',
+    role: UserRole.CLIENT,
     referral_id: '',
   },
 };

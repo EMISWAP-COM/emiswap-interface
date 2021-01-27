@@ -141,6 +141,7 @@ interface CurrencyInputPanelProps {
   showCommonBases?: boolean;
   isCrowdsale?: boolean;
   isMatchEth?: boolean;
+  disabled?: boolean;
 }
 
 export default function CurrencyInputPanel({
@@ -161,6 +162,7 @@ export default function CurrencyInputPanel({
   showCommonBases,
   isCrowdsale = false,
   isMatchEth = false,
+  disabled = false,
 }: CurrencyInputPanelProps) {
   const { t } = useTranslation();
 
@@ -211,6 +213,7 @@ export default function CurrencyInputPanel({
                 onUserInput={val => {
                   onUserInput(val);
                 }}
+                disabled={disabled}
               />
               {account && currency && showMaxButton && label !== 'To' && (
                 <StyledBalanceMax onClick={onMax}>MAX</StyledBalanceMax>
