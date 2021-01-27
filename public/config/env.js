@@ -15,4 +15,5 @@ window['env'] = {
   REACT_APP_ANALYTICS_URL: 'https://moon.firstbridge.online/',
   REACT_APP_CODE_LINK: 'https://github.com/EMISWAP-COM',
   REACT_APP_PUBLIC_URL: 'https://emiswap.emirex.co',
+  PUBLIC_API: 'https://emiswap-oracle-development.emirex.co'
 };

@@ -138,13 +138,15 @@ const purchaseList = [
 ];
 
 export const PurchaseHistory = () => {
+  // const { reward, total_amount, total_count, first_level, second_level, third_level } = useSelector((state: AppState) => state.cabinets)
+
   return (
     <>
       <TYPE.mediumHeader>Your Purchase History</TYPE.mediumHeader>
       <TableWrapper>
         <Table id={'test'} className="mostly-customized-scrollbar">
           {purchaseList.map(purchase => (
-            <TableRow>
+            <TableRow key={purchase.value}>
               <Date>{purchase.date}</Date>
               <LevelWrapper />
               <Cost>
