@@ -11,9 +11,14 @@ import { StatusIcon } from '../StatusIcon';
 import { PurchaseHistory } from './PurchaseHistory'
 import { ReferalPerformance } from './ReferalPerformance'
 import { WalletAction, StatusAction} from '../styleds'
-import { loadPerformance } from '../../../state/cabinets/actions'
-import { useDispatch } from 'react-redux'
-import { AppDispatch } from '../../../state'
+import {
+  loadBalance,
+  loadPerformance,
+  loadPurchaseHistory,
+  loadReferralPurchaseHistory
+} from '../../../state/cabinets/actions'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, AppState } from '../../../state'
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -160,9 +165,16 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
   const { chainId, account, connector } = useActiveWeb3React();
   // const [referalPerformance, setReferalPerformance] = useState(null)
 
+  const userId = useSelector((state: AppState) => state.user.info.id)
+  const balance = useSelector((state: AppState) => state.cabinets.balance)
+
+
   useEffect(() => {
-    dispatch(loadPerformance() as any)
-  }, [dispatch])
+    dispatch(loadPerformance(userId) as any)
+    dispatch(loadPurchaseHistory(userId) as any)
+    dispatch(loadReferralPurchaseHistory(userId) as any)
+    dispatch(loadBalance(userId) as any)
+  }, [dispatch, userId]);
 
   return (
     <Wrapper>
@@ -217,7 +229,7 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
               <span>ESW</span>
               &nbsp; balance
             </span>
-            <span>4599.00</span>
+            <span>{balance.amount}</span>
             <span>Buy 2000.34 ESW to gain next Package!</span>
           </BalanceWrapper>
           <AccountGroupingRow>

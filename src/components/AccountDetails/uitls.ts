@@ -13,3 +13,19 @@ export function formatConnectorName(connectorName) {
     .map(k => SUPPORTED_WALLETS[k].name)[0];
   return name
 }
+
+
+export const convertBigDecimal = (bigDecimal: string) => {
+  if (!isNaN(Number(bigDecimal))) {
+    return Number(bigDecimal).toFixed(2)
+  }
+  return '-'
+}
+
+export const normalizeNumber = (number: number) => {
+  if (!isNaN(number)) {
+    return number
+  }
+
+  return '-'
+}
