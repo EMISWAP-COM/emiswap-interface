@@ -78,6 +78,26 @@ const FAQWrapper = styled.div`
   }
 `;
 
+const CardsButton = styled.a`
+  background-color: ${({ theme }) => theme.yellow1};
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 10px 16px;
+  border-radius: 5px;
+  display: block;
+  width: 100%;
+  max-width: 96px;
+  margin: 0 auto 32px auto;
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: 500;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 12px;
+  line-height: 16px;
+  color: ${({ theme }) => theme.grey2};
+`;
+
 /**
  * The styled container element that wraps the content of most pages and the tabs.
  */
@@ -103,6 +123,7 @@ export default function AppBody({
         <BonusProgram />
       </HeadersPlusBodyWrapper>
       <FAQWrapper>
+        <CardsButton>NFT CARDS</CardsButton>
         <FAQInfo />
       </FAQWrapper>
     </ThemeProvider>
