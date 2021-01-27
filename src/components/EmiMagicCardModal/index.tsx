@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import WAValidator from 'wallet-address-validator';
 import ReactGA from 'react-ga';
 import Modal from '../Modal';
-import EmiCardHeaderImg from '../../assets/images/EmiCardHeaderImg.jpg';
+import EmiCardHeaderImg from '../../assets/images/EmiCardHeaderImgNew.jpg';
 import CloseIcon from '../../assets/images/close-white.svg';
 
 const ModalBody = styled.div`
@@ -15,39 +15,43 @@ const ModalBody = styled.div`
 
   .close-icon {
     position: absolute;
-    width: 25px;
-    right: 10px;
-    top: 10px;
+    width: 15px;
+    right: 30px;
+    top: 30px;
     cursor: pointer;
   }
 
   img {
     width: 100%;
-    margin-bottom: 30px;
     ${({ theme }) => theme.mediaWidth.upToTabletop`
       margin-bottom: 10px;
     `};
   }
 
   .modal-body {
-    padding: 0 45px 40px;
+    padding: 60px 45px 40px;
     overflow-y: auto;
     width: 100%;
+    background: rgba(255, 255, 255, 0.5);
 
     &__header {
-      font-family: 'IBM Plex Sans', Arial, sans-serif;
       font-weight: 600;
-      color: #000000;
-      font-size: 36px;
+      color: ${({ theme }) => theme.green5};
+      font-family: Poppins, sans-serif, Arial;
+      font-style: normal;
+      font-size: 32px;
+      line-height: 48px;
       margin-bottom: 20px;
     }
 
     &__description {
-      font-family: 'IBM Plex Sans', Arial, sans-serif;
-      font-weight: 300;
-      color: #000000;
+      font-family: Poppins, Arial, sans-serif;
+      font-weight: 600;
+      line-height: 24px;
+      font-style: normal;
+      color: #434a72;
       font-size: 16px;
-      margin-bottom: 20px;
+      margin-bottom: 59px;
     }
 
     &__input-block {
@@ -56,30 +60,34 @@ const ModalBody = styled.div`
     }
 
     &__input-label {
-      font-size: 20px;
-      line-height: 1.55;
-      font-family: 'IBM Plex Sans', Arial, sans-serif;
-      font-weight: 300;
-      color: #000000;
-      padding-bottom: 5px;
+      font-size: 16px;
+      font-family: Poppins, Arial, sans-serif;
+      font-weight: 600;
+      padding: 0 20px;
+      font-style: normal;
+      line-height: 24px;
+
+      color: #434a72;
     }
 
     &__input {
       color: #000000;
-      border: 1px solid #c9c9c9;
-      border-radius: 8px;
+      border: none;
+      background: none;
+      border-bottom: 1px solid #d2d2d2;
       height: 60px;
       padding: 0 20px;
       font-size: 16px;
       line-height: 1.33;
       width: 100%;
+      max-height: 35px;
     }
 
     &__btn {
       color: #ffffff;
-      background-color: #11b382;
-      border-radius: 8px;
-      width: 100%;
+      background-color: ${({ theme }) => theme.green5};
+      border-radius: 60px;
+      width: 67%;
       font-family: 'IBM Plex Sans', Arial, sans-serif;
       text-align: center;
       height: 60px;
@@ -96,21 +104,30 @@ const ModalBody = styled.div`
       outline: none;
       display: flex;
       justify-content: center;
+      align-self: center;
       align-items: center;
+    }
+
+    &__btn-container {
+      display: flex;
+      justify-content: center;
+      width: 100%;
     }
 
     &__bottom-text {
       margin-top: 20px;
       text-align: center;
-      font-size: 15px;
-      line-height: 1.55;
-      font-family: 'IBM Plex Sans', Arial, sans-serif;
+      font-family: Poppins, Arial, sans-serif;
       font-weight: 300;
-      color: #000000;
+      color: #434a72;
+      font-style: normal;
+      font-size: 16px;
+      line-height: 24px;
+      text-align: center;
     }
 
     &__link {
-      color: rgb(17, 179, 130) !important;
+      color: #434a72 !important;
       border-bottom-color: rgb(17, 179, 130);
       text-decoration: none;
     }
@@ -136,6 +153,19 @@ const ModalBody = styled.div`
       font-size: 22px;
     }
   `};
+
+    @media screen and (max-width: 375px) {
+      &__header {
+        font-size: 24px;
+        line-height: 36px;
+      }
+
+      &__btn {
+        max-width: 310px;
+        max-height: 47px;
+        font-size: 16px;
+      }
+    }
   }
 `;
 
@@ -221,7 +251,7 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
     }
   };
   return (
-    <Modal isOpen={isOpen} onDismiss={onDismiss} maxHeight={90} maxWidth={500}>
+    <Modal isOpen={isOpen} onDismiss={onDismiss} maxHeight={90} maxWidth={680}>
       <ModalBody>
         <img className="close-icon" src={CloseIcon} alt="EmiCardHeaderImg" onClick={onDismiss} />
         <img src={EmiCardHeaderImg} alt="EmiCardHeaderImg" />
@@ -282,8 +312,10 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
               <span className="modal-body__error-text">Please enter the correct value</span>
             )}
           </div>
-          <div className="modal-body__btn" onClick={sendForm}>
-            Register for a whitelist
+          <div className="modal-body__btn-container">
+            <div className="modal-body__btn" onClick={sendForm}>
+              Register for a whitelist
+            </div>
           </div>
           <div className="modal-body__bottom-text">
             Still have questions? Join EmiSwap{' '}

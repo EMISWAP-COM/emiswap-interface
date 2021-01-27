@@ -50,6 +50,7 @@ const StyledDialogContent = styled(
   'aria-label': 'dialog',
 })`
   &[data-reach-dialog-content] {
+    border: none!important;
     margin: 0 0 2rem 0;
     border: 1px solid ${({ theme }) => theme.bg1};
     background-color: ${({ theme }) => theme.bg1};
@@ -57,7 +58,7 @@ const StyledDialogContent = styled(
     padding: 0;
     width: 54vw;
     overflow: scroll;
-    
+
     &::-webkit-scrollbar {
       display: none;
     }
