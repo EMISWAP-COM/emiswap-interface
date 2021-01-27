@@ -155,8 +155,6 @@ export default function WalletModal({
 
   useLogin(account)
 
-  console.log('--state', user)
-
   const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT);
 
   const [pendingWallet, setPendingWallet] = useState();
@@ -418,7 +416,7 @@ export default function WalletModal({
 
 
       if (
-        user.role === 'client'
+        user.role === 'distributor'
       ) {
          return (
            <Distributor

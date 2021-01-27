@@ -29,3 +29,8 @@ export const normalizeNumber = (number: number) => {
 
   return '-'
 }
+
+export function shortenHash(hash: string, chars = 4): string {
+
+  return `${hash.substring(0, chars + 2)}...${hash.substring(42 - chars)}`;
+}

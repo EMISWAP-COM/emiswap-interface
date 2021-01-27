@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { loadBalance, loadPerformance, loadPurchaseHistory } from './actions'
+import { loadBalance, loadPerformance, loadPurchaseHistory, loadReferralPurchaseHistory } from './actions'
 
 interface Unlock {
   amount: string;
@@ -21,7 +21,8 @@ interface Balance
 interface CabinetState {
   performance: ReferralPerformance;
   balance: Balance;
-  purchaseHistory: object;
+  purchaseHistory: PurchaseHistory[];
+  referralHistory: ReferralPurchaseHistory[]
 }
 
 interface PerformanceLevel
@@ -29,7 +30,6 @@ interface PerformanceLevel
   "total_count": number,
   "purchases_count": number,
   "amount": string;
-
 }
 
 interface Reward {
@@ -47,7 +47,15 @@ export interface ReferralPerformance {
 }
 
 export interface PurchaseHistory {
+  amount: string;
+  date: string;
+  transaction_hash: string;
+}
 
+export interface ReferralPurchaseHistory {
+  amount: string;
+  date: string;
+  transaction_hash: string;
 }
 
 const initialState: CabinetState = {
@@ -55,8 +63,8 @@ const initialState: CabinetState = {
     reward: {} as Reward
   } as ReferralPerformance,
   balance: {} as Balance,
-  purchaseHistory: {}
-
+  purchaseHistory: [] as PurchaseHistory[],
+  referralHistory: [] as ReferralPurchaseHistory[]
 }
 
 export default createReducer(initialState, builder =>
@@ -69,6 +77,9 @@ export default createReducer(initialState, builder =>
     })
     .addCase(loadBalance.fulfilled, (state, action) => {
       state.balance = action.payload
+    })
+    .addCase(loadReferralPurchaseHistory.fulfilled, (state, action) => {
+      state.referralHistory = action.payload
     })
 
 )

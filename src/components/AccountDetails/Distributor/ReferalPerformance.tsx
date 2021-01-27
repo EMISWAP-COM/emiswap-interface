@@ -6,6 +6,7 @@ import { WalletAction } from '../styleds'
 import { useSelector } from 'react-redux'
 import { AppState } from '../../../state'
 import { convertBigDecimal, normalizeNumber } from '../uitls'
+import {CommingSoon} from '../../../base/ui/CommingSoon'
 
 const Wrapper = styled.div`
 
@@ -14,7 +15,9 @@ const Wrapper = styled.div`
   border-radius: 20px;
   position: relative;
   margin-bottom: 20px;
-  overflow: hidden;
+  // overflow: hidden;
+  background: #e4e5e7;
+
   
   @media screen and (max-width: 1200px) {
       display: flex;
@@ -32,7 +35,6 @@ const Cell = styled.div`
   height: 35px;
   align-items: center;
   justify-content: center;
-  background: #e4e5e7;
   color: #000000;
   
   > div {
@@ -59,6 +61,11 @@ const Title = styled(Cell)`
 const TwoCells = styled(Cell)`
   font-size: 1.2rem;
   font-weight: 600;
+  
+  @media screen and (max-width: 1200px) {
+    display: flex;
+    justify-content: space-between;
+  }
 `
 
 const Table = styled.div`
@@ -144,15 +151,19 @@ export const ReferalPerformance = () => {
           <Title>Total Referral reward</Title>
           <TwoCells>
             {convertBigDecimal(reward?.esw)} ESW
-            <WalletAction>
+            <CommingSoon>
+              <WalletAction>
               Claim
             </WalletAction>
+            </CommingSoon>
           </TwoCells>
           <TwoCells>
             {convertBigDecimal(reward?.dai)} DAI
-            <WalletAction>
+            <CommingSoon>
+              <WalletAction>
               Claim
-            </WalletAction>
+              </WalletAction>
+            </CommingSoon>
           </TwoCells>
         </Reward>
 
