@@ -1,8 +1,12 @@
-import React from 'react'
+import React  from 'react'
 import { TYPE } from '../../../theme'
 import styled from 'styled-components'
-import {Level} from '../styleds'
-import {WalletAction} from '../styleds'
+import { Level } from '../styleds'
+import { WalletAction } from '../styleds'
+import { useSelector } from 'react-redux'
+import { AppState } from '../../../state'
+import { convertBigDecimal, normalizeNumber } from '../uitls'
+import {CommingSoon} from '../../../base/ui/CommingSoon'
 
 const Wrapper = styled.div`
 
@@ -11,7 +15,9 @@ const Wrapper = styled.div`
   border-radius: 20px;
   position: relative;
   margin-bottom: 20px;
-  overflow: hidden;
+  // overflow: hidden;
+  background: #e4e5e7;
+
   
   @media screen and (max-width: 1200px) {
       display: flex;
@@ -20,7 +26,7 @@ const Wrapper = styled.div`
       border: none;
   }
   
-`;
+`
 
 const Cell = styled.div`
   flex-grow: 1;
@@ -29,7 +35,6 @@ const Cell = styled.div`
   height: 35px;
   align-items: center;
   justify-content: center;
-  background: #e4e5e7;
   color: #000000;
   
   > div {
@@ -56,7 +61,12 @@ const Title = styled(Cell)`
 const TwoCells = styled(Cell)`
   font-size: 1.2rem;
   font-weight: 600;
-`;
+  
+  @media screen and (max-width: 1200px) {
+    display: flex;
+    justify-content: space-between;
+  }
+`
 
 const Table = styled.div`
   display: flex;
@@ -108,7 +118,30 @@ const ReferalPurchases = styled(Table)`
   }
 `
 
+// {
+//   "reward": {
+//   "dai": 0,
+//     "esw": 0
+// },
+//   "total_amount": "0.15e4",
+//   "total_count": 3,
+//   "first_level": {
+//   "count": 1,
+//     "amount": "0.5e3"
+// },
+//   "second_level": {
+//   "count": 1,
+//     "amount": "0.5e3"
+// },
+//   "third_level": {
+//   "count": 1,
+//     "amount": "0.5e3"
+// }
+// }
+
 export const ReferalPerformance = () => {
+  const { reward, total_amount, total_count, first_level, second_level, third_level } = useSelector((state: AppState) => state.cabinets.performance)
+
   return (
     <>
       <TYPE.mediumHeader>Total Referral Performance</TYPE.mediumHeader>
@@ -117,37 +150,46 @@ export const ReferalPerformance = () => {
         <Reward>
           <Title>Total Referral reward</Title>
           <TwoCells>
-            1200 ESW
-            <WalletAction>
+            {convertBigDecimal(reward?.esw)} ESW
+            <CommingSoon>
+              <WalletAction>
               Claim
             </WalletAction>
+            </CommingSoon>
           </TwoCells>
           <TwoCells>
-            200 DAI
+            {convertBigDecimal(reward?.dai)} DAI
+            <CommingSoon>
               <WalletAction>
-                Claim
+              Claim
               </WalletAction>
+            </CommingSoon>
           </TwoCells>
         </Reward>
 
         <Referals>
           <Title>Total Referrals</Title>
-          <Cell>21</Cell>
-          <Cell>6
-            <Level>3[v]</Level>
+          <Cell>{normalizeNumber(total_count)}</Cell>
+          <Cell>
+            {normalizeNumber(first_level?.total_count)}
+            <Level>3lvl</Level>
           </Cell>
-          <Cell>2</Cell>
-          <Cell>3
-            <Level>2[v]</Level>
+          <Cell>
+            {normalizeNumber(second_level?.total_count)}
+            <Level>2lvl</Level>
+          </Cell>
+          <Cell>
+            {normalizeNumber(third_level?.total_count)}
+            <Level>3lvl</Level>
           </Cell>
         </Referals>
 
         <ReferalPurchases>
           <Title>Total Ref. Purchases, ESW</Title>
-          <CellSmall>999 000.3</CellSmall>
-          <CellSmall>740 999.0</CellSmall>
-          <CellSmall>100 000.0</CellSmall>
-          <CellSmall>159 000.8</CellSmall>
+          <CellSmall>{convertBigDecimal(total_amount)}</CellSmall>
+          <CellSmall>{convertBigDecimal(first_level?.amount)}</CellSmall>
+          <CellSmall>{convertBigDecimal(second_level?.amount)}</CellSmall>
+          <CellSmall>{convertBigDecimal(third_level?.amount)}</CellSmall>
         </ReferalPurchases>
       </Wrapper>
     </>

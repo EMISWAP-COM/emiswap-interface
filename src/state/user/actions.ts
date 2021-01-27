@@ -1,4 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
+import { UserInfo } from './reducer'
 
 export interface SerializedToken {
   chainId: number;
@@ -12,7 +13,7 @@ export interface SerializedPair {
   token0: SerializedToken;
   token1: SerializedToken;
 }
-export const login = createAction<{walletAccount: string, refferalWallet: string}>('user/login')
+export const login = createAction<UserInfo>('user/login');
 
 export const updateVersion = createAction<void>('updateVersion');
 export const updateMatchesDarkMode = createAction<{ matchesDarkMode: boolean }>(
