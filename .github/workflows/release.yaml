@@ -5,6 +5,7 @@ on:
       - development
       - production
       - feature/es-270
+      - feature/es-247
 
   # manual trigger
   workflow_dispatch:

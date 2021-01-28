@@ -81,6 +81,7 @@ const ModalBody = styled.div`
       line-height: 1.33;
       width: 100%;
       max-height: 35px;
+      outline: none;
     }
 
     &__btn {
