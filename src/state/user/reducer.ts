@@ -19,6 +19,16 @@ import {
 
 const currentTimestamp = () => new Date().getTime();
 
+export interface UserInfo
+{
+  address: string;
+  role: string;
+  id: string;
+  referral_id: string;
+  bonus_role_name?: string;
+}
+
+
 export interface UserState {
   // the timestamp of the last updateVersion action
   lastUpdateVersionTimestamp?: number;
@@ -55,7 +65,7 @@ export interface UserState {
   };
 
   timestamp: number;
-  info: {}
+  info: UserInfo
 }
 
 function pairKey(token0Address: string, token1Address: string) {
@@ -71,12 +81,18 @@ export const initialState: UserState = {
   tokens: {},
   pairs: {},
   timestamp: currentTimestamp(),
-  info: {},
+  info: {
+    id: '',
+    address: '',
+    role: '',
+    referral_id: '',
+  },
 };
 
 export default createReducer(initialState, builder =>
   builder
     .addCase(login, (state, action) => {
+      // console.log('-----', state.info, action);
       state.info = action.payload
     })
     .addCase(updateVersion, state => {

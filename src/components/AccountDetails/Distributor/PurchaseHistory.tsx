@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import { TYPE } from '../../../theme';
 import { Level } from '../styleds';
 import './styles.css';
+import { useSelector } from 'react-redux'
+import { AppState } from '../../../state'
+import { convertBigDecimal, shortenHash } from '../uitls'
 
 const TableWrapper = styled.div`
   border: 1px solid #707070;
@@ -104,53 +107,23 @@ const Wallet = styled.div`
 
 `;
 
-const purchaseList = [
-  {
-    date: '20 Dec 2020, 19:16:31',
-    value: '5999.92',
-    wallet: 'Txhash  0xad91394d4894…533357ca4ce6418d06fd4a',
-  },
-  {
-    date: '2 Jan 2020, 19:16:31',
-    value: '599.92',
-    wallet: 'Txhash  0xad91dddd4894…533357ca4ce6418d06fd4a',
-  },
-  {
-    date: '9 Feb 2020, 19:16:31',
-    value: '59988.92',
-    wallet: 'Txhash  0xad91dddd4894…533357ca4ce6418d06fd4a',
-  },
-  {
-    date: '20 Dec 2020, 19:16:31',
-    value: '5999.92',
-    wallet: 'Txhash  0xad91394d4894…533357ca4ce6418d06fd4a',
-  },
-  {
-    date: '2 Jan 2020, 19:16:31',
-    value: '599.92',
-    wallet: 'Txhash  0xad91dddd4894…533357ca4ce6418d06fd4a',
-  },
-  {
-    date: '9 Feb 2020, 19:16:31',
-    value: '59988.92',
-    wallet: 'Txhash  0xad91dddd4894…533357ca4ce6418d06fd4a',
-  },
-];
-
 export const PurchaseHistory = () => {
+  const purchases = useSelector((state: AppState) => state.cabinets.purchaseHistory)
+  const referralPurchases = useSelector((state: AppState) => state.cabinets.referralHistory)
+
   return (
     <>
       <TYPE.mediumHeader>Your Purchase History</TYPE.mediumHeader>
       <TableWrapper>
         <Table id={'test'} className="mostly-customized-scrollbar">
-          {purchaseList.map(purchase => (
-            <TableRow>
-              <Date>{purchase.date}</Date>
+          {purchases.map(({ amount, date, transaction_hash }) => (
+            <TableRow key={transaction_hash}>
+              <Date>{date.slice(0, 19)}</Date>
               <LevelWrapper />
               <Cost>
-                <span>{purchase.value}</span>&nbsp; ESW
+                <span>{convertBigDecimal(amount)}</span>&nbsp; ESW
               </Cost>
-              <Wallet>{purchase.wallet}</Wallet>
+              <Wallet>{shortenHash(transaction_hash, 10)}</Wallet>
             </TableRow>
           ))}
         </Table>
@@ -159,16 +132,16 @@ export const PurchaseHistory = () => {
       <TYPE.mediumHeader>Referal Purchase History</TYPE.mediumHeader>
       <TableWrapper>
         <Table>
-          {purchaseList.map(purchase => (
-            <TableRow>
-              <Date>{purchase.date}</Date>
+          {referralPurchases.map(({ amount, date, transaction_hash }) => (
+            <TableRow key={transaction_hash}>
+              <Date>{date.slice(0, 19)}</Date>
               <LevelWrapper>
                 <Level>1lvl</Level>
               </LevelWrapper>
               <Cost>
-                <span>{purchase.value}</span>&nbsp; ESW
+                <span>{convertBigDecimal(amount)}</span>&nbsp; ESW
               </Cost>
-              <Wallet>{purchase.wallet}</Wallet>
+              <Wallet>{shortenHash(transaction_hash, 10)}</Wallet>
             </TableRow>
           ))}
         </Table>

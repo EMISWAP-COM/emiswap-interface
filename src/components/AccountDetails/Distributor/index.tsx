@@ -4,16 +4,23 @@ import { ExternalLink } from '../../../theme';
 import { injected, walletlink } from '../../../connectors';
 import { getEtherscanLink, shortenAddress } from '../../../utils';
 import { ExternalLink as LinkIcon } from 'react-feather';
-import { formatConnectorName } from '../uitls';
+import { convertBigDecimal, formatConnectorName } from '../uitls'
 import { useActiveWeb3React } from '../../../hooks';
 import Copy from '../Copy';
 import { StatusIcon } from '../StatusIcon';
 import { PurchaseHistory } from './PurchaseHistory'
 import { ReferalPerformance } from './ReferalPerformance'
 import { WalletAction, StatusAction} from '../styleds'
-import { loadPerformance } from '../../../state/cabinets/actions'
-import { useDispatch } from 'react-redux'
-import { AppDispatch } from '../../../state'
+import {CommingSoon} from '../../../base/ui/CommingSoon'
+import {
+  loadBalance,
+  loadPerformance,
+  loadPurchaseHistory,
+  loadReferralPurchaseHistory
+} from '../../../state/cabinets/actions'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, AppState } from '../../../state'
+
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -31,7 +38,7 @@ const InfoCard = styled.div`
   grid-gap: 12px;
   margin-bottom: 20px;
   
-    @media screen and (max-width: 1200px) {
+  @media screen and (max-width: 1200px) {
     border-radius: 5px;
 }
 `;
@@ -160,19 +167,30 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
   const { chainId, account, connector } = useActiveWeb3React();
   // const [referalPerformance, setReferalPerformance] = useState(null)
 
+  const {id: userId, bonus_role_name = ''} = useSelector((state: AppState) => state.user.info)
+  const balance = useSelector((state: AppState) => state.cabinets.balance)
+  const {nearest_unlock} = balance
+
   useEffect(() => {
-    dispatch(loadPerformance() as any)
-  }, [dispatch])
+    dispatch(loadPerformance(userId) as any)
+    dispatch(loadPurchaseHistory(userId) as any)
+    dispatch(loadReferralPurchaseHistory(userId) as any)
+    dispatch(loadBalance(userId) as any)
+  }, [dispatch, userId]);
 
   return (
     <Wrapper>
       <ProfileStatus>
-        <div>Status: <span>Distributor</span></div>
+        <div>
+          Status: <span>Distributor</span>
+        </div>
         <Package>
           <div>
-            Package: <span>Basic+</span>
+            Package: <span>{bonus_role_name}</span>
           </div>
-          <StatusAction>Upgrade</StatusAction>
+          <CommingSoon>
+            <StatusAction>Upgrade</StatusAction>
+          </CommingSoon>
         </Package>
       </ProfileStatus>
       <TableWrapper>
@@ -217,8 +235,8 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
               <span>ESW</span>
               &nbsp; balance
             </span>
-            <span>4599.00</span>
-            <span>Buy 2000.34 ESW to gain next Package!</span>
+            <span>{convertBigDecimal(balance.amount)}</span>
+            {nearest_unlock && <span>Buy {convertBigDecimal(nearest_unlock.amount)} ESW to gain next Package!</span>}
           </BalanceWrapper>
           <AccountGroupingRow>
             <AccountControl>
