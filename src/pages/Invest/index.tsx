@@ -627,7 +627,27 @@ const Invest = () => {
         value: enterpriseCount,
       },
     ];
-    if (role === UserRole.CLIENT) {
+    if (role === UserRole.DISTRIBUTOR) {
+      bodyNode = (
+        <div className="block-with-cards__cards">
+          {distributorCardList.map(el => {
+            return (
+              <div
+                className={`emicard ${+selectedCardAmount === el.value ? 'active' : ''}`}
+                key={el.title}
+                onClick={() => handleSelectCard(String(el.value))}
+              >
+                <img className="emicard__img" src={el.img} alt="Ordinary" />
+                <div className="emicard__info">
+                  <div className="emicard__title">{el.title}</div>
+                  <div className="emicard__description">{el.description}</div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      );
+    } else {
       bodyNode = (
         <div className="block-with-cards__cards">
           <div className="emicard">
@@ -855,26 +875,6 @@ const Invest = () => {
           </div>
         );
       }
-    } else if (role === UserRole.DISTRIBUTOR) {
-      bodyNode = (
-        <div className="block-with-cards__cards">
-          {distributorCardList.map(el => {
-            return (
-              <div
-                className={`emicard ${+selectedCardAmount === el.value ? 'active' : ''}`}
-                key={el.title}
-                onClick={() => handleSelectCard(String(el.value))}
-              >
-                <img className="emicard__img" src={el.img} alt="Ordinary" />
-                <div className="emicard__info">
-                  <div className="emicard__title">{el.title}</div>
-                  <div className="emicard__description">{el.description}</div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      );
     }
 
     const getClassToEmiCardsBlock = (ESW: Number) => {
@@ -889,17 +889,22 @@ const Invest = () => {
     };
 
     const getHeaderToEmiCardBlock = (role: UserRole, ESW: Number): string => {
-      if (role === UserRole.CLIENT) {
-        return ESW > 0 ? 'You will get:' : 'Buy ESW to get Magic NFT EmiCards';
-      } else if (role === UserRole.DISTRIBUTOR) {
+      if (role === UserRole.DISTRIBUTOR) {
         return 'Choose your Package';
       } else {
-        return '';
+        return ESW > 0 ? 'You will get:' : 'Buy ESW to get Magic NFT EmiCards';
       }
     };
 
     const getFooterToEmiCardBlock = (role: UserRole) => {
-      if (role === UserRole.CLIENT) {
+      if (role === UserRole.DISTRIBUTOR) {
+        return (
+          <>
+            <div className="arrow-left arrow-position-1" />
+            <div className="arrow-left-white arrow-position-1" />
+          </>
+        );
+      } else {
         return (
           <>
             <div className="block-with-cards__footer">
@@ -924,13 +929,6 @@ const Invest = () => {
                 Number(formattedAmounts[Field.INPUT]) > 0 ? 2 : 1
               }`}
             />
-          </>
-        );
-      } else {
-        return (
-          <>
-            <div className="arrow-left arrow-position-1" />
-            <div className="arrow-left-white arrow-position-1" />
           </>
         );
       }
@@ -996,7 +994,7 @@ const Invest = () => {
       )}
       <AppBody
         disabled={showWarning}
-        className={`invest-mobile ${role !== UserRole.CLIENT ? 'mb650' : ''}`}
+        className={`invest-mobile ${role === UserRole.DISTRIBUTOR ? 'mb650' : ''}`}
       >
         <SwapPoolTabs active={'invest'} />
         <Wrapper id="invest-page">
