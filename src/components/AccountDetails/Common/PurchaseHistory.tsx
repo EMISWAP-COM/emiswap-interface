@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { TYPE } from '../../../theme';
 import { Level } from '../styleds';
-import './styles.css';
 import { useSelector } from 'react-redux'
 import { AppState } from '../../../state'
 import { convertBigDecimal, shortenHash } from '../uitls'
@@ -132,11 +131,11 @@ export const PurchaseHistory = () => {
       <TYPE.mediumHeader>Referal Purchase History</TYPE.mediumHeader>
       <TableWrapper>
         <Table>
-          {referralPurchases.map(({ amount, date, transaction_hash }) => (
+          {referralPurchases.map(({ amount, date, transaction_hash, referral_level}) => (
             <TableRow key={transaction_hash}>
               <Date>{date.slice(0, 19)}</Date>
               <LevelWrapper>
-                <Level>1lvl</Level>
+                <Level>{referral_level}lvl</Level>
               </LevelWrapper>
               <Cost>
                 <span>{convertBigDecimal(amount)}</span>&nbsp; ESW

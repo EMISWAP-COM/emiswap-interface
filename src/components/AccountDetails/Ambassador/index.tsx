@@ -161,7 +161,7 @@ interface Props {
   openOptions: () => void;
 }
 
-const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
+const Ambassador: React.FC<Props> = ({ openOptions, ENSName }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { chainId, account, connector } = useActiveWeb3React();
@@ -182,7 +182,7 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
     <Wrapper>
       <ProfileStatus>
         <div>
-          Status: <span>Distributor</span>
+          Status: <span>Ambassador</span>
         </div>
         <Package>
           <div>
@@ -258,4 +258,4 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
   );
 };
 
-export { Distributor };
+export { Ambassador };

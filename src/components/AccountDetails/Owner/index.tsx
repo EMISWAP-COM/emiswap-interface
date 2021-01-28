@@ -10,8 +10,7 @@ import Copy from '../Copy';
 import { StatusIcon } from '../StatusIcon';
 import { PurchaseHistory } from '../Common/PurchaseHistory'
 import { ReferalPerformance } from '../Common/ReferalPerformance'
-import { WalletAction, StatusAction} from '../styleds'
-import {CommingSoon} from '../../../base/ui/CommingSoon'
+import { WalletAction} from '../styleds'
 import {
   loadBalance,
   loadPerformance,
@@ -146,13 +145,6 @@ const ProfileStatus = styled.div`
   }
 `;
 
-const Package = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-width: 300px;
-  width: 100%;
-`;
 
 interface Props {
   // toggleWalletModal: () => void;
@@ -161,13 +153,12 @@ interface Props {
   openOptions: () => void;
 }
 
-const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
+const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { chainId, account, connector } = useActiveWeb3React();
-  // const [referalPerformance, setReferalPerformance] = useState(null)
 
-  const {id: userId, bonus_role_name = ''} = useSelector((state: AppState) => state.user.info)
+  const { id: userId } = useSelector((state: AppState) => state.user.info);
   const balance = useSelector((state: AppState) => state.cabinets.balance)
   const {nearest_unlock} = balance
 
@@ -182,16 +173,8 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
     <Wrapper>
       <ProfileStatus>
         <div>
-          Status: <span>Distributor</span>
+          Status: <span>EMISWAP OWNER</span>
         </div>
-        <Package>
-          <div>
-            Package: <span>{bonus_role_name}</span>
-          </div>
-          <CommingSoon>
-            <StatusAction>Upgrade</StatusAction>
-          </CommingSoon>
-        </Package>
       </ProfileStatus>
       <TableWrapper>
         <InfoCard>
@@ -258,4 +241,4 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
   );
 };
 
-export { Distributor };
+export { Owner };
