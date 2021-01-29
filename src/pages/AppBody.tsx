@@ -13,7 +13,7 @@ export const HeadersPlusBodyWrapper = styled.div<{ disabled?: boolean }>`
   max-width: 440px;
   width: 100%;
   text-align: center;
-  
+
   :after {
     content: '';
     background: center / contain no-repeat url('${PolygonSvg}');
@@ -30,7 +30,7 @@ export const HeadersPlusBodyWrapper = styled.div<{ disabled?: boolean }>`
       display: none;
     `};
   }
-  
+
 `;
 
 export const BodyWrapper = styled.div<{ disabled?: boolean; data?: string }>`
@@ -62,7 +62,7 @@ export const BodyWrapper = styled.div<{ disabled?: boolean; data?: string }>`
 
 const FAQWrapper = styled.div`
   max-width: 1200px;
-  margin-top: 70px;
+  margin-top: 45px;
 
   @media screen and (max-width: 1300px) {
     max-width: 960px;

@@ -461,7 +461,7 @@ const Invest = () => {
         ReactGA.event({
           category: 'purchase',
           action: 'invest',
-          value: Number(parsedAmounts[Field.OUTPUT]?.raw.toString()),
+          value: Number(parsedAmounts[Field.OUTPUT]?.toExact()),
         });
       })
       .catch((error: any) => {

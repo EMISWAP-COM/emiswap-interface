@@ -138,7 +138,7 @@ const Body = styled.div`
 
   @media screen and (max-width: 500px) {
     .isOpen1 {
-      height: 1500px;
+      height: 1160px;
     }
 
     .isOpen2 {
@@ -151,6 +151,12 @@ const Body = styled.div`
 
     .isOpen4 {
       height: 710px;
+    }
+  }
+
+  @media screen and (max-width: 320px) {
+    .isOpen1 {
+      height: 1240px;
     }
   }
 
