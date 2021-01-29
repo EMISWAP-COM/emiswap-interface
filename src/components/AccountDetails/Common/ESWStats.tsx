@@ -1,89 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { TYPE } from '../../../theme';
 import { CommingSoon } from '../../../base/ui/CommingSoon';
-import useWindowDimensions from '../../../hooks/useWindowDimensions';
 import { AppState } from '../../../state';
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  background: #f7f8fa;
-  border-radius: 4px;
-  padding: 1rem;
-  margin-bottom: 20px;
-`;
-
-const StyledTable = styled.table`
-  width: 100%;
-  border: 1px solid #707070;
-  border-radius: 20px;
-  position: relative;
-  margin-bottom: 20px;
-  overflow: hidden;
-  border-spacing: 0;
-  margin-bottom: 20px;
-`;
-
-const Row = styled.tr`
-  display: flex;
-  justify-content: space-between;
-  padding: 0 1rem;
-  height: 40px;
-  align-items: center;
-  > td:nth-child(1) {
-    text-align: left;
-  }
-
-  > td:nth-child(5) {
-    text-align: right;
-  }
-`;
-
-const AmountRow = styled(Row)`
-  > td:nth-child(1) {
-    max-width: 116px;
-  }
-  > td:nth-child(2) {
-    max-width: 110px;
-  }
-  > td:nth-child(3) {
-    max-width: 97px;
-  }
-  > td:nth-child(4) {
-    max-width: 174px;
-  }
-  > td:nth-child(5) {
-    max-width: 153px;
-  }
-`;
-
-const Cell = styled.td`
-  max-height: 20px;
-  font-family: 'IBM Plex Sans';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 13px;
-  line-height: 17px;
-  flex-grow: 1;
-  text-align: center;
-`;
-
-const TittleRow = styled(Row)`
-  background: #e4e5e7;
-  > td:not(:last-child) {
-    border-right: 1.5px solid #707070;
-  }
-`;
-
-const ButtonRow = styled(Row)`
-  display: flex;
-  justify-content: center;
-`;
+import { TYPE } from '../../../theme';
 
 const WalletButton = styled.span`
   display: block;
@@ -109,41 +29,6 @@ const WalletButton = styled.span`
   }
 `;
 
-const InfoBlock = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-self: stretch;
-`;
-const LeftSideBlock = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  span {
-    margin-bottom: 12px;
-  }
-`;
-
-const RightSideBlock = styled(LeftSideBlock)`
-  align-items: flex-end;
-`;
-
-const SideItem = styled.span`
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 21px;
-`;
-
-const Amount = styled.span`
-  font-family: 'IBM Plex Sans';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 21px;
-  color: ${({ theme }) => theme.grey3};
-`;
-
 const DateBlock = styled.span`
   font-family: 'IBM Plex Sans';
   font-style: normal;
@@ -151,6 +36,118 @@ const DateBlock = styled.span`
   font-size: 12px;
   line-height: 16px;
   color: ${({ theme }) => theme.grey3};
+`;
+
+const Wrapper = styled.div`
+  width: 100%;
+  overflow: hidden;
+  background: none;
+  border-radius: 20px;
+  border: 1px solid #707070;
+  margin-bottom: 20px;
+  @media screen and (max-width: 1200px) {
+    border-radius: 4px;
+    background: #f7f8fa;
+    border: none;
+  }
+`;
+
+const TopRows = styled.div`
+  display: flex;
+  justify-content: space-between;
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 17px;
+  .item-top {
+    background: #ccc;
+    position: relative;
+    padding: 12px 16px;
+    white-space: nowrap;
+    margin-bottom: 14px;
+    font-family: 'IBM Plex Sans';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 17px;
+  }
+  .item-top:after {
+    content: '';
+    width: 1px;
+    height: 20px;
+    background: #707070;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+  }
+
+  > div:nth-child(1) {
+    text-align: left;
+    .item-bottom {
+      padding-left: 16px;
+    }
+  }
+
+  > div:last-child {
+    text-align: right;
+    .item-bottom {
+      padding-right: 16px;
+    }
+  }
+
+  @media screen and (max-width: 1200px) {
+    flex-direction: column;
+    padding: 14px 16px;
+    .item-top {
+      background: none;
+      padding: 0;
+      font-family: 'Roboto';
+      font-style: normal;
+      font-weight: normal;
+      font-size: 12px;
+      line-height: 21px;
+    }
+    > div:nth-child(1) {
+      .item-bottom {
+        padding-left: 0;
+      }
+    }
+
+    > div:last-child {
+      .item-bottom {
+        padding-right: 0;
+      }
+    }
+    .item-top:after {
+      display: none;
+    }
+  }
+`;
+
+const RowItem = styled.div`
+  width: 100%;
+  text-align: center;
+  position: relative;
+  @media screen and (max-width: 1200px) {
+    display: flex;
+    justify-content: space-between;
+  }
+`;
+
+const BottomRow = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 12px 0 2px 0;
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 21px;
+  @media screen and (max-width: 1200px) {
+    padding-top: 0;
+  }
 `;
 
 export const getDate = (date: string) => {
@@ -173,8 +170,6 @@ export const getDate = (date: string) => {
 };
 
 export const ESWStats = () => {
-  const { width } = useWindowDimensions();
-
   const balance = useSelector((state: AppState) => state.cabinets.balance);
 
   const amount = Number(balance?.amount).toFixed(2);
@@ -184,70 +179,40 @@ export const ESWStats = () => {
     ? getDate(balance?.nearest_unlock?.unlock_date)
     : '-';
   const total = amount && lockedAmount ? +amount + +nextUnlockAmount : '-';
-  if (width <= 1200) {
-    return (
-      <>
-        <TYPE.mediumHeader>ESW STATS</TYPE.mediumHeader>
-        <Wrapper>
-          <InfoBlock>
-            <LeftSideBlock>
-              <SideItem>Total ESW</SideItem>
-              <SideItem>Unfrozen</SideItem>
-              <SideItem>Next unlock amount</SideItem>
-              <SideItem>Frozen</SideItem>
-              <SideItem>Next unlock date</SideItem>
-            </LeftSideBlock>
-            <RightSideBlock>
-              <SideItem>
-                <Amount>{total}</Amount> ESW
-              </SideItem>
-              <SideItem>
-                <Amount>{amount || '-'}</Amount> ESW
-              </SideItem>
-              <SideItem>
-                <Amount>{nextUnlockAmount || '-'}</Amount> ESW
-              </SideItem>
-              <SideItem>
-                <Amount>{lockedAmount || '-'}</Amount> ESW
-              </SideItem>
-              <SideItem>
-                <DateBlock>{unlockDate}</DateBlock>
-              </SideItem>
-            </RightSideBlock>
-          </InfoBlock>
-          <CommingSoon>
-            <WalletButton>Collect to my wallet</WalletButton>
-          </CommingSoon>
-        </Wrapper>
-      </>
-    );
-  }
   return (
     <>
-      <TYPE.mediumHeader>ESW STATS</TYPE.mediumHeader>
-      <StyledTable>
-        <TittleRow>
-          <Cell>Total ESW</Cell>
-          <Cell>Unfrozen</Cell>
-          <Cell>Frozen</Cell>
-          <Cell>Next unlock amount</Cell>
-          <Cell>Next unlock date</Cell>
-        </TittleRow>
-        <AmountRow>
-          <Cell>{total}</Cell>
-          <Cell>{amount || '-'}</Cell>
-          <Cell>{nextUnlockAmount || '-'}</Cell>
-          <Cell>{lockedAmount || '-'}</Cell>
-          <Cell>
-            <DateBlock>{unlockDate}</DateBlock>
-          </Cell>
-        </AmountRow>
-        <ButtonRow>
+      <TYPE.mediumHeader>My ESW Performance</TYPE.mediumHeader>
+      <Wrapper>
+        <TopRows>
+          <RowItem>
+            <div className="item-top">Total ESW</div>
+            <div className="item-bottom">{total}</div>
+          </RowItem>
+          <RowItem>
+            <div className="item-top">Unfrozen</div>
+            <div className="item-bottom">{amount || '-'}</div>
+          </RowItem>
+          <RowItem>
+            <div className="item-top">Frozen</div>
+            <div className="item-bottom">{nextUnlockAmount || '-'}</div>
+          </RowItem>
+          <RowItem>
+            <div className="item-top">Next unlock amount</div>
+            <div className="item-bottom">{lockedAmount || '-'}</div>
+          </RowItem>
+          <RowItem>
+            <div className="item-top">Next unlock date</div>
+            <div className="item-bottom">
+              <DateBlock>{unlockDate}</DateBlock>
+            </div>
+          </RowItem>
+        </TopRows>
+        <BottomRow>
           <CommingSoon>
             <WalletButton>Collect to my wallet</WalletButton>
           </CommingSoon>
-        </ButtonRow>
-      </StyledTable>
+        </BottomRow>
+      </Wrapper>
     </>
   );
 };

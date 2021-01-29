@@ -2,60 +2,6 @@ import React from 'react';
 import { TYPE } from '../../../theme';
 import styled from 'styled-components';
 import { CommingSoon } from '../../../base/ui/CommingSoon';
-import useWindowDimensions from '../../../hooks/useWindowDimensions';
-
-const Wrapper = styled.div`
-  width: 100%;
-  border: 1px solid #707070;
-  border-radius: 20px;
-  position: relative;
-  margin-bottom: 20px;
-  overflow: hidden;
-
-  @media screen and (max-width: 375px) {
-    border: none;
-  }
-`;
-
-const TableRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding: 0 1rem;
-  height: 40px;
-  align-items: center;
-  width: 100%;
-
-  > div:nth-child(2) {
-    justify-content: center;
-  }
-
-  > div:last-child {
-    justify-content: flex-end;
-  }
-`;
-
-const TittleRow = styled(TableRow)`
-  background: #e4e5e7;
-
-  > div:not(:last-child) {
-    border-right: 1px solid black;
-  }
-
-  @media screen and (max-width: 375px) {
-    background: none;
-  }
-`;
-
-const Cell = styled.div`
-  height: 20px;
-  flex-basis: 100%;
-  font-family: 'IBM Plex Sans';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 13px;
-  line-height: 17px;
-  display: flex;
-`;
 
 const SwappingBoostBtn = styled.span`
   display: block;
@@ -72,153 +18,188 @@ const SwappingBoostBtn = styled.span`
   font-size: 10px;
   line-height: 25px;
   cursor: pointer;
+
+  @media screen and (max-width: 1200px) {
+    background: #9a56d1;
+    width: 119px;
+    height: 30px;
+    font-size: 12px;
+    line-height: 30px;
+  }
 `;
 
-const PercentageMessage = styled(Cell)`
-  align-self: baseline;
-  font-family: 'IBM Plex Sans';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 13px;
-  line-height: 17px;
-`;
-
-const Container = styled.div`
-  background: #f7f8fa;
-  border-radius: 4px;
-  display: flex;
+const Wrapper = styled.div`
   width: 100%;
-  padding: 14px 16px 12px 16px;
-  flex-direction: column;
-  justify-content: space-between;
+  overflow: hidden;
+  background: none;
+  border-radius: 20px;
+  border: 1px solid #707070;
   margin-bottom: 20px;
 
-  > div:not(last-child) {
-    margin-bottom: 12px;
+  @media screen and (max-width: 1200px) {
+    border-radius: 4px;
+    background: #f7f8fa;
+    border: none;
   }
 `;
 
-const TitledAmount = styled.div`
-  font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 13px;
-  line-height: 17px;
-  color: #89919a;
-
-  span {
-    color: #24272c;
-    font-size: 16px;
-    line-height: 21px;
-  }
-`;
-
-const Title = styled.div`
-  font-family: 'Roboto';
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 21px;
-`;
-
-const PurpleButton = styled.span`
-  color: #ffffff;
-  font-family: 'IBM Plex Sans';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 30px;
-  background: #9a56d1;
-  border-radius: 4px;
-  width: 119px;
-  text-align: center;
-  display: block;
-`;
-
-const Row = styled.div`
+const TopRows = styled.div`
   display: flex;
   justify-content: space-between;
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 17px;
+
+  .item-top {
+    background: #ccc;
+    position: relative;
+    padding: 12px 16px;
+    white-space: nowrap;
+    margin-bottom: 14px;
+    font-family: 'IBM Plex Sans';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 17px;
+
+    @media screen and (max-width: 1200px) {
+      margin: 0;
+    }
+  }
+
+  .item-top:after {
+    content: '';
+    width: 1px;
+    height: 20px;
+    background: #707070;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+  }
+
+  > div:nth-child(1) {
+    > div:nth-child(1) {
+      text-align: left;
+
+      .item-bottom {
+        padding-left: 16px;
+      }
+
+      @media screen and (max-width: 1200px) {
+        .item-bottom {
+          padding: 0;
+        }
+      }
+    }
+  }
+
+  > div:last-child {
+    text-align: right;
+
+    .item-bottom {
+      padding-right: 16px;
+    }
+  }
+
+  @media screen and (max-width: 1200px) {
+    flex-direction: column;
+    padding: 14px 16px;
+
+    .item-top {
+      background: none;
+      padding: 0;
+      font-family: 'Roboto';
+      font-style: normal;
+      font-weight: normal;
+      font-size: 12px;
+      line-height: 21px;
+    }
+
+    .item-top:after {
+      display: none;
+    }
+
+    > div {
+      > div {
+        text-align: left;
+
+        .item-bottom {
+          padding: 0;
+        }
+      }
+    }
+  }
 `;
 
-const TextBlock = styled.div`
+const RowItem = styled.div`
+  width: 100%;
+  text-align: center;
+  position: relative;
+  margin-bottom: 15px;
+`;
+
+const ThreeRow = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 15px;
+
+  @media screen and (max-width: 1200px) {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: flex-start;
+    margin-bottom: 0;
+  }
 `;
 
-const CardName = styled.span`
-  color: #9a56d1;
+const Boosted = styled.div`
+  align-self: flex-start;
+  padding-left: 16px;
+
+  @media screen and (max-width: 1200px) {
+    padding: 0;
+    text-align: right !important;
+  }
 `;
 
 export const ESWPerformance = () => {
-  const { width } = useWindowDimensions();
-  if (width <= 1200) {
-    return (
-      <>
-        <TYPE.mediumHeader>My ESW Performance</TYPE.mediumHeader>
-        <Container>
-          <Row>
-            <TitledAmount>
-              <Title>Total Profit</Title>
-              <span>Coming soon</span>
-            </TitledAmount>
-            <TextBlock>
-              <span>Boosted at</span>
-              <span>
-                by <CardName>Rare</CardName>
-              </span>
-            </TextBlock>
-          </Row>
-          <Row>
-            <TitledAmount>
-              <Title>Swapping</Title>
-              <span>Coming soon</span>
-            </TitledAmount>
-            <CommingSoon>
-              <PurpleButton>BOOST IT NOW!</PurpleButton>
-            </CommingSoon>
-          </Row>
-          <Row>
-            <TitledAmount>
-              <Title>Providing Liquidity</Title>
-              <span>Coming soon</span>
-            </TitledAmount>
-            <CommingSoon>
-              <PurpleButton>BOOST IT NOW!</PurpleButton>
-            </CommingSoon>
-          </Row>
-        </Container>
-      </>
-    );
-  }
-
   return (
     <>
       <TYPE.mediumHeader>My ESW Performance</TYPE.mediumHeader>
       <Wrapper>
-        <TittleRow>
-          <Cell>ESW Profit</Cell>
-          <Cell>Swapping</Cell>
-          <Cell>Providing Liquidity</Cell>
-        </TittleRow>
-        <TableRow>
-          <Cell>Coming soon</Cell>
-          <Cell>Coming soon</Cell>
-          <Cell>Coming soon</Cell>
-        </TableRow>
-        <TableRow>
-          <PercentageMessage>Boosted at 25% by Rare</PercentageMessage>
-          <Cell>
+        <TopRows>
+          <ThreeRow>
+            <RowItem>
+              <div className="item-top">Total ESW</div>
+              <div className="item-bottom">Coming soon</div>
+            </RowItem>
+            <Boosted>Boosted at 25% by Rare</Boosted>
+          </ThreeRow>
+          <ThreeRow>
+            <RowItem>
+              <div className="item-top">Total ESW</div>
+              <div className="item-bottom">Coming soon</div>
+            </RowItem>
             <CommingSoon>
               <SwappingBoostBtn>boost it now</SwappingBoostBtn>
             </CommingSoon>
-          </Cell>
-          <Cell>
+          </ThreeRow>
+          <ThreeRow>
+            <RowItem>
+              <div className="item-top">Total ESW</div>
+              <div className="item-bottom">Coming soon</div>
+            </RowItem>
             <CommingSoon>
               <SwappingBoostBtn>boost it now</SwappingBoostBtn>
             </CommingSoon>
-          </Cell>
-        </TableRow>
+          </ThreeRow>
+        </TopRows>
       </Wrapper>
     </>
   );
