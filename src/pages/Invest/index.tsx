@@ -1,8 +1,9 @@
-import { TokenAmount, JSBI } from '@uniswap/sdk';
+import { JSBI, TokenAmount } from '@uniswap/sdk';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
 import { Text } from 'rebass';
 import styled, { ThemeContext } from 'styled-components';
+import { useSelector } from 'react-redux';
 import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button';
 import Card from '../../components/Card';
 import { AutoColumn } from '../../components/Column';
@@ -38,23 +39,29 @@ import UncommonIcon from '../../assets/svg/CardIcon/common.svg';
 import RareIcon from '../../assets/svg/CardIcon/unusual.svg';
 import EpicIcon from '../../assets/svg/CardIcon/rare.svg';
 import LegendaryIcon from '../../assets/svg/CardIcon/legendary.svg';
+import Basic from '../../assets/svg/CardIcon/basic.svg';
+import Partner from '../../assets/svg/CardIcon/partner.svg';
+import BasicPlus from '../../assets/svg/CardIcon/basic_plus.svg';
+import Diamond from '../../assets/svg/CardIcon/diamond.svg';
+import Enterprise from '../../assets/svg/CardIcon/enterprise.svg';
+import Gold from '../../assets/svg/CardIcon/gold.svg';
+import Silver from '../../assets/svg/CardIcon/silver.svg';
 import Question from '../../assets/svg/FAQIcon/question.svg';
 import EmiMagicBackground from '../../assets/svg/EmiMagicBackground.svg';
 import EmiMagicCardModal from '../../components/EmiMagicCardModal';
 import WarningBlock, { StyledButton } from '../../components/Warning/WarningBlock';
-import useParsedQueryString from '../../hooks/useParsedQueryString'
+import useParsedQueryString from '../../hooks/useParsedQueryString';
 import ReferralLink from '../../components/RefferalLink';
+import { AppState } from '../../state';
 
 const EmiCard = styled.div`
   position: absolute;
   width: 440px;
-  height: 100%;
   background: #ffffff;
   border-radius: 24px;
   padding: 32px 40px 20px;
   left: 0;
   top: 0;
-  bottom: 0;
   right: -210%;
   margin: 0 auto;
   border: 1px solid #ecceff;
@@ -158,7 +165,8 @@ const EmiCard = styled.div`
         width: 100%;
         display: flex;
         margin-bottom: 10px;
-
+        padding: 9px;
+        border: 1px solid #ffffff;
         &__info {
           display: flex;
           flex-direction: column;
@@ -268,6 +276,11 @@ const EmiCard = styled.div`
     top: 26px;
   }
 
+  .active {
+    border: ${({ theme }) => `1px solid ${theme.primary1}`}!important;
+    border-radius: 24px;
+  }
+
   @media screen and (max-width: 1400px) {
     width: 340px;
     right: -185%;
@@ -323,10 +336,6 @@ const EmiCard = styled.div`
       top: -9px;
     }
   }
-
-  @media screen and (max-width: 510px) {
-    height: 540px;
-  }
 `;
 
 const EmiMagicBtn = styled.div`
@@ -348,6 +357,12 @@ const EmiMagicBtn = styled.div`
 export function RedirectPathToInvestOnly({ location }: RouteComponentProps) {
   return <Redirect to={{ ...location, pathname: '/invest' }} />;
 }
+
+export enum UserRole {
+  CLIENT = 'client',
+  DISTRIBUTOR = 'distributor',
+}
+
 const Invest = () => {
   const { bonusform } = useParsedQueryString();
 
@@ -374,6 +389,9 @@ const Invest = () => {
     error,
   } = useDerivedInvestInfo();
 
+  const [selectedCardAmount, setSelectedCardAmount] = useState<number>(0);
+  const role: UserRole = useSelector((state: AppState) => state.user.info.role);
+
   const parsedAmounts = {
     [Field.INPUT]: parsedAmount,
     [Field.OUTPUT]: parsedOutputAmount,
@@ -394,6 +412,14 @@ const Invest = () => {
       onUserInput(Field.OUTPUT, value, currencies[Field.INPUT]);
     },
     [onUserInput, currencies],
+  );
+
+  const handleSelectCard = useCallback(
+    value => {
+      handleTypeInputOUTPUT(value);
+      setSelectedCardAmount(value);
+    },
+    [handleTypeInputOUTPUT],
   );
 
   // modal and loading
@@ -425,6 +451,10 @@ const Invest = () => {
       setApprovalSubmitted(true);
     }
   }, [approval, approvalSubmitted]);
+
+  useEffect(() => {
+    setSelectedCardAmount(formattedAmounts[Field.OUTPUT] ? +formattedAmounts[Field.OUTPUT] : 0);
+  }, [formattedAmounts]);
 
   // the callback to execute the invest
   const [investCallback] = useInvest(
@@ -523,6 +553,13 @@ const Invest = () => {
     const rareCount = 7500;
     const epicCount = 20000;
     const legendaryCount = 50000;
+    const basicCount = 900;
+    const basicPlusCount = 2750;
+    const silverCount = 9000;
+    const goldCount = 45500;
+    const diamondCount = 90000;
+    const partnerCount = 450000;
+    const enterpriseCount = 900000;
     let rare = '';
     let NunOfCard = 0;
     if (ESW > 0 && ESW < uncommonCount) {
@@ -545,233 +582,299 @@ const Invest = () => {
       rare = 'Legendary';
       NunOfCard = Math.floor(ESW / legendaryCount);
     }
-
-    let bodyNode = (
-      <div className="block-with-cards__cards">
-        <div className="emicard">
-          <img className="emicard__img" src={OrdinaryIcon} alt="Ordinary" />
-          <div className="emicard__info">
-            <div className="emicard__title">Ordinary</div>
-            <div className="emicard__description">Non less than {ordinaryCount} ESW</div>
-          </div>
-        </div>
-        <div className="emicard">
-          <img className="emicard__img" src={UncommonIcon} alt="Uncommon" />
-          <div className="emicard__info">
-            <div className="emicard__title">Uncommon</div>
-            <div className="emicard__description">Non less than {uncommonCount} ESW</div>
-          </div>
-        </div>
-        <div className="emicard">
-          <img className="emicard__img" src={RareIcon} alt="Rare" />
-          <div className="emicard__info">
-            <div className="emicard__title">Rare</div>
-            <div className="emicard__description">Non less than {rareCount} ESW</div>
-          </div>
-        </div>
-        <div className="emicard">
-          <img className="emicard__img" src={EpicIcon} alt="Epic" />
-          <div className="emicard__info">
-            <div className="emicard__title">Epic</div>
-            <div className="emicard__description">Non less than {epicCount} ESW</div>
-          </div>
-        </div>
-        <div className="emicard">
-          <img className="emicard__img" src={LegendaryIcon} alt="Legendary" />
-          <div className="emicard__info">
-            <div className="emicard__title">Legendary</div>
-            <div className="emicard__description">Non less than {legendaryCount} ESW</div>
-          </div>
-        </div>
-      </div>
-    );
-
-    if (rare === 'Ordinary') {
-      const NumByGetMoreCard = (NunOfCard + 1) * ordinaryCount;
+    let bodyNode;
+    const distributorCardList = [
+      {
+        img: Basic,
+        title: 'Basic',
+        description: `Non less than ${basicCount} ESW`,
+        value: basicCount,
+      },
+      {
+        img: BasicPlus,
+        title: 'Basic +',
+        description: `Non less than ${basicPlusCount} ESW`,
+        value: basicPlusCount,
+      },
+      {
+        img: Silver,
+        title: 'Silver',
+        description: `Non less than ${silverCount} ESW`,
+        value: silverCount,
+      },
+      {
+        img: Gold,
+        title: 'Gold',
+        description: `Non less than ${goldCount} ESW`,
+        value: goldCount,
+      },
+      {
+        img: Diamond,
+        title: 'Diamond',
+        description: `Non less than ${diamondCount} ESW`,
+        value: diamondCount,
+      },
+      {
+        img: Partner,
+        title: 'Partner',
+        description: `Non less than ${partnerCount} ESW`,
+        value: partnerCount,
+      },
+      {
+        img: Enterprise,
+        title: 'Enterprise',
+        description: `Non less than ${enterpriseCount} ESW`,
+        value: enterpriseCount,
+      },
+    ];
+    if (role === UserRole.DISTRIBUTOR) {
       bodyNode = (
         <div className="block-with-cards__cards">
-          <div className="block-with-current-cards">
-            <img className="block-with-current-cards__img" src={OrdinaryIcon} alt="Ordinary" />
-            <div className="block-with-current-cards__info">
-              <div className="block-with-current-cards__title">
-                {NunOfCard} {'Ordinary'}
+          {distributorCardList.map(el => {
+            return (
+              <div
+                className={`emicard ${+selectedCardAmount === el.value ? 'active' : ''}`}
+                key={el.title}
+                onClick={() => handleSelectCard(String(el.value))}
+              >
+                <img className="emicard__img" src={el.img} alt="Ordinary" />
+                <div className="emicard__info">
+                  <div className="emicard__title">{el.title}</div>
+                  <div className="emicard__description">{el.description}</div>
+                </div>
               </div>
-              <div className="block-with-current-cards__text">Card</div>
+            );
+          })}
+        </div>
+      );
+    } else {
+      bodyNode = (
+        <div className="block-with-cards__cards">
+          <div className="emicard">
+            <img className="emicard__img" src={OrdinaryIcon} alt="Ordinary" />
+            <div className="emicard__info">
+              <div className="emicard__title">Ordinary</div>
+              <div className="emicard__description">Non less than {ordinaryCount} ESW</div>
             </div>
           </div>
-          {NunOfCard < 4 && (
-            <div className="emicard">
-              <img className="emicard__img" src={OrdinaryIcon} alt="Ordinary" />
-              <div className="emicard__info">
-                <div className="emicard__description-card">
-                  Make purchase of <b className="green-color ml-5">{NumByGetMoreCard} ESW</b>
-                </div>
-                <div className="emicard__description-card">
-                  to get <b className="ml-5 mr-5">1</b> more <b className="ml-5">Ordinary card</b>
-                </div>
-              </div>
-            </div>
-          )}
           <div className="emicard">
             <img className="emicard__img" src={UncommonIcon} alt="Uncommon" />
             <div className="emicard__info">
-              <div className="emicard__description-card">
-                Make purchase of <b className="green-color ml-5">{uncommonCount} ESW</b>
-              </div>
-              <div className="emicard__description-card">
-                to get <b className="ml-5">a Uncommon card</b>
-              </div>
+              <div className="emicard__title">Uncommon</div>
+              <div className="emicard__description">Non less than {uncommonCount} ESW</div>
+            </div>
+          </div>
+          <div className="emicard">
+            <img className="emicard__img" src={RareIcon} alt="Rare" />
+            <div className="emicard__info">
+              <div className="emicard__title">Rare</div>
+              <div className="emicard__description">Non less than {rareCount} ESW</div>
+            </div>
+          </div>
+          <div className="emicard">
+            <img className="emicard__img" src={EpicIcon} alt="Epic" />
+            <div className="emicard__info">
+              <div className="emicard__title">Epic</div>
+              <div className="emicard__description">Non less than {epicCount} ESW</div>
+            </div>
+          </div>
+          <div className="emicard">
+            <img className="emicard__img" src={LegendaryIcon} alt="Legendary" />
+            <div className="emicard__info">
+              <div className="emicard__title">Legendary</div>
+              <div className="emicard__description">Non less than {legendaryCount} ESW</div>
             </div>
           </div>
         </div>
       );
-    }
-    if (rare === 'Uncommon') {
-      const NumByGetMoreCard = (NunOfCard + 1) * uncommonCount;
-      bodyNode = (
-        <div className="block-with-cards__cards">
-          <div className="block-with-current-cards">
-            <img className="block-with-current-cards__img" src={UncommonIcon} alt="Uncommon" />
-            <div className="block-with-current-cards__info">
-              <div className="block-with-current-cards__title">
-                {NunOfCard} {'Uncommon'}
+
+      if (rare === 'Ordinary') {
+        const NumByGetMoreCard = (NunOfCard + 1) * ordinaryCount;
+        bodyNode = (
+          <div className="block-with-cards__cards">
+            <div className="block-with-current-cards">
+              <img className="block-with-current-cards__img" src={OrdinaryIcon} alt="Ordinary" />
+              <div className="block-with-current-cards__info">
+                <div className="block-with-current-cards__title">
+                  {NunOfCard} {'Ordinary'}
+                </div>
+                <div className="block-with-current-cards__text">Card</div>
               </div>
-              <div className="block-with-current-cards__text">Card</div>
             </div>
-          </div>
-          {NunOfCard < 4 && (
+            {NunOfCard < 4 && (
+              <div className="emicard">
+                <img className="emicard__img" src={OrdinaryIcon} alt="Ordinary" />
+                <div className="emicard__info">
+                  <div className="emicard__description-card">
+                    Make purchase of <b className="green-color ml-5">{NumByGetMoreCard} ESW</b>
+                  </div>
+                  <div className="emicard__description-card">
+                    to get <b className="ml-5 mr-5">1</b> more <b className="ml-5">Ordinary card</b>
+                  </div>
+                </div>
+              </div>
+            )}
             <div className="emicard">
               <img className="emicard__img" src={UncommonIcon} alt="Uncommon" />
               <div className="emicard__info">
                 <div className="emicard__description-card">
-                  Make purchase of <b className="green-color ml-5">{NumByGetMoreCard} ESW</b>
+                  Make purchase of <b className="green-color ml-5">{uncommonCount} ESW</b>
                 </div>
                 <div className="emicard__description-card">
-                  to get <b className="ml-5 mr-5">1</b> more <b className="ml-5">Uncommon card</b>
+                  to get <b className="ml-5">a Uncommon card</b>
                 </div>
               </div>
             </div>
-          )}
-          <div className="emicard">
-            <img className="emicard__img" src={RareIcon} alt="Rare" />
-            <div className="emicard__info">
-              <div className="emicard__description-card">
-                Make purchase of <b className="green-color ml-5">{rareCount} ESW</b>
-              </div>
-              <div className="emicard__description-card">
-                to get <b className="ml-5">a Rare card</b>
+          </div>
+        );
+      }
+      if (rare === 'Uncommon') {
+        const NumByGetMoreCard = (NunOfCard + 1) * uncommonCount;
+        bodyNode = (
+          <div className="block-with-cards__cards">
+            <div className="block-with-current-cards">
+              <img className="block-with-current-cards__img" src={UncommonIcon} alt="Uncommon" />
+              <div className="block-with-current-cards__info">
+                <div className="block-with-current-cards__title">
+                  {NunOfCard} {'Uncommon'}
+                </div>
+                <div className="block-with-current-cards__text">Card</div>
               </div>
             </div>
-          </div>
-        </div>
-      );
-    }
-    if (rare === 'Rare') {
-      const NumByGetMoreCard = (NunOfCard + 1) * rareCount;
-      bodyNode = (
-        <div className="block-with-cards__cards">
-          <div className="block-with-current-cards">
-            <img className="block-with-current-cards__img" src={RareIcon} alt="Rare" />
-            <div className="block-with-current-cards__info">
-              <div className="block-with-current-cards__title">
-                {NunOfCard} {'Rare'}
+            {NunOfCard < 4 && (
+              <div className="emicard">
+                <img className="emicard__img" src={UncommonIcon} alt="Uncommon" />
+                <div className="emicard__info">
+                  <div className="emicard__description-card">
+                    Make purchase of <b className="green-color ml-5">{NumByGetMoreCard} ESW</b>
+                  </div>
+                  <div className="emicard__description-card">
+                    to get <b className="ml-5 mr-5">1</b> more <b className="ml-5">Uncommon card</b>
+                  </div>
+                </div>
               </div>
-              <div className="block-with-current-cards__text">Card</div>
-            </div>
-          </div>
-          {NunOfCard < 4 && (
+            )}
             <div className="emicard">
-              <img className="emicard__img" src={RareIcon} alt="Ordinary" />
+              <img className="emicard__img" src={RareIcon} alt="Rare" />
+              <div className="emicard__info">
+                <div className="emicard__description-card">
+                  Make purchase of <b className="green-color ml-5">{rareCount} ESW</b>
+                </div>
+                <div className="emicard__description-card">
+                  to get <b className="ml-5">a Rare card</b>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      }
+      if (rare === 'Rare') {
+        const NumByGetMoreCard = (NunOfCard + 1) * rareCount;
+        bodyNode = (
+          <div className="block-with-cards__cards">
+            <div className="block-with-current-cards">
+              <img className="block-with-current-cards__img" src={RareIcon} alt="Rare" />
+              <div className="block-with-current-cards__info">
+                <div className="block-with-current-cards__title">
+                  {NunOfCard} {'Rare'}
+                </div>
+                <div className="block-with-current-cards__text">Card</div>
+              </div>
+            </div>
+            {NunOfCard < 4 && (
+              <div className="emicard">
+                <img className="emicard__img" src={RareIcon} alt="Ordinary" />
+                <div className="emicard__info">
+                  <div className="emicard__description-card">
+                    Make purchase of <b className="green-color ml-5">{NumByGetMoreCard} ESW</b>
+                  </div>
+                  <div className="emicard__description-card">
+                    to get <b className="ml-5 mr-5">1</b> more <b className="ml-5">Rare card</b>
+                  </div>
+                </div>
+              </div>
+            )}
+            <div className="emicard">
+              <img className="emicard__img" src={EpicIcon} alt="Epic" />
+              <div className="emicard__info">
+                <div className="emicard__description-card">
+                  Make purchase of <b className="green-color ml-5">{epicCount} ESW</b>
+                </div>
+                <div className="emicard__description-card">
+                  to get <b className="ml-5">a Epic card</b>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      }
+      if (rare === 'Epic') {
+        const NumByGetMoreCard = (NunOfCard + 1) * epicCount;
+        bodyNode = (
+          <div className="block-with-cards__cards">
+            <div className="block-with-current-cards">
+              <img className="block-with-current-cards__img" src={EpicIcon} alt="Epic" />
+              <div className="block-with-current-cards__info">
+                <div className="block-with-current-cards__title">
+                  {NunOfCard} {'Epic'}
+                </div>
+                <div className="block-with-current-cards__text">Card</div>
+              </div>
+            </div>
+            {NunOfCard < 4 && (
+              <div className="emicard">
+                <img className="emicard__img" src={EpicIcon} alt="Ordinary" />
+                <div className="emicard__info">
+                  <div className="emicard__description-card">
+                    Make purchase of <b className="green-color ml-5">{NumByGetMoreCard} ESW</b>
+                  </div>
+                  <div className="emicard__description-card">
+                    to get <b className="ml-5 mr-5">1</b> more <b className="ml-5">Epic card</b>
+                  </div>
+                </div>
+              </div>
+            )}
+            <div className="emicard">
+              <img className="emicard__img" src={LegendaryIcon} alt="Legendary" />
+              <div className="emicard__info">
+                <div className="emicard__description-card">
+                  Make purchase of <b className="green-color ml-5">{legendaryCount} ESW</b>
+                </div>
+                <div className="emicard__description-card">
+                  to get <b className="ml-5">a Legendary card</b>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      }
+      if (rare === 'Legendary') {
+        const NumByGetMoreCard = (NunOfCard + 1) * legendaryCount;
+        bodyNode = (
+          <div className="block-with-cards__cards">
+            <div className="block-with-current-cards">
+              <img className="block-with-current-cards__img" src={LegendaryIcon} alt="Legendary" />
+              <div className="block-with-current-cards__info">
+                <div className="block-with-current-cards__title">
+                  {NunOfCard} {'Legendary'}
+                </div>
+                <div className="block-with-current-cards__text">Card</div>
+              </div>
+            </div>
+            <div className="emicard">
+              <img className="emicard__img" src={LegendaryIcon} alt="Ordinary" />
               <div className="emicard__info">
                 <div className="emicard__description-card">
                   Make purchase of <b className="green-color ml-5">{NumByGetMoreCard} ESW</b>
                 </div>
                 <div className="emicard__description-card">
-                  to get <b className="ml-5 mr-5">1</b> more <b className="ml-5">Rare card</b>
+                  to get <b className="ml-5 mr-5">1</b> more <b className="ml-5">Legendary card</b>
                 </div>
               </div>
             </div>
-          )}
-          <div className="emicard">
-            <img className="emicard__img" src={EpicIcon} alt="Epic" />
-            <div className="emicard__info">
-              <div className="emicard__description-card">
-                Make purchase of <b className="green-color ml-5">{epicCount} ESW</b>
-              </div>
-              <div className="emicard__description-card">
-                to get <b className="ml-5">a Epic card</b>
-              </div>
-            </div>
           </div>
-        </div>
-      );
-    }
-    if (rare === 'Epic') {
-      const NumByGetMoreCard = (NunOfCard + 1) * epicCount;
-      bodyNode = (
-        <div className="block-with-cards__cards">
-          <div className="block-with-current-cards">
-            <img className="block-with-current-cards__img" src={EpicIcon} alt="Epic" />
-            <div className="block-with-current-cards__info">
-              <div className="block-with-current-cards__title">
-                {NunOfCard} {'Epic'}
-              </div>
-              <div className="block-with-current-cards__text">Card</div>
-            </div>
-          </div>
-          {NunOfCard < 4 && (
-            <div className="emicard">
-              <img className="emicard__img" src={EpicIcon} alt="Ordinary" />
-              <div className="emicard__info">
-                <div className="emicard__description-card">
-                  Make purchase of <b className="green-color ml-5">{NumByGetMoreCard} ESW</b>
-                </div>
-                <div className="emicard__description-card">
-                  to get <b className="ml-5 mr-5">1</b> more <b className="ml-5">Epic card</b>
-                </div>
-              </div>
-            </div>
-          )}
-          <div className="emicard">
-            <img className="emicard__img" src={LegendaryIcon} alt="Legendary" />
-            <div className="emicard__info">
-              <div className="emicard__description-card">
-                Make purchase of <b className="green-color ml-5">{legendaryCount} ESW</b>
-              </div>
-              <div className="emicard__description-card">
-                to get <b className="ml-5">a Legendary card</b>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-    }
-    if (rare === 'Legendary') {
-      const NumByGetMoreCard = (NunOfCard + 1) * legendaryCount;
-      bodyNode = (
-        <div className="block-with-cards__cards">
-          <div className="block-with-current-cards">
-            <img className="block-with-current-cards__img" src={LegendaryIcon} alt="Legendary" />
-            <div className="block-with-current-cards__info">
-              <div className="block-with-current-cards__title">
-                {NunOfCard} {'Legendary'}
-              </div>
-              <div className="block-with-current-cards__text">Card</div>
-            </div>
-          </div>
-          <div className="emicard">
-            <img className="emicard__img" src={LegendaryIcon} alt="Ordinary" />
-            <div className="emicard__info">
-              <div className="emicard__description-card">
-                Make purchase of <b className="green-color ml-5">{NumByGetMoreCard} ESW</b>
-              </div>
-              <div className="emicard__description-card">
-                to get <b className="ml-5 mr-5">1</b> more <b className="ml-5">Legendary card</b>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
+        );
+      }
     }
 
     const getClassToEmiCardsBlock = (ESW: Number) => {
@@ -784,34 +887,58 @@ const Invest = () => {
 
       return 'block-with-cards';
     };
+
+    const getHeaderToEmiCardBlock = (role: UserRole, ESW: Number): string => {
+      if (role === UserRole.DISTRIBUTOR) {
+        return 'Choose your Package';
+      } else {
+        return ESW > 0 ? 'You will get:' : 'Buy ESW to get Magic NFT EmiCards';
+      }
+    };
+
+    const getFooterToEmiCardBlock = (role: UserRole) => {
+      if (role === UserRole.DISTRIBUTOR) {
+        return (
+          <>
+            <div className="arrow-left arrow-position-1" />
+            <div className="arrow-left-white arrow-position-1" />
+          </>
+        );
+      } else {
+        return (
+          <>
+            <div className="block-with-cards__footer">
+              Fill the amount of ESW for purchase to see the NFT cards you will get
+            </div>
+            <a
+              href="https://crowdsale.emidao.org/magic-nft"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block-with-cards__btn"
+            >
+              <img className="block-with-cards__btn-img" src={Question} alt="Question" />
+              What is NFT Magic Card?
+            </a>
+            <div
+              className={`arrow-left arrow-position-${
+                Number(formattedAmounts[Field.INPUT]) > 0 ? 2 : 1
+              }`}
+            />
+            <div
+              className={`arrow-left-white arrow-position-${
+                Number(formattedAmounts[Field.INPUT]) > 0 ? 2 : 1
+              }`}
+            />
+          </>
+        );
+      }
+    };
+
     return (
       <EmiCard className={getClassToEmiCardsBlock(ESW)}>
-        <div className="block-with-cards__header">
-          {ESW > 0 ? 'You will get:' : 'Buy ESW to get Magic NFT EmiCards'}
-        </div>
+        <div className="block-with-cards__header">{getHeaderToEmiCardBlock(role, ESW)}</div>
         {bodyNode}
-        <div className="block-with-cards__footer">
-          Fill the amount of ESW for purchase to see the NFT cards you will get
-        </div>
-        <a
-          href="https://crowdsale.emidao.org/magic-nft"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block-with-cards__btn"
-        >
-          <img className="block-with-cards__btn-img" src={Question} alt="Question" />
-          What is NFT Magic Card?
-        </a>
-        <div
-          className={`arrow-left arrow-position-${
-            Number(formattedAmounts[Field.INPUT]) > 0 ? 2 : 1
-          }`}
-        />
-        <div
-          className={`arrow-left-white arrow-position-${
-            Number(formattedAmounts[Field.INPUT]) > 0 ? 2 : 1
-          }`}
-        />
+        {getFooterToEmiCardBlock(role)}
       </EmiCard>
     );
   };
@@ -865,7 +992,10 @@ const Invest = () => {
           bottomContent={warningBottomContent}
         />
       )}
-      <AppBody disabled={showWarning} className={'invest-mobile'}>
+      <AppBody
+        disabled={showWarning}
+        className={`invest-mobile ${role === UserRole.DISTRIBUTOR ? 'mb650' : ''}`}
+      >
         <SwapPoolTabs active={'invest'} />
         <Wrapper id="invest-page">
           <ConfirmationModal
@@ -892,6 +1022,7 @@ const Invest = () => {
               showMaxButton={!atMaxAmountInput}
               currency={currencies[Field.INPUT]}
               onUserInput={handleTypeInput}
+              disabled={role === UserRole.DISTRIBUTOR}
               onMax={() => {
                 maxAmountInput &&
                   onUserInput(Field.INPUT, maxAmountInput.toExact(), currencies[Field.INPUT]);
@@ -905,6 +1036,7 @@ const Invest = () => {
               isCrowdsale
             />
             <CurrencyInputPanel
+              disabled={role === UserRole.DISTRIBUTOR}
               value={formattedAmounts[Field.OUTPUT]}
               onUserInput={handleTypeInputOUTPUT}
               label={independentField === Field.INPUT ? 'To (estimated)' : 'To'}

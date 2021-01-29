@@ -1,6 +1,6 @@
 import { ChainId, Pair, Token } from '@uniswap/sdk';
 import flatMap from 'lodash.flatmap';
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from '../../constants';
 
@@ -10,45 +10,44 @@ import { AppDispatch, AppState } from '../index';
 import {
   addSerializedPair,
   addSerializedToken,
-  dismissTokenWarning, login,
+  dismissTokenWarning,
+  login,
   removeSerializedToken,
   SerializedPair,
   SerializedToken,
   updateUserDarkMode,
   updateUserDeadline,
   updateUserExpertMode,
-  updateUserSlippageTolerance
-} from './actions'
+  updateUserSlippageTolerance,
+} from './actions';
 import { useDefaultTokenList } from '../lists/hooks';
 import { isDefaultToken } from '../../utils';
 
 export const useLogin = async (account: string) => {
   const dispatch = useDispatch<AppDispatch>();
 
-
   const getUser = async () => {
-
     const user = await fetch(`https://emiswap-oracle-development.emirex.co/v1/public/users`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          address: account,
-          referalAddress: ''
-        })
-      }
-    ).then(res => res.json()).then(data => data)
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        address: account,
+        referalAddress: '',
+      }),
+    })
+      .then(res => res.json())
+      .then(data => data);
 
-    dispatch(login(user))
-  }
+    dispatch(login(user));
+  };
 
   useEffect(() => {
     getUser();
     // eslint-disable-next-line
   }, [account])
-}
-
+};
 
 function serializeToken(token: Token): SerializedToken {
   return {

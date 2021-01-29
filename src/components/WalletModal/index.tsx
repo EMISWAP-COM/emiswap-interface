@@ -24,7 +24,6 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../state';
 import { Ambassador } from '../AccountDetails/Ambassador';
 import { Owner } from '../AccountDetails/Owner';
-import AccountDetails from '../AccountDetails'
 
 const CloseIcon = styled.div`
   position: absolute;
@@ -137,7 +136,6 @@ enum UserRoles {
   client = 'client',
   disributor = 'distributor',
   ambassador = 'ambassador',
-  owner = 'owner',
 }
 
 const WALLET_VIEWS = {
@@ -192,7 +190,6 @@ export default function WalletModal({
   // close modal when a connection is successful
   const activePrevious = usePrevious(active);
   const connectorPrevious = usePrevious(connector);
-
 
   useEffect(() => {
     if (
@@ -433,22 +430,20 @@ export default function WalletModal({
           return (
             <Ambassador ENSName={ENSName} openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)} />
           );
-        case UserRoles.owner:
+        default:
           return (
             <Owner ENSName={ENSName} openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)} />
           );
-
-        default:
-          return (
-            <AccountDetails
-              toggleWalletModal={toggleWalletModal}
-              pendingTransactions={pendingTransactions}
-              confirmedTransactions={confirmedTransactions}
-              ENSName={ENSName}
-              openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}
-            />
-          );
       }
+      // return (
+      //   <AccountDetails
+      //     toggleWalletModal={toggleWalletModal}
+      //     pendingTransactions={pendingTransactions}
+      //     confirmedTransactions={confirmedTransactions}
+      //     ENSName={ENSName}
+      //     openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}
+      //   />
+      // );
     }
     return (
       <UpperSection>
