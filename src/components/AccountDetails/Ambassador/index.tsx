@@ -1,27 +1,28 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from 'react'
 import styled from 'styled-components';
 import { ExternalLink } from '../../../theme';
 import { injected, walletlink } from '../../../connectors';
 import { getEtherscanLink, shortenAddress } from '../../../utils';
 import { ExternalLink as LinkIcon } from 'react-feather';
-import { convertBigDecimal, formatConnectorName } from '../uitls';
+import { convertBigDecimal, formatConnectorName } from '../uitls'
 import { useActiveWeb3React } from '../../../hooks';
 import Copy from '../Copy';
 import { StatusIcon } from '../StatusIcon';
-import { PurchaseHistory } from '../Common/PurchaseHistory';
-import { ReferalPerformance } from '../Common/ReferalPerformance';
-import { WalletAction, StatusAction } from '../styleds';
-import { CommingSoon } from '../../../base/ui/CommingSoon';
+import { PurchaseHistory } from '../Common/PurchaseHistory'
+import { ReferalPerformance } from '../Common/ReferalPerformance'
+import { WalletAction, StatusAction} from '../styleds'
+import {CommingSoon} from '../../../base/ui/CommingSoon'
 import {
   loadBalance,
   loadPerformance,
   loadPurchaseHistory,
-  loadReferralPurchaseHistory,
-} from '../../../state/cabinets/actions';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, AppState } from '../../../state';
-import { ESWPerformance } from '../Common/ESWPerformance';
-import { ESWStats } from '../Common/ESWStats';
+  loadReferralPurchaseHistory
+} from '../../../state/cabinets/actions'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, AppState } from '../../../state'
+import { ESWPerformance } from '../Common/ESWPerformance'
+import { ESWStats } from '../Common/ESWStats'
+
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -41,7 +42,7 @@ const InfoCard = styled.div`
 
   @media screen and (max-width: 1200px) {
     border-radius: 5px;
-  }
+}
 `;
 
 const AccountGroupingRow = styled.div`
@@ -122,6 +123,7 @@ const TableWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
 `;
 
 const ProfileStatus = styled.div`
@@ -161,28 +163,28 @@ interface Props {
   openOptions: () => void;
 }
 
-const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
+const Ambassador: React.FC<Props> = ({ openOptions, ENSName }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { chainId, account, connector } = useActiveWeb3React();
   // const [referalPerformance, setReferalPerformance] = useState(null)
 
-  const { id: userId, bonus_role_name = '' } = useSelector((state: AppState) => state.user.info);
-  const balance = useSelector((state: AppState) => state.cabinets.balance);
-  const { nearest_unlock } = balance;
+  const {id: userId, bonus_role_name = ''} = useSelector((state: AppState) => state.user.info)
+  const balance = useSelector((state: AppState) => state.cabinets.balance)
+  const {nearest_unlock} = balance
 
   useEffect(() => {
-    dispatch(loadPerformance(userId) as any);
-    dispatch(loadPurchaseHistory(userId) as any);
-    dispatch(loadReferralPurchaseHistory(userId) as any);
-    dispatch(loadBalance(userId) as any);
+    dispatch(loadPerformance(userId) as any)
+    dispatch(loadPurchaseHistory(userId) as any)
+    dispatch(loadReferralPurchaseHistory(userId) as any)
+    dispatch(loadBalance(userId) as any)
   }, [dispatch, userId]);
 
   return (
     <Wrapper>
       <ProfileStatus>
         <div>
-          Status: <span>Distributor</span>
+          Status: <span>Ambassador</span>
         </div>
         <Package>
           <div>
@@ -236,9 +238,7 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
               &nbsp; balance
             </span>
             <span>{convertBigDecimal(balance.amount)}</span>
-            {nearest_unlock && (
-              <span>Buy {convertBigDecimal(nearest_unlock.amount)} ESW to gain next Package!</span>
-            )}
+            {nearest_unlock && <span>Buy {convertBigDecimal(nearest_unlock.amount)} ESW to gain next Package!</span>}
           </BalanceWrapper>
           <AccountGroupingRow>
             <AccountControl>
@@ -252,13 +252,13 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
             </AccountControl>
           </AccountGroupingRow>
         </InfoCard>
-        <ReferalPerformance />
-        <PurchaseHistory />
-        <ESWPerformance />
+        <ReferalPerformance/>
+        <PurchaseHistory/>
+        <ESWPerformance/>
         <ESWStats />
       </TableWrapper>
     </Wrapper>
   );
 };
 
-export { Distributor };
+export { Ambassador };

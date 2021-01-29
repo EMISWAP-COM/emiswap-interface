@@ -4,7 +4,10 @@ on:
     branches:
       - development
       - production
-      - feature/es-268
+      - feature/es-304
+      - feature-es244_distibutor_cabinet
+
+      - feature/es-270
 
   # manual trigger
   workflow_dispatch:

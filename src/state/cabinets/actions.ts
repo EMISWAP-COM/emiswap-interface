@@ -21,7 +21,7 @@ export const loadPerformance = createAsyncThunk(
 export const loadPurchaseHistory = createAsyncThunk(
   'cabinets/loadPurchaseHistory',
   async (userId: string) => {
-    const url = `${baseUrl}/v1/public/users/${'61d2d49b-f315-475a-883c-b8381f14ddf5'}/purchases/history`
+    const url = `${baseUrl}/v1/public/users/${userId}/purchases/history`
     const response = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',

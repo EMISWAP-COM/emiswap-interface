@@ -26,6 +26,7 @@ export interface UserInfo
   role: UserRole;
   id: string;
   referral_id: string;
+  bonus_role_name?: string;
 }
 
 

@@ -8,7 +8,6 @@ import usePrevious from '../../hooks/usePrevious';
 import { useWalletModalOpen, useWalletModalToggle } from '../../state/application/hooks';
 
 import Modal from '../Modal';
-import AccountDetails from '../AccountDetails';
 import PendingView from './PendingView';
 import Option from './Option';
 import { SUPPORTED_WALLETS } from '../../constants';
@@ -19,11 +18,12 @@ import { injected, fortmatic, portis } from '../../connectors';
 import { OVERLAY_READY } from '../../connectors/Fortmatic';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
-import { Distributor } from '../AccountDetails/Distributor'
-import { useLogin } from '../../state/user/hooks'
-import { useSelector } from 'react-redux'
-import { AppState } from '../../state'
-// import { useDispatch } from 'react-redux'
+import { Distributor } from '../AccountDetails/Distributor';
+import { useLogin } from '../../state/user/hooks';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../state';
+import { Ambassador } from '../AccountDetails/Ambassador';
+import { Owner } from '../AccountDetails/Owner';
 
 const CloseIcon = styled.div`
   position: absolute;
@@ -132,6 +132,12 @@ const WarningRow = styled.div`
   justify-content: center;
 `;
 
+enum UserRoles {
+  client = 'client',
+  disributor = 'distributor',
+  ambassador = 'ambassador',
+}
+
 const WALLET_VIEWS = {
   OPTIONS: 'options',
   OPTIONS_SECONDARY: 'options_secondary',
@@ -151,11 +157,9 @@ export default function WalletModal({
   // important that these are destructed from the account-specific web3-react context
   const { active, account, connector, activate, error } = useWeb3React();
 
-  const user = useSelector((state: AppState) => state.user.info)
+  const user = useSelector((state: AppState) => state.user.info);
 
-  useLogin(account)
-
-  console.log('--state', user)
+  useLogin(account);
 
   const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT);
 
@@ -186,7 +190,6 @@ export default function WalletModal({
   // close modal when a connection is successful
   const activePrevious = usePrevious(active);
   const connectorPrevious = usePrevious(connector);
-
 
   useEffect(() => {
     if (
@@ -415,28 +418,32 @@ export default function WalletModal({
       );
     }
     if (account && walletView === WALLET_VIEWS.ACCOUNT) {
-
-
-      if (
-        user.role === 'client'
-      ) {
-         return (
-           <Distributor
-             ENSName={ENSName}
-             openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}
-           />
-         )
-
+      switch (user.role) {
+        case UserRoles.disributor:
+          return (
+            <Distributor
+              ENSName={ENSName}
+              openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}
+            />
+          );
+        case UserRoles.ambassador:
+          return (
+            <Ambassador ENSName={ENSName} openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)} />
+          );
+        default:
+          return (
+            <Owner ENSName={ENSName} openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)} />
+          );
       }
-      return (
-        <AccountDetails
-          toggleWalletModal={toggleWalletModal}
-          pendingTransactions={pendingTransactions}
-          confirmedTransactions={confirmedTransactions}
-          ENSName={ENSName}
-          openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}
-        />
-      );
+      // return (
+      //   <AccountDetails
+      //     toggleWalletModal={toggleWalletModal}
+      //     pendingTransactions={pendingTransactions}
+      //     confirmedTransactions={confirmedTransactions}
+      //     ENSName={ENSName}
+      //     openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}
+      //   />
+      // );
     }
     return (
       <UpperSection>
