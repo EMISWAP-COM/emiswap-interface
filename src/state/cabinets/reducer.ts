@@ -52,10 +52,8 @@ export interface PurchaseHistory {
   transaction_hash: string;
 }
 
-export interface ReferralPurchaseHistory {
-  amount: string;
-  date: string;
-  transaction_hash: string;
+export interface ReferralPurchaseHistory extends PurchaseHistory {
+  referral_level: number
 }
 
 const initialState: CabinetState = {

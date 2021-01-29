@@ -8,7 +8,6 @@ import usePrevious from '../../hooks/usePrevious';
 import { useWalletModalOpen, useWalletModalToggle } from '../../state/application/hooks';
 
 import Modal from '../Modal';
-import AccountDetails from '../AccountDetails';
 import PendingView from './PendingView';
 import Option from './Option';
 import { SUPPORTED_WALLETS } from '../../constants';
@@ -23,7 +22,8 @@ import { Distributor } from '../AccountDetails/Distributor'
 import { useLogin } from '../../state/user/hooks'
 import { useSelector } from 'react-redux'
 import { AppState } from '../../state'
-// import { useDispatch } from 'react-redux'
+import { Ambassador } from '../AccountDetails/Ambassador'
+import { Owner } from '../AccountDetails/Owner'
 
 const CloseIcon = styled.div`
   position: absolute;
@@ -131,6 +131,12 @@ const WarningRow = styled.div`
   display: flex;
   justify-content: center;
 `;
+
+enum UserRoles {
+  client = 'client',
+  disributor = 'distributor',
+  ambassador = 'ambassador'
+}
 
 const WALLET_VIEWS = {
   OPTIONS: 'options',
@@ -413,28 +419,38 @@ export default function WalletModal({
       );
     }
     if (account && walletView === WALLET_VIEWS.ACCOUNT) {
-
-
-      if (
-        user.role === 'distributor'
-      ) {
-         return (
-           <Distributor
-             ENSName={ENSName}
-             openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}
-           />
-         )
-
+      switch (user.role) {
+        case UserRoles.disributor:
+          return (
+            <Distributor
+              ENSName={ENSName}
+              openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}
+            />
+          )
+        case UserRoles.ambassador:
+          return (
+            <Ambassador
+              ENSName={ENSName}
+              openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}
+            />
+          )
+        default:
+          return (
+            <Owner
+              ENSName={ENSName}
+              openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}
+            />
+          )
       }
-      return (
-        <AccountDetails
-          toggleWalletModal={toggleWalletModal}
-          pendingTransactions={pendingTransactions}
-          confirmedTransactions={confirmedTransactions}
-          ENSName={ENSName}
-          openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}
-        />
-      );
+      // return (
+      //   <AccountDetails
+      //     toggleWalletModal={toggleWalletModal}
+      //     pendingTransactions={pendingTransactions}
+      //     confirmedTransactions={confirmedTransactions}
+      //     ENSName={ENSName}
+      //     openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}
+      //   />
+      // );
     }
     return (
       <UpperSection>
