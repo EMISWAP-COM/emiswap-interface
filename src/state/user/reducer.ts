@@ -1,5 +1,5 @@
-import { DEFAULT_DEADLINE_FROM_NOW, INITIAL_ALLOWED_SLIPPAGE } from '../../constants'
-import { createReducer } from '@reduxjs/toolkit'
+import { DEFAULT_DEADLINE_FROM_NOW, INITIAL_ALLOWED_SLIPPAGE } from '../../constants';
+import { createReducer } from '@reduxjs/toolkit';
 import {
   addSerializedPair,
   addSerializedToken,
@@ -14,21 +14,19 @@ import {
   updateUserDeadline,
   updateUserExpertMode,
   updateUserSlippageTolerance,
-  updateVersion
-} from './actions'
-import { UserRole } from '../../pages/Invest'
+  updateVersion,
+} from './actions';
+import { UserRoles } from '../../components/WalletModal';
 
 const currentTimestamp = () => new Date().getTime();
 
-export interface UserInfo
-{
+export interface UserInfo {
   address: string;
-  role: UserRole;
+  role: UserRoles;
   id: string;
   referral_id: string;
   bonus_role_name?: string;
 }
-
 
 export interface UserState {
   // the timestamp of the last updateVersion action
@@ -66,7 +64,7 @@ export interface UserState {
   };
 
   timestamp: number;
-  info: UserInfo
+  info: UserInfo;
 }
 
 function pairKey(token0Address: string, token1Address: string) {
@@ -85,7 +83,7 @@ export const initialState: UserState = {
   info: {
     id: '',
     address: '',
-    role: UserRole.CLIENT,
+    role: UserRoles.client,
     referral_id: '',
   },
 };
@@ -94,7 +92,7 @@ export default createReducer(initialState, builder =>
   builder
     .addCase(login, (state, action) => {
       // console.log('-----', state.info, action);
-      state.info = action.payload
+      state.info = action.payload;
     })
     .addCase(updateVersion, state => {
       // slippage isnt being tracked in local storage, reset to default

@@ -132,9 +132,9 @@ const WarningRow = styled.div`
   justify-content: center;
 `;
 
-enum UserRoles {
+export enum UserRoles {
   client = 'client',
-  disributor = 'distributor',
+  distributor = 'distributor',
   ambassador = 'ambassador',
 }
 
@@ -419,7 +419,7 @@ export default function WalletModal({
     }
     if (account && walletView === WALLET_VIEWS.ACCOUNT) {
       switch (user.role) {
-        case UserRoles.disributor:
+        case UserRoles.distributor:
           return (
             <Distributor
               ENSName={ENSName}

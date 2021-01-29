@@ -53,6 +53,7 @@ import WarningBlock, { StyledButton } from '../../components/Warning/WarningBloc
 import useParsedQueryString from '../../hooks/useParsedQueryString';
 import ReferralLink from '../../components/RefferalLink';
 import { AppState } from '../../state';
+import { UserRoles } from '../../components/WalletModal';
 
 const EmiCard = styled.div`
   position: absolute;
@@ -281,6 +282,17 @@ const EmiCard = styled.div`
     border-radius: 24px;
   }
 
+  .grey {
+    color: ${({ theme }) => theme.grey6}!important;
+    filter: grayscale(100%) !important;
+    opacity: 0.5;
+  }
+
+  .grey-text {
+    color: ${({ theme }) => theme.grey6}!important;
+    opacity: 0.4;
+  }
+
   @media screen and (max-width: 1400px) {
     width: 340px;
     right: -185%;
@@ -358,9 +370,14 @@ export function RedirectPathToInvestOnly({ location }: RouteComponentProps) {
   return <Redirect to={{ ...location, pathname: '/invest' }} />;
 }
 
-export enum UserRole {
-  CLIENT = 'client',
-  DISTRIBUTOR = 'distributor',
+enum AccountPackage {
+  basic,
+  basic_plus,
+  silver,
+  gold,
+  diamond,
+  partner,
+  enterprise,
 }
 
 const Invest = () => {
@@ -390,7 +407,8 @@ const Invest = () => {
   } = useDerivedInvestInfo();
 
   const [selectedCardAmount, setSelectedCardAmount] = useState<number>(0);
-  const role: UserRole = useSelector((state: AppState) => state.user.info.role);
+  const role: UserRoles = useSelector((state: AppState) => state.user.info.role);
+  const bonusRoleName = useSelector((state: AppState) => state.user.info.bonus_role_name);
 
   const parsedAmounts = {
     [Field.INPUT]: parsedAmount,
@@ -560,6 +578,17 @@ const Invest = () => {
     const diamondCount = 90000;
     const partnerCount = 450000;
     const enterpriseCount = 900000;
+
+    const accountAmounts: { [key in keyof typeof AccountPackage]: number } = {
+      basic: basicCount,
+      basic_plus: basicPlusCount,
+      silver: silverCount,
+      gold: goldCount,
+      diamond: diamondCount,
+      partner: partnerCount,
+      enterprise: enterpriseCount,
+    };
+
     let rare = '';
     let NunOfCard = 0;
     if (ESW > 0 && ESW < uncommonCount) {
@@ -627,20 +656,27 @@ const Invest = () => {
         value: enterpriseCount,
       },
     ];
-    if (role === UserRole.DISTRIBUTOR) {
+    if (role === UserRoles.distributor) {
       bodyNode = (
         <div className="block-with-cards__cards">
           {distributorCardList.map(el => {
+            const isDisabled = bonusRoleName ? el.value <= accountAmounts[+bonusRoleName] : false;
             return (
               <div
                 className={`emicard ${+selectedCardAmount === el.value ? 'active' : ''}`}
                 key={el.title}
-                onClick={() => handleSelectCard(String(el.value))}
+                onClick={() => (!isDisabled ? handleSelectCard(String(el.value)) : null)}
               >
-                <img className="emicard__img" src={el.img} alt="Ordinary" />
+                <img
+                  className={`emicard__img ${isDisabled ? 'grey' : ''}`}
+                  src={el.img}
+                  alt="Ordinary"
+                />
                 <div className="emicard__info">
-                  <div className="emicard__title">{el.title}</div>
-                  <div className="emicard__description">{el.description}</div>
+                  <div className={`emicard__title ${isDisabled ? 'grey' : ''}`}>{el.title}</div>
+                  <div className={`emicard__description ${isDisabled ? 'grey-text' : ''}`}>
+                    {el.description}
+                  </div>
                 </div>
               </div>
             );
@@ -888,16 +924,16 @@ const Invest = () => {
       return 'block-with-cards';
     };
 
-    const getHeaderToEmiCardBlock = (role: UserRole, ESW: Number): string => {
-      if (role === UserRole.DISTRIBUTOR) {
+    const getHeaderToEmiCardBlock = (role: UserRoles, ESW: Number): string => {
+      if (role === UserRoles.distributor) {
         return 'Choose your Package';
       } else {
         return ESW > 0 ? 'You will get:' : 'Buy ESW to get Magic NFT EmiCards';
       }
     };
 
-    const getFooterToEmiCardBlock = (role: UserRole) => {
-      if (role === UserRole.DISTRIBUTOR) {
+    const getFooterToEmiCardBlock = (role: UserRoles) => {
+      if (role === UserRoles.distributor) {
         return (
           <>
             <div className="arrow-left arrow-position-1" />
@@ -994,7 +1030,7 @@ const Invest = () => {
       )}
       <AppBody
         disabled={showWarning}
-        className={`invest-mobile ${role === UserRole.DISTRIBUTOR ? 'mb650' : ''}`}
+        className={`invest-mobile ${role === UserRoles.distributor ? 'mb650' : ''}`}
       >
         <SwapPoolTabs active={'invest'} />
         <Wrapper id="invest-page">
@@ -1022,7 +1058,7 @@ const Invest = () => {
               showMaxButton={!atMaxAmountInput}
               currency={currencies[Field.INPUT]}
               onUserInput={handleTypeInput}
-              disabled={role === UserRole.DISTRIBUTOR}
+              disabled={role === UserRoles.distributor}
               onMax={() => {
                 maxAmountInput &&
                   onUserInput(Field.INPUT, maxAmountInput.toExact(), currencies[Field.INPUT]);
@@ -1036,7 +1072,7 @@ const Invest = () => {
               isCrowdsale
             />
             <CurrencyInputPanel
-              disabled={role === UserRole.DISTRIBUTOR}
+              disabled={role === UserRoles.distributor}
               value={formattedAmounts[Field.OUTPUT]}
               onUserInput={handleTypeInputOUTPUT}
               label={independentField === Field.INPUT ? 'To (estimated)' : 'To'}

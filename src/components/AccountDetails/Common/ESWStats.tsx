@@ -2,9 +2,8 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { CommingSoon } from '../../../base/ui/CommingSoon';
-import useWindowDimensions from '../../../hooks/useWindowDimensions';
 import { AppState } from '../../../state';
-import { TYPE } from '../../../theme'
+import { TYPE } from '../../../theme';
 
 const WalletButton = styled.span`
   display: block;
@@ -171,8 +170,6 @@ export const getDate = (date: string) => {
 };
 
 export const ESWStats = () => {
-  const { width } = useWindowDimensions();
-
   const balance = useSelector((state: AppState) => state.cabinets.balance);
 
   const amount = Number(balance?.amount).toFixed(2);
