@@ -20,7 +20,8 @@ import {
 } from '../../../state/cabinets/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, AppState } from '../../../state';
-import { ESWPerformance } from './ESWPerformance'
+import { ESWPerformance } from './ESWPerformance';
+import { ESWStats } from './ESWStats';
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -254,6 +255,7 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
         <ReferalPerformance />
         <PurchaseHistory />
         <ESWPerformance />
+        <ESWStats />
       </TableWrapper>
     </Wrapper>
   );

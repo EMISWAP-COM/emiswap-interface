@@ -91,6 +91,7 @@ const Container = styled.div`
   padding: 14px 16px 12px 16px;
   flex-direction: column;
   justify-content: space-between;
+  margin-bottom: 20px;
 
   > div:not(last-child) {
     margin-bottom: 12px;
@@ -159,7 +160,7 @@ export const ESWPerformance = () => {
           <Row>
             <TitledAmount>
               <Title>Total Profit</Title>
-              <span>123</span> ESW
+              <span>Coming soon</span>
             </TitledAmount>
             <TextBlock>
               <span>Boosted at</span>
@@ -171,7 +172,7 @@ export const ESWPerformance = () => {
           <Row>
             <TitledAmount>
               <Title>Swapping</Title>
-              <span>123</span> ESW
+              <span>Coming soon</span>
             </TitledAmount>
             <CommingSoon>
               <PurpleButton>BOOST IT NOW!</PurpleButton>
@@ -180,7 +181,7 @@ export const ESWPerformance = () => {
           <Row>
             <TitledAmount>
               <Title>Providing Liquidity</Title>
-              <span>123</span> ESW
+              <span>Coming soon</span>
             </TitledAmount>
             <CommingSoon>
               <PurpleButton>BOOST IT NOW!</PurpleButton>
@@ -201,9 +202,9 @@ export const ESWPerformance = () => {
           <Cell>Providing Liquidity</Cell>
         </TittleRow>
         <TableRow>
-          <Cell>1234.06</Cell>
-          <Cell>3599.99</Cell>
-          <Cell>1000.00</Cell>
+          <Cell>Coming soon</Cell>
+          <Cell>Coming soon</Cell>
+          <Cell>Coming soon</Cell>
         </TableRow>
         <TableRow>
           <PercentageMessage>Boosted at 25% by Rare</PercentageMessage>
