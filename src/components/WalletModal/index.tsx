@@ -18,12 +18,12 @@ import { injected, fortmatic, portis } from '../../connectors';
 import { OVERLAY_READY } from '../../connectors/Fortmatic';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
-import { Distributor } from '../AccountDetails/Distributor'
-import { useLogin } from '../../state/user/hooks'
-import { useSelector } from 'react-redux'
-import { AppState } from '../../state'
-import { Ambassador } from '../AccountDetails/Ambassador'
-import { Owner } from '../AccountDetails/Owner'
+import { Distributor } from '../AccountDetails/Distributor';
+import { useLogin } from '../../state/user/hooks';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../state';
+import { Ambassador } from '../AccountDetails/Ambassador';
+import { Owner } from '../AccountDetails/Owner';
 
 const CloseIcon = styled.div`
   position: absolute;
@@ -135,7 +135,7 @@ const WarningRow = styled.div`
 enum UserRoles {
   client = 'client',
   disributor = 'distributor',
-  ambassador = 'ambassador'
+  ambassador = 'ambassador',
 }
 
 const WALLET_VIEWS = {
@@ -157,9 +157,9 @@ export default function WalletModal({
   // important that these are destructed from the account-specific web3-react context
   const { active, account, connector, activate, error } = useWeb3React();
 
-  const user = useSelector((state: AppState) => state.user.info)
+  const user = useSelector((state: AppState) => state.user.info);
 
-  useLogin(account)
+  useLogin(account);
 
   const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT);
 
@@ -190,7 +190,6 @@ export default function WalletModal({
   // close modal when a connection is successful
   const activePrevious = usePrevious(active);
   const connectorPrevious = usePrevious(connector);
-
 
   useEffect(() => {
     if (
@@ -426,21 +425,15 @@ export default function WalletModal({
               ENSName={ENSName}
               openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}
             />
-          )
+          );
         case UserRoles.ambassador:
           return (
-            <Ambassador
-              ENSName={ENSName}
-              openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}
-            />
-          )
+            <Ambassador ENSName={ENSName} openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)} />
+          );
         default:
           return (
-            <Owner
-              ENSName={ENSName}
-              openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}
-            />
-          )
+            <Owner ENSName={ENSName} openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)} />
+          );
       }
       // return (
       //   <AccountDetails
