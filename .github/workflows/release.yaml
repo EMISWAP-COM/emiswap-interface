@@ -5,6 +5,8 @@ on:
       - development
       - production
       - feature/es-304
+      - feature-es244_distibutor_cabinet
+
 
   # manual trigger
   workflow_dispatch:
@@ -19,7 +21,7 @@ jobs:
     steps:
       - name: Git checkout
         uses: actions/checkout@v1
-      - name: get shortsha  
+      - name: get shortsha
         id: vars
         run: |
          echo ::set-output name=sha_short::$(git rev-parse --short=4 ${{ github.sha }})

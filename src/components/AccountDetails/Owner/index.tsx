@@ -1,27 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from 'react'
 import styled from 'styled-components';
 import { ExternalLink } from '../../../theme';
 import { injected, walletlink } from '../../../connectors';
 import { getEtherscanLink, shortenAddress } from '../../../utils';
 import { ExternalLink as LinkIcon } from 'react-feather';
-import { convertBigDecimal, formatConnectorName } from '../uitls';
+import { convertBigDecimal, formatConnectorName } from '../uitls'
 import { useActiveWeb3React } from '../../../hooks';
 import Copy from '../Copy';
 import { StatusIcon } from '../StatusIcon';
-import { PurchaseHistory } from '../Common/PurchaseHistory';
-import { ReferalPerformance } from '../Common/ReferalPerformance';
-import { WalletAction, StatusAction } from '../styleds';
-import { CommingSoon } from '../../../base/ui/CommingSoon';
+import { PurchaseHistory } from '../Common/PurchaseHistory'
+import { ReferalPerformance } from '../Common/ReferalPerformance'
+import { WalletAction} from '../styleds'
 import {
   loadBalance,
   loadPerformance,
   loadPurchaseHistory,
-  loadReferralPurchaseHistory,
-} from '../../../state/cabinets/actions';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, AppState } from '../../../state';
-import { ESWPerformance } from './ESWPerformance';
-import { ESWStats } from './ESWStats';
+  loadReferralPurchaseHistory
+} from '../../../state/cabinets/actions'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, AppState } from '../../../state'
+
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -38,10 +36,10 @@ const InfoCard = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   grid-gap: 12px;
   margin-bottom: 20px;
-
+  
   @media screen and (max-width: 1200px) {
     border-radius: 5px;
-  }
+}
 `;
 
 const AccountGroupingRow = styled.div`
@@ -66,7 +64,7 @@ const BalanceWrapper = styled.div`
   @media screen and (max-width: 1200px) {
     grid-template-columns: 3fr 1fr;
     justify-items: normal;
-    span: nth-child(3) {
+    span: nth-child(3) { 
       grid-column: span 2;
     }
   }
@@ -122,6 +120,7 @@ const TableWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  
 `;
 
 const ProfileStatus = styled.div`
@@ -131,14 +130,14 @@ const ProfileStatus = styled.div`
   text-transform: capitalize;
   padding: 0 1rem 1rem 1rem;
   flex-wrap: wrap;
-  align-items:
+  align-items: 
   background: lightgreen;
   gap: 12px;
-
+  
   @media screen and (max-width: 1200px) {
     padding: 0 0 1rem 0;
   }
-
+  
   span {
     color: #000000;
     font-weight: 700;
@@ -146,13 +145,6 @@ const ProfileStatus = styled.div`
   }
 `;
 
-const Package = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-width: 300px;
-  width: 100%;
-`;
 
 interface Props {
   // toggleWalletModal: () => void;
@@ -161,37 +153,28 @@ interface Props {
   openOptions: () => void;
 }
 
-const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
+const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { chainId, account, connector } = useActiveWeb3React();
-  // const [referalPerformance, setReferalPerformance] = useState(null)
 
-  const { id: userId, bonus_role_name = '' } = useSelector((state: AppState) => state.user.info);
-  const balance = useSelector((state: AppState) => state.cabinets.balance);
-  const { nearest_unlock } = balance;
+  const { id: userId } = useSelector((state: AppState) => state.user.info);
+  const balance = useSelector((state: AppState) => state.cabinets.balance)
+  const {nearest_unlock} = balance
 
   useEffect(() => {
-    dispatch(loadPerformance(userId) as any);
-    dispatch(loadPurchaseHistory(userId) as any);
-    dispatch(loadReferralPurchaseHistory(userId) as any);
-    dispatch(loadBalance(userId) as any);
+    dispatch(loadPerformance(userId) as any)
+    dispatch(loadPurchaseHistory(userId) as any)
+    dispatch(loadReferralPurchaseHistory(userId) as any)
+    dispatch(loadBalance(userId) as any)
   }, [dispatch, userId]);
 
   return (
     <Wrapper>
       <ProfileStatus>
         <div>
-          Status: <span>Distributor</span>
+          Status: <span>EMISWAP OWNER</span>
         </div>
-        <Package>
-          <div>
-            Package: <span>{bonus_role_name}</span>
-          </div>
-          <CommingSoon>
-            <StatusAction>Upgrade</StatusAction>
-          </CommingSoon>
-        </Package>
       </ProfileStatus>
       <TableWrapper>
         <InfoCard>
@@ -236,9 +219,7 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
               &nbsp; balance
             </span>
             <span>{convertBigDecimal(balance.amount)}</span>
-            {nearest_unlock && (
-              <span>Buy {convertBigDecimal(nearest_unlock.amount)} ESW to gain next Package!</span>
-            )}
+            {nearest_unlock && <span>Buy {convertBigDecimal(nearest_unlock.amount)} ESW to gain next Package!</span>}
           </BalanceWrapper>
           <AccountGroupingRow>
             <AccountControl>
@@ -252,13 +233,12 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
             </AccountControl>
           </AccountGroupingRow>
         </InfoCard>
-        <ReferalPerformance />
-        <PurchaseHistory />
-        <ESWPerformance />
-        <ESWStats />
+        <ReferalPerformance/>
+        <PurchaseHistory/>
+
       </TableWrapper>
     </Wrapper>
   );
 };
 
-export { Distributor };
+export { Owner };
