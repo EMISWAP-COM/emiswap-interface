@@ -44,6 +44,24 @@ const Row = styled.tr`
   }
 `;
 
+const AmountRow = styled(Row)`
+  > td:nth-child(1) {
+    max-width: 116px;
+  }
+  > td:nth-child(2) {
+    max-width: 110px;
+  }
+  > td:nth-child(3) {
+    max-width: 97px;
+  }
+  > td:nth-child(4) {
+    max-width: 174px;
+  }
+  > td:nth-child(5) {
+    max-width: 153px;
+  }
+`;
+
 const Cell = styled.td`
   max-height: 20px;
   font-family: 'IBM Plex Sans';
@@ -159,13 +177,13 @@ export const ESWStats = () => {
 
   const balance = useSelector((state: AppState) => state.cabinets.balance);
 
-  const amount = +balance?.amount;
-  const nextUnlockAmount = +balance?.nearest_unlock?.amount;
-  const lockedAmount = +balance?.locked;
+  const amount = Number(balance?.amount).toFixed(2);
+  const nextUnlockAmount = Number(balance?.nearest_unlock?.amount).toFixed(2);
+  const lockedAmount = Number(balance?.locked).toFixed(2);
   const unlockDate = balance?.nearest_unlock?.unlock_date
     ? getDate(balance?.nearest_unlock?.unlock_date)
     : '-';
-  const total = amount && lockedAmount ? amount + lockedAmount : '-';
+  const total = amount && lockedAmount ? +amount + +nextUnlockAmount : '-';
   if (width <= 1200) {
     return (
       <>
@@ -215,7 +233,7 @@ export const ESWStats = () => {
           <Cell>Next unlock amount</Cell>
           <Cell>Next unlock date</Cell>
         </TittleRow>
-        <Row>
+        <AmountRow>
           <Cell>{total}</Cell>
           <Cell>{amount || '-'}</Cell>
           <Cell>{nextUnlockAmount || '-'}</Cell>
@@ -223,7 +241,7 @@ export const ESWStats = () => {
           <Cell>
             <DateBlock>{unlockDate}</DateBlock>
           </Cell>
-        </Row>
+        </AmountRow>
         <ButtonRow>
           <CommingSoon>
             <WalletButton>Collect to my wallet</WalletButton>

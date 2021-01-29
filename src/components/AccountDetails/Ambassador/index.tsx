@@ -20,6 +20,8 @@ import {
 } from '../../../state/cabinets/actions'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, AppState } from '../../../state'
+import { ESWPerformance } from '../Common/ESWPerformance'
+import { ESWStats } from '../Common/ESWStats'
 
 
 const Wrapper = styled.div`
@@ -37,7 +39,7 @@ const InfoCard = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   grid-gap: 12px;
   margin-bottom: 20px;
-  
+
   @media screen and (max-width: 1200px) {
     border-radius: 5px;
 }
@@ -65,7 +67,7 @@ const BalanceWrapper = styled.div`
   @media screen and (max-width: 1200px) {
     grid-template-columns: 3fr 1fr;
     justify-items: normal;
-    span: nth-child(3) { 
+    span: nth-child(3) {
       grid-column: span 2;
     }
   }
@@ -121,7 +123,7 @@ const TableWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  
+
 `;
 
 const ProfileStatus = styled.div`
@@ -131,14 +133,14 @@ const ProfileStatus = styled.div`
   text-transform: capitalize;
   padding: 0 1rem 1rem 1rem;
   flex-wrap: wrap;
-  align-items: 
+  align-items:
   background: lightgreen;
   gap: 12px;
-  
+
   @media screen and (max-width: 1200px) {
     padding: 0 0 1rem 0;
   }
-  
+
   span {
     color: #000000;
     font-weight: 700;
@@ -252,7 +254,8 @@ const Ambassador: React.FC<Props> = ({ openOptions, ENSName }) => {
         </InfoCard>
         <ReferalPerformance/>
         <PurchaseHistory/>
-
+        <ESWPerformance/>
+        <ESWStats />
       </TableWrapper>
     </Wrapper>
   );
