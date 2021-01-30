@@ -24,7 +24,7 @@ import { useDefaultTokenList } from '../lists/hooks';
 import { isDefaultToken } from '../../utils';
 
 // @ts-ignore
-const baseUrl = window.env ? window.env.PUBLIC_API : ''
+const baseUrl = window.env ? window.env.REACT_APP_PUBLIC_URL : ''
 
 export const useLogin = async (account: string) => {
   const dispatch = useDispatch<AppDispatch>();
