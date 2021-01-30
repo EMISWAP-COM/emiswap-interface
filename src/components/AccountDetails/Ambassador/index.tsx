@@ -10,8 +10,7 @@ import Copy from '../Copy';
 import { StatusIcon } from '../StatusIcon';
 import { PurchaseHistory } from '../Common/PurchaseHistory'
 import { ReferalPerformance } from '../Common/ReferalPerformance'
-import { WalletAction, StatusAction} from '../styleds'
-import {CommingSoon} from '../../../base/ui/CommingSoon'
+import { WalletAction} from '../styleds'
 import {
   loadBalance,
   loadPerformance,
@@ -182,11 +181,9 @@ const Ambassador: React.FC<Props> = ({ openOptions, ENSName }) => {
 
   const { chainId, account, connector } = useActiveWeb3React();
 
-  const {id: userId, bonus_role_name = ''} = useSelector((state: AppState) => state.user.info)
+  const {id: userId } = useSelector((state: AppState) => state.user.info)
   const balance = useSelector((state: AppState) => state.cabinets.balance)
-  const { reward } = useSelector(
-    (state: AppState) => state.cabinets.performance,
-  );
+
 
   useEffect(() => {
     dispatch(loadPerformance(userId) as any)
