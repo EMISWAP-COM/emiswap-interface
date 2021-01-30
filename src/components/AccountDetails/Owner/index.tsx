@@ -56,35 +56,48 @@ const AccountGroupingRow = styled.div`
 `;
 
 const BalanceWrapper = styled.div`
-  grid-row: span 2;
-  display: grid;
-  grid-template-columns: 1fr;
-  justify-items: center;
-  align-items: baseline;
+  display: flex;
+  justify-content: flex-end;  
 
   @media screen and (max-width: 1200px) {
-    grid-template-columns: 3fr 1fr;
-    justify-items: normal;
-    span: nth-child(3) {
-      grid-column: span 2;
-    }
+     flex-direction: column;
   }
+`;
 
+const BalanceContainer = styled.div`
+  grid-row: span 2; 
+  //
+  // @media screen and (max-width: 1200px) {
+  //    flex-direction: column;
+  // }
+`;
+
+const Balance = styled.div`
+  display: flex;
+  width: 50%;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  
+  @media screen and (max-width: 1200px) {
+     flex-direction: row
+     justify-content: space-between;
+  }
+  
   span:nth-child(1) {
-    font-size: min(1.2rem, 4vw);
+    font-size: min(1rem, 4vw);
   }
+`;
 
-  span:nth-child(2) {
+const BalanceFigure = styled.span`
     font-size: min(2rem, 4vw);
     font-weight: 600;
-    text-align: right;
-  }
+`;
 
-  span:nth-child(3) {
+const BalancePromo = styled.div`
     font-size: min(0.9rem, 3vw);
     font-weight: 600;
     color: #e50606;
-  }
 `;
 
 const AccountControl = styled.div`
@@ -159,7 +172,10 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
 
   const { id: userId } = useSelector((state: AppState) => state.user.info);
   const balance = useSelector((state: AppState) => state.cabinets.balance);
-  const { nearest_unlock } = balance;
+  const { reward } = useSelector(
+    (state: AppState) => state.cabinets.performance,
+  );
+
 
   useEffect(() => {
     dispatch(loadPerformance(userId) as any);
@@ -211,17 +227,30 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
               </AccountControl>
             </AccountGroupingRow>
           </div>
-          <BalanceWrapper>
-            <span>
-              your &nbsp;
-              <span>ESW</span>
-              &nbsp; balance
-            </span>
-            <span>{convertBigDecimal(balance.amount)}</span>
-            {nearest_unlock && (
-              <span>Buy {convertBigDecimal(nearest_unlock.amount)} ESW to gain next Package!</span>
-            )}
-          </BalanceWrapper>
+          <BalanceContainer>
+            <BalanceWrapper>
+              <Balance>
+                <span>
+                  your &nbsp;
+                  <span>ESW</span>
+                  &nbsp; balance
+                </span>
+
+                <BalanceFigure>{convertBigDecimal(balance.amount)}</BalanceFigure>
+              </Balance>
+              <Balance>
+                <span>
+                  <span>ESW</span>
+                  &nbsp; profit
+                </span>
+
+                <BalanceFigure>{convertBigDecimal(reward?.esw)}</BalanceFigure>
+              </Balance>
+            </BalanceWrapper>
+            <BalancePromo>To boost your ESW Profit use our Referral Program,
+              become an Ambassador or farm your Magic Cards!
+            </BalancePromo>
+          </BalanceContainer>
           <AccountGroupingRow>
             <AccountControl>
               <Copy toCopy={account}>
