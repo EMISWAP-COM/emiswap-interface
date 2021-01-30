@@ -23,11 +23,14 @@ import {
 import { useDefaultTokenList } from '../lists/hooks';
 import { isDefaultToken } from '../../utils';
 
+// @ts-ignore
+const baseUrl = window.env ? window.env.PUBLIC_API : ''
+
 export const useLogin = async (account: string) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const getUser = async () => {
-    const user = await fetch(`https://emiswap-oracle-development.emirex.co/v1/public/users`, {
+    const user = await fetch(`${baseUrl}/v1/public/users`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
