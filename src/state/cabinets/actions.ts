@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { ReferralPerformance } from './reducer'
 // @ts-ignore
-const baseUrl = window.env ? window.env.PUBLIC_API : ''
+const baseUrl = window.env ? window.env.REACT_APP_PUBLIC_URL : ''
 
 export const loadPerformance = createAsyncThunk(
   'cabinets/loadReferalPerformance',
