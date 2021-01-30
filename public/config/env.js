@@ -14,6 +14,5 @@ window['env'] = {
   REACT_APP_ESW_ID: '0x5a75A093747b72a0e14056352751eDF03518031d',
   REACT_APP_ANALYTICS_URL: 'https://moon.firstbridge.online/',
   REACT_APP_CODE_LINK: 'https://github.com/EMISWAP-COM',
-  REACT_APP_PUBLIC_URL: 'https://emiswap.emirex.co',
-  PUBLIC_API: 'https://emiswap-oracle-development.emirex.co'
+  REACT_APP_PUBLIC_URL: 'https://emiswap-ui-development.emirex.co/',
 };
