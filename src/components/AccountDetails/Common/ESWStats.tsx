@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { CommingSoon } from '../../../base/ui/CommingSoon';
 import { AppState } from '../../../state';
 import { TYPE } from '../../../theme';
+import { convertBigDecimal, convertDate } from '../uitls'
 
 const WalletButton = styled.span`
   display: block;
@@ -172,13 +173,11 @@ export const getDate = (date: string) => {
 export const ESWStats = () => {
   const balance = useSelector((state: AppState) => state.cabinets.balance);
 
-  const amount = Number(balance?.amount).toFixed(2);
-  const nextUnlockAmount = Number(balance?.nearest_unlock?.amount).toFixed(2);
-  const lockedAmount = Number(balance?.locked).toFixed(2);
-  const unlockDate = balance?.nearest_unlock?.unlock_date
-    ? getDate(balance?.nearest_unlock?.unlock_date)
-    : '-';
-  const total = amount && lockedAmount ? +amount + +nextUnlockAmount : '-';
+  const unfrozen = convertBigDecimal(balance?.available);
+  const frozen = convertBigDecimal(String(balance?.locked));
+  const nextUnlockAmount = convertBigDecimal(balance?.nearest_unlock?.amount);
+  const unlockDate = convertDate(balance?.nearest_unlock?.unlock_date);
+  const total = convertBigDecimal(balance?.amount);
   return (
     <>
       <TYPE.mediumHeader>My ESW Performance</TYPE.mediumHeader>
@@ -190,15 +189,15 @@ export const ESWStats = () => {
           </RowItem>
           <RowItem>
             <div className="item-top">Unfrozen</div>
-            <div className="item-bottom">{amount || '-'}</div>
+            <div className="item-bottom">{unfrozen}</div>
           </RowItem>
           <RowItem>
             <div className="item-top">Frozen</div>
-            <div className="item-bottom">{nextUnlockAmount || '-'}</div>
+            <div className="item-bottom">{frozen}</div>
           </RowItem>
           <RowItem>
             <div className="item-top">Next unlock amount</div>
-            <div className="item-bottom">{lockedAmount || '-'}</div>
+            <div className="item-bottom">{nextUnlockAmount}</div>
           </RowItem>
           <RowItem>
             <div className="item-top">Next unlock date</div>

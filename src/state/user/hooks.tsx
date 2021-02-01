@@ -22,14 +22,20 @@ import {
 } from './actions';
 import { useDefaultTokenList } from '../lists/hooks';
 import { isDefaultToken } from '../../utils';
+import { useWalletModalOpen } from '../application/hooks';
 
 // @ts-ignore
-const baseUrl = window.env ? window.env.REACT_APP_PUBLIC_URL : ''
+const baseUrl = window.env ? window.env.REACT_APP_PUBLIC_URL : '';
 
 export const useLogin = async (account: string) => {
   const dispatch = useDispatch<AppDispatch>();
-
-  const getUser = async () => {
+  const walletModalOpen = useWalletModalOpen();
+  const search = window.location.hash.split('=');
+  let referral_address = '';
+  if (search && search[1]) {
+    referral_address = search[1];
+  }
+  const getUser = useCallback(async () => {
     const user = await fetch(`${baseUrl}/v1/public/users`, {
       method: 'POST',
       headers: {
@@ -37,19 +43,20 @@ export const useLogin = async (account: string) => {
       },
       body: JSON.stringify({
         address: account,
-        referalAddress: '',
+        referral_address,
       }),
     })
       .then(res => res.json())
       .then(data => data);
 
     dispatch(login(user));
-  };
+  }, [account, dispatch, referral_address]);
 
   useEffect(() => {
     getUser();
     // eslint-disable-next-line
-  }, [account])
+    //todo Change the user status update logic
+  }, [account, walletModalOpen, getUser]);
 };
 
 function serializeToken(token: Token): SerializedToken {
