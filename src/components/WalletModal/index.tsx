@@ -24,6 +24,7 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../state';
 import { Ambassador } from '../AccountDetails/Ambassador';
 import { Owner } from '../AccountDetails/Owner';
+import WarningBlock from '../Warning/WarningBlock'
 
 const CloseIcon = styled.div`
   position: absolute;
@@ -131,6 +132,14 @@ const WarningRow = styled.div`
   display: flex;
   justify-content: center;
 `;
+
+const NoUser = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+`;
+
+
 
 export enum UserRoles {
   client = 'client',
@@ -417,7 +426,8 @@ export default function WalletModal({
         </UpperSection>
       );
     }
-    if (account && walletView === WALLET_VIEWS.ACCOUNT) {
+    if (account && user && walletView === WALLET_VIEWS.ACCOUNT) {
+
       switch (user.role) {
         case UserRoles.distributor:
           return (
@@ -430,9 +440,23 @@ export default function WalletModal({
           return (
             <Ambassador ENSName={ENSName} openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)} />
           );
-        default:
+        case UserRoles.client:
           return (
             <Owner ENSName={ENSName} openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)} />
+          );
+        default:
+          return (
+            <NoUser>
+              <WarningBlock
+                title={'Login failed'}
+                content={() => <div>Something went wrong.
+                </div>}
+                bottomContent={() => <div>
+                  Please refresh the page and try again.
+                </div>
+                  }
+              />
+            </NoUser>
           );
       }
       // return (
