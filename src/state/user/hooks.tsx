@@ -24,6 +24,7 @@ import { useDefaultTokenList } from '../lists/hooks';
 import { isDefaultToken } from '../../utils';
 import { useWalletModalOpen } from '../application/hooks';
 
+//TODO refactor after release
 // @ts-ignore
 const baseUrl = window.env ? window.env.REACT_APP_PUBLIC_URL : '';
 
@@ -36,7 +37,8 @@ export const useLogin = async (account: string) => {
     referral_address = search[1];
   }
   const getUser = useCallback(async () => {
-    const user = await fetch(`${baseUrl}/v1/public/users`, {
+    //TODO create proper instance wrapper for REST
+    fetch(`${baseUrl}/v1/public/users`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -46,10 +48,19 @@ export const useLogin = async (account: string) => {
         referral_address,
       }),
     })
-      .then(res => res.json())
-      .then(data => data);
-
-    dispatch(login(user));
+      .then(res => {
+        if (res.status === 200 || res.status === 201) {
+          return res.json()
+        }
+        throw new Error('no user')
+      })
+      .then(data => {
+        dispatch(login(data));
+      })
+      .catch(e => {
+        console.log(e)
+      }
+  )
   }, [account, dispatch, referral_address]);
 
   useEffect(() => {
