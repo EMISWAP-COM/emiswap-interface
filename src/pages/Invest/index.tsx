@@ -54,6 +54,17 @@ import useParsedQueryString from '../../hooks/useParsedQueryString';
 import ReferralLink from '../../components/RefferalLink';
 import { AppState } from '../../state';
 import { UserRoles } from '../../components/WalletModal';
+import { getNextNumber } from './utils';
+import {
+  accountAmounts,
+  basicCount,
+  basicPlusCount,
+  diamondCount,
+  enterpriseCount,
+  goldCount,
+  partnerCount,
+  silverCount,
+} from '../../constants/invest';
 
 const EmiCard = styled.div`
   position: absolute;
@@ -370,16 +381,6 @@ export function RedirectPathToInvestOnly({ location }: RouteComponentProps) {
   return <Redirect to={{ ...location, pathname: '/invest' }} />;
 }
 
-enum AccountPackage {
-  basic,
-  basic_plus,
-  silver,
-  gold,
-  diamond,
-  partner,
-  enterprise,
-}
-
 const Invest = () => {
   const { bonusform } = useParsedQueryString();
 
@@ -409,6 +410,7 @@ const Invest = () => {
   const [selectedCardAmount, setSelectedCardAmount] = useState<number>(0);
   const role: UserRoles = useSelector((state: AppState) => state.user.info.role);
   const bonusRoleName = useSelector((state: AppState) => state.user.info.bonus_role_name);
+  const ESWBalance = useSelector((state: AppState) => state.cabinets.balance.amount);
 
   const parsedAmounts = {
     [Field.INPUT]: parsedAmount,
@@ -434,10 +436,10 @@ const Invest = () => {
 
   const handleSelectCard = useCallback(
     value => {
-      handleTypeInputOUTPUT(value);
+      handleTypeInputOUTPUT(ESWBalance ? String(value - +ESWBalance) : value);
       setSelectedCardAmount(value);
     },
-    [handleTypeInputOUTPUT],
+    [handleTypeInputOUTPUT, ESWBalance],
   );
 
   // modal and loading
@@ -471,7 +473,11 @@ const Invest = () => {
   }, [approval, approvalSubmitted]);
 
   useEffect(() => {
-    setSelectedCardAmount(formattedAmounts[Field.OUTPUT] ? +formattedAmounts[Field.OUTPUT] : 0);
+    setSelectedCardAmount(
+      formattedAmounts[Field.OUTPUT]
+        ? getNextNumber(Object.values(accountAmounts), +formattedAmounts[Field.OUTPUT])
+        : 0,
+    );
   }, [formattedAmounts]);
 
   // the callback to execute the invest
@@ -571,23 +577,6 @@ const Invest = () => {
     const rareCount = 7500;
     const epicCount = 20000;
     const legendaryCount = 50000;
-    const basicCount = 900;
-    const basicPlusCount = 2750;
-    const silverCount = 9000;
-    const goldCount = 45500;
-    const diamondCount = 90000;
-    const partnerCount = 450000;
-    const enterpriseCount = 900000;
-
-    const accountAmounts: { [key in keyof typeof AccountPackage]: number } = {
-      basic: basicCount,
-      basic_plus: basicPlusCount,
-      silver: silverCount,
-      gold: goldCount,
-      diamond: diamondCount,
-      partner: partnerCount,
-      enterprise: enterpriseCount,
-    };
 
     let rare = '';
     let NunOfCard = 0;
@@ -660,7 +649,7 @@ const Invest = () => {
       bodyNode = (
         <div className="block-with-cards__cards">
           {distributorCardList.map(el => {
-            const isDisabled = bonusRoleName ? el.value <= accountAmounts[+bonusRoleName] : false;
+            const isDisabled = bonusRoleName ? el.value <= accountAmounts[bonusRoleName] : false;
             return (
               <div
                 className={`emicard ${+selectedCardAmount === el.value ? 'active' : ''}`}
