@@ -33,6 +33,7 @@ const Cell = styled.div`
   align-items: center;
   justify-content: center;
   color: #000000;
+  width: 15%;
 
   > div {
     margin-left: 5px;
@@ -56,6 +57,7 @@ const Title = styled(Cell)`
 const TwoCells = styled(Cell)`
   font-size: 1.2rem;
   font-weight: 600;
+  width: auto;
 
   @media screen and (max-width: 1200px) {
     display: flex;
@@ -110,26 +112,6 @@ const ReferalPurchases = styled(Table)`
   }
 `;
 
-// {
-//   "reward": {
-//   "dai": 0,
-//     "esw": 0
-// },
-//   "total_amount": "0.15e4",
-//   "total_count": 3,
-//   "first_level": {
-//   "count": 1,
-//     "amount": "0.5e3"
-// },
-//   "second_level": {
-//   "count": 1,
-//     "amount": "0.5e3"
-// },
-//   "third_level": {
-//   "count": 1,
-//     "amount": "0.5e3"
-// }
-// }
 
 export const ReferalPerformance = () => {
   const { reward, total_amount, total_count, first_level, second_level, third_level } = useSelector(
@@ -162,7 +144,7 @@ export const ReferalPerformance = () => {
           <Cell>{normalizeNumber(total_count)}</Cell>
           <Cell>
             {normalizeNumber(first_level?.total_count)}
-            <Level>3lvl</Level>
+            <Level>1lvl</Level>
           </Cell>
           <Cell>
             {normalizeNumber(second_level?.total_count)}
