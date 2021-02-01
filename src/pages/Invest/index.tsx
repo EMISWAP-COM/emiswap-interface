@@ -436,10 +436,10 @@ const Invest = () => {
 
   const handleSelectCard = useCallback(
     value => {
-      handleTypeInputOUTPUT(ESWBalance ? String(value - +ESWBalance) : value);
+      handleTypeInputOUTPUT(ESWBalance && bonusRoleName ? String(value - +ESWBalance) : value);
       setSelectedCardAmount(value);
     },
-    [handleTypeInputOUTPUT, ESWBalance],
+    [handleTypeInputOUTPUT, ESWBalance, bonusRoleName],
   );
 
   // modal and loading
