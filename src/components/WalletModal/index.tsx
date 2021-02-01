@@ -523,8 +523,7 @@ export default function WalletModal({
 
   return (
     <Modal
-      // isOpen={walletModalOpen}
-      isOpen
+      isOpen={walletModalOpen}
       onDismiss={toggleWalletModal}
       minHeight={null}
       maxHeight={90}
