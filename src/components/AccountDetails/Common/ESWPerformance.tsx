@@ -158,15 +158,15 @@ const ThreeRow = styled.div`
   }
 `;
 
-const Boosted = styled.div`
-  align-self: flex-start;
-  padding-left: 16px;
-
-  @media screen and (max-width: 1200px) {
-    padding: 0;
-    text-align: right !important;
-  }
-`;
+// const Boosted = styled.div`
+//   align-self: flex-start;
+//   padding-left: 16px;
+//
+//   @media screen and (max-width: 1200px) {
+//     padding: 0;
+//     text-align: right !important;
+//   }
+// `;
 
 export const ESWPerformance = () => {
   return (
@@ -179,7 +179,7 @@ export const ESWPerformance = () => {
               <div className="item-top">Total ESW</div>
               <div className="item-bottom">Coming soon</div>
             </RowItem>
-            <Boosted>Boosted at 25% by Rare</Boosted>
+            {/*<Boosted>Boosted at 25% by Rare</Boosted>*/}
           </ThreeRow>
           <ThreeRow>
             <RowItem>
