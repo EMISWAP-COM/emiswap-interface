@@ -24,11 +24,15 @@ import { useDefaultTokenList } from '../lists/hooks';
 import { isDefaultToken } from '../../utils';
 
 // @ts-ignore
-const baseUrl = window.env ? window.env.REACT_APP_PUBLIC_URL : ''
+const baseUrl = window.env ? window.env.REACT_APP_PUBLIC_URL : '';
 
 export const useLogin = async (account: string) => {
   const dispatch = useDispatch<AppDispatch>();
-
+  const search = window.location.hash.split('=');
+  let referral_address = '';
+  if (search && search[1]) {
+    referral_address = search[1];
+  }
   const getUser = async () => {
     const user = await fetch(`${baseUrl}/v1/public/users`, {
       method: 'POST',
@@ -37,7 +41,7 @@ export const useLogin = async (account: string) => {
       },
       body: JSON.stringify({
         address: account,
-        referalAddress: '',
+        referral_address,
       }),
     })
       .then(res => res.json())
