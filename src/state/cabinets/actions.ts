@@ -49,6 +49,7 @@ export const loadBalance = createAsyncThunk(
   'cabinets/loadBalance',
   async (userId: string) => {
     const url = `${baseUrl}/v1/public/users/${userId}/balance`
+    // const url = `https://emiswap-ui-development.emirex.co/v1/public/users/6943887a-4393-4de3-95e6-a12382fd858e/balance`
     const response = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',

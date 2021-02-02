@@ -429,7 +429,7 @@ export default function WalletModal({
     if (account && user && walletView === WALLET_VIEWS.ACCOUNT) {
 
       switch (user.role) {
-        case UserRoles.distributor:
+        case UserRoles.client:
           return (
             <Distributor
               ENSName={ENSName}

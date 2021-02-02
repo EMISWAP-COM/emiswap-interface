@@ -163,6 +163,10 @@ const BalanceFigure = styled.span`
     font-weight: 600;
 `;
 
+const UpperCase = styled.span`
+    text-transform: uppercase;
+`;
+
 const BalancePromo = styled.div`
     font-size: min(0.9rem, 3vw);
     font-weight: 600;
@@ -268,9 +272,10 @@ const Ambassador: React.FC<Props> = ({ openOptions, ENSName }) => {
               {change_level_info && (
                 <span>
                 You need {convertBigDecimal(change_level_info.amount)}
-                ESW purchase from your Ref’s to change level to {change_level_info.next_level}
-
-                Buy  ESW to gain next Package!
+                ESW purchase from your Ref’s to change level to&nbsp;
+                  <UpperCase>
+                    {change_level_info.next_level}
+                  </UpperCase>
               </span>
               )}
             </BalancePromo>
