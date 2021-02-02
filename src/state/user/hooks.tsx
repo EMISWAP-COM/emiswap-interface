@@ -22,7 +22,6 @@ import {
 } from './actions';
 import { useDefaultTokenList } from '../lists/hooks';
 import { isDefaultToken } from '../../utils';
-import { useWalletModalOpen } from '../application/hooks';
 
 //TODO refactor after release
 // @ts-ignore
@@ -30,7 +29,6 @@ const baseUrl = window.env ? window.env.REACT_APP_PUBLIC_URL : '';
 
 export const useLogin = async (account: string) => {
   const dispatch = useDispatch<AppDispatch>();
-  const walletModalOpen = useWalletModalOpen();
   const search = window.location.hash.split('=');
   let referral_address = '';
   if (search && search[1]) {
@@ -50,24 +48,28 @@ export const useLogin = async (account: string) => {
     })
       .then(res => {
         if (res.status === 200 || res.status === 201) {
-          return res.json()
+          return res.json();
         }
-        throw new Error('no user')
+        throw new Error('no user');
       })
       .then(data => {
         dispatch(login(data));
       })
       .catch(e => {
-        console.log(e)
-      }
-  )
+        console.log(e);
+      });
   }, [account, dispatch, referral_address]);
 
   useEffect(() => {
-    getUser();
+    const interval = setInterval(() => {
+      getUser();
+    }, 30000);
+    return () => {
+      clearInterval(interval);
+    };
     // eslint-disable-next-line
     //todo Change the user status update logic
-  }, [account, walletModalOpen, getUser]);
+  }, [getUser]);
 };
 
 function serializeToken(token: Token): SerializedToken {
