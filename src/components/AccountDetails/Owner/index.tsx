@@ -177,11 +177,6 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
   );
 
 
-
-  // Реферальная программа - https://emiswap.medium.com/your-guide-to-the-emiswap-referral-program-f142a4170d1
-  // Амбассадорство - https://crowdsale.emidao.org/en#rec240950289
-  // Магия - https://crowdsale.emidao.org/magic-nft
-
   useEffect(() => {
     console.log('test')
     dispatch(loadPerformance(userId) as any);
@@ -255,7 +250,10 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
             </BalanceWrapper>
             <BalancePromo>To boost your ESW Profit use our&nbsp;
               <ExternalLink
-                href={'https://emiswap.medium.com/your-guide-to-the-emiswap-referral-program-f142a4170d1'}>
+                href={
+                  'https://emiswap.medium.com/your-guide-to-the-emiswap-referral-program-f142a4170d1'
+                }
+              >
                 Referral Program
               </ExternalLink>
               , become an
