@@ -542,7 +542,7 @@ export default function AddLiquidity({
                     onClick={() => {
                       onPoolCreate();
                     }}
-                    disabled={false}
+                    disabled={!!error}
                     error={
                       !isValid &&
                       !!parsedAmounts[Field.CURRENCY_A] &&
@@ -550,7 +550,7 @@ export default function AddLiquidity({
                     }
                   >
                     <Text fontSize={20} fontWeight={500}>
-                      {'Create Pool'}
+                      {error ?? 'Create Pool'}
                     </Text>
                   </ButtonError>
                 ) : (
