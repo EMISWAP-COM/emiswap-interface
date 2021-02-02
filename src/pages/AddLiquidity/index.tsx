@@ -445,6 +445,9 @@ export default function AddLiquidity({
               showCommonBases
               otherCurrency={currencies[Field.CURRENCY_B]}
               isMatchEth
+              errorMax={
+                maxAmounts[Field.CURRENCY_A]?.toExact() === '0' ? 'insufficient balance' : ''
+              }
             />
             <StyledButtonNavigation>
               <ColumnCenter>
@@ -464,6 +467,9 @@ export default function AddLiquidity({
               showCommonBases
               otherCurrency={currencies[Field.CURRENCY_A]}
               isMatchEth={true}
+              errorMax={
+                maxAmounts[Field.CURRENCY_A]?.toExact() === '0' ? 'insufficient balance' : ''
+              }
             />
             {currencies[Field.CURRENCY_A] &&
               currencies[Field.CURRENCY_B] &&
@@ -536,7 +542,7 @@ export default function AddLiquidity({
                     onClick={() => {
                       onPoolCreate();
                     }}
-                    disabled={false}
+                    disabled={!!error}
                     error={
                       !isValid &&
                       !!parsedAmounts[Field.CURRENCY_A] &&
@@ -544,7 +550,7 @@ export default function AddLiquidity({
                     }
                   >
                     <Text fontSize={20} fontWeight={500}>
-                      {'Create Pool'}
+                      {error ?? 'Create Pool'}
                     </Text>
                   </ButtonError>
                 ) : (
