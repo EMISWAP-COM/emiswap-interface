@@ -169,7 +169,7 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
 
   const { id: userId, bonus_role_name = '' } = useSelector((state: AppState) => state.user.info);
   const balance = useSelector((state: AppState) => state.cabinets.balance);
-  const { nearest_unlock } = balance;
+  const { change_level_info } = balance;
 
   useEffect(() => {
     dispatch(loadPerformance(userId) as any);
@@ -236,8 +236,10 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
               &nbsp; balance
             </span>
             <span>{convertBigDecimal(balance.amount)}</span>
-            {nearest_unlock && (
-              <span>Buy {convertBigDecimal(nearest_unlock.amount)} ESW to gain next Package!</span>
+            {change_level_info && (
+              <span>
+                Buy {convertBigDecimal(change_level_info.amount)} ESW to gain next Package!
+              </span>
             )}
           </BalanceWrapper>
           <AccountGroupingRow>

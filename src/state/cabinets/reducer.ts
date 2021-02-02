@@ -9,12 +9,19 @@ interface Unlock {
   unlock_date: string;
 }
 
+interface ChangeLevel {
+  amount: string,
+  next_level: string,
+}
+
 interface Balance
 {
   amount: string;
   available: string;
   locked: number;
   nearest_unlock: null | Unlock;
+  change_level_info: ChangeLevel | null
+
 }
 
 

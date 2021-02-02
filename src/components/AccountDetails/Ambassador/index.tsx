@@ -183,7 +183,11 @@ const Ambassador: React.FC<Props> = ({ openOptions, ENSName }) => {
 
   const {id: userId } = useSelector((state: AppState) => state.user.info)
   const balance = useSelector((state: AppState) => state.cabinets.balance)
+  const { change_level_info } = balance;
 
+  const { total_amount } = useSelector(
+    (state: AppState) => state.cabinets.performance,
+  );
 
   useEffect(() => {
     dispatch(loadPerformance(userId) as any)
@@ -191,6 +195,7 @@ const Ambassador: React.FC<Props> = ({ openOptions, ENSName }) => {
     dispatch(loadReferralPurchaseHistory(userId) as any)
     dispatch(loadBalance(userId) as any)
   }, [dispatch, userId]);
+
 
   return (
     <Wrapper>
@@ -256,10 +261,18 @@ const Ambassador: React.FC<Props> = ({ openOptions, ENSName }) => {
                   Referral Purchases
                 </span>
 
-                <BalanceFigure>{convertBigDecimal(undefined)}</BalanceFigure>
+                <BalanceFigure>{convertBigDecimal(total_amount)}</BalanceFigure>
               </Balance>
             </BalanceWrapper>
             <BalancePromo>
+              {change_level_info && (
+                <span>
+                You need {convertBigDecimal(change_level_info.amount)}
+                ESW purchase from your Ref’s to change level to {change_level_info.next_level}
+
+                Buy  ESW to gain next Package!
+              </span>
+              )}
             </BalancePromo>
           </BalanceContainer>
           <AccountGroupingRow>
