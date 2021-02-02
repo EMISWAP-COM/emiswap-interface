@@ -179,7 +179,7 @@ export const ESWPerformance = () => {
               <div className="item-top">Total ESW</div>
               <div className="item-bottom">Coming soon</div>
             </RowItem>
-            <Boosted>Boosted at 25% by Rare</Boosted>
+            <Boosted>-</Boosted>
           </ThreeRow>
           <ThreeRow>
             <RowItem>

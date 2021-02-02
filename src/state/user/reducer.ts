@@ -22,7 +22,7 @@ const currentTimestamp = () => new Date().getTime();
 
 export interface UserInfo {
   address: string;
-  role: UserRoles;
+  role: UserRoles | undefined;
   id: string;
   referral_id: string;
   bonus_role_name?: string;
@@ -83,7 +83,7 @@ export const initialState: UserState = {
   info: {
     id: '',
     address: '',
-    role: UserRoles.client,
+    role: null,
     referral_id: '',
   },
 };
@@ -91,8 +91,10 @@ export const initialState: UserState = {
 export default createReducer(initialState, builder =>
   builder
     .addCase(login, (state, action) => {
-      // console.log('-----', state.info, action);
-      state.info = action.payload;
+      if (action.payload.role) {
+        console.log('role')
+        state.info = action.payload;
+      }
     })
     .addCase(updateVersion, state => {
       // slippage isnt being tracked in local storage, reset to default
@@ -165,5 +167,5 @@ export default createReducer(initialState, builder =>
         }
         state.timestamp = currentTimestamp();
       },
-    ),
+    )
 );

@@ -34,6 +34,10 @@ const Cell = styled.div`
   justify-content: center;
   color: #000000;
   width: 15%;
+  
+  @media screen and (max-width: 1200px) {
+    width: auto;
+  }
 
   > div {
     margin-left: 5px;

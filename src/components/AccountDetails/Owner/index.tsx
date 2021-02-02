@@ -178,6 +178,7 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
 
 
   useEffect(() => {
+    console.log('test')
     dispatch(loadPerformance(userId) as any);
     dispatch(loadPurchaseHistory(userId) as any);
     dispatch(loadReferralPurchaseHistory(userId) as any);
@@ -188,7 +189,7 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
     <Wrapper>
       <ProfileStatus>
         <div>
-          Status: <span>EMISWAP OWNER</span>
+          Status: <span>ESW OWNER</span>
         </div>
       </ProfileStatus>
       <TableWrapper>
@@ -247,8 +248,26 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
                 <BalanceFigure>{convertBigDecimal(reward?.esw)}</BalanceFigure>
               </Balance>
             </BalanceWrapper>
-            <BalancePromo>To boost your ESW Profit use our Referral Program,
-              become an Ambassador or farm your Magic Cards!
+            <BalancePromo>To boost your ESW Profit use our&nbsp;
+              <ExternalLink
+                href={
+                  'https://emiswap.medium.com/your-guide-to-the-emiswap-referral-program-f142a4170d1'
+                }
+              >
+                Referral Program
+              </ExternalLink>
+              , become an
+              <ExternalLink
+                href={'https://crowdsale.emidao.org/en#rec240950289'}
+              >
+                &nbsp;Ambassador&nbsp;
+              </ExternalLink>
+              or farm your
+              <ExternalLink
+                href={'https://crowdsale.emidao.org/magic-nft'}
+              >
+                &nbsp;Magic Cards!
+              </ExternalLink>
             </BalancePromo>
           </BalanceContainer>
           <AccountGroupingRow>
