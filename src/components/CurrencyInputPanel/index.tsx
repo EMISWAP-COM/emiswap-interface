@@ -142,6 +142,7 @@ interface CurrencyInputPanelProps {
   isCrowdsale?: boolean;
   isMatchEth?: boolean;
   disabled?: boolean;
+  errorMax?: string;
 }
 
 export default function CurrencyInputPanel({
@@ -163,6 +164,7 @@ export default function CurrencyInputPanel({
   isCrowdsale = false,
   isMatchEth = false,
   disabled = false,
+  errorMax = '',
 }: CurrencyInputPanelProps) {
   const { t } = useTranslation();
 
@@ -216,7 +218,9 @@ export default function CurrencyInputPanel({
                 disabled={disabled}
               />
               {account && currency && showMaxButton && label !== 'To' && (
-                <StyledBalanceMax onClick={onMax}>MAX</StyledBalanceMax>
+                <StyledBalanceMax onClick={onMax} disabled={!!errorMax}>
+                  {errorMax || 'MAX'}
+                </StyledBalanceMax>
               )}
             </>
           )}
