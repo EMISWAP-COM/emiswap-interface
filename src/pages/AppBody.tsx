@@ -55,7 +55,23 @@ export const BodyWrapper = styled.div<{ disabled?: boolean; data?: string }>`
       margin-bottom: 650px;
     }
     @media screen and (max-width: 500px) {
-      margin-bottom: 580px;
+      margin-bottom: 600px;
+    }
+    @media screen and (max-width: 390px) {
+      margin-bottom: 630px;
+    }
+  }
+  &.mb650 {
+    @media screen and (max-width: 500px) {
+      margin-bottom: 650px;
+    }
+
+    @media screen and (max-width: 320px) {
+      margin-bottom: 670px;
+    }
+
+    @media screen and (max-width: 280px) {
+      margin-bottom: 720px;
     }
   }
 `;

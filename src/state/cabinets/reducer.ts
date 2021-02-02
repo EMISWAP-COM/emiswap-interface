@@ -9,12 +9,19 @@ interface Unlock {
   unlock_date: string;
 }
 
+interface ChangeLevel {
+  amount: string,
+  next_level: string,
+}
+
 interface Balance
 {
   amount: string;
   available: string;
   locked: number;
   nearest_unlock: null | Unlock;
+  change_level_info: ChangeLevel | null
+
 }
 
 
@@ -52,10 +59,8 @@ export interface PurchaseHistory {
   transaction_hash: string;
 }
 
-export interface ReferralPurchaseHistory {
-  amount: string;
-  date: string;
-  transaction_hash: string;
+export interface ReferralPurchaseHistory extends PurchaseHistory {
+  referral_level: number
 }
 
 const initialState: CabinetState = {
