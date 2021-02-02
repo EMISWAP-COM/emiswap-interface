@@ -24,7 +24,7 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../state';
 import { Ambassador } from '../AccountDetails/Ambassador';
 import { Owner } from '../AccountDetails/Owner';
-import WarningBlock from '../Warning/WarningBlock'
+import WarningBlock from '../Warning/WarningBlock';
 
 const CloseIcon = styled.div`
   position: absolute;
@@ -145,6 +145,7 @@ export enum UserRoles {
   client = 'client',
   distributor = 'distributor',
   ambassador = 'ambassador',
+  owner = 'owner',
 }
 
 const WALLET_VIEWS = {
@@ -440,7 +441,7 @@ export default function WalletModal({
           return (
             <Ambassador ENSName={ENSName} openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)} />
           );
-        case UserRoles.client:
+        case UserRoles.owner:
           return (
             <Owner ENSName={ENSName} openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)} />
           );
