@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { CommingSoon } from '../../../base/ui/CommingSoon';
 import { AppState } from '../../../state';
 import { TYPE } from '../../../theme';
-import { convertBigDecimal, convertDate } from '../uitls'
+import { convertBigDecimal, convertDate } from '../uitls';
 
 const WalletButton = styled.span`
   display: block;
@@ -61,6 +61,7 @@ const TopRows = styled.div`
   font-weight: 500;
   font-size: 13px;
   line-height: 17px;
+
   .item-top {
     background: #ccc;
     position: relative;
@@ -72,16 +73,21 @@ const TopRows = styled.div`
     font-weight: 500;
     font-size: 13px;
     line-height: 17px;
-  }
-  .item-top:after {
-    content: '';
-    width: 1px;
-    height: 20px;
-    background: #707070;
-    position: absolute;
-    top: 50%;
-    right: 0;
-    transform: translateY(-50%);
+
+    &:after {
+      content: '';
+      width: 1px;
+      height: 20px;
+      background: #707070;
+      position: absolute;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+    }
+
+    &.no-border:after {
+      display: none;
+    }
   }
 
   > div:nth-child(1) {
@@ -200,7 +206,7 @@ export const ESWStats = () => {
             <div className="item-bottom">{nextUnlockAmount}</div>
           </RowItem>
           <RowItem>
-            <div className="item-top">Next unlock date</div>
+            <div className="item-top no-border">Next unlock date</div>
             <div className="item-bottom">
               <DateBlock>{unlockDate}</DateBlock>
             </div>
