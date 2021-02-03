@@ -979,7 +979,10 @@ const Invest = () => {
     (!dismissedToken1 && !!currencies[Field.OUTPUT]);
   const notEnoughBalance =
     maxAmountInput && parsedAmount && JSBI.lessThan(maxAmountInput.raw, parsedAmount.raw);
-  const getErrorText = (error, notEnoughBalance) => {
+  const getErrorText = (error, notEnoughBalance, currencies) => {
+    if (Object.values(currencies).includes(undefined)) {
+      return 'Please choose a token';
+    }
     if (Number(typedValue) > 0 && Number(outputAmount) === 0) {
       return 'Sorry, you are reaching the limits of our crowdsale. Please try to buy less ESW';
     }
@@ -1133,7 +1136,7 @@ const Invest = () => {
                   error={!!error}
                 >
                   <Text fontSize={16} fontWeight={450}>
-                    {error || notEnoughBalance ? getErrorText(error, notEnoughBalance) : `Invest`}
+                    {error || notEnoughBalance ? getErrorText(error, notEnoughBalance, currencies) : `Invest`}
                   </Text>
                 </ButtonError>
               )}
