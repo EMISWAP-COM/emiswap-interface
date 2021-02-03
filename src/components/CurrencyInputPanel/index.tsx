@@ -1,4 +1,4 @@
-import { Token, Pair } from '@uniswap/sdk';
+import { Token, Pair, TokenAmount, JSBI } from '@uniswap/sdk';
 import React, { useState, useContext, useCallback } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import { darken } from 'polished';
@@ -15,12 +15,14 @@ import { useActiveWeb3React } from '../../hooks';
 import { useTranslation } from 'react-i18next';
 import CrowdsaleCurrencySearchModal from '../SearchModal/CrowdsaleCurrencySearchModal';
 import { tokenAmountToString } from '../../utils/formats';
+import { MIN_ETH } from '../../constants';
 
 const InputRow = styled.div<{ selected: boolean }>`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: center;
   padding: ${({ selected }) =>
-    selected ? '0.75rem 0.5rem 0.75rem 1rem' : '0.3125rem 0.75rem 0.75rem 1rem'};
+    selected ? '0.75rem 0.5rem 1.75rem 1rem' : '0.3125rem 0.75rem 1.75rem 1rem'};
+  position: relative;
 `;
 
 const CurrencySelect = styled.button<{ selected: boolean }>`
@@ -123,6 +125,14 @@ const StyledBalanceMax = styled.button`
   `};
 `;
 
+const ErrorText = styled.span`
+  position: absolute;
+  bottom: 0;
+  left: 1rem;
+  color: #ff5569;
+  font-size: 13px;
+`;
+
 interface CurrencyInputPanelProps {
   value: string;
   onUserInput: (value: string) => void;
@@ -142,7 +152,9 @@ interface CurrencyInputPanelProps {
   isCrowdsale?: boolean;
   isMatchEth?: boolean;
   disabled?: boolean;
-  errorMax?: string;
+  isDepended?: boolean;
+  showMaxError?: boolean;
+  currencyBalance?: TokenAmount | undefined;
 }
 
 export default function CurrencyInputPanel({
@@ -164,7 +176,9 @@ export default function CurrencyInputPanel({
   isCrowdsale = false,
   isMatchEth = false,
   disabled = false,
-  errorMax = '',
+  isDepended = false,
+  showMaxError = false,
+  currencyBalance,
 }: CurrencyInputPanelProps) {
   const { t } = useTranslation();
 
@@ -176,6 +190,20 @@ export default function CurrencyInputPanel({
   const handleDismissSearch = useCallback(() => {
     setModalOpen(false);
   }, [setModalOpen]);
+
+  const getErrorText: () => string = () => {
+    if (
+      currencyBalance &&
+      currencyBalance.token.isEther &&
+      !isDepended &&
+      !JSBI.greaterThan(currencyBalance.raw, MIN_ETH) &&
+      showMaxError
+    ) {
+      return 'insufficient balance, available: 0';
+    }
+    return '';
+  };
+
   return (
     <InputPanel id={id}>
       <Container hideInput={hideInput}>
@@ -218,9 +246,7 @@ export default function CurrencyInputPanel({
                 disabled={disabled}
               />
               {account && currency && showMaxButton && label !== 'To' && (
-                <StyledBalanceMax onClick={onMax} disabled={!!errorMax}>
-                  {errorMax || 'MAX'}
-                </StyledBalanceMax>
+                <StyledBalanceMax onClick={onMax}>{'MAX'}</StyledBalanceMax>
               )}
             </>
           )}
@@ -263,6 +289,7 @@ export default function CurrencyInputPanel({
               {!disableCurrencySelect && <StyledDropDown selected={!!currency} />}
             </Aligner>
           </CurrencySelect>
+          <ErrorText>{getErrorText()}</ErrorText>
         </InputRow>
       </Container>
       {!disableCurrencySelect &&
