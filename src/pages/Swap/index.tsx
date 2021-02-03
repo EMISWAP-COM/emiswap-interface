@@ -1,4 +1,4 @@
-import { TokenAmount, JSBI } from '@uniswap/sdk';
+import { JSBI, TokenAmount } from '@uniswap/sdk';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { ArrowDown, ArrowUp } from 'react-feather';
 import { Text } from 'rebass';
@@ -392,6 +392,9 @@ export default function Swap() {
               }}
               otherCurrency={currencies[Field.OUTPUT]}
               id="swap-currency-input"
+              currencyBalance={currencyBalances[Field.INPUT]}
+              isDepended={dependentField === Field.INPUT}
+              showMaxError
             />
 
             <CursorPointer>
@@ -436,6 +439,8 @@ export default function Swap() {
               onCurrencySelect={address => onCurrencySelection(Field.OUTPUT, address)}
               otherCurrency={currencies[Field.INPUT]}
               id="swap-currency-output"
+              currencyBalance={currencyBalances[Field.OUTPUT]}
+              isDepended={dependentField === Field.OUTPUT}
             />
 
             {showWrap ? null : (

@@ -445,9 +445,7 @@ export default function AddLiquidity({
               showCommonBases
               otherCurrency={currencies[Field.CURRENCY_B]}
               isMatchEth
-              errorMax={
-                maxAmounts[Field.CURRENCY_A]?.toExact() === '0' ? 'insufficient balance' : ''
-              }
+              currencyBalance={currencyBalances[Field.CURRENCY_A]}
             />
             <StyledButtonNavigation>
               <ColumnCenter>
@@ -467,9 +465,7 @@ export default function AddLiquidity({
               showCommonBases
               otherCurrency={currencies[Field.CURRENCY_A]}
               isMatchEth={true}
-              errorMax={
-                maxAmounts[Field.CURRENCY_A]?.toExact() === '0' ? 'insufficient balance' : ''
-              }
+              currencyBalance={currencyBalances[Field.CURRENCY_B]}
             />
             {currencies[Field.CURRENCY_A] &&
               currencies[Field.CURRENCY_B] &&

@@ -64,20 +64,24 @@ const TopRows = styled.div`
     font-size: 13px;
     line-height: 17px;
 
+    &:after {
+      content: '';
+      width: 1px;
+      height: 20px;
+      background: #707070;
+      position: absolute;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+    }
+
+    &.no-border:after {
+      display: none;
+    }
+
     @media screen and (max-width: 1200px) {
       margin: 0;
     }
-  }
-
-  .item-top:after {
-    content: '';
-    width: 1px;
-    height: 20px;
-    background: #707070;
-    position: absolute;
-    top: 50%;
-    right: 0;
-    transform: translateY(-50%);
   }
 
   > div:nth-child(1) {
@@ -192,7 +196,7 @@ export const ESWPerformance = () => {
           </ThreeRow>
           <ThreeRow>
             <RowItem>
-              <div className="item-top">Total ESW</div>
+              <div className="item-top no-border">Total ESW</div>
               <div className="item-bottom">Coming soon</div>
             </RowItem>
             <CommingSoon>

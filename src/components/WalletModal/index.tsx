@@ -27,6 +27,8 @@ import { Owner } from '../AccountDetails/Owner';
 import WarningBlock from '../Warning/WarningBlock';
 
 const CloseIcon = styled.div`
+  display: none;
+
   position: absolute;
   top: 30px;
   right: 30px;
@@ -39,6 +41,10 @@ const CloseIcon = styled.div`
     top: 14px;
     right: 16px;
   `};
+  
+  @media screen and (max-width: 1200px) {
+    display: block;
+  }
 `;
 
 const CloseColor = styled(Close)`
@@ -410,10 +416,7 @@ export default function WalletModal({
   function getModalContent(): {} {
     if (error) {
       return (
-        <UpperSection>
-          <CloseIcon onClick={toggleWalletModal}>
-            <CloseColor />
-          </CloseIcon>
+        <>
           <HeaderRow>
             {error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error connecting'}
           </HeaderRow>
@@ -424,7 +427,7 @@ export default function WalletModal({
               'Error connecting. Try refreshing the page.'
             )}
           </ContentWrapper>
-        </UpperSection>
+        </>
       );
     }
     if (account && user && walletView === WALLET_VIEWS.ACCOUNT) {
@@ -471,10 +474,7 @@ export default function WalletModal({
       // );
     }
     return (
-      <UpperSection>
-        <CloseIcon onClick={toggleWalletModal}>
-          <CloseColor />
-        </CloseIcon>
+      <>
         {walletView !== WALLET_VIEWS.ACCOUNT ? (
           <HeaderRow color="blue">
             <HoverText
@@ -542,7 +542,7 @@ export default function WalletModal({
             </Blurb>
           )}
         </ContentWrapper>
-      </UpperSection>
+      </>
     );
   }
 
@@ -554,7 +554,14 @@ export default function WalletModal({
       maxHeight={90}
       maxWidth={720}
     >
-      <Wrapper>{getModalContent()}</Wrapper>
+      <Wrapper>
+        <UpperSection>
+          <CloseIcon onClick={toggleWalletModal}>
+            <CloseColor />
+          </CloseIcon>
+        {getModalContent()}
+        </UpperSection>
+      </Wrapper>
     </Modal>
   );
 }
