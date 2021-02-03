@@ -61,6 +61,7 @@ export const useLogin = async (account: string) => {
   }, [account, dispatch, referral_address]);
 
   useEffect(() => {
+    getUser();
     const interval = setInterval(() => {
       getUser();
     }, 30000);
@@ -69,7 +70,7 @@ export const useLogin = async (account: string) => {
     };
     // eslint-disable-next-line
     //todo Change the user status update logic
-  }, [getUser]);
+  }, [getUser, account]);
 };
 
 function serializeToken(token: Token): SerializedToken {

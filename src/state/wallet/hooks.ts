@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import ERC20_INTERFACE from '../../constants/abis/erc20';
 import { useAllTokens } from '../../hooks/Tokens';
 import { useActiveWeb3React } from '../../hooks';
-import { useESWContract, useMulticallContract } from '../../hooks/useContract';
+import { useMulticallContract } from '../../hooks/useContract';
 import { useAllCoins } from '../../hooks/Coins';
 import { isAddress } from '../../utils';
 import { useSingleContractMultipleData, useMultipleContractSingleData } from '../multicall/hooks';
@@ -47,7 +47,6 @@ export function useETHBalances(
 export function useESWBalances(
   uncheckedAddresses?: (string | undefined)[],
 ): { [address: string]: TokenAmount | undefined } {
-  const eswContract = useESWContract();
 
   const addresses: string[] = useMemo(
     () =>
@@ -59,21 +58,21 @@ export function useESWBalances(
         : [],
     [uncheckedAddresses],
   );
-
-  const results = useSingleContractMultipleData(
-    eswContract,
-    'balanceOf2',
-    addresses.map(address => [address]),
-  );
+  // Todo change esw contract to oracle
+  // const results = useSingleContractMultipleData(
+  //   eswContract,
+  //   'balanceOf2',
+  //   addresses.map(address => [address]),
+  // );
 
   return useMemo(
     () =>
       addresses.reduce<{ [address: string]: TokenAmount }>((memo, address, i) => {
-        const value = results?.[i]?.result?.[0];
+        const value = BigInt(0);
         if (value) memo[address] = new TokenAmount(ETHER, JSBI.BigInt(value.toString()));
         return memo;
       }, {}),
-    [addresses, results],
+    [addresses],
   );
 }
 
