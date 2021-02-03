@@ -209,7 +209,7 @@ export function useDerivedSwapInfo(): {
   ];
 
   if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
-    error = 'Insufficient ' + amountIn.token.symbol + ' balance';
+    error = 'Insufficient ' + balanceIn.token.symbol + ' balance';
   }
 
   return {
