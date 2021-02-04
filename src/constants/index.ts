@@ -57,14 +57,14 @@ export const CHI = new Token(
 
 export const KOVAN_DAI = new Token(
   ChainId.KOVAN,
-  '0xE380B174d75974Fd6f425b0A0E9c8489890Cd8F9',
+  '0xEe6CE89559d68719366C1a8150C9227910CA8B2F',
   18,
   'DAI',
   'Dai Stablecoin',
 );
 export const KOVAN_USDC = new Token(
   ChainId.KOVAN,
-  '0x5a89AFefB5e3912d81F90Ea2c4844553e979bafF',
+  '0x685E323f912C1a5FE2Ae089D1a743942C458A9E3',
   6,
   'USDC',
   'USD//C',
@@ -201,58 +201,55 @@ const TESTNET_CAPABLE_WALLETS = {
   },
 };
 
-export const SUPPORTED_WALLETS =
-  window['env'].REACT_APP_CHAIN_ID !== '1'
-    ? TESTNET_CAPABLE_WALLETS
-    : {
-        ...TESTNET_CAPABLE_WALLETS,
-        ...{
-          WALLET_CONNECT: {
-            connector: walletconnect,
-            name: 'WalletConnect',
-            iconName: 'walletConnectIcon.svg',
-            description: 'Connect to Trust Wallet, Rainbow Wallet and more...',
-            href: null,
-            color: '#4196FC',
-            mobile: true,
-          },
-          WALLET_LINK: {
-            connector: walletlink,
-            name: 'Coinbase Wallet',
-            iconName: 'coinbaseWalletIcon.svg',
-            description: 'Use Coinbase Wallet app on mobile device',
-            href: null,
-            color: '#315CF5',
-          },
-          COINBASE_LINK: {
-            name: 'Open in Coinbase Wallet',
-            iconName: 'coinbaseWalletIcon.svg',
-            description: 'Open in Coinbase Wallet app.',
-            href: 'https://go.cb-w.com/dFdHIRRZS8',
-            color: '#315CF5',
-            mobile: true,
-            mobileOnly: true,
-          },
-          FORTMATIC: {
-            connector: fortmatic,
-            name: 'Fortmatic',
-            iconName: 'fortmaticIcon.png',
-            description: 'Login using Fortmatic hosted wallet',
-            href: null,
-            color: '#6748FF',
-            mobile: true,
-          },
-          Portis: {
-            connector: portis,
-            name: 'Portis',
-            iconName: 'portisIcon.png',
-            description: 'Login using Portis hosted wallet',
-            href: null,
-            color: '#4A6C9B',
-            mobile: true,
-          },
-        },
-      };
+export const SUPPORTED_WALLETS = {
+  ...TESTNET_CAPABLE_WALLETS,
+  ...{
+    WALLET_CONNECT: {
+      connector: walletconnect,
+      name: 'WalletConnect',
+      iconName: 'walletConnectIcon.svg',
+      description: 'Connect to Trust Wallet, Rainbow Wallet and more...',
+      href: null,
+      color: '#4196FC',
+      mobile: true,
+    },
+    WALLET_LINK: {
+      connector: walletlink,
+      name: 'Coinbase Wallet',
+      iconName: 'coinbaseWalletIcon.svg',
+      description: 'Use Coinbase Wallet app on mobile device',
+      href: null,
+      color: '#315CF5',
+    },
+    COINBASE_LINK: {
+      name: 'Open in Coinbase Wallet',
+      iconName: 'coinbaseWalletIcon.svg',
+      description: 'Open in Coinbase Wallet app.',
+      href: 'https://go.cb-w.com/dFdHIRRZS8',
+      color: '#315CF5',
+      mobile: true,
+      mobileOnly: true,
+    },
+    FORTMATIC: {
+      connector: fortmatic,
+      name: 'Fortmatic',
+      iconName: 'fortmaticIcon.png',
+      description: 'Login using Fortmatic hosted wallet',
+      href: null,
+      color: '#6748FF',
+      mobile: true,
+    },
+    Portis: {
+      connector: portis,
+      name: 'Portis',
+      iconName: 'portisIcon.png',
+      description: 'Login using Portis hosted wallet',
+      href: null,
+      color: '#4A6C9B',
+      mobile: true,
+    },
+  },
+};
 
 export const NetworkContextName = 'NETWORK';
 

@@ -37,7 +37,7 @@ async function useCoinList(
   for (let i = 0; i < counter; i++) {
     const coin = await contract.coin(i);
     const coinData = await contract.coinData(i);
-    if (coin.status === 3) {
+    if ([3, 1].includes(coin.status)) {
       coins[i] = {
         chainId,
         address: coinData.coinAddress,

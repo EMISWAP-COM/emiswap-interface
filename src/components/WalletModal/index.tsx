@@ -8,7 +8,6 @@ import usePrevious from '../../hooks/usePrevious';
 import { useWalletModalOpen, useWalletModalToggle } from '../../state/application/hooks';
 
 import Modal from '../Modal';
-import AccountDetails from '../AccountDetails';
 import PendingView from './PendingView';
 import Option from './Option';
 import { SUPPORTED_WALLETS } from '../../constants';
@@ -19,10 +18,17 @@ import { injected, fortmatic, portis } from '../../connectors';
 import { OVERLAY_READY } from '../../connectors/Fortmatic';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
-// import { Distributor } from '../AccountDetails/Distributor'
-// import { useDispatch } from 'react-redux'
+import { Distributor } from '../AccountDetails/Distributor';
+import { useLogin } from '../../state/user/hooks';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../state';
+import { Ambassador } from '../AccountDetails/Ambassador';
+import { Owner } from '../AccountDetails/Owner';
+import WarningBlock from '../Warning/WarningBlock';
 
 const CloseIcon = styled.div`
+  display: none;
+
   position: absolute;
   top: 30px;
   right: 30px;
@@ -35,6 +41,10 @@ const CloseIcon = styled.div`
     top: 14px;
     right: 16px;
   `};
+  
+  @media screen and (max-width: 1200px) {
+    display: block;
+  }
 `;
 
 const CloseColor = styled(Close)`
@@ -129,6 +139,21 @@ const WarningRow = styled.div`
   justify-content: center;
 `;
 
+const NoUser = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+`;
+
+
+
+export enum UserRoles {
+  client = 'client',
+  distributor = 'distributor',
+  ambassador = 'ambassador',
+  owner = 'owner',
+}
+
 const WALLET_VIEWS = {
   OPTIONS: 'options',
   OPTIONS_SECONDARY: 'options_secondary',
@@ -147,6 +172,10 @@ export default function WalletModal({
 }) {
   // important that these are destructed from the account-specific web3-react context
   const { active, account, connector, activate, error } = useWeb3React();
+
+  const user = useSelector((state: AppState) => state.user.info);
+
+  useLogin(account);
 
   const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT);
 
@@ -177,25 +206,6 @@ export default function WalletModal({
   // close modal when a connection is successful
   const activePrevious = usePrevious(active);
   const connectorPrevious = usePrevious(connector);
-  // const dispatch = useDispatch()
-
-  // const initLogin = async () => {
-  //   console.log(account)
-  //   await fetch(`https://emiswap-oracle-development.emirex.co/v1/public/users`, {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({
-  //       address: account,
-  //       referalAddress: ''
-  //     }),
-  //   })
-  // }
-
-  // useEffect(() => {
-  //   initLogin()
-  // }, [account])
 
   useEffect(() => {
     if (
@@ -406,10 +416,7 @@ export default function WalletModal({
   function getModalContent(): {} {
     if (error) {
       return (
-        <UpperSection>
-          <CloseIcon onClick={toggleWalletModal}>
-            <CloseColor />
-          </CloseIcon>
+        <>
           <HeaderRow>
             {error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error connecting'}
           </HeaderRow>
@@ -420,40 +427,54 @@ export default function WalletModal({
               'Error connecting. Try refreshing the page.'
             )}
           </ContentWrapper>
-        </UpperSection>
+        </>
       );
     }
-    if (account && walletView === WALLET_VIEWS.ACCOUNT) {
+    if (account && user && walletView === WALLET_VIEWS.ACCOUNT) {
 
-
-      // const role = 'distributor'
-      // if (
-      //   role === 'distributor'
-      // // false
-      // ) {
-      //    return (
-      //      <Distributor
-      //        ENSName={ENSName}
-      //        openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}
-      //      />
-      //    )
-      //
-      // }
-      return (
-        <AccountDetails
-          toggleWalletModal={toggleWalletModal}
-          pendingTransactions={pendingTransactions}
-          confirmedTransactions={confirmedTransactions}
-          ENSName={ENSName}
-          openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}
-        />
-      );
+      switch (user.role) {
+        case UserRoles.distributor:
+          return (
+            <Distributor
+              ENSName={ENSName}
+              openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}
+            />
+          );
+        case UserRoles.ambassador:
+          return (
+            <Ambassador ENSName={ENSName} openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)} />
+          );
+        case UserRoles.client:
+          return (
+            <Owner ENSName={ENSName} openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)} />
+          );
+        default:
+          return (
+            <NoUser>
+              <WarningBlock
+                title={'Login failed'}
+                content={() => <div>Something went wrong.
+                </div>}
+                bottomContent={() => <div>
+                  Please refresh the page and try again.
+                </div>
+                  }
+              />
+            </NoUser>
+          );
+      }
+      // return (
+      //   <AccountDetails
+      //     toggleWalletModal={toggleWalletModal}
+      //     pendingTransactions={pendingTransactions}
+      //     confirmedTransactions={confirmedTransactions}
+      //     ENSName={ENSName}
+      //     openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}
+      //   />
+      // );
     }
     return (
-      <UpperSection>
-        <CloseIcon onClick={toggleWalletModal}>
-          <CloseColor />
-        </CloseIcon>
+      <>
         {walletView !== WALLET_VIEWS.ACCOUNT ? (
           <HeaderRow color="blue">
             <HoverText
@@ -521,7 +542,7 @@ export default function WalletModal({
             </Blurb>
           )}
         </ContentWrapper>
-      </UpperSection>
+      </>
     );
   }
 
@@ -533,7 +554,14 @@ export default function WalletModal({
       maxHeight={90}
       maxWidth={720}
     >
-      <Wrapper>{getModalContent()}</Wrapper>
+      <Wrapper>
+        <UpperSection>
+          <CloseIcon onClick={toggleWalletModal}>
+            <CloseColor />
+          </CloseIcon>
+        {getModalContent()}
+        </UpperSection>
+      </Wrapper>
     </Modal>
   );
 }

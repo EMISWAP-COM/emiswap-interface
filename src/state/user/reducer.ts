@@ -1,23 +1,32 @@
-import { INITIAL_ALLOWED_SLIPPAGE, DEFAULT_DEADLINE_FROM_NOW } from '../../constants';
+import { DEFAULT_DEADLINE_FROM_NOW, INITIAL_ALLOWED_SLIPPAGE } from '../../constants';
 import { createReducer } from '@reduxjs/toolkit';
 import {
   addSerializedPair,
   addSerializedToken,
   dismissTokenWarning,
+  login,
   removeSerializedPair,
   removeSerializedToken,
   SerializedPair,
   SerializedToken,
   updateMatchesDarkMode,
   updateUserDarkMode,
-  updateVersion,
+  updateUserDeadline,
   updateUserExpertMode,
   updateUserSlippageTolerance,
-  updateUserDeadline,
-  login
-} from './actions'
+  updateVersion,
+} from './actions';
+import { UserRoles } from '../../components/WalletModal';
 
 const currentTimestamp = () => new Date().getTime();
+
+export interface UserInfo {
+  address: string;
+  role: UserRoles | undefined;
+  id: string;
+  referral_id: string;
+  bonus_role_name?: string;
+}
 
 export interface UserState {
   // the timestamp of the last updateVersion action
@@ -55,7 +64,7 @@ export interface UserState {
   };
 
   timestamp: number;
-  info: {}
+  info: UserInfo;
 }
 
 function pairKey(token0Address: string, token1Address: string) {
@@ -71,13 +80,21 @@ export const initialState: UserState = {
   tokens: {},
   pairs: {},
   timestamp: currentTimestamp(),
-  info: {},
+  info: {
+    id: '',
+    address: '',
+    role: null,
+    referral_id: '',
+  },
 };
 
 export default createReducer(initialState, builder =>
   builder
     .addCase(login, (state, action) => {
-      state.info = action.payload
+      if (action.payload.role) {
+        console.log('role')
+        state.info = action.payload;
+      }
     })
     .addCase(updateVersion, state => {
       // slippage isnt being tracked in local storage, reset to default
@@ -150,5 +167,5 @@ export default createReducer(initialState, builder =>
         }
         state.timestamp = currentTimestamp();
       },
-    ),
+    )
 );

@@ -1,5 +1,6 @@
-import { SUPPORTED_WALLETS } from '../../constants'
-import { injected } from '../../connectors'
+import { SUPPORTED_WALLETS } from '../../constants';
+import { injected } from '../../connectors';
+import { getDate } from './Common/ESWStats';
 
 export function formatConnectorName(connectorName) {
   const { ethereum } = window;
@@ -11,5 +12,28 @@ export function formatConnectorName(connectorName) {
         (connectorName !== injected || isMetaMask === (k === 'METAMASK')),
     )
     .map(k => SUPPORTED_WALLETS[k].name)[0];
-  return name
+  return name;
 }
+
+export const convertBigDecimal = (bigDecimal: string) => {
+  if (!isNaN(Number(bigDecimal))) {
+    return Number(bigDecimal).toFixed(2);
+  }
+  return '-';
+};
+
+export const normalizeNumber = (number: number) => {
+  if (!isNaN(number)) {
+    return number;
+  }
+
+  return '-';
+};
+
+export function shortenHash(hash: string, chars = 4): string {
+  return `${hash.substring(0, chars + 2)}...${hash.substring(42 - chars)}`;
+}
+
+export const convertDate = (date: string) => {
+  return date ? getDate(date) : '-';
+};

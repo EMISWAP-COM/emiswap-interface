@@ -10,8 +10,7 @@ import Copy from '../Copy';
 import { StatusIcon } from '../StatusIcon';
 import { PurchaseHistory } from '../Common/PurchaseHistory';
 import { ReferalPerformance } from '../Common/ReferalPerformance';
-import { WalletAction, StatusAction } from '../styleds';
-import { CommingSoon } from '../../../base/ui/CommingSoon';
+import { WalletAction } from '../styleds';
 import {
   loadBalance,
   loadPerformance,
@@ -54,38 +53,6 @@ const AccountGroupingRow = styled.div`
   div {
     ${({ theme }) => theme.flexRowNoWrap}
     align-items: center;
-  }
-`;
-
-const BalanceWrapper = styled.div`
-  grid-row: span 2;
-  display: grid;
-  grid-template-columns: 1fr;
-  justify-items: center;
-  align-items: baseline;
-
-  @media screen and (max-width: 1200px) {
-    grid-template-columns: 3fr 1fr;
-    justify-items: normal;
-    span: nth-child(3) {
-      grid-column: span 2;
-    }
-  }
-
-  span:nth-child(1) {
-    font-size: min(1.2rem, 4vw);
-  }
-
-  span:nth-child(2) {
-    font-size: min(2rem, 4vw);
-    font-weight: 600;
-    text-align: right;
-  }
-
-  span:nth-child(3) {
-    font-size: min(0.9rem, 3vw);
-    font-weight: 600;
-    color: #e50606;
   }
 `;
 
@@ -133,7 +100,6 @@ const ProfileStatus = styled.div`
   padding: 0 1rem 1rem 1rem;
   flex-wrap: wrap;
   align-items:
-  background: lightgreen;
   gap: 12px;
 
   @media screen and (max-width: 1200px) {
@@ -151,8 +117,59 @@ const Package = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-width: 300px;
+
+  @media screen and (max-width: 1200px) {
+    width: 100%;
+  }
+`;
+
+const BalanceWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+
+  @media screen and (max-width: 1200px) {
+    flex-direction: column;
+  }
+`;
+
+const BalanceContainer = styled.div`
+  grid-row: span 2;
+  //
+  // @media screen and (max-width: 1200px) {
+  //    flex-direction: column;
+  // }
+`;
+
+const Balance = styled.div`
+  display: flex;
+  width: 50%;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
+
+  @media screen and (max-width: 1200px) {
+     flex-direction: row
+     justify-content: space-between;
+  }
+
+  span:nth-child(1) {
+    font-size: min(1rem, 4vw);
+  }
+`;
+
+const BalanceFigure = styled.span`
+  font-size: min(2rem, 4vw);
+  font-weight: 600;
+`;
+
+const UpperCase = styled.span`
+  text-transform: uppercase;
+`;
+
+const BalancePromo = styled.div`
+  font-size: min(0.9rem, 3vw);
+  font-weight: 600;
+  color: #e50606;
 `;
 
 interface Props {
@@ -162,15 +179,16 @@ interface Props {
   openOptions: () => void;
 }
 
-const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
+const Ambassador: React.FC<Props> = ({ openOptions, ENSName }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { chainId, account, connector } = useActiveWeb3React();
-  // const [referalPerformance, setReferalPerformance] = useState(null)
 
   const { id: userId, bonus_role_name = '' } = useSelector((state: AppState) => state.user.info);
   const balance = useSelector((state: AppState) => state.cabinets.balance);
   const { change_level_info } = balance;
+
+  const { total_amount } = useSelector((state: AppState) => state.cabinets.performance);
 
   useEffect(() => {
     dispatch(loadPerformance(userId) as any);
@@ -183,15 +201,12 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
     <Wrapper>
       <ProfileStatus>
         <div>
-          Status: <span>Distributor</span>
+          Status: <span>Ambassador</span>
         </div>
         <Package>
           <div>
-            Package: <span>{packageNames[bonus_role_name]}</span>
+            Level: <span>{packageNames[bonus_role_name]}</span>
           </div>
-          <CommingSoon>
-            <StatusAction>Upgrade</StatusAction>
-          </CommingSoon>
         </Package>
       </ProfileStatus>
       <TableWrapper>
@@ -230,19 +245,33 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
               </AccountControl>
             </AccountGroupingRow>
           </div>
-          <BalanceWrapper>
-            <span>
-              your &nbsp;
-              <span>ESW</span>
-              &nbsp; balance
-            </span>
-            <span>{convertBigDecimal(balance.amount)}</span>
-            {change_level_info && (
-              <span>
-                Buy {convertBigDecimal(change_level_info.amount)} ESW to gain next Package!
-              </span>
-            )}
-          </BalanceWrapper>
+          <BalanceContainer>
+            <BalanceWrapper>
+              <Balance>
+                <span>
+                  your &nbsp;
+                  <span>ESW</span>
+                  &nbsp; balance
+                </span>
+
+                <BalanceFigure>{convertBigDecimal(balance.amount)}</BalanceFigure>
+              </Balance>
+              <Balance>
+                <span>Referral Purchases</span>
+
+                <BalanceFigure>{convertBigDecimal(total_amount)}</BalanceFigure>
+              </Balance>
+            </BalanceWrapper>
+            <BalancePromo>
+              {change_level_info && (
+                <span>
+                  You need {convertBigDecimal(change_level_info.amount)}
+                  ESW purchase from your Ref’s to change level to&nbsp;
+                  <UpperCase>{change_level_info.next_level}</UpperCase>
+                </span>
+              )}
+            </BalancePromo>
+          </BalanceContainer>
           <AccountGroupingRow>
             <AccountControl>
               <Copy toCopy={account}>
@@ -264,4 +293,4 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
   );
 };
 
-export { Distributor };
+export { Ambassador };

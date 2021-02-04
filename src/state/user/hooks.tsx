@@ -1,6 +1,6 @@
 import { ChainId, Pair, Token } from '@uniswap/sdk';
 import flatMap from 'lodash.flatmap';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from '../../constants';
 
@@ -11,6 +11,7 @@ import {
   addSerializedPair,
   addSerializedToken,
   dismissTokenWarning,
+  login,
   removeSerializedToken,
   SerializedPair,
   SerializedToken,
@@ -21,7 +22,56 @@ import {
 } from './actions';
 import { useDefaultTokenList } from '../lists/hooks';
 import { isDefaultToken } from '../../utils';
-// import { useV1FactoryContract } from '../../hooks/useContract'
+
+//TODO refactor after release
+// @ts-ignore
+const baseUrl = window.env ? window.env.REACT_APP_PUBLIC_URL : '';
+
+export const useLogin = async (account: string) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const search = window.location.hash.split('=');
+  let referral_address = '';
+  if (search && search[1]) {
+    referral_address = search[1];
+  }
+  const getUser = useCallback(async () => {
+    //TODO create proper instance wrapper for REST
+    fetch(`${baseUrl}/v1/public/users`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        address: account,
+        referral_address,
+      }),
+    })
+      .then(res => {
+        if (res.status === 200 || res.status === 201) {
+          return res.json();
+        }
+        throw new Error('no user');
+      })
+      .then(data => {
+        dispatch(login(data));
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  }, [account, dispatch, referral_address]);
+
+  useEffect(() => {
+    getUser();
+    const interval = setInterval(() => {
+      getUser();
+    }, 30000);
+    return () => {
+      clearInterval(interval);
+    };
+    // eslint-disable-next-line
+    //todo Change the user status update logic
+  }, [getUser, account]);
+};
 
 function serializeToken(token: Token): SerializedToken {
   return {

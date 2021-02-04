@@ -30,6 +30,7 @@ const HeaderRow = styled.div`
   `};
 `;
 
+
 const UpperSection = styled.div`
   position: relative;
 
