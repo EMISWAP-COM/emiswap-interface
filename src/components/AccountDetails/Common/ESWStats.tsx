@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { CommingSoon } from '../../../base/ui/CommingSoon';
 import { AppState } from '../../../state';
 import { TYPE } from '../../../theme';
-import { convertBigDecimal, convertDate } from '../uitls';
+import { convertBigDecimal, convertDate, DateFormat } from '../uitls'
 
 const WalletButton = styled.span`
   display: block;
@@ -157,32 +157,13 @@ const BottomRow = styled.div`
   }
 `;
 
-export const getDate = (date: string) => {
-  const newDate = new Date(date);
-  const months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
-  return `${months[newDate.getMonth()]} ${newDate.getDay()}, ${newDate.getFullYear()}`;
-};
-
 export const ESWStats = () => {
   const balance = useSelector((state: AppState) => state.cabinets.balance);
 
   const unfrozen = convertBigDecimal(balance?.available);
   const frozen = convertBigDecimal(String(balance?.locked));
   const nextUnlockAmount = convertBigDecimal(balance?.nearest_unlock?.amount);
-  const unlockDate = convertDate(balance?.nearest_unlock?.unlock_date);
+  const unlockDate = convertDate(balance?.nearest_unlock?.unlock_date, DateFormat.short);
   const total = convertBigDecimal(balance?.amount);
   return (
     <>

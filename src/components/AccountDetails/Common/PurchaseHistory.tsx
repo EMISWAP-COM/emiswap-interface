@@ -4,7 +4,7 @@ import { TYPE } from '../../../theme';
 import { Level } from '../styleds';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
-import { convertBigDecimal, shortenHash } from '../uitls';
+import { convertBigDecimal, convertDate, DateFormat, shortenHash } from '../uitls'
 
 const TableWrapper = styled.div`
   border: 1px solid #707070;
@@ -112,7 +112,7 @@ export const PurchaseHistory = () => {
         <Table id={'test'} className="mostly-customized-scrollbar">
           {purchases.map(({ amount, date, transaction_hash }) => (
             <TableRow key={transaction_hash}>
-              <Date>{date.slice(0, 19)}</Date>
+              <Date>{convertDate(date, DateFormat.full)}</Date>
               <LevelWrapper />
               <Cost>
                 <span>{convertBigDecimal(amount)}</span>&nbsp; ESW
@@ -128,7 +128,7 @@ export const PurchaseHistory = () => {
         <Table>
           {referralPurchases.map(({ amount, date, transaction_hash, referral_level }) => (
             <TableRow key={transaction_hash}>
-              <Date>{date.slice(0, 19)}</Date>
+              <Date>{convertDate(date, DateFormat.full)}</Date>
               <LevelWrapper>
                 <Level>{referral_level}lvl</Level>
               </LevelWrapper>
