@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, AppState } from '../../../state';
 import { ESWPerformance } from '../Common/ESWPerformance';
 import { ESWStats } from '../Common/ESWStats';
+import { packageNames } from '../constant';
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -186,7 +187,7 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
         </div>
         <Package>
           <div>
-            Package: <span>{bonus_role_name}</span>
+            Package: <span>{packageNames[bonus_role_name]}</span>
           </div>
           <CommingSoon>
             <StatusAction>Upgrade</StatusAction>
