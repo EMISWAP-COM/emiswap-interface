@@ -1,12 +1,12 @@
 import React from 'react';
 import { TYPE } from '../../../theme';
 import styled from 'styled-components';
-import { Level } from '../styleds';
-import { WalletAction } from '../styleds';
+import { Level, WalletAction } from '../styleds';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { convertBigDecimal, normalizeNumber } from '../uitls';
 import { CommingSoon } from '../../../base/ui/CommingSoon';
+import { UserRoles } from '../../WalletModal';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -34,7 +34,7 @@ const Cell = styled.div`
   justify-content: center;
   color: #000000;
   width: 15%;
-  
+
   @media screen and (max-width: 1200px) {
     width: auto;
   }
@@ -116,11 +116,11 @@ const ReferalPurchases = styled(Table)`
   }
 `;
 
-
 export const ReferalPerformance = () => {
   const { reward, total_amount, total_count, first_level, second_level, third_level } = useSelector(
     (state: AppState) => state.cabinets.performance,
   );
+  const user = useSelector((state: AppState) => state.user.info);
 
   return (
     <>
@@ -135,12 +135,14 @@ export const ReferalPerformance = () => {
               <WalletAction>Claim</WalletAction>
             </CommingSoon>
           </TwoCells>
-          <TwoCells>
-            {convertBigDecimal(reward?.dai)} DAI
-            <CommingSoon>
-              <WalletAction>Claim</WalletAction>
-            </CommingSoon>
-          </TwoCells>
+          {user.role !== UserRoles.client && (
+            <TwoCells>
+              {convertBigDecimal(reward?.dai)} DAI
+              <CommingSoon>
+                <WalletAction>Claim</WalletAction>
+              </CommingSoon>
+            </TwoCells>
+          )}
         </Reward>
 
         <Referals>
