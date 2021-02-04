@@ -11,7 +11,6 @@ import { StatusIcon } from '../StatusIcon';
 import { PurchaseHistory } from '../Common/PurchaseHistory';
 import { ReferalPerformance } from '../Common/ReferalPerformance';
 import { WalletAction, StatusAction } from '../styleds';
-import { CommingSoon } from '../../../base/ui/CommingSoon';
 import {
   loadBalance,
   loadPerformance,
@@ -23,6 +22,8 @@ import { AppDispatch, AppState } from '../../../state';
 import { ESWPerformance } from '../Common/ESWPerformance';
 import { ESWStats } from '../Common/ESWStats';
 import { packageNames } from '../constant';
+import { useWalletModalToggle } from '../../../state/application/hooks'
+import { useHistory } from 'react-router'
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -156,17 +157,16 @@ const Package = styled.div`
 `;
 
 interface Props {
-  // toggleWalletModal: () => void;
-  // pendingTransad
   ENSName?: string;
   openOptions: () => void;
 }
 
 const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
   const dispatch = useDispatch<AppDispatch>();
+  const toggleWalletModal = useWalletModalToggle();
+  const history = useHistory()
 
   const { chainId, account, connector } = useActiveWeb3React();
-  // const [referalPerformance, setReferalPerformance] = useState(null)
 
   const { id: userId, bonus_role_name = '' } = useSelector((state: AppState) => state.user.info);
   const balance = useSelector((state: AppState) => state.cabinets.balance);
@@ -179,6 +179,25 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
     dispatch(loadBalance(userId) as any);
   }, [dispatch, userId]);
 
+  function scrollIntoInvest(){
+    const investForm = document.querySelector('#invest-page')
+    const headerOffset = 150;
+    const elementPosition = investForm.getBoundingClientRect().top;
+    const offsetPosition = elementPosition - headerOffset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: "smooth"
+    });
+  }
+
+  const handlePackageUpgrade = () => {
+    toggleWalletModal()
+    history.push('/invest')
+    setTimeout(scrollIntoInvest, 300)
+
+  }
+
   return (
     <Wrapper>
       <ProfileStatus>
@@ -189,9 +208,9 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
           <div>
             Package: <span>{packageNames[bonus_role_name]}</span>
           </div>
-          <CommingSoon>
-            <StatusAction>Upgrade</StatusAction>
-          </CommingSoon>
+          <StatusAction onClick={handlePackageUpgrade}>
+            Upgrade
+          </StatusAction>
         </Package>
       </ProfileStatus>
       <TableWrapper>
