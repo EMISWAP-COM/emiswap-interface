@@ -1,27 +1,27 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { ExternalLink } from '../../../theme';
 import { injected, walletlink } from '../../../connectors';
 import { getEtherscanLink, shortenAddress } from '../../../utils';
 import { ExternalLink as LinkIcon } from 'react-feather';
-import { convertBigDecimal, formatConnectorName } from '../uitls'
+import { convertBigDecimal, formatConnectorName } from '../uitls';
 import { useActiveWeb3React } from '../../../hooks';
 import Copy from '../Copy';
 import { StatusIcon } from '../StatusIcon';
-import { PurchaseHistory } from '../Common/PurchaseHistory'
-import { ReferalPerformance } from '../Common/ReferalPerformance'
-import { WalletAction} from '../styleds'
+import { PurchaseHistory } from '../Common/PurchaseHistory';
+import { ReferalPerformance } from '../Common/ReferalPerformance';
+import { WalletAction } from '../styleds';
 import {
   loadBalance,
   loadPerformance,
   loadPurchaseHistory,
-  loadReferralPurchaseHistory
-} from '../../../state/cabinets/actions'
-import { useDispatch, useSelector } from 'react-redux'
-import { AppDispatch, AppState } from '../../../state'
-import { ESWPerformance } from '../Common/ESWPerformance'
-import { ESWStats } from '../Common/ESWStats'
-
+  loadReferralPurchaseHistory,
+} from '../../../state/cabinets/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, AppState } from '../../../state';
+import { ESWPerformance } from '../Common/ESWPerformance';
+import { ESWStats } from '../Common/ESWStats';
+import { packageNames } from '../constant';
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -41,7 +41,7 @@ const InfoCard = styled.div`
 
   @media screen and (max-width: 1200px) {
     border-radius: 5px;
-}
+  }
 `;
 
 const AccountGroupingRow = styled.div`
@@ -90,7 +90,6 @@ const TableWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
 `;
 
 const ProfileStatus = styled.div`
@@ -118,7 +117,7 @@ const Package = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  
+
   @media screen and (max-width: 1200px) {
     width: 100%;
   }
@@ -126,15 +125,15 @@ const Package = styled.div`
 
 const BalanceWrapper = styled.div`
   display: flex;
-  justify-content: flex-end;  
+  justify-content: flex-end;
 
   @media screen and (max-width: 1200px) {
-     flex-direction: column;
+    flex-direction: column;
   }
 `;
 
 const BalanceContainer = styled.div`
-  grid-row: span 2; 
+  grid-row: span 2;
   //
   // @media screen and (max-width: 1200px) {
   //    flex-direction: column;
@@ -147,30 +146,30 @@ const Balance = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  
+
   @media screen and (max-width: 1200px) {
      flex-direction: row
      justify-content: space-between;
   }
-  
+
   span:nth-child(1) {
     font-size: min(1rem, 4vw);
   }
 `;
 
 const BalanceFigure = styled.span`
-    font-size: min(2rem, 4vw);
-    font-weight: 600;
+  font-size: min(2rem, 4vw);
+  font-weight: 600;
 `;
 
 const UpperCase = styled.span`
-    text-transform: uppercase;
+  text-transform: uppercase;
 `;
 
 const BalancePromo = styled.div`
-    font-size: min(0.9rem, 3vw);
-    font-weight: 600;
-    color: #e50606;
+  font-size: min(0.9rem, 3vw);
+  font-weight: 600;
+  color: #e50606;
 `;
 
 interface Props {
@@ -185,21 +184,18 @@ const Ambassador: React.FC<Props> = ({ openOptions, ENSName }) => {
 
   const { chainId, account, connector } = useActiveWeb3React();
 
-  const {id: userId } = useSelector((state: AppState) => state.user.info)
-  const balance = useSelector((state: AppState) => state.cabinets.balance)
+  const { id: userId, bonus_role_name = '' } = useSelector((state: AppState) => state.user.info);
+  const balance = useSelector((state: AppState) => state.cabinets.balance);
   const { change_level_info } = balance;
 
-  const { total_amount } = useSelector(
-    (state: AppState) => state.cabinets.performance,
-  );
+  const { total_amount } = useSelector((state: AppState) => state.cabinets.performance);
 
   useEffect(() => {
-    dispatch(loadPerformance(userId) as any)
-    dispatch(loadPurchaseHistory(userId) as any)
-    dispatch(loadReferralPurchaseHistory(userId) as any)
-    dispatch(loadBalance(userId) as any)
+    dispatch(loadPerformance(userId) as any);
+    dispatch(loadPurchaseHistory(userId) as any);
+    dispatch(loadReferralPurchaseHistory(userId) as any);
+    dispatch(loadBalance(userId) as any);
   }, [dispatch, userId]);
-
 
   return (
     <Wrapper>
@@ -209,7 +205,7 @@ const Ambassador: React.FC<Props> = ({ openOptions, ENSName }) => {
         </div>
         <Package>
           <div>
-            Level: <span>{'Rookie_mock'}</span>
+            Level: <span>{packageNames[bonus_role_name]}</span>
           </div>
         </Package>
       </ProfileStatus>
@@ -261,9 +257,7 @@ const Ambassador: React.FC<Props> = ({ openOptions, ENSName }) => {
                 <BalanceFigure>{convertBigDecimal(balance.amount)}</BalanceFigure>
               </Balance>
               <Balance>
-                <span>
-                  Referral Purchases
-                </span>
+                <span>Referral Purchases</span>
 
                 <BalanceFigure>{convertBigDecimal(total_amount)}</BalanceFigure>
               </Balance>
@@ -271,12 +265,10 @@ const Ambassador: React.FC<Props> = ({ openOptions, ENSName }) => {
             <BalancePromo>
               {change_level_info && (
                 <span>
-                You need {convertBigDecimal(change_level_info.amount)}
-                ESW purchase from your Ref’s to change level to&nbsp;
-                  <UpperCase>
-                    {change_level_info.next_level}
-                  </UpperCase>
-              </span>
+                  You need {convertBigDecimal(change_level_info.amount)}
+                  ESW purchase from your Ref’s to change level to&nbsp;
+                  <UpperCase>{change_level_info.next_level}</UpperCase>
+                </span>
               )}
             </BalancePromo>
           </BalanceContainer>
@@ -292,9 +284,9 @@ const Ambassador: React.FC<Props> = ({ openOptions, ENSName }) => {
             </AccountControl>
           </AccountGroupingRow>
         </InfoCard>
-        <ReferalPerformance/>
-        <PurchaseHistory/>
-        <ESWPerformance/>
+        <ReferalPerformance />
+        <PurchaseHistory />
+        <ESWPerformance />
         <ESWStats />
       </TableWrapper>
     </Wrapper>
