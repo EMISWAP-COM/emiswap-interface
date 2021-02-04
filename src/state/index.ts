@@ -10,11 +10,11 @@ import lists from './lists/reducer';
 import burn from './burn/reducer';
 import multicall from './multicall/reducer';
 import invest from './invest/reducer';
-import cabinets from './cabinets/reducer'
+import cabinets from './cabinets/reducer';
 
 import { updateVersion } from './user/actions';
 
-const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists', 'swap', 'invest'];
+const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists'];
 
 const store = configureStore({
   reducer: {
@@ -27,7 +27,7 @@ const store = configureStore({
     multicall,
     lists,
     invest,
-    cabinets
+    cabinets,
   },
   middleware: [
     ...getDefaultMiddleware({ serializableCheck: false }),
