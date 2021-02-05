@@ -380,7 +380,7 @@ const EmiMagicBtn = styled.div`
 const EmiCardHeader = styled.div`
   color: #e50606;
   font-size: 1rem;
-  
+
   span {
     text-decoration: underline;
     cursor: pointer;
@@ -543,7 +543,7 @@ const Invest = () => {
   const openEmiCardModal = () => {
     ReactGA.event({
       category: 'Magic_NFT',
-      action: 'click',
+      action: 'click_MagicNFT',
     });
     setShowEmiCardModal(true);
   };
