@@ -137,6 +137,7 @@ const RowItem = styled.div`
   width: 100%;
   text-align: center;
   position: relative;
+
   @media screen and (max-width: 1200px) {
     display: flex;
     justify-content: space-between;
