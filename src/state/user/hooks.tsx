@@ -22,6 +22,12 @@ import {
 } from './actions';
 import { useDefaultTokenList } from '../lists/hooks';
 import { isDefaultToken } from '../../utils';
+import {
+  loadBalance,
+  loadPerformance,
+  loadPurchaseHistory,
+  loadReferralPurchaseHistory,
+} from '../cabinets/actions';
 
 //TODO refactor after release
 // @ts-ignore
@@ -54,6 +60,10 @@ export const useLogin = async (account: string) => {
       })
       .then(data => {
         dispatch(login(data));
+        dispatch(loadPerformance(data.id) as any);
+        dispatch(loadPurchaseHistory(data.id) as any);
+        dispatch(loadReferralPurchaseHistory(data.id) as any);
+        dispatch(loadBalance(data.id) as any);
       })
       .catch(e => {
         console.log(e);
