@@ -11,6 +11,7 @@ import burn from './burn/reducer';
 import multicall from './multicall/reducer';
 import invest from './invest/reducer';
 import cabinets from './cabinets/reducer';
+import stats from './stats/reducer';
 
 import { updateVersion } from './user/actions';
 
@@ -28,6 +29,7 @@ const store = configureStore({
     lists,
     invest,
     cabinets,
+    stats,
   },
   middleware: [
     ...getDefaultMiddleware({ serializableCheck: false }),

@@ -28,6 +28,7 @@ import {
   loadPurchaseHistory,
   loadReferralPurchaseHistory,
 } from '../cabinets/actions';
+import { loadGasPrice } from '../stats/actions';
 
 //TODO refactor after release
 // @ts-ignore
@@ -64,6 +65,7 @@ export const useLogin = async (account: string) => {
         dispatch(loadPurchaseHistory(data.id) as any);
         dispatch(loadReferralPurchaseHistory(data.id) as any);
         dispatch(loadBalance(data.id) as any);
+        dispatch(loadGasPrice() as any);
       })
       .catch(e => {
         console.log(e);
