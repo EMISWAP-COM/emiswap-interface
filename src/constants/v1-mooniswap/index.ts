@@ -16,7 +16,7 @@ const V1_EMIROUTER_HELPER_ADDRESSES: { [chainId in ChainId]: string } = {
   [ChainId.ROPSTEN]: '0xe5c8e363de97840d5996e1e8db8b5facda0f1e21',
   [ChainId.RINKEBY]: '0xe5c8e363de97840d5996e1e8db8b5facda0f1e21',
   [ChainId.GÖRLI]: '0xe5c8e363de97840d5996e1e8db8b5facda0f1e21',
-  [ChainId.KOVAN]: '0xcd9B11D0Bb92053A268c590e3c3Ae115E6531d1F',
+  [ChainId.KOVAN]: '0x3c756Eed6DC66F7013923AC50aB236111a9494bD',
 };
 
 const V1_FACTORY_INTERFACE = new Interface(V1_MOONISWAP_FACTORY_ABI);

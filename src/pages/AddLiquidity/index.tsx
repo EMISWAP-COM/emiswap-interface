@@ -37,6 +37,9 @@ import { currencyId } from '../../utils/currencyId';
 import { PoolPriceBar } from './PoolPriceBar';
 import { tokenAmountToString } from '../../utils/formats';
 import { useEmiRouter } from '../../hooks/useContract';
+import { ErrorText } from '../../components/swap/styleds';
+import { useMockEstimate } from '../../hooks/useMockEstimate';
+import { REFERRAL_ADDRESS_STORAGE_KEY } from '../../constants';
 
 export default function AddLiquidity({
   match: {
@@ -74,6 +77,8 @@ export default function AddLiquidity({
 
   const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity);
 
+  const [isEnough] = useMockEstimate('pool');
+
   const isValid = !error;
   // modal and loading
   const [showConfirm, setShowConfirm] = useState<boolean>(false);
@@ -101,6 +106,8 @@ export default function AddLiquidity({
       [field]: maxAmountSpend(currencyBalances[field]),
     };
   }, {});
+
+  const referralAddress = localStorage.getItem(REFERRAL_ADDRESS_STORAGE_KEY) || ZERO_ADDRESS;
 
   const atMaxAmounts: { [field in Field]?: TokenAmount } = [
     Field.CURRENCY_A,
@@ -152,6 +159,7 @@ export default function AddLiquidity({
         parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
         parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
         ...Object.values(minReturns),
+        referralAddress,
       ];
     } else {
       const notEthValue = currencyA.isEther ? Field.CURRENCY_B : Field.CURRENCY_A;
@@ -160,6 +168,7 @@ export default function AddLiquidity({
         parsedAmounts[notEthValue]?.raw.toString(),
         minReturns[notEthValue],
         minReturns[notEthValue === Field.CURRENCY_A ? Field.CURRENCY_B : Field.CURRENCY_A],
+        referralAddress,
       ];
       optionalArgs = {
         value: `0x${BigInt(
@@ -237,6 +246,7 @@ export default function AddLiquidity({
         parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
         parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
         ...Object.values(minReturns),
+        referralAddress,
       ];
     } else {
       const notEthValue = currencyA.isEther ? Field.CURRENCY_B : Field.CURRENCY_A;
@@ -245,6 +255,7 @@ export default function AddLiquidity({
         parsedAmounts[notEthValue]?.raw.toString(),
         minReturns[notEthValue],
         minReturns[notEthValue === Field.CURRENCY_A ? Field.CURRENCY_B : Field.CURRENCY_A],
+        referralAddress,
       ];
       optionalArgs = {
         value: `0x${BigInt(
@@ -571,6 +582,11 @@ export default function AddLiquidity({
                       {error ?? 'Supply'}
                     </Text>
                   </ButtonError>
+                )}
+                {!isEnough && (
+                  <ErrorText fontWeight={500} fontSize="11pt" severity={3}>
+                    Probably insufficient ETH balance
+                  </ErrorText>
                 )}
               </AutoColumn>
             )}
