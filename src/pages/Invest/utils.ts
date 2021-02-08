@@ -1,13 +1,11 @@
+import { accountAmounts } from '../../constants/invest';
+
 export const getClosestNumber = (counts: number[], goal: number) => {
   return counts.reduce(function(prev, curr) {
     return Math.abs(curr - goal) < Math.abs(prev - goal) ? curr : prev;
   });
 };
 
-export const getNextNumber = (counts: number[], goal: number) => {
-  return (
-    counts.find(num => {
-      return num >= goal;
-    }) || 0
-  );
+export const getPriceToNextStep = (prevRole: string, nextRole: string) => {
+  return String(accountAmounts[nextRole] - accountAmounts[prevRole]);
 };

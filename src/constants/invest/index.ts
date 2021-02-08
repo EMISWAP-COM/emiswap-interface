@@ -15,3 +15,13 @@ export const accountAmounts: { [key: string]: number } = {
   partner: partnerCount,
   enterprise: enterpriseCount,
 };
+
+export enum PackageNames {
+  basic = 'basic',
+  basic_plus = 'basic_plus',
+  silver = 'silver',
+  gold = 'gold',
+  diamond = 'diamond',
+  partner = 'partner',
+  enterprise = 'enterprise',
+}

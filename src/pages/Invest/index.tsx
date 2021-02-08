@@ -54,7 +54,7 @@ import useParsedQueryString from '../../hooks/useParsedQueryString';
 import ReferralLink from '../../components/RefferalLink';
 import { AppState } from '../../state';
 import { UserRoles } from '../../components/WalletModal';
-import { getNextNumber } from './utils';
+import { getPriceToNextStep } from './utils';
 import {
   accountAmounts,
   basicCount,
@@ -62,6 +62,7 @@ import {
   diamondCount,
   enterpriseCount,
   goldCount,
+  PackageNames,
   partnerCount,
   silverCount,
 } from '../../constants/invest';
@@ -387,7 +388,7 @@ const EmiCardHeader = styled.div`
     text-decoration: underline;
     cursor: pointer;
   }
-`
+`;
 
 export function RedirectPathToInvestOnly({ location }: RouteComponentProps) {
   return <Redirect to={{ ...location, pathname: '/invest' }} />;
@@ -421,7 +422,7 @@ const Invest = () => {
     error,
   } = useDerivedInvestInfo();
 
-  const [selectedCardAmount, setSelectedCardAmount] = useState<number>(0);
+  const [selectedCardRole, setSelectedCardRole] = useState<number>(0);
   const role: UserRoles = useSelector((state: AppState) => state.user.info.role);
   const bonusRoleName = useSelector((state: AppState) => state.user.info.bonus_role_name);
   const ESWBalance = useSelector((state: AppState) => state.cabinets.balance.amount);
@@ -449,9 +450,11 @@ const Invest = () => {
   );
 
   const handleSelectCard = useCallback(
-    value => {
-      handleTypeInputOUTPUT(ESWBalance && bonusRoleName ? String(value - +ESWBalance) : value);
-      setSelectedCardAmount(value);
+    nextRole => {
+      handleTypeInputOUTPUT(
+        ESWBalance && bonusRoleName ? getPriceToNextStep(bonusRoleName, nextRole) : '0',
+      );
+      setSelectedCardRole(nextRole);
     },
     [handleTypeInputOUTPUT, ESWBalance, bonusRoleName],
   );
@@ -486,13 +489,6 @@ const Invest = () => {
     }
   }, [approval, approvalSubmitted]);
 
-  useEffect(() => {
-    setSelectedCardAmount(
-      formattedAmounts[Field.OUTPUT]
-        ? getNextNumber(Object.values(accountAmounts), +formattedAmounts[Field.OUTPUT])
-        : 0,
-    );
-  }, [formattedAmounts]);
 
   // the callback to execute the invest
   const [investCallback] = useInvest(
@@ -621,42 +617,49 @@ const Invest = () => {
         title: 'Basic',
         description: `Non less than ${basicCount} ESW`,
         value: basicCount,
+        role: PackageNames.basic,
       },
       {
         img: BasicPlus,
         title: 'Basic +',
         description: `Non less than ${basicPlusCount} ESW`,
         value: basicPlusCount,
+        role: PackageNames.basic_plus,
       },
       {
         img: Silver,
         title: 'Silver',
         description: `Non less than ${silverCount} ESW`,
         value: silverCount,
+        role: PackageNames.silver,
       },
       {
         img: Gold,
         title: 'Gold',
         description: `Non less than ${goldCount} ESW`,
         value: goldCount,
+        role: PackageNames.gold,
       },
       {
         img: Diamond,
         title: 'Diamond',
         description: `Non less than ${diamondCount} ESW`,
         value: diamondCount,
+        role: PackageNames.diamond,
       },
       {
         img: Partner,
         title: 'Partner',
         description: `Non less than ${partnerCount} ESW`,
         value: partnerCount,
+        role: PackageNames.partner,
       },
       {
         img: Enterprise,
         title: 'Enterprise',
         description: `Non less than ${enterpriseCount} ESW`,
         value: enterpriseCount,
+        role: PackageNames.enterprise,
       },
     ];
     if (role === UserRoles.distributor) {
@@ -666,9 +669,11 @@ const Invest = () => {
             const isDisabled = bonusRoleName ? el.value <= accountAmounts[bonusRoleName] : false;
             return (
               <div
-                className={`emicard ${+selectedCardAmount === el.value ? 'active' : ''}`}
+                className={`emicard ${
+                  accountAmounts[selectedCardRole] === el.value ? 'active' : ''
+                }`}
                 key={el.title}
-                onClick={() => (!isDisabled ? handleSelectCard(String(el.value)) : null)}
+                onClick={() => (!isDisabled ? handleSelectCard(String(el.role)) : null)}
               >
                 <img
                   className={`emicard__img ${isDisabled ? 'grey' : ''}`}
@@ -929,19 +934,21 @@ const Invest = () => {
 
     const getHeaderToEmiCardBlock = (role: UserRoles, ESW: Number): React.ReactFragment => {
       if (role === UserRoles.distributor) {
-        return <>Choose your Package</>
+        return <>Choose your Package</>;
       } else {
         return (
           <p>
-            {ESW > 0 ?
-              <EmiCardHeader>Please, &nbsp;
+            {ESW > 0 ? (
+              <EmiCardHeader>
+                Please, &nbsp;
                 <span onClick={() => setShowEmiCardModal(true)}>Register in the Whitelist</span>
-              &nbsp; to Get:</EmiCardHeader>
-
-              : <>Buy ESW to get Magic NFT EmiCards</>
-            }
-            </p>
-      )
+                &nbsp; to Get:
+              </EmiCardHeader>
+            ) : (
+              <>Buy ESW to get Magic NFT EmiCards</>
+            )}
+          </p>
+        );
       }
     };
 
