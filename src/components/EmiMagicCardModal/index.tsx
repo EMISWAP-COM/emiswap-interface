@@ -16,9 +16,15 @@ const ModalBody = styled.div`
   .close-icon {
     position: absolute;
     width: 15px;
-    right: 30px;
-    top: 30px;
+    right: 20px;
+    top: 20px;
     cursor: pointer;
+    
+    @media screen and (max-width: 375px) {
+      top: 15px;
+      right: 15px;
+    }
+
   }
 
   img {
