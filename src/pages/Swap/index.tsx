@@ -1,4 +1,4 @@
-import { TokenAmount, JSBI } from '@uniswap/sdk';
+import { JSBI, TokenAmount } from '@uniswap/sdk';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { ArrowDown, ArrowUp } from 'react-feather';
 import { Text } from 'rebass';
@@ -12,7 +12,13 @@ import { SwapPoolTabs } from '../../components/NavigationTabs';
 import { AutoRow, RowBetween } from '../../components/Row';
 import BetterTradeLink from '../../components/swap/BetterTradeLink';
 import confirmPriceImpactWithoutFee from '../../components/swap/confirmPriceImpactWithoutFee';
-import { ArrowWrapper, BottomGrouping, Dots, Wrapper } from '../../components/swap/styleds';
+import {
+  ArrowWrapper,
+  BottomGrouping,
+  Dots,
+  ErrorText,
+  Wrapper,
+} from '../../components/swap/styleds';
 import SwapModalFooter from '../../components/swap/SwapModalFooter';
 import SwapModalHeader from '../../components/swap/SwapModalHeader';
 import TradePrice from '../../components/swap/TradePrice';
@@ -53,6 +59,7 @@ import GasConsumption from '../../components/swap/GasConsumption';
 import { BigNumber } from '@ethersproject/bignumber';
 import { AdvancedSwapDetails } from '../../components/swap/AdvancedSwapDetails';
 import WarningBlock, { StyledButton } from '../../components/Warning/WarningBlock';
+import { useMockEstimate } from '../../hooks/useMockEstimate';
 
 export default function Swap() {
   useDefaultsFromURLSearch();
@@ -149,6 +156,8 @@ export default function Swap() {
       : parsedAmounts[dependentField]?.toSignificant(6) ?? '',
   };
 
+  const [isEnough] = useMockEstimate('swap');
+
   const route = trade?.route;
   const userHasSpecifiedInputOutput = Boolean(
     currencies[Field.INPUT] &&
@@ -216,7 +225,11 @@ export default function Swap() {
       setGasWhenUseChi(gasWhenUseChi);
     }
 
-    srcAmount && estimate && estimate().then(result => handleStatusChange(result));
+    srcAmount &&
+      estimate &&
+      estimate().then(result => {
+        handleStatusChange(result);
+      });
 
     // Specify how to clean up after this effect:
     return function cleanup() {
@@ -392,6 +405,9 @@ export default function Swap() {
               }}
               otherCurrency={currencies[Field.OUTPUT]}
               id="swap-currency-input"
+              currencyBalance={currencyBalances[Field.INPUT]}
+              isDepended={dependentField === Field.INPUT}
+              showMaxError
             />
 
             <CursorPointer>
@@ -436,6 +452,8 @@ export default function Swap() {
               onCurrencySelect={address => onCurrencySelection(Field.OUTPUT, address)}
               otherCurrency={currencies[Field.INPUT]}
               id="swap-currency-output"
+              currencyBalance={currencyBalances[Field.OUTPUT]}
+              isDepended={dependentField === Field.OUTPUT}
             />
 
             {showWrap ? null : (
@@ -565,6 +583,11 @@ export default function Swap() {
               </ButtonError>
             )}
             {betterTradeLinkVersion && <BetterTradeLink version={betterTradeLinkVersion} />}
+            {!isEnough && (
+              <ErrorText fontWeight={500} fontSize="11pt" severity={3}>
+                Probably insufficient ETH balance
+              </ErrorText>
+            )}
           </BottomGrouping>
 
           {account ? <ReferralLink /> : ''}

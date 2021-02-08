@@ -122,12 +122,13 @@ export function useDerivedSwapInfo(): {
 
   const inputCurrency = useCurrency(inputCurrencyId);
   const outputCurrency = useCurrency(outputCurrencyId);
-
+  const eth = useCurrency(ZERO_ADDRESS);
   const to: string | null | undefined = account;
 
   const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
     inputCurrency ?? undefined,
     outputCurrency ?? undefined,
+    eth ?? undefined
   ]);
 
   const isExactIn: boolean = independentField === Field.INPUT;
@@ -209,7 +210,7 @@ export function useDerivedSwapInfo(): {
   ];
 
   if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
-    error = 'Insufficient ' + amountIn.token.symbol + ' balance';
+    error = 'Insufficient ' + balanceIn.token.symbol + ' balance';
   }
 
   return {

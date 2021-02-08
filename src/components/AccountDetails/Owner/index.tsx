@@ -10,7 +10,7 @@ import Copy from '../Copy';
 import { StatusIcon } from '../StatusIcon';
 import { PurchaseHistory } from '../Common/PurchaseHistory';
 import { ReferalPerformance } from '../Common/ReferalPerformance';
-import { WalletAction, StatusAction } from '../styleds';
+import { WalletAction } from '../styleds';
 import {
   loadBalance,
   loadPerformance,
@@ -19,11 +19,8 @@ import {
 } from '../../../state/cabinets/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, AppState } from '../../../state';
-import { ESWPerformance } from '../Common/ESWPerformance';
 import { ESWStats } from '../Common/ESWStats';
-import { packageNames } from '../constant';
-import { useWalletModalToggle } from '../../../state/application/hooks'
-import { useHistory } from 'react-router'
+import { ESWPerformance } from '../Common/ESWPerformance'
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -59,35 +56,48 @@ const AccountGroupingRow = styled.div`
 `;
 
 const BalanceWrapper = styled.div`
-  grid-row: span 2;
-  display: grid;
-  grid-template-columns: 1fr;
-  justify-items: center;
-  align-items: baseline;
+  display: flex;
+  justify-content: flex-end;  
 
   @media screen and (max-width: 1200px) {
-    grid-template-columns: 3fr 1fr;
-    justify-items: normal;
-    span: nth-child(3) {
-      grid-column: span 2;
-    }
+     flex-direction: column;
   }
+`;
 
+const BalanceContainer = styled.div`
+  grid-row: span 2; 
+  //
+  // @media screen and (max-width: 1200px) {
+  //    flex-direction: column;
+  // }
+`;
+
+const Balance = styled.div`
+  display: flex;
+  width: 50%;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  
+  @media screen and (max-width: 1200px) {
+     flex-direction: row
+     justify-content: space-between;
+  }
+  
   span:nth-child(1) {
-    font-size: min(1.2rem, 4vw);
+    font-size: min(1rem, 4vw);
   }
+`;
 
-  span:nth-child(2) {
+const BalanceFigure = styled.span`
     font-size: min(2rem, 4vw);
     font-weight: 600;
-    text-align: right;
-  }
+`;
 
-  span:nth-child(3) {
+const BalancePromo = styled.div`
     font-size: min(0.9rem, 3vw);
     font-weight: 600;
     color: #e50606;
-  }
 `;
 
 const AccountControl = styled.div`
@@ -148,70 +158,39 @@ const ProfileStatus = styled.div`
   }
 `;
 
-const Package = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-width: 300px;
-  width: 100%;
-`;
-
 interface Props {
+  // toggleWalletModal: () => void;
+  // pendingTransad
   ENSName?: string;
   openOptions: () => void;
 }
 
-const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
+const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const toggleWalletModal = useWalletModalToggle();
-  const history = useHistory()
 
   const { chainId, account, connector } = useActiveWeb3React();
 
-  const { id: userId, bonus_role_name = '' } = useSelector((state: AppState) => state.user.info);
+  const { id: userId } = useSelector((state: AppState) => state.user.info);
   const balance = useSelector((state: AppState) => state.cabinets.balance);
-  const { change_level_info } = balance;
+  const { reward } = useSelector(
+    (state: AppState) => state.cabinets.performance,
+  );
+
 
   useEffect(() => {
+    console.log('test')
     dispatch(loadPerformance(userId) as any);
     dispatch(loadPurchaseHistory(userId) as any);
     dispatch(loadReferralPurchaseHistory(userId) as any);
     dispatch(loadBalance(userId) as any);
   }, [dispatch, userId]);
 
-  function scrollIntoInvest(){
-    const investForm = document.querySelector('#invest-page')
-    const headerOffset = 150;
-    const elementPosition = investForm.getBoundingClientRect().top;
-    const offsetPosition = elementPosition - headerOffset;
-
-    window.scrollTo({
-      top: offsetPosition,
-      behavior: "smooth"
-    });
-  }
-
-  const handlePackageUpgrade = () => {
-    toggleWalletModal()
-    history.push('/invest')
-    setTimeout(scrollIntoInvest, 300)
-
-  }
-
   return (
     <Wrapper>
       <ProfileStatus>
         <div>
-          Status: <span>Distributor</span>
+          Status: <span>ESW OWNER</span>
         </div>
-        <Package>
-          <div>
-            Package: <span>{packageNames[bonus_role_name]}</span>
-          </div>
-          <StatusAction onClick={handlePackageUpgrade}>
-            Upgrade
-          </StatusAction>
-        </Package>
       </ProfileStatus>
       <TableWrapper>
         <InfoCard>
@@ -249,19 +228,48 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
               </AccountControl>
             </AccountGroupingRow>
           </div>
-          <BalanceWrapper>
-            <span>
-              your &nbsp;
-              <span>ESW</span>
-              &nbsp; balance
-            </span>
-            <span>{convertBigDecimal(balance.amount)}</span>
-            {change_level_info && (
-              <span>
-                Buy {convertBigDecimal(change_level_info.amount)} ESW to gain next Package!
-              </span>
-            )}
-          </BalanceWrapper>
+          <BalanceContainer>
+            <BalanceWrapper>
+              <Balance>
+                <span>
+                  your &nbsp;
+                  <span>ESW</span>
+                  &nbsp; balance
+                </span>
+
+                <BalanceFigure>{convertBigDecimal(balance.amount)}</BalanceFigure>
+              </Balance>
+              <Balance>
+                <span>
+                  <span>ESW</span>
+                  &nbsp; profit
+                </span>
+
+                <BalanceFigure>{convertBigDecimal(reward?.esw)}</BalanceFigure>
+              </Balance>
+            </BalanceWrapper>
+            <BalancePromo>To boost your ESW Profit use our&nbsp;
+              <ExternalLink
+                href={
+                  'https://emiswap.medium.com/your-guide-to-the-emiswap-referral-program-f142a4170d1'
+                }
+              >
+                Referral Program
+              </ExternalLink>
+              , become an
+              <ExternalLink
+                href={'https://crowdsale.emidao.org/en#rec240950289'}
+              >
+                &nbsp;Ambassador&nbsp;
+              </ExternalLink>
+              or farm your
+              <ExternalLink
+                href={'https://crowdsale.emidao.org/magic-nft'}
+              >
+                &nbsp;Magic Cards!
+              </ExternalLink>
+            </BalancePromo>
+          </BalanceContainer>
           <AccountGroupingRow>
             <AccountControl>
               <Copy toCopy={account}>
@@ -276,11 +284,11 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
         </InfoCard>
         <ReferalPerformance />
         <PurchaseHistory />
-        <ESWPerformance />
+        <ESWPerformance/>
         <ESWStats />
       </TableWrapper>
     </Wrapper>
   );
 };
 
-export { Distributor };
+export { Owner };

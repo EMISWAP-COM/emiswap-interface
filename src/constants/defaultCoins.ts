@@ -3797,7 +3797,7 @@ export default {
         'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x39eAE99E685906fF1C11A962a743440d0a1A6e09/logo.png',
     },
     {
-      address: '0xE380B174d75974Fd6f425b0A0E9c8489890Cd8F9',
+      address: '0xEe6CE89559d68719366C1a8150C9227910CA8B2F',
       chainId: 42,
       name: 'DaiStablecoin',
       symbol: 'DAI',
@@ -3805,7 +3805,7 @@ export default {
       logoURI: 'https://tokConens.1inch.exchange/0x6b175474e89094c44da98b954eedeac495271d0f.png',
     },
     {
-      address: '0x5a89AFefB5e3912d81F90Ea2c4844553e979bafF',
+      address: '0x685E323f912C1a5FE2Ae089D1a743942C458A9E3',
       chainId: 42,
       name: 'USDCoin',
       symbol: 'USDC',
@@ -3813,7 +3813,7 @@ export default {
       logoURI: 'https://tokens.1inch.exchange/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.png',
     },
     {
-      address: '0x7dDb125B0E5bFE795E7293cC7E2882Cb7E68Ad12',
+      address: '0xcfc833888943ec8d4b31bccde4d235368014161b',
       chainId: 42,
       name: 'WrappedBTC',
       symbol: 'WBTC',

@@ -37,6 +37,9 @@ import { currencyId } from '../../utils/currencyId';
 import { PoolPriceBar } from './PoolPriceBar';
 import { tokenAmountToString } from '../../utils/formats';
 import { useEmiRouter } from '../../hooks/useContract';
+import { ErrorText } from '../../components/swap/styleds';
+import { useMockEstimate } from '../../hooks/useMockEstimate';
+import { useReferralAddress } from '../../hooks/useReferralAddress';
 
 export default function AddLiquidity({
   match: {
@@ -74,6 +77,8 @@ export default function AddLiquidity({
 
   const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity);
 
+  const [isEnough] = useMockEstimate('pool');
+
   const isValid = !error;
   // modal and loading
   const [showConfirm, setShowConfirm] = useState<boolean>(false);
@@ -101,6 +106,8 @@ export default function AddLiquidity({
       [field]: maxAmountSpend(currencyBalances[field]),
     };
   }, {});
+
+  const referralAddress = useReferralAddress();
 
   const atMaxAmounts: { [field in Field]?: TokenAmount } = [
     Field.CURRENCY_A,
@@ -152,6 +159,7 @@ export default function AddLiquidity({
         parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
         parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
         ...Object.values(minReturns),
+        referralAddress,
       ];
     } else {
       const notEthValue = currencyA.isEther ? Field.CURRENCY_B : Field.CURRENCY_A;
@@ -160,6 +168,7 @@ export default function AddLiquidity({
         parsedAmounts[notEthValue]?.raw.toString(),
         minReturns[notEthValue],
         minReturns[notEthValue === Field.CURRENCY_A ? Field.CURRENCY_B : Field.CURRENCY_A],
+        referralAddress,
       ];
       optionalArgs = {
         value: `0x${BigInt(
@@ -237,6 +246,7 @@ export default function AddLiquidity({
         parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
         parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
         ...Object.values(minReturns),
+        referralAddress,
       ];
     } else {
       const notEthValue = currencyA.isEther ? Field.CURRENCY_B : Field.CURRENCY_A;
@@ -245,6 +255,7 @@ export default function AddLiquidity({
         parsedAmounts[notEthValue]?.raw.toString(),
         minReturns[notEthValue],
         minReturns[notEthValue === Field.CURRENCY_A ? Field.CURRENCY_B : Field.CURRENCY_A],
+        referralAddress,
       ];
       optionalArgs = {
         value: `0x${BigInt(
@@ -445,6 +456,7 @@ export default function AddLiquidity({
               showCommonBases
               otherCurrency={currencies[Field.CURRENCY_B]}
               isMatchEth
+              currencyBalance={currencyBalances[Field.CURRENCY_A]}
             />
             <StyledButtonNavigation>
               <ColumnCenter>
@@ -464,6 +476,7 @@ export default function AddLiquidity({
               showCommonBases
               otherCurrency={currencies[Field.CURRENCY_A]}
               isMatchEth={true}
+              currencyBalance={currencyBalances[Field.CURRENCY_B]}
             />
             {currencies[Field.CURRENCY_A] &&
               currencies[Field.CURRENCY_B] &&
@@ -536,7 +549,7 @@ export default function AddLiquidity({
                     onClick={() => {
                       onPoolCreate();
                     }}
-                    disabled={false}
+                    disabled={!!error}
                     error={
                       !isValid &&
                       !!parsedAmounts[Field.CURRENCY_A] &&
@@ -544,7 +557,7 @@ export default function AddLiquidity({
                     }
                   >
                     <Text fontSize={20} fontWeight={500}>
-                      {'Create Pool'}
+                      {error ?? 'Create Pool'}
                     </Text>
                   </ButtonError>
                 ) : (
@@ -569,6 +582,11 @@ export default function AddLiquidity({
                       {error ?? 'Supply'}
                     </Text>
                   </ButtonError>
+                )}
+                {!isEnough && (
+                  <ErrorText fontWeight={500} fontSize="11pt" severity={3}>
+                    Probably insufficient ETH balance
+                  </ErrorText>
                 )}
               </AutoColumn>
             )}
