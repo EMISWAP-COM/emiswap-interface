@@ -3,7 +3,7 @@ import { Contract } from '@ethersproject/contracts';
 import { JSBI, TokenAmount, Trade, ZERO_ADDRESS } from '@uniswap/sdk';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { INITIAL_ALLOWED_SLIPPAGE } from '../constants';
+import { INITIAL_ALLOWED_SLIPPAGE, REFERRAL_ADDRESS_STORAGE_KEY } from '../constants';
 import { getTradeVersion } from '../data/V1';
 import { useTransactionAdder } from '../state/transactions/hooks';
 import { calculateGasMargin, getMooniswapContract, getOneSplit } from '../utils';
@@ -219,10 +219,14 @@ export function useSwapCallback(
       if (!contract) {
         throw new Error('Failed to get a swap contract');
       }
+
       let value: BigNumber | undefined;
+
       if (trade.inputAmount.token.symbol === 'ETH') {
         value = BigNumber.from(fromAmount.raw.toString());
       }
+
+      const referralAddress = localStorage.getItem(REFERRAL_ADDRESS_STORAGE_KEY) || ZERO_ADDRESS;
       const estimateSwap = (args: any[]) => {
         return contract.estimateGas['swapTokensForExactETH'](
           ...args,
@@ -347,7 +351,7 @@ export function useSwapCallback(
             (+formattedAmounts.INPUT * 10 ** trade?.inputAmount?.token?.decimals).toString(),
             minReturn.toString(),
             account,
-            ZERO_ADDRESS,
+            referralAddress,
           ];
           obj = {};
         } else if (
@@ -365,7 +369,7 @@ export function useSwapCallback(
               minReturn.toString(), //t3,
               addresses,
               account,
-              ZERO_ADDRESS,
+              referralAddress,
             ];
             obj = {
               value: `0x${BigInt(+formattedAmounts.INPUT * 10 ** WETH!.decimals).toString(16)}`,
@@ -377,7 +381,7 @@ export function useSwapCallback(
               // t3,
               addresses,
               account,
-              ZERO_ADDRESS,
+              referralAddress,
             ];
           }
         } else {
@@ -387,7 +391,7 @@ export function useSwapCallback(
             minReturn.toString(),
             addresses,
             account,
-            ZERO_ADDRESS,
+            referralAddress,
           ];
           obj = {};
         }

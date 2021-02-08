@@ -271,6 +271,11 @@
         "internalType": "uint256",
         "name": "amountBMin",
         "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "ref",
+        "type": "address"
       }
     ],
     "name": "addLiquidity",
@@ -315,6 +320,11 @@
         "internalType": "uint256",
         "name": "amountETHMin",
         "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "ref",
+        "type": "address"
       }
     ],
     "name": "addLiquidityETH",
