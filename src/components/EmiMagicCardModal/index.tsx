@@ -229,6 +229,7 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
     if (!validateForm(name, email, telegram, address)) {
       setValidation(defaultValidation);
       const utm = localStorage.getItem('UTMMarks');
+      //TODO сделать единый фечт интерфейс для проекта, когда выделят время)
       fetch(`/v1/public/whitelist${utm || ''}`, {
         method: 'POST',
         headers: {
@@ -242,7 +243,13 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
           created_at: new Date().toString(),
         }),
       })
-        .then(response => response.text())
+        .then(response => {
+          const respMessage = response.text()
+          if (response.status !== 200 && response.status !== 201) {
+            throw new Error(response.status.toString())
+          }
+          return respMessage
+        })
         .then(contents => {
           ReactGA.event({
             category: 'whitelist',
@@ -252,8 +259,10 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
           localStorage.removeItem('UTMMarks');
           onDismiss();
         })
-        .catch(() =>
-          console.log('Can’t access /v1/public/whitelist response. Blocked by browser?'),
+        .catch((e) => {
+            alert(`Oops, we unable to perform whitelist registration - ${e}`)
+            console.log('Can’t access /v1/public/whitelist response. Blocked by browser?')
+          }
         );
     }
   };
