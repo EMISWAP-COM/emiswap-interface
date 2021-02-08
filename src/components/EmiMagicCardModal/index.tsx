@@ -209,7 +209,7 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
         .then(contents => {
           ReactGA.event({
             category: 'whitelist',
-            action: 'register',
+            action: 'whitelist_MagicNFT',
           });
           console.log(contents);
           localStorage.removeItem('UTMMarks');

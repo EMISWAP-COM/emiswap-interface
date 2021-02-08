@@ -41,7 +41,7 @@ const CloseIcon = styled.div`
     top: 14px;
     right: 16px;
   `};
-  
+
   @media screen and (max-width: 1200px) {
     display: block;
   }
@@ -222,7 +222,7 @@ export default function WalletModal({
         return () => {
           ReactGA.event({
             category: 'wallet',
-            action: 'connect',
+            action: 'connect_metamask',
             label: 'metamask',
           });
         };
@@ -230,7 +230,7 @@ export default function WalletModal({
         return () => {
           ReactGA.event({
             category: 'wallet',
-            action: 'connect',
+            action: 'connect_walletconnect',
             label: 'walletconnect',
           });
         };
@@ -238,7 +238,7 @@ export default function WalletModal({
         return () => {
           ReactGA.event({
             category: 'wallet',
-            action: 'connect',
+            action: 'connect_coinbasewallet',
             label: 'coinbasewallet',
           });
         };
@@ -246,7 +246,7 @@ export default function WalletModal({
         return () => {
           ReactGA.event({
             category: 'wallet',
-            action: 'connect',
+            action: 'connect_fortmatic',
             label: 'fortmatic',
           });
         };
@@ -254,7 +254,7 @@ export default function WalletModal({
         return () => {
           ReactGA.event({
             category: 'wallet',
-            action: 'connect',
+            action: 'connect_portis',
             label: 'portis',
           });
         };
@@ -291,7 +291,7 @@ export default function WalletModal({
       .then(() => {
         ReactGA.event({
           category: 'wallet',
-          action: 'connect',
+          action: 'connect_success',
           label: 'success',
         });
       })

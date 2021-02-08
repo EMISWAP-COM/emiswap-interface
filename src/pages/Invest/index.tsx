@@ -379,6 +379,16 @@ const EmiMagicBtn = styled.div`
   margin-top: 10px;
 `;
 
+const EmiCardHeader = styled.div`
+  color: #e50606;
+  font-size: 1rem;
+
+  span {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+`
+
 export function RedirectPathToInvestOnly({ location }: RouteComponentProps) {
   return <Redirect to={{ ...location, pathname: '/invest' }} />;
 }
@@ -537,7 +547,7 @@ const Invest = () => {
   const openEmiCardModal = () => {
     ReactGA.event({
       category: 'Magic_NFT',
-      action: 'click',
+      action: 'click_MagicNFT',
     });
     setShowEmiCardModal(true);
   };
@@ -917,11 +927,21 @@ const Invest = () => {
       return 'block-with-cards';
     };
 
-    const getHeaderToEmiCardBlock = (role: UserRoles, ESW: Number): string => {
+    const getHeaderToEmiCardBlock = (role: UserRoles, ESW: Number): React.ReactFragment => {
       if (role === UserRoles.distributor) {
-        return 'Choose your Package';
+        return <>Choose your Package</>
       } else {
-        return ESW > 0 ? 'You will get:' : 'Buy ESW to get Magic NFT EmiCards';
+        return (
+          <p>
+            {ESW > 0 ?
+              <EmiCardHeader>Please, &nbsp;
+                <span onClick={() => setShowEmiCardModal(true)}>Register in the Whitelist</span>
+              &nbsp; to Get:</EmiCardHeader>
+
+              : <>Buy ESW to get Magic NFT EmiCards</>
+            }
+            </p>
+      )
       }
     };
 
@@ -1154,7 +1174,7 @@ const Invest = () => {
             </BottomGrouping>
           </AutoColumn>
           {account ? <ReferralLink /> : ''}
-          <EmiMagicBtn onClick={openEmiCardModal}>Get Magic NFT Cards</EmiMagicBtn>
+          <EmiMagicBtn onClick={openEmiCardModal}>Register here to Get Magic Cards</EmiMagicBtn>
           {showEmiCardModal && (
             <EmiMagicCardModal
               isOpen={showEmiCardModal}

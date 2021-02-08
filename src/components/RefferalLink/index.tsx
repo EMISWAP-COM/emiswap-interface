@@ -39,7 +39,7 @@ export default function ReferralLink() {
   const handleGA = () => {
     ReactGA.event({
       category: 'reflink',
-      action: 'copy',
+      action: 'copy_ref',
     });
   };
 
