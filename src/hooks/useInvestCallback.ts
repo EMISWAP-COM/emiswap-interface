@@ -2,15 +2,14 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { Contract } from '@ethersproject/contracts';
 import { ETHER, JSBI, Token, TokenAmount, Trade } from '@uniswap/sdk';
 import { useMemo } from 'react';
-import { REFERRAL_ADDRESS_STORAGE_KEY } from '../constants';
 import { getTradeVersion } from '../data/V1';
 import { useTransactionAdder } from '../state/transactions/hooks';
-import { getCrowdsaleContract, isAddress } from '../utils';
+import { getCrowdsaleContract } from '../utils';
 import { useActiveWeb3React } from './index';
-import { getAddress } from '@ethersproject/address';
 import { Field } from '../state/invest/actions';
 // import { toHex } from '../utils/v1SwapArguments';
 import { tokenAmountToString } from '../utils/formats';
+import { useReferralAddress } from './useReferralAddress';
 
 export type InvestCallback = null | (() => Promise<string>);
 export type EstimateCallback = null | (() => Promise<Array<number | undefined> | undefined>);
@@ -63,7 +62,7 @@ export function useInvestCallback(
   const { account, chainId, library } = useActiveWeb3React();
   const addTransaction = useTransactionAdder();
   const recipient = account;
-
+  const referralAddress = useReferralAddress();
   return useMemo(() => {
     if (!recipient || !library || !account || !chainId || !parsedAmounts || !currencies) {
       return null;
@@ -107,12 +106,6 @@ export function useInvestCallback(
           throw Error('An error occurred while investing. Please contact support.');
         }
       };
-
-      const referralAddressStr = localStorage.getItem(REFERRAL_ADDRESS_STORAGE_KEY);
-      let referralAddress = '0x0000000000000000000000000000000000000000';
-      if (referralAddressStr && isAddress(referralAddressStr)) {
-        referralAddress = getAddress(referralAddressStr);
-      }
 
       const amount: string =
         (inputCurrency?.decimals && inputCurrency?.decimals !== 0
@@ -160,5 +153,15 @@ export function useInvestCallback(
           .catch(onError);
       }
     };
-  }, [recipient, library, account, chainId, addTransaction, parsedAmounts, currencies, inputField]);
+  }, [
+    recipient,
+    library,
+    account,
+    chainId,
+    addTransaction,
+    parsedAmounts,
+    currencies,
+    inputField,
+    referralAddress,
+  ]);
 }

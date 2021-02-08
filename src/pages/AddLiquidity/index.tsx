@@ -39,7 +39,7 @@ import { tokenAmountToString } from '../../utils/formats';
 import { useEmiRouter } from '../../hooks/useContract';
 import { ErrorText } from '../../components/swap/styleds';
 import { useMockEstimate } from '../../hooks/useMockEstimate';
-import { REFERRAL_ADDRESS_STORAGE_KEY } from '../../constants';
+import { useReferralAddress } from '../../hooks/useReferralAddress';
 
 export default function AddLiquidity({
   match: {
@@ -107,7 +107,7 @@ export default function AddLiquidity({
     };
   }, {});
 
-  const referralAddress = localStorage.getItem(REFERRAL_ADDRESS_STORAGE_KEY) || ZERO_ADDRESS;
+  const referralAddress = useReferralAddress();
 
   const atMaxAmounts: { [field in Field]?: TokenAmount } = [
     Field.CURRENCY_A,
