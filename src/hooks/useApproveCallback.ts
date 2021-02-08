@@ -124,6 +124,7 @@ export function useApproveCallbackFromTrade(
   distribution?: BigNumber[],
   allowedSlippage = 0,
 ) {
+  const { chainId } = useActiveWeb3React();
   const swapState = useSelector<AppState, AppState['swap']>(state => state.swap);
   const amountToApprove = useMemo(
     () => (trade ? computeSlippageAdjustedAmounts(trade, allowedSlippage)[Field.INPUT] : undefined),
@@ -132,13 +133,13 @@ export function useApproveCallbackFromTrade(
   // const tradeIsV1 = getTradeVersion(trade) === Version.v1
   // const v1ExchangeAddress = useV1TradeExchangeAddress(trade)
   let spenderAddress;
-  if (trade) {
+  if (trade && chainId) {
     spenderAddress =
       trade.route.path.length <= 2 &&
-      (swapState[Field.INPUT].currencyId !== ZERO_ADDRESS ||
-        swapState[Field.OUTPUT].currencyId !== ZERO_ADDRESS)
+      swapState[Field.INPUT].currencyId !== ZERO_ADDRESS &&
+      swapState[Field.OUTPUT].currencyId !== ZERO_ADDRESS
         ? trade?.route.pairs[0].poolAddress
-        : ONE_SPLIT_ADDRESSES[ChainId.KOVAN];
+        : ONE_SPLIT_ADDRESSES[chainId];
   } else {
     spenderAddress = ONE_SPLIT_ADDRESSES[ChainId.KOVAN];
   }

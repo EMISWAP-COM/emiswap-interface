@@ -65,6 +65,8 @@ import {
   partnerCount,
   silverCount,
 } from '../../constants/invest';
+import { useMockEstimate } from '../../hooks/useMockEstimate';
+import { ErrorText } from '../../components/swap/styleds';
 
 const EmiCard = styled.div`
   position: absolute;
@@ -398,6 +400,8 @@ const Invest = () => {
 
   const { account, chainId } = useActiveWeb3React();
   const theme = useContext(ThemeContext);
+
+  const [isEnough] = useMockEstimate('pool');
 
   // toggle wallet when disconnected
   const toggleWalletModal = useWalletModalToggle();
@@ -1156,9 +1160,16 @@ const Invest = () => {
                   error={!!error}
                 >
                   <Text fontSize={16} fontWeight={450}>
-                    {error || notEnoughBalance ? getErrorText(error, notEnoughBalance, currencies) : `Invest`}
+                    {error || notEnoughBalance
+                      ? getErrorText(error, notEnoughBalance, currencies)
+                      : `Invest`}
                   </Text>
                 </ButtonError>
+              )}
+              {!isEnough && (
+                <ErrorText fontWeight={500} fontSize="11pt" severity={3}>
+                  Probably insufficient ETH balance
+                </ErrorText>
               )}
             </BottomGrouping>
           </AutoColumn>
