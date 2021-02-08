@@ -29,6 +29,8 @@ import {
   loadReferralPurchaseHistory,
 } from '../cabinets/actions';
 import { loadGasPrice } from '../stats/actions';
+import { useReferralAddress } from '../../hooks/useReferralAddress';
+import { ZERO_ADDRESS } from '../../constants/one-split';
 
 //TODO refactor after release
 // @ts-ignore
@@ -36,11 +38,7 @@ const baseUrl = window.env ? window.env.REACT_APP_PUBLIC_URL : '';
 
 export const useLogin = async (account: string) => {
   const dispatch = useDispatch<AppDispatch>();
-  const search = window.location.hash.split('=');
-  let referral_address = '';
-  if (search && search[1]) {
-    referral_address = search[1];
-  }
+  const referral_address = useReferralAddress();
   const getUser = useCallback(async () => {
     //TODO create proper instance wrapper for REST
     fetch(`${baseUrl}/v1/public/users`, {
@@ -50,7 +48,11 @@ export const useLogin = async (account: string) => {
       },
       body: JSON.stringify({
         address: account,
-        referral_address,
+        ...(referral_address !== ZERO_ADDRESS
+          ? {
+              referral_address,
+            }
+          : {}),
       }),
     })
       .then(res => {
