@@ -590,7 +590,7 @@ export default function Swap() {
             )}
           </BottomGrouping>
 
-          {account ? <ReferralLink /> : ''}
+          {account ? <ReferralLink /> : 'Please connect to get a referral link.'}
         </Wrapper>
         <AdvancedSwapDetails trade={trade} />
       </AppBody>
