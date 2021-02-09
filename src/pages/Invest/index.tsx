@@ -425,7 +425,6 @@ const Invest = () => {
   const [selectedCardRole, setSelectedCardRole] = useState<number>(0);
   const role: UserRoles = useSelector((state: AppState) => state.user.info.role);
   const bonusRoleName = useSelector((state: AppState) => state.user.info.bonus_role_name);
-  const ESWBalance = useSelector((state: AppState) => state.cabinets.balance.amount);
 
   const parsedAmounts = {
     [Field.INPUT]: parsedAmount,
@@ -452,11 +451,13 @@ const Invest = () => {
   const handleSelectCard = useCallback(
     nextRole => {
       handleTypeInputOUTPUT(
-        ESWBalance && bonusRoleName ? getPriceToNextStep(bonusRoleName, nextRole) : '0',
+        bonusRoleName
+          ? getPriceToNextStep(bonusRoleName, nextRole)
+          : String(accountAmounts[nextRole]),
       );
       setSelectedCardRole(nextRole);
     },
-    [handleTypeInputOUTPUT, ESWBalance, bonusRoleName],
+    [handleTypeInputOUTPUT, bonusRoleName],
   );
 
   // modal and loading
