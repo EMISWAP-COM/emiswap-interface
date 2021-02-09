@@ -1181,7 +1181,7 @@ const Invest = () => {
               )}
             </BottomGrouping>
           </AutoColumn>
-          {account ? <ReferralLink /> : ''}
+          {account ? <ReferralLink /> : 'Please connect to get a referral link.'}
           <EmiMagicBtn onClick={openEmiCardModal}>Register here to Get Magic Cards</EmiMagicBtn>
           {showEmiCardModal && (
             <EmiMagicCardModal
