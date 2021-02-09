@@ -1183,13 +1183,11 @@ const Invest = () => {
           </AutoColumn>
           {account ? <ReferralLink /> : 'Please connect to get a referral link.'}
           <EmiMagicBtn onClick={openEmiCardModal}>Register here to Get Magic Cards</EmiMagicBtn>
-          {showEmiCardModal && (
             <EmiMagicCardModal
               isOpen={showEmiCardModal}
               onDismiss={closeEmiCardModal}
               walletID={account}
             />
-          )}
         </Wrapper>
         {generateEmiCardBlock(Number(formattedAmounts[Field.OUTPUT]))}
       </AppBody>
