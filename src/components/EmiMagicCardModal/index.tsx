@@ -1,21 +1,14 @@
 import React, { useRef, useState } from 'react';
-import styled from 'styled-components';
+import styled from "styled-components";
 import WAValidator from 'wallet-address-validator';
 import ReactGA from 'react-ga';
 import Modal from '../Modal';
 import EmiCardHeaderImg from '../../assets/images/EmiCardHeaderImgNew.jpg';
-import CloseIcon from '../../assets/images/close-white.svg';
+import { SuccessRegistration } from './SuccessRegistration'
+import {CloseIcon} from '../../assets/tsx/CloseIcon'
 
-const ModalBody = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-
-  .close-icon {
+const CloseBtn = styled.div`
     position: absolute;
-    width: 15px;
     right: 20px;
     top: 20px;
     cursor: pointer;
@@ -24,6 +17,18 @@ const ModalBody = styled.div`
       top: 15px;
       right: 15px;
     }
+`
+
+
+const ModalBody = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+    
+  @media screen and (max-width: 600px) {
+    font-size: 12px;
 
   }
 
@@ -190,12 +195,15 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
   const telegramRef = useRef(null);
   const addressRef = useRef(null);
   const [validation, setValidation] = useState(defaultValidation);
+  const [isRegistered, setIsRegistered] = useState(false)
+
   const validateForm = (name = '', email = '', telegram = '', address = '') => {
     let isValid = false;
     const newValidator = { ...defaultValidation };
+    const nameRegexp = /[A-Za-zА-Яа-я]{3}/
     const emailRegexp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const telegramRegexp = /^@[a-z0-9_]+$/;
-    if (name.replace(/[^A-Za-z0-9_'-]/gi, '').length === 0) {
+    if (!nameRegexp.test(name)) {
       newValidator.name = true;
       isValid = true;
     }
@@ -244,6 +252,8 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
         }),
       })
         .then(response => {
+          setIsRegistered(true)
+
           const respMessage = response.text()
           if (response.status !== 200 && response.status !== 201) {
             throw new Error(response.status.toString())
@@ -255,7 +265,6 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
             category: 'whitelist',
             action: 'whitelist_MagicNFT',
           });
-          console.log(contents);
           localStorage.removeItem('UTMMarks');
           onDismiss();
         })
@@ -269,82 +278,89 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
   return (
     <Modal isOpen={isOpen} onDismiss={onDismiss} maxHeight={90} maxWidth={680}>
       <ModalBody>
-        <img className="close-icon" src={CloseIcon} alt="EmiCardHeaderImg" onClick={onDismiss} />
-        <img src={EmiCardHeaderImg} alt="EmiCardHeaderImg" />
-        <div className="modal-body">
-          <div className="modal-body__header">
-            Fill in this form and get Magic NFT Bonus at EmiSwap Crowdsale
-          </div>
-          <div className="modal-body__description">
-            Only the first 1,000 Crowdsale participants with 500 or more ESW, who fill this form
-            will receive the bonus!
-          </div>
-          <div className="modal-body__input-block">
-            <div className="modal-body__input-label">Name</div>
-            <input
-              ref={nameRef}
-              className={`modal-body__input${validation.name ? ' modal-body__error' : ''}`}
-              type="text"
-              placeholder="Bob"
-            />
-            {validation.name && (
-              <span className="modal-body__error-text">Please enter the correct value</span>
-            )}
-          </div>
-          <div className="modal-body__input-block">
-            <div className="modal-body__input-label">Your Email</div>
-            <input
-              ref={emailRef}
-              className={`modal-body__input${validation.email ? ' modal-body__error' : ''}`}
-              type="text"
-              placeholder="email@email.com"
-            />
-            {validation.email && (
-              <span className="modal-body__error-text">Please enter the correct value</span>
-            )}
-          </div>
-          <div className="modal-body__input-block">
-            <div className="modal-body__input-label">Your Telegram</div>
-            <input
-              ref={telegramRef}
-              className={`modal-body__input${validation.telegram ? ' modal-body__error' : ''}`}
-              type="text"
-              placeholder="@telegram"
-            />
-            {validation.telegram && (
-              <span className="modal-body__error-text">Please enter the correct value</span>
-            )}
-          </div>
-          <div className="modal-body__input-block">
-            <div className="modal-body__input-label">Ethereum Address Used to Buy ESW</div>
-            <input
-              ref={addressRef}
-              className={`modal-body__input${validation.address ? ' modal-body__error' : ''}`}
-              defaultValue={walletID}
-              type="text"
-              placeholder="0x3f4..."
-            />
-            {validation.address && (
-              <span className="modal-body__error-text">Please enter the correct value</span>
-            )}
-          </div>
-          <div className="modal-body__btn-container">
-            <div className="modal-body__btn" onClick={sendForm}>
-              Register for a whitelist
+        <CloseBtn onClick={onDismiss}>
+          <CloseIcon color={isRegistered ? '#555959' : '#ffffff'} />
+        </CloseBtn>
+        {isRegistered ? <SuccessRegistration/> : (
+          <>
+            <img src={EmiCardHeaderImg} alt="EmiCardHeaderImg" />
+            <div className="modal-body">
+              <div className="modal-body__header">
+                Fill in this form and get Magic NFT Bonus at EmiSwap Crowdsale
+              </div>
+              <div className="modal-body__description">
+                Only the first 1,000 Crowdsale participants with 500 or more ESW, who fill this form
+                will receive the bonus!
+              </div>
+              <div className="modal-body__input-block">
+                <div className="modal-body__input-label">Name</div>
+                <input
+                  ref={nameRef}
+                  className={`modal-body__input${validation.name ? ' modal-body__error' : ''}`}
+                  type="text"
+                  placeholder="Bob"
+                />
+                {validation.name && (
+                  <span className="modal-body__error-text">Please enter the correct value</span>
+                )}
+              </div>
+              <div className="modal-body__input-block">
+                <div className="modal-body__input-label">Your Email</div>
+                <input
+                  ref={emailRef}
+                  className={`modal-body__input${validation.email ? ' modal-body__error' : ''}`}
+                  type="text"
+                  placeholder="email@email.com"
+                />
+                {validation.email && (
+                  <span className="modal-body__error-text">Please enter the correct value</span>
+                )}
+              </div>
+              <div className="modal-body__input-block">
+                <div className="modal-body__input-label">Your Telegram</div>
+                <input
+                  ref={telegramRef}
+                  className={`modal-body__input${validation.telegram ? ' modal-body__error' : ''}`}
+                  type="text"
+                  placeholder="@telegram"
+                />
+                {validation.telegram && (
+                  <span className="modal-body__error-text">Please enter the correct value</span>
+                )}
+              </div>
+              <div className="modal-body__input-block">
+                <div className="modal-body__input-label">Ethereum Address Used to Buy ESW</div>
+                <input
+                  ref={addressRef}
+                  className={`modal-body__input${validation.address ? ' modal-body__error' : ''}`}
+                  defaultValue={walletID}
+                  type="text"
+                  placeholder="0x3f4..."
+                />
+                {validation.address && (
+                  <span className="modal-body__error-text">Please enter the correct value</span>
+                )}
+              </div>
+              <div className="modal-body__btn-container">
+                <div className="modal-body__btn" onClick={sendForm}>
+                  Register for a whitelist
+                </div>
+              </div>
+              <div className="modal-body__bottom-text">
+                Still have questions? Join EmiSwap{' '}
+                <a
+                  className="modal-body__link"
+                  href="https://t.me/emiswap_official"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Telegram Chat
+                </a>
+              </div>
             </div>
-          </div>
-          <div className="modal-body__bottom-text">
-            Still have questions? Join EmiSwap{' '}
-            <a
-              className="modal-body__link"
-              href="https://t.me/emiswap_official"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Telegram Chat
-            </a>
-          </div>
-        </div>
+          </>
+        )}
+
       </ModalBody>
     </Modal>
   );
