@@ -8,6 +8,7 @@ on:
       - feature-es244_distibutor_cabinet
 
       - feature/es-270
+      - feature/es-247
 
   # manual trigger
   workflow_dispatch:
