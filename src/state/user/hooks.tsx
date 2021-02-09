@@ -2,7 +2,11 @@ import { ChainId, Pair, Token } from '@uniswap/sdk';
 import flatMap from 'lodash.flatmap';
 import { useCallback, useEffect, useMemo } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from '../../constants';
+import {
+  BASES_TO_TRACK_LIQUIDITY_FOR,
+  PINNED_PAIRS,
+  REFERRAL_ADDRESS_STORAGE_KEY,
+} from '../../constants';
 
 import { useActiveWeb3React } from '../../hooks';
 import { useAllTokens } from '../../hooks/Tokens';
@@ -11,7 +15,7 @@ import {
   addSerializedPair,
   addSerializedToken,
   dismissTokenWarning,
-  login,
+  loginCabinets,
   removeSerializedToken,
   SerializedPair,
   SerializedToken,
@@ -22,54 +26,16 @@ import {
 } from './actions';
 import { useDefaultTokenList } from '../lists/hooks';
 import { isDefaultToken } from '../../utils';
-import {
-  loadBalance,
-  loadPerformance,
-  loadPurchaseHistory,
-  loadReferralPurchaseHistory,
-} from '../cabinets/actions';
-import { loadGasPrice } from '../stats/actions';
 
 //TODO refactor after release
 // @ts-ignore
-const baseUrl = window.env ? window.env.REACT_APP_PUBLIC_URL : '';
 
 export const useLogin = async (account: string) => {
   const dispatch = useDispatch<AppDispatch>();
-  const search = window.location.hash.split('=');
-  let referral_address = '';
-  if (search && search[1]) {
-    referral_address = search[1];
-  }
+  const referral_address = localStorage.getItem(REFERRAL_ADDRESS_STORAGE_KEY);
   const getUser = useCallback(async () => {
     //TODO create proper instance wrapper for REST
-    fetch(`${baseUrl}/v1/public/users`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        address: account,
-        referral_address,
-      }),
-    })
-      .then(res => {
-        if (res.status === 200 || res.status === 201) {
-          return res.json();
-        }
-        throw new Error('no user');
-      })
-      .then(data => {
-        dispatch(login(data));
-        dispatch(loadPerformance(data.id) as any);
-        dispatch(loadPurchaseHistory(data.id) as any);
-        dispatch(loadReferralPurchaseHistory(data.id) as any);
-        dispatch(loadBalance(data.id) as any);
-        dispatch(loadGasPrice() as any);
-      })
-      .catch(e => {
-        console.log(e);
-      });
+    dispatch(loginCabinets({ account, ...(referral_address ? { referral_address } : {}) }) as any);
   }, [account, dispatch, referral_address]);
 
   useEffect(() => {

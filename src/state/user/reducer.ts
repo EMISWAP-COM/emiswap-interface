@@ -4,6 +4,7 @@ import {
   addSerializedPair,
   addSerializedToken,
   dismissTokenWarning,
+  loadWalletAddress,
   login,
   removeSerializedPair,
   removeSerializedToken,
@@ -26,6 +27,7 @@ export interface UserInfo {
   id: string;
   referral_id: string;
   bonus_role_name?: string;
+  walletAddress: string;
 }
 
 export interface UserState {
@@ -85,6 +87,7 @@ export const initialState: UserState = {
     address: '',
     role: null,
     referral_id: '',
+    walletAddress: '',
   },
 };
 
@@ -92,7 +95,6 @@ export default createReducer(initialState, builder =>
   builder
     .addCase(login, (state, action) => {
       if (action.payload.role) {
-        console.log('role')
         state.info = action.payload;
       }
     })
@@ -168,4 +170,7 @@ export default createReducer(initialState, builder =>
         state.timestamp = currentTimestamp();
       },
     )
+    .addCase(loadWalletAddress.fulfilled, (state, { payload }) => {
+      state.info.walletAddress = payload;
+    }),
 );
