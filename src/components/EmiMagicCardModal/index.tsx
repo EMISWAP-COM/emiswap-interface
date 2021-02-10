@@ -200,7 +200,7 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
   const validateForm = (name = '', email = '', telegram = '', address = '') => {
     let isValid = false;
     const newValidator = { ...defaultValidation };
-    const nameRegexp = /[A-Za-zА-Яа-я]{3}/
+    const nameRegexp = /\D/
     const emailRegexp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const telegramRegexp = /^@[a-z0-9_]+$/;
     if (!nameRegexp.test(name)) {
@@ -252,8 +252,6 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
         }),
       })
         .then(response => {
-          setIsRegistered(true)
-
           const respMessage = response.text()
           if (response.status !== 200 && response.status !== 201) {
             throw new Error(response.status.toString())
@@ -266,7 +264,7 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
             action: 'whitelist_MagicNFT',
           });
           localStorage.removeItem('UTMMarks');
-          onDismiss();
+          setIsRegistered(true)
         })
         .catch((e) => {
             alert(`Oops, we unable to perform whitelist registration - ${e}`)
