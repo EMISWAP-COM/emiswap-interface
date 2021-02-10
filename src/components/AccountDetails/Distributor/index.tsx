@@ -10,7 +10,7 @@ import Copy from '../Copy';
 import { StatusIcon } from '../StatusIcon';
 import { PurchaseHistory } from '../Common/PurchaseHistory';
 import { ReferalPerformance } from '../Common/ReferalPerformance';
-import { WalletAction, StatusAction } from '../styleds';
+import { WalletAction } from '../styleds';
 import {
   loadBalance,
   loadPerformance,
@@ -140,12 +140,12 @@ const ProfileStatus = styled.div`
   @media screen and (max-width: 1200px) {
     padding: 0 0 1rem 0;
   }
+`;
 
-  span {
+const ProfileText = styled.span`
     color: #000000;
     font-weight: 700;
     text-transform: uppercase;
-  }
 `;
 
 const Package = styled.div`
@@ -154,6 +154,21 @@ const Package = styled.div`
   justify-content: space-between;
   min-width: 300px;
   width: 100%;
+`;
+
+const UpgradeBtn = styled.span`
+  display: block;
+  border-radius: 5px;
+  background: #bb26c7;
+  color: #ffffff;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 10px 15px;
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 10px;
+  cursor: pointer;
 `;
 
 interface Props {
@@ -202,15 +217,15 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
     <Wrapper>
       <ProfileStatus>
         <div>
-          Status: <span>Distributor</span>
+          Status: <ProfileText>Distributor</ProfileText>
         </div>
         <Package>
           <div>
-            Package: <span>{packageNames[bonus_role_name]}</span>
+            Package: <ProfileText>{packageNames[bonus_role_name]}</ProfileText>
           </div>
-          <StatusAction onClick={handlePackageUpgrade}>
+          <UpgradeBtn onClick={handlePackageUpgrade}>
             Upgrade
-          </StatusAction>
+          </UpgradeBtn>
         </Package>
       </ProfileStatus>
       <TableWrapper>
