@@ -72,10 +72,3 @@ export const WalletAction = styled(ButtonSecondary)`
     margin-left: auto;
   }
 `;
-
-export const StatusAction = styled(WalletAction)`
-  background-color: #9A56D1;
-  opacity: .6;
-  color: #fff;
-  border-radius: 10px;
-`;
