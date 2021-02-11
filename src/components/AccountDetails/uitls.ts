@@ -70,7 +70,32 @@ const getFullDate = (date: string) => {
   }-${d.getFullYear()}, ${hours}:${minutes}:${seconds}`;
 }
 
-export const convertDate = (date: string, format: string) => {
+const convertToISOSafari = (dateString: string) => {
+
+  try {
+    if (Date.parse(dateString)) {
+      return dateString
+    }
+
+    const normalizedDateString = dateString
+      .replace(/\s/, 'T')
+      .slice(0, -4)
+      .concat('+00:00');
+
+    if (Date.parse(normalizedDateString)) {
+      return normalizedDateString
+    }
+
+    return null
+  } catch (e) {
+    console.log(e)
+    return null
+  }
+}
+
+export const convertDate = (dateSourceString: string, format: string) => {
+
+  const date = convertToISOSafari(dateSourceString)
 
   if (date) {
 
@@ -88,3 +113,4 @@ export const convertDate = (date: string, format: string) => {
   return '-'
 
 };
+
