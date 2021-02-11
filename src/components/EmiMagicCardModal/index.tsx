@@ -212,7 +212,7 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
       isValid = true;
     }
 
-    if (!telegramRegexp.test(telegram)) {
+    if (!telegramRegexp.test(telegram.toLowerCase())) {
       newValidator.telegram = true;
       isValid = true;
     }
