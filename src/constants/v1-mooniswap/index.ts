@@ -12,11 +12,11 @@ const V1_MOONISWAP_FACTORY_ADDRESSES: { [chainId in ChainId]: string } = {
 };
 
 const V1_EMIROUTER_HELPER_ADDRESSES: { [chainId in ChainId]: string } = {
-  [ChainId.MAINNET]: '0xBA2398194721b292Ff628Faa782Cf22E924D365D',
-  [ChainId.ROPSTEN]: '0xe5c8e363de97840d5996e1e8db8b5facda0f1e21',
-  [ChainId.RINKEBY]: '0xe5c8e363de97840d5996e1e8db8b5facda0f1e21',
-  [ChainId.GÖRLI]: '0xe5c8e363de97840d5996e1e8db8b5facda0f1e21',
-  [ChainId.KOVAN]: '0x3c756Eed6DC66F7013923AC50aB236111a9494bD',
+  [ChainId.MAINNET]: window['env'].REACT_APP_EMI_ROUTER_MAINNET,
+  [ChainId.ROPSTEN]: window['env'].REACT_APP_EMI_ROUTER_ROPSTEN,
+  [ChainId.RINKEBY]: window['env'].REACT_APP_EMI_ROUTER_RINKEBY,
+  [ChainId.GÖRLI]: window['env'].REACT_APP_EMI_ROUTER_GÖRLI,
+  [ChainId.KOVAN]: window['env'].REACT_APP_EMI_ROUTER_KOVAN,
 };
 
 const V1_FACTORY_INTERFACE = new Interface(V1_MOONISWAP_FACTORY_ABI);
