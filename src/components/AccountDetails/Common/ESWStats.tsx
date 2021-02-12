@@ -5,30 +5,8 @@ import { CommingSoon } from '../../../base/ui/CommingSoon';
 import { AppState } from '../../../state';
 import { TYPE } from '../../../theme';
 import { convertBigDecimal, convertDate, DateFormat } from '../uitls'
+import {  WalletAction } from '../styleds';
 
-const WalletButton = styled.span`
-  display: block;
-  width: 100%;
-  max-width: 133px;
-  padding: 7px 11px 6px 15px;
-  height: 29px;
-  font-family: 'IBM Plex Sans';
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 16px;
-  text-align: center;
-  color: ${({ theme }) => theme.black};
-  border-radius: 5px;
-  background: ${({ theme }) => theme.primary1};
-  @media screen and (max-width: 1200px) {
-    max-width: 295px;
-    height: 40px;
-    padding: 11px 80px;
-    font-size: 14px;
-    font-weight: 500;
-  }
-`;
 
 const DateBlock = styled.span`
   font-family: 'IBM Plex Sans';
@@ -196,7 +174,7 @@ export const ESWStats = () => {
         </TopRows>
         <BottomRow>
           <CommingSoon>
-            <WalletButton>Collect to my wallet</WalletButton>
+            <WalletAction>Collect to my wallet</WalletAction>
           </CommingSoon>
         </BottomRow>
       </Wrapper>
