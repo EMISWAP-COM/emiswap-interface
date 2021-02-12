@@ -423,8 +423,8 @@ const Invest = () => {
   } = useDerivedInvestInfo();
 
   const [selectedCardRole, setSelectedCardRole] = useState<number>(0);
-  const role: UserRoles = useSelector((state: AppState) => state.user.info.role);
-  const bonusRoleName = useSelector((state: AppState) => state.user.info.bonus_role_name);
+  const role: UserRoles = useSelector((state: AppState) => state.user.info?.role);
+  const bonusRoleName = useSelector((state: AppState) => state.user.info?.bonus_role_name);
 
   const parsedAmounts = {
     [Field.INPUT]: parsedAmount,

@@ -4,7 +4,7 @@ import { AppState } from '../state';
 import { useSelector } from 'react-redux';
 
 export const useReferralAddress = () => {
-  const walletAddress = useSelector((state: AppState) => state.user.info.walletAddress);
+  const walletAddress = useSelector((state: AppState) => state.user.info?.walletAddress);
   const { account } = useActiveWeb3React();
   return !walletAddress || account === walletAddress ? ZERO_ADDRESS : walletAddress;
 };
