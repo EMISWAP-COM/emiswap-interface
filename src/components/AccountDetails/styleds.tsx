@@ -68,9 +68,6 @@ export const WalletAction = styled(ButtonSecondary)`
     cursor: pointer;
     text-decoration: underline;
   }
-  &:focus {
-    background-color: ${({ theme }) => theme.primary1};
-  }
 
   @media screen and (max-width: 1200px) {
     margin-left: auto;

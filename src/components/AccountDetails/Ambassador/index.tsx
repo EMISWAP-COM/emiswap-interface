@@ -199,8 +199,8 @@ const Ambassador: React.FC<Props> = ({ openOptions, ENSName }) => {
 
   return (
     <Wrapper>
-      <ProfileStatus>
-        <div>
+      <ProfileStatus >
+        <div >
           Status: <span>Ambassador</span>
         </div>
         <Package>
