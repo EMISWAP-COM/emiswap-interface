@@ -4,7 +4,7 @@ import { TYPE } from '../../../theme';
 import { Level } from '../styleds';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
-import { convertBigDecimal, convertDate, DateFormat, shortenHash } from '../uitls'
+import { convertBigDecimal, convertDate, DateFormat, shortenHash } from '../uitls';
 
 const TableWrapper = styled.div`
   border: 1px solid #707070;
@@ -32,21 +32,7 @@ const Table = styled.div`
   }
 
   &::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-    background: none;
-  }
-
-  &::-webkit-scrollbar-track {
-    width: 2px;
-    background: #707070;
-    border: 2px solid white;
-  }
-  &::-webkit-scrollbar-thumb {
-    width: 3px;
-    max-height: 5px;
-    background: #707070;
-    border-radius: 20px;
+    display: none;
   }
 `;
 
