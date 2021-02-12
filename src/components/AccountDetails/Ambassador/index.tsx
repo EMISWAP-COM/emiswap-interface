@@ -263,10 +263,10 @@ const Ambassador: React.FC<Props> = ({ openOptions, ENSName }) => {
               </Balance>
             </BalanceWrapper>
             <BalancePromo>
-              {change_level_info && (
+              {change_level_info && bonus_role_name === packageNames.rookie && (
                 <span>
                   You need {convertBigDecimal(change_level_info.amount)}
-                  ESW purchase from your Ref’s to change level to&nbsp;
+                  DAI purchase from your Ref’s to change level to&nbsp;
                   <UpperCase>{change_level_info.next_level}</UpperCase>
                 </span>
               )}
