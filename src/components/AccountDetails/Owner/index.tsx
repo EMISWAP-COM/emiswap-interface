@@ -178,7 +178,6 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
 
 
   useEffect(() => {
-    console.log('test')
     dispatch(loadPerformance(userId) as any);
     dispatch(loadPurchaseHistory(userId) as any);
     dispatch(loadReferralPurchaseHistory(userId) as any);
@@ -256,17 +255,17 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
               >
                 Referral Program
               </ExternalLink>
-              , become an
+              , become an&nbsp;
               <ExternalLink
                 href={'https://crowdsale.emidao.org/en#rec240950289'}
               >
-                &nbsp;Ambassador&nbsp;
+                Ambassador
               </ExternalLink>
-              or farm your
+              &nbsp;or farm your&nbsp;
               <ExternalLink
                 href={'https://crowdsale.emidao.org/magic-nft'}
               >
-                &nbsp;Magic Cards!
+                Magic Cards!
               </ExternalLink>
             </BalancePromo>
           </BalanceContainer>

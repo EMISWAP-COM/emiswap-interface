@@ -215,8 +215,8 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
 
   return (
     <Wrapper>
-      <ProfileStatus>
-        <div>
+      <ProfileStatus >
+        <div >
           Status: <ProfileText>Distributor</ProfileText>
         </div>
         <Package>

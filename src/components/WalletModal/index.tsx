@@ -556,7 +556,7 @@ export default function WalletModal({
       maxHeight={90}
       maxWidth={720}
     >
-      <Wrapper>
+      <Wrapper tabIndex={0}>
         <UpperSection>
           <CloseIcon onClick={toggleWalletModal}>
             <CloseColor />
