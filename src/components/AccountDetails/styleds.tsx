@@ -2,16 +2,16 @@ import styled from 'styled-components';
 import { FixedSizeList } from 'react-window';
 
 import { RowBetween } from '../Row';
-import { ButtonSecondary } from '../Button'
+import { ButtonSecondary } from '../Button';
 
 export const Level = styled.div`
   width: 1.5rem;
-  background: #6E6E6E;
-  border-radius: .4rem;
+  background: #6e6e6e;
+  border-radius: 0.4rem;
   color: #ffffff;
-  font-size: .7rem;
+  font-size: 0.7rem;
   padding: 1px 3px 1px 2px;
-`
+`;
 
 export const MenuItem = styled(RowBetween)`
   padding: 4px 30px 4px 16px;
@@ -68,6 +68,10 @@ export const WalletAction = styled(ButtonSecondary)`
     cursor: pointer;
     text-decoration: underline;
   }
+  &:focus {
+    background-color: ${({ theme }) => theme.primary1};
+  }
+
   @media screen and (max-width: 1200px) {
     margin-left: auto;
   }
