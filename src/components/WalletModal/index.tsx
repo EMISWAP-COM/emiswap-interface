@@ -463,15 +463,17 @@ export default function WalletModal({
             </NoUser>
           );
       }
-      // return (
-      //   <AccountDetails
-      //     toggleWalletModal={toggleWalletModal}
-      //     pendingTransactions={pendingTransactions}
-      //     confirmedTransactions={confirmedTransactions}
-      //     ENSName={ENSName}
-      //     openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}
-      //   />
-      // );
+    } else if (account && !user && walletView === WALLET_VIEWS.ACCOUNT) {
+      return (
+        <>
+          <HeaderRow>
+            Sorry, we couldn't load user info
+          </HeaderRow>
+          <ContentWrapper>
+            account - {account}
+          </ContentWrapper>
+        </>
+      )
     }
     return (
       <>
