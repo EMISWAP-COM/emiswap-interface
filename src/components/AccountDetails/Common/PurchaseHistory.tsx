@@ -132,7 +132,7 @@ export const PurchaseHistory = () => {
         </Table>
       </TableWrapper>
 
-      <TYPE.mediumHeader>Referal Purchase History</TYPE.mediumHeader>
+      <TYPE.mediumHeader>Referral Purchase History</TYPE.mediumHeader>
       <TableWrapper>
         <TableLong amount={referralPurchases.length}>
           {referralPurchases.map(({ amount, date, transaction_hash, referral_level }) => (
