@@ -19,8 +19,8 @@ import {
 } from '../../../state/cabinets/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, AppState } from '../../../state';
-import { ESWPerformance } from '../Common/ESWPerformance';
-import { ESWStats } from '../Common/ESWStats';
+// import { ESWPerformance } from '../Common/ESWPerformance';
+// import { ESWStats } from '../Common/ESWStats';
 import { packageNames } from '../constant';
 import { useWalletModalToggle } from '../../../state/application/hooks'
 import { useHistory } from 'react-router'
@@ -291,8 +291,8 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
         </InfoCard>
         <ReferalPerformance />
         <PurchaseHistory />
-        <ESWPerformance />
-        <ESWStats />
+        {/* <ESWPerformance />
+        <ESWStats /> */}
       </TableWrapper>
     </Wrapper>
   );
