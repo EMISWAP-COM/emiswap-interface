@@ -19,7 +19,7 @@ import {
 } from '../../../state/cabinets/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, AppState } from '../../../state';
-// import { ESWStats } from '../Common/ESWStats';
+import { ESWStats } from '../Common/ESWStats';
 // import { ESWPerformance } from '../Common/ESWPerformance'
 
 const Wrapper = styled.div`
@@ -283,8 +283,8 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
         </InfoCard>
         <ReferalPerformance />
         <PurchaseHistory />
-        {/* <ESWPerformance/>
-        <ESWStats /> */}
+        {/* <ESWPerformance/> */}
+        <ESWStats />
       </TableWrapper>
     </Wrapper>
   );

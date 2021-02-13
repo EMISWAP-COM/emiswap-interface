@@ -20,7 +20,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, AppState } from '../../../state';
 // import { ESWPerformance } from '../Common/ESWPerformance';
-// import { ESWStats } from '../Common/ESWStats';
+import { ESWStats } from '../Common/ESWStats';
 import { packageNames } from '../constant';
 
 const Wrapper = styled.div`
@@ -286,8 +286,8 @@ const Ambassador: React.FC<Props> = ({ openOptions, ENSName }) => {
         </InfoCard>
         <ReferalPerformance />
         <PurchaseHistory />
-        {/* <ESWPerformance />
-        <ESWStats /> */}
+        {/* <ESWPerformance /> */}
+        <ESWStats />
       </TableWrapper>
     </Wrapper>
   );
