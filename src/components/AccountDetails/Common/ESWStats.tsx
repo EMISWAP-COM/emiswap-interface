@@ -142,7 +142,7 @@ export const ESWStats = () => {
   const unfrozen = convertBigDecimal(balance?.available);
   const frozen = convertBigDecimal(String(balance?.locked));
   const nextUnlockAmount = convertBigDecimal(balance?.nearest_unlock?.amount);
-  const unlockDate = convertDate(balance?.nearest_unlock?.unlock_date, DateFormat.short);
+  const unlockDate = balance?.nearest_unlock?.unlock_date === undefined ? null : convertDate(balance?.nearest_unlock?.unlock_date, DateFormat.short);
   const total = convertBigDecimal(balance?.amount);
   return (
     <>
