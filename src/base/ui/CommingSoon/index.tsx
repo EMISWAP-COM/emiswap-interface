@@ -6,7 +6,7 @@ export const CommingSoon = styled.div`
   &:after {
     position: absolute;
     content: 'soon';
-    background: '#dc000c';
+    background: #dc000c;
     // width: 30px;
     // height: 20px; 
     border-radius: 12px;
