@@ -4,7 +4,7 @@ import { TYPE } from '../../../theme';
 import { Level } from '../styleds';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
-import { convertBigDecimal, convertDate, DateFormat, shortenHash } from '../uitls'
+import { convertBigDecimal, convertDate, DateFormat, shortenHash } from '../uitls';
 
 const TableWrapper = styled.div`
   border: 1px solid #707070;
@@ -21,34 +21,32 @@ const TableWrapper = styled.div`
   }
 `;
 
-const Table = styled.div`
+const Table = styled.div<{ amount?: number }>`
   height: 105px;
 
   overflow-y: scroll;
   align-items: center;
 
+  background: ${({ amount }) => {
+  return amount < 4
+    ? 'repeating-linear-gradient(#e4e5e7, #e4e5e7 35px, transparent 35px, transparent 70px)'
+    : 'transparent'
+}
+  };
+
   @media screen and (max-width: 1200px) {
     height: 210px;
-  }
-
-  &::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
     background: none;
   }
 
-  &::-webkit-scrollbar-track {
-    width: 2px;
-    background: #707070;
-    border: 2px solid white;
-  }
-  &::-webkit-scrollbar-thumb {
-    width: 3px;
-    max-height: 5px;
-    background: #707070;
-    border-radius: 20px;
+  &::-webkit-scrollbar {
+    display: none;
   }
 `;
+
+const TableLong = styled(Table)`
+  height: 175px;
+`
 
 const TableRow = styled.div`
   height: 35px;
@@ -56,6 +54,7 @@ const TableRow = styled.div`
   align-items: center;
   font-size: 0.8rem;
   padding: 0 1rem;
+
 
   &:nth-child(2n - 1) {
     background: #e4e5e7;
@@ -101,6 +100,15 @@ const Wallet = styled.div`
   }
 `;
 
+const NoContent = styled.div`
+  width: 100%;
+  text-align: center;
+  @media screen and (max-width: 1200px) {
+    font-weight: 500;
+    font-size: 0.75rem;
+  }
+`;
+
 export const PurchaseHistory = () => {
   const purchases = useSelector((state: AppState) => state.cabinets.purchaseHistory);
   const referralPurchases = useSelector((state: AppState) => state.cabinets.referralHistory);
@@ -109,7 +117,7 @@ export const PurchaseHistory = () => {
     <>
       <TYPE.mediumHeader>Your Purchase History</TYPE.mediumHeader>
       <TableWrapper>
-        <Table id={'test'} className="mostly-customized-scrollbar">
+        <Table id={'test'} className="mostly-customized-scrollbar" amount={purchases.length}>
           {purchases.map(({ amount, date, transaction_hash }) => (
             <TableRow key={transaction_hash}>
               <Date>{convertDate(date, DateFormat.full)}</Date>
@@ -120,12 +128,13 @@ export const PurchaseHistory = () => {
               <Wallet>{shortenHash(transaction_hash, 10)}</Wallet>
             </TableRow>
           ))}
+          {!purchases.length && <TableRow><NoContent>No content</NoContent></TableRow>}
         </Table>
       </TableWrapper>
 
-      <TYPE.mediumHeader>Referal Purchase History</TYPE.mediumHeader>
+      <TYPE.mediumHeader>Referral Purchase History</TYPE.mediumHeader>
       <TableWrapper>
-        <Table>
+        <TableLong amount={referralPurchases.length}>
           {referralPurchases.map(({ amount, date, transaction_hash, referral_level }) => (
             <TableRow key={transaction_hash}>
               <Date>{convertDate(date, DateFormat.full)}</Date>
@@ -138,7 +147,8 @@ export const PurchaseHistory = () => {
               <Wallet>{shortenHash(transaction_hash, 10)}</Wallet>
             </TableRow>
           ))}
-        </Table>
+          {!referralPurchases.length && <TableRow><NoContent>No content</NoContent></TableRow>}
+        </TableLong>
       </TableWrapper>
     </>
   );

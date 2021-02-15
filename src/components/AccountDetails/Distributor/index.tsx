@@ -19,7 +19,7 @@ import {
 } from '../../../state/cabinets/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, AppState } from '../../../state';
-import { ESWPerformance } from '../Common/ESWPerformance';
+// import { ESWPerformance } from '../Common/ESWPerformance';
 import { ESWStats } from '../Common/ESWStats';
 import { packageNames } from '../constant';
 import { useWalletModalToggle } from '../../../state/application/hooks'
@@ -215,8 +215,8 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
 
   return (
     <Wrapper>
-      <ProfileStatus>
-        <div>
+      <ProfileStatus >
+        <div >
           Status: <ProfileText>Distributor</ProfileText>
         </div>
         <Package>
@@ -291,7 +291,7 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
         </InfoCard>
         <ReferalPerformance />
         <PurchaseHistory />
-        <ESWPerformance />
+        {/* <ESWPerformance /> */}
         <ESWStats />
       </TableWrapper>
     </Wrapper>
