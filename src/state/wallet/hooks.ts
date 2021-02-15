@@ -193,22 +193,17 @@ export function useCurrencyBalances(
     [currencies],
   );
   const ethBalance = useETHBalances(containsETH ? [account] : []);
-  const containsESW: boolean = useMemo(
-    () =>
-      currencies?.some(currency => currency?.address === window['env'].REACT_APP_ESW_ID) ?? false,
-    [currencies],
-  );
-  const eswBalance = useESWBalances(containsESW ? [account] : []);
 
   return useMemo(
     () =>
       currencies?.map(currency => {
         if (!account || !currency) return;
         if (currency.isEther) return ethBalance[account];
-        if (currency.address === window['env'].REACT_APP_ESW_ID) return eswBalance[account];
+        // balance of the esw is taken from erc20 interface
+        // if (currency.address === window['env'].REACT_APP_ESW_ID) return eswBalance[account];
         return tokenBalances[currency.address];
       }) ?? [],
-    [account, currencies, ethBalance, tokenBalances, eswBalance],
+    [account, currencies, ethBalance, tokenBalances],
   );
 }
 
