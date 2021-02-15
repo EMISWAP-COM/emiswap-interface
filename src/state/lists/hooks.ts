@@ -91,7 +91,7 @@ export function useTokenList(url: string): TokenAddressMap {
       ],
     };
     return listToTokenMap(newCurrent);
-  }, [lists, url]);
+  }, [lists, url, chainId]);
 }
 
 export function useDefaultTokenList(): TokenAddressMap {
