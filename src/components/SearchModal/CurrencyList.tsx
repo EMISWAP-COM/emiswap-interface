@@ -39,7 +39,7 @@ export default function CurrencyList({
 }) {
   const { account, chainId } = useActiveWeb3React();
   const theme = useContext(ThemeContext);
-  const allTokens = useAllTokens();
+  const [allTokens] = useAllTokens();
   const defaultTokens = useDefaultTokenList();
   const addToken = useAddUserToken();
   const removeToken = useRemoveUserAddedToken();
