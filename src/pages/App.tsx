@@ -25,16 +25,8 @@ import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects';
 import ReferralUrlParser from '../referral-url-parser';
 import MigrateV1 from './MigrateV1';
 import MigrateV1Exchange from './MigrateV1/MigrateV1Exchange';
-import UnicornSvg from '../assets/images/bg.svg';
-
-const AppWrapper = styled.div`
-  display: flex;
-  flex-flow: column;
-  align-items: flex-start;
-  overflow-x: hidden;
-  // height: 100vh;
-  background: center / cover no-repeat url('${UnicornSvg}');
-`;
+import { AppWrapper } from '../base/ui/AppWrapper/AppWrapper';
+import { ErrorBoundary } from '../components/ErrorBoundary/ErrorBoundary'
 
 const LogoWrapper = styled.div`
   display: none;
@@ -73,10 +65,13 @@ const BodyWrapper = styled.div`
 export default function App() {
   useEffect(() => {
     const search = window.location.hash.split('?');
+    // throw new TypeError('type invalid')
+
     if (search[1] && search[1].length) {
       localStorage.setItem('UTMMarks', `?${search[1]}`);
     }
   }, []);
+
   return (
     <Suspense fallback={null}>
       <HashRouter>
@@ -95,6 +90,7 @@ export default function App() {
               <Popups />
               <Polling />
               <Web3ReactManager>
+                <ErrorBoundary title={'Oops, try again later...'} onDismiss={() => {}}>
                 <Switch>
                   <Route exact strict path="/invest" component={Invest} />
                   <Route exact strict path="/swap" component={Swap} />
@@ -130,6 +126,7 @@ export default function App() {
                   <Route exact strict path="/migrate/:address" component={MigrateV1Exchange} />
                   <Route component={RedirectPathToInvestOnly} />
                 </Switch>
+                </ErrorBoundary>
               </Web3ReactManager>
             </BodyWrapper>
           </AppWrapper>
