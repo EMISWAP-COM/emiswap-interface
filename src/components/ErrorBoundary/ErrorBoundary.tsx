@@ -57,7 +57,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 
   render() {
 
-    if (!this.state.error) {
+    if (this.state.error) {
       return (
         <AppWrapper>
           <ErrorContainer>
