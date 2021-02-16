@@ -80,7 +80,8 @@ export function useMooniswapMigratorContract(): Contract | null {
 }
 
 export function useEmiFactoryContract(): Contract | null {
-  return useContract(window['env'].REACT_APP_EMISWAP_FACTORY_ADDRESS, EMI_FACTORY_ABI, true);
+  const { chainId } = useActiveWeb3React();
+  return useContract(V1_MOONISWAP_FACTORY_ADDRESSES[chainId ?? 42], EMI_FACTORY_ABI, true);
 }
 export function useEmiSwapContract(): Contract | null {
   return useContract(EmiSwapAddress, EMI_SWAP_ABI, true);
