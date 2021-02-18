@@ -234,9 +234,13 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
     const email = emailRef && emailRef.current.value;
     const telegram = telegramRef && telegramRef.current.value;
     const address = addressRef && addressRef.current.value;
+
+    const utm = localStorage.getItem('UTMMarks');
+
     if (!validateForm(name, email, telegram, address)) {
       setValidation(defaultValidation);
-      const utm = localStorage.getItem('UTMMarks');
+      const urlParams = new URLSearchParams(localStorage.getItem('UTMMarks'));
+      console.log('utm', utm)
       //TODO сделать единый фечт интерфейс для проекта, когда выделят время)
       fetch(`/v1/public/whitelist${utm || ''}`, {
         method: 'POST',
@@ -249,6 +253,7 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
           telegram: telegram,
           address: address,
           created_at: new Date().toString(),
+          utm: urlParams.get('test')
         }),
       })
         .then(response => {
