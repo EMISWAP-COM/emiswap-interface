@@ -47,7 +47,6 @@ export function useETHBalances(
 export function useESWBalances(
   uncheckedAddresses?: (string | undefined)[],
 ): { [address: string]: TokenAmount | undefined } {
-
   const addresses: string[] = useMemo(
     () =>
       uncheckedAddresses
@@ -242,7 +241,7 @@ export function useCurrencyBalance(account?: string, currency?: Token): TokenAmo
 // mimics useAllBalances
 export function useAllTokenBalances(): { [tokenAddress: string]: TokenAmount | undefined } {
   const { account } = useActiveWeb3React();
-  const allTokens = useAllTokens();
+  const [allTokens] = useAllTokens();
   const allTokensArray = useMemo(() => Object.values(allTokens ?? {}), [allTokens]);
   const balances = useTokenBalances(account ?? undefined, allTokensArray);
   return balances ?? {};

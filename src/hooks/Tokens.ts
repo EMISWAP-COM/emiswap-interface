@@ -1,7 +1,7 @@
 import { parseBytes32String } from '@ethersproject/strings';
 import { Token, ETHER } from '@uniswap/sdk';
 import { useMemo } from 'react';
-import { useDefaultTokenList } from '../state/lists/hooks';
+import { useDefaultTokenList, WrappedTokenInfo } from '../state/lists/hooks';
 import { NEVER_RELOAD, useSingleCallResult } from '../state/multicall/hooks';
 import { useUserAddedTokens } from '../state/user/hooks';
 import { isAddress } from '../utils';
@@ -9,28 +9,41 @@ import { useActiveWeb3React } from './index';
 import { useBytes32TokenContract, useTokenContract } from './useContract';
 import { useDefaultCoin } from './Coins';
 import { ZERO_ADDRESS } from '@uniswap/sdk/src/constants';
+import { useTokenListWithPair } from './useTokenListWithPair';
 
-export function useAllTokens(): { [address: string]: Token } {
+export function useAllTokens(): [{ [address: string]: Token }, boolean] {
   const { chainId } = useActiveWeb3React();
   const userAddedTokens = useUserAddedTokens();
   const allTokens = useDefaultTokenList();
-
-  return useMemo(() => {
-    if (!chainId) return {};
-    return (
-      userAddedTokens
-        // reduce into all ALL_TOKENS filtered by the current chain
-        .reduce<{ [address: string]: Token }>(
-          (tokenMap, token) => {
-            tokenMap[token.address] = token;
-            return tokenMap;
-          },
-          // must make a copy because reduce modifies the map, and we do not
-          // want to make a copy in every iteration
-          { ...allTokens[chainId] },
+  const [enableTokensList, isLoading] = useTokenListWithPair();
+  return [
+    useMemo(() => {
+      if (!chainId) return {};
+      const filteredTokens = Object.values(allTokens[chainId])
+        .filter(
+          el =>
+            enableTokensList.includes(el.address) || el.address === window['env'].REACT_APP_ESW_ID,
         )
-    );
-  }, [chainId, userAddedTokens, allTokens]);
+        .reduce((acc: { [key: string]: WrappedTokenInfo }, val) => {
+          acc[val.address] = val;
+          return acc;
+        }, {});
+      return (
+        userAddedTokens
+          // reduce into all ALL_TOKENS filtered by the current chain
+          .reduce<{ [address: string]: Token }>(
+            (tokenMap, token) => {
+              tokenMap[token.address] = token;
+              return tokenMap;
+            },
+            // must make a copy because reduce modifies the map, and we do not
+            // want to make a copy in every iteration
+            { ...filteredTokens },
+          )
+      );
+    }, [chainId, userAddedTokens, allTokens, enableTokensList]),
+    isLoading,
+  ];
 }
 
 // parse a name or symbol from a token response
@@ -52,7 +65,7 @@ function parseStringOrBytes32(
 // otherwise returns the token
 export function useToken(tokenAddress?: string): Token | undefined | null {
   const { chainId } = useActiveWeb3React();
-  const tokens = useAllTokens();
+  const [tokens] = useAllTokens();
 
   const address = isAddress(tokenAddress);
   const tokenContract = useTokenContract(address ? address : undefined, false);

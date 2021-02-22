@@ -50,7 +50,7 @@ function useMockV1Pair(inputCurrency?: Token): MockV1Pair | undefined {
 
 // returns all v1 exchange addresses in the user's token list
 export function useAllTokenV1Exchanges(): { [exchangeAddress: string]: Token } {
-  const allTokens = useAllTokens();
+  const [allTokens] = useAllTokens();
   const factory = useV1FactoryContract();
   const args = useMemo(() => Object.keys(allTokens).map(tokenAddress => [tokenAddress]), [
     allTokens,

@@ -53,7 +53,7 @@ export default function TokenWarningCard({ token, ...rest }: TokenWarningCardPro
   const tokenSymbol = token?.symbol?.toLowerCase() ?? '';
   const tokenName = token?.name?.toLowerCase() ?? '';
 
-  const allTokens = useAllTokens();
+  const [allTokens] = useAllTokens();
 
   const duplicateNameOrSymbol = useMemo(() => {
     if (isDefault || !token || !chainId) return false;

@@ -11,7 +11,7 @@ import React, {
 import { isMobile } from 'react-device-detect';
 import { useTranslation } from 'react-i18next';
 import { Text } from 'rebass';
-import { ThemeContext } from 'styled-components';
+import styled, { ThemeContext } from 'styled-components';
 import Card from '../../components/Card';
 import { useActiveWeb3React } from '../../hooks';
 import { useAllTokens, useToken } from '../../hooks/Tokens';
@@ -30,6 +30,7 @@ import { useTokenComparator } from './sorting';
 import { PaddedColumn, SearchInput } from './styleds';
 import CurrencyList from './CurrencyList';
 import SortButton from './SortButton';
+import Loader from '../Loader';
 
 interface CurrencySearchModalProps {
   isOpen?: boolean;
@@ -41,6 +42,14 @@ interface CurrencySearchModalProps {
   showCommonBases?: boolean;
   isMatchEth?: boolean;
 }
+
+const LoaderBox = styled.div`
+  width: 100%;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 export default function CurrencySearchModal({
   isOpen,
@@ -59,7 +68,7 @@ export default function CurrencySearchModal({
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [tooltipOpen, setTooltipOpen] = useState<boolean>(false);
   const [invertSearchOrder, setInvertSearchOrder] = useState<boolean>(false);
-  const allTokens = useAllTokens();
+  const [allTokens, isLoading] = useAllTokens();
 
   // if the current input is an address, and we don't have the token in context, try to fetch it and import
   const searchToken = useToken(searchQuery);
@@ -199,15 +208,21 @@ export default function CurrencySearchModal({
             />
           </RowBetween>
         </PaddedColumn>
-        <CurrencyList
-          currencies={filteredSortedTokens}
-          allBalances={allTokenBalances}
-          onCurrencySelect={handleCurrencySelect}
-          otherCurrency={otherSelectedCurrency}
-          selectedCurrency={hiddenCurrency}
-          showSendWithSwap={showSendWithSwap}
-          isMatchEth={isMatchEth}
-        />
+        {isLoading ? (
+          <LoaderBox>
+            <Loader size="100px" />
+          </LoaderBox>
+        ) : (
+          <CurrencyList
+            currencies={filteredSortedTokens}
+            allBalances={allTokenBalances}
+            onCurrencySelect={handleCurrencySelect}
+            otherCurrency={otherSelectedCurrency}
+            selectedCurrency={hiddenCurrency}
+            showSendWithSwap={showSendWithSwap}
+            isMatchEth={isMatchEth}
+          />
+        )}
         <div style={{ height: '1px', backgroundColor: theme.bg2, margin: '0 30px' }} />
         <Card>
           <AutoRow justify={'center'}>

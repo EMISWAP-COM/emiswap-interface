@@ -33,7 +33,7 @@ export default function MigrateV1() {
   const token = useToken(tokenSearch);
   const defaultTokens = useDefaultTokenList();
   const isDefault = isDefaultToken(defaultTokens, token);
-  const allTokens = useAllTokens();
+  const [allTokens] = useAllTokens();
 
   const addToken = useAddUserToken();
 
