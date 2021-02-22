@@ -247,7 +247,6 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
         }
       }
 
-      console.log('utm', utmMakrs)
       //TODO сделать единый фечт интерфейс для проекта, когда выделят время)
       fetch(`/v1/public/whitelist${utm || ''}`, {
         method: 'POST',
