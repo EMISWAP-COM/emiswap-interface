@@ -47,7 +47,6 @@ export function useETHBalances(
 export function useESWBalances(
   uncheckedAddresses?: (string | undefined)[],
 ): { [address: string]: TokenAmount | undefined } {
-
   const addresses: string[] = useMemo(
     () =>
       uncheckedAddresses
