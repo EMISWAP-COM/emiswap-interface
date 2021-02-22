@@ -258,8 +258,7 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
           telegram: telegram,
           address: address,
           created_at: new Date().toString(),
-
-      ...utmMakrs
+          utm: utmMakrs
         }),
       })
         .then(response => {
