@@ -95,7 +95,7 @@ const Reward = styled(Table)`
   }
 `;
 
-const Referals = styled(Table)`
+const Referrals = styled(Table)`
   border-top: 1px solid #707070;
   border-bottom: 1px solid #707070;
 
@@ -106,7 +106,7 @@ const Referals = styled(Table)`
   }
 `;
 
-const ReferalPurchases = styled(Table)`
+const ReferralPurchases = styled(Table)`
   @media screen and (max-width: 1200px) {
     width: 50%;
     align-items: flex-end;
@@ -116,7 +116,7 @@ const ReferalPurchases = styled(Table)`
   }
 `;
 
-export const ReferalPerformance = () => {
+export const ReferralPerformance = () => {
   const { reward, total_amount, total_count, first_level, second_level, third_level } = useSelector(
     (state: AppState) => state.cabinets.performance,
   );
@@ -145,7 +145,7 @@ export const ReferalPerformance = () => {
           )}
         </Reward>
 
-        <Referals>
+        <Referrals>
           <Title>Total Referrals</Title>
           <Cell>{normalizeNumber(total_count)}</Cell>
           <Cell>
@@ -160,15 +160,15 @@ export const ReferalPerformance = () => {
             {normalizeNumber(third_level?.total_count)}
             <Level>3lvl</Level>
           </Cell>
-        </Referals>
+        </Referrals>
 
-        <ReferalPurchases>
+        <ReferralPurchases>
           <Title>Total Ref. Purchases, ESW</Title>
           <CellSmall>{convertBigDecimal(total_amount)}</CellSmall>
           <CellSmall>{convertBigDecimal(first_level?.amount)}</CellSmall>
           <CellSmall>{convertBigDecimal(second_level?.amount)}</CellSmall>
           <CellSmall>{convertBigDecimal(third_level?.amount)}</CellSmall>
-        </ReferalPurchases>
+        </ReferralPurchases>
       </Wrapper>
     </>
   );

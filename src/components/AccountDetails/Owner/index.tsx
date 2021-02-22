@@ -9,7 +9,7 @@ import { useActiveWeb3React } from '../../../hooks';
 import Copy from '../Copy';
 import { StatusIcon } from '../StatusIcon';
 import { PurchaseHistory } from '../Common/PurchaseHistory';
-import { ReferalPerformance } from '../Common/ReferalPerformance';
+import { ReferralPerformance } from '../Common/ReferralPerformance';
 import { WalletAction } from '../styleds';
 import {
   loadBalance,
@@ -281,7 +281,7 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
             </AccountControl>
           </AccountGroupingRow>
         </InfoCard>
-        <ReferalPerformance />
+        <ReferralPerformance />
         <PurchaseHistory />
         {/* <ESWPerformance/> */}
         <ESWStats />

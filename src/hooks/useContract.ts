@@ -10,6 +10,8 @@ import CHI_ABI from '../constants/abis/chi.json';
 import UNISOCKS_ABI from '../constants/abis/unisocks.json';
 import ERC20_ABI from '../constants/abis/erc20.json';
 import { MIGRATOR_ABI, MIGRATOR_ADDRESS } from '../constants/abis/migrator';
+import EMI_FACTORY_ABI from '../constants/abis/EmiFactory.json';
+import { abi as EMI_SWAP_ABI } from '../constants/abis/Emiswap.json';
 import { MULTICALL_ABI, MULTICALL_NETWORKS } from '../constants/multicall';
 import { V1_EXCHANGE_ABI, V1_FACTORY_ABI, V1_FACTORY_ADDRESSES } from '../constants/v1';
 import {
@@ -31,6 +33,7 @@ import {
 } from '../constants/abis/uniswap-v2-factory';
 import { ESW_ABI, ESW_ADDRESS } from '../constants/abis/esw';
 import { Web3Provider } from '@ethersproject/providers';
+import { EmiSwapAddress } from '../constants/emi/addresses';
 
 // returns null on errors
 function useContract(address?: string, ABI?: any, withSignerIfPossible = true): Contract | null {
@@ -74,6 +77,14 @@ export function useUniswapV2FactoryContract(): Contract | null {
 
 export function useMooniswapMigratorContract(): Contract | null {
   return useContract(MIGRATOR_ADDRESS, MIGRATOR_ABI, true);
+}
+
+export function useEmiFactoryContract(): Contract | null {
+  const { chainId } = useActiveWeb3React();
+  return useContract(V1_MOONISWAP_FACTORY_ADDRESSES[chainId ?? 42], EMI_FACTORY_ABI, true);
+}
+export function useEmiSwapContract(): Contract | null {
+  return useContract(EmiSwapAddress, EMI_SWAP_ABI, true);
 }
 
 export function useV1ExchangeContract(
