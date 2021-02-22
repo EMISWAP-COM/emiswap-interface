@@ -246,7 +246,6 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
           utmMakrs[key] = value
         }
       }
-
       //TODO сделать единый фечт интерфейс для проекта, когда выделят время)
       fetch(`/v1/public/whitelist${utm || ''}`, {
         method: 'POST',
@@ -259,7 +258,8 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
           telegram: telegram,
           address: address,
           created_at: new Date().toString(),
-          ...utmMakrs
+
+      ...utmMakrs
         }),
       })
         .then(response => {
