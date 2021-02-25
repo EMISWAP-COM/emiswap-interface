@@ -157,11 +157,16 @@ export const CursorPointer = styled.div`
 
 const BackArrowLink = styled(StyledInternalLink)`
   color: ${({ theme }) => theme.text1};
+  display: flex;
+  align-items: center;
+  :hover {
+    text-decoration: none;
+  }
 `;
 export function BackArrow({ to }: { to: string }) {
   return (
     <BackArrowLink to={to}>
-      <ArrowLeft />
+      <ArrowLeft /> <p>Back</p>
     </BackArrowLink>
   );
 }

@@ -1,11 +1,11 @@
 import { TransactionResponse } from '@ethersproject/abstract-provider';
 import { AddressZero } from '@ethersproject/constants';
-import { Token, TokenAmount, Fraction, JSBI, Percent, ETHER } from '@uniswap/sdk';
+import { ETHER, Fraction, JSBI, Percent, Token, TokenAmount } from '@uniswap/sdk';
 import React, { useCallback, useMemo, useState } from 'react';
 import ReactGA from 'react-ga';
 import { Redirect, RouteComponentProps } from 'react-router';
 import { Text } from 'rebass';
-import { ButtonConfirmed, ButtonPrimary } from '../../components/Button';
+import { ButtonConfirmed, ButtonGreen, ButtonPrimary } from '../../components/Button';
 import { LightCard, PinkCard, YellowCard } from '../../components/Card';
 import { AutoColumn } from '../../components/Column';
 import CurrencyLogo from '../../components/CurrencyLogo';
@@ -16,28 +16,47 @@ import { MIGRATOR_ADDRESS } from '../../constants/abis/migrator';
 import { PairState, usePair } from '../../data-mooniswap/Reserves';
 import { useTotalSupply } from '../../data-mooniswap/TotalSupply';
 import { useActiveWeb3React } from '../../hooks';
-import { useToken } from '../../hooks/Tokens';
+import { useCurrency, useToken } from '../../hooks/Tokens';
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback';
 import { useMooniswapMigratorContract } from '../../hooks/useContract';
 import { useIsTransactionPending, useTransactionAdder } from '../../state/transactions/hooks';
 import { useTokenBalance, useTokenBalances } from '../../state/wallet/hooks';
 import { BackArrow, TYPE } from '../../theme';
 import { calculateSlippageAmount, getMooniswapMigratorContract, isAddress } from '../../utils';
-import { BodyWrapper, HeadersPlusBodyWrapper } from '../AppBody';
-import { EmptyState } from './EmptyState';
+import AppBody from '../AppBody';
 import { usePairTokens } from '../../data-mooniswap/UniswapV2';
 import DoubleCurrencyLogo from '../../components/DoubleLogo';
 import { Link } from 'react-router-dom';
 import { useUserSlippageTolerance } from '../../state/user/hooks';
-import Logo from '../../components/Logo';
-import Wordmark from '../../components/Wordmark';
 import { tokenAmountToString } from '../../utils/formats';
+import CurrencyInputPanel from '../../components/CurrencyInputPanel';
+import styled from 'styled-components';
+import Loader from '../../components/Loader'
 
 const POOL_CURRENCY_AMOUNT_MIN = new Fraction(JSBI.BigInt(1), JSBI.BigInt(1000000));
 const ZERO = JSBI.BigInt(0);
 const ONE = JSBI.BigInt(1);
 const ZERO_FRACTION = new Fraction(ZERO, ONE);
 const weth = isAddress('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2');
+
+const StyledContainer = styled.div`
+  min-height: 230px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  & > *:not(:last-child) {
+    margin-bottom: 20px;
+  }
+`;
+
+const LoaderBox = styled.div`
+  width: 100%;
+  min-height: 230px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 function getDenom(decimals: number): JSBI {
   return JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(decimals));
@@ -400,8 +419,15 @@ export default function MigrateV1Exchange({
 }: RouteComponentProps<{ address: string }>) {
   const validatedAddress = isAddress(address);
   const { chainId, account } = useActiveWeb3React();
-
+  const inputCurrency = useCurrency(address);
   const tokenAddresses = usePairTokens(validatedAddress ? validatedAddress : undefined);
+
+  const [approval, setApproval] = useState(ApprovalState.NOT_APPROVED);
+  const [amount, setAmount] = useState('0');
+
+  setTimeout(() => {
+    setApproval(ApprovalState.APPROVED);
+  }, 10000);
 
   const token0 = useToken(tokenAddresses[0]);
   const token1 = useToken(tokenAddresses[1]);
@@ -428,34 +454,79 @@ export default function MigrateV1Exchange({
   }
 
   return (
-    <HeadersPlusBodyWrapper>
-      <div className="onlyDesktop">
-        <Logo />
-        <Wordmark />
-      </div>
-      <BodyWrapper style={{ padding: 24 }}>
-        <AutoColumn gap="16px">
-          <AutoRow style={{ alignItems: 'center', justifyContent: 'space-between' }} gap="8px">
-            <BackArrow to="/migrate" />
-            <TYPE.mediumHeader>Migrate Liquidity</TYPE.mediumHeader>
-            <div>
-              <QuestionHelper text="Migrate your liquidity tokens from Uniswap V2 to Mooniswap." />
-            </div>
-          </AutoRow>
-
-          {!account ? (
-            <TYPE.largeHeader>You must connect an account.</TYPE.largeHeader>
-          ) : userLiquidityBalance && token0 && token1 ? (
-            <V1PairMigration
-              liquidityTokenAmount={userLiquidityBalance}
-              token0={token0}
-              token1={token1}
+    <AppBody>
+      <AutoRow style={{ alignItems: 'center', justifyContent: 'space-between' }}>
+        <BackArrow to="/migrate" />
+        <div>
+          <QuestionHelper text="Migrate your liquidity tokens from Uniswap V2 to Mooniswap." />
+        </div>
+      </AutoRow>
+      <StyledContainer>
+        {!inputCurrency ? (
+          <LoaderBox>
+            <Loader size="100px" />
+          </LoaderBox>
+        ) : (
+          <>
+            <TYPE.mediumHeader>How many tokens?</TYPE.mediumHeader>
+            <CurrencyInputPanel
+              disabled={false}
+              value={amount}
+              onUserInput={val => setAmount(val)}
+              id={'migrate-liquidity'}
+              label={'from'}
+              showMaxButton={false}
+              currency={inputCurrency}
+              disableCurrencySelect
             />
-          ) : (
-            <EmptyState message="Loading..." />
-          )}
-        </AutoColumn>
-      </BodyWrapper>
-    </HeadersPlusBodyWrapper>
+            {approval !== ApprovalState.APPROVED && (
+              <ButtonPrimary onClick={() => {}}>
+                <Text fontWeight={500} fontSize={16}>
+                  Approve
+                </Text>
+              </ButtonPrimary>
+            )}
+            <ButtonGreen
+              style={{ width: '100%', padding: '15px 16px' }}
+              disabled={approval !== ApprovalState.APPROVED}
+              onClick={() => {}}
+            >
+              <Text fontWeight={500} fontSize={16}>
+                Migrate
+              </Text>
+            </ButtonGreen>
+          </>
+        )}
+      </StyledContainer>
+    </AppBody>
+    // <HeadersPlusBodyWrapper>
+    //   <div className="onlyDesktop">
+    //     <Logo />
+    //     <Wordmark />
+    //   </div>
+    //   <BodyWrapper style={{ padding: 24 }}>
+    //     <AutoColumn gap="16px">
+    //       <AutoRow style={{ alignItems: 'center', justifyContent: 'space-between' }} gap="8px">
+    //         <BackArrow to="/migrate" />
+    //         <TYPE.mediumHeader>Migrate Liquidity</TYPE.mediumHeader>
+    //         <div>
+    //           <QuestionHelper text="Migrate your liquidity tokens from Uniswap V2 to Mooniswap." />
+    //         </div>
+    //       </AutoRow>
+    //
+    //       {/*{!account ? (*/}
+    //       {/*  <TYPE.largeHeader>You must connect an account.</TYPE.largeHeader>*/}
+    //       {/*) : userLiquidityBalance && token0 && token1 ? (*/}
+    //       {/*  <V1PairMigration*/}
+    //       {/*    liquidityTokenAmount={userLiquidityBalance}*/}
+    //       {/*    token0={token0}*/}
+    //       {/*    token1={token1}*/}
+    //       {/*  />*/}
+    //       {/*) : (*/}
+    //       {/*  <EmptyState message="Loading..." />*/}
+    //       {/*)}*/}
+    //     </AutoColumn>
+    //   </BodyWrapper>
+    // </HeadersPlusBodyWrapper>
   );
 }
