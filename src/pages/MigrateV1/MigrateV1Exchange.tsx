@@ -1,7 +1,7 @@
 import { TransactionResponse } from '@ethersproject/abstract-provider';
 import { AddressZero } from '@ethersproject/constants';
 import { ETHER, Fraction, JSBI, Percent, Token, TokenAmount } from '@uniswap/sdk';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import ReactGA from 'react-ga';
 import { Redirect, RouteComponentProps } from 'react-router';
 import { Text } from 'rebass';
@@ -16,11 +16,11 @@ import { MIGRATOR_ADDRESS } from '../../constants/abis/migrator';
 import { PairState, usePair } from '../../data-mooniswap/Reserves';
 import { useTotalSupply } from '../../data-mooniswap/TotalSupply';
 import { useActiveWeb3React } from '../../hooks';
-import { useCurrency, useToken } from '../../hooks/Tokens';
+import { useCurrency } from '../../hooks/Tokens';
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback';
 import { useMooniswapMigratorContract } from '../../hooks/useContract';
 import { useIsTransactionPending, useTransactionAdder } from '../../state/transactions/hooks';
-import { useTokenBalance, useTokenBalances } from '../../state/wallet/hooks';
+import { useCurrencyBalance, useTokenBalances } from '../../state/wallet/hooks';
 import { BackArrow, TYPE } from '../../theme';
 import { calculateSlippageAmount, getMooniswapMigratorContract, isAddress } from '../../utils';
 import AppBody from '../AppBody';
@@ -31,7 +31,7 @@ import { useUserSlippageTolerance } from '../../state/user/hooks';
 import { tokenAmountToString } from '../../utils/formats';
 import CurrencyInputPanel from '../../components/CurrencyInputPanel';
 import styled from 'styled-components';
-import Loader from '../../components/Loader'
+import Loader from '../../components/Loader';
 
 const POOL_CURRENCY_AMOUNT_MIN = new Fraction(JSBI.BigInt(1), JSBI.BigInt(1000000));
 const ZERO = JSBI.BigInt(0);
@@ -45,7 +45,7 @@ const StyledContainer = styled.div`
   flex-direction: column;
   justify-content: center;
 
-  & > *:not(:last-child) {
+  & > *:not(:last-child):not(:nth-child(2)) {
     margin-bottom: 20px;
   }
 `;
@@ -418,34 +418,34 @@ export default function MigrateV1Exchange({
   },
 }: RouteComponentProps<{ address: string }>) {
   const validatedAddress = isAddress(address);
-  const { chainId, account } = useActiveWeb3React();
+  const { account } = useActiveWeb3React();
   const inputCurrency = useCurrency(address);
   const tokenAddresses = usePairTokens(validatedAddress ? validatedAddress : undefined);
-
+  const inputCurrencyBalance = useCurrencyBalance(account, inputCurrency);
   const [approval, setApproval] = useState(ApprovalState.NOT_APPROVED);
   const [amount, setAmount] = useState('0');
-
   setTimeout(() => {
     setApproval(ApprovalState.APPROVED);
   }, 10000);
 
-  const token0 = useToken(tokenAddresses[0]);
-  const token1 = useToken(tokenAddresses[1]);
-
-  const liquidityToken: Token | undefined = useMemo(
-    () =>
-      validatedAddress && token0 && token1
-        ? new Token(
-            chainId,
-            validatedAddress,
-            18,
-            `UNI-V2-${token0.symbol}-${token1.symbol}`,
-            'Uniswap V2',
-          )
-        : undefined,
-    [chainId, validatedAddress, token0, token1],
-  );
-  const userLiquidityBalance = useTokenBalance(account, liquidityToken);
+  // const token0 = useToken(tokenAddresses[0]);
+  // const token1 = useToken(tokenAddresses[1]);
+  const notEnoughBalance = !inputCurrencyBalance || inputCurrencyBalance?.toExact() < amount;
+  const showApproveFlow = approval !== ApprovalState.APPROVED;
+  // const liquidityToken: Token | undefined = useMemo(
+  //   () =>
+  //     validatedAddress && token0 && token1
+  //       ? new Token(
+  //           chainId,
+  //           validatedAddress,
+  //           18,
+  //           `UNI-V2-${token0.symbol}-${token1.symbol}`,
+  //           'Uniswap V2',
+  //         )
+  //       : undefined,
+  //   [chainId, validatedAddress, token0, token1],
+  // );
+  // const userLiquidityBalance = useTokenBalance(account, liquidityToken);
 
   // redirect for invalid url params
   if (!validatedAddress || tokenAddresses[0] === AddressZero || tokenAddresses[1] === AddressZero) {
@@ -458,7 +458,7 @@ export default function MigrateV1Exchange({
       <AutoRow style={{ alignItems: 'center', justifyContent: 'space-between' }}>
         <BackArrow to="/migrate" />
         <div>
-          <QuestionHelper text="Migrate your liquidity tokens from Uniswap V2 to Mooniswap." />
+          <QuestionHelper text="Migrate your liquidity tokens from Uniswap V2 to Emiswap." />
         </div>
       </AutoRow>
       <StyledContainer>
@@ -479,20 +479,20 @@ export default function MigrateV1Exchange({
               currency={inputCurrency}
               disableCurrencySelect
             />
-            {approval !== ApprovalState.APPROVED && (
+            {showApproveFlow && (
               <ButtonPrimary onClick={() => {}}>
                 <Text fontWeight={500} fontSize={16}>
-                  Approve
+                  {approval === ApprovalState.PENDING ? <Dots>Approving</Dots> : 'Approve'}
                 </Text>
               </ButtonPrimary>
             )}
             <ButtonGreen
               style={{ width: '100%', padding: '15px 16px' }}
-              disabled={approval !== ApprovalState.APPROVED}
+              disabled={approval !== ApprovalState.APPROVED || notEnoughBalance}
               onClick={() => {}}
             >
               <Text fontWeight={500} fontSize={16}>
-                Migrate
+                {notEnoughBalance ? 'Not enough balance' : 'Migrate'}
               </Text>
             </ButtonGreen>
           </>
