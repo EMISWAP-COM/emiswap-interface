@@ -76,7 +76,7 @@ ReactDOM.render(
   <HttpsRedirect>
     <Provider store={store}>
       <ThemeProvider>
-        <ErrorBoundary title={"Oops, something goes wrong..."}>
+        <ErrorBoundary title={'Oops, something goes wrong...'}>
           <FixedGlobalStyle/>
           <Web3ReactProvider getLibrary={getLibrary}>
             <Web3ProviderNetwork getLibrary={getLibrary}>

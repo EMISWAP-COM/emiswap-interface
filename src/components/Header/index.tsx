@@ -1,4 +1,3 @@
-import { ChainId } from '@uniswap/sdk';
 import React from 'react';
 import { isMobile, isTablet } from 'react-device-detect';
 import { Text } from 'rebass';
@@ -17,6 +16,7 @@ import Row, { RowBetween } from '../Row';
 import Web3Status from '../Web3Status';
 import { tokenAmountToString } from '../../utils/formats';
 import { ReactComponent as MagicIcon } from '../../assets/images/magic_icon.svg';
+import { NETWORK_LABELS } from '../../connectors/utils'
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -268,16 +268,10 @@ const RowBetweenStyled = styled(RowBetween)`
   `};
 `;
 
-const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
-  [ChainId.MAINNET]: null,
-  [ChainId.RINKEBY]: 'Rinkeby',
-  [ChainId.ROPSTEN]: 'Ropsten',
-  [ChainId.GÖRLI]: 'Görli',
-  [ChainId.KOVAN]: 'Kovan',
-};
 
 export default function Header() {
   const { account, chainId } = useActiveWeb3React();
+
   const userEthBalance = useETHBalances([account])[account];
   const [isDark] = useDarkModeManager();
   return (
