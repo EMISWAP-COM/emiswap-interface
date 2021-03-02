@@ -9,6 +9,25 @@ const NETWORK_URL = window['env'].REACT_APP_NETWORK_URL;
 const FORMATIC_KEY = window['env'].REACT_APP_FORTMATIC_KEY;
 const PORTIS_ID = window['env'].REACT_APP_PORTIS_ID;
 
+export enum SupportedChainId {
+  MAINNET = 1,
+  ROPSTEN = 3,
+  RINKEBY = 4,
+  GÖRLI = 5,
+  KOVAN = 42,
+  BSC = 56,
+  BSCTESTNET = 97
+}
+
+const chainIds = Object.keys(SupportedChainId).filter(Number).map(Number)
+
+export const NETWORK_LABELS = {
+  [SupportedChainId.MAINNET]: 'Main',
+  [SupportedChainId.KOVAN]: 'Kovan',
+  [SupportedChainId.BSC]: 'BSC',
+  [SupportedChainId.BSCTESTNET]: 'BSC test'
+};
+
 if (typeof NETWORK_URL === 'undefined') {
   throw new Error(`REACT_APP_NETWORK_URL must be a defined environment variable`);
 }
@@ -18,7 +37,7 @@ export const network = new NetworkConnector({
 });
 
 export const injected = new InjectedConnector({
-  supportedChainIds: [1, 3, 4, 5, 42],
+  supportedChainIds: chainIds,
 });
 
 // mainnet only

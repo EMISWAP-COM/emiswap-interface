@@ -3,11 +3,7 @@ import { isMobile, isTablet } from 'react-device-detect';
 import { Text } from 'rebass';
 import styled from 'styled-components';
 import Logo from '../../assets/svg/logo.svg';
-import LogoDark from '../../assets/svg/logo_dark.svg';
-// import Wordmark from '../../assets/svg/wordmark.svg';
-// import WordmarkDark from '../../assets/svg/wordmark_white.svg';
 import { useActiveWeb3React } from '../../hooks';
-import { useDarkModeManager } from '../../state/user/hooks';
 import { useETHBalances } from '../../state/wallet/hooks';
 import { YellowCard } from '../Card';
 import Settings from '../Settings';
@@ -16,7 +12,7 @@ import Row, { RowBetween } from '../Row';
 import Web3Status from '../Web3Status';
 import { tokenAmountToString } from '../../utils/formats';
 import { ReactComponent as MagicIcon } from '../../assets/images/magic_icon.svg';
-import { NETWORK_LABELS } from '../../connectors/utils'
+import { NETWORK_LABELS } from '../../connectors/index'
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -272,19 +268,18 @@ const RowBetweenStyled = styled(RowBetween)`
 export default function Header() {
   const { account, chainId } = useActiveWeb3React();
 
+  //TODO refactor hook to get BNB balance as well
   const userEthBalance = useETHBalances([account])[account];
-  const [isDark] = useDarkModeManager();
+
   return (
     <HeaderFrame>
       <RowBetweenStyled>
         <LogoElem>
           <Title href=".">
             <UniIcon>
-              <img src={isDark ? LogoDark : Logo} alt="logo" />
+              <img src={Logo} alt="logo" />
             </UniIcon>
-            <TitleText>
-              {/*<img style={{ marginLeft: '4px', marginTop: '4px' }} src={isDark ? WordmarkDark : Wordmark} alt="logo" width="160px"/>*/}
-            </TitleText>
+            <TitleText/>
           </Title>
         </LogoElem>
         <HeaderControls>

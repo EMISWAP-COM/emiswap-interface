@@ -1,6 +1,6 @@
 import { parseUnits } from '@ethersproject/units';
 import { Contract } from '@ethersproject/contracts';
-import { ChainId, ETHER, JSBI, Token, TokenAmount, ZERO_ADDRESS } from '@uniswap/sdk';
+import { ETHER, JSBI, Token, TokenAmount, ZERO_ADDRESS } from '@uniswap/sdk';
 import { BigNumber } from '@ethersproject/bignumber';
 import { ParsedQs } from 'qs';
 import { useCallback, useEffect, useMemo } from 'react';
@@ -21,7 +21,7 @@ import {
   typeInput,
 } from './actions';
 import { InvestState } from './reducer';
-import { TokenAddressMap, WrappedTokenInfo } from '../lists/hooks';
+import { emptyTokenList, TokenAddressMap, WrappedTokenInfo } from '../lists/hooks'
 import { ESW } from '../../constants';
 
 const num2str = (value: number, decimals: number): string => {
@@ -34,13 +34,6 @@ const num2str = (value: number, decimals: number): string => {
 /**
  * An empty result, useful as a default.
  */
-const EMPTY_LIST: TokenAddressMap = {
-  [ChainId.KOVAN]: {},
-  [ChainId.RINKEBY]: {},
-  [ChainId.ROPSTEN]: {},
-  [ChainId.GÖRLI]: {},
-  [ChainId.MAINNET]: {},
-};
 
 export function useInvestState(): AppState['invest'] {
   return useSelector<AppState, AppState['invest']>(state => state.invest);
@@ -294,7 +287,7 @@ export function useDefaultsFromURLSearch() {
 export function useCoinList(): TokenAddressMap {
   const list = useSelector<AppState, AppState['invest']['coins']>(state => state.invest.coins);
   return useMemo(() => {
-    if (!list) return EMPTY_LIST;
+    if (!list) return emptyTokenList;
     // @ts-ignore
     return listToTokenMap(list.filter(coin => coin?.status));
   }, [list]);
@@ -324,7 +317,7 @@ export function listToTokenMap(list: Token[]): TokenAddressMap {
         },
       };
     },
-    { ...EMPTY_LIST },
+    { ...emptyTokenList },
   );
   listCache?.set(list, map);
   return map;

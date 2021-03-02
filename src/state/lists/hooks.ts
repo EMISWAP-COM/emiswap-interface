@@ -1,10 +1,11 @@
-import { ChainId, Token } from '@uniswap/sdk';
+import { Token } from '@uniswap/sdk';
 import { TokenInfo, TokenList } from '@uniswap/token-lists';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { DEFAULT_TOKEN_LIST_URL } from '../../constants';
 import { AppState } from '../index';
 import { useActiveWeb3React } from '../../hooks';
+import { SupportedChainId } from '../../connectors'
 
 /**
  * Token instances created from token info.
@@ -29,19 +30,24 @@ export class WrappedTokenInfo extends Token {
 }
 
 export type TokenAddressMap = Readonly<
-  { [chainId in ChainId]: Readonly<{ [tokenAddress: string]: WrappedTokenInfo }> }
+  { [chainId in SupportedChainId]: Readonly<{ [tokenAddress: string]: WrappedTokenInfo }> }
 >;
 
 /**
  * An empty result, useful as a default.
  */
-const EMPTY_LIST: TokenAddressMap = {
-  [ChainId.KOVAN]: {},
-  [ChainId.RINKEBY]: {},
-  [ChainId.ROPSTEN]: {},
-  [ChainId.GÖRLI]: {},
-  [ChainId.MAINNET]: {},
+
+export const emptyTokenList: TokenAddressMap = {
+  [SupportedChainId.BSCTESTNET]: {},
+  [SupportedChainId.BSC]: {},
+  [SupportedChainId.KOVAN]: {},
+  [SupportedChainId.RINKEBY]: {},
+  [SupportedChainId.ROPSTEN]: {},
+  [SupportedChainId.GÖRLI]: {},
+  [SupportedChainId.MAINNET]: {},
+
 };
+
 
 const listCache: WeakMap<TokenList, TokenAddressMap> | null =
   'WeakMap' in window ? new WeakMap<TokenList, TokenAddressMap>() : null;
@@ -53,6 +59,8 @@ export function listToTokenMap(list: TokenList): TokenAddressMap {
   const map = list.tokens.reduce<TokenAddressMap>(
     (tokenMap, tokenInfo) => {
       const token = new WrappedTokenInfo(tokenInfo);
+
+
       if (tokenMap[token.chainId][token.address] !== undefined) throw Error('Duplicate tokens.');
       if (token.address === '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE') {
         return { ...tokenMap };
@@ -65,7 +73,7 @@ export function listToTokenMap(list: TokenList): TokenAddressMap {
         },
       };
     },
-    { ...EMPTY_LIST },
+    { ...emptyTokenList },
   );
   listCache?.set(list, map);
   return map;
@@ -73,16 +81,17 @@ export function listToTokenMap(list: TokenList): TokenAddressMap {
 
 export function useTokenList(url: string): TokenAddressMap {
   const lists = useSelector<AppState, AppState['lists']['byUrl']>(state => state.lists.byUrl);
+  console.log('list', lists)
   const { chainId } = useActiveWeb3React();
   return useMemo(() => {
     const current = lists[url]?.current;
-    if (!current) return EMPTY_LIST;
+    if (!current) return emptyTokenList;
     const newCurrent = {
       ...current,
       tokens: [
         {
           address: window['env'].REACT_APP_ESW_ID,
-          chainId: chainId ?? 42,
+          chainId: chainId,
           name: 'EmiDAO Token',
           decimals: 18,
           symbol: 'ESW',
