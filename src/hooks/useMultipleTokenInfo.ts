@@ -6,7 +6,7 @@ import { useActiveWeb3React } from './index';
 import { Token } from '@uniswap/sdk';
 
 export function useMultipleTokenInfo(addresses: string[], lpTokensAddresses: string[]) {
-  const { chainId } = useActiveWeb3React();
+  const { chainId, account } = useActiveWeb3React();
   const tokenInterface = new Interface(ERC20_ABI);
   const names = useMultipleContractSingleData(
     [...addresses],
@@ -41,8 +41,8 @@ export function useMultipleTokenInfo(addresses: string[], lpTokensAddresses: str
   const balances = useMultipleContractSingleData(
     [...lpTokensAddresses],
     tokenInterface,
-    'decimals',
-    undefined,
+    'balanceOf',
+    [account as string | undefined],
     undefined,
     undefined,
     undefined,
@@ -50,14 +50,16 @@ export function useMultipleTokenInfo(addresses: string[], lpTokensAddresses: str
   );
 
   return useMemo(() => {
-    const tokens = addresses.map((el, idx) => {
-      if (!chainId) return undefined;
-      const name = names?.[idx] ? names?.[idx].result?.[0] : '';
-      const symbol = symbols?.[idx] ? symbols?.[idx].result?.[0] : '';
-      const decimal = decimals?.[idx] ? decimals?.[idx].result?.[0] : '';
-      return new Token(chainId, el, decimal, symbol, name);
-    });
+    const tokens = addresses
+      .map((el, idx) => {
+        const name = names?.[idx] ? names?.[idx].result?.[0] : '';
+        const symbol = symbols?.[idx] ? symbols?.[idx].result?.[0] : '';
+        const decimal = decimals?.[idx] ? decimals?.[idx].result?.[0] : '';
+        if (!name || !symbol || !decimal || !chainId) return undefined;
+        return new Token(chainId, el, decimal, symbol, name);
+      })
+      .filter(el => el);
     const formattedBalances = balances.map(el => el?.result?.[0]);
     return { tokens, balances: formattedBalances };
-  }, [addresses, names, symbols]);
+  }, [addresses, names, symbols, balances, chainId, decimals]);
 }

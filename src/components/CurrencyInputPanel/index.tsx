@@ -279,7 +279,7 @@ export default function CurrencyInputPanel({
                 ) : null}
                 {pair ? (
                   <StyledTokenName className="pair-name-container">
-                    {pair?.token0.symbol}:{pair?.token1.symbol}
+                    {pair?.token0.symbol}-{pair?.token1.symbol}
                   </StyledTokenName>
                 ) : (
                   <StyledTokenName
