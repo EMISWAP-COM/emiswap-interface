@@ -185,6 +185,6 @@ export function useChiController(): Contract | null {
 export function useESWContract(): Contract | null {
   return useContract(ESW_ADDRESS, ESW_ABI, false);
 }
-export function useVampContract(library: Web3Provider, account?: string): Contract | null {
-  return useContract(VAMP_ADDRESS, VAMP_ABI, getProviderOrSigner(library, account) as any);
+export function useVampContract(): Contract | null {
+  return useContract(VAMP_ADDRESS, VAMP_ABI, true);
 }

@@ -10,11 +10,9 @@ import { Text } from 'rebass';
 import { ExternalLink } from '../../theme';
 import { useHistory } from 'react-router-dom';
 import { ButtonGreen } from '../../components/Button';
-import { useVampContract } from '../../hooks/useContract';
 import DoubleCurrencyLogo from '../../components/DoubleLogo';
 import { useLpTokens } from '../../hooks/useLpTokens';
 import Loader from '../../components/Loader';
-import { useActiveWeb3React } from '../../hooks';
 import { amountToString } from './utils';
 
 const StyledSubTitle = styled.p`
@@ -66,9 +64,7 @@ export default function MigrateV1() {
   const theme = useContext(ThemeContext);
   const history = useHistory();
   const [selected, setSelected] = useState(null);
-  const { account, library } = useActiveWeb3React();
-  const contract = useVampContract(library, account);
-  const { tokenList, tokens, balances, isLoading } = useLpTokens(contract);
+  const { tokenList, tokens, balances, isLoading } = useLpTokens();
   const onSelect = (address: string) => {
     setSelected(address);
   };

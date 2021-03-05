@@ -1,4 +1,3 @@
-import { AddressZero } from '@ethersproject/constants';
 import { Fraction, JSBI, Token, TokenAmount } from '@uniswap/sdk';
 import React, { useState } from 'react';
 import { Redirect, RouteComponentProps } from 'react-router';
@@ -14,9 +13,8 @@ import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallbac
 import { useVampContract } from '../../hooks/useContract';
 import { useCurrencyBalance } from '../../state/wallet/hooks';
 import { BackArrow, TYPE } from '../../theme';
-import { isAddress } from '../../utils';
+import { calculateGasMargin, isAddress } from '../../utils';
 import AppBody from '../AppBody';
-import { usePairTokens } from '../../data-mooniswap/UniswapV2';
 import DoubleCurrencyLogo from '../../components/DoubleLogo';
 import { tokenAmountToString } from '../../utils/formats';
 import CurrencyInputPanel from '../../components/CurrencyInputPanel';
@@ -28,6 +26,7 @@ import { EmiVampAddress } from '../../constants/emi/addresses';
 import { tryParseAmount } from '../../state/swap/hooks';
 import { useWalletModalToggle } from '../../state/application/hooks';
 import { useCurrency } from '../../hooks/Tokens';
+import { useTransactionAdder } from '../../state/transactions/hooks';
 
 const POOL_CURRENCY_AMOUNT_MIN = new Fraction(JSBI.BigInt(1), JSBI.BigInt(1000000));
 
@@ -122,18 +121,18 @@ export default function MigrateV1Exchange({
 }: RouteComponentProps<{ address: string }>) {
   const validatedAddress = isAddress(address);
   const toggleWalletModal = useWalletModalToggle();
-  const { account, library } = useActiveWeb3React();
-  const tokenAddresses = usePairTokens(validatedAddress ? validatedAddress : undefined);
-  const contract = useVampContract(library, account);
-
-  const { tokenList, lpTokensInfo } = useLpTokens(contract);
+  const { account } = useActiveWeb3React();
+  const contract = useVampContract();
+  const { tokenList, lpTokensInfo } = useLpTokens();
   const tokens = tokenList.find(el => el.base === address)?.addresses ?? [];
   const inputCurrency = useLpCurrencies(tokens, address);
   const currency0 = useCurrency(tokens[0]);
   const currency1 = useCurrency(tokens[1]);
   const pair = usePair(currency0, currency1)[1];
+  const selectedCurrencyBalance = useCurrencyBalance(account, inputCurrency);
   const inputCurrencyBalance = useCurrencyBalance(account, inputCurrency);
   const [amount, setAmount] = useState('0');
+  const addTransaction = useTransactionAdder();
 
   const parsedAmount = tryParseAmount(amount, inputCurrency);
   const [approval, approveCallback] = useApproveCallback(parsedAmount, EmiVampAddress);
@@ -141,19 +140,41 @@ export default function MigrateV1Exchange({
   const notEnoughBalance = !inputCurrencyBalance || inputCurrencyBalance?.toExact() < amount;
 
   // redirect for invalid url params
-  if (!validatedAddress || tokenAddresses[0] === AddressZero || tokenAddresses[1] === AddressZero) {
+  if (!validatedAddress) {
     console.error('Invalid address in path', address);
     return <Redirect to="/migrate" />;
   }
+
+  const onSuccess = response => {
+    setAmount('0');
+    addTransaction(response);
+  };
+
+  const onError = error => {
+    if (error?.code === 4001) {
+      throw error;
+    } else {
+      throw Error('An error occurred while migration. Please contact support.');
+    }
+  };
 
   const handleMigrate = () => {
     const idx = lpTokensInfo.findIndex(el => el === address);
     if (idx !== -1) {
       const args = [idx.toString(), `${10 ** 18 * +parsedAmount.toExact()}`];
-      contract.estimateGas.deposit(...args).then(data => console.log(`==========>data`, data));
-      // contract
-      //   .deposit(...args)
-      //   .then(data => console.log(`==========>data`, data));
+      contract.estimateGas
+        .deposit(...args)
+        .then(data => {
+          const gasLimit = calculateGasMargin(data);
+          return contract
+            .deposit(...args, { gasLimit })
+            .then(onSuccess)
+            .catch(onError);
+        })
+        .catch(error => {
+          console.error('estimateGas failed for deposit', error);
+          return undefined;
+        });
     }
   };
 
@@ -179,7 +200,8 @@ export default function MigrateV1Exchange({
               onUserInput={val => setAmount(val)}
               id={'migrate-liquidity'}
               label={'from'}
-              showMaxButton={false}
+              showMaxButton
+              onMax={() => setAmount(tokenAmountToString(selectedCurrencyBalance))}
               currency={inputCurrency}
               disableCurrencySelect
               pair={pair}
