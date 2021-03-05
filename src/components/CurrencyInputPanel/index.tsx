@@ -17,7 +17,7 @@ import CrowdsaleCurrencySearchModal from '../SearchModal/CrowdsaleCurrencySearch
 import { tokenAmountToString } from '../../utils/formats';
 import { MIN_ETH } from '../../constants';
 
-const InputRow = styled.div<{ selected: boolean }>`
+export const InputRow = styled.div<{ selected: boolean }>`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: center;
   padding: ${({ selected }) =>
