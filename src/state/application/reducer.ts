@@ -5,12 +5,14 @@ import {
   removePopup,
   toggleWalletModal,
   toggleSettingsMenu,
-  updateBlockNumber,
-} from './actions';
-
+  updateBlockNumber, updateAppChainId
+} from './actions'
 type PopupList = Array<{ key: string; show: boolean; content: PopupContent }>;
 
+const ETH_CHAIN_ID = window['env'] ? window['env'].REACT_APP_CHAIN_ID : 1
+
 export interface ApplicationState {
+  appChainId: number;
   blockNumber: { [chainId: number]: number };
   popupList: PopupList;
   walletModalOpen: boolean;
@@ -18,6 +20,7 @@ export interface ApplicationState {
 }
 
 const initialState: ApplicationState = {
+  appChainId: Number(ETH_CHAIN_ID),
   blockNumber: {},
   popupList: [],
   walletModalOpen: false,
@@ -26,6 +29,9 @@ const initialState: ApplicationState = {
 
 export default createReducer(initialState, builder =>
   builder
+    .addCase(updateAppChainId, (state, action) => {
+      state.appChainId = Number(action.payload.chainId)
+    })
     .addCase(updateBlockNumber, (state, action) => {
       const { chainId, blockNumber } = action.payload;
       if (typeof state.blockNumber[chainId] !== 'number') {

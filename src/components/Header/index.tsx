@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from 'rebass';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import Logo from '../../assets/svg/logo.svg';
 import { useActiveWeb3React } from '../../hooks';
 import { useETHBalances } from '../../state/wallet/hooks';
@@ -11,6 +11,10 @@ import Web3Status from '../Web3Status';
 import { tokenAmountToString } from '../../utils/formats';
 import { ReactComponent as MagicIcon } from '../../assets/images/magic_icon.svg';
 import Networks from '../Newtorks'
+import {NETWORK_LABELS } from '../../connectors'
+import { useSelector } from 'react-redux'
+import { AppState } from '../../state'
+import { ExternalLink } from '../../theme'
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -21,9 +25,6 @@ const HeaderFrame = styled.div`
   top: 0;
   position: relative;
   z-index: 2;
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    position: relative;
-  `};
 `;
 
 const HeaderElement = styled.div`
@@ -248,12 +249,39 @@ const RowBetweenStyled = styled(RowBetween)`
   `};
 `;
 
+const ChainIdWarning = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  padding: 0 5px;
+  width: 100%;
+  top: 80px;
+  background:   ${({ theme }) => theme.red3};
+  color: white;
+  
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+      top: 160px;
+      font-size: 12px;
+  `};
+  
+`;
+
+
+
 
 export default function Header() {
-  const { account } = useActiveWeb3React();
+  const { account, chainId } = useActiveWeb3React();
+  const appChainId = useSelector((state: AppState) => state.application.appChainId)
 
   //TODO refactor hook to get BNB balance as well
   const userEthBalance = useETHBalances([account])[account];
+
+  const networksMismatch = chainId && appChainId !== chainId
+  const appNetwork = `${NETWORK_LABELS[appChainId]} (${appChainId})`
+  const walletNetwork = `${NETWORK_LABELS[chainId]} (${chainId})`
+  const isAppOnBinance = appChainId === 56 || appChainId === 97
 
   return (
     <HeaderFrame>
@@ -309,6 +337,18 @@ export default function Header() {
           <Menu />
         </HeaderElementWrap>
       </RowBetweenStyled>
+      {networksMismatch && (
+        <ChainIdWarning>
+        {appNetwork} doesn’t match to network selected in wallet: {walletNetwork}.&nbsp;
+        {isAppOnBinance && <span>
+          See how to set &nbsp;
+            <ExternalLink href={'https://docs.binance.org/smart-chain/wallet/metamask.html'}>
+              Binance Chain
+            </ExternalLink>&nbsp; in Metamask
+        </span>
+          }
+      </ChainIdWarning>
+      )}
     </HeaderFrame>
   );
 }

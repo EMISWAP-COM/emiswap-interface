@@ -5,8 +5,10 @@ import { AutoColumn } from '../Column';
 import { Text } from 'rebass';
 
 import { NETWORK_ICONS, NETWORK_LABELS } from '../../connectors'
-// import { useActiveWeb3React } from '../../hooks'
 import activeIcon from '../../assets/svg/active_network.svg'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppState } from '../../state'
+import { updateAppChainId } from '../../state/application/actions'
 
 const StyledMenuButton = styled.button`
   position: relative;
@@ -105,17 +107,19 @@ const MenuFlyout = styled.span`
   `};
 `;
 
-
-
-
 const ETH_CHAIN_ID = window['env'] ? window['env'].REACT_APP_CHAIN_ID : 1
-const BNB_CHAIN_ID = 56
+const BNB_CHAIN_ID = window['env'] ? window['env'].REACT_APP_BINANCE_CHAIN_ID : 56
+
 
 export default function Networks() {
   const node = useRef<HTMLDivElement>();
-  const [isOpen, setIsOpen] = useState(true)
-  const [appChainId, setAppChainId] = useState(ETH_CHAIN_ID)
-  // const { chainId } = useActiveWeb3React()
+  const [isOpen, setIsOpen] = useState(false)
+  const appChainId = useSelector((state: AppState) => state.application.appChainId)
+  const dispatch = useDispatch()
+
+  const handleNetworkChange = (networkId: number) => {
+    dispatch(updateAppChainId({ chainId: networkId }));
+  }
 
   useEffect(() => {
     const handleClickOutside = e => {
@@ -151,7 +155,7 @@ export default function Networks() {
               Switch Networks
             </Text>
             <NetworksOptions>
-              <NetworkBtn onClick={() => setAppChainId(ETH_CHAIN_ID)}>
+              <NetworkBtn onClick={() => handleNetworkChange(ETH_CHAIN_ID)}>
                 <NetworkWrapper>
                   <NetworkIcon active={appChainId === ETH_CHAIN_ID}>
                     <img src={NETWORK_ICONS[1]} width={45} height={45} alt={'etherium_network_icon'}/>
@@ -160,7 +164,7 @@ export default function Networks() {
                 </NetworkWrapper>
               </NetworkBtn>
               <StyledMenuButton>
-                <NetworkWrapper onClick={() => setAppChainId(BNB_CHAIN_ID)}>
+                <NetworkWrapper onClick={() => handleNetworkChange(BNB_CHAIN_ID)}>
                   <NetworkIcon active={appChainId === BNB_CHAIN_ID} >
                    <img src={NETWORK_ICONS[56]} width={45} height={45} alt={'binance_network_icon'}/>
                   </NetworkIcon>

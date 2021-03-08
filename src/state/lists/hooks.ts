@@ -81,7 +81,6 @@ export function listToTokenMap(list: TokenList): TokenAddressMap {
 
 export function useTokenList(url: string): TokenAddressMap {
   const lists = useSelector<AppState, AppState['lists']['byUrl']>(state => state.lists.byUrl);
-  console.log('list', lists)
   const { chainId } = useActiveWeb3React();
   return useMemo(() => {
     const current = lists[url]?.current;
