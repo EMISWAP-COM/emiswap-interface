@@ -1,18 +1,16 @@
 import React from 'react';
-import { isMobile, isTablet } from 'react-device-detect';
 import { Text } from 'rebass';
 import styled from 'styled-components';
 import Logo from '../../assets/svg/logo.svg';
 import { useActiveWeb3React } from '../../hooks';
 import { useETHBalances } from '../../state/wallet/hooks';
-import { YellowCard } from '../Card';
 import Settings from '../Settings';
 import Menu from '../Menu';
 import Row, { RowBetween } from '../Row';
 import Web3Status from '../Web3Status';
 import { tokenAmountToString } from '../../utils/formats';
 import { ReactComponent as MagicIcon } from '../../assets/images/magic_icon.svg';
-import { NETWORK_LABELS } from '../../connectors/index'
+import Networks from '../Newtorks'
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -182,20 +180,6 @@ const AccountElement = styled.div<{ active: boolean }>`
   }
 `;
 
-const TestnetWrapper = styled.div`
-  white-space: nowrap;
-  width: fit-content;
-  margin-left: 10px;
-  pointer-events: auto;
-`;
-
-const NetworkCard = styled(YellowCard)`
-  width: fit-content;
-  margin-right: 10px;
-  border-radius: 12px;
-  padding: 8px 12px;
-`;
-
 const UniIcon = styled.div`
   transition: transform 0.3s ease;
   :hover {
@@ -266,7 +250,7 @@ const RowBetweenStyled = styled(RowBetween)`
 
 
 export default function Header() {
-  const { account, chainId } = useActiveWeb3React();
+  const { account } = useActiveWeb3React();
 
   //TODO refactor hook to get BNB balance as well
   const userEthBalance = useETHBalances([account])[account];
@@ -295,11 +279,11 @@ export default function Header() {
             <a className="purple-btn" href={`${window.location.origin}/magic_cards/`}>
               <span>Magic Hall</span>
             </a>
-            {!isMobile && !isTablet && NETWORK_LABELS[chainId] && (
-              <TestnetWrapper>
-                <NetworkCard>{NETWORK_LABELS[chainId]}</NetworkCard>
-              </TestnetWrapper>
-            )}
+
+
+            <Networks/>
+
+
             <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
               {account && userEthBalance ? (
                 <>

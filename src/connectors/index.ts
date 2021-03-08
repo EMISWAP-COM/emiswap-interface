@@ -2,12 +2,17 @@ import { InjectedConnector } from '@web3-react/injected-connector';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import { PortisConnector } from '@web3-react/portis-connector';
+import etheriumIcon from '../assets/svg/etherium_icon.svg'
+import binanceIcon from '../assets/svg/binance_icon.svg'
+
 
 import { FortmaticConnector } from './Fortmatic';
 import { NetworkConnector } from './NetworkConnector';
 const NETWORK_URL = window['env'].REACT_APP_NETWORK_URL;
 const FORMATIC_KEY = window['env'].REACT_APP_FORTMATIC_KEY;
 const PORTIS_ID = window['env'].REACT_APP_PORTIS_ID;
+
+
 
 export enum SupportedChainId {
   MAINNET = 1,
@@ -21,10 +26,17 @@ export enum SupportedChainId {
 
 const chainIds = Object.keys(SupportedChainId).filter(Number).map(Number)
 
+export const NETWORK_ICONS = {
+  [SupportedChainId.MAINNET]: etheriumIcon,
+  [SupportedChainId.KOVAN]: etheriumIcon,
+  [SupportedChainId.BSC]: binanceIcon,
+  [SupportedChainId.BSCTESTNET]: binanceIcon
+}
+
 export const NETWORK_LABELS = {
-  [SupportedChainId.MAINNET]: 'Main',
+  [SupportedChainId.MAINNET]: 'Etherium',
   [SupportedChainId.KOVAN]: 'Kovan',
-  [SupportedChainId.BSC]: 'BSC',
+  [SupportedChainId.BSC]: 'Binance',
   [SupportedChainId.BSCTESTNET]: 'BSC test'
 };
 
