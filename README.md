@@ -49,6 +49,6 @@ You should have received a copy of the GNU General Public License along with thi
 
 #### Contact us
 
-Copyright © 2020, [EmiSwap](https://emiswap.com/).
+Copyright © 2021, [EmiSwap](https://emiswap.com/).
 
 Released under GNU General Public License v3.0 
