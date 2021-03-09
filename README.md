@@ -32,7 +32,7 @@ To have the interface default to a different network when a wallet is not connec
 Note that the interface only works on mainent where all contracts are deployed.
 The interface will not work on other networks.
 
-## Contributions
+#### Contributions
 
 **Please open all pull requests against the `master` branch.** 
 CI checks will run against all PRs.
