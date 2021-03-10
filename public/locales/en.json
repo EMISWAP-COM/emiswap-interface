@@ -106,5 +106,6 @@
   "getBonusESWs": "Get Bonus ESW",
   "tokensNotIncludedInTheDividendPool": "Add tokens not yet included in the dividend pool",
   "lastCall": "The last call",
-  "dividendPool": "Dividend pool"
+  "dividendPool": "Dividend pool",
+  "migrate": "Migrate"
 }
