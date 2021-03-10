@@ -23,9 +23,9 @@ import Swap from './Swap';
 import Invest, { RedirectPathToInvestOnly } from './Invest';
 import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects';
 import ReferralUrlParser from '../referral-url-parser';
-import MigrateV1Exchange from './MigrateV1/MigrateV1Exchange';
 import { AppWrapper } from '../base/ui/AppWrapper/AppWrapper';
 import { ErrorBoundary } from '../components/ErrorBoundary/ErrorBoundary';
+import MigrateV1Exchange from './MigrateV1/MigrateV1Exchange';
 import MigrateV1 from './MigrateV1';
 
 const LogoWrapper = styled.div`
