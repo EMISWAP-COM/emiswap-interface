@@ -182,5 +182,5 @@ export function useChiController(): Contract | null {
 }
 
 export function useESWContract(): Contract | null {
-  return useContract(ESW_ADDRESS, ESW_ABI, false);
+  return useContract(ESW_ADDRESS, ESW_ABI, true);
 }

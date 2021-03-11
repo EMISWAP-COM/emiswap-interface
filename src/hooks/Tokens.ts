@@ -8,7 +8,7 @@ import { isAddress } from '../utils';
 import { useActiveWeb3React } from './index';
 import { useBytes32TokenContract, useTokenContract } from './useContract';
 import { useDefaultCoin } from './Coins';
-import { ZERO_ADDRESS } from '@uniswap/sdk/src/constants';
+import { ZERO_ADDRESS } from '@uniswap/sdk';
 import { useTokenListWithPair } from './useTokenListWithPair';
 
 export function useAllTokens(): [{ [address: string]: Token }, boolean] {

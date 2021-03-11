@@ -3,20 +3,20 @@ import { AppState } from '../state';
 import { useActiveWeb3React } from './index';
 import Web3 from 'web3';
 import { useLocalStorage } from './useLocalStorage';
-import { MOCK_USER } from './useClaim';
+// import { MOCK_USER } from './useClaim';
 import { useCallback } from 'react';
 
-const baseUrl = 'https://emiswap-oracle-development.emirex.co';
+const baseUrl = window['env']?.REACT_APP_PUBLIC_URL;
+// 'https://emiswap-oracle-development.emirex.co';
 
 export function useAuth() {
   const { id } = useSelector((state: AppState) => state.user.info);
   const { library, account } = useActiveWeb3React();
   const [auth, setAuth] = useLocalStorage('auth_token', null);
-
   const initSession = async (userID: string) => {
     return await fetch(`${baseUrl}/v1/public/sessions`, {
       method: 'POST',
-      body: JSON.stringify({ user_id: MOCK_USER }),
+      body: JSON.stringify({ user_id: userID }),
     }).then(res => res.json());
   };
 
@@ -46,7 +46,7 @@ export function useAuth() {
       }
     }
     if (account && id) {
-      const session = await initSession(MOCK_USER);
+      const session = await initSession(id);
       const signature = await signToMetamask(session.auth_message, account);
       const sessionToken = await signSession(session.session_id, signature);
       setAuth({ time: Date.now(), token: sessionToken.token });

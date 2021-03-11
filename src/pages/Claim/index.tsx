@@ -18,6 +18,7 @@ import { useESWContract } from '../../hooks/useContract';
 import { useClaim } from '../../hooks/useClaim';
 import { useActiveWeb3React } from '../../hooks';
 import { useTransactionAdder } from '../../state/transactions/hooks';
+import { useWalletModalToggle } from '../../state/application/hooks';
 
 const Tittle = styled.div`
   font-weight: 500;
@@ -113,15 +114,19 @@ export default function Claim({
   const contract = useESWContract();
   const { claimCallback } = useClaim();
   const addTransaction = useTransactionAdder();
-  const { reward } = useSelector((state: AppState) => state.cabinets.performance);
-  const formattedBalance = convertBigDecimal(reward[tokenName.toLowerCase()]);
+  const { available: unfrozenESWbalance } = useSelector(
+    (state: AppState) => state.cabinets.balance,
+  );
+  const formattedBalance = convertBigDecimal(unfrozenESWbalance);
+  const toggleWalletModal = useWalletModalToggle();
 
   const onMax = () => {
     setTypedValue(formattedBalance);
+    toggleWalletModal();
   };
 
   const onSuccess = () => {
-    // do something
+    toggleWalletModal();
   };
 
   const onError = error => {
@@ -134,8 +139,9 @@ export default function Claim({
 
   const handleSubmit = () => {
     claimCallback(tokenName, +typedValue).then(data => {
-      const { hash, nonce, amount } = data;
-      const args = [account, amount, nonce, hash];
+      const { signature, nonce, amount } = data;
+      const args = [account, amount, nonce, `0x${signature}`];
+
       contract.estimateGas
         .mintSigned(...args)
         .then(gasLimit => {
@@ -154,6 +160,16 @@ export default function Claim({
         });
     });
   };
+
+  console.log('formattedBalance', formattedBalance);
+  const isTransactionDisabled =
+    Number(unfrozenESWbalance) < Number(typedValue) || Number(typedValue) === 0;
+  console.log(
+    'formattedBalance',
+    formattedBalance,
+    Number(unfrozenESWbalance) > Number(typedValue),
+  );
+
   return (
     <AppBody>
       <RowBetween style={{ padding: '1rem' }}>
@@ -200,7 +216,7 @@ export default function Claim({
       </Container>
       <ButtonPrimary
         style={{ marginTop: '20px' }}
-        disabled={+formattedBalance > +typedValue}
+        disabled={isTransactionDisabled}
         onClick={handleSubmit}
       >
         Claim

@@ -4,9 +4,10 @@ import styled from 'styled-components';
 import { CommingSoon } from '../../../base/ui/CommingSoon';
 import { AppState } from '../../../state';
 import { TYPE } from '../../../theme';
-import { convertBigDecimal, convertDate, DateFormat } from '../uitls'
-import {  WalletAction } from '../styleds';
-
+import { convertBigDecimal, convertDate, DateFormat } from '../uitls';
+import { WalletAction } from '../styleds';
+import { useHistory } from 'react-router';
+import { useWalletModalToggle } from '../../../state/application/hooks';
 
 const DateBlock = styled.span`
   font-family: 'IBM Plex Sans';
@@ -142,8 +143,19 @@ export const ESWStats = () => {
   const unfrozen = convertBigDecimal(balance?.available);
   const frozen = convertBigDecimal(String(balance?.locked));
   const nextUnlockAmount = convertBigDecimal(balance?.nearest_unlock?.amount);
-  const unlockDate = balance?.nearest_unlock?.unlock_date === undefined ? null : convertDate(balance?.nearest_unlock?.unlock_date, DateFormat.short);
+  const unlockDate =
+    balance?.nearest_unlock?.unlock_date === undefined
+      ? null
+      : convertDate(balance?.nearest_unlock?.unlock_date, DateFormat.short);
   const total = convertBigDecimal(balance?.amount);
+  const history = useHistory();
+  const toggle = useWalletModalToggle();
+
+  const handleClaim = () => {
+    toggle();
+    history.push('/claim/ESW');
+  };
+
   return (
     <>
       <TYPE.mediumHeader>My ESW Performance</TYPE.mediumHeader>
@@ -174,7 +186,7 @@ export const ESWStats = () => {
         </TopRows>
         <BottomRow>
           <CommingSoon>
-            <WalletAction>Collect to my wallet</WalletAction>
+            <WalletAction onClick={handleClaim}>Collect to my wallet</WalletAction>
           </CommingSoon>
         </BottomRow>
       </Wrapper>
