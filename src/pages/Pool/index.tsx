@@ -153,9 +153,13 @@ export default function Pool() {
                   Add Liquidity
                 </Text>
               </ButtonPrimary>
-              <ButtonGreen style={{ width: 'initial', padding: '15px 16px' }}>
+              <ButtonGreen
+                style={{ width: 'initial', padding: '15px 16px' }}
+                as={Link}
+                to="/migrate"
+              >
                 <Text fontWeight={500} fontSize={16}>
-                  Migrate Liquidity (coming soon...)
+                  Migrate Liquidity
                 </Text>
               </ButtonGreen>
               <div>{account ? <ReferralLink /> : 'Please connect to get a referral link.'}</div>

@@ -20,7 +20,7 @@ import { shortenAddress } from '../../utils';
 import { useAllTransactions } from '../../state/transactions/hooks';
 import { NetworkContextName } from '../../constants';
 import { fortmatic, injected, portis, walletconnect, walletlink } from '../../connectors';
-import Loader from '../Loader';
+import SingleLoader from '../Loader/SingleLoader';
 
 const IconWrapper = styled.div<{ size?: number }>`
   ${({ theme }) => theme.flexColumnNoWrap};
@@ -194,7 +194,7 @@ export default function Web3Status() {
         >
           {hasPendingTransactions ? (
             <RowBetween>
-              <Text>{pending?.length} Pending</Text> <Loader stroke="white" />
+              <Text>{pending?.length} Pending</Text> <SingleLoader stroke="white" />
             </RowBetween>
           ) : (
             <>

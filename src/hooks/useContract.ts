@@ -9,6 +9,7 @@ import { ERC20_BYTES32_ABI } from '../constants/abis/erc20';
 import CHI_ABI from '../constants/abis/chi.json';
 import UNISOCKS_ABI from '../constants/abis/unisocks.json';
 import ERC20_ABI from '../constants/abis/erc20.json';
+import VAMP_ABI from '../constants/abis/vamp.json';
 import { MIGRATOR_ABI, MIGRATOR_ADDRESS } from '../constants/abis/migrator';
 import EMI_FACTORY_ABI from '../constants/abis/EmiFactory.json';
 import { abi as EMI_SWAP_ABI } from '../constants/abis/Emiswap.json';
@@ -17,6 +18,7 @@ import { V1_EXCHANGE_ABI, V1_FACTORY_ABI, V1_FACTORY_ADDRESSES } from '../consta
 import {
   V1_EMIROUTER_HELPER_ADDRESSES,
   V1_MOONISWAP_FACTORY_ADDRESSES,
+  VAMP_ADDRESS,
 } from '../constants/v1-mooniswap';
 import { getContract, getProviderOrSigner } from '../utils';
 import { useActiveWeb3React } from './index';
@@ -183,4 +185,7 @@ export function useChiController(): Contract | null {
 
 export function useESWContract(): Contract | null {
   return useContract(ESW_ADDRESS, ESW_ABI, true);
+}
+export function useVampContract(): Contract | null {
+  return useContract(VAMP_ADDRESS, VAMP_ABI, true);
 }
