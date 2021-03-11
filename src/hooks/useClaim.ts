@@ -21,6 +21,7 @@ export function useClaim() {
   const [{ token }] = useLocalStorage('auth_token', { token: null });
 
   const claimCallback = (tokenName: string, amount: number) => {
+    console.log('contract', contractESW, token);
     if (contractESW) {
       return contractESW.walletNonce(account).then((nonce: BigNumber) => {
         if (token) {
