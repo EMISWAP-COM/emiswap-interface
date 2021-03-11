@@ -25,6 +25,7 @@ import { AppState } from '../../state';
 import { Ambassador } from '../AccountDetails/Ambassador';
 import { Owner } from '../AccountDetails/Owner';
 import WarningBlock from '../Warning/WarningBlock';
+import { useAuth } from '../../hooks/useAuth';
 
 const CloseIcon = styled.div`
   display: none;
@@ -187,13 +188,14 @@ export default function WalletModal({
   const toggleWalletModal = useWalletModalToggle();
 
   const previousAccount = usePrevious(account);
-
+  const handleAuth = useAuth();
   // close on connection, when logged out before
   useEffect(() => {
     if (account && !previousAccount && walletModalOpen) {
       toggleWalletModal();
+      handleAuth();
     }
-  }, [account, previousAccount, toggleWalletModal, walletModalOpen]);
+  }, [account, previousAccount, toggleWalletModal, walletModalOpen, handleAuth]);
 
   // always reset to account view
   useEffect(() => {
@@ -453,12 +455,8 @@ export default function WalletModal({
             <NoUser>
               <WarningBlock
                 title={'Login failed'}
-                content={() => <div>Something went wrong.
-                </div>}
-                bottomContent={() => <div>
-                  Please refresh the page and try again.
-                </div>
-                  }
+                content={() => <div>Something went wrong.</div>}
+                bottomContent={() => <div>Please refresh the page and try again.</div>}
               />
             </NoUser>
           );
@@ -466,14 +464,10 @@ export default function WalletModal({
     } else if (account && !user && walletView === WALLET_VIEWS.ACCOUNT) {
       return (
         <>
-          <HeaderRow>
-            Sorry, we couldn't load user info
-          </HeaderRow>
-          <ContentWrapper>
-            account - {account}
-          </ContentWrapper>
+          <HeaderRow>Sorry, we couldn't load user info</HeaderRow>
+          <ContentWrapper>account - {account}</ContentWrapper>
         </>
-      )
+      );
     }
     return (
       <>
@@ -561,7 +555,7 @@ export default function WalletModal({
           <CloseIcon onClick={toggleWalletModal}>
             <CloseColor />
           </CloseIcon>
-        {getModalContent()}
+          {getModalContent()}
         </UpperSection>
       </Wrapper>
     </Modal>

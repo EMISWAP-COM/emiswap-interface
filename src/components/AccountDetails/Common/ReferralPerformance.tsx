@@ -1,12 +1,14 @@
 import React from 'react';
 import { TYPE } from '../../../theme';
 import styled from 'styled-components';
-import { Level, WalletAction } from '../styleds';
+import { Level } from '../styleds';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { convertBigDecimal, normalizeNumber } from '../uitls';
-import { CommingSoon } from '../../../base/ui/CommingSoon';
+// import { CommingSoon } from '../../../base/ui/CommingSoon';
 import { UserRoles } from '../../WalletModal';
+// import { useHistory } from 'react-router';
+// import { useWalletModalToggle } from '../../../state/application/hooks';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -120,7 +122,13 @@ export const ReferralPerformance = () => {
   const { reward, total_amount, total_count, first_level, second_level, third_level } = useSelector(
     (state: AppState) => state.cabinets.performance,
   );
+  // const history = useHistory();
+  // const toggle = useWalletModalToggle();
   const user = useSelector((state: AppState) => state.user.info);
+  // const handleClaim = () => {
+  //   toggle();
+  //   history.push('/claim/ESW');
+  // };
 
   return (
     <>
@@ -131,16 +139,17 @@ export const ReferralPerformance = () => {
           <Title>Total Referral reward</Title>
           <TwoCells>
             {convertBigDecimal(reward?.esw)} ESW
-            <CommingSoon>
-              <WalletAction>Claim</WalletAction>
-            </CommingSoon>
+            {/*<CommingSoon>*/}
+            {/*  <WalletAction>*/}
+            {/*    Claim</WalletAction>*/}
+            {/*</CommingSoon>*/}
           </TwoCells>
           {user.role !== UserRoles.client && (
             <TwoCells>
               {convertBigDecimal(reward?.dai)} DAI
-              <CommingSoon>
-                <WalletAction>Claim</WalletAction>
-              </CommingSoon>
+              {/*<CommingSoon>*/}
+              {/*  <WalletAction onClick={handleClaim}>Claim</WalletAction>*/}
+              {/*</CommingSoon>*/}
             </TwoCells>
           )}
         </Reward>

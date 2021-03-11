@@ -21,9 +21,7 @@ export function useLpTokens(): {
   const { tokens, balances } = useMultipleTokenInfo(formattedAddresses, lpTokensInfo);
   useEffect(() => {
     const fetchInfo = async () => {
-
       try {
-
         setIsLoading(true);
         const length = await contract?.lpTokensInfoLength();
         let promiseArr = [];
@@ -34,11 +32,12 @@ export function useLpTokens(): {
         setLpTokensInfo(lpTokensInfo.map(el => el.lpToken));
         promiseArr = lpTokensInfo.map((_, idx) => contract.lpTokenDetailedInfo(idx));
         const listPair = await Promise.all(promiseArr);
-        setTokenList(listPair.map((el, idx) => ({ addresses: el, base: lpTokensInfo[idx].lpToken })));
+        setTokenList(
+          listPair.map((el, idx) => ({ addresses: el, base: lpTokensInfo[idx].lpToken })),
+        );
         setIsLoading(false);
-
       } catch (e) {
-          throw new Error(`Failed to get a swap contract - ${e.message}`);
+        throw new Error(`Failed to get a swap contract - ${e.message}`);
       }
     };
     fetchInfo();
