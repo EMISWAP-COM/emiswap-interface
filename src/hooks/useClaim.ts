@@ -21,11 +21,14 @@ export function useClaim() {
   const [{ token }] = useLocalStorage('auth_token', { token: null });
 
   const claimCallback = (tokenName: string, amount: number) => {
+    console.log('contract', contractESW, token);
     if (contractESW) {
       return contractESW.walletNonce(account).then((nonce: BigNumber) => {
-        if (token) {
-          console.log('has token', nonce);
+        // if (token) {
+        //   console.log('has token', nonce);
 
+        return handleAuth().then((token: string) => {
+          console.log('token', token);
           return fetch(confirmClaimSignatureUrl, {
             headers: {
               'Content-Type': 'application/json',
@@ -41,9 +44,11 @@ export function useClaim() {
               chainID: 'ETH_KV',
             }),
           }).then(res => res.json());
-        }
-        handleAuth();
-        return Promise.resolve(undefined);
+        });
+
+        // }
+        // handleAuth();
+        // return Promise.resolve(undefined);
       });
     }
     return Promise.resolve(undefined);

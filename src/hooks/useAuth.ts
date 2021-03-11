@@ -42,7 +42,7 @@ export function useAuth() {
     if (auth) {
       const isExpired = (Date.now() - auth.time) / (1000 * 3600) > 12;
       if (!isExpired) {
-        return;
+        return auth.token;
       }
     }
     if (account && id) {
@@ -50,6 +50,7 @@ export function useAuth() {
       const signature = await signToMetamask(session.auth_message, account);
       const sessionToken = await signSession(session.session_id, signature);
       setAuth({ time: Date.now(), token: sessionToken.token });
+      return sessionToken.token;
     }
   }, [auth, account, id, setAuth, signToMetamask]);
 
