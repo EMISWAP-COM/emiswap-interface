@@ -1,47 +1,53 @@
-import { TransactionResponse } from '@ethersproject/abstract-provider';
-import { AddressZero } from '@ethersproject/constants';
-import { Token, TokenAmount, Fraction, JSBI, Percent, ETHER } from '@uniswap/sdk';
-import React, { useCallback, useMemo, useState } from 'react';
-import ReactGA from 'react-ga';
+import { Fraction, JSBI, Token, TokenAmount } from '@uniswap/sdk';
+import React, { useState } from 'react';
 import { Redirect, RouteComponentProps } from 'react-router';
 import { Text } from 'rebass';
-import { ButtonConfirmed, ButtonPrimary } from '../../components/Button';
-import { LightCard, PinkCard, YellowCard } from '../../components/Card';
-import { AutoColumn } from '../../components/Column';
+import { ButtonGreen, ButtonLight, ButtonPrimary } from '../../components/Button';
 import CurrencyLogo from '../../components/CurrencyLogo';
 import QuestionHelper from '../../components/QuestionHelper';
 import { AutoRow, RowBetween, RowFixed } from '../../components/Row';
 import { Dots } from '../../components/swap/styleds';
-import { MIGRATOR_ADDRESS } from '../../constants/abis/migrator';
-import { PairState, usePair } from '../../data-mooniswap/Reserves';
-import { useTotalSupply } from '../../data-mooniswap/TotalSupply';
+import { usePair } from '../../data-mooniswap/Reserves';
 import { useActiveWeb3React } from '../../hooks';
-import { useToken } from '../../hooks/Tokens';
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback';
-import { useMooniswapMigratorContract } from '../../hooks/useContract';
-import { useIsTransactionPending, useTransactionAdder } from '../../state/transactions/hooks';
-import { useTokenBalance, useTokenBalances } from '../../state/wallet/hooks';
+import { useVampContract } from '../../hooks/useContract';
+import { useCurrencyBalance } from '../../state/wallet/hooks';
 import { BackArrow, TYPE } from '../../theme';
-import { calculateSlippageAmount, getMooniswapMigratorContract, isAddress } from '../../utils';
-import { BodyWrapper, HeadersPlusBodyWrapper } from '../AppBody';
-import { EmptyState } from './EmptyState';
-import { usePairTokens } from '../../data-mooniswap/UniswapV2';
+import { calculateGasMargin, isAddress } from '../../utils';
+import AppBody from '../AppBody';
 import DoubleCurrencyLogo from '../../components/DoubleLogo';
-import { Link } from 'react-router-dom';
-import { useUserSlippageTolerance } from '../../state/user/hooks';
-import Logo from '../../components/Logo';
-import Wordmark from '../../components/Wordmark';
 import { tokenAmountToString } from '../../utils/formats';
+import CurrencyInputPanel from '../../components/CurrencyInputPanel';
+import styled from 'styled-components';
+import Loader from '../../components/Loader';
+import { useLpCurrencies } from '../../hooks/useLpCurrencies';
+import { useLpTokens } from '../../hooks/useLpTokens';
+import { EmiVampAddress } from '../../constants/emi/addresses';
+import { tryParseAmount } from '../../state/swap/hooks';
+import { useWalletModalToggle } from '../../state/application/hooks';
+import { useCurrency } from '../../hooks/Tokens';
+import { useTransactionAdder } from '../../state/transactions/hooks';
 
 const POOL_CURRENCY_AMOUNT_MIN = new Fraction(JSBI.BigInt(1), JSBI.BigInt(1000000));
-const ZERO = JSBI.BigInt(0);
-const ONE = JSBI.BigInt(1);
-const ZERO_FRACTION = new Fraction(ZERO, ONE);
-const weth = isAddress('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2');
 
-function getDenom(decimals: number): JSBI {
-  return JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(decimals));
-}
+const StyledContainer = styled.div`
+  min-height: 230px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  & > *:not(:last-child):not(:nth-child(2)) {
+    margin-bottom: 20px;
+  }
+`;
+
+const LoaderBox = styled.div`
+  width: 100%;
+  min-height: 230px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 function FormattedPoolCurrencyAmount({ currencyAmount }: { currencyAmount: TokenAmount }) {
   return (
@@ -108,354 +114,122 @@ export function V1LiquidityInfo({
   );
 }
 
-function V1PairMigration({
-  liquidityTokenAmount,
-  token0,
-  token1,
-}: {
-  liquidityTokenAmount: TokenAmount;
-  token0: Token;
-  token1: Token;
-}) {
-  const { account, chainId, library } = useActiveWeb3React();
-  const totalSupply = useTotalSupply(liquidityTokenAmount.token);
-  const pairTokenBalances = useTokenBalances(liquidityTokenAmount.token.address, [token0, token1]);
-  const [allowedSlippage] = useUserSlippageTolerance();
-
-  let mooniswapTokens = [];
-  if (token0.address === weth) {
-    mooniswapTokens = [ETHER, token1];
-  } else if (token1.address === weth) {
-    mooniswapTokens = [ETHER, token0];
-  } else {
-    mooniswapTokens = [token0, token1];
-  }
-  const [mooniswapPairState, mooniswapPair] = usePair(mooniswapTokens[0], mooniswapTokens[1]);
-  const isFirstLiquidityProvider: boolean = mooniswapPairState === PairState.NOT_EXISTS;
-
-  const mooniswapSpotPrice = mooniswapPair
-    ?.reserveOf(mooniswapTokens[1])
-    ?.divide(mooniswapPair?.reserveOf(mooniswapTokens[0]));
-
-  const [confirmingMigration, setConfirmingMigration] = useState<boolean>(false);
-  const [pendingMigrationHash, setPendingMigrationHash] = useState<string | null>(null);
-
-  const shareFraction: Fraction = totalSupply
-    ? new Percent(liquidityTokenAmount.raw, totalSupply.raw)
-    : ZERO_FRACTION;
-
-  const token0Worth: TokenAmount = pairTokenBalances?.[token0.address]
-    ? new TokenAmount(
-        token0,
-        pairTokenBalances[token0.address]
-          .multiply(shareFraction)
-          .multiply(getDenom(token0.decimals)).quotient,
-      )
-    : new TokenAmount(token0, ZERO);
-
-  const token1Worth: TokenAmount = pairTokenBalances?.[token1.address]
-    ? new TokenAmount(
-        token1,
-        shareFraction.multiply(pairTokenBalances[token1.address].raw).quotient,
-      )
-    : new TokenAmount(token1, ZERO);
-
-  const [approval, approve] = useApproveCallback(liquidityTokenAmount, MIGRATOR_ADDRESS);
-
-  const uniswapSpotPrice =
-    pairTokenBalances?.[token0.address] && pairTokenBalances?.[token1.address]
-      ? token0Worth.divide(new Fraction(token1Worth.raw, getDenom(token1.decimals)))
-      : null;
-
-  const priceDifferenceFraction: Fraction | undefined =
-    uniswapSpotPrice && mooniswapSpotPrice
-      ? uniswapSpotPrice
-          .divide(mooniswapSpotPrice)
-          .multiply('100')
-          .subtract('100')
-      : undefined;
-
-  const priceDifferenceAbs: Fraction | undefined = priceDifferenceFraction?.lessThan(ZERO)
-    ? priceDifferenceFraction?.multiply('-1')
-    : priceDifferenceFraction;
-
-  const addTransaction = useTransactionAdder();
-  const isMigrationPending = useIsTransactionPending(pendingMigrationHash);
-
-  const migrator = useMooniswapMigratorContract();
-
-  const migrate = useCallback(async () => {
-    // if (!mooniswapPair || !minAmountToken || !minAmountETH) return
-    if (!mooniswapPair || !allowedSlippage) return;
-
-    const contract = getMooniswapMigratorContract(chainId, library, account);
-    const res = await contract.getExpectedReturn(
-      liquidityTokenAmount.token.address,
-      mooniswapPair.poolAddress,
-      '0x' + liquidityTokenAmount.raw.toString(16),
-      '1', // set normal amount
-      '0x0',
-    );
-
-    const minReturn = calculateSlippageAmount(
-      new TokenAmount(mooniswapPair.liquidityToken, res.returnAmount),
-      allowedSlippage,
-    )[0];
-
-    setConfirmingMigration(true);
-    migrator
-      .swap(
-        liquidityTokenAmount.token.address,
-        mooniswapPair.poolAddress,
-        '0x' + liquidityTokenAmount.raw.toString(16),
-        '0x' + minReturn.toString(16),
-        new Array(34).fill(0),
-        '0x0',
-      )
-      .then((response: TransactionResponse) => {
-        ReactGA.event({
-          category: 'Migrate',
-          action: 'V2->Mooniswap',
-          label: token0?.symbol + '/' + token1?.symbol,
-        });
-
-        addTransaction(response, {
-          summary: `Migrate UNI-V2-${token0.symbol}-${token0.symbol} liquidity to Mooniswap`,
-        });
-        setPendingMigrationHash(response.hash);
-      })
-      .catch(e => {
-        console.log(e);
-        setConfirmingMigration(false);
-      });
-  }, [
-    allowedSlippage,
-    chainId,
-    library,
-    liquidityTokenAmount,
-    mooniswapPair,
-    migrator,
-    token0,
-    token1,
-    account,
-    addTransaction,
-  ]);
-
-  const noLiquidityTokens = !!liquidityTokenAmount && liquidityTokenAmount.equalTo(ZERO);
-
-  const largePriceDifference = !!priceDifferenceAbs && !priceDifferenceAbs.lessThan(JSBI.BigInt(5));
-
-  const isSuccessfullyMigrated = !!pendingMigrationHash && !!noLiquidityTokens;
-
-  return (
-    <AutoColumn gap="20px">
-      <TYPE.body my={9} style={{ fontWeight: 400 }}>
-        This tool will safely migrate your Uniswap V2 liquidity to EmiSwap with minimal price risk .
-      </TYPE.body>
-
-      {!isFirstLiquidityProvider && largePriceDifference ? (
-        <YellowCard>
-          <AutoColumn gap="8px">
-            <RowBetween>
-              <TYPE.body>Mooniswap V2 Price:</TYPE.body>
-              <TYPE.black>
-                {tokenAmountToString(uniswapSpotPrice)} {token0.symbol}/{token1.symbol}
-              </TYPE.black>
-            </RowBetween>
-            <RowBetween>
-              <div />
-              <TYPE.black>
-                {tokenAmountToString(uniswapSpotPrice?.invert())} {token1.symbol}/{token0.symbol}
-              </TYPE.black>
-            </RowBetween>
-
-            <RowBetween>
-              <TYPE.body>EmiSwap Price:</TYPE.body>
-              <TYPE.black>
-                {tokenAmountToString(mooniswapSpotPrice)} {token0.symbol.replace('WETH', 'ETH')}/
-                {token1.symbol.replace('WETH', 'ETH')}
-              </TYPE.black>
-            </RowBetween>
-            <RowBetween>
-              <div />
-              <TYPE.black>
-                {tokenAmountToString(mooniswapSpotPrice?.invert())}{' '}
-                {token1.symbol.replace('WETH', 'ETH')}/{token0.symbol.replace('WETH', 'ETH')}
-              </TYPE.black>
-            </RowBetween>
-
-            <RowBetween>
-              <TYPE.body color="inherit">
-                Price Difference:{' '}
-                <QuestionHelper
-                  text={`It's best to deposit liquidity into EmiSwap at a price you believe is correct. If the EmiSwap price seems
-                incorrect, you can either make a swap to move the price or wait for someone else to do so.`}
-                />
-              </TYPE.body>
-              <TYPE.black color="inherit">{tokenAmountToString(priceDifferenceAbs, 4)}%</TYPE.black>
-            </RowBetween>
-          </AutoColumn>
-        </YellowCard>
-      ) : null}
-
-      {isFirstLiquidityProvider && (
-        <PinkCard>
-          <TYPE.body style={{ marginBottom: 8, fontWeight: 400 }}>
-            EmiSwap POOL for {mooniswapTokens[0].symbol}/{mooniswapTokens[1].symbol} hasn't created
-            yet. First you need to create a pool
-          </TYPE.body>
-
-          <AutoColumn gap="8px">
-            <RowBetween>
-              <TYPE.body>Mooniswap V2 Price:</TYPE.body>
-              <TYPE.black>
-                {tokenAmountToString(uniswapSpotPrice)} {token0.symbol}/{token1.symbol}
-              </TYPE.black>
-            </RowBetween>
-            <RowBetween>
-              <div />
-              <TYPE.black>
-                {tokenAmountToString(uniswapSpotPrice?.invert())} {token1.symbol}/{token0.symbol}
-              </TYPE.black>
-            </RowBetween>
-          </AutoColumn>
-        </PinkCard>
-      )}
-
-      <LightCard>
-        <V1LiquidityInfo
-          token0={token0}
-          token1={token1}
-          liquidityTokenAmount={liquidityTokenAmount}
-          token0Worth={token0Worth}
-          token1Worth={token1Worth}
-        />
-
-        {isFirstLiquidityProvider && (
-          <div style={{ display: 'flex', marginTop: '1rem' }}>
-            <AutoColumn gap="12px" style={{ flex: '1', marginRight: 12 }}>
-              <ButtonPrimary
-                as={Link}
-                to={'/add/' + mooniswapTokens[0].address + '/' + mooniswapTokens[1].address}
-              >
-                Create Pool
-              </ButtonPrimary>
-            </AutoColumn>
-          </div>
-        )}
-
-        {!isFirstLiquidityProvider && (
-          <div style={{ display: 'flex', marginTop: '1rem' }}>
-            <AutoColumn gap="12px" style={{ flex: '1', marginRight: 12 }}>
-              <ButtonConfirmed
-                confirmed={approval === ApprovalState.APPROVED}
-                disabled={approval !== ApprovalState.NOT_APPROVED}
-                onClick={approve}
-              >
-                {approval === ApprovalState.PENDING ? (
-                  <Dots>Approving</Dots>
-                ) : approval === ApprovalState.APPROVED ? (
-                  'Approved'
-                ) : (
-                  'Approve'
-                )}
-              </ButtonConfirmed>
-            </AutoColumn>
-            <AutoColumn gap="12px" style={{ flex: '1' }}>
-              <ButtonConfirmed
-                confirmed={isSuccessfullyMigrated}
-                disabled={
-                  isSuccessfullyMigrated ||
-                  noLiquidityTokens ||
-                  isMigrationPending ||
-                  approval !== ApprovalState.APPROVED ||
-                  confirmingMigration
-                }
-                onClick={migrate}
-              >
-                {isSuccessfullyMigrated ? (
-                  'Success'
-                ) : isMigrationPending ? (
-                  <Dots>Migrating</Dots>
-                ) : (
-                  'Migrate'
-                )}
-              </ButtonConfirmed>
-            </AutoColumn>
-          </div>
-        )}
-      </LightCard>
-      <TYPE.darkGray style={{ textAlign: 'center' }}>
-        {`Your Uniswap V2 ${token0.symbol}/${token1.symbol} liquidity will become Mooniswap ${mooniswapTokens[0].symbol}/${mooniswapTokens[1].symbol} liquidity.`}
-      </TYPE.darkGray>
-    </AutoColumn>
-  );
-}
-
 export default function MigrateV1Exchange({
-  history,
   match: {
     params: { address },
   },
 }: RouteComponentProps<{ address: string }>) {
   const validatedAddress = isAddress(address);
-  const { chainId, account } = useActiveWeb3React();
+  const toggleWalletModal = useWalletModalToggle();
+  const { account } = useActiveWeb3React();
+  const contract = useVampContract();
+  const { tokenList, lpTokensInfo } = useLpTokens();
+  const tokens = tokenList.find(el => el.base === address)?.addresses ?? [];
+  const inputCurrency = useLpCurrencies(tokens, address);
+  const currency0 = useCurrency(tokens[0]);
+  const currency1 = useCurrency(tokens[1]);
+  const pair = usePair(currency0, currency1)[1];
+  const selectedCurrencyBalance = useCurrencyBalance(account, inputCurrency);
+  const inputCurrencyBalance = useCurrencyBalance(account, inputCurrency);
+  const [amount, setAmount] = useState('0');
+  const addTransaction = useTransactionAdder();
 
-  const tokenAddresses = usePairTokens(validatedAddress ? validatedAddress : undefined);
+  const parsedAmount = tryParseAmount(amount, inputCurrency);
+  const [approval, approveCallback] = useApproveCallback(parsedAmount, EmiVampAddress);
 
-  const token0 = useToken(tokenAddresses[0]);
-  const token1 = useToken(tokenAddresses[1]);
-
-  const liquidityToken: Token | undefined = useMemo(
-    () =>
-      validatedAddress && token0 && token1
-        ? new Token(
-            chainId,
-            validatedAddress,
-            18,
-            `UNI-V2-${token0.symbol}-${token1.symbol}`,
-            'Uniswap V2',
-          )
-        : undefined,
-    [chainId, validatedAddress, token0, token1],
-  );
-  const userLiquidityBalance = useTokenBalance(account, liquidityToken);
+  const notEnoughBalance = !inputCurrencyBalance || inputCurrencyBalance?.toExact() < amount;
 
   // redirect for invalid url params
-  if (!validatedAddress || tokenAddresses[0] === AddressZero || tokenAddresses[1] === AddressZero) {
+  if (!validatedAddress) {
     console.error('Invalid address in path', address);
     return <Redirect to="/migrate" />;
   }
 
-  return (
-    <HeadersPlusBodyWrapper>
-      <div className="onlyDesktop">
-        <Logo />
-        <Wordmark />
-      </div>
-      <BodyWrapper style={{ padding: 24 }}>
-        <AutoColumn gap="16px">
-          <AutoRow style={{ alignItems: 'center', justifyContent: 'space-between' }} gap="8px">
-            <BackArrow to="/migrate" />
-            <TYPE.mediumHeader>Migrate Liquidity</TYPE.mediumHeader>
-            <div>
-              <QuestionHelper text="Migrate your liquidity tokens from Uniswap V2 to Mooniswap." />
-            </div>
-          </AutoRow>
+  const onSuccess = response => {
+    setAmount('0');
+    addTransaction(response);
+  };
 
-          {!account ? (
-            <TYPE.largeHeader>You must connect an account.</TYPE.largeHeader>
-          ) : userLiquidityBalance && token0 && token1 ? (
-            <V1PairMigration
-              liquidityTokenAmount={userLiquidityBalance}
-              token0={token0}
-              token1={token1}
+  const onError = error => {
+    if (error?.code === 4001) {
+      throw error;
+    } else {
+      throw Error('An error occurred while migration. Please contact support.');
+    }
+  };
+
+  const handleMigrate = () => {
+    const idx = lpTokensInfo.findIndex(el => el === address);
+    if (idx !== -1) {
+      const args = [idx.toString(), `${10 ** 18 * +parsedAmount.toExact()}`];
+      contract.estimateGas
+        .deposit(...args)
+        .then(data => {
+          const gasLimit = calculateGasMargin(data);
+          return contract
+            .deposit(...args, { gasLimit })
+            .then(onSuccess)
+            .catch(onError);
+        })
+        .catch(error => {
+          console.error('estimateGas failed for deposit', error);
+          return undefined;
+        });
+    }
+  };
+
+  return (
+    <AppBody>
+      <AutoRow style={{ alignItems: 'center', justifyContent: 'space-between' }}>
+        <BackArrow to="/migrate" />
+        <div>
+          <QuestionHelper text="Migrate your liquidity tokens from Uniswap V2 to Emiswap." />
+        </div>
+      </AutoRow>
+      <StyledContainer>
+        {!inputCurrency ? (
+          <LoaderBox>
+            <Loader size="100px" />
+          </LoaderBox>
+        ) : (
+          <>
+            <TYPE.mediumHeader>How many tokens?</TYPE.mediumHeader>
+            <CurrencyInputPanel
+              disabled={false}
+              value={amount}
+              onUserInput={val => setAmount(val)}
+              id={'migrate-liquidity'}
+              label={'from'}
+              showMaxButton
+              onMax={() => setAmount(tokenAmountToString(selectedCurrencyBalance))}
+              currency={inputCurrency}
+              disableCurrencySelect
+              pair={pair}
             />
-          ) : (
-            <EmptyState message="Loading..." />
-          )}
-        </AutoColumn>
-      </BodyWrapper>
-    </HeadersPlusBodyWrapper>
+            {(approval === ApprovalState.PENDING || approval === ApprovalState.NOT_APPROVED) &&
+              !notEnoughBalance && (
+                <ButtonPrimary onClick={approveCallback}>
+                  <Text fontWeight={500} fontSize={16}>
+                    {approval === ApprovalState.PENDING ? <Dots>Approving</Dots> : 'Approve'}
+                  </Text>
+                </ButtonPrimary>
+              )}
+            {!account ? (
+              <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
+            ) : (
+              <ButtonGreen
+                style={{ width: '100%', padding: '15px 16px' }}
+                disabled={approval !== ApprovalState.APPROVED || notEnoughBalance}
+                onClick={handleMigrate}
+              >
+                <Text fontWeight={500} fontSize={16}>
+                  {notEnoughBalance ? 'Not enough balance' : 'Migrate'}
+                </Text>
+              </ButtonGreen>
+            )}
+          </>
+        )}
+      </StyledContainer>
+    </AppBody>
   );
 }

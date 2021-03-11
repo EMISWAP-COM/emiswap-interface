@@ -114,6 +114,15 @@ export const ButtonGray = styled(Base)`
 export const ButtonGreen = styled(Base)`
   background-color: ${({ theme }) => theme.green1};
   color: ${({ theme }) => theme.white};
+  :disabled {
+    background-color: ${({ theme, altDisbaledStyle }) =>
+      altDisbaledStyle ? theme.primary1 : theme.bg3};
+    color: ${({ theme, altDisbaledStyle }) => (altDisbaledStyle ? 'white' : theme.text3)};
+    cursor: auto;
+    box-shadow: none;
+    border: 1px solid transparent;
+    outline: none;
+  }
 `;
 
 export const ButtonSecondary = styled(Base)`
