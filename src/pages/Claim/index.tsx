@@ -175,7 +175,7 @@ export default function Claim({
         <HistoryLink to="/pool">
           <StyledArrowLeft />
         </HistoryLink>
-        <Tittle> claim {tokenName}</Tittle>
+        <Tittle> Collect to my wallet</Tittle>
         <QuestionHelper text={'sometext'} />
       </RowBetween>
       <Container hideInput={false}>
@@ -218,7 +218,7 @@ export default function Claim({
         disabled={isTransactionDisabled}
         onClick={handleSubmit}
       >
-        Claim
+        Collect
       </ButtonPrimary>
     </AppBody>
   );
