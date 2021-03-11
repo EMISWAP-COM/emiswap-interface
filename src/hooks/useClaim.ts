@@ -25,7 +25,7 @@ export function useClaim() {
     if (contractESW) {
       return contractESW.walletNonce(account).then((nonce: BigNumber) => {
         // if (token) {
-        //   console.log('has token', nonce);
+        console.log('has token', Number(amount) * 1000000000000000000);
 
         return handleAuth().then((token: string) => {
           console.log('token', token);
@@ -36,7 +36,7 @@ export function useClaim() {
             },
             method: 'POST',
             body: JSON.stringify({
-              amount: amount.toString() + '000000000000000000',
+              amount: (Number(amount) * 1000000000000000000).toString(),
               nonce: nonce.add(1).toNumber(),
               contract_address: ESW_ADDRESS,
               token_name: tokenName,
