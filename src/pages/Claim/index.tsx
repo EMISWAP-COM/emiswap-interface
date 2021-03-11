@@ -122,7 +122,6 @@ export default function Claim({
 
   const onMax = () => {
     setTypedValue(formattedBalance);
-    toggleWalletModal();
   };
 
   const onSuccess = () => {
