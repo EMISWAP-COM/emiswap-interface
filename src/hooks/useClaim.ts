@@ -7,10 +7,9 @@ import { AppState } from '../state';
 import { useActiveWeb3React } from './index';
 import { parseUnits } from '@ethersproject/units';
 
-export const MOCK_USER = 'c98052fa-99ff-479c-8a8a-19d32acdbbf8';
 const ESW_ADDRESS = window['env'].REACT_APP_ESW_ID;
-
-const confirmClaimSignatureUrl = 'https://us-central1-emirex-preprod.cloudfunctions.net/sign_trans';
+const ESW_CLAIM_API = window['env'].REACT_APP_ESW_CLAIM_API;
+const ESW_CLAIM_CHAIN_ID = window['env'].REACT_APP_ESW_CLAIM_CHAIN_ID;
 
 export function useClaim() {
   const { id } = useSelector((state: AppState) => state.user.info);
@@ -33,7 +32,7 @@ export function useClaim() {
 
         return handleAuth().then((token: string) => {
           console.log('token', token);
-          return fetch(confirmClaimSignatureUrl, {
+          return fetch(ESW_CLAIM_API, {
             headers: {
               'Content-Type': 'application/json',
               authorization: token,
@@ -45,7 +44,7 @@ export function useClaim() {
               contract_address: ESW_ADDRESS,
               token_name: tokenName,
               userID: id,
-              chainID: 'ETH_KV',
+              chainID: ESW_CLAIM_CHAIN_ID,
             }),
           }).then(res => res.json());
         });
