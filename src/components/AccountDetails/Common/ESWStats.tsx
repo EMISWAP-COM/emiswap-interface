@@ -185,9 +185,7 @@ export const ESWStats = () => {
           </RowItem>
         </TopRows>
         <BottomRow>
-          <CommingSoon>
-            <WalletAction onClick={handleClaim}>Collect to my wallet</WalletAction>
-          </CommingSoon>
+          <WalletAction onClick={handleClaim}>Collect to my wallet</WalletAction>
         </BottomRow>
       </Wrapper>
     </>
