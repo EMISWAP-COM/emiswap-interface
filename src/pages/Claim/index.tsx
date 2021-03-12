@@ -120,9 +120,7 @@ export default function Claim({
 
   const formatBalance = balance => {
     if (!isNaN(Number(balance))) {
-      return Number(balance)
-        .toFixed(5)
-        .toString();
+      return (Math.trunc(Number(balance) * 1e6) / 1e6).toFixed(6);
     }
 
     return balance;
@@ -176,10 +174,14 @@ export default function Claim({
   const isTransactionDisabled = () => {
     if (unfrozenESWbalance && typedValue) {
       console.log(Number(unfrozenESWbalance));
+      // console.log(parse)
       return (
-        parseUnits(Number(unfrozenESWbalance).toString(), 18).lte(
-          parseUnits(typedValue.toString(), 18),
-        ) || parseUnits(typedValue.toString()).isZero()
+        parseUnits(
+          Number(unfrozenESWbalance)
+            .toFixed(15)
+            .toString(),
+          18,
+        ).lt(parseUnits(typedValue.toString(), 18)) || parseUnits(typedValue.toString()).isZero()
       );
     }
     return true;
