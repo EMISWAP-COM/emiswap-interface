@@ -19,6 +19,7 @@ import { useClaim } from '../../hooks/useClaim';
 import { useActiveWeb3React } from '../../hooks';
 import { useTransactionAdder } from '../../state/transactions/hooks';
 import { useWalletModalToggle } from '../../state/application/hooks';
+import { parseUnits } from '@ethersproject/units';
 
 const Tittle = styled.div`
   font-weight: 500;
@@ -160,14 +161,16 @@ export default function Claim({
     });
   };
 
-  console.log('formattedBalance', formattedBalance);
-  const isTransactionDisabled =
-    Number(unfrozenESWbalance) < Number(typedValue) || Number(typedValue) === 0;
-  console.log(
-    'formattedBalance',
-    formattedBalance,
-    Number(unfrozenESWbalance) > Number(typedValue),
-  );
+  const isTransactionDisabled = () => {
+    if (unfrozenESWbalance && typedValue) {
+      console.log(Number(unfrozenESWbalance));
+      return parseUnits(Number(unfrozenESWbalance).toString(), 18).lt(
+        parseUnits(typedValue.toString(), 18),
+      );
+    }
+    return true;
+  };
+  // Number(unfrozenESWbalance) < Number(typedValue) || Number(typedValue) === 0;
 
   return (
     <AppBody>
@@ -215,7 +218,7 @@ export default function Claim({
       </Container>
       <ButtonPrimary
         style={{ marginTop: '20px' }}
-        disabled={isTransactionDisabled}
+        disabled={isTransactionDisabled()}
         onClick={handleSubmit}
       >
         Collect
