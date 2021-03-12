@@ -1,10 +1,11 @@
-import { BigNumber } from 'ethers';
+import { BigNumber } from '@ethersproject/bignumber';
 import { useESWContract } from './useContract';
 import { useAuth } from './useAuth';
 import { useLocalStorage } from './useLocalStorage';
 import { useSelector } from 'react-redux';
 import { AppState } from '../state';
 import { useActiveWeb3React } from './index';
+import { parseUnits } from '@ethersproject/units';
 
 export const MOCK_USER = 'c98052fa-99ff-479c-8a8a-19d32acdbbf8';
 const ESW_ADDRESS = window['env'].REACT_APP_ESW_ID;
@@ -25,7 +26,10 @@ export function useClaim() {
     if (contractESW) {
       return contractESW.walletNonce(account).then((nonce: BigNumber) => {
         // if (token) {
-        console.log('has token', Number(amount) * 1000000000000000000);
+        // console.log('has token', BigNumber.from(amount).mul(BigNumber.from('1000000000000000000')), Number(amount) * 1000000000000000000);
+        console.log('has token', parseUnits(amount.toString(), 18).toString());
+
+        // BigNumber.from(amount).mul(BigNumber.from('1000000000000000000')), Number(amount) * 1000000000000000000);
 
         return handleAuth().then((token: string) => {
           console.log('token', token);
@@ -36,7 +40,7 @@ export function useClaim() {
             },
             method: 'POST',
             body: JSON.stringify({
-              amount: (Number(amount) * 1000000000000000000).toString(),
+              amount: parseUnits(amount.toString(), 18).toString(),
               nonce: nonce.add(1).toNumber(),
               contract_address: ESW_ADDRESS,
               token_name: tokenName,
