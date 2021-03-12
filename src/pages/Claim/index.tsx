@@ -192,7 +192,7 @@ export default function Claim({
           <StyledArrowLeft />
         </HistoryLink>
         <Tittle> Collect to my wallet</Tittle>
-        <QuestionHelper text={'sometext'} />
+        <QuestionHelper text={''} />
       </RowBetween>
       <Container hideInput={false}>
         <LabelRow>
