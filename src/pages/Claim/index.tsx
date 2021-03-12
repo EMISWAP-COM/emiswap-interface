@@ -121,7 +121,7 @@ export default function Claim({
   const formatBalance = balance => {
     if (!isNaN(Number(balance))) {
       return Number(balance)
-        .toFixed(10)
+        .toFixed(5)
         .toString();
     }
 
