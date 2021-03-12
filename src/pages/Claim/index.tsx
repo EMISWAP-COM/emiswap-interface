@@ -177,7 +177,7 @@ export default function Claim({
     if (unfrozenESWbalance && typedValue) {
       console.log(Number(unfrozenESWbalance));
       return (
-        parseUnits(Number(unfrozenESWbalance).toString(), 18).lt(
+        parseUnits(Number(unfrozenESWbalance).toString(), 18).lte(
           parseUnits(typedValue.toString(), 18),
         ) || parseUnits(typedValue.toString()).isZero()
       );
