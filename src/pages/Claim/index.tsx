@@ -11,7 +11,6 @@ import { CursorPointer, TYPE } from '../../theme';
 import { darken } from 'polished';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../state';
-import { convertBigDecimal } from '../../components/AccountDetails/uitls';
 import { Image } from '../../components/CurrencyLogo';
 import { ButtonPrimary } from '../../components/Button';
 import { useESWContract } from '../../hooks/useContract';
@@ -20,7 +19,6 @@ import { useActiveWeb3React } from '../../hooks';
 import { useTransactionAdder } from '../../state/transactions/hooks';
 import { useWalletModalToggle } from '../../state/application/hooks';
 import { parseUnits } from '@ethersproject/units';
-import { Animated } from 'react-native';
 
 const Tittle = styled.div`
   font-weight: 500;
