@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { CommingSoon } from '../../../base/ui/CommingSoon';
 import { AppState } from '../../../state';
 import { TYPE } from '../../../theme';
 import { convertBigDecimal, convertDate, DateFormat } from '../uitls';
