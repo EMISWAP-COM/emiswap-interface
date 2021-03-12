@@ -20,6 +20,7 @@ import { useActiveWeb3React } from '../../hooks';
 import { useTransactionAdder } from '../../state/transactions/hooks';
 import { useWalletModalToggle } from '../../state/application/hooks';
 import { parseUnits } from '@ethersproject/units';
+import { Animated } from 'react-native';
 
 const Tittle = styled.div`
   font-weight: 500;
@@ -118,11 +119,21 @@ export default function Claim({
   const { available: unfrozenESWbalance } = useSelector(
     (state: AppState) => state.cabinets.balance,
   );
-  const formattedBalance = convertBigDecimal(unfrozenESWbalance);
+
+  const formatBalance = balance => {
+    if (!isNaN(Number(balance))) {
+      return Number(balance).toString();
+    }
+
+    return balance;
+  };
+
+  const formattedUnfrozenBalance = formatBalance(unfrozenESWbalance);
+
   const toggleWalletModal = useWalletModalToggle();
 
   const onMax = () => {
-    setTypedValue(formattedBalance);
+    setTypedValue(formattedUnfrozenBalance);
   };
 
   const onSuccess = () => {
@@ -164,8 +175,10 @@ export default function Claim({
   const isTransactionDisabled = () => {
     if (unfrozenESWbalance && typedValue) {
       console.log(Number(unfrozenESWbalance));
-      return parseUnits(Number(unfrozenESWbalance).toString(), 18).lt(
-        parseUnits(typedValue.toString(), 18),
+      return (
+        parseUnits(Number(unfrozenESWbalance).toString(), 18).lt(
+          parseUnits(typedValue.toString(), 18),
+        ) || parseUnits(typedValue.toString()).isZero()
       );
     }
     return true;
@@ -191,7 +204,7 @@ export default function Claim({
               fontSize={14}
               style={{ display: 'inline' }}
             >
-              {'Balance: ' + formattedBalance}
+              {'Balance: ' + formattedUnfrozenBalance}
             </TYPE.body>
           </CursorPointer>
         </LabelRow>
