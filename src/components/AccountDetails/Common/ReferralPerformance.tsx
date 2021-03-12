@@ -138,7 +138,7 @@ export const ReferralPerformance = () => {
         <Reward>
           <Title>Total Referral reward</Title>
           <TwoCells>
-            {convertBigDecimal(reward?.esw)} ESW
+            {convertBigDecimal(reward?.esw?.total)} ESW
             {/*<CommingSoon>*/}
             {/*  <WalletAction>*/}
             {/*    Claim</WalletAction>*/}
@@ -146,7 +146,7 @@ export const ReferralPerformance = () => {
           </TwoCells>
           {user.role !== UserRoles.client && (
             <TwoCells>
-              {convertBigDecimal(reward?.dai)} DAI
+              {convertBigDecimal(reward?.dai?.total)} DAI
               {/*<CommingSoon>*/}
               {/*  <WalletAction onClick={handleClaim}>Claim</WalletAction>*/}
               {/*</CommingSoon>*/}

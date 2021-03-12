@@ -57,15 +57,15 @@ const AccountGroupingRow = styled.div`
 
 const BalanceWrapper = styled.div`
   display: flex;
-  justify-content: flex-end;  
+  justify-content: flex-end;
 
   @media screen and (max-width: 1200px) {
-     flex-direction: column;
+    flex-direction: column;
   }
 `;
 
 const BalanceContainer = styled.div`
-  grid-row: span 2; 
+  grid-row: span 2;
   //
   // @media screen and (max-width: 1200px) {
   //    flex-direction: column;
@@ -90,14 +90,14 @@ const Balance = styled.div`
 `;
 
 const BalanceFigure = styled.span`
-    font-size: min(2rem, 4vw);
-    font-weight: 600;
+  font-size: min(2rem, 4vw);
+  font-weight: 600;
 `;
 
 const BalancePromo = styled.div`
-    font-size: min(0.9rem, 3vw);
-    font-weight: 600;
-    color: #e50606;
+  font-size: min(0.9rem, 3vw);
+  font-weight: 600;
+  color: #e50606;
 `;
 
 const AccountControl = styled.div`
@@ -172,10 +172,7 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
 
   const { id: userId } = useSelector((state: AppState) => state.user.info);
   const balance = useSelector((state: AppState) => state.cabinets.balance);
-  const { reward } = useSelector(
-    (state: AppState) => state.cabinets.performance,
-  );
-
+  const { reward } = useSelector((state: AppState) => state.cabinets.performance);
 
   useEffect(() => {
     dispatch(loadPerformance(userId) as any);
@@ -244,10 +241,11 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
                   &nbsp; profit
                 </span>
 
-                <BalanceFigure>{convertBigDecimal(reward?.esw)}</BalanceFigure>
+                <BalanceFigure>{convertBigDecimal(reward?.esw?.total)}</BalanceFigure>
               </Balance>
             </BalanceWrapper>
-            <BalancePromo>To boost your ESW Profit use our&nbsp;
+            <BalancePromo>
+              To boost your ESW Profit use our&nbsp;
               <ExternalLink
                 href={
                   'https://emiswap.medium.com/your-guide-to-the-emiswap-referral-program-f142a4170d1'
@@ -256,15 +254,11 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
                 Referral Program
               </ExternalLink>
               , become an&nbsp;
-              <ExternalLink
-                href={'https://crowdsale.emidao.org/en#rec240950289'}
-              >
+              <ExternalLink href={'https://crowdsale.emidao.org/en#rec240950289'}>
                 Ambassador
               </ExternalLink>
               &nbsp;or farm your&nbsp;
-              <ExternalLink
-                href={'https://crowdsale.emidao.org/magic-nft'}
-              >
+              <ExternalLink href={'https://crowdsale.emidao.org/magic-nft'}>
                 Magic Cards!
               </ExternalLink>
             </BalancePromo>
