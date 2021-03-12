@@ -120,7 +120,9 @@ export default function Claim({
 
   const formatBalance = balance => {
     if (!isNaN(Number(balance))) {
-      return Number(balance).toString();
+      return Number(balance)
+        .toFixed(10)
+        .toString();
     }
 
     return balance;
@@ -131,6 +133,7 @@ export default function Claim({
   const toggleWalletModal = useWalletModalToggle();
 
   const onMax = () => {
+    console.log('formattedUnfrozenBalance', formattedUnfrozenBalance);
     setTypedValue(formattedUnfrozenBalance);
   };
 
