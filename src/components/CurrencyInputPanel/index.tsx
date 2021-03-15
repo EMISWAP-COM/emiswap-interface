@@ -190,30 +190,27 @@ export default function CurrencyInputPanel({
   const selectedCurrencyBalance = useCurrencyBalance(account, currency);
   const theme = useContext(ThemeContext);
 
-  const [isError, setIsError] = useState(false);
-
   const handleDismissSearch = useCallback(() => {
     setModalOpen(false);
   }, [setModalOpen]);
 
-  const getErrorText: () => string = () => {
-    if (
+  const checkError: () => boolean = () => {
+    if (currencyBalance) {
+      console.log(currencyBalance, MIN_ETH, showMaxError);
+    }
+    return (
       currencyBalance &&
       currencyBalance.token.isEther &&
       !isDepended &&
       !JSBI.greaterThan(currencyBalance.raw, MIN_ETH) &&
       showMaxError
-    ) {
-      setIsError(true);
-      return 'insufficient balance, available: 0';
-    }
-    return '';
+    );
   };
 
   return (
     <>
       <InputPanel id={id}>
-        <Container hideInput={hideInput} isError={isError}>
+        <Container hideInput={hideInput} isError={checkError()}>
           {!hideInput && (
             <LabelRow>
               <RowBetween>
@@ -322,7 +319,7 @@ export default function CurrencyInputPanel({
             />
           ))}
       </InputPanel>
-      <ErrorText>{getErrorText()}</ErrorText>
+      {checkError() && <ErrorText>insufficient balance</ErrorText>}
     </>
   );
 }
