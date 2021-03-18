@@ -10,9 +10,10 @@ const baseUrl = window['env']?.REACT_APP_PUBLIC_URL;
 // 'https://emiswap-oracle-development.emirex.co';
 
 export function useAuth() {
-  const { id } = useSelector((state: AppState) => state.user.info);
+  const user = useSelector((state: AppState) => state.user);
+  const id = user?.info?.id;
   const { library, account } = useActiveWeb3React();
-  const [auth, setAuth] = useLocalStorage('auth_token', null);
+  const [authToken, setAuthToken] = useLocalStorage('auth_token', null);
   const initSession = async (userID: string) => {
     return await fetch(`${baseUrl}/v1/public/sessions`, {
       method: 'POST',
@@ -39,20 +40,20 @@ export function useAuth() {
   );
 
   const init = useCallback(async () => {
-    if (auth) {
-      const isExpired = (Date.now() - auth.time) / (1000 * 3600) > 12;
+    if (authToken) {
+      const isExpired = (Date.now() - authToken.time) / (1000 * 3600) > 12;
       if (!isExpired) {
-        return auth.token;
+        return authToken.token;
       }
     }
     if (account && id) {
       const session = await initSession(id);
       const signature = await signToMetamask(session.auth_message, account);
       const sessionToken = await signSession(session.session_id, signature);
-      setAuth({ time: Date.now(), token: sessionToken.token });
+      setAuthToken({ time: Date.now(), token: sessionToken.token });
       return sessionToken.token;
     }
-  }, [auth, account, id, setAuth, signToMetamask]);
+  }, [authToken, account, id, setAuthToken, signToMetamask]);
 
   return init;
 }
