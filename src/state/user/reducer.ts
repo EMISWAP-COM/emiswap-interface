@@ -23,7 +23,7 @@ const currentTimestamp = () => new Date().getTime();
 
 export interface UserInfo {
   address: string;
-  role: UserRoles | undefined;
+  role: UserRoles | null;
   id: string;
   referral_id: string;
   bonus_role_name?: string;
