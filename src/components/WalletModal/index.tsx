@@ -146,8 +146,6 @@ const NoUser = styled.div`
   padding: 20px 0;
 `;
 
-
-
 export enum UserRoles {
   client = 'client',
   distributor = 'distributor',
@@ -433,7 +431,6 @@ export default function WalletModal({
       );
     }
     if (account && user && walletView === WALLET_VIEWS.ACCOUNT) {
-
       switch (user.role) {
         case UserRoles.distributor:
           return (
@@ -544,7 +541,7 @@ export default function WalletModal({
 
   return (
     <Modal
-      isOpen={walletModalOpen}
+      isOpen={true}
       onDismiss={toggleWalletModal}
       minHeight={null}
       maxHeight={90}

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { ExternalLink } from '../../../theme';
 import { injected, walletlink } from '../../../connectors';
 import { getEtherscanLink, shortenAddress } from '../../../utils';
@@ -20,6 +20,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, AppState } from '../../../state';
 import { ESWStats } from '../Common/ESWStats';
+import { Connection } from '../Common/Connection';
 // import { ESWPerformance } from '../Common/ESWPerformance'
 
 const Wrapper = styled.div`
@@ -188,6 +189,8 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
           Status: <span>ESW OWNER</span>
         </div>
       </ProfileStatus>
+
+      <Connection openOptions={() => console.log('')} />
       <TableWrapper>
         <InfoCard>
           <div>
