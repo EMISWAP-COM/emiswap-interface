@@ -11,18 +11,9 @@ import { ExternalLink as LinkIcon } from 'react-feather';
 import Copy from '../Copy';
 import { ExternalLink } from '../../../theme';
 
-// const GreyText = styled.span`
-//   color: #89919A;
-// `
-// const DarkGreyText = styled.span`
-//   color: #555959;
-// `
-
-// const LIGHT_GREY = '#89919A'
-
 const Container = styled.div`
   font-size: 13px;
-  color: #89919a;
+  color: ${({ theme }) => theme.grey6};
   border: 1px solid #dbdede;
   border-radius: 12px;
 
@@ -40,7 +31,7 @@ const Main = styled.div`
 `;
 
 const DarkText = styled.span`
-  color: #24272c;
+  color: ${({ theme }) => theme.grey3};
 `;
 
 const Account = styled(DarkText)`
