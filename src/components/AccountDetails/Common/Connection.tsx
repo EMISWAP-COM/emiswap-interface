@@ -48,7 +48,7 @@ const Wallet = styled.div`
   margin-top: 5px;
   display: flex;
 `;
-const BallanceWrapper = styled.div`
+const BalanceWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 12px;
@@ -59,11 +59,11 @@ const BallanceWrapper = styled.div`
   }
 `;
 
-const BallanceItem = styled.div`
+const BalanceItem = styled.div`
   padding: 14px;
   background: #f7f8fa;
 `;
-const BallanceValue = styled(DarkText)`
+const BalanceValue = styled(DarkText)`
   font-size: 16px;
   font-weight: 600;
 `;
@@ -164,32 +164,32 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName }) => {
             <StatusIcon connectorName={connector} />
             <Account>{ENSName || shortenAddress(account)}</Account>
           </Wallet>
-          <BallanceWrapper>
-            <BallanceItem>
+          <BalanceWrapper>
+            <BalanceItem>
               <span>Total</span>
               <div>
-                <BallanceValue>4 500.00</BallanceValue>&nbsp;ESW
+                <BalanceValue>4 500.00</BalanceValue>&nbsp;ESW
               </div>
-            </BallanceItem>
-            <BallanceItem>
+            </BalanceItem>
+            <BalanceItem>
               <span>Wallet</span>
               <div>
-                <BallanceValue>4 500.00</BallanceValue>&nbsp;ESW
+                <BalanceValue>4 500.00</BalanceValue>&nbsp;ESW
               </div>
-            </BallanceItem>
-            <BallanceItem>
+            </BalanceItem>
+            <BalanceItem>
               <span>Locked at Emiswap </span>
               <div>
-                <BallanceValue>4 500.00</BallanceValue>&nbsp;ESW
+                <BalanceValue>4 500.00</BalanceValue>&nbsp;ESW
               </div>{' '}
-            </BallanceItem>
-            <BallanceItem>
+            </BalanceItem>
+            <BalanceItem>
               <span>Available to collect</span>
               <div>
-                <BallanceValue>4 500.00</BallanceValue>&nbsp;ESW
+                <BalanceValue>4 500.00</BalanceValue>&nbsp;ESW
               </div>{' '}
-            </BallanceItem>
-          </BallanceWrapper>
+            </BalanceItem>
+          </BalanceWrapper>
           <Options>
             <OptionsPromo>
               To boost your ESW Profit use our&nbsp;

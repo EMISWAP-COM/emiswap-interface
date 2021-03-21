@@ -14,6 +14,7 @@ import { AppDispatch, AppState } from '../../../state';
 import { ESWStats } from '../Common/ESWStats';
 import { Connection } from '../Common/Connection';
 import { ESWRewards } from '../Common/ESWRewards';
+import { ESWLocked } from '../Common/ESWLocked';
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -79,6 +80,7 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
 
       <Connection openOptions={() => console.log('')} />
       <ESWRewards />
+      <ESWLocked />
       <TableWrapper>
         <ReferralPerformance />
         <PurchaseHistory />
