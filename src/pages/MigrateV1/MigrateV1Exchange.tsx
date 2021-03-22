@@ -13,7 +13,7 @@ import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallbac
 import { useVampContract } from '../../hooks/useContract';
 import { useCurrencyBalance } from '../../state/wallet/hooks';
 import { BackArrow, TYPE } from '../../theme';
-import { calculateGasMargin, isAddress } from '../../utils';
+import { calculateGasMargin, isAddress } from '../../utils'
 import AppBody from '../AppBody';
 import DoubleCurrencyLogo from '../../components/DoubleLogo';
 import { tokenAmountToString } from '../../utils/formats';
@@ -201,10 +201,11 @@ export default function MigrateV1Exchange({
               id={'migrate-liquidity'}
               label={'from'}
               showMaxButton
-              onMax={() => setAmount(tokenAmountToString(selectedCurrencyBalance))}
+              onMax={() => setAmount(tokenAmountToString(selectedCurrencyBalance, 10))}
               currency={inputCurrency}
               disableCurrencySelect
               pair={pair}
+              balanceDecimals={10}
             />
             {(approval === ApprovalState.PENDING || approval === ApprovalState.NOT_APPROVED) &&
               !notEnoughBalance && (

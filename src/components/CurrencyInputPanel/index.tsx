@@ -158,6 +158,7 @@ interface CurrencyInputPanelProps {
   isDepended?: boolean;
   showMaxError?: boolean;
   currencyBalance?: TokenAmount | undefined;
+  balanceDecimals?: number;
 }
 
 export default function CurrencyInputPanel({
@@ -182,6 +183,7 @@ export default function CurrencyInputPanel({
   isDepended = false,
   showMaxError = false,
   currencyBalance,
+  balanceDecimals = 6,
 }: CurrencyInputPanelProps) {
   const { t } = useTranslation();
 
@@ -230,7 +232,8 @@ export default function CurrencyInputPanel({
                       style={{ display: 'inline' }}
                     >
                       {!hideBalance && !!currency && selectedCurrencyBalance
-                        ? 'Balance: ' + tokenAmountToString(selectedCurrencyBalance)
+                        ? 'Balance: ' +
+                          tokenAmountToString(selectedCurrencyBalance, balanceDecimals ?? 6)
                         : ' '}
                     </TYPE.body>
                   </CursorPointer>

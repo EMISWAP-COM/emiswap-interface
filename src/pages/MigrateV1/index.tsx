@@ -68,13 +68,18 @@ export default function MigrateV1() {
   const onSelect = (address: string) => {
     setSelected(address);
   };
-  const formatedTokenList = tokenList.filter(el => {
-    const {
-      addresses: [address0, address1],
-    } = el;
-    return tokens.find(el => el.address === address0) && tokens.find(el => el.address === address1);
-  });
-
+  const formatedTokenList = tokenList
+    .map((el, idx) => ({ ...el, balance: balances[idx] }))
+    .filter((el, idx) => {
+      const {
+        addresses: [address0, address1],
+      } = el;
+      return (
+        tokens.find(el => el.address === address0) &&
+        tokens.find(el => el.address === address1) &&
+        +amountToString(balances[idx], 10)
+      );
+    });
   const handleRedirect = () => {
     history.push(`migrate/${selected}`);
   };
@@ -84,7 +89,8 @@ export default function MigrateV1() {
       const {
         addresses: [address0, address1],
         base,
-      } = tokenList[index];
+        balance,
+      } = formatedTokenList[index];
       const token0 = tokens.find(el => el.address === address0);
       const token1 = tokens.find(el => el.address === address1);
       return (
@@ -106,7 +112,7 @@ export default function MigrateV1() {
             </Column>
           </RowFixed>
           <AutoColumn>
-            <StyledText className="balance">{amountToString(balances[index])}</StyledText>
+            <StyledText className="balance">{amountToString(balance, 10)}</StyledText>
           </AutoColumn>
         </StyledMenuItemMigrate>
       );
