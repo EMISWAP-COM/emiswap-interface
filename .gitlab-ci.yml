@@ -37,8 +37,7 @@ build:
   extends: .build:react
   stage: build
   script:
-  - |
-    docker build -t $_img_repo/$_img_name:$_img_tag .
+  - docker build -t $_img_repo/$_img_name:$_img_tag .
 
 push:
   extends: .push
@@ -59,11 +58,18 @@ deploy:review:
   except:
     refs:
     - production
+    - /^release-.*$/
+
+deploy:release:
+  extends: .deploy:review
+  stage: deploy:review
+  only:
+    refs:
+    - /^release-.*$/
 
 deploy:uat:
   extends: .deploy:uat
   stage: deploy:uat
-  when: manual
   only:
     refs:
     - production
