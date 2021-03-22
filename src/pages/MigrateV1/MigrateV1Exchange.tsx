@@ -1,5 +1,5 @@
 import { Fraction, JSBI, Token, TokenAmount } from '@uniswap/sdk';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Redirect, RouteComponentProps } from 'react-router';
 import { Text } from 'rebass';
 import { ButtonGreen, ButtonLight, ButtonPrimary } from '../../components/Button';
@@ -13,11 +13,11 @@ import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallbac
 import { useVampContract } from '../../hooks/useContract';
 import { useCurrencyBalance } from '../../state/wallet/hooks';
 import { BackArrow, TYPE } from '../../theme';
-import { calculateGasMargin, isAddress } from '../../utils'
+import { calculateGasMargin, isAddress } from '../../utils';
 import AppBody from '../AppBody';
 import DoubleCurrencyLogo from '../../components/DoubleLogo';
 import { tokenAmountToString } from '../../utils/formats';
-import CurrencyInputPanel from '../../components/CurrencyInputPanel';
+import CurrencyInputPanel, { StyledTokenName } from '../../components/CurrencyInputPanel';
 import styled from 'styled-components';
 import Loader from '../../components/Loader';
 import { useLpCurrencies } from '../../hooks/useLpCurrencies';
@@ -27,6 +27,7 @@ import { tryParseAmount } from '../../state/swap/hooks';
 import { useWalletModalToggle } from '../../state/application/hooks';
 import { useCurrency } from '../../hooks/Tokens';
 import { useTransactionAdder } from '../../state/transactions/hooks';
+import Modal from '../../components/Modal';
 
 const POOL_CURRENCY_AMOUNT_MIN = new Fraction(JSBI.BigInt(1), JSBI.BigInt(1000000));
 
@@ -47,6 +48,36 @@ const LoaderBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const ModalWrapper = styled.div`
+  width: 100%;
+  padding: 10px 20px;
+`;
+
+const ModalHeaderWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const TokensInfoBlock = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ButtonGreenConfirm = styled(ButtonGreen)`
+  padding: 15px 16px;
+  margin: 20px auto 10px;
+  max-width: 60%;
+`;
+
+const StyledHr = styled.hr`
+  width: 100%;
+  background: #eaeeee;
+  border: none;
+  height: 1px;
 `;
 
 function FormattedPoolCurrencyAmount({ currencyAmount }: { currencyAmount: TokenAmount }) {
@@ -126,18 +157,27 @@ export default function MigrateV1Exchange({
   const { tokenList, lpTokensInfo } = useLpTokens();
   const tokens = tokenList.find(el => el.base === address)?.addresses ?? [];
   const inputCurrency = useLpCurrencies(tokens, address);
+  const [isPairExist, setIsPairExist] = useState(false);
   const currency0 = useCurrency(tokens[0]);
   const currency1 = useCurrency(tokens[1]);
   const pair = usePair(currency0, currency1)[1];
   const selectedCurrencyBalance = useCurrencyBalance(account, inputCurrency);
   const inputCurrencyBalance = useCurrencyBalance(account, inputCurrency);
   const [amount, setAmount] = useState('0');
+  const [isConfirmModelOpen, setIsConfirmModelOpen] = useState(false);
   const addTransaction = useTransactionAdder();
 
   const parsedAmount = tryParseAmount(amount, inputCurrency);
   const [approval, approveCallback] = useApproveCallback(parsedAmount, EmiVampAddress);
 
   const notEnoughBalance = !inputCurrencyBalance || inputCurrencyBalance?.toExact() < amount;
+
+  useEffect(() => {
+    const [token0, token1] = tokens;
+    if (token0 && token1) {
+      contract.isPairAvailable(token0, token1).then(data => setIsPairExist(data));
+    }
+  }, [tokens, contract]);
 
   // redirect for invalid url params
   if (!validatedAddress) {
@@ -176,6 +216,15 @@ export default function MigrateV1Exchange({
           return undefined;
         });
     }
+  };
+
+  const showConfirmModal = () => {
+    setIsConfirmModelOpen(true);
+  };
+
+  const confirmNewPair = () => {
+    setIsConfirmModelOpen(false);
+    handleMigrate();
   };
 
   return (
@@ -221,7 +270,7 @@ export default function MigrateV1Exchange({
               <ButtonGreen
                 style={{ width: '100%', padding: '15px 16px' }}
                 disabled={approval !== ApprovalState.APPROVED || notEnoughBalance}
-                onClick={handleMigrate}
+                onClick={isPairExist ? handleMigrate : showConfirmModal}
               >
                 <Text fontWeight={500} fontSize={16}>
                   {notEnoughBalance ? 'Not enough balance' : 'Migrate'}
@@ -231,6 +280,41 @@ export default function MigrateV1Exchange({
           </>
         )}
       </StyledContainer>
+      <Modal
+        isOpen={isConfirmModelOpen}
+        onDismiss={() => setIsConfirmModelOpen(false)}
+        minHeight={null}
+        maxHeight={null}
+        maxWidth={440}
+      >
+        {pair && (
+          <ModalWrapper>
+            <ModalHeaderWrapper>
+              <TokensInfoBlock>
+                <StyledTokenName className="pair-name-container">
+                  {pair?.token0.symbol}-{pair?.token1.symbol}
+                </StyledTokenName>
+                <DoubleCurrencyLogo
+                  currency0={pair.token0}
+                  currency1={pair.token1}
+                  size={24}
+                  margin={true}
+                />
+              </TokensInfoBlock>
+              <QuestionHelper text="It will cost a lot more to make a new pair" />
+            </ModalHeaderWrapper>
+            <StyledHr />
+            <Text textAlign="center" fontWeight={500} fontSize={16}>
+              Pair does not exist. Do you want to create?
+            </Text>
+            <ButtonGreenConfirm onClick={confirmNewPair}>
+              <Text fontWeight={500} fontSize={16}>
+                Create
+              </Text>
+            </ButtonGreenConfirm>
+          </ModalWrapper>
+        )}
+      </Modal>
     </AppBody>
   );
 }

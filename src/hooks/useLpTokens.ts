@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Token } from '@uniswap/sdk';
 import { useMultipleTokenInfo } from './useMultipleTokenInfo';
 import { useVampContract } from './useContract';
+import { useDispatch } from 'react-redux';
 
 export function useLpTokens(): {
   tokenList: { addresses: string[]; base: string }[];
@@ -14,6 +15,7 @@ export function useLpTokens(): {
   const [lpTokensInfo, setLpTokensInfo] = useState<any[]>([]);
   const [tokenList, setTokenList] = useState<{ addresses: string[]; base: string }[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
   const formattedAddresses = tokenList
     .map(el => el.addresses)
     .flat()
@@ -37,11 +39,11 @@ export function useLpTokens(): {
         );
         setIsLoading(false);
       } catch (e) {
-        throw new Error(`Failed to get a swap contract - ${e.message}`);
+        throw new Error('Failed to migrate ');
       }
     };
     fetchInfo();
-  }, [contract]);
+  }, [contract, dispatch]);
   return useMemo(() => {
     return { tokenList, lpTokensInfo, balances, tokens, isLoading };
   }, [balances, isLoading, lpTokensInfo, tokenList, tokens]);

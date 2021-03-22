@@ -117,7 +117,7 @@ export default function MigrateV1() {
         </StyledMenuItemMigrate>
       );
     };
-  }, [selected, tokenList, tokens, balances]);
+  }, [selected, tokens, formatedTokenList]);
 
   const warningContent = () => {
     return (
