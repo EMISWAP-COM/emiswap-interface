@@ -81,8 +81,9 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
       <Connection openOptions={() => console.log('')} />
       <ESWRewards />
       <ESWLocked />
+      <ReferralPerformance />
+
       <TableWrapper>
-        <ReferralPerformance />
         <PurchaseHistory />
         {/* <ESWPerformance/> */}
         <ESWStats />

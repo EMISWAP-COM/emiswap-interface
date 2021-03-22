@@ -6,11 +6,12 @@ import { ButtonSecondary } from '../Button';
 
 export const Level = styled.div`
   width: 1.5rem;
-  background: #6e6e6e;
-  border-radius: 0.4rem;
+  background: ${({ theme }) => theme.grey6};
+  border-radius: 4px;
   color: #ffffff;
   font-size: 0.7rem;
   padding: 1px 3px 1px 2px;
+  margin-left: 6px;
 `;
 
 export const MenuItem = styled(RowBetween)`
