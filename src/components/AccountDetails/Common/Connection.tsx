@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatConnectorName } from '../uitls';
+import { convertBigDecimal, formatConnectorName } from '../uitls';
 import { WalletAction } from '../styleds';
 import styled from 'styled-components/macro';
 import { useActiveWeb3React } from '../../../hooks';
@@ -10,6 +10,8 @@ import { useWalletModalToggle } from '../../../state/application/hooks';
 import { ExternalLink as LinkIcon } from 'react-feather';
 import Copy from '../Copy';
 import { ExternalLink } from '../../../theme';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../../state';
 
 const Container = styled.div`
   font-size: 13px;
@@ -80,10 +82,6 @@ const Options = styled.div`
   }
 `;
 
-const OptionsPromo = styled.div`
-  max-width: 340px;
-`;
-
 const ActionBtn = styled(WalletAction)`
   height: 32px;
 `;
@@ -133,8 +131,10 @@ interface Props {
   openOptions: () => void;
 }
 
-export const Connection: React.FC<Props> = ({ openOptions, ENSName }) => {
+export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) => {
   const { chainId, account, connector } = useActiveWeb3React();
+
+  const balance = useSelector((state: AppState) => state.cabinets.balance);
 
   const history = useHistory();
   const toggle = useWalletModalToggle();
@@ -168,47 +168,30 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName }) => {
             <BalanceItem>
               <span>Total</span>
               <div>
-                <BalanceValue>4 500.00</BalanceValue>&nbsp;ESW
+                <BalanceValue>{convertBigDecimal(balance?.amount)}</BalanceValue>&nbsp;ESW
               </div>
             </BalanceItem>
             <BalanceItem>
               <span>Wallet</span>
               <div>
-                <BalanceValue>4 500.00</BalanceValue>&nbsp;ESW
+                <BalanceValue>0 000.00</BalanceValue>&nbsp;ESW
               </div>
             </BalanceItem>
             <BalanceItem>
               <span>Locked at Emiswap </span>
               <div>
-                <BalanceValue>4 500.00</BalanceValue>&nbsp;ESW
+                <BalanceValue>{convertBigDecimal(balance?.locked)}</BalanceValue>&nbsp;ESW
               </div>{' '}
             </BalanceItem>
             <BalanceItem>
               <span>Available to collect</span>
               <div>
-                <BalanceValue>4 500.00</BalanceValue>&nbsp;ESW
+                <BalanceValue>{convertBigDecimal(balance?.available)}</BalanceValue>&nbsp;ESW
               </div>{' '}
             </BalanceItem>
           </BalanceWrapper>
           <Options>
-            <OptionsPromo>
-              To boost your ESW Profit use our&nbsp;
-              <ExternalLink
-                href={
-                  'https://emiswap.medium.com/your-guide-to-the-emiswap-referral-program-f142a4170d1'
-                }
-              >
-                Referral Program
-              </ExternalLink>
-              , become an&nbsp;
-              <ExternalLink href={'https://crowdsale.emidao.org/en#rec240950289'}>
-                Ambassador
-              </ExternalLink>
-              &nbsp;or farm your&nbsp;
-              <ExternalLink href={'https://crowdsale.emidao.org/magic-nft'}>
-                Magic Cards!
-              </ExternalLink>
-            </OptionsPromo>
+            {children}
             <CollectBtn onClick={handleClaim}>Collect to my wallet</CollectBtn>
           </Options>
         </Main>

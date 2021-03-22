@@ -4,6 +4,15 @@ import { FixedSizeList } from 'react-window';
 import { RowBetween } from '../Row';
 import { ButtonSecondary } from '../Button';
 
+export const Header = styled.div`
+  margin-top: 36px;
+  color: ${({ theme }) => theme.text1};
+
+  @media screen and (max-width: 1200px) {
+    margin-top: 24px;
+  }
+`;
+
 export const Level = styled.div`
   width: 1.5rem;
   background: ${({ theme }) => theme.grey6};

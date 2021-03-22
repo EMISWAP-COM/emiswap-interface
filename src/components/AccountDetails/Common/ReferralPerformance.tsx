@@ -1,18 +1,9 @@
 import React from 'react';
 import styled from 'styled-components/macro';
-import { Level, WalletAction } from '../styleds';
+import { Level, WalletAction, Header } from '../styleds';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { convertBigDecimal, normalizeNumber } from '../uitls';
-
-const Header = styled.div`
-  margin-top: 36px;
-  color: ${({ theme }) => theme.text1};
-
-  @media screen and (max-width: 1200px) {
-    margin-top: 24px;
-  }
-`;
 
 const DarkText = styled.span`
   color: ${({ theme }) => theme.grey3};

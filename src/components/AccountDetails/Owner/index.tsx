@@ -11,20 +11,14 @@ import {
 } from '../../../state/cabinets/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, AppState } from '../../../state';
-import { ESWStats } from '../Common/ESWStats';
 import { Connection } from '../Common/Connection';
 import { ESWRewards } from '../Common/ESWRewards';
 import { ESWLocked } from '../Common/ESWLocked';
+import { ExternalLink } from '../../../theme';
 
 const Wrapper = styled.div`
   padding: 1rem;
   width: 100%;
-`;
-
-const TableWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 `;
 
 const ProfileStatus = styled.div`
@@ -47,6 +41,10 @@ const ProfileStatus = styled.div`
     font-weight: 700;
     text-transform: uppercase;
   }
+`;
+
+const OptionsPromo = styled.div`
+  max-width: 340px;
 `;
 
 interface Props {
@@ -78,16 +76,29 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
         </div>
       </ProfileStatus>
 
-      <Connection openOptions={() => console.log('')} />
+      <Connection openOptions={openOptions}>
+        <OptionsPromo>
+          To boost your ESW Profit use our&nbsp;
+          <ExternalLink
+            href={
+              'https://emiswap.medium.com/your-guide-to-the-emiswap-referral-program-f142a4170d1'
+            }
+          >
+            Referral Program
+          </ExternalLink>
+          , become an&nbsp;
+          <ExternalLink href={'https://crowdsale.emidao.org/en#rec240950289'}>
+            Ambassador
+          </ExternalLink>
+          &nbsp;or farm your&nbsp;
+          <ExternalLink href={'https://crowdsale.emidao.org/magic-nft'}>Magic Cards!</ExternalLink>
+        </OptionsPromo>
+      </Connection>
       <ESWRewards />
       <ESWLocked />
       <ReferralPerformance />
 
-      <TableWrapper>
-        <PurchaseHistory />
-        {/* <ESWPerformance/> */}
-        <ESWStats />
-      </TableWrapper>
+      <PurchaseHistory />
     </Wrapper>
   );
 };

@@ -1,14 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/macro';
-
-const Header = styled.div`
-  margin-top: 36px;
-  color: ${({ theme }) => theme.text1};
-
-  @media screen and (max-width: 1200px) {
-    margin-top: 24px;
-  }
-`;
+import { Header } from '../styleds';
 
 const DarkText = styled.span`
   color: #24272c;
