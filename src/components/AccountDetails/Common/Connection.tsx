@@ -174,7 +174,7 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
             <BalanceItem>
               <span>Wallet</span>
               <div>
-                <BalanceValue>0 000.00</BalanceValue>&nbsp;ESW
+                <BalanceValue>--.-</BalanceValue>&nbsp;ESW
               </div>
             </BalanceItem>
             <BalanceItem>

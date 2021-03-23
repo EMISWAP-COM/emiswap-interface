@@ -1,10 +1,12 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 import timer from '../../../assets/images/timer.svg';
+import lock from '../../../assets/images/lock.svg';
+import unlock from '../../../assets/images/unlock.svg';
 import { Header } from '../styleds';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
-import { convertBigDecimal } from '../uitls';
+import { convertBigDecimal, convertDate, DateFormat } from '../uitls';
 
 const DarkText = styled.span`
   color: ${({ theme }) => theme.grey3};
@@ -53,7 +55,7 @@ export const ESWLocked = () => {
       <Header>ESW Locked Balance</Header>
       <LockedWrapper>
         <LockedItem>
-          <img alt="timer" src={timer} />
+          <img alt="lock" src={lock} />
 
           <LockedItemWrapper>
             <span>Locked at Emiswap</span>
@@ -63,7 +65,7 @@ export const ESWLocked = () => {
           </LockedItemWrapper>
         </LockedItem>
         <LockedItem>
-          <img alt="timer" src={timer} />
+          <img alt="unlock" src={unlock} />
 
           <LockedItemWrapper>
             <span>Next unlock amount</span>
@@ -77,7 +79,9 @@ export const ESWLocked = () => {
           <img alt="timer" src={timer} />
           <LockedItemWrapper>
             <span>Next unlock date</span>
-            <DarkText>{convertBigDecimal(balance?.nearest_unlock?.unlock_date)}</DarkText>
+            <DarkText>
+              {convertDate(balance?.nearest_unlock?.unlock_date, DateFormat.full)}
+            </DarkText>
           </LockedItemWrapper>
         </LockedItem>
       </LockedWrapper>

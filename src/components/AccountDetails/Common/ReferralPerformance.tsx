@@ -123,7 +123,7 @@ export const ReferralPerformance = () => {
               <RewardsValue>{convertBigDecimal(reward?.dai?.total)}</RewardsValue>&nbsp;DAI
             </div>
           </div>
-          <CollectBtn onClick={alert}>Collect to my wallet 44.00 DAI</CollectBtn>
+          <CollectBtn onClick={alert}>Collect to my wallet  --.-</CollectBtn>
         </RewardsItem>
       </RewardsWrapper>
 

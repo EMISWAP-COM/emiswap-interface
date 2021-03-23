@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 import { convertBigDecimal } from '../uitls';
 import { PurchaseHistory } from '../Common/PurchaseHistory';
@@ -18,6 +18,7 @@ import { useWalletModalToggle } from '../../../state/application/hooks';
 import { useHistory } from 'react-router';
 import { Connection } from '../Common/Connection';
 import { ESWLocked } from '../Common/ESWLocked';
+import { ESWRewards } from '../Common/ESWRewards';
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -30,13 +31,10 @@ const ProfileStatus = styled.div`
   width: 100%;
   text-transform: capitalize;
   padding: 0 1rem 1rem 1rem;
-  flex-wrap: wrap;
-  align-items:
-  background: lightgreen;
-  gap: 12px;
 
   @media screen and (max-width: 1200px) {
     padding: 0 0 1rem 0;
+    flex-wrap: wrap;
   }
 `;
 
@@ -49,16 +47,20 @@ const ProfileText = styled.span`
 const Package = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   min-width: 300px;
-  width: 100%;
+
+  @media screen and (max-width: 1200px) {
+    justify-content: space-between;
+    width: 100%;
+  }
 `;
 
 const UpgradeBtn = styled.span`
   display: block;
   border-radius: 5px;
-  background: #bb26c7;
-  color: #ffffff;
+  background: ${({ theme }) => 'rgba(154, 86, 209, 0.1)'};
+  color: ${({ theme }) => theme.grey6};
   text-transform: uppercase;
   text-align: center;
   padding: 10px 15px;
@@ -67,6 +69,12 @@ const UpgradeBtn = styled.span`
   font-weight: 500;
   font-size: 10px;
   cursor: pointer;
+  margin-left: 10px;
+  margin-right: 1rem;
+
+  @media screen and (max-width: 1200px) {
+    margin-right: 0;
+  }
 `;
 
 const OptionsPromo = styled.div`
@@ -133,8 +141,9 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
           </OptionsPromo>
         )}
       </Connection>
-      <ESWLocked />
 
+      <ESWRewards />
+      <ESWLocked />
       <ReferralPerformance />
       <PurchaseHistory />
     </Wrapper>

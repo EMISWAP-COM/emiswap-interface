@@ -23,7 +23,7 @@ const RewardsWrapper = styled.div`
 
 const RewardsItem = styled.div`
   padding: 14px;
-  background: #f7f8fa;
+  background: ${({ theme }) => theme.bg2};
 `;
 const RewardsValue = styled(DarkText)`
   font-size: 16px;
@@ -38,25 +38,25 @@ export const ESWRewards = () => {
         <RewardsItem>
           <span>Providing Liquidity</span>
           <div>
-            <RewardsValue>4 500.00</RewardsValue>&nbsp;ESW
+            <RewardsValue>--.-</RewardsValue>&nbsp;ESW
           </div>
         </RewardsItem>
         <RewardsItem>
           <span>Swapping</span>
           <div>
-            <RewardsValue>4 500.00</RewardsValue>&nbsp;ESW
+            <RewardsValue>--.-</RewardsValue>&nbsp;ESW
           </div>
         </RewardsItem>
         <RewardsItem>
           <span>Referral Reward</span>
           <div>
-            <RewardsValue>4 500.00</RewardsValue>&nbsp;ESW
+            <RewardsValue>--.-</RewardsValue>&nbsp;ESW
           </div>{' '}
         </RewardsItem>
         <RewardsItem>
           <span>Fee Compensation</span>
           <div>
-            <RewardsValue>4 500.00</RewardsValue>&nbsp;ESW
+            <RewardsValue>--.-</RewardsValue>&nbsp;ESW
           </div>{' '}
         </RewardsItem>
       </RewardsWrapper>
