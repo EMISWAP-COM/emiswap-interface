@@ -36,7 +36,7 @@ const ProfileStatus = styled.div`
   }
 
   span {
-    color: #000000;
+  color: ${({ theme }) => theme.grey3};
     font-weight: 700;
     text-transform: uppercase;
   }
