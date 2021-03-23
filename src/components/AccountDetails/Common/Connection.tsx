@@ -174,7 +174,7 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
             <BalanceItem>
               <span>Wallet</span>
               <div>
-                <BalanceValue>--.-</BalanceValue>&nbsp;ESW
+                <BalanceValue>{convertBigDecimal(balance?.wallet_balance)}</BalanceValue>&nbsp;ESW
               </div>
             </BalanceItem>
             <BalanceItem>

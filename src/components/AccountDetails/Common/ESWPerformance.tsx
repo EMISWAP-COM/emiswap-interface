@@ -1,7 +1,7 @@
 import React from 'react';
 import { TYPE } from '../../../theme';
 import styled from 'styled-components';
-import { CommingSoon } from '../../../base/ui/CommingSoon';
+import { ComingSoon } from '../../../base/ui/ComingSoon';
 
 const SwappingBoostBtn = styled.span`
   display: block;
@@ -190,18 +190,18 @@ export const ESWPerformance = () => {
               <div className="item-top">Total ESW</div>
               <div className="item-bottom">Coming soon</div>
             </RowItem>
-            <CommingSoon>
+            <ComingSoon>
               <SwappingBoostBtn>boost it now</SwappingBoostBtn>
-            </CommingSoon>
+            </ComingSoon>
           </ThreeRow>
           <ThreeRow>
             <RowItem>
               <div className="item-top no-border">Total ESW</div>
               <div className="item-bottom">Coming soon</div>
             </RowItem>
-            <CommingSoon>
+            <ComingSoon>
               <SwappingBoostBtn>boost it now</SwappingBoostBtn>
-            </CommingSoon>
+            </ComingSoon>
           </ThreeRow>
         </TopRows>
       </Wrapper>
