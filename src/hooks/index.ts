@@ -11,6 +11,7 @@ export function useActiveWeb3React(): Web3ReactContextInterface<Web3Provider> & 
   chainId?: ChainId;
 } {
   const context = useWeb3ReactCore<Web3Provider>();
+  console.log('context', context);
   const contextNetwork = useWeb3ReactCore<Web3Provider>(NetworkContextName);
   return context.active ? context : contextNetwork;
 }

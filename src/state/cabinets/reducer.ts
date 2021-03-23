@@ -20,9 +20,11 @@ interface ChangeLevel {
 }
 
 interface Balance {
+  wallet_balance: string;
+  total_fee_compensation: string;
   amount: string;
   available: string;
-  locked: number;
+  locked: string;
   nearest_unlock: null | Unlock;
   change_level_info: ChangeLevel | null;
 }
