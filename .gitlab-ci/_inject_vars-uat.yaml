@@ -1,7 +1,7 @@
 # almost production environemnt with staging env vars
 emirex_charts:
   app:
-    - emiswap-ui
+  - emiswap-ui
 
 chart_vars:
   emiswap-ui:
@@ -11,7 +11,7 @@ chart_vars:
       tag: "{{ lookup('env', '_img_tag') }}"
       pullPolicy: IfNotPresent
     imagePullSecrets:
-      - name: "{{ lookup('env', 'CI_PROJECT_PATH_SLUG') }}"
+    - name: "{{ lookup('env', 'CI_PROJECT_PATH_SLUG') }}"
     env_js: |
       window.env = {
         REACT_APP_CHAIN_ID: '42',
