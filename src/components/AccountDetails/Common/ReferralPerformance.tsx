@@ -1,159 +1,138 @@
 import React from 'react';
-import { TYPE } from '../../../theme';
-import styled from 'styled-components';
-import { Level } from '../styleds';
+import styled from 'styled-components/macro';
+import { Level, WalletAction, Header } from '../styleds';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { convertBigDecimal, normalizeNumber } from '../uitls';
-// import { CommingSoon } from '../../../base/ui/CommingSoon';
-import { UserRoles } from '../../WalletModal';
-// import { useHistory } from 'react-router';
-// import { useWalletModalToggle } from '../../../state/application/hooks';
+import { ComingSoon } from '../../../base/ui/ComingSoon';
+
+const DarkText = styled.span`
+  color: ${({ theme }) => theme.grey3};
+`;
+
+const RewardsWrapper = styled.div`
+  font-size: 13px;
+  color: ${({ theme }) => theme.grey6};
+
+  margin-top: 12px;
+  margin-bottom: 16px;
+  display: grid;
+  grid-template-columns: 3fr 4fr;
+  grid-gap: 12px;
+
+  @media screen and (max-width: 1200px) {
+    margin-top: 16px;
+    margin-bottom: 12px;
+    grid-template-columns: repeat(1, 1fr);
+    grid-gap: 8px;
+  }
+`;
+
+const RewardsItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 14px;
+  background: #f7f8fa;
+`;
+const RewardsValue = styled(DarkText)`
+  font-size: 16px;
+  font-weight: 600;
+`;
 
 const Wrapper = styled.div`
   width: 100%;
-  border: 1px solid #707070;
-  border-radius: 20px;
-  position: relative;
   margin-bottom: 20px;
-  // overflow: hidden;
-  background: #e4e5e7;
+  border-top: ${({ theme }) => `1px solid ${theme.grey1}`};
 
   @media screen and (max-width: 1200px) {
     display: flex;
-    flex-wrap: wrap;
-    border-radius: 5px;
+    width: auto;
     border: none;
   }
 `;
 
 const Cell = styled.div`
-  flex-grow: 1;
   font-weight: 600;
+  font-size: 0.9rem;
   display: flex;
-  height: 35px;
+  height: 50px;
   align-items: center;
-  justify-content: center;
-  color: #000000;
-  width: 15%;
+  justify-content: flex-end;
+  width: 16%;
+  color: ${({ theme }) => theme.grey3};
+  border-bottom: ${({ theme }) => `1px solid ${theme.grey1}`};
 
   @media screen and (max-width: 1200px) {
+    justify-content: flex-start;
     width: auto;
   }
-
-  > div {
-    margin-left: 5px;
-  }
-`;
-
-const CellSmall = styled(Cell)`
-  font-size: 0.8rem;
 `;
 
 const Title = styled(Cell)`
   justify-content: flex-start;
-  flex-grow: 0;
-  min-width: 13rem;
+  width: 150px;
   font-size: 0.8rem;
   font-weight: normal;
-  padding-left: 1rem;
-  color: #000000;
-`;
-
-const TwoCells = styled(Cell)`
-  font-size: 1.2rem;
-  font-weight: 600;
-  width: auto;
+  color: ${({ theme }) => theme.grey6};
 
   @media screen and (max-width: 1200px) {
-    display: flex;
-    justify-content: space-between;
+    padding-right: 20px;
+    min-width: 50px;
+    width: auto;
   }
 `;
 
 const Table = styled.div`
   display: flex;
-  width: 100%;
+  justify-content: space-between;
 
   @media screen and (max-width: 1200px) {
     flex-direction: column;
-    padding: 1rem 0;
-    background: #f7f8fa;
-
-    > div {
-      background: none;
-      padding: 0 1rem;
-    }
-
-    > div:first-child {
-      color: #707070;
-    }
+    flex-grow: 1;
   }
 `;
 
-const Reward = styled(Table)`
-  @media screen and (max-width: 1200px) {
-    margin-bottom: 20px;
-  }
-`;
+const Referrals = styled(Table)``;
 
-const Referrals = styled(Table)`
-  border-top: 1px solid #707070;
-  border-bottom: 1px solid #707070;
+const ReferralPurchases = styled(Table)``;
 
-  @media screen and (max-width: 1200px) {
-    border: none;
-    width: 50%;
-    align-items: flex-start;
-  }
-`;
-
-const ReferralPurchases = styled(Table)`
-  @media screen and (max-width: 1200px) {
-    width: 50%;
-    align-items: flex-end;
-    > div:first-child {
-      justify-content: flex-end;
-    }
-  }
+const CollectBtn = styled(WalletAction)`
+  max-width: 160px;
 `;
 
 export const ReferralPerformance = () => {
   const { reward, total_amount, total_count, first_level, second_level, third_level } = useSelector(
     (state: AppState) => state.cabinets.performance,
   );
-  // const history = useHistory();
-  // const toggle = useWalletModalToggle();
-  const user = useSelector((state: AppState) => state.user.info);
-  // const handleClaim = () => {
-  //   toggle();
-  //   history.push('/claim/ESW');
-  // };
 
   return (
-    <>
-      <TYPE.mediumHeader>Total Referral Performance</TYPE.mediumHeader>
+    <div>
+      <Header>Total Referral Performance</Header>
+      <RewardsWrapper>
+        <RewardsItem>
+          <div>
+            <span>Referral Reward, ESW</span>
+            <div>
+              <RewardsValue>{convertBigDecimal(reward?.esw?.total)}</RewardsValue>&nbsp;ESW
+            </div>
+          </div>
+        </RewardsItem>
+        <RewardsItem>
+          <div>
+            <span>Referral Reward, DAI</span>
+            <div>
+              <RewardsValue>{convertBigDecimal(reward?.dai?.total)}</RewardsValue>&nbsp;DAI
+            </div>
+          </div>
+          <ComingSoon>
+            <CollectBtn onClick={() => console.log('no collect handler')}>
+              Collect to my wallet 
+            </CollectBtn>
+          </ComingSoon>
+        </RewardsItem>
+      </RewardsWrapper>
 
       <Wrapper>
-        <Reward>
-          <Title>Total Referral reward</Title>
-          <TwoCells>
-            {convertBigDecimal(reward?.esw?.total)} ESW
-            {/*<CommingSoon>*/}
-            {/*  <WalletAction>*/}
-            {/*    Claim</WalletAction>*/}
-            {/*</CommingSoon>*/}
-          </TwoCells>
-          {user.role !== UserRoles.client && (
-            <TwoCells>
-              {convertBigDecimal(reward?.dai?.total)} DAI
-              {/*<CommingSoon>*/}
-              {/*  <WalletAction onClick={handleClaim}>Claim</WalletAction>*/}
-              {/*</CommingSoon>*/}
-            </TwoCells>
-          )}
-        </Reward>
-
         <Referrals>
           <Title>Total Referrals</Title>
           <Cell>{normalizeNumber(total_count)}</Cell>
@@ -173,12 +152,37 @@ export const ReferralPerformance = () => {
 
         <ReferralPurchases>
           <Title>Total Ref. Purchases, ESW</Title>
-          <CellSmall>{convertBigDecimal(total_amount)}</CellSmall>
-          <CellSmall>{convertBigDecimal(first_level?.amount)}</CellSmall>
-          <CellSmall>{convertBigDecimal(second_level?.amount)}</CellSmall>
-          <CellSmall>{convertBigDecimal(third_level?.amount)}</CellSmall>
+          <Cell>{convertBigDecimal(total_amount)}</Cell>
+          <Cell>
+            {convertBigDecimal(first_level?.amount)}
+            <Level>1lvl</Level>
+          </Cell>
+          <Cell>
+            {convertBigDecimal(second_level?.amount)}
+            <Level>1lvl</Level>
+          </Cell>
+          <Cell>
+            {convertBigDecimal(third_level?.amount)}
+            <Level>1lvl</Level>
+          </Cell>
+        </ReferralPurchases>
+        <ReferralPurchases>
+          <Title>Total Ref. Purchases, DAI</Title>
+          <Cell>{convertBigDecimal(total_amount)}</Cell>
+          <Cell>
+            {convertBigDecimal(first_level?.amount)}
+            <Level>1lvl</Level>
+          </Cell>
+          <Cell>
+            {convertBigDecimal(second_level?.amount)}
+            <Level>1lvl</Level>
+          </Cell>
+          <Cell>
+            {convertBigDecimal(third_level?.amount)}
+            <Level>1lvl</Level>
+          </Cell>
         </ReferralPurchases>
       </Wrapper>
-    </>
+    </div>
   );
 };
