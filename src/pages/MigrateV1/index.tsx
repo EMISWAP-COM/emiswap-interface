@@ -9,16 +9,21 @@ import { RowFixed } from '../../components/Row';
 import { Text } from 'rebass';
 import { ExternalLink } from '../../theme';
 import { useHistory } from 'react-router-dom';
-import { ButtonGreen } from '../../components/Button';
+import { ButtonGreen, ButtonLight } from '../../components/Button';
 import DoubleCurrencyLogo from '../../components/DoubleLogo';
 import { useLpTokens } from '../../hooks/useLpTokens';
 import Loader from '../../components/Loader';
 import { amountToString } from './utils';
+import { useActiveWeb3React } from '../../hooks';
+import { useWalletModalToggle } from '../../state/application/hooks';
 
 const StyledSubTitle = styled.p`
   text-align: left;
   padding: 0.75rem;
   margin: 0;
+  @media screen and (max-width: 375px) {
+    padding: 0.75rem 0;
+  }
 `;
 
 const StyledHr = styled.hr`
@@ -32,8 +37,11 @@ const StyledText = styled(Text)`
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 500;
-  font-size: 18px;
+  font-size: 1.2rem;
   line-height: 40px;
+  @media screen and (max-width: 375px) {
+    font-size: 1rem;
+  }
 `;
 
 const WrapperLoader = styled.div`
@@ -58,11 +66,21 @@ const StyledMenuItemMigrate = styled(StyledMenuItem)<{ selected?: boolean }>`
       color: ${({ theme }) => theme.green1};
     }
   }
+  @media screen and (max-width: 375px) {
+    .double-logo {
+      display: none;
+    }
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+  }
 `;
 
 export default function MigrateV1() {
   const theme = useContext(ThemeContext);
+  const { account } = useActiveWeb3React();
   const history = useHistory();
+  const toggleWalletModal = useWalletModalToggle();
   const [selected, setSelected] = useState(null);
   const { tokenList, tokens, balances, isLoading } = useLpTokens();
   const onSelect = (address: string) => {
@@ -147,9 +165,12 @@ export default function MigrateV1() {
         <StyledSubTitle>You have</StyledSubTitle>
         <AutoColumn gap="lg" justify="center">
           {(!formatedTokenList.length && tokenList.length > 0) || isLoading ? (
-            <WrapperLoader>
-              <Loader size="100px" />
-            </WrapperLoader>
+            <>
+              <WrapperLoader>
+                <Loader size="100px" />
+              </WrapperLoader>
+              {!account && <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>}
+            </>
           ) : (
             <>
               <StyledFixedSizeList
