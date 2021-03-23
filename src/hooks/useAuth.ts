@@ -5,6 +5,7 @@ import Web3 from 'web3';
 import { useLocalStorage } from './useLocalStorage';
 // import { MOCK_USER } from './useClaim';
 import { useCallback } from 'react';
+import { fetchWrapper } from '../api/fetchWrapper';
 
 const baseUrl = window['env']?.REACT_APP_PUBLIC_URL;
 // 'https://emiswap-oracle-development.emirex.co';
@@ -15,20 +16,18 @@ export function useAuth() {
   const { library, account } = useActiveWeb3React();
   const [authToken, setAuthToken] = useLocalStorage('auth_token', null);
   const initSession = async (userID: string) => {
-    return await fetch(`${baseUrl}/v1/public/sessions`, {
-      method: 'POST',
+    return await fetchWrapper.post(`${baseUrl}/v1/public/sessions`, {
       body: JSON.stringify({ user_id: userID }),
-    }).then(res => res.json());
+    });
   };
 
   const signSession = async (sessionID: string, signature: string) => {
-    return await fetch(`${baseUrl}/v1/public/sessions/confirm`, {
-      method: 'POST',
+    return await fetchWrapper.post(`${baseUrl}/v1/public/sessions/confirm`, {
       body: JSON.stringify({
         id: sessionID,
         signature,
       }),
-    }).then(res => res.json());
+    });
   };
 
   const signToMetamask = useCallback(

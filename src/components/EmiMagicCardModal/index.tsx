@@ -6,6 +6,7 @@ import Modal from '../Modal';
 import EmiCardHeaderImg from '../../assets/images/EmiCardHeaderImgNew.jpg';
 import { SuccessRegistration } from './SuccessRegistration';
 import { CloseIcon } from '../../assets/tsx/CloseIcon';
+import { fetchWrapper } from '../../api/fetchWrapper';
 
 const CloseBtn = styled.div`
   position: absolute;
@@ -251,31 +252,28 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
         }
       }
       //TODO сделать единый фечт интерфейс для проекта, когда выделят время)
-      fetch(`https://emiswap.emirex.co/v1/public/whitelist${utm || ''}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: name,
-          email: email,
-          telegram: telegram,
-          address: address,
-          created_at: new Date().toString(),
-          utm: utmMakrs,
-        }),
-      })
-        .then(response => {
-          const respMessage = response.json();
-
-          if (response.status === 200 || response.status === 201) {
-            return respMessage;
-          } else if (response.status === 422) {
-            return respMessage;
-          }
-
-          throw new Error(response.status.toString());
+      fetchWrapper
+        .post(`https://emiswap.emirex.co/v1/public/whitelist${utm || ''}`, {
+          body: JSON.stringify({
+            name: name,
+            email: email,
+            telegram: telegram,
+            address: address,
+            created_at: new Date().toString(),
+            utm: utmMakrs,
+          }),
         })
+        // .then(response => {
+        //   const respMessage = response.json();
+        //
+        //   if (response.status === 200 || response.status === 201) {
+        //     return respMessage;
+        //   } else if (response.status === 422) {
+        //     return respMessage;
+        //   }
+        //
+        //   throw new Error(response.status.toString());
+        // })
         .then(content => {
           if (content.error) {
             const { payload = {} } = content;

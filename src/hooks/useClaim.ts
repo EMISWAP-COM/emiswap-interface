@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../state';
 import { useActiveWeb3React } from './index';
 import { parseUnits } from '@ethersproject/units';
+import { fetchWrapper } from '../api/fetchWrapper';
 
 const ESW_ADDRESS = window['env'].REACT_APP_ESW_ID;
 const ESW_CLAIM_API = window['env'].REACT_APP_ESW_CLAIM_API;
@@ -28,12 +29,10 @@ export function useClaim() {
 
         return handleAuth().then((token: string) => {
           console.log('token', token);
-          return fetch(ESW_CLAIM_API, {
+          return fetchWrapper.post(ESW_CLAIM_API, {
             headers: {
-              'Content-Type': 'application/json',
               authorization: token,
             },
-            method: 'POST',
             body: JSON.stringify({
               amount: parseUnits(amount.toString(), 18).toString(),
               nonce: nonce.add(1).toNumber(),
@@ -42,7 +41,7 @@ export function useClaim() {
               userID: id,
               chainID: ESW_CLAIM_CHAIN_ID,
             }),
-          }).then(res => res.json());
+          });
         });
 
         // }

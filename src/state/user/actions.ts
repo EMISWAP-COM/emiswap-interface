@@ -7,6 +7,7 @@ import {
   loadReferralPurchaseHistory,
 } from '../cabinets/actions';
 import { loadGasPrice } from '../stats/actions';
+import { fetchWrapper } from '../../api/fetchWrapper';
 
 export interface SerializedToken {
   chainId: number;
@@ -60,13 +61,7 @@ export const loadWalletAddress = createAsyncThunk(
   async (referralId: string) => {
     const url = `${baseUrl}/v1/public/users/${referralId}`;
     try {
-      const user = await fetch(url, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-        .then(res => res.json())
-        .then(data => data);
+      const user = await fetchWrapper.get(url).then(data => data);
       return user.address;
     } catch (e) {
       alert(e.message);
@@ -79,21 +74,12 @@ export const loginCabinets = createAsyncThunk(
   async (payload: { account: string; referral_address?: string }, thunkAPI) => {
     const { dispatch } = thunkAPI;
     const { account, referral_address } = payload;
-    fetch(`${baseUrl}/v1/public/users`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        address: account,
-        referral_address,
-      }),
-    })
-      .then(res => {
-        if (res.status === 200 || res.status === 201) {
-          return res.json();
-        }
-        throw new Error('no user');
+    fetchWrapper
+      .post(`${baseUrl}/v1/public/users`, {
+        body: JSON.stringify({
+          address: account,
+          referral_address,
+        }),
       })
       .then(data => {
         dispatch(login(data));
