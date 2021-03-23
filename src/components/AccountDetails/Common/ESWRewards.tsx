@@ -64,7 +64,7 @@ export const ESWRewards = () => {
         <RewardsItem>
           <span>Referral Reward</span>
           <div>
-            <RewardsValue>{convertBigDecimal(reward?.esw.total)}</RewardsValue>&nbsp;ESW
+            <RewardsValue>{convertBigDecimal(reward?.esw?.total)}</RewardsValue>&nbsp;ESW
           </div>{' '}
         </RewardsItem>
         <RewardsItem>
