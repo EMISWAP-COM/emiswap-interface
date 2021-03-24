@@ -3,7 +3,7 @@ import { Contract } from '@ethersproject/contracts';
 import { JSBI, TokenAmount, Trade, ZERO_ADDRESS } from '@uniswap/sdk';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { INITIAL_ALLOWED_SLIPPAGE} from '../constants';
+import { INITIAL_ALLOWED_SLIPPAGE } from '../constants';
 import { getTradeVersion } from '../data/V1';
 import { useTransactionAdder } from '../state/transactions/hooks';
 import { calculateGasMargin, getMooniswapContract, getOneSplit } from '../utils';
@@ -18,7 +18,7 @@ import {
 } from '../constants/one-split';
 import { MIN_CHI_BALANCE, useHasChi, useIsChiApproved } from './useChi';
 import { ApprovalState } from './useApproveCallback';
-import { tokenAmountToString } from '../utils/formats';
+import { expNumberToStr, tokenAmountToString } from '../utils/formats'
 import { useSwapEmiRouter } from './useContract';
 import defaultCoins from '../constants/defaultCoins';
 import { Web3Provider } from '@ethersproject/providers';
@@ -350,7 +350,7 @@ export function useSwapCallback(
           method = 'swap';
           args = [
             ...addresses,
-            (+formattedAmounts.INPUT * 10 ** trade?.inputAmount?.token?.decimals).toString(),
+            expNumberToStr(+formattedAmounts.INPUT * 10 ** trade?.inputAmount?.token?.decimals),
             minReturn.toString(),
             account,
             referralAddress,
@@ -379,7 +379,7 @@ export function useSwapCallback(
           } else {
             method = 'swapExactTokensForETH';
             args = [
-              (+formattedAmounts.INPUT * 10 ** trade?.inputAmount?.token?.decimals).toString(),
+              expNumberToStr(+formattedAmounts.INPUT * 10 ** trade?.inputAmount?.token?.decimals),
               // t3,
               addresses,
               account,
@@ -389,7 +389,7 @@ export function useSwapCallback(
         } else {
           method = 'swapExactTokensForTokens';
           args = [
-            (+formattedAmounts.INPUT * 10 ** trade?.inputAmount?.token?.decimals).toString(),
+            expNumberToStr(+formattedAmounts.INPUT * 10 ** trade?.inputAmount?.token?.decimals),
             minReturn.toString(),
             addresses,
             account,
