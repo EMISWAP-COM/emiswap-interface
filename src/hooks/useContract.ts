@@ -17,8 +17,9 @@ import { MULTICALL_ABI, MULTICALL_NETWORKS } from '../constants/multicall';
 import { V1_EXCHANGE_ABI, V1_FACTORY_ABI, V1_FACTORY_ADDRESSES } from '../constants/v1';
 import {
   V1_EMIROUTER_HELPER_ADDRESSES,
-  V1_MOONISWAP_FACTORY_ADDRESSES, VAMP_ADDRESS
-} from '../constants/v1-mooniswap'
+  V1_MOONISWAP_FACTORY_ADDRESSES,
+  VAMP_ADDRESS,
+} from '../constants/v1-mooniswap';
 import { getContract, getProviderOrSigner } from '../utils';
 import { useActiveWeb3React } from './index';
 import { ONE_SPLIT_ABI, ONE_SPLIT_ADDRESSES } from '../constants/one-split';
@@ -183,7 +184,7 @@ export function useChiController(): Contract | null {
 }
 
 export function useESWContract(): Contract | null {
-  return useContract(ESW_ADDRESS, ESW_ABI, false);
+  return useContract(ESW_ADDRESS, ESW_ABI, true);
 }
 export function useVampContract(): Contract | null {
   return useContract(VAMP_ADDRESS, VAMP_ABI, true);

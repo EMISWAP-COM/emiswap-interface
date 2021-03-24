@@ -102,32 +102,45 @@ export default function Menu() {
       </StyledMenuButton>
       {open && (
         <MenuFlyout>
-          <MenuItem
-            id="link"
-            href="https://emiswap.medium.com/emiswap-amm-exchange-to-perfect-the-defi-market-d13e74dc6e14"
-          >
+          <MenuItem id="link" href="https://about.emiswap.com">
             <Info size={14} />
             About
           </MenuItem>
-          <MenuItem id="link" href="https://emiswap.com/info/" target="_blank">
-            <BookOpen size={14} />
-            Crowdsale Info
-          </MenuItem>
-          <MenuItem id="link" href="https://crowdsale.emidao.org/magic-nft" target="_blank">
+          <MenuItem
+            id="link"
+            href="https://crowdsale.emidao.org/magic-nft?_ga=2.93764061.1534273430.1614249828-363309939.1603872891"
+            target="_blank"
+          >
             <MessageCircle size={14} />
             NFT Magic EmiCards
+          </MenuItem>
+          <MenuItem
+            id="link"
+            href="https://crowdsale.emidao.org/whitepaper?_ga=2.106215235.1534273430.1614249828-363309939.1603872891"
+            target="_blank"
+          >
+            <BookOpen size={14} />
+            Whitepaper
+          </MenuItem>
+          <MenuItem
+            id="link"
+            href="https://etherscan.io/token/0x5a75A093747b72a0e14056352751eDF03518031d"
+            target="_blank"
+          >
+            <Info size={14} />
+            ESW etherscan
+          </MenuItem>
+          <MenuItem
+            id="link"
+            href="https://hacken.io/wp-content/uploads/2021/02/18022021_Emiswap_SC_Audit_Report.pdf"
+            target="_blank"
+          >
+            <BookOpen size={14} />
+            Smart Contract Audit
           </MenuItem>
           <MenuItem id="link" href={window['env'].REACT_APP_CODE_LINK} target="_blank">
             <Code size={14} />
             Code
-          </MenuItem>
-          <MenuItem id="link" href="https://discord.gg/yRbYYPmFpr" target="_blank">
-            <MessageCircle size={14} />
-            Discord
-          </MenuItem>
-          <MenuItem id="link" href="https://crowdsale.emidao.org/whitepaper" target="_blank">
-            <BookOpen size={14} />
-            Whitepaper
           </MenuItem>
         </MenuFlyout>
       )}

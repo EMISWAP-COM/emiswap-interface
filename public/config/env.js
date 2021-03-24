@@ -25,4 +25,6 @@ window['env'] = {
   REACT_APP_EMI_ROUTER_GÖRLI: '0xe5c8e363de97840d5996e1e8db8b5facda0f1e21',
   REACT_APP_EMI_ROUTER_KOVAN: '0x3c756Eed6DC66F7013923AC50aB236111a9494bD',
   REACT_APP_EMI_VAMP: '0x09aff00ed78b18dcd5cbd444a563e9329f459c7a',
+  REACT_APP_ESW_CLAIM_API: 'https://us-central1-emirex-preprod.cloudfunctions.net/sign_trans',
+  REACT_APP_ESW_CLAIM_CHAIN_ID: 'ETH_KV',
 };

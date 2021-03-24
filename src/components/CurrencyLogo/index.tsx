@@ -25,7 +25,7 @@ const getTokenLogoURL1inch = async ({ symbol, address }) => {
 const BAD_URIS: { [tokenAddress: string]: true } = {};
 const FALLBACK_URIS: { [tokenAddress: string]: string } = {};
 
-const Image = styled.img<{ size: string }>`
+export const Image = styled.img<{ size: string }>`
   width: ${({ size }) => size};
   height: ${({ size }) => size};
   background-color: white;
