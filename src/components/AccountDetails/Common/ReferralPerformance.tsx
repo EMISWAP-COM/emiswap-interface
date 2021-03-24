@@ -126,7 +126,7 @@ export const ReferralPerformance = () => {
           </div>
           <ComingSoon>
             <CollectBtn onClick={() => console.log('no collect handler')}>
-              Collect to my wallet 
+              Collect to my wallet
             </CollectBtn>
           </ComingSoon>
         </RewardsItem>
