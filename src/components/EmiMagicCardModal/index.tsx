@@ -7,6 +7,8 @@ import EmiCardHeaderImg from '../../assets/images/EmiCardHeaderImgNew.jpg';
 import { SuccessRegistration } from './SuccessRegistration';
 import { CloseIcon } from '../../assets/tsx/CloseIcon';
 import { fetchWrapper } from '../../api/fetchWrapper';
+import { useDispatch } from 'react-redux'
+import { addPopup } from '../../state/application/actions'
 
 const CloseBtn = styled.div`
   position: absolute;
@@ -201,6 +203,7 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
   const [validation, setValidation] = useState(defaultValidation);
   const [isRegistered, setIsRegistered] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
+  const dispatch = useDispatch();
 
   const validateForm = (name = '', email = '', telegram = '', address = '') => {
     let isValid = false;
@@ -295,6 +298,17 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
         .catch(e => {
           alert(`Oops, we unable to perform whitelist registration - ${e}`);
           console.log('Can’t access /v1/public/whitelist response. Blocked by browser?');
+          dispatch(
+            addPopup({
+              key: 'magicCardModal',
+              content: {
+                status: {
+                  name: `Oops, we unable to perform whitelist registration - ${e}`,
+                  isError: true,
+                },
+              },
+            }),
+          );
         });
     }
   };

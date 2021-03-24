@@ -8,6 +8,7 @@ import {
 } from '../cabinets/actions';
 import { loadGasPrice } from '../stats/actions';
 import { fetchWrapper } from '../../api/fetchWrapper';
+import { addPopup } from '../application/actions';
 
 export interface SerializedToken {
   chainId: number;
@@ -58,13 +59,24 @@ export const dismissTokenWarning = createAction<{ chainId: number; tokenAddress:
 
 export const loadWalletAddress = createAsyncThunk(
   'user/loadWalletAddress',
-  async (referralId: string) => {
+  async (referralId: string, { dispatch }) => {
     const url = `${baseUrl}/v1/public/users/${referralId}`;
     try {
       const user = await fetchWrapper.get(url).then(data => data);
       return user.address;
     } catch (e) {
       alert(e.message);
+      dispatch(
+        addPopup({
+          key: 'loadPerformance',
+          content: {
+            status: {
+              name: e.message,
+              isError: true,
+            },
+          },
+        }),
+      );
     }
   },
 );
@@ -94,6 +106,17 @@ export const loginCabinets = createAsyncThunk(
       })
       .catch(e => {
         console.log(e);
+        dispatch(
+          addPopup({
+            key: 'loginCabinets',
+            content: {
+              status: {
+                name: e.message,
+                isError: true,
+              },
+            },
+          }),
+        );
       });
   },
 );

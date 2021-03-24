@@ -7,6 +7,7 @@ import { TYPE } from '../../theme';
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
+  word-break: break-word;
 `;
 const IconBlock = styled.div`
   padding-right: 18px;

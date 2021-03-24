@@ -4,18 +4,18 @@ const baseHeaders = {
 };
 
 const handleResponse = (response: Response) => {
-  const { status} = response;
+  const { status, url } = response;
   switch (status) {
     case 200:
     case 201:
       return response.json();
-    case 404:
     default:
-      if ((status >= 400 && status <= 403) || (status >= 405 && status <= 499)) {
-        return response.text().then(text => {
-          throw new Error(text);
+      if (status === 422) {
+        return response.json().then(data => {
+          throw new Error(data?.error);
         });
       }
+      throw new Error(`something went wrong in ${url}`);
   }
 };
 
