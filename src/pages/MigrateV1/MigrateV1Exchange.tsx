@@ -40,6 +40,9 @@ const StyledContainer = styled.div`
   & > *:not(:last-child):not(:nth-child(2)) {
     margin-bottom: 20px;
   }
+  #migrate-liquidity {
+    margin-bottom: 32px;
+  }
 `;
 
 const LoaderBox = styled.div`
@@ -254,7 +257,7 @@ export default function MigrateV1Exchange({
               currency={inputCurrency}
               disableCurrencySelect
               pair={pair}
-              balanceDecimals={10}
+              balanceDecimals={12}
             />
             {(approval === ApprovalState.PENDING || approval === ApprovalState.NOT_APPROVED) &&
               !notEnoughBalance && (
