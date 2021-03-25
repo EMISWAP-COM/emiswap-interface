@@ -5,7 +5,7 @@ import { useVampContract } from './useContract';
 import { useDispatch } from 'react-redux';
 
 export function useLpTokens(): {
-  tokenList: { addresses: string[]; base: string }[];
+  lpTokensDetailedInfo: { addresses: string[]; base: string }[];
   lpTokensInfo: string[];
   tokens: (Token | undefined)[];
   balances: number[];
@@ -13,10 +13,10 @@ export function useLpTokens(): {
 } {
   const contract = useVampContract();
   const [lpTokensInfo, setLpTokensInfo] = useState<any[]>([]);
-  const [tokenList, setTokenList] = useState<{ addresses: string[]; base: string }[]>([]);
+  const [lpTokensDetailedInfo, setLpTokensDetailedInfot] = useState<{ addresses: string[]; base: string }[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
-  const formattedAddresses = tokenList
+  const formattedAddresses = lpTokensDetailedInfo
     .map(el => el.addresses)
     .flat()
     .filter((el, idx, arr) => arr.findIndex(address => address === el) === idx);
@@ -34,7 +34,7 @@ export function useLpTokens(): {
         setLpTokensInfo(lpTokensInfo.map(el => el.lpToken));
         promiseArr = lpTokensInfo.map((_, idx) => contract?.lpTokenDetailedInfo(idx));
         const listPair = await Promise.all(promiseArr);
-        setTokenList(
+        setLpTokensDetailedInfot(
           listPair.map((el, idx) => ({ addresses: el, base: lpTokensInfo[idx].lpToken })),
         );
         setIsLoading(false);
@@ -45,6 +45,6 @@ export function useLpTokens(): {
     fetchInfo();
   }, [contract, dispatch]);
   return useMemo(() => {
-    return { tokenList, lpTokensInfo, balances, tokens, isLoading };
-  }, [balances, isLoading, lpTokensInfo, tokenList, tokens]);
+    return { lpTokensDetailedInfo, lpTokensInfo, balances, tokens, isLoading };
+  }, [balances, isLoading, lpTokensInfo, lpTokensDetailedInfo, tokens]);
 }

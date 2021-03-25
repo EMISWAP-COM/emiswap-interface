@@ -2,7 +2,7 @@ import React, { useContext, useMemo, useState } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import WarningBlock, { StyledButton } from '../../components/Warning/WarningBlock';
 import AppBody from '../AppBody';
-import { SwapPoolTabs } from '../../components/NavigationTabs';
+import { SwapPoolTabs, TabNames } from '../../components/NavigationTabs';
 import Column, { AutoColumn } from '../../components/Column';
 import { StyledFixedSizeList, StyledMenuItem } from '../../components/SearchModal/styleds';
 import { RowFixed } from '../../components/Row';
@@ -82,19 +82,19 @@ export default function MigrateV1() {
   const history = useHistory();
   const toggleWalletModal = useWalletModalToggle();
   const [selected, setSelected] = useState(null);
-  const { tokenList, tokens, balances, isLoading } = useLpTokens();
+  const { lpTokensDetailedInfo, tokens, balances, isLoading } = useLpTokens();
   const onSelect = (address: string) => {
     setSelected(address);
   };
-  const formatedTokenList = tokenList
-    .map((el, idx) => ({ ...el, balance: balances[idx] }))
-    .filter((el, idx) => {
+  const formatedTokenList = lpTokensDetailedInfo
+    .map((lpTokenDetailedInfo, idx) => ({ ...lpTokenDetailedInfo, balance: balances[idx] }))
+    .filter((lpTokenDetailedInfoWithBalance, idx) => {
       const {
         addresses: [address0, address1],
-      } = el;
+      } = lpTokenDetailedInfoWithBalance;
       return (
-        tokens.find(el => el.address === address0) &&
-        tokens.find(el => el.address === address1) &&
+        tokens.find(token => token.address === address0) &&
+        tokens.find(token => token.address === address1) &&
         +amountToString(balances[idx], 10)
       );
     });
@@ -161,10 +161,10 @@ export default function MigrateV1() {
         bottomContent={warningBottomContent}
       />
       <AppBody>
-        <SwapPoolTabs active={'migrate'} />
+        <SwapPoolTabs active={TabNames.MIGRATE} />
         <StyledSubTitle>You have</StyledSubTitle>
         <AutoColumn gap="lg" justify="center">
-          {(!formatedTokenList.length && tokenList.length > 0) || isLoading ? (
+          {(!formatedTokenList.length && lpTokensDetailedInfo.length > 0) || isLoading ? (
             <>
               <WrapperLoader>
                 <Loader size="100px" />

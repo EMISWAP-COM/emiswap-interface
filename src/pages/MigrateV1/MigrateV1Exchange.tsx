@@ -76,7 +76,7 @@ const ButtonGreenConfirm = styled(ButtonGreen)`
   max-width: 60%;
 `;
 
-const StyledHr = styled.hr`
+const Separator = styled.hr`
   width: 100%;
   background: #eaeeee;
   border: none;
@@ -157,8 +157,8 @@ export default function MigrateV1Exchange({
   const toggleWalletModal = useWalletModalToggle();
   const { account } = useActiveWeb3React();
   const contract = useVampContract();
-  const { tokenList, lpTokensInfo } = useLpTokens();
-  const tokens = tokenList.find(el => el.base === address)?.addresses ?? [];
+  const { lpTokensDetailedInfo, lpTokensInfo } = useLpTokens();
+  const tokens = lpTokensDetailedInfo.find(el => el.base === address)?.addresses ?? [];
   const inputCurrency = useLpCurrencies(tokens, address);
   const [isPairExist, setIsPairExist] = useState(false);
   const currency0 = useCurrency(tokens[0]);
@@ -176,6 +176,7 @@ export default function MigrateV1Exchange({
   const notEnoughBalance = !inputCurrencyBalance || inputCurrencyBalance?.toExact() < amount;
 
   useEffect(() => {
+    // base pair tokens
     const [token0, token1] = tokens;
     if (token0 && token1) {
       contract.isPairAvailable(token0, token1).then(data => setIsPairExist(data));
@@ -253,7 +254,7 @@ export default function MigrateV1Exchange({
               id={'migrate-liquidity'}
               label={'from'}
               showMaxButton
-              onMax={() => setAmount(tokenAmountToString(selectedCurrencyBalance, 10))}
+              onMax={() => setAmount(tokenAmountToString(selectedCurrencyBalance, 12))}
               currency={inputCurrency}
               disableCurrencySelect
               pair={pair}
@@ -306,7 +307,7 @@ export default function MigrateV1Exchange({
               </TokensInfoBlock>
               <QuestionHelper text="It will cost a lot more to make a new pair" />
             </ModalHeaderWrapper>
-            <StyledHr />
+            <Separator />
             <Text textAlign="center" fontWeight={500} fontSize={16}>
               Pair does not exist. Do you want to create?
             </Text>

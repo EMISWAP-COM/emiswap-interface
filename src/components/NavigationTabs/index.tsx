@@ -52,20 +52,35 @@ const StyledArrowLeft = styled(ArrowLeft)`
   color: ${({ theme }) => theme.text1};
 `;
 
-export function SwapPoolTabs({ active }: { active: 'swap' | 'pool' | 'invest' | 'migrate' }) {
+export enum TabNames {
+  SWAP,
+  POOL,
+  MIGRATE,
+  INVEST,
+}
+
+export function SwapPoolTabs({ active }: { active: TabNames }) {
   const { t } = useTranslation();
   return (
     <Tabs style={{ marginBottom: '24px' }}>
-      <StyledNavLink id={`swap-nav-link`} to={'/swap'} isActive={() => active === 'swap'}>
+      <StyledNavLink id={`swap-nav-link`} to={'/swap'} isActive={() => active === TabNames.SWAP}>
         {t('swap')}
       </StyledNavLink>
-      <StyledNavLink id={`pool-nav-link`} to={'/pool'} isActive={() => active === 'pool'}>
+      <StyledNavLink id={`pool-nav-link`} to={'/pool'} isActive={() => active === TabNames.POOL}>
         {t('pool')}
       </StyledNavLink>
-      <StyledNavLink id={`migrate-nav-link`} to={'/migrate'} isActive={() => active === 'migrate'}>
+      <StyledNavLink
+        id={`migrate-nav-link`}
+        to={'/migrate'}
+        isActive={() => active === TabNames.MIGRATE}
+      >
         {t('migrate')}
       </StyledNavLink>
-      <StyledNavLink id={`pool-nav-link`} to={'/invest'} isActive={() => active === 'invest'}>
+      <StyledNavLink
+        id={`pool-nav-link`}
+        to={'/invest'}
+        isActive={() => active === TabNames.INVEST}
+      >
         {t('invest')}
       </StyledNavLink>
     </Tabs>

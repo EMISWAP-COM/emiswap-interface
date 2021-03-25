@@ -230,7 +230,7 @@ export default function CurrencyInputPanel({
                     >
                       {!hideBalance && !!currency && selectedCurrencyBalance
                         ? 'Balance: ' +
-                          tokenAmountToString(selectedCurrencyBalance, balanceDecimals ?? 6)
+                          tokenAmountToString(selectedCurrencyBalance, balanceDecimals)
                         : ' '}
                     </TYPE.body>
                   </CursorPointer>
