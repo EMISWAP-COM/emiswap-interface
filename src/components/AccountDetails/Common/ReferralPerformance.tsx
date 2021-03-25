@@ -126,7 +126,7 @@ export const ReferralPerformance = () => {
           </div>
           <ComingSoon>
             <CollectBtn onClick={() => console.log('no collect handler')}>
-              Collect to my wallet 
+              Collect to my wallet
             </CollectBtn>
           </ComingSoon>
         </RewardsItem>
@@ -159,11 +159,11 @@ export const ReferralPerformance = () => {
           </Cell>
           <Cell>
             {convertBigDecimal(second_level?.amount)}
-            <Level>1lvl</Level>
+            <Level>2lvl</Level>
           </Cell>
           <Cell>
             {convertBigDecimal(third_level?.amount)}
-            <Level>1lvl</Level>
+            <Level>3lvl</Level>
           </Cell>
         </ReferralPurchases>
         <ReferralPurchases>
@@ -175,11 +175,11 @@ export const ReferralPerformance = () => {
           </Cell>
           <Cell>
             {convertBigDecimal(second_level?.amount)}
-            <Level>1lvl</Level>
+            <Level>2lvl</Level>
           </Cell>
           <Cell>
             {convertBigDecimal(third_level?.amount)}
-            <Level>1lvl</Level>
+            <Level>3lvl</Level>
           </Cell>
         </ReferralPurchases>
       </Wrapper>
