@@ -7,8 +7,8 @@ import EmiCardHeaderImg from '../../assets/images/EmiCardHeaderImgNew.jpg';
 import { SuccessRegistration } from './SuccessRegistration';
 import { CloseIcon } from '../../assets/tsx/CloseIcon';
 import { fetchWrapper } from '../../api/fetchWrapper';
-import { useDispatch } from 'react-redux'
-import { addPopup } from '../../state/application/actions'
+import { useDispatch } from 'react-redux';
+import { addPopup } from '../../state/application/actions';
 
 const CloseBtn = styled.div`
   position: absolute;
@@ -254,7 +254,6 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
           utmMakrs[key] = value;
         }
       }
-      //TODO сделать единый фечт интерфейс для проекта, когда выделят время)
       fetchWrapper
         .post(`https://emiswap.emirex.co/v1/public/whitelist${utm || ''}`, {
           body: JSON.stringify({
@@ -266,28 +265,8 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
             utm: utmMakrs,
           }),
         })
-        // .then(response => {
-        //   const respMessage = response.json();
-        //
-        //   if (response.status === 200 || response.status === 201) {
-        //     return respMessage;
-        //   } else if (response.status === 422) {
-        //     return respMessage;
-        //   }
-        //
-        //   throw new Error(response.status.toString());
-        // })
-        .then(content => {
-          if (content.error) {
-            const { payload = {} } = content;
-            const { address = [] } = payload;
-            if (!address.includes('duplicate')) {
-              throw new Error(JSON.stringify(content));
-            }
-            setSuccessMessage(Message.duplicate);
-          } else {
-            setSuccessMessage(Message.success);
-          }
+        .then(() => {
+          setSuccessMessage(Message.success);
           ReactGA.event({
             category: 'whitelist',
             action: 'whitelist_MagicNFT',
@@ -296,6 +275,7 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
           setIsRegistered(true);
         })
         .catch(e => {
+          setSuccessMessage(Message.duplicate);
           alert(`Oops, we unable to perform whitelist registration - ${e}`);
           console.log('Can’t access /v1/public/whitelist response. Blocked by browser?');
           dispatch(

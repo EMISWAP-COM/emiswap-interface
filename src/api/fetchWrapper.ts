@@ -9,13 +9,12 @@ const handleResponse = (response: Response) => {
     case 200:
     case 201:
       return response.json();
+    case 422:
+      return response.json().then(data => {
+        throw new CustomError(data?.error, data?.payload);
+      });
     default:
-      if (status === 422) {
-        return response.json().then(data => {
-          throw new Error(data?.error);
-        });
-      }
-      throw new Error(`something went wrong in ${url}`);
+      throw new Error(`something went wrong while requesting ${url}`);
   }
 };
 
@@ -46,3 +45,11 @@ export const fetchWrapper = {
     });
   },
 };
+
+class CustomError extends Error {
+  payload: any;
+  constructor(message: string, errorObj?: any) {
+    super(message);
+    this.payload = errorObj;
+  }
+}
