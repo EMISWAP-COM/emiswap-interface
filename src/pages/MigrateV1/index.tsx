@@ -7,7 +7,7 @@ import Column, { AutoColumn } from '../../components/Column';
 import { StyledFixedSizeList, StyledMenuItem } from '../../components/SearchModal/styleds';
 import { RowFixed } from '../../components/Row';
 import { Text } from 'rebass';
-import { ExternalLink } from '../../theme';
+import { ExternalLink, TYPE } from '../../theme';
 import { useHistory } from 'react-router-dom';
 import { ButtonGreen, ButtonLight } from '../../components/Button';
 import DoubleCurrencyLogo from '../../components/DoubleLogo';
@@ -34,7 +34,7 @@ const StyledHr = styled.hr`
 `;
 
 const StyledText = styled(Text)`
-  font-family: 'Roboto';
+  font-family: IBM Plex Arabic;
   font-style: normal;
   font-weight: 500;
   font-size: 1.2rem;
@@ -162,15 +162,23 @@ export default function MigrateV1() {
       />
       <AppBody>
         <SwapPoolTabs active={TabNames.MIGRATE} />
-        <StyledSubTitle>You have</StyledSubTitle>
+        {account && <StyledSubTitle>You have</StyledSubTitle>}
         <AutoColumn gap="lg" justify="center">
-          {(!formatedTokenList.length && lpTokensDetailedInfo.length > 0) || isLoading ? (
+          {!account ? (
+            <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
+          ) : (!formatedTokenList.length &&
+              lpTokensDetailedInfo.length &&
+              balances.every(balance => balance === undefined)) ||
+            isLoading ? (
             <>
               <WrapperLoader>
                 <Loader size="100px" />
               </WrapperLoader>
-              {!account && <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>}
             </>
+          ) : balances.every(balance => {
+              return +amountToString(balance, 10) === 0;
+            }) ? (
+            <TYPE.body>No Lp tokens found</TYPE.body>
           ) : (
             <>
               <StyledFixedSizeList
