@@ -380,6 +380,22 @@ const EmiMagicBtn = styled.div`
   margin-top: 10px;
 `;
 
+const EmiMagicMark = styled.div`
+  background: url('${EmiMagicBackground}');
+  background-repeat: no-repeat;
+  width: 100%;
+  background-size: cover;
+  border-radius: 8px;
+  height: 56px;
+  color: #FFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  margin-top: 10px;
+  opacity: .5;
+`;
+
 const EmiCardHeader = styled.div`
   color: #e50606;
   font-size: 1rem;
@@ -490,7 +506,6 @@ const Invest = () => {
     }
   }, [approval, approvalSubmitted]);
 
-
   // the callback to execute the invest
   const [investCallback] = useInvest(
     chainId,
@@ -541,6 +556,9 @@ const Invest = () => {
   // errors
   const [showInverted, setShowInverted] = useState<boolean>(false);
   const [showEmiCardModal, setShowEmiCardModal] = useState<boolean>(bonusform === 'open');
+
+  const { whitelisted } = useSelector((state: AppState) => state.user.info);
+
   const openEmiCardModal = () => {
     ReactGA.event({
       category: 'Magic_NFT',
@@ -1182,12 +1200,18 @@ const Invest = () => {
             </BottomGrouping>
           </AutoColumn>
           {account ? <ReferralLink /> : 'Please connect to get a referral link.'}
-          <EmiMagicBtn onClick={openEmiCardModal}>Register here to Get Magic Cards</EmiMagicBtn>
-            <EmiMagicCardModal
-              isOpen={showEmiCardModal}
-              onDismiss={closeEmiCardModal}
-              walletID={account}
-            />
+          {!whitelisted && account ? (
+            <>
+              <EmiMagicBtn onClick={openEmiCardModal}>Register here to Get Magic Cards</EmiMagicBtn>
+              <EmiMagicCardModal
+                isOpen={showEmiCardModal}
+                onDismiss={closeEmiCardModal}
+                walletID={account}
+              />
+            </>
+          ) : (
+            <EmiMagicMark>You are in white list</EmiMagicMark>
+          )}
         </Wrapper>
         {generateEmiCardBlock(Number(formattedAmounts[Field.OUTPUT]))}
       </AppBody>
