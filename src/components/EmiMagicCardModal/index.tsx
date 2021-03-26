@@ -188,14 +188,14 @@ interface EmiMagicCardModalProps {
   walletID?: string;
 }
 
+const baseUrl = window['env'] ? window['env'].REACT_APP_PUBLIC_URL : '';
+
 const defaultValidation = { name: false, email: false, telegram: false, address: false };
 
 enum Message {
   success = 'Now you are whitelisted and you still have time to be one of the first 1,000 to claim the bonus!',
   duplicate = 'You have already been whitelisted a while ago...',
 }
-
-const baseUrl = window['env'] ? window['env'].REACT_APP_PUBLIC_URL : '';
 
 export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMagicCardModalProps) {
   const nameRef = useRef(null);
