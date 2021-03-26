@@ -173,7 +173,7 @@ export default function MigrateV1Exchange({
   const parsedAmount = tryParseAmount(amount, inputCurrency);
   const [approval, approveCallback] = useApproveCallback(parsedAmount, EmiVampAddress);
 
-  const notEnoughBalance = !inputCurrencyBalance || inputCurrencyBalance?.toExact() < amount;
+  const notEnoughBalance = !inputCurrencyBalance || +inputCurrencyBalance?.toExact() < +amount;
 
   useEffect(() => {
     // base pair tokens

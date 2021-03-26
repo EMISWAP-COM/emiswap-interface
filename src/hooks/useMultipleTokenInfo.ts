@@ -5,7 +5,7 @@ import ERC20_ABI from '../constants/abis/erc20.json';
 import { useActiveWeb3React } from './index';
 import { Token } from '@uniswap/sdk';
 
-export function useMultipleTokenInfo(addresses: string[], lpTokensAddresses: string[]) {
+export function useMultipleTokenInfo(addresses: string[], lpTokensAddresses?: string[]) {
   const { chainId, account } = useActiveWeb3React();
   const tokenInterface = new Interface(ERC20_ABI);
   const names = useMultipleContractSingleData(
@@ -39,7 +39,7 @@ export function useMultipleTokenInfo(addresses: string[], lpTokensAddresses: str
     true,
   );
   const balances = useMultipleContractSingleData(
-    [...lpTokensAddresses],
+    [...(lpTokensAddresses ? lpTokensAddresses : addresses)],
     tokenInterface,
     'balanceOf',
     [account as string | undefined],
