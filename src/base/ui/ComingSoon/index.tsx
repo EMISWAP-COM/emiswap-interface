@@ -1,18 +1,17 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
-export const CommingSoon = styled.div`
+export const ComingSoon = styled.div`
   position: relative;
-  
+
   &:after {
     position: absolute;
     content: 'soon';
-    background: #dc000c;
-    // width: 30px;
-    // height: 20px; 
+    background: ${({ theme }) => theme.red3};
+
     border-radius: 12px;
     padding: 0 8px;
     top: -12px;
-    right: -5px; 
+    right: -5px;
     text-transform: lowercase;
     color: white;
     font-weight: 600;

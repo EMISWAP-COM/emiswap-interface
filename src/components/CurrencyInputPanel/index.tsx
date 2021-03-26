@@ -92,7 +92,7 @@ const Container = styled.div<{ hideInput: boolean; isError: boolean }>`
   background-color: ${({ theme }) => theme.bg1};
 `;
 
-const StyledTokenName = styled.span<{ active?: boolean }>`
+export const StyledTokenName = styled.span<{ active?: boolean }>`
   ${({ active }) =>
     active ? '  margin: 0 0.25rem 0 0.5rem;' : '  margin: 0.125rem 0.25rem 0 0.25rem;'}
   font-size:  ${({ active }) => (active ? '18px' : '16px')};
@@ -158,6 +158,7 @@ interface CurrencyInputPanelProps {
   isDepended?: boolean;
   showMaxError?: boolean;
   currencyBalance?: TokenAmount | undefined;
+  balanceDecimals?: number;
 }
 
 export default function CurrencyInputPanel({
@@ -182,6 +183,7 @@ export default function CurrencyInputPanel({
   isDepended = false,
   showMaxError = false,
   currencyBalance,
+  balanceDecimals = 6,
 }: CurrencyInputPanelProps) {
   const { t } = useTranslation();
 
@@ -227,7 +229,8 @@ export default function CurrencyInputPanel({
                       style={{ display: 'inline' }}
                     >
                       {!hideBalance && !!currency && selectedCurrencyBalance
-                        ? 'Balance: ' + tokenAmountToString(selectedCurrencyBalance)
+                        ? 'Balance: ' +
+                          tokenAmountToString(selectedCurrencyBalance, balanceDecimals)
                         : ' '}
                     </TYPE.body>
                   </CursorPointer>

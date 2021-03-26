@@ -4,13 +4,23 @@ import { FixedSizeList } from 'react-window';
 import { RowBetween } from '../Row';
 import { ButtonSecondary } from '../Button';
 
+export const Header = styled.div`
+  margin-top: 36px;
+  color: ${({ theme }) => theme.text1};
+
+  @media screen and (max-width: 1200px) {
+    margin-top: 24px;
+  }
+`;
+
 export const Level = styled.div`
   width: 1.5rem;
-  background: #6e6e6e;
-  border-radius: 0.4rem;
+  background: ${({ theme }) => theme.grey6};
+  border-radius: 4px;
   color: #ffffff;
   font-size: 0.7rem;
   padding: 1px 3px 1px 2px;
+  margin-left: 6px;
 `;
 
 export const MenuItem = styled(RowBetween)`
