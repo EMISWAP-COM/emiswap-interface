@@ -39,10 +39,13 @@ export const useLogin = async (account: string) => {
   }, [account, dispatch, referral_address]);
 
   useEffect(() => {
-    getUser();
-    const interval = setInterval(() => {
+    let interval: any;
+    if (account) {
       getUser();
-    }, 30000);
+      interval = setInterval(() => {
+        getUser();
+      }, 30000);
+    }
     return () => {
       clearInterval(interval);
     };
