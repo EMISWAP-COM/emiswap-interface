@@ -195,6 +195,8 @@ enum Message {
   duplicate = 'You have already been whitelisted a while ago...',
 }
 
+const baseUrl = window['env'] ? window['env'].REACT_APP_PUBLIC_URL : '';
+
 export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMagicCardModalProps) {
   const nameRef = useRef(null);
   const emailRef = useRef(null);
@@ -255,7 +257,7 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
         }
       }
       fetchWrapper
-        .post(`https://emiswap.emirex.co/v1/public/whitelist${utm || ''}`, {
+        .post(`${baseUrl}/v1/public/whitelist${utm || ''}`, {
           body: JSON.stringify({
             name: name,
             email: email,
@@ -275,20 +277,25 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
           setIsRegistered(true);
         })
         .catch(e => {
-          setSuccessMessage(Message.duplicate);
-          alert(`Oops, we unable to perform whitelist registration - ${e}`);
-          console.log('Can’t access /v1/public/whitelist response. Blocked by browser?');
-          dispatch(
-            addPopup({
-              key: 'magicCardModal',
-              content: {
-                status: {
-                  name: `Oops, we unable to perform whitelist registration - ${e}`,
-                  isError: true,
+          const validation = e?.payload?.address;
+          if (validation && validation[0] === 'duplicate') {
+            setSuccessMessage(Message.duplicate);
+            setIsRegistered(true);
+          } else {
+            alert(`Oops, we unable to perform whitelist registration - ${e}`);
+            console.log('e', e.payload);
+            dispatch(
+              addPopup({
+                key: 'magicCardModal',
+                content: {
+                  status: {
+                    name: `Oops, we unable to perform whitelist registration - ${e}`,
+                    isError: true,
+                  },
                 },
-              },
-            }),
-          );
+              }),
+            );
+          }
         });
     }
   };

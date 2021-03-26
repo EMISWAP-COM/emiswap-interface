@@ -10,7 +10,9 @@ const handleResponse = (response: Response) => {
     case 201:
       return response.json();
     case 422:
+      console.log('response', response);
       return response.json().then(data => {
+        console.log('data', data, new CustomError(data?.error, data?.payload));
         throw new CustomError(data?.error, data?.payload);
       });
     default:
