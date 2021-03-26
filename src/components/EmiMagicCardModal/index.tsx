@@ -251,7 +251,7 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
         }
       }
       //TODO сделать единый фечт интерфейс для проекта, когда выделят время)
-      fetch(`https://emiswap.emirex.co/v1/public/whitelist${utm || ''}`, {
+      fetch(`/v1/public/whitelist${utm || ''}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
