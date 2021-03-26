@@ -1,0 +1,84 @@
+stages:
+- compile
+- build
+- registry
+- deploy:review
+- deploy:uat
+- deploy:prod
+
+variables:
+  _img_repo: $CI_REGISTRY_IMAGE
+  _img_name: emiswap-ui-$CI_COMMIT_REF_SLUG
+  _app_name: emiswap-ui
+  _img_short_name: emiswap-ui
+  _env_name: emiswap-ui-$CI_COMMIT_REF_SLUG
+  _node_image: node:12
+
+include:
+- project: emirex-exchange/devops/pipelines
+  file: emiswap.yaml
+  ref: dev
+
+compile:
+  stage: compile
+  image: $_node_image
+  artifacts:
+    name: $_img_short_name-$CI_COMMIT_REF_SLUG
+    paths:
+    - build/
+  script:
+  - yarn install --frozen-lockfile
+  - yarn build
+  tags:
+  - hetzner
+  - docker
+
+build:
+  extends: .build:react
+  stage: build
+  script:
+  - docker build -t $_img_repo/$_img_name:$_img_tag .
+
+push:
+  extends: .push
+  stage: registry
+  only:
+  - branches
+
+push:tagged:
+  extends: .push:tagged
+  stage: registry
+  only:
+  - tags
+
+deploy:review:
+  extends: .deploy:review
+  stage: deploy:review
+  when: manual
+  except:
+    refs:
+    - production
+    - /^release-.*$/
+
+deploy:release:
+  extends: .deploy:review
+  stage: deploy:review
+  only:
+    refs:
+    - /^release-.*$/
+
+deploy:uat:
+  extends: .deploy:uat
+  stage: deploy:uat
+  only:
+    refs:
+    - production
+
+deploy:prod:
+  extends: .deploy:prod
+  stage: deploy:prod
+  when: manual
+
+abandon:
+  extends: .abandon
+  stage: deploy:review

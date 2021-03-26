@@ -8,7 +8,7 @@ import Card, { GreyCard } from '../../components/Card';
 import { AutoColumn } from '../../components/Column';
 import ConfirmationModal from '../../components/ConfirmationModal';
 import CurrencyInputPanel from '../../components/CurrencyInputPanel';
-import { SwapPoolTabs } from '../../components/NavigationTabs';
+import { SwapPoolTabs, TabNames } from '../../components/NavigationTabs';
 import { AutoRow, RowBetween } from '../../components/Row';
 import BetterTradeLink from '../../components/swap/BetterTradeLink';
 import confirmPriceImpactWithoutFee from '../../components/swap/confirmPriceImpactWithoutFee';
@@ -367,7 +367,7 @@ export default function Swap() {
         />
       )}
       <AppBody disabled={showWarning}>
-        <SwapPoolTabs active={'swap'} />
+        <SwapPoolTabs active={TabNames.SWAP} />
         <Wrapper id="swap-page">
           <ConfirmationModal
             isOpen={showConfirm}

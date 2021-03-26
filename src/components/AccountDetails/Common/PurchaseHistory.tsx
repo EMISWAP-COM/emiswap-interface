@@ -1,63 +1,46 @@
 import React from 'react';
-import styled from 'styled-components';
-import { TYPE } from '../../../theme';
-import { Level } from '../styleds';
+import styled from 'styled-components/macro';
+import { Level, Header } from '../styleds';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { convertBigDecimal, convertDate, DateFormat, shortenHash } from '../uitls';
 
-const TableWrapper = styled.div`
-  border: 1px solid #707070;
-  border-radius: 20px;
-  overflow-y: hidden;
-  margin-bottom: 20px;
-
-  width: 100%;
-
-  @media screen and (max-width: 1200px) {
-    border: none;
-    border-radius: 5px;
-    background: #f7f8fa;
-  }
-`;
-
 const Table = styled.div<{ amount?: number }>`
-  height: 105px;
-
-  overflow-y: scroll;
+  color: ${({ theme }) => theme.grey6};
+  height: 120px;
   align-items: center;
+  overflow-y: scroll;
 
   background: ${({ amount }) => {
-  return amount < 4
-    ? 'repeating-linear-gradient(#e4e5e7, #e4e5e7 35px, transparent 35px, transparent 70px)'
-    : 'transparent'
-}
-  };
+    return amount < 4
+      ? 'repeating-linear-gradient(#F7F8FA, #F7F8FA 40px, transparent 40px, transparent 80px)'
+      : 'transparent';
+  }};
 
   @media screen and (max-width: 1200px) {
     height: 210px;
     background: none;
   }
 
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  //&::-webkit-scrollbar {
+  //  display: none;
+  //}
 `;
 
 const TableLong = styled(Table)`
-  height: 175px;
-`
+  height: 200px;
+`;
 
 const TableRow = styled.div`
-  height: 35px;
+  height: 40px;
   display: flex;
+  border-radius: 3px;
   align-items: center;
   font-size: 0.8rem;
   padding: 0 1rem;
 
-
   &:nth-child(2n - 1) {
-    background: #e4e5e7;
+    background: ${({ theme }) => theme.bg2};
   }
 
   @media screen and (max-width: 1200px) {
@@ -72,8 +55,15 @@ const Date = styled.div`
 `;
 
 const LevelWrapper = styled.div`
+  display: flex;
+  align-items: center;
   min-width: 1.5rem;
   align-self: center;
+
+  @media screen and (max-width: 1200px) {
+    min-width: 190px;
+    justify-content: flex-end;
+  }
 `;
 
 const Cost = styled.div`
@@ -83,6 +73,8 @@ const Cost = styled.div`
 
   @media screen and (max-width: 1200px) {
     margin-right: 0;
+    min-width: auto;
+    margin-left: 5px;
   }
 
   > span {
@@ -92,11 +84,13 @@ const Cost = styled.div`
 `;
 
 const Wallet = styled.div`
-  font-weight: 600;
-  color: #000000;
+  color: ${({ theme }) => theme.text1};
+  margin-left: auto;
+
   @media screen and (max-width: 1200px) {
     font-weight: 500;
     font-size: 0.75rem;
+    margin-left: 0;
   }
 `;
 
@@ -115,41 +109,47 @@ export const PurchaseHistory = () => {
 
   return (
     <>
-      <TYPE.mediumHeader>Your Purchase History</TYPE.mediumHeader>
-      <TableWrapper>
-        <Table id={'test'} className="mostly-customized-scrollbar" amount={purchases.length}>
-          {purchases.map(({ amount, date, transaction_hash }) => (
-            <TableRow key={transaction_hash}>
-              <Date>{convertDate(date, DateFormat.full)}</Date>
-              <LevelWrapper />
+      <Header>Your Purchase History</Header>
+      <Table amount={purchases.length}>
+        {purchases.map(({ amount, date, transaction_hash }) => (
+          <TableRow key={transaction_hash}>
+            <Date>{convertDate(date, DateFormat.full)}</Date>
+            <LevelWrapper>
               <Cost>
                 <span>{convertBigDecimal(amount)}</span>&nbsp; ESW
               </Cost>
-              <Wallet>{shortenHash(transaction_hash, 10)}</Wallet>
-            </TableRow>
-          ))}
-          {!purchases.length && <TableRow><NoContent>No content</NoContent></TableRow>}
-        </Table>
-      </TableWrapper>
+            </LevelWrapper>
+            <Wallet>{shortenHash(transaction_hash, 7)}</Wallet>
+          </TableRow>
+        ))}
+        {!purchases.length && (
+          <TableRow>
+            <NoContent>No content</NoContent>
+          </TableRow>
+        )}
+      </Table>
 
-      <TYPE.mediumHeader>Referral Purchase History</TYPE.mediumHeader>
-      <TableWrapper>
-        <TableLong amount={referralPurchases.length}>
-          {referralPurchases.map(({ amount, date, transaction_hash, referral_level }) => (
-            <TableRow key={transaction_hash}>
-              <Date>{convertDate(date, DateFormat.full)}</Date>
-              <LevelWrapper>
-                <Level>{referral_level}lvl</Level>
-              </LevelWrapper>
+      <Header>Referral Purchase History</Header>
+      <TableLong amount={referralPurchases.length}>
+        {referralPurchases.map(({ amount, date, transaction_hash, referral_level }) => (
+          <TableRow key={transaction_hash}>
+            <Date>{convertDate(date, DateFormat.full)}</Date>
+            <LevelWrapper>
+              <Level>{referral_level}lvl</Level>
               <Cost>
                 <span>{convertBigDecimal(amount)}</span>&nbsp; ESW
               </Cost>
-              <Wallet>{shortenHash(transaction_hash, 10)}</Wallet>
-            </TableRow>
-          ))}
-          {!referralPurchases.length && <TableRow><NoContent>No content</NoContent></TableRow>}
-        </TableLong>
-      </TableWrapper>
+            </LevelWrapper>
+
+            <Wallet>{shortenHash(transaction_hash, 7)}</Wallet>
+          </TableRow>
+        ))}
+        {!referralPurchases.length && (
+          <TableRow>
+            <NoContent>No content</NoContent>
+          </TableRow>
+        )}
+      </TableLong>
     </>
   );
 };
