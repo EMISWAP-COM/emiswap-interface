@@ -34,7 +34,7 @@ const StyledHr = styled.hr`
 `;
 
 const StyledText = styled(Text)`
-  font-family: 'Roboto';
+  font-family: IBM Plex Arabic;
   font-style: normal;
   font-weight: 500;
   font-size: 1.2rem;
@@ -162,14 +162,15 @@ export default function MigrateV1() {
       />
       <AppBody>
         <SwapPoolTabs active={TabNames.MIGRATE} />
-        <StyledSubTitle>You have</StyledSubTitle>
+        {account && <StyledSubTitle>You have</StyledSubTitle>}
         <AutoColumn gap="lg" justify="center">
-          {(!formatedTokenList.length && lpTokensDetailedInfo.length > 0) || isLoading ? (
+          {!account ? (
+            <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
+          ) : (!formatedTokenList.length && lpTokensDetailedInfo.length > 0) || isLoading ? (
             <>
               <WrapperLoader>
                 <Loader size="100px" />
               </WrapperLoader>
-              {!account && <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>}
             </>
           ) : (
             <>
