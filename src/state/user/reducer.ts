@@ -28,6 +28,7 @@ export interface UserInfo {
   referral_id: string;
   bonus_role_name?: string;
   walletAddress: string;
+  whitelisted: boolean;
 }
 
 export interface UserState {
@@ -88,6 +89,7 @@ export const initialState: UserState = {
     role: null,
     referral_id: '',
     walletAddress: '',
+    whitelisted: false,
   },
 };
 

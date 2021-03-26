@@ -36,6 +36,15 @@ const DarkText = styled.span`
   color: ${({ theme }) => theme.grey3};
 `;
 
+const WhiteListMark = styled.span`
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px;
+  color: ${({ theme }) => theme.grey3};
+`;
+
 const Account = styled(DarkText)`
   font-size: 22px;
 `;
@@ -120,6 +129,7 @@ const AddressLink = styled(ExternalLink)`
   font-size: 0.825rem;
   color: ${({ theme }) => theme.text3};
   margin-left: 1rem;
+  font-weight: 500;
   display: flex;
   :hover {
     color: ${({ theme }) => theme.text2};
@@ -133,6 +143,7 @@ interface Props {
 
 export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) => {
   const { chainId, account, connector } = useActiveWeb3React();
+  const { whitelisted } = useSelector((state: AppState) => state.user.info);
 
   const balance = useSelector((state: AppState) => state.cabinets.balance);
 
@@ -163,6 +174,7 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
           <Wallet>
             <StatusIcon connectorName={connector} />
             <Account>{ENSName || shortenAddress(account)}</Account>
+            {whitelisted && <WhiteListMark>In white List</WhiteListMark>}
           </Wallet>
           <BalanceWrapper>
             <BalanceItem>
