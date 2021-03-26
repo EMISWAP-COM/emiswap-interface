@@ -56,7 +56,7 @@ const StyledMenuItemMigrate = styled(StyledMenuItem)<{ selected?: boolean }>`
   .balance {
     color: ${({ theme, selected }) => theme[selected ? 'green1' : 'grey1']};
   }
-  color: ${({ theme, selected }) => theme[selected ? 'green1' : 'grey2']};
+  color: ${({ theme, selected }) => theme[selected ? 'green1' : 'text1']};
   transition: none;
   opacity: ${({ selected }) => (selected ? 'inherit' : 'none')};
 
@@ -178,7 +178,7 @@ export default function MigrateV1() {
           ) : balances.every(balance => {
               return +amountToString(balance, 10) === 0;
             }) ? (
-            <TYPE.body>No Lp tokens found</TYPE.body>
+            <TYPE.body>No LP tokens found</TYPE.body>
           ) : (
             <>
               <StyledFixedSizeList
