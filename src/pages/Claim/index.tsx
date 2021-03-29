@@ -156,8 +156,6 @@ export default function Claim({
 
   const handleSubmit = () => {
     claimCallback(tokenName, +typedValue).then(data => {
-      console.log('claim callback', data);
-
       const { signature, nonce, amount, user_id, id } = data;
       const args = [account, amount, nonce, `0x${signature}`];
 
@@ -196,7 +194,6 @@ export default function Claim({
   const isTransactionDisabled = () => {
     if (unfrozenESWbalance && typedValue) {
       console.log(Number(unfrozenESWbalance));
-      // console.log(parse)
       return (
         parseUnits(
           Number(unfrozenESWbalance)
@@ -208,7 +205,6 @@ export default function Claim({
     }
     return true;
   };
-  // Number(unfrozenESWbalance) < Number(typedValue) || Number(typedValue) === 0;
 
   return (
     <AppBody>

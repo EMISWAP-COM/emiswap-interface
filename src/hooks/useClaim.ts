@@ -26,7 +26,6 @@ export function useClaim() {
       return contractESW.walletNonce(account).then((nonce: BigNumber) => {
         return handleAuth()
           .then((token: string) => {
-            console.log('token', token);
             return fetchWrapper.post(ESW_CLAIM_API, {
               headers: {
                 authorization: token,
