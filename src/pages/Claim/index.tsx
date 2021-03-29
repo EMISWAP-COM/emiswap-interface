@@ -105,8 +105,7 @@ const StyledBalanceMax = styled.button`
   `};
 `;
 
-// const baseUrl = window['env'] ? window['env'].REACT_APP_PUBLIC_URL : '';
-const baseUrl = 'https://emiswap-oracle-development.emirex.co';
+const baseUrl = window['env'] ? window['env'].REACT_APP_PUBLIC_URL : '';
 
 export default function Claim({
   match: {
