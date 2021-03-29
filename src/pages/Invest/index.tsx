@@ -29,7 +29,7 @@ import {
 import { useExpertModeManager, useTokenWarningDismissal } from '../../state/user/hooks';
 import { maxAmountSpendInvest } from '../../utils/maxAmountSpend';
 import AppBody from '../AppBody';
-import { SwapPoolTabs } from '../../components/NavigationTabs';
+import { SwapPoolTabs, TabNames } from '../../components/NavigationTabs';
 import { EMISWAP_CROWDSALE_ADDRESS } from '../../constants/abis/crowdsale';
 import { Redirect, RouteComponentProps } from 'react-router-dom';
 // import { MAX_NUM_DECIMALS } from '../../constants';
@@ -1074,7 +1074,7 @@ const Invest = () => {
         disabled={showWarning}
         className={`invest-mobile ${role === UserRoles.distributor ? 'mb650' : ''}`}
       >
-        <SwapPoolTabs active={'invest'} />
+        <SwapPoolTabs active={TabNames.INVEST} />
         <Wrapper id="invest-page">
           <ConfirmationModal
             isOpen={showConfirm}

@@ -7,6 +7,8 @@ import {
   loadReferralPurchaseHistory,
 } from '../cabinets/actions';
 import { loadGasPrice } from '../stats/actions';
+import { fetchWrapper } from '../../api/fetchWrapper';
+import { addPopup } from '../application/actions';
 
 export interface SerializedToken {
   chainId: number;
@@ -57,19 +59,24 @@ export const dismissTokenWarning = createAction<{ chainId: number; tokenAddress:
 
 export const loadWalletAddress = createAsyncThunk(
   'user/loadWalletAddress',
-  async (referralId: string) => {
+  async (referralId: string, { dispatch }) => {
     const url = `${baseUrl}/v1/public/users/${referralId}`;
     try {
-      const user = await fetch(url, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-        .then(res => res.json())
-        .then(data => data);
+      const user = await fetchWrapper.get(url).then(data => data);
       return user.address;
     } catch (e) {
       alert(e.message);
+      dispatch(
+        addPopup({
+          key: 'loadPerformance',
+          content: {
+            status: {
+              name: e.message,
+              isError: true,
+            },
+          },
+        }),
+      );
     }
   },
 );
@@ -79,21 +86,12 @@ export const loginCabinets = createAsyncThunk(
   async (payload: { account: string; referral_address?: string }, thunkAPI) => {
     const { dispatch } = thunkAPI;
     const { account, referral_address } = payload;
-    fetch(`${baseUrl}/v1/public/users`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        address: account,
-        referral_address,
-      }),
-    })
-      .then(res => {
-        if (res.status === 200 || res.status === 201) {
-          return res.json();
-        }
-        throw new Error('no user');
+    fetchWrapper
+      .post(`${baseUrl}/v1/public/users`, {
+        body: JSON.stringify({
+          address: account,
+          referral_address,
+        }),
       })
       .then(data => {
         dispatch(login(data));
@@ -108,6 +106,17 @@ export const loginCabinets = createAsyncThunk(
       })
       .catch(e => {
         console.log(e);
+        dispatch(
+          addPopup({
+            key: 'loginCabinets',
+            content: {
+              status: {
+                name: e.message,
+                isError: true,
+              },
+            },
+          }),
+        );
       });
   },
 );
