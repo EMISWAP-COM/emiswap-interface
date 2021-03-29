@@ -46,6 +46,19 @@ export const fetchWrapper = {
       return handleResponse(res);
     });
   },
+  put: (endPoint: string, options: RequestInit = {}) => {
+    return fetch(endPoint, {
+      headers: {
+        ...(options.hasOwnProperty('headers')
+          ? Object.assign(baseHeaders, options.headers)
+          : baseHeaders),
+      },
+      method: 'PUT',
+      ...options,
+    }).then(res => {
+      return handleResponse(res);
+    });
+  },
 };
 
 class CustomError extends Error {

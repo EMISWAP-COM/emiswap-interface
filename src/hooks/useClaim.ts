@@ -1,13 +1,12 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { useESWContract } from './useContract';
 import { useAuth } from './useAuth';
-import { useLocalStorage } from './useLocalStorage';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../state';
 import { useActiveWeb3React } from './index';
 import { parseUnits } from '@ethersproject/units';
 import { fetchWrapper } from '../api/fetchWrapper';
-import { addPopup } from '../state/application/actions'
+import { addPopup } from '../state/application/actions';
 
 const ESW_ADDRESS = window['env'].REACT_APP_ESW_ID;
 const ESW_CLAIM_API = window['env'].REACT_APP_ESW_CLAIM_API;
@@ -20,16 +19,11 @@ export function useClaim() {
 
   const handleAuth = useAuth();
 
-  const [{ token }] = useLocalStorage('auth_token', { token: null });
-
   const dispatch = useDispatch();
 
   const claimCallback = (tokenName: string, amount: number) => {
-    console.log('contract', contractESW, token);
     if (contractESW) {
       return contractESW.walletNonce(account).then((nonce: BigNumber) => {
-        console.log('has token', parseUnits(amount.toString(), 18).toString());
-
         return handleAuth()
           .then((token: string) => {
             console.log('token', token);
