@@ -24,8 +24,9 @@ import {
   updateUserExpertMode,
   updateUserSlippageTolerance,
 } from './actions';
-import { useDefaultTokenList } from '../lists/hooks';
+import { useDefaultTokenList} from '../lists/hooks';
 import { isDefaultToken } from '../../utils';
+import { useTokens } from '../../hooks/useTokens';
 
 //TODO refactor after release
 // @ts-ignore
@@ -39,10 +40,13 @@ export const useLogin = async (account: string) => {
   }, [account, dispatch, referral_address]);
 
   useEffect(() => {
-    getUser();
-    const interval = setInterval(() => {
+    let interval: any;
+    if (account) {
       getUser();
-    }, 30000);
+      interval = setInterval(() => {
+        getUser();
+      }, 30000);
+    }
     return () => {
       clearInterval(interval);
     };
@@ -250,7 +254,12 @@ export function toV2LiquidityToken([tokenA, tokenB]: [Token, Token]): Token {
 export function useTrackedTokenPairs(): [Token, Token][] {
   const { chainId } = useActiveWeb3React();
   const [tokens] = useAllTokens();
-
+  const tokensFromPools = useTokens();
+  const formattedTokensFromPools = tokensFromPools.reduce((acc: { [key: string]: Token }, val) => {
+    acc[val.address] = val;
+    return acc;
+  }, {});
+  const newTokens = Object.assign(tokens, formattedTokensFromPools);
   // pinned pairs
   const pinnedPairs = useMemo(() => (chainId ? PINNED_PAIRS[chainId] ?? [] : []), [chainId]);
 
@@ -258,13 +267,14 @@ export function useTrackedTokenPairs(): [Token, Token][] {
   const generatedPairs: [Token, Token][] = useMemo(
     () =>
       chainId
-        ? flatMap(Object.keys(tokens), tokenAddress => {
-            const token = tokens[tokenAddress];
+        ? flatMap(Object.keys(newTokens), tokenAddress => {
+            const token = newTokens[tokenAddress];
 
             // for each token on the current chain,
             return (
               // loop though all bases on the current chain
-              (BASES_TO_TRACK_LIQUIDITY_FOR[chainId] ?? [])
+              tokensFromPools
+                .concat(BASES_TO_TRACK_LIQUIDITY_FOR[chainId] ?? [])
                 // to construct pairs of the given token with each base
                 .map(base => {
                   if (base.address === token.address) {
@@ -277,7 +287,7 @@ export function useTrackedTokenPairs(): [Token, Token][] {
             );
           })
         : [],
-    [tokens, chainId],
+    [newTokens, chainId, tokensFromPools],
   );
 
   // pairs saved by users
