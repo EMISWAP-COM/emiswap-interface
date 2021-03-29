@@ -4,7 +4,6 @@ import styled, { ThemeContext } from 'styled-components';
 import AppBody from '../AppBody';
 import { RowBetween } from '../../components/Row';
 import { Link as HistoryLink } from 'react-router-dom';
-import QuestionHelper from '../../components/QuestionHelper';
 import { Input as NumericalInput } from '../../components/NumericalInput';
 import { InputRow } from '../../components/CurrencyInputPanel';
 import { CursorPointer, TYPE } from '../../theme';
