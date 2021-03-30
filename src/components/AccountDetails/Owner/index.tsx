@@ -3,12 +3,7 @@ import styled from 'styled-components/macro';
 import { PurchaseHistory } from '../Common/PurchaseHistory';
 import { ReferralPerformance } from '../Common/ReferralPerformance';
 
-import {
-  loadBalance,
-  loadPerformance,
-  loadPurchaseHistory,
-  loadReferralPurchaseHistory,
-} from '../../../state/cabinets/actions';
+import { loadBalance, loadPerformance } from '../../../state/cabinets/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, AppState } from '../../../state';
 import { Connection } from '../Common/Connection';
@@ -63,8 +58,6 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
 
   useEffect(() => {
     dispatch(loadPerformance(userId) as any);
-    dispatch(loadPurchaseHistory(userId) as any);
-    dispatch(loadReferralPurchaseHistory(userId) as any);
     dispatch(loadBalance(userId) as any);
   }, [dispatch, userId]);
 

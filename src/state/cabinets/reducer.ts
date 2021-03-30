@@ -1,10 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import {
-  loadBalance,
-  loadPerformance,
-  loadPurchaseHistory,
-  loadReferralPurchaseHistory,
-} from './actions';
+import { loadBalance, loadPerformance } from './actions';
 
 interface Unlock {
   amount: string;
@@ -93,18 +88,6 @@ interface ReferralLevel {
   bought: PaymentOperationTokens;
 }
 
-// {total: {bought: {ESW: "1906447.636374"}, reward: {ESW: "92735.631824"},…}, referrals: [,…]}
-// referrals: [,…]
-// total: {bought: {ESW: "1906447.636374"}, reward: {ESW: "92735.631824"},…}
-// bought: {ESW: "1906447.636374"}
-// level1: {referrals_count: 4, deposits_count: 10, bought: {ESW: "1786012.636374"}}
-// bought: {ESW: "1786012.636374"}
-// deposits_count: 10
-// referrals_count: 4
-// level2: {referrals_count: 5, deposits_count: 14, bought: {ESW: "117585.0"}}
-// level3: {referrals_count: 2, deposits_count: 3, bought: {ESW: "2850.0"}}
-// bought: {ESW: "2850.0"}
-
 export interface ReferralPerformance {
   total: {
     bought: PaymentOperationTokens;
@@ -165,18 +148,20 @@ const initialState: CabinetState = {
   referralHistory: [] as ReferralPurchaseHistory[],
 };
 
-export default createReducer(initialState, builder =>
-  builder
-    .addCase(loadPerformance.fulfilled, (state, action) => {
-      state.performance = action.payload;
-    })
-    .addCase(loadPurchaseHistory.fulfilled, (state, action) => {
-      state.purchaseHistory = action.payload;
-    })
-    .addCase(loadBalance.fulfilled, (state, action) => {
-      state.balance = action.payload;
-    })
-    .addCase(loadReferralPurchaseHistory.fulfilled, (state, action) => {
-      state.referralHistory = action.payload;
-    }),
+export default createReducer(
+  initialState,
+  builder =>
+    builder
+      .addCase(loadPerformance.fulfilled, (state, action) => {
+        state.performance = action.payload;
+      })
+      // .addCase(loadPurchaseHistory.fulfilled, (state, action) => {
+      //   state.purchaseHistory = action.payload;
+      // })
+      .addCase(loadBalance.fulfilled, (state, action) => {
+        state.balance = action.payload;
+      }),
+  // .addCase(loadReferralPurchaseHistory.fulfilled, (state, action) => {
+  //   state.referralHistory = action.payload;
+  // }),
 );

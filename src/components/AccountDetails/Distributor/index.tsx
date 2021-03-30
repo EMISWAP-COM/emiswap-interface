@@ -5,12 +5,7 @@ import { convertBigDecimal } from '../uitls';
 import { PurchaseHistory } from '../Common/PurchaseHistory';
 import { ReferralPerformance } from '../Common/ReferralPerformance';
 
-import {
-  loadBalance,
-  loadPerformance,
-  loadPurchaseHistory,
-  loadReferralPurchaseHistory,
-} from '../../../state/cabinets/actions';
+import { loadBalance, loadPerformance } from '../../../state/cabinets/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, AppState } from '../../../state';
 import { packageNames } from '../constant';
@@ -97,8 +92,6 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
 
   useEffect(() => {
     dispatch(loadPerformance(userId) as any);
-    dispatch(loadPurchaseHistory(userId) as any);
-    dispatch(loadReferralPurchaseHistory(userId) as any);
     dispatch(loadBalance(userId) as any);
   }, [dispatch, userId]);
 
