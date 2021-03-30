@@ -71,9 +71,9 @@ interface Props {
 const Ambassador: React.FC<Props> = ({ openOptions, ENSName }) => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { id: userId, bonus_role_name = '' } = useSelector((state: AppState) => state.user.info);
-  const balance = useSelector((state: AppState) => state.cabinets.balance);
-  const { change_level_info } = balance;
+  const { id: userId, bonus_role_name = '', next_bonus_role } = useSelector(
+    (state: AppState) => state.user.info,
+  );
 
   useEffect(() => {
     dispatch(loadPerformance(userId) as any);
@@ -97,11 +97,11 @@ const Ambassador: React.FC<Props> = ({ openOptions, ENSName }) => {
 
       <Connection openOptions={openOptions}>
         <OptionsPromo>
-          {change_level_info && bonus_role_name === packageNames.rookie && (
+          {next_bonus_role && bonus_role_name === packageNames.rookie && (
             <span>
-              You need {convertBigDecimal(change_level_info.amount)}
+              You need {convertBigDecimal(next_bonus_role.amount)}
               DAI purchase from your Ref’s to change level to&nbsp;
-              <UpperCase>{change_level_info.next_level}</UpperCase>
+              <UpperCase>{next_bonus_role.role}</UpperCase>
             </span>
           )}
         </OptionsPromo>

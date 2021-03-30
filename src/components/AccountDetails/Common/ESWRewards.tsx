@@ -4,7 +4,6 @@ import { Header } from '../styleds';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { convertBigDecimal } from '../uitls';
-import { ComingSoon } from '../../../base/ui/ComingSoon';
 
 const DarkText = styled.span`
   color: #24272c;
@@ -35,42 +34,41 @@ const RewardsValue = styled(DarkText)`
 `;
 
 export const ESWRewards = () => {
-  const { reward } = useSelector((state: AppState) => state.cabinets.performance);
-
   const balance = useSelector((state: AppState) => state.cabinets.balance);
 
   return (
     <div>
       <Header>My ESW Rewards</Header>
       <RewardsWrapper>
-        <ComingSoon>
-          <RewardsItem>
-            <span>Providing Liquidity</span>
-            <div>
-              <RewardsValue />
-              ESW
-            </div>
-          </RewardsItem>
-        </ComingSoon>
-        <ComingSoon>
-          <RewardsItem>
-            <span>Swapping</span>
-            <div>
-              <RewardsValue />
-              ESW
-            </div>
-          </RewardsItem>
-        </ComingSoon>
+        <RewardsItem>
+          <span>Providing Liquidity</span>
+          <div>
+            <RewardsValue />
+            ESW
+          </div>
+        </RewardsItem>
+        <RewardsItem>
+          <span>Swapping</span>
+          <div>
+            <RewardsValue />
+            {balance.total.grouped.pool_bonus?.ESW} ESW
+          </div>
+        </RewardsItem>
         <RewardsItem>
           <span>Referral Reward</span>
           <div>
-            <RewardsValue>{convertBigDecimal(reward?.esw?.total)}</RewardsValue>&nbsp;ESW
+            <RewardsValue>
+              {convertBigDecimal(balance?.total.grouped.referral_bonus?.ESW)}
+            </RewardsValue>
+            &nbsp;ESW
           </div>{' '}
         </RewardsItem>
         <RewardsItem>
           <span>Fee Compensation</span>
           <div>
-            <RewardsValue>{convertBigDecimal(balance?.total_fee_compensation)}</RewardsValue>
+            <RewardsValue>
+              {convertBigDecimal(balance?.total.grouped.compensation?.ESW)}
+            </RewardsValue>
             &nbsp;ESW
           </div>{' '}
         </RewardsItem>

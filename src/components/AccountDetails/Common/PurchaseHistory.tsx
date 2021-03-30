@@ -105,23 +105,28 @@ const NoContent = styled.div`
 
 export const PurchaseHistory = () => {
   const purchases = useSelector((state: AppState) => state.cabinets.purchaseHistory);
-  const referralPurchases = useSelector((state: AppState) => state.cabinets.referralHistory);
+  const { referrals } = useSelector((state: AppState) => state.cabinets.performance);
+  const { details } = useSelector((state: AppState) => state.cabinets.balance);
+  console.log('total');
+  const deposit = details?.deposit;
 
+  console.log(useSelector((state: AppState) => state.cabinets.performance));
   return (
     <>
       <Header>Your Purchase History</Header>
       <Table amount={purchases.length}>
-        {purchases.map(({ amount, date, transaction_hash }) => (
-          <TableRow key={transaction_hash}>
-            <Date>{convertDate(date, DateFormat.full)}</Date>
-            <LevelWrapper>
-              <Cost>
-                <span>{convertBigDecimal(amount)}</span>&nbsp; ESW
-              </Cost>
-            </LevelWrapper>
-            <Wallet>{shortenHash(transaction_hash, 7)}</Wallet>
-          </TableRow>
-        ))}
+        {deposit &&
+          deposit.map(({ amount, token, created_at, transaction_hash }) => (
+            <TableRow key={transaction_hash}>
+              <Date>{convertDate(created_at, DateFormat.full)}</Date>
+              <LevelWrapper>
+                <Cost>
+                  <span>{convertBigDecimal(amount)}</span>&nbsp; {token}
+                </Cost>
+              </LevelWrapper>
+              <Wallet>{shortenHash(transaction_hash, 7)}</Wallet>
+            </TableRow>
+          ))}
         {!purchases.length && (
           <TableRow>
             <NoContent>No content</NoContent>
@@ -130,21 +135,24 @@ export const PurchaseHistory = () => {
       </Table>
 
       <Header>Referral Purchase History</Header>
-      <TableLong amount={referralPurchases.length}>
-        {referralPurchases.map(({ amount, date, transaction_hash, referral_level }) => (
-          <TableRow key={transaction_hash}>
-            <Date>{convertDate(date, DateFormat.full)}</Date>
-            <LevelWrapper>
-              <Level>{referral_level}lvl</Level>
-              <Cost>
-                <span>{convertBigDecimal(amount)}</span>&nbsp; ESW
-              </Cost>
-            </LevelWrapper>
+      <TableLong amount={referrals.length}>
+        {referrals &&
+          referrals.map(({ deposits, level }) => {
+            return deposits.map(({ transaction_hash, amount, token, created_at }) => (
+              <TableRow key={transaction_hash}>
+                <Date>{convertDate(created_at, DateFormat.full)}</Date>
+                <LevelWrapper>
+                  <Level>{level}lvl</Level>
+                  <Cost>
+                    <span>{convertBigDecimal(amount)}</span>&nbsp; {token}
+                  </Cost>
+                </LevelWrapper>
 
-            <Wallet>{shortenHash(transaction_hash, 7)}</Wallet>
-          </TableRow>
-        ))}
-        {!referralPurchases.length && (
+                <Wallet>{shortenHash(transaction_hash, 7)}</Wallet>
+              </TableRow>
+            ));
+          })}
+        {!referrals.length && (
           <TableRow>
             <NoContent>No content</NoContent>
           </TableRow>

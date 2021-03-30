@@ -8,9 +8,9 @@ const baseUrl = window.env ? window.env.REACT_APP_PUBLIC_URL : '';
 export const loadPerformance = createAsyncThunk(
   'cabinets/loadReferalPerformance',
   async (userId: string, { dispatch }) => {
-    const url = `${baseUrl}/v1/public/users/${userId}/referrals/total`;
+    const url = `${baseUrl}/v1/public/users/${userId}/referrals`;
     try {
-      const { referrals } = await fetchWrapper.get(url);
+      const referrals = await fetchWrapper.get(url);
 
       return referrals as ReferralPerformance;
     } catch (e) {
@@ -80,7 +80,7 @@ export const loadReferralPurchaseHistory = createAsyncThunk(
 export const loadBalance = createAsyncThunk(
   'cabinets/loadBalance',
   async (userId: string, { dispatch }) => {
-    const url = `${baseUrl}/v1/public/users/${userId}/balance`;
+    const url = `${baseUrl}/v1/public/users/${userId}/balances`;
     try {
       const response = await fetchWrapper.get(url);
       return response;

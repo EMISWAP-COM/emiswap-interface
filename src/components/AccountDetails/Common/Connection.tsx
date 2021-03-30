@@ -136,6 +136,8 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
 
   const balance = useSelector((state: AppState) => state.cabinets.balance);
 
+  const totalAmount = Number(balance?.wallet.ESW) + Number(balance?.available.ESW);
+
   const history = useHistory();
   const toggle = useWalletModalToggle();
 
@@ -168,25 +170,25 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
             <BalanceItem>
               <span>Total</span>
               <div>
-                <BalanceValue>{convertBigDecimal(balance?.amount)}</BalanceValue>&nbsp;ESW
+                <BalanceValue>{convertBigDecimal(totalAmount.toString())}</BalanceValue>&nbsp;ESW
               </div>
             </BalanceItem>
             <BalanceItem>
               <span>Wallet</span>
               <div>
-                <BalanceValue>{convertBigDecimal(balance?.wallet_balance)}</BalanceValue>&nbsp;ESW
+                <BalanceValue>{convertBigDecimal(balance?.wallet.ESW)}</BalanceValue>&nbsp;ESW
               </div>
             </BalanceItem>
             <BalanceItem>
               <span>Locked at Emiswap </span>
               <div>
-                <BalanceValue>{convertBigDecimal(balance?.locked)}</BalanceValue>&nbsp;ESW
+                <BalanceValue>{convertBigDecimal(balance?.total.locked.ESW)}</BalanceValue>&nbsp;ESW
               </div>{' '}
             </BalanceItem>
             <BalanceItem>
               <span>Available to collect</span>
               <div>
-                <BalanceValue>{convertBigDecimal(balance?.available)}</BalanceValue>&nbsp;ESW
+                <BalanceValue>{convertBigDecimal(balance?.available.ESW)}</BalanceValue>&nbsp;ESW
               </div>{' '}
             </BalanceItem>
           </BalanceWrapper>
