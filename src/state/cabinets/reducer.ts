@@ -25,6 +25,7 @@ interface Balance {
   total: {
     grouped: {
       pool_bonus?: PaymentOperationTokens;
+      pool_swap_bonus?: PaymentOperationTokens;
       compensation?: PaymentOperationTokens;
       referral_bonus?: PaymentOperationTokens;
     };
