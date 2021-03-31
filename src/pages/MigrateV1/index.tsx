@@ -131,11 +131,6 @@ export default function MigrateV1() {
   };
   return (
     <>
-      <WarningBlock
-        title="EMISWAP soft launch"
-        content={warningContent}
-        bottomContent={warningBottomContent}
-      />
       <AppBody>
         <SwapPoolTabs active={'migrate'} />
         <StyledSubTitle>You have</StyledSubTitle>

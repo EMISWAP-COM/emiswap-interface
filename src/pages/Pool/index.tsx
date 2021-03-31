@@ -102,11 +102,6 @@ export default function Pool() {
 
   return (
     <>
-      <WarningBlock
-        title="EMISWAP soft launch"
-        content={warningContent}
-        bottomContent={warningBottomContent}
-      />
       <AppBody>
         <SwapPoolTabs active={'pool'} />
         <AutoColumn gap="lg" justify="center">

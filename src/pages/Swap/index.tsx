@@ -357,14 +357,8 @@ export default function Swap() {
 
   return (
     <>
-      {showWarning ? (
+      {showWarning && (
         <TokenWarningCards currencies={currencies} />
-      ) : (
-        <WarningBlock
-          title="EMISWAP soft launch"
-          content={warningContent}
-          bottomContent={warningBottomContent}
-        />
       )}
       <AppBody disabled={showWarning}>
         <SwapPoolTabs active={'swap'} />
