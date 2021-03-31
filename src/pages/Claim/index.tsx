@@ -4,7 +4,6 @@ import styled, { ThemeContext } from 'styled-components';
 import AppBody from '../AppBody';
 import { RowBetween } from '../../components/Row';
 import { Link as HistoryLink } from 'react-router-dom';
-import QuestionHelper from '../../components/QuestionHelper';
 import { Input as NumericalInput } from '../../components/NumericalInput';
 import { InputRow } from '../../components/CurrencyInputPanel';
 import { CursorPointer, TYPE } from '../../theme';
@@ -19,6 +18,7 @@ import { useActiveWeb3React } from '../../hooks';
 import { useTransactionAdder } from '../../state/transactions/hooks';
 import { useWalletModalToggle } from '../../state/application/hooks';
 import { parseUnits } from '@ethersproject/units';
+import QuestionHelper from '../../components/QuestionHelper';
 
 const Tittle = styled.div`
   font-weight: 500;
@@ -195,7 +195,11 @@ export default function Claim({
           <StyledArrowLeft />
         </HistoryLink>
         <Tittle> Collect to my wallet</Tittle>
-        <QuestionHelper text={''} />
+        <QuestionHelper
+          text={
+            "Press “Collect” to transfer your ESW tokens from the EmiSwap platform to your wallet. You'll continue getting a share from EmiSwap's trading volume in this case as well."
+          }
+        />
       </RowBetween>
       <Container hideInput={false}>
         <LabelRow>
