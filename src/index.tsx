@@ -59,6 +59,7 @@ window.addEventListener('error', error => {
   })
 })
 
+// eslint-disable-next-line no-extend-native
 Object.defineProperty(Array.prototype, 'flat', {
   value: function(depth = 1) {
     return this.reduce(function (flat, toFlatten) {
