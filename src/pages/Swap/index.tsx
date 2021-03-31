@@ -58,7 +58,6 @@ import ReferralLink from '../../components/RefferalLink';
 import GasConsumption from '../../components/swap/GasConsumption';
 import { BigNumber } from '@ethersproject/bignumber';
 import { AdvancedSwapDetails } from '../../components/swap/AdvancedSwapDetails';
-import WarningBlock, { StyledButton } from '../../components/Warning/WarningBlock';
 import { useMockEstimate } from '../../hooks/useMockEstimate';
 
 export default function Swap() {
@@ -338,33 +337,10 @@ export default function Swap() {
   const notEnoughBalance =
     maxAmountInput && parsedAmount && JSBI.lessThan(maxAmountInput.raw, parsedAmount.raw);
 
-  const warningBottomContent = () => {
-    return (
-      <StyledButton href={'https://link.medium.com/gNa3ztuvkdb'} target="_blank">
-        <span> READ MORE </span> {'>>'}
-      </StyledButton>
-    );
-  };
-
-  const warningContent = () => {
-    return (
-      <p>
-        The beta testing runs for about 2 weeks, and the users who join us within this period will
-        have 50,000 ESW distributed among them during the first week after the official launch.
-      </p>
-    );
-  };
-
   return (
     <>
-      {showWarning ? (
+      {showWarning && (
         <TokenWarningCards currencies={currencies} />
-      ) : (
-        <WarningBlock
-          title="EMISWAP soft launch"
-          content={warningContent}
-          bottomContent={warningBottomContent}
-        />
       )}
       <AppBody disabled={showWarning}>
         <SwapPoolTabs active={'swap'} />
