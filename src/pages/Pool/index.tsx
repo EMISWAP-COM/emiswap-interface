@@ -20,7 +20,6 @@ import { useTrackedTokenPairs } from '../../state/user/hooks';
 import AppBody from '../AppBody';
 import { Dots } from '../../components/swap/styleds';
 import ReferralLink from '../../components/RefferalLink';
-import WarningBlock, { StyledButton } from '../../components/Warning/WarningBlock';
 
 const StyledHr = styled.hr`
   width: 100%;
@@ -82,23 +81,6 @@ export default function Pool() {
         }) !== -1
       );
     });
-
-  const warningBottomContent = () => {
-    return (
-      <StyledButton href={'https://link.medium.com/gNa3ztuvkdb'} target="_blank">
-        <span> READ MORE </span> {'>>'}
-      </StyledButton>
-    );
-  };
-
-  const warningContent = () => {
-    return (
-      <p>
-        The beta testing runs for about 2 weeks, and the users who join us within this period will
-        have 50,000 ESW distributed among them during the first week after the official launch.
-      </p>
-    );
-  };
 
   return (
     <>

@@ -49,7 +49,6 @@ import Silver from '../../assets/svg/CardIcon/silver.svg';
 import Question from '../../assets/svg/FAQIcon/question.svg';
 import EmiMagicBackground from '../../assets/svg/EmiMagicBackground.svg';
 import EmiMagicCardModal from '../../components/EmiMagicCardModal';
-import WarningBlock, { StyledButton } from '../../components/Warning/WarningBlock';
 import useParsedQueryString from '../../hooks/useParsedQueryString';
 import ReferralLink from '../../components/RefferalLink';
 import { AppState } from '../../state';
@@ -1040,23 +1039,6 @@ const Invest = () => {
       return `Not enough balance`;
     }
     return error;
-  };
-
-  const warningBottomContent = () => {
-    return (
-      <StyledButton href={'https://link.medium.com/gNa3ztuvkdb'} target="_blank">
-        <span> READ MORE </span> {'>>'}
-      </StyledButton>
-    );
-  };
-
-  const warningContent = () => {
-    return (
-      <p>
-        The beta testing runs for about 2 weeks, and the users who join us within this period will
-        have 50,000 ESW distributed among them during the first week after the official launch.
-      </p>
-    );
   };
 
   return (
