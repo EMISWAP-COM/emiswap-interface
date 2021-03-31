@@ -107,5 +107,6 @@
   "tokensNotIncludedInTheDividendPool": "Add tokens not yet included in the dividend pool",
   "lastCall": "The last call",
   "dividendPool": "Dividend pool",
-  "migrate": "Migrate"
+  "migrate": "Migrate",
+  "collectHelper": "Press “Collect” to transfer your ESW tokens from the EmiSwap platform to your wallet. You'll continue getting a share from EmiSwap's trading volume in this case as well."
 }

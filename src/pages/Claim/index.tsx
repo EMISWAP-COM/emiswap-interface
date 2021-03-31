@@ -18,6 +18,7 @@ import { useActiveWeb3React } from '../../hooks';
 import { useTransactionAdder } from '../../state/transactions/hooks';
 import { useWalletModalToggle } from '../../state/application/hooks';
 import { parseUnits } from '@ethersproject/units';
+import QuestionHelper from '../../components/QuestionHelper';
 
 const Tittle = styled.div`
   font-weight: 500;
@@ -194,6 +195,11 @@ export default function Claim({
           <StyledArrowLeft />
         </HistoryLink>
         <Tittle> Collect to my wallet</Tittle>
+        <QuestionHelper
+          text={
+            "Press “Collect” to transfer your ESW tokens from the EmiSwap platform to your wallet. You'll continue getting a share from EmiSwap's trading volume in this case as well."
+          }
+        />
       </RowBetween>
       <Container hideInput={false}>
         <LabelRow>
