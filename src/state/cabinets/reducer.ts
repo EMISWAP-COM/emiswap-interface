@@ -28,6 +28,7 @@ interface Balance {
       pool_swap_bonus?: PaymentOperationTokens;
       compensation?: PaymentOperationTokens;
       referral_bonus?: PaymentOperationTokens;
+      pool_referral_bonus?: PaymentOperationTokens;
     };
     locked: PaymentOperationTokens;
     unlocked: PaymentOperationTokens;
