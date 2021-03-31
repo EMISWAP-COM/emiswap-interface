@@ -1,10 +1,9 @@
 import React from 'react';
 import styled from 'styled-components/macro';
-import { Level, WalletAction, Header } from '../styleds';
+import { Header, Level, WalletAction } from '../styleds';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { convertBigDecimal, normalizeNumber } from '../uitls';
-import { ComingSoon } from '../../../base/ui/ComingSoon';
 
 const DarkText = styled.span`
   color: ${({ theme }) => theme.grey3};
@@ -124,11 +123,11 @@ export const ReferralPerformance = () => {
               <RewardsValue>{convertBigDecimal(reward?.dai?.total)}</RewardsValue>&nbsp;DAI
             </div>
           </div>
-          <ComingSoon>
+          <div>
             <CollectBtn onClick={() => console.log('no collect handler')}>
-              Collect to my wallet 
+              Collect to my wallet
             </CollectBtn>
-          </ComingSoon>
+          </div>
         </RewardsItem>
       </RewardsWrapper>
 

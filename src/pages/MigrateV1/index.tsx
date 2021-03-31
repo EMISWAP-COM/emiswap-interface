@@ -1,23 +1,28 @@
 import React, { useContext, useMemo, useState } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import AppBody from '../AppBody';
-import { SwapPoolTabs } from '../../components/NavigationTabs';
+import { SwapPoolTabs, TabNames } from '../../components/NavigationTabs';
 import Column, { AutoColumn } from '../../components/Column';
 import { StyledFixedSizeList, StyledMenuItem } from '../../components/SearchModal/styleds';
 import { RowFixed } from '../../components/Row';
 import { Text } from 'rebass';
-import { ExternalLink } from '../../theme';
+import { ExternalLink, TYPE } from '../../theme';
 import { useHistory } from 'react-router-dom';
-import { ButtonGreen } from '../../components/Button';
+import { ButtonGreen, ButtonLight } from '../../components/Button';
 import DoubleCurrencyLogo from '../../components/DoubleLogo';
 import { useLpTokens } from '../../hooks/useLpTokens';
 import Loader from '../../components/Loader';
 import { amountToString } from './utils';
+import { useActiveWeb3React } from '../../hooks';
+import { useWalletModalToggle } from '../../state/application/hooks';
 
 const StyledSubTitle = styled.p`
   text-align: left;
   padding: 0.75rem;
   margin: 0;
+  @media screen and (max-width: 375px) {
+    padding: 0.75rem 0;
+  }
 `;
 
 const StyledHr = styled.hr`
@@ -28,11 +33,14 @@ const StyledHr = styled.hr`
 `;
 
 const StyledText = styled(Text)`
-  font-family: 'Roboto';
+  font-family: IBM Plex Arabic;
   font-style: normal;
   font-weight: 500;
-  font-size: 18px;
+  font-size: 1.2rem;
   line-height: 40px;
+  @media screen and (max-width: 375px) {
+    font-size: 1rem;
+  }
 `;
 
 const WrapperLoader = styled.div`
@@ -47,7 +55,7 @@ const StyledMenuItemMigrate = styled(StyledMenuItem)<{ selected?: boolean }>`
   .balance {
     color: ${({ theme, selected }) => theme[selected ? 'green1' : 'grey1']};
   }
-  color: ${({ theme, selected }) => theme[selected ? 'green1' : 'grey2']};
+  color: ${({ theme, selected }) => theme[selected ? 'green1' : 'text1']};
   transition: none;
   opacity: ${({ selected }) => (selected ? 'inherit' : 'none')};
 
@@ -57,23 +65,38 @@ const StyledMenuItemMigrate = styled(StyledMenuItem)<{ selected?: boolean }>`
       color: ${({ theme }) => theme.green1};
     }
   }
+  @media screen and (max-width: 375px) {
+    .double-logo {
+      display: none;
+    }
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+  }
 `;
 
 export default function MigrateV1() {
   const theme = useContext(ThemeContext);
+  const { account } = useActiveWeb3React();
   const history = useHistory();
+  const toggleWalletModal = useWalletModalToggle();
   const [selected, setSelected] = useState(null);
-  const { tokenList, tokens, balances, isLoading } = useLpTokens();
+  const { lpTokensDetailedInfo, tokens, balances, isLoading } = useLpTokens();
   const onSelect = (address: string) => {
     setSelected(address);
   };
-  const formatedTokenList = tokenList.filter(el => {
-    const {
-      addresses: [address0, address1],
-    } = el;
-    return tokens.find(el => el.address === address0) && tokens.find(el => el.address === address1);
-  });
-
+  const formatedTokenList = lpTokensDetailedInfo
+    .map((lpTokenDetailedInfo, idx) => ({ ...lpTokenDetailedInfo, balance: balances[idx] }))
+    .filter((lpTokenDetailedInfoWithBalance, idx) => {
+      const {
+        addresses: [address0, address1],
+      } = lpTokenDetailedInfoWithBalance;
+      return (
+        tokens.find(token => token.address === address0) &&
+        tokens.find(token => token.address === address1) &&
+        +amountToString(balances[idx], 10)
+      );
+    });
   const handleRedirect = () => {
     history.push(`migrate/${selected}`);
   };
@@ -83,7 +106,8 @@ export default function MigrateV1() {
       const {
         addresses: [address0, address1],
         base,
-      } = tokenList[index];
+        balance,
+      } = formatedTokenList[index];
       const token0 = tokens.find(el => el.address === address0);
       const token1 = tokens.find(el => el.address === address1);
       return (
@@ -105,23 +129,34 @@ export default function MigrateV1() {
             </Column>
           </RowFixed>
           <AutoColumn>
-            <StyledText className="balance">{amountToString(balances[index])}</StyledText>
+            <StyledText className="balance">{amountToString(balance, 10)}</StyledText>
           </AutoColumn>
         </StyledMenuItemMigrate>
       );
     };
-  }, [selected, tokenList, tokens, balances]);
+  }, [selected, tokens, formatedTokenList]);
 
   return (
     <>
       <AppBody>
-        <SwapPoolTabs active={'migrate'} />
-        <StyledSubTitle>You have</StyledSubTitle>
+        <SwapPoolTabs active={TabNames.MIGRATE} />
+        {account && <StyledSubTitle>You have</StyledSubTitle>}
         <AutoColumn gap="lg" justify="center">
-          {(!formatedTokenList.length && tokenList.length > 0) || isLoading ? (
-            <WrapperLoader>
-              <Loader size="100px" />
-            </WrapperLoader>
+          {!account ? (
+            <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
+          ) : (!formatedTokenList.length &&
+              lpTokensDetailedInfo.length &&
+              balances.every(balance => balance === undefined)) ||
+            isLoading ? (
+            <>
+              <WrapperLoader>
+                <Loader size="100px" />
+              </WrapperLoader>
+            </>
+          ) : balances.every(balance => {
+              return +amountToString(balance, 10) === 0;
+            }) ? (
+            <TYPE.body>No LP tokens found</TYPE.body>
           ) : (
             <>
               <StyledFixedSizeList

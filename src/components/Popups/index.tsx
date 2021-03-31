@@ -10,7 +10,10 @@ const MobilePopupWrapper = styled.div<{ height: string | number }>`
   max-width: 100%;
   height: ${({ height }) => height};
   margin: ${({ height }) => (height ? '0 auto;' : 0)};
-  margin-bottom: ${({ height }) => (height ? '20px' : 0)}};
+  margin-bottom: ${({ height }) => (height ? '20px' : 0)}
+}
+
+;
 `;
 
 const MobilePopupInner = styled.div`
@@ -20,21 +23,25 @@ const MobilePopupInner = styled.div`
   display: flex;
   flex-direction: row;
   -webkit-overflow-scrolling: touch;
+
   ::-webkit-scrollbar {
     display: none;
   }
 `;
 
 const FixedPopupColumn = styled(AutoColumn)`
-  position: absolute;
+  position: fixed;
   top: 112px;
   right: 1rem;
-  max-width: 355px !important;
+  max-width: 522px !important;
   width: 100%;
-
+  z-index: 5;
   ${({ theme }) => theme.mediaWidth.upToSmall`
     display: none;
   `};
+  @media screen and (max-width: 768px) {
+    max-width: 355px !important;
+  }
 `;
 
 export default function Popups() {

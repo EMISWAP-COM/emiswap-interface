@@ -2,7 +2,7 @@ import React, { useContext, useMemo } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import { Pair, ZERO_ADDRESS } from '@uniswap/sdk';
 import { Link } from 'react-router-dom';
-import { SwapPoolTabs } from '../../components/NavigationTabs';
+import { SwapPoolTabs, TabNames } from '../../components/NavigationTabs';
 
 import Question from '../../components/QuestionHelper';
 import FullPositionCard from '../../components/PositionCard';
@@ -85,7 +85,7 @@ export default function Pool() {
   return (
     <>
       <AppBody>
-        <SwapPoolTabs active={'pool'} />
+        <SwapPoolTabs active={TabNames.POOL} />
         <AutoColumn gap="lg" justify="center">
           <>
             <AutoColumn gap="12px" style={{ width: '100%' }}>

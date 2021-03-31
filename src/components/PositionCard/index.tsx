@@ -20,7 +20,7 @@ import DoubleCurrencyLogo from '../DoubleLogo';
 import { AutoRow, RowBetween, RowFixed } from '../Row';
 import { Dots } from '../swap/styleds';
 import { tokenAmountToString } from '../../utils/formats';
-import {ExternalLink} from '../../theme';
+import { ExternalLink } from '../../theme';
 
 export const FixedHeightRow = styled(RowBetween)`
   height: 24px;

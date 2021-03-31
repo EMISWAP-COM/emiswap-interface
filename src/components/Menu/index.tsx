@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 // import { Info, BookOpen, Code, PieChart, MessageCircle } from 'react-feather'
-import {BookOpen, Code, Info, MessageCircle, PieChart} from 'react-feather';
+import { BookOpen, Code, Info, MessageCircle, PieChart } from 'react-feather';
 import styled from 'styled-components';
 import { ReactComponent as MenuIcon } from '../../assets/images/menu.svg';
 import useToggle from '../../hooks/useToggle';
