@@ -37,8 +37,13 @@ export const ESWRewards = () => {
   const balance = useSelector((state: AppState) => state.cabinets.balance);
   const grouped = balance?.total?.grouped;
 
-  const referralReward =
-    Number(grouped.referral_bonus?.ESW) + Number(grouped.pool_referral_bonus?.ESW);
+  const sumRewardsESW = () => {
+    const referralBonus = grouped.referral_bonus?.ESW || 0;
+    const poolRefferalBonus = grouped.pool_referral_bonus?.ESW || 0;
+
+    const reward = Number(referralBonus) + Number(poolRefferalBonus);
+    return convertBigDecimal(reward.toString());
+  };
 
   return (
     <div>
@@ -61,7 +66,7 @@ export const ESWRewards = () => {
         <RewardsItem>
           <span>Referral Reward</span>
           <div>
-            <RewardsValue>{convertBigDecimal(referralReward.toString())}</RewardsValue>
+            <RewardsValue>{sumRewardsESW()}</RewardsValue>
             &nbsp;ESW
           </div>{' '}
         </RewardsItem>

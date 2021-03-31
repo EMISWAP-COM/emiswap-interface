@@ -136,7 +136,14 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
 
   const balance = useSelector((state: AppState) => state.cabinets.balance);
 
-  const totalAmount = Number(balance?.wallet.ESW) + Number(balance?.available.ESW);
+  const sumESW = () => {
+    const walletESW = balance?.wallet.ESW || 0;
+    const availableESW = balance?.available.ESW || 0;
+
+    const sum = Number(walletESW) + Number(availableESW);
+
+    return convertBigDecimal(sum.toString());
+  };
 
   const history = useHistory();
   const toggle = useWalletModalToggle();
@@ -170,7 +177,7 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
             <BalanceItem>
               <span>Total</span>
               <div>
-                <BalanceValue>{convertBigDecimal(totalAmount.toString())}</BalanceValue>&nbsp;ESW
+                <BalanceValue>{sumESW()}</BalanceValue>&nbsp;ESW
               </div>
             </BalanceItem>
             <BalanceItem>
