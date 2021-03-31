@@ -212,7 +212,11 @@ export default function Claim({
           <StyledArrowLeft />
         </HistoryLink>
         <Tittle> Collect to my wallet</Tittle>
-        <QuestionHelper text={''} />
+        <QuestionHelper
+          text={
+            "Press “Collect” to transfer your ESW tokens from the EmiSwap platform to your wallet. You'll continue getting a share from EmiSwap's trading volume in this case as well."
+          }
+        />
       </RowBetween>
       <Container hideInput={false}>
         <LabelRow>
