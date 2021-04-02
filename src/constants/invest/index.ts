@@ -25,3 +25,7 @@ export enum PackageNames {
   partner = 'partner',
   enterprise = 'enterprise',
 }
+
+export const USDPerESW = 0.11;
+export const investMinESW = 2750;
+export const investMinUSD = 25000;
