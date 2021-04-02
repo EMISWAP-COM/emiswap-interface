@@ -26,6 +26,6 @@ export enum PackageNames {
   enterprise = 'enterprise',
 }
 
-export const USDPerESW = 0.11;
-export const investMinESW = 2750;
+export const ESWPerUSD = 0.11;
+export const investMinESW = 227272;
 export const investMinUSD = 25000;
