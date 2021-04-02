@@ -517,9 +517,9 @@ const Invest = () => {
   const maxAmountInput: TokenAmount | undefined = maxAmountSpendInvest(
     currencyBalances[Field.INPUT],
   );
-  /*const atMaxAmountInput = Boolean(
+  const atMaxAmountInput = Boolean(
     maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput),
-  );*/
+  );
 
   function onInvest() {
     if (!investCallback) {
@@ -1097,7 +1097,7 @@ const Invest = () => {
             <CurrencyInputPanel
               label={independentField === Field.OUTPUT ? 'From (estimated)' : 'From'}
               value={formattedAmounts[Field.INPUT]}
-              showMaxButton={false}
+              showMaxButton={!atMaxAmountInput && role !== UserRoles.distributor}
               currency={currencies[Field.INPUT]}
               onUserInput={handleTypeInput}
               disabled={role === UserRoles.distributor}
