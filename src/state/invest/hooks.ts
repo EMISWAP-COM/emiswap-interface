@@ -23,6 +23,7 @@ import {
 import { InvestState } from './reducer';
 import { TokenAddressMap, WrappedTokenInfo } from '../lists/hooks';
 import { ESW } from '../../constants';
+import {investMinESW} from '../../constants/invest';
 
 const num2str = (value: number, decimals: number): string => {
   return value.toLocaleString('en', {
@@ -196,6 +197,10 @@ export function useDerivedInvestInfo(): {
 
   if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
     error = 'Insufficient ' + amountIn.token.symbol + ' balance';
+  }
+
+  if (parsedOutputAmount && parsedOutputAmount.lessThan(JSBI.BigInt(investMinESW))) {
+    error = "We've moved to the private sale stage with a minimum investment of $25,000";
   }
 
   if (parsedAmount && !parsedOutputAmount) {

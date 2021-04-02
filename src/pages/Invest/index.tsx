@@ -61,6 +61,7 @@ import {
   diamondCount,
   enterpriseCount,
   goldCount,
+  investMinESW,
   PackageNames,
   partnerCount,
   silverCount,
@@ -405,6 +406,10 @@ const EmiCardHeader = styled.div`
   }
 `;
 
+const ConnectReferralText = styled.div`
+  margin-top: 8px;
+`;
+
 export function RedirectPathToInvestOnly({ location }: RouteComponentProps) {
   return <Redirect to={{ ...location, pathname: '/invest' }} />;
 }
@@ -684,7 +689,10 @@ const Invest = () => {
       bodyNode = (
         <div className="block-with-cards__cards">
           {distributorCardList.map(el => {
-            const isDisabled = bonusRoleName ? el.value <= accountAmounts[bonusRoleName] : false;
+            let isDisabled = bonusRoleName ? el.value <= accountAmounts[bonusRoleName] : false;
+            if (el.value < investMinESW) {
+              isDisabled = true;
+            }
             return (
               <div
                 className={`emicard ${
@@ -1173,7 +1181,10 @@ const Invest = () => {
               )}
             </BottomGrouping>
           </AutoColumn>
-          {account ? <ReferralLink /> : 'Please connect to get a referral link.'}
+          {account
+              ? <ReferralLink />
+              : <ConnectReferralText>Please connect to get a referral link</ConnectReferralText>
+          }
           {!whitelisted && account ? (
             <>
               <EmiMagicBtn onClick={openEmiCardModal}>Register here to Get Magic Cards</EmiMagicBtn>
@@ -1187,7 +1198,9 @@ const Invest = () => {
             <EmiMagicMark>You are in white list</EmiMagicMark>
           )}
         </Wrapper>
-        {generateEmiCardBlock(Number(formattedAmounts[Field.OUTPUT]))}
+        {role === UserRoles.distributor && (
+            generateEmiCardBlock(Number(formattedAmounts[Field.OUTPUT]))
+        )}
       </AppBody>
     </>
   );
