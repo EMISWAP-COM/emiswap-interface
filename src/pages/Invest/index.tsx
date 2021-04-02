@@ -598,6 +598,7 @@ const Invest = () => {
     );
   }
 
+  // eslint-disable-next-line
   const generateEmiCardBlock = (num: Number) => {
     const ESW = Number(num.toFixed(3));
     const ordinaryCount = 500;
@@ -1187,7 +1188,7 @@ const Invest = () => {
             <EmiMagicMark>You are in white list</EmiMagicMark>
           )}
         </Wrapper>
-        {generateEmiCardBlock(Number(formattedAmounts[Field.OUTPUT]))}
+        {/*{generateEmiCardBlock(Number(formattedAmounts[Field.OUTPUT]))}*/}
       </AppBody>
     </>
   );
