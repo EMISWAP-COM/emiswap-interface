@@ -52,14 +52,16 @@ export const ESWRewards = () => {
         <RewardsItem>
           <span>Providing Liquidity</span>
           <div>
-            <RewardsValue>{balance.total.grouped.pool_bonus?.ESW}</RewardsValue>
+            <RewardsValue>{convertBigDecimal(balance.total.grouped.pool_bonus?.ESW)}</RewardsValue>
             &nbsp;ESW
           </div>
         </RewardsItem>
         <RewardsItem>
           <span>Swapping</span>
           <div>
-            <RewardsValue>{balance.total.grouped.pool_swap_bonus?.ESW}</RewardsValue>
+            <RewardsValue>
+              {convertBigDecimal(balance.total.grouped.pool_swap_bonus?.ESW)}
+            </RewardsValue>
             &nbsp;ESW
           </div>
         </RewardsItem>
