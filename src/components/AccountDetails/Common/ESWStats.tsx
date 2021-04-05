@@ -136,57 +136,60 @@ const BottomRow = styled.div`
   }
 `;
 
-export const ESWStats = () => {
-  const balance = useSelector((state: AppState) => state.cabinets.balance);
+//TODO выпилить после релиза март 31го.
 
-  const unfrozen = convertBigDecimal(balance?.available);
-  const frozen = convertBigDecimal(String(balance?.locked));
-  const nextUnlockAmount = convertBigDecimal(balance?.nearest_unlock?.amount);
-  const unlockDate =
-    balance?.nearest_unlock?.unlock_date === undefined
-      ? null
-      : convertDate(balance?.nearest_unlock?.unlock_date, DateFormat.short);
-  const total = convertBigDecimal(balance?.amount);
-  const history = useHistory();
-  const toggle = useWalletModalToggle();
-
-  const handleClaim = () => {
-    toggle();
-    history.push('/claim/ESW');
-  };
-
-  return (
-    <>
-      <TYPE.mediumHeader>My ESW Performance</TYPE.mediumHeader>
-      <Wrapper>
-        <TopRows>
-          <RowItem>
-            <div className="item-top">Total ESW</div>
-            <div className="item-bottom">{total}</div>
-          </RowItem>
-          <RowItem>
-            <div className="item-top">Unfrozen</div>
-            <div className="item-bottom">{unfrozen}</div>
-          </RowItem>
-          <RowItem>
-            <div className="item-top">Frozen</div>
-            <div className="item-bottom">{frozen}</div>
-          </RowItem>
-          <RowItem>
-            <div className="item-top">Next unlock amount</div>
-            <div className="item-bottom">{nextUnlockAmount}</div>
-          </RowItem>
-          <RowItem>
-            <div className="item-top no-border">Next unlock date</div>
-            <div className="item-bottom">
-              <DateBlock>{unlockDate}</DateBlock>
-            </div>
-          </RowItem>
-        </TopRows>
-        <BottomRow>
-          <WalletAction onClick={handleClaim}>Collect to my wallet</WalletAction>
-        </BottomRow>
-      </Wrapper>
-    </>
-  );
-};
+// export const ESWStats = () => {
+//   const balance = useSelector((state: AppState) => state.cabinets.balance);
+//
+//   const unfrozen = convertBigDecimal(balance?.available.ESW);
+//   const frozen = convertBigDecimal(String(balance?.locked.ESW));
+//   const nextUnlockAmount = convertBigDecimal(balance?.nearest_unlock?.amount);
+//   const unlockDate =
+//     balance?.nearest_unlock?.unlock_date === undefined
+//       ? null
+//       : convertDate(balance?.nearest_unlock?.unlock_date, DateFormat.short);
+//
+//   const total = convertBigDecimal(balance?.amount);
+//   const history = useHistory();
+//   const toggle = useWalletModalToggle();
+//
+//   const handleClaim = () => {
+//     toggle();
+//     history.push('/claim/ESW');
+//   };
+//
+//   return (
+//     <>
+//       <TYPE.mediumHeader>My ESW Performance</TYPE.mediumHeader>
+//       <Wrapper>
+//         <TopRows>
+//           <RowItem>
+//             <div className="item-top">Total ESW</div>
+//             <div className="item-bottom">{total}</div>
+//           </RowItem>
+//           <RowItem>
+//             <div className="item-top">Unfrozen</div>
+//             <div className="item-bottom">{unfrozen}</div>
+//           </RowItem>
+//           <RowItem>
+//             <div className="item-top">Frozen</div>
+//             <div className="item-bottom">{frozen}</div>
+//           </RowItem>
+//           <RowItem>
+//             <div className="item-top">Next unlock amount</div>
+//             <div className="item-bottom">{nextUnlockAmount}</div>
+//           </RowItem>
+//           <RowItem>
+//             <div className="item-top no-border">Next unlock date</div>
+//             <div className="item-bottom">
+//               <DateBlock>{unlockDate}</DateBlock>
+//             </div>
+//           </RowItem>
+//         </TopRows>
+//         <BottomRow>
+//           <WalletAction onClick={handleClaim}>Collect to my wallet</WalletAction>
+//         </BottomRow>
+//       </Wrapper>
+//     </>
+//   );
+// };
