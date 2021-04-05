@@ -1,10 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import {
-  loadBalance,
-  loadPerformance,
-  loadPurchaseHistory,
-  loadReferralPurchaseHistory,
-} from './actions';
+import { loadBalance, loadPerformance } from './actions';
 
 interface Unlock {
   amount: string;
@@ -19,12 +14,31 @@ interface ChangeLevel {
   next_level: string;
 }
 
+//TODO: вывести в единый тип лейблов токенов.
+type TokenKey = 'ESW' | 'DAI';
+type PaymentOperationTokens = {
+  [token in TokenKey]?: string;
+};
+
 interface Balance {
-  wallet_balance: string;
+  wallet: PaymentOperationTokens;
+  total: {
+    grouped: {
+      pool_bonus?: PaymentOperationTokens;
+      pool_swap_bonus?: PaymentOperationTokens;
+      compensation?: PaymentOperationTokens;
+      referral_bonus?: PaymentOperationTokens;
+      pool_referral_bonus?: PaymentOperationTokens;
+    };
+    locked: PaymentOperationTokens;
+    unlocked: PaymentOperationTokens;
+  };
+  details: {
+    locked: LockedDeposit;
+    deposit: Deposit[];
+  };
   total_fee_compensation: string;
-  amount: string;
-  available: string;
-  locked: string;
+  available: PaymentOperationTokens;
   nearest_unlock: null | Unlock;
   change_level_info: ChangeLevel | null;
 }
@@ -55,7 +69,36 @@ interface Reward {
   };
 }
 
+interface Deposit {
+  transaction_hash: string;
+  token: TokenKey;
+  created_at: string;
+  amount: string;
+}
+
+type LockedDeposit = {
+  [tokenKey in TokenKey]: Deposit[];
+};
+
+interface Referral {
+  deposits: Deposit[];
+  level: number;
+}
+
+interface ReferralLevel {
+  referrals_count: number;
+  bought: PaymentOperationTokens;
+}
+
 export interface ReferralPerformance {
+  total: {
+    bought: PaymentOperationTokens;
+    level1: ReferralLevel;
+    level2: ReferralLevel;
+    level3: ReferralLevel;
+    reward: PaymentOperationTokens;
+  };
+  referrals: Referral[];
   reward: Reward;
   total_amount: string;
   total_count: number;
@@ -76,25 +119,51 @@ export interface ReferralPurchaseHistory extends PurchaseHistory {
 
 const initialState: CabinetState = {
   performance: {
+    referrals: [] as Referral[],
+    total: {
+      bought: {} as PaymentOperationTokens,
+      reward: {},
+    },
     reward: {} as Reward,
   } as ReferralPerformance,
-  balance: {} as Balance,
+  balance: {
+    wallet: {},
+    total: {
+      grouped: {
+        pool_bonus: {},
+        compensation: {},
+        referral_bonus: {},
+      },
+      locked: {},
+      unlocked: {},
+    },
+    details: {
+      locked: {} as LockedDeposit,
+      deposit: [] as Deposit[],
+    },
+    total_fee_compensation: '',
+    available: {},
+    nearest_unlock: null,
+    change_level_info: null,
+  },
   purchaseHistory: [] as PurchaseHistory[],
   referralHistory: [] as ReferralPurchaseHistory[],
 };
 
-export default createReducer(initialState, builder =>
-  builder
-    .addCase(loadPerformance.fulfilled, (state, action) => {
-      state.performance = action.payload;
-    })
-    .addCase(loadPurchaseHistory.fulfilled, (state, action) => {
-      state.purchaseHistory = action.payload;
-    })
-    .addCase(loadBalance.fulfilled, (state, action) => {
-      state.balance = action.payload;
-    })
-    .addCase(loadReferralPurchaseHistory.fulfilled, (state, action) => {
-      state.referralHistory = action.payload;
-    }),
+export default createReducer(
+  initialState,
+  builder =>
+    builder
+      .addCase(loadPerformance.fulfilled, (state, action) => {
+        state.performance = action.payload;
+      })
+      // .addCase(loadPurchaseHistory.fulfilled, (state, action) => {
+      //   state.purchaseHistory = action.payload;
+      // })
+      .addCase(loadBalance.fulfilled, (state, action) => {
+        state.balance = action.payload;
+      }),
+  // .addCase(loadReferralPurchaseHistory.fulfilled, (state, action) => {
+  //   state.referralHistory = action.payload;
+  // }),
 );

@@ -48,7 +48,9 @@ const LockedValue = styled(DarkText)`
 `;
 
 export const ESWLocked = () => {
-  const balance = useSelector((state: AppState) => state.cabinets.balance);
+  const { details, total } = useSelector((state: AppState) => state.cabinets.balance);
+
+  const nextUnlock = details?.locked?.ESW ? details?.locked?.ESW[0] : null;
 
   return (
     <div>
@@ -60,7 +62,7 @@ export const ESWLocked = () => {
           <LockedItemWrapper>
             <span>Locked at Emiswap</span>
             <div>
-              <LockedValue>{convertBigDecimal(balance?.locked)}</LockedValue>&nbsp;ESW
+              <LockedValue>{convertBigDecimal(total.locked.ESW)}</LockedValue>&nbsp;ESW
             </div>
           </LockedItemWrapper>
         </LockedItem>
@@ -70,7 +72,7 @@ export const ESWLocked = () => {
           <LockedItemWrapper>
             <span>Next unlock amount</span>
             <div>
-              <LockedValue>{convertBigDecimal(balance?.nearest_unlock?.amount)}</LockedValue>
+              <LockedValue>{convertBigDecimal(nextUnlock?.amount)}</LockedValue>
               &nbsp;ESW
             </div>
           </LockedItemWrapper>
@@ -79,9 +81,7 @@ export const ESWLocked = () => {
           <img alt="timer" src={timer} />
           <LockedItemWrapper>
             <span>Next unlock date</span>
-            <DarkText>
-              {convertDate(balance?.nearest_unlock?.unlock_date, DateFormat.full)}
-            </DarkText>
+            <DarkText>{convertDate(nextUnlock?.created_at, DateFormat.full)}</DarkText>
           </LockedItemWrapper>
         </LockedItem>
       </LockedWrapper>
