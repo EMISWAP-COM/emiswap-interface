@@ -58,6 +58,7 @@ export enum TabNames {
   MIGRATE,
   INVEST,
 }
+//TODO refactor. Component index.tsx must return single component
 
 export function SwapPoolTabs({ active }: { active: TabNames }) {
   const { t } = useTranslation();

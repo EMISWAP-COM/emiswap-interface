@@ -1,6 +1,5 @@
 import React, { useContext, useMemo, useState } from 'react';
 import styled, { ThemeContext } from 'styled-components';
-import WarningBlock, { StyledButton } from '../../components/Warning/WarningBlock';
 import AppBody from '../AppBody';
 import { SwapPoolTabs, TabNames } from '../../components/NavigationTabs';
 import Column, { AutoColumn } from '../../components/Column';
@@ -137,29 +136,8 @@ export default function MigrateV1() {
     };
   }, [selected, tokens, formatedTokenList]);
 
-  const warningContent = () => {
-    return (
-      <p>
-        {/*The beta testing runs for about 2 weeks, and the users who join us within this period will*/}
-        {/*have 50,000 ESW distributed among them during the first week after the official launch.*/}
-      </p>
-    );
-  };
-
-  const warningBottomContent = () => {
-    return (
-      <StyledButton href={'https://link.medium.com/gNa3ztuvkdb'} target="_blank">
-        <span> READ MORE </span> {'>>'}
-      </StyledButton>
-    );
-  };
   return (
     <>
-      <WarningBlock
-        title="EMISWAP soft launch"
-        content={warningContent}
-        bottomContent={warningBottomContent}
-      />
       <AppBody>
         <SwapPoolTabs active={TabNames.MIGRATE} />
         {account && <StyledSubTitle>You have</StyledSubTitle>}

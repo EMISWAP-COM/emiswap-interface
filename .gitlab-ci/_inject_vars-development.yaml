@@ -6,7 +6,7 @@ inject_vars:
       tag: "{{ lookup('env', '_img_tag') }}"
       pullPolicy: IfNotPresent
     imagePullSecrets:
-    - name: "{{ lookup('env', 'CI_PROJECT_PATH_SLUG') }}"
+      - name: "{{ lookup('env', 'CI_PROJECT_PATH_SLUG') }}"
     env_js: |
       window.env = {
         REACT_APP_CHAIN_ID: '42',
@@ -51,7 +51,7 @@ inject_vars:
       tag: latest
       pullPolicy: Always
     imagePullSecrets:
-    - name: gitlab-foreign-project-registry
+      - name: gitlab-foreign-project-registry
 
   emiswap-nft:
     image:
@@ -59,10 +59,10 @@ inject_vars:
       tag: latest
       pullPolicy: Always
     imagePullSecrets:
-    - name: gitlab-foreign-project-registry
+      - name: gitlab-foreign-project-registry
     basePath: /magic_cards
     ingress:
       hosts:
-      - host: "{{ env_fqdn }}"
-        paths:
-        - /magic_cards
+        - host: '{{ env_fqdn }}'
+          paths:
+            - /magic_cards

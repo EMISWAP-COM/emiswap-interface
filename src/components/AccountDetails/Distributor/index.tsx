@@ -5,12 +5,7 @@ import { convertBigDecimal } from '../uitls';
 import { PurchaseHistory } from '../Common/PurchaseHistory';
 import { ReferralPerformance } from '../Common/ReferralPerformance';
 
-import {
-  loadBalance,
-  loadPerformance,
-  loadPurchaseHistory,
-  loadReferralPurchaseHistory,
-} from '../../../state/cabinets/actions';
+import { loadBalance, loadPerformance } from '../../../state/cabinets/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, AppState } from '../../../state';
 import { packageNames } from '../constant';
@@ -91,14 +86,12 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
   const dispatch = useDispatch<AppDispatch>();
   const toggleWalletModal = useWalletModalToggle();
   const history = useHistory();
-  const { id: userId, bonus_role_name = '' } = useSelector((state: AppState) => state.user.info);
-  const balance = useSelector((state: AppState) => state.cabinets.balance);
-  const { change_level_info } = balance;
+  const { id: userId, bonus_role_name = '', next_bonus_role } = useSelector(
+    (state: AppState) => state.user.info,
+  );
 
   useEffect(() => {
     dispatch(loadPerformance(userId) as any);
-    dispatch(loadPurchaseHistory(userId) as any);
-    dispatch(loadReferralPurchaseHistory(userId) as any);
     dispatch(loadBalance(userId) as any);
   }, [dispatch, userId]);
 
@@ -135,9 +128,9 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
       </ProfileStatus>
 
       <Connection openOptions={openOptions}>
-        {change_level_info && (
+        {next_bonus_role && (
           <OptionsPromo>
-            Buy {convertBigDecimal(change_level_info.amount)} ESW to gain next Package!
+            Buy {convertBigDecimal(next_bonus_role.amount)} ESW to gain next Package!
           </OptionsPromo>
         )}
       </Connection>

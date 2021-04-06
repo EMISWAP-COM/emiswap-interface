@@ -1,10 +1,9 @@
 import React from 'react';
 import styled from 'styled-components/macro';
-import { Level, WalletAction, Header } from '../styleds';
+import { Header, Level, WalletAction } from '../styleds';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { convertBigDecimal, normalizeNumber } from '../uitls';
-import { ComingSoon } from '../../../base/ui/ComingSoon';
 
 const DarkText = styled.span`
   color: ${({ theme }) => theme.grey3};
@@ -101,9 +100,9 @@ const CollectBtn = styled(WalletAction)`
 `;
 
 export const ReferralPerformance = () => {
-  const { reward, total_amount, total_count, first_level, second_level, third_level } = useSelector(
-    (state: AppState) => state.cabinets.performance,
-  );
+  const { total, referrals } = useSelector((state: AppState) => state.cabinets.performance);
+
+  const { level1, level2, level3 } = total;
 
   return (
     <div>
@@ -113,7 +112,7 @@ export const ReferralPerformance = () => {
           <div>
             <span>Referral Reward, ESW</span>
             <div>
-              <RewardsValue>{convertBigDecimal(reward?.esw?.total)}</RewardsValue>&nbsp;ESW
+              <RewardsValue>{convertBigDecimal(total?.reward.ESW)}</RewardsValue>&nbsp;ESW
             </div>
           </div>
         </RewardsItem>
@@ -121,64 +120,64 @@ export const ReferralPerformance = () => {
           <div>
             <span>Referral Reward, DAI</span>
             <div>
-              <RewardsValue>{convertBigDecimal(reward?.dai?.total)}</RewardsValue>&nbsp;DAI
+              <RewardsValue>{convertBigDecimal(total?.reward.DAI)}</RewardsValue>&nbsp;DAI
             </div>
           </div>
-          <ComingSoon>
+          <div>
             <CollectBtn onClick={() => console.log('no collect handler')}>
               Collect to my wallet
             </CollectBtn>
-          </ComingSoon>
+          </div>
         </RewardsItem>
       </RewardsWrapper>
 
       <Wrapper>
         <Referrals>
           <Title>Total Referrals</Title>
-          <Cell>{normalizeNumber(total_count)}</Cell>
+          <Cell>{normalizeNumber(referrals.length)}</Cell>
           <Cell>
-            {normalizeNumber(first_level?.total_count)}
+            {normalizeNumber(level1?.referrals_count)}
             <Level>1lvl</Level>
           </Cell>
           <Cell>
-            {normalizeNumber(second_level?.total_count)}
+            {normalizeNumber(level2?.referrals_count)}
             <Level>2lvl</Level>
           </Cell>
           <Cell>
-            {normalizeNumber(third_level?.total_count)}
+            {normalizeNumber(level3?.referrals_count)}
             <Level>3lvl</Level>
           </Cell>
         </Referrals>
 
         <ReferralPurchases>
           <Title>Total Ref. Purchases, ESW</Title>
-          <Cell>{convertBigDecimal(total_amount)}</Cell>
+          <Cell>{convertBigDecimal(total.bought.ESW)}</Cell>
           <Cell>
-            {convertBigDecimal(first_level?.amount)}
+            {convertBigDecimal(level1?.bought.ESW)}
             <Level>1lvl</Level>
           </Cell>
           <Cell>
-            {convertBigDecimal(second_level?.amount)}
+            {convertBigDecimal(level2?.bought.ESW)}
             <Level>2lvl</Level>
           </Cell>
           <Cell>
-            {convertBigDecimal(third_level?.amount)}
+            {convertBigDecimal(level3?.bought.ESW)}
             <Level>3lvl</Level>
           </Cell>
         </ReferralPurchases>
         <ReferralPurchases>
           <Title>Total Ref. Purchases, DAI</Title>
-          <Cell>{convertBigDecimal(total_amount)}</Cell>
+          <Cell>{convertBigDecimal(total.bought.DAI)}</Cell>
           <Cell>
-            {convertBigDecimal(first_level?.amount)}
+            {convertBigDecimal(level1?.bought.DAI)}
             <Level>1lvl</Level>
           </Cell>
           <Cell>
-            {convertBigDecimal(second_level?.amount)}
+            {convertBigDecimal(level2?.bought.DAI)}
             <Level>2lvl</Level>
           </Cell>
           <Cell>
-            {convertBigDecimal(third_level?.amount)}
+            {convertBigDecimal(level3?.bought.DAI)}
             <Level>3lvl</Level>
           </Cell>
         </ReferralPurchases>

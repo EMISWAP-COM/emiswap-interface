@@ -19,6 +19,8 @@ import { useActiveWeb3React } from '../../hooks';
 import { useTransactionAdder } from '../../state/transactions/hooks';
 import { useWalletModalToggle } from '../../state/application/hooks';
 import { parseUnits } from '@ethersproject/units';
+import { useAuth } from '../../hooks/useAuth';
+import { fetchWrapper } from '../../api/fetchWrapper';
 
 const Tittle = styled.div`
   font-weight: 500;
@@ -103,6 +105,8 @@ const StyledBalanceMax = styled.button`
   `};
 `;
 
+const baseUrl = window['env'] ? window['env'].REACT_APP_PUBLIC_URL : '';
+
 export default function Claim({
   match: {
     params: { tokenName },
@@ -118,6 +122,8 @@ export default function Claim({
     (state: AppState) => state.cabinets.balance,
   );
 
+  const handleAuth = useAuth();
+
   const formatBalance = balance => {
     if (!isNaN(Number(balance))) {
       return (Math.trunc(Number(balance) * 1e6) / 1e6).toFixed(6);
@@ -131,25 +137,25 @@ export default function Claim({
   const toggleWalletModal = useWalletModalToggle();
 
   const onMax = () => {
-    console.log('formattedUnfrozenBalance', formattedUnfrozenBalance);
     setTypedValue(formattedUnfrozenBalance);
   };
 
   const onSuccess = () => {
     toggleWalletModal();
+    return { state: 'sent' };
   };
 
   const onError = error => {
-    if (error?.code === 4001) {
-      throw error;
-    } else {
-      throw Error('An error occurred while claim. Please contact support.');
+    if (error?.code) {
+      return { state: 'errored', error_message: `${error.code} - ${error.message}` };
     }
+
+    throw error;
   };
 
   const handleSubmit = () => {
     claimCallback(tokenName, +typedValue).then(data => {
-      const { signature, nonce, amount } = data;
+      const { signature, nonce, amount, user_id, id } = data;
       const args = [account, amount, nonce, `0x${signature}`];
 
       contract.estimateGas
@@ -158,6 +164,7 @@ export default function Claim({
           return contract
             .mintSigned(...args, { gasLimit })
             .then(response => {
+              console.log('mintSigned response', response);
               addTransaction(response);
               return response.hash;
             })
@@ -165,8 +172,20 @@ export default function Claim({
             .catch(onError);
         })
         .catch(error => {
-          console.error(`estimateGas failed for claim`, error);
-          return undefined;
+          console.log('contract.mintSigned unexpected error', error);
+          return { state: 'errored', error_message: error.message };
+        })
+        .then(transactionResult => {
+          const transactionStateEndPoint = `${baseUrl}/v1/private/users/${user_id}/transactions/${id}`;
+
+          handleAuth().then(token => {
+            fetchWrapper.put(transactionStateEndPoint, {
+              headers: {
+                authorization: token,
+              },
+              body: JSON.stringify(transactionResult),
+            });
+          });
         });
     });
   };
@@ -174,7 +193,6 @@ export default function Claim({
   const isTransactionDisabled = () => {
     if (unfrozenESWbalance && typedValue) {
       console.log(Number(unfrozenESWbalance));
-      // console.log(parse)
       return (
         parseUnits(
           Number(unfrozenESWbalance)
@@ -186,7 +204,6 @@ export default function Claim({
     }
     return true;
   };
-  // Number(unfrozenESWbalance) < Number(typedValue) || Number(typedValue) === 0;
 
   return (
     <AppBody>
@@ -195,7 +212,11 @@ export default function Claim({
           <StyledArrowLeft />
         </HistoryLink>
         <Tittle> Collect to my wallet</Tittle>
-        <QuestionHelper text={''} />
+        <QuestionHelper
+          text={
+            "Press “Collect” to transfer your ESW tokens from the EmiSwap platform to your wallet. You'll continue getting a share from EmiSwap's trading volume in this case as well."
+          }
+        />
       </RowBetween>
       <Container hideInput={false}>
         <LabelRow>
