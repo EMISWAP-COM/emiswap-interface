@@ -9,6 +9,7 @@ export interface AccordionProps {
   children: React.ReactNode;
   btnClick?: () => void;
   btnText?: string;
+  headerClass?: string;
   openClass: string;
 }
 
@@ -204,6 +205,35 @@ const Body = styled.div`
   .hidden {
     display: none;
   }
+
+  .blink1-text {
+    -webkit-animation: blink1 3s linear infinite;
+    animation: blink1 3s linear infinite;
+  }
+
+  @-webkit-keyframes blink1 {
+    0% {
+      color: rgba(34, 34, 34, 1);
+    }
+    50% {
+      color: rgba(34, 34, 34, 0);
+    }
+    100% {
+      color: rgba(34, 34, 34, 1);
+    }
+  }
+
+  @keyframes blink1 {
+    0% {
+      color: rgba(34, 34, 34, 1);
+    }
+    50% {
+      color: rgba(34, 34, 34, 0);
+    }
+    100% {
+      color: rgba(34, 34, 34, 1);
+    }
+  }
 `;
 
 export default (props: AccordionProps) => {
@@ -217,7 +247,7 @@ export default (props: AccordionProps) => {
       <div className="header" onClick={handleSwitchAccordion}>
         <div className="header__left">
           <img src={Question} alt="" />
-          <div className="h4">{props.header}</div>
+          <div className={`h4 ${props.headerClass}`}>{props.header}</div>
         </div>
         <div className="header__open-icon">
           <img src={isOpen ? ArrowUp : ArrowDown} alt="" />

@@ -405,7 +405,6 @@ const Body = styled.div`
   }
 `;
 
-
 export default () => {
   const btnClick1 = () => {
     const win = window.open('https://crowdsale.emidao.org/whitepaper', '_blank');
@@ -420,6 +419,45 @@ export default () => {
   };
   return (
     <div className="for-scroll-faq">
+      <Accordion
+        header="Early Swappers and Liquidity Providers Rewards"
+        openClass="isOpen4"
+        headerClass="blink1-text"
+      >
+        <Body>
+          <div className="last-block">
+            <div className="last-block__block">
+              <img className="last-block__img" src={Board} alt="" />
+              <div className="text-block">
+                <div className="h4 mb16">Rewards for Liquidity Providers</div>
+                <div className="text-block__text">
+                  From the 11th to the 100th day after the launch <b>30,000 ESW</b> will be
+                  proportionally distributed among LP’s for <b>1 million DAI</b> trading volume.
+                </div>
+                <div className="text-block__text">
+                  From the 11th to the 40th day after the launch <b>6,150 ESW</b> will be issued
+                  additionally every 1000 blocks and will be distributed among LP’s in proportion to
+                  the amount of liquidity provided.
+                </div>
+              </div>
+            </div>
+            <div className="last-block__block">
+              <img className="last-block__img" src={Coins} alt="" />
+              <div className="text-block">
+                <div className="h4 mb16">Rewards for Swappers</div>
+                <div className="text-block__text">
+                  From the 11th to the 100th day after the launch Swappers are rewarded with{' '}
+                  <b>16 ESW</b> for every <b>1,000 DAI</b> of personal trading volume.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="last-string">
+            The EmiSwap early liquidity provider and swap allocation fund is capped at{' '}
+            <b>6,000,000 ESW</b>
+          </div>
+        </Body>
+      </Accordion>
       <Accordion
         header="Introduction to EmiSwap"
         btnText="Read White Paper"
@@ -580,41 +618,6 @@ export default () => {
             </div>
           </div>
           <div className="chart-description">Learn more about ESW tokens vesting.</div>
-        </Body>
-      </Accordion>
-      <Accordion header="Early Swappers and Liquidity Providers Rewards" openClass="isOpen4">
-        <Body>
-          <div className="last-block">
-            <div className="last-block__block">
-              <img className="last-block__img" src={Board} alt="" />
-              <div className="text-block">
-                <div className="h4 mb16">Rewards for Liquidity Providers</div>
-                <div className="text-block__text">
-                  From the 11th to the 100th day after the launch <b>30,000 ESW</b> will be
-                  proportionally distributed among LP’s for <b>1 million DAI</b> trading volume.
-                </div>
-                <div className="text-block__text">
-                  From the 11th to the 40th day after the launch <b>6,150 ESW</b> will be issued
-                  additionally every 1000 blocks and will be distributed among LP’s in proportion to
-                  the amount of liquidity provided.
-                </div>
-              </div>
-            </div>
-            <div className="last-block__block">
-              <img className="last-block__img" src={Coins} alt="" />
-              <div className="text-block">
-                <div className="h4 mb16">Rewards for Swappers</div>
-                <div className="text-block__text">
-                  From the 11th to the 100th day after the launch Swappers are rewarded with{' '}
-                  <b>16 ESW</b> for every <b>1,000 DAI</b> of personal trading volume.
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="last-string">
-            The EmiSwap early liquidity provider and swap allocation fund is capped at{' '}
-            <b>6,000,000 ESW</b>
-          </div>
         </Body>
       </Accordion>
     </div>

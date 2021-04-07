@@ -20,6 +20,7 @@ import DoubleCurrencyLogo from '../DoubleLogo';
 import { AutoRow, RowBetween, RowFixed } from '../Row';
 import { Dots } from '../swap/styleds';
 import { tokenAmountToString } from '../../utils/formats';
+import { ExternalLink } from '../../theme';
 
 export const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -245,7 +246,9 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
             </FixedHeightRow>
 
             <AutoRow justify="center" marginTop={'10px'}>
-              <YellowText>View pool information ↗ (Coming soon...)</YellowText>
+              <ExternalLink href={'https://emiswap.com/analytics'}>
+                <YellowText>View pool information ↗</YellowText>
+              </ExternalLink>
             </AutoRow>
             <RowBetween marginTop="10px">
               <ButtonSecondary

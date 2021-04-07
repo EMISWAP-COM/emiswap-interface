@@ -49,7 +49,6 @@ import Silver from '../../assets/svg/CardIcon/silver.svg';
 import Question from '../../assets/svg/FAQIcon/question.svg';
 import EmiMagicBackground from '../../assets/svg/EmiMagicBackground.svg';
 import EmiMagicCardModal from '../../components/EmiMagicCardModal';
-import WarningBlock, { StyledButton } from '../../components/Warning/WarningBlock';
 import useParsedQueryString from '../../hooks/useParsedQueryString';
 import ReferralLink from '../../components/RefferalLink';
 import { AppState } from '../../state';
@@ -62,6 +61,7 @@ import {
   diamondCount,
   enterpriseCount,
   goldCount,
+  investMinESW,
   PackageNames,
   partnerCount,
   silverCount,
@@ -406,6 +406,10 @@ const EmiCardHeader = styled.div`
   }
 `;
 
+const ConnectReferralText = styled.div`
+  margin-top: 8px;
+`;
+
 export function RedirectPathToInvestOnly({ location }: RouteComponentProps) {
   return <Redirect to={{ ...location, pathname: '/invest' }} />;
 }
@@ -685,7 +689,10 @@ const Invest = () => {
       bodyNode = (
         <div className="block-with-cards__cards">
           {distributorCardList.map(el => {
-            const isDisabled = bonusRoleName ? el.value <= accountAmounts[bonusRoleName] : false;
+            let isDisabled = bonusRoleName ? el.value <= accountAmounts[bonusRoleName] : false;
+            if (el.value < investMinESW) {
+              isDisabled = true;
+            }
             return (
               <div
                 className={`emicard ${
@@ -1042,34 +1049,9 @@ const Invest = () => {
     return error;
   };
 
-  const warningBottomContent = () => {
-    return (
-      <StyledButton href={'https://link.medium.com/gNa3ztuvkdb'} target="_blank">
-        <span> READ MORE </span> {'>>'}
-      </StyledButton>
-    );
-  };
-
-  const warningContent = () => {
-    return (
-      <p>
-        The beta testing runs for about 2 weeks, and the users who join us within this period will
-        have 50,000 ESW distributed among them during the first week after the official launch.
-      </p>
-    );
-  };
-
   return (
     <>
-      {showWarning ? (
-        <TokenWarningCards currencies={currencies} />
-      ) : (
-        <WarningBlock
-          title="EMISWAP soft launch"
-          content={warningContent}
-          bottomContent={warningBottomContent}
-        />
-      )}
+      {showWarning && <TokenWarningCards currencies={currencies} />}
       <AppBody
         disabled={showWarning}
         className={`invest-mobile ${role === UserRoles.distributor ? 'mb650' : ''}`}
@@ -1199,7 +1181,11 @@ const Invest = () => {
               )}
             </BottomGrouping>
           </AutoColumn>
-          {account ? <ReferralLink /> : 'Please connect to get a referral link.'}
+          {account ? (
+            <ReferralLink />
+          ) : (
+            <ConnectReferralText>Please connect to get a referral link</ConnectReferralText>
+          )}
           {!whitelisted && account ? (
             <>
               <EmiMagicBtn onClick={openEmiCardModal}>Register here to Get Magic Cards</EmiMagicBtn>
@@ -1213,7 +1199,8 @@ const Invest = () => {
             <EmiMagicMark>You are in white list</EmiMagicMark>
           )}
         </Wrapper>
-        {generateEmiCardBlock(Number(formattedAmounts[Field.OUTPUT]))}
+        {role === UserRoles.distributor &&
+          generateEmiCardBlock(Number(formattedAmounts[Field.OUTPUT]))}
       </AppBody>
     </>
   );

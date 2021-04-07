@@ -18,7 +18,7 @@ import MulticallUpdater from './state/multicall/updater';
 import InvestUpdater from './state/invest/updater';
 import ThemeProvider, { FixedGlobalStyle, ThemedGlobalStyle } from './theme';
 import HttpsRedirect from './https-redirect';
-import { ErrorBoundary } from './components/ErrorBoundary/ErrorBoundary'
+import { ErrorBoundary } from './components/ErrorBoundary/ErrorBoundary';
 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName);
 
@@ -57,6 +57,17 @@ window.addEventListener('error', error => {
     description: `${error.message} @ ${error.filename}:${error.lineno}:${error.colno}`,
     fatal: true,
   });
+});
+
+// eslint-disable-next-line no-extend-native
+Object.defineProperty(Array.prototype, 'flat', {
+  value: function(depth = 1) {
+    return this.reduce(function(flat, toFlatten) {
+      return flat.concat(
+        Array.isArray(toFlatten) && depth > 1 ? toFlatten.flat(depth - 1) : toFlatten,
+      );
+    }, []);
+  },
 });
 
 function Updaters() {

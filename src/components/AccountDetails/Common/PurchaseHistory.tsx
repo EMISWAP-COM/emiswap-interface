@@ -107,8 +107,10 @@ export const PurchaseHistory = () => {
   const purchases = useSelector((state: AppState) => state.cabinets.purchaseHistory);
   const { referrals } = useSelector((state: AppState) => state.cabinets.performance);
   const { details } = useSelector((state: AppState) => state.cabinets.balance);
+  console.log('total');
   const deposit = details?.deposit;
 
+  console.log(useSelector((state: AppState) => state.cabinets.performance));
   return (
     <>
       <Header>Your Purchase History</Header>
