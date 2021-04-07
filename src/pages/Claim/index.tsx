@@ -124,15 +124,18 @@ export default function Claim({
 
   const handleAuth = useAuth();
 
+  //TODO fix TS. Не требует типизировать аргумент функции вообще! Принимал объект, вместо строки и ничего не сказал. Просто упал в препроде
   const formatBalance = balance => {
     if (!isNaN(Number(balance))) {
       return (Math.trunc(Number(balance) * 1e6) / 1e6).toFixed(6);
     }
 
-    return balance;
+    return '-';
   };
 
-  const formattedUnfrozenBalance = formatBalance(unfrozenESWbalance);
+  const formattedUnfrozenBalance = formatBalance(unfrozenESWbalance.ESW);
+
+  console.log('formattedUnfrozenBalance', formattedUnfrozenBalance);
 
   const toggleWalletModal = useWalletModalToggle();
 
@@ -191,11 +194,10 @@ export default function Claim({
   };
 
   const isTransactionDisabled = () => {
-    if (unfrozenESWbalance && typedValue) {
-      console.log(Number(unfrozenESWbalance));
+    if (unfrozenESWbalance.ESW && typedValue) {
       return (
         parseUnits(
-          Number(unfrozenESWbalance)
+          Number(unfrozenESWbalance.ESW)
             .toFixed(15)
             .toString(),
           18,
