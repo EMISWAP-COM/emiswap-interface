@@ -1181,10 +1181,11 @@ const Invest = () => {
               )}
             </BottomGrouping>
           </AutoColumn>
-          {account
-              ? <ReferralLink />
-              : <ConnectReferralText>Please connect to get a referral link</ConnectReferralText>
-          }
+          {account ? (
+            <ReferralLink />
+          ) : (
+            <ConnectReferralText>Please connect to get a referral link</ConnectReferralText>
+          )}
           {!whitelisted && account ? (
             <>
               <EmiMagicBtn onClick={openEmiCardModal}>Register here to Get Magic Cards</EmiMagicBtn>
@@ -1198,9 +1199,8 @@ const Invest = () => {
             <EmiMagicMark>You are in white list</EmiMagicMark>
           )}
         </Wrapper>
-        {role === UserRoles.distributor && (
-            generateEmiCardBlock(Number(formattedAmounts[Field.OUTPUT]))
-        )}
+        {role === UserRoles.distributor &&
+          generateEmiCardBlock(Number(formattedAmounts[Field.OUTPUT]))}
       </AppBody>
     </>
   );

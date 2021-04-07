@@ -23,7 +23,7 @@ import {
 import { InvestState } from './reducer';
 import { TokenAddressMap, WrappedTokenInfo } from '../lists/hooks';
 import { ESW } from '../../constants';
-import {investMinESW} from '../../constants/invest';
+import { investMinESW } from '../../constants/invest';
 
 const num2str = (value: number, decimals: number): string => {
   return value.toLocaleString('en', {

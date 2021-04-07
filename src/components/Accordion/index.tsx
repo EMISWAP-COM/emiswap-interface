@@ -205,22 +205,34 @@ const Body = styled.div`
   .hidden {
     display: none;
   }
-  
+
   .blink1-text {
     -webkit-animation: blink1 3s linear infinite;
     animation: blink1 3s linear infinite;
   }
-  
+
   @-webkit-keyframes blink1 {
-    0% { color: rgba(34, 34, 34, 1); }
-    50% { color: rgba(34, 34, 34, 0); }
-    100% { color: rgba(34, 34, 34, 1); }
+    0% {
+      color: rgba(34, 34, 34, 1);
+    }
+    50% {
+      color: rgba(34, 34, 34, 0);
+    }
+    100% {
+      color: rgba(34, 34, 34, 1);
+    }
   }
-  
+
   @keyframes blink1 {
-    0% { color: rgba(34, 34, 34, 1); }
-    50% { color: rgba(34, 34, 34, 0); }
-    100% { color: rgba(34, 34, 34, 1); }
+    0% {
+      color: rgba(34, 34, 34, 1);
+    }
+    50% {
+      color: rgba(34, 34, 34, 0);
+    }
+    100% {
+      color: rgba(34, 34, 34, 1);
+    }
   }
 `;
 

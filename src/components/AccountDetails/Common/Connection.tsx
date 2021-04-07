@@ -153,6 +153,8 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
     history.push('/claim/ESW');
   };
 
+  const isCollectDisabled = !balance?.available.ESW;
+
   return (
     <>
       <Container>
@@ -201,7 +203,9 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
           </BalanceWrapper>
           <Options>
             {children}
-            <CollectBtn onClick={handleClaim}>Collect to my wallet</CollectBtn>
+            <CollectBtn disabled={isCollectDisabled} onClick={handleClaim}>
+              Collect to my wallet
+            </CollectBtn>
           </Options>
         </Main>
         <AccountControl>

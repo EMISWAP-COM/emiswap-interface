@@ -405,7 +405,6 @@ const Body = styled.div`
   }
 `;
 
-
 export default () => {
   const btnClick1 = () => {
     const win = window.open('https://crowdsale.emidao.org/whitepaper', '_blank');
