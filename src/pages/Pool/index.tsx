@@ -11,7 +11,7 @@ import { ExternalLink, StyledInternalLink, TYPE } from '../../theme';
 import { Text } from 'rebass';
 import { LightCard } from '../../components/Card';
 import { RowBetween } from '../../components/Row';
-import { ButtonPrimary, ButtonGreen } from '../../components/Button';
+import { ButtonPrimary } from '../../components/Button';
 import { AutoColumn } from '../../components/Column';
 
 import { useActiveWeb3React } from '../../hooks';
@@ -130,15 +130,6 @@ export default function Pool() {
                   Add Liquidity
                 </Text>
               </ButtonPrimary>
-              <ButtonGreen
-                style={{ width: 'initial', padding: '15px 16px' }}
-                as={Link}
-                to="/migrate"
-              >
-                <Text fontWeight={500} fontSize={16}>
-                  Migrate Liquidity
-                </Text>
-              </ButtonGreen>
               <div>{account ? <ReferralLink /> : 'Please connect to get a referral link.'}</div>
               <StyledHr />
               <div>
