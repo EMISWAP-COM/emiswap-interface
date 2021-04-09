@@ -95,6 +95,8 @@ const convertToISOSafari = (dateString: string) => {
 
 export const convertDate = (dateSourceString: string, format: string) => {
 
+  if (!dateSourceString) return '-';
+
   const date = convertToISOSafari(dateSourceString)
 
   if (date) {
