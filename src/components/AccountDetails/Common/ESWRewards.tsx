@@ -45,6 +45,13 @@ export const ESWRewards = () => {
     return convertBigDecimal(reward.toString());
   };
 
+  const evalPoolBonuses = () => {
+    const poolBonus = balance.total.grouped.pool_bonus?.ESW;
+    const poolBonus10x =  balance.total.grouped.pool_bonus_10x?.ESW;
+    const sum = (!isNaN(Number(poolBonus))? Number(poolBonus) : 0) + (!isNaN(Number(poolBonus)) ? Number(poolBonus10x) : 0);
+    return sum.toFixed(2);
+  }
+
   return (
     <div>
       <Header>My ESW Rewards</Header>
@@ -52,7 +59,7 @@ export const ESWRewards = () => {
         <RewardsItem>
           <span>Providing Liquidity</span>
           <div>
-            <RewardsValue>{convertBigDecimal(balance.total.grouped.pool_bonus?.ESW)}</RewardsValue>
+            <RewardsValue>{evalPoolBonuses()}</RewardsValue>
             &nbsp;ESW
           </div>
         </RewardsItem>

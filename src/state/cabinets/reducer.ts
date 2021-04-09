@@ -25,6 +25,7 @@ interface Balance {
   total: {
     grouped: {
       pool_bonus?: PaymentOperationTokens;
+      pool_bonus_10x?: PaymentOperationTokens;
       pool_swap_bonus?: PaymentOperationTokens;
       compensation?: PaymentOperationTokens;
       referral_bonus?: PaymentOperationTokens;
@@ -131,6 +132,8 @@ const initialState: CabinetState = {
     total: {
       grouped: {
         pool_bonus: {},
+        pool_bonus_10x: {},
+        pool_swap_bonus: {},
         compensation: {},
         referral_bonus: {},
       },
