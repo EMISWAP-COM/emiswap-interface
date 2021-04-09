@@ -136,6 +136,7 @@ export function useDerivedInvestInfo(): {
   parsedAmount: TokenAmount | undefined;
   parsedOutputAmount: TokenAmount | undefined;
   error?: string;
+  isSmallInvestment: boolean;
 } {
   const { account } = useActiveWeb3React();
 
@@ -175,6 +176,9 @@ export function useDerivedInvestInfo(): {
     [Field.OUTPUT]: outputCurrency ?? undefined,
   };
 
+  const isSmallInvestment =
+    parsedOutputAmount && parsedOutputAmount.lessThan(JSBI.BigInt(investMinESW));
+
   let error: string | undefined;
   if (!account) {
     error = 'Connect Wallet';
@@ -199,7 +203,7 @@ export function useDerivedInvestInfo(): {
     error = 'Insufficient ' + amountIn.token.symbol + ' balance';
   }
 
-  if (parsedOutputAmount && parsedOutputAmount.lessThan(JSBI.BigInt(investMinESW))) {
+  if (isSmallInvestment) {
     error = "We've moved to the private sale stage with a minimum investment of $25,000";
   }
 
@@ -213,6 +217,7 @@ export function useDerivedInvestInfo(): {
     parsedAmount,
     parsedOutputAmount,
     error,
+    isSmallInvestment,
   };
 }
 

@@ -2,7 +2,7 @@ import { JSBI, TokenAmount } from '@uniswap/sdk';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
 import { Text } from 'rebass';
-import styled, { ThemeContext } from 'styled-components';
+import styled, { ThemeContext } from 'styled-components/macro';
 import { useSelector } from 'react-redux';
 import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button';
 import Card from '../../components/Card';
@@ -68,6 +68,27 @@ import {
 } from '../../constants/invest';
 import { useMockEstimate } from '../../hooks/useMockEstimate';
 import { ErrorText } from '../../components/swap/styleds';
+import InvestContactForm from '../../components/InvestContactForm';
+
+const ButtonLink = styled.span`
+  color: #0000ee;
+  cursor: pointer;
+  font-weight: 500;
+  text-decoration: underline;
+
+  :hover {
+    text-decoration: none;
+  }
+
+  :focus {
+    outline: none;
+    text-decoration: none;
+  }
+
+  :active {
+    text-decoration: none;
+  }
+`;
 
 const EmiCard = styled.div`
   position: absolute;
@@ -440,6 +461,7 @@ const Invest = () => {
     parsedOutputAmount,
     currencies,
     error,
+    isSmallInvestment,
   } = useDerivedInvestInfo();
 
   const [selectedCardRole, setSelectedCardRole] = useState<number>(0);
@@ -560,6 +582,7 @@ const Invest = () => {
   // errors
   const [showInverted, setShowInverted] = useState<boolean>(false);
   const [showEmiCardModal, setShowEmiCardModal] = useState<boolean>(bonusform === 'open');
+  const [showContactForm, setShowContactForm] = useState<boolean>(false);
 
   const { whitelisted } = useSelector((state: AppState) => state.user.info);
 
@@ -570,6 +593,7 @@ const Invest = () => {
     });
     setShowEmiCardModal(true);
   };
+
   const closeEmiCardModal = () => setShowEmiCardModal(false);
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
   // never show if price impact is above threshold in non expert mode
@@ -1181,6 +1205,13 @@ const Invest = () => {
               )}
             </BottomGrouping>
           </AutoColumn>
+          {isSmallInvestment && (
+            <p>
+              if you are interested in purchasing ESW for less than $25,000, fill out this&nbsp;
+              <ButtonLink onClick={() => setShowContactForm(true)}>form.</ButtonLink>
+            </p>
+          )}
+          <InvestContactForm isOpen={showContactForm} onDismiss={() => setShowContactForm(false)} />
           {account ? (
             <ReferralLink />
           ) : (
