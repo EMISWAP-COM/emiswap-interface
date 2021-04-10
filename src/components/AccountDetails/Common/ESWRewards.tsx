@@ -46,8 +46,8 @@ export const ESWRewards = () => {
   };
 
   const evalPoolBonuses = () => {
-    const poolBonus = grouped.pool_bonus?.ESW;
-    const poolBonus10x =  grouped.pool_bonus_10x?.ESW;
+    const poolBonus = grouped.pool_bonus?.ESW ?? 0;
+    const poolBonus10x =  grouped.pool_bonus_10x?.ESW ?? 0;
     const sum = (!isNaN(Number(poolBonus))? Number(poolBonus) : 0) + (!isNaN(Number(poolBonus)) ? Number(poolBonus10x) : 0);
     return sum.toFixed(2);
   }
