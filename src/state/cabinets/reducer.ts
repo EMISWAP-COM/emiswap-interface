@@ -78,6 +78,7 @@ interface Deposit {
   transaction_hash: string;
   token: TokenKey;
   created_at: string;
+  available_at: string;
   amount: string;
 }
 
