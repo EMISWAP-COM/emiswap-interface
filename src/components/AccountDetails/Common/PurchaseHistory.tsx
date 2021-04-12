@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/macro';
-import { Level, Header } from '../styleds';
+import { Header } from '../styleds';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { convertBigDecimal, convertDate, DateFormat, shortenHash } from '../uitls';
@@ -104,17 +104,22 @@ const NoContent = styled.div`
 `;
 
 export const PurchaseHistory = () => {
-  const purchases = useSelector((state: AppState) => state.cabinets.purchaseHistory);
-  const { referrals } = useSelector((state: AppState) => state.cabinets.performance);
-  const { details } = useSelector((state: AppState) => state.cabinets.balance);
-  console.log('total');
-  const deposit = details?.deposit;
+  // const purchases = useSelector((state: AppState) => state.cabinets.purchaseHistory);
+  // const { referrals } = useSelector((state: AppState) => state.cabinets.performance);
+  const { histories } = useSelector((state: AppState) => state.cabinets.balance);
+  // console.log('total');
+  const deposit = histories?.deposits;
+  const referrals = [
+    {
+      deposits: histories?.referral_bonus || [],
+    },
+  ];
 
   console.log(useSelector((state: AppState) => state.cabinets.performance));
   return (
     <>
       <Header>Your Purchase History</Header>
-      <Table amount={purchases.length}>
+      <Table amount={deposit.length}>
         {deposit &&
           deposit.map(({ amount, token, created_at, transaction_hash }) => (
             <TableRow key={transaction_hash}>
@@ -127,7 +132,7 @@ export const PurchaseHistory = () => {
               <Wallet>{shortenHash(transaction_hash, 7)}</Wallet>
             </TableRow>
           ))}
-        {!purchases.length && (
+        {!deposit.length && (
           <TableRow>
             <NoContent>No content</NoContent>
           </TableRow>
@@ -137,12 +142,12 @@ export const PurchaseHistory = () => {
       <Header>Referral Purchase History</Header>
       <TableLong amount={referrals.length}>
         {referrals &&
-          referrals.map(({ deposits, level }) => {
+          referrals.map(({ deposits }) => {
             return deposits.map(({ transaction_hash, amount, token, created_at }) => (
               <TableRow key={transaction_hash}>
                 <Date>{convertDate(created_at, DateFormat.full)}</Date>
                 <LevelWrapper>
-                  <Level>{level}lvl</Level>
+                  {/*<Level>{level}lvl</Level>*/}
                   <Cost>
                     <span>{convertBigDecimal(amount)}</span>&nbsp; {token}
                   </Cost>
