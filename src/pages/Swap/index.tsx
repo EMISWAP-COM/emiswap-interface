@@ -89,6 +89,7 @@ export default function Swap() {
     currencies,
     error,
   } = useDerivedSwapInfo();
+  console.log('connect', useActiveWeb3React());
 
   let distribution: any[] = [];
   // mcck distibution
