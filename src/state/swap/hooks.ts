@@ -24,7 +24,7 @@ import { SwapState } from './reducer';
 import { useUserSlippageTolerance } from '../user/hooks';
 import { computeSlippageAdjustedAmounts } from '../../utils/prices';
 import { BigNumber } from '@ethersproject/bignumber';
-import { KOVAN_WETH } from '../../constants';
+import { KOVAN_WETH, WETH } from '../../constants';
 
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>(state => state.swap);
@@ -128,12 +128,13 @@ export function useDerivedSwapInfo(): {
   const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
     inputCurrency ?? undefined,
     outputCurrency ?? undefined,
-    eth ?? undefined
+    eth ?? undefined,
   ]);
 
   const isExactIn: boolean = independentField === Field.INPUT;
-  const newInputCurrency = inputCurrency?.isEther ? KOVAN_WETH : inputCurrency;
-  const newOutputCurrency = outputCurrency?.isEther ? KOVAN_WETH : outputCurrency;
+
+  const newInputCurrency = inputCurrency?.isEther ? WETH : inputCurrency;
+  const newOutputCurrency = outputCurrency?.isEther ? WETH : outputCurrency;
   const parsedAmount = tryParseAmount(
     typedValue,
     (isExactIn ? newInputCurrency : outputCurrency) ?? undefined,
