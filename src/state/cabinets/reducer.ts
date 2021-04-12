@@ -21,6 +21,10 @@ type PaymentOperationTokens = {
 };
 
 interface Balance {
+  histories: {
+    deposits: Deposit[];
+    referral_bonus: Deposit[];
+  };
   wallet: PaymentOperationTokens;
   total: {
     grouped: {
@@ -128,6 +132,10 @@ const initialState: CabinetState = {
     reward: {} as Reward,
   } as ReferralPerformance,
   balance: {
+    histories: {
+      deposits: [],
+      referral_bonus: [],
+    },
     wallet: {},
     total: {
       grouped: {
