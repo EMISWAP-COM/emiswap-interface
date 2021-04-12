@@ -157,7 +157,7 @@ export const PurchaseHistory = () => {
               </TableRow>
             ));
           })}
-        {!referrals.length && (
+        {!referrals[0].deposits.length && (
           <TableRow>
             <NoContent>No content</NoContent>
           </TableRow>
