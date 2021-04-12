@@ -12,6 +12,14 @@ type ChainTokenList = {
   readonly [chainId in ChainId]: Token[];
 };
 
+export const WETH = new Token(
+  ChainId.MAINNET,
+  '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+  18,
+  'WETH',
+  'WrappedEther',
+);
+
 export const DAI = new Token(
   ChainId.MAINNET,
   '0x6B175474E89094C44Da98b954EedeAC495271d0F',
@@ -105,7 +113,6 @@ export const KOVAN_CHI = new Token(
   'Chi Gastoken by 1inch',
 );
 
-
 export const ESW: ChainTokenList = {
   [ChainId.MAINNET]: [
     new Token(ChainId.MAINNET, window['env'].REACT_APP_ESW_ID, 18, 'ESW', 'EmiDAO Token'),
@@ -124,8 +131,6 @@ export const ESW: ChainTokenList = {
   ],
 };
 
-
-
 const ETH_ONLY: ChainTokenList = {
   [ChainId.MAINNET]: [ETHER],
   [ChainId.ROPSTEN]: [ETHER],
@@ -138,7 +143,7 @@ const ETH_ONLY: ChainTokenList = {
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ...ETH_ONLY,
   [ChainId.KOVAN]: [KOVAN_DAI, KOVAN_USDC, KOVAN_WETH],
-  [ChainId.MAINNET]: [DAI, USDC, USDT, COMP, MKR, CHI],
+  [ChainId.MAINNET]: [DAI, USDC, USDT, COMP, MKR, CHI, WETH],
 };
 
 // used for display in the default list when adding liquidity
@@ -152,7 +157,7 @@ export const SUGGESTED_BASES: ChainTokenList = {
 export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   ...ETH_ONLY,
   [ChainId.KOVAN]: [KOVAN_DAI, KOVAN_USDC, KOVAN_WETH, ESW[ChainId.KOVAN][0]],
-  [ChainId.MAINNET]: [ETHER, DAI, USDC, USDT, CHI, ESW[ChainId.MAINNET][0]],
+  [ChainId.MAINNET]: [ETHER, DAI, USDC, USDT, CHI, ESW[ChainId.MAINNET][0], WETH],
 };
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
