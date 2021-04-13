@@ -12,7 +12,7 @@ import Copy from '../Copy';
 import { ExternalLink } from '../../../theme';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
-import { ComingSoon } from '../../../base/ui/ComingSoon';
+import { ComingSoon2 } from '../../../base/ui/ComingSoon';
 
 const Container = styled.div`
   font-size: 13px;
@@ -206,11 +206,11 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
           </BalanceWrapper>
           <Options>
             {children}
-            <ComingSoon>
+            <ComingSoon2>
               <CollectBtn disabled={isCollectDisabled} onClick={handleClaim}>
                 Collect to my wallet
               </CollectBtn>
-            </ComingSoon>
+            </ComingSoon2>
           </Options>
         </Main>
         <AccountControl>
