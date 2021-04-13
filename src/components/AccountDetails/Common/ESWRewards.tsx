@@ -83,7 +83,8 @@ export const ESWRewards = () => {
           <RewardsItem>
             <span>Providing Liquidity</span>
             <div>
-              <RewardsValue>{evalPoolBonuses()}</RewardsValue>
+              {/*<RewardsValue>{evalPoolBonuses()}</RewardsValue>*/}
+              <RewardsValue>0.00</RewardsValue>
               &nbsp;ESW
             </div>
           </RewardsItem>
@@ -92,9 +93,10 @@ export const ESWRewards = () => {
           <RewardsItem>
             <span>Swapping</span>
             <div>
-              <RewardsValue>
-                {convertBigDecimal(balance.total.grouped.pool_swap_bonus?.ESW)}
-              </RewardsValue>
+              {/*<RewardsValue>*/}
+              {/*  {convertBigDecimal(balance.total.grouped.pool_swap_bonus?.ESW)}*/}
+              {/*</RewardsValue>              */}
+              <RewardsValue>0.00</RewardsValue>
               &nbsp;ESW
             </div>
           </RewardsItem>
@@ -103,7 +105,8 @@ export const ESWRewards = () => {
           <RewardsItem>
             <span>Referral Reward</span>
             <div>
-              <RewardsValue>{sumRewardsESW()}</RewardsValue>
+              {/*<RewardsValue>{sumRewardsESW()}</RewardsValue>*/}
+              <RewardsValue>0.00</RewardsValue>
               &nbsp;ESW
             </div>{' '}
           </RewardsItem>
@@ -112,9 +115,10 @@ export const ESWRewards = () => {
           <RewardsItem>
             <span>Fee Compensation</span>
             <div>
-              <RewardsValue>
-                {convertBigDecimal(balance?.total.grouped.compensation?.ESW)}
-              </RewardsValue>
+              {/*<RewardsValue>*/}
+              {/*  {convertBigDecimal(balance?.total.grouped.compensation?.ESW)}*/}
+              {/*</RewardsValue>             */}
+              <RewardsValue>0.00</RewardsValue>
               &nbsp;ESW
             </div>{' '}
           </RewardsItem>
