@@ -135,8 +135,6 @@ export default function Claim({
 
   const formattedUnfrozenBalance = formatBalance(unfrozenESWbalance.ESW);
 
-  console.log('formattedUnfrozenBalance', formattedUnfrozenBalance);
-
   const toggleWalletModal = useWalletModalToggle();
 
   const onMax = () => {

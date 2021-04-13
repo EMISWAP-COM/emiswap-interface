@@ -41,6 +41,7 @@ export function useClaim() {
             });
           })
           .catch(e => {
+            debugger;
             dispatch(
               addPopup({
                 key: 'useClaim',
@@ -53,10 +54,6 @@ export function useClaim() {
               }),
             );
           });
-
-        // }
-        // handleAuth();
-        // return Promise.resolve(undefined);
       });
     }
     return Promise.resolve(undefined);
