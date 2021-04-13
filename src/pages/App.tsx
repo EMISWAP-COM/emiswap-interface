@@ -27,7 +27,7 @@ import ReferralUrlParser from '../referral-url-parser';
 // import MigrateV1Exchange from './MigrateV1/MigrateV1Exchange';
 import { AppWrapper } from '../base/ui/AppWrapper/AppWrapper';
 import { ErrorBoundary } from '../components/ErrorBoundary/ErrorBoundary';
-import Claim from './Claim';
+// import Claim from './Claim';
 
 const LogoWrapper = styled.div`
   display: none;
@@ -125,7 +125,7 @@ export default function App() {
                     />
                     {/*<Route exact strict path="/migrate" component={MigrateV1} />*/}
                     {/*<Route exact strict path="/migrate/:address" component={MigrateV1Exchange} />*/}
-                    <Route exact strict path="/claim/:tokenName" component={Claim} />
+                    {/*<Route exact strict path="/claim/:tokenName" component={Claim} />*/}
                     <Route component={RedirectPathToInvestOnly} />
                   </Switch>
                 </ErrorBoundary>
