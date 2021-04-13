@@ -41,7 +41,6 @@ export function useClaim() {
             });
           })
           .catch(e => {
-            debugger;
             dispatch(
               addPopup({
                 key: 'useClaim',
