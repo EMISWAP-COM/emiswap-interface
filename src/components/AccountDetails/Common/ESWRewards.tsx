@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 import { Header } from '../styleds';
-import { useSelector } from 'react-redux';
-import { AppState } from '../../../state';
-import { convertBigDecimal } from '../uitls';
+// import { useSelector } from 'react-redux';
+// import { AppState } from '../../../state';
+// import { convertBigDecimal } from '../uitls';
 // import { ComingSoon } from '../../../base/ui/ComingSoon';
 
 export const Calculating = styled.div`
@@ -55,25 +55,25 @@ const RewardsValue = styled(DarkText)`
 `;
 
 export const ESWRewards = () => {
-  const balance = useSelector((state: AppState) => state.cabinets.balance);
-  const grouped = balance?.total?.grouped;
+  // const balance = useSelector((state: AppState) => state.cabinets.balance);
+  // const grouped = balance?.total?.grouped;
 
-  const sumRewardsESW = () => {
-    const referralBonus = grouped.referral_bonus?.ESW || 0;
-    const poolRefferalBonus = grouped.pool_referral_bonus?.ESW || 0;
+  // const sumRewardsESW = () => {
+  //   const referralBonus = grouped.referral_bonus?.ESW || 0;
+  //   const poolRefferalBonus = grouped.pool_referral_bonus?.ESW || 0;
+  //
+  //   const reward = Number(referralBonus) + Number(poolRefferalBonus);
+  //   return convertBigDecimal(reward.toString());
+  // };
 
-    const reward = Number(referralBonus) + Number(poolRefferalBonus);
-    return convertBigDecimal(reward.toString());
-  };
-
-  const evalPoolBonuses = () => {
-    const poolBonus = grouped.pool_bonus?.ESW ?? 0;
-    const poolBonus10x = grouped.pool_bonus_10x?.ESW ?? 0;
-    const sum =
-      (!isNaN(Number(poolBonus)) ? Number(poolBonus) : 0) +
-      (!isNaN(Number(poolBonus)) ? Number(poolBonus10x) : 0);
-    return sum.toFixed(2);
-  };
+  // const evalPoolBonuses = () => {
+  //   const poolBonus = grouped.pool_bonus?.ESW ?? 0;
+  //   const poolBonus10x = grouped.pool_bonus_10x?.ESW ?? 0;
+  //   const sum =
+  //     (!isNaN(Number(poolBonus)) ? Number(poolBonus) : 0) +
+  //     (!isNaN(Number(poolBonus)) ? Number(poolBonus10x) : 0);
+  //   return sum.toFixed(2);
+  // };
 
   return (
     <div>
