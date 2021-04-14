@@ -53,10 +53,6 @@ export function useClaim() {
               }),
             );
           });
-
-        // }
-        // handleAuth();
-        // return Promise.resolve(undefined);
       });
     }
     return Promise.resolve(undefined);
