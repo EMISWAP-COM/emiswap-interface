@@ -7,18 +7,12 @@ import { convertBigDecimal, convertDate, DateFormat, shortenHash } from '../uitl
 
 const Table = styled.div<{ amount?: number }>`
   color: ${({ theme }) => theme.grey6};
-  height: 120px;
+  max-height: 120px;
   align-items: center;
-  overflow-y: scroll;
-
-  background: ${({ amount }) => {
-    return amount < 4
-      ? 'repeating-linear-gradient(#F7F8FA, #F7F8FA 40px, transparent 40px, transparent 80px)'
-      : 'transparent';
-  }};
+  overflow-y: auto;
 
   @media screen and (max-width: 1200px) {
-    height: 210px;
+    max-height: 210px;
     background: none;
   }
 
@@ -28,7 +22,7 @@ const Table = styled.div<{ amount?: number }>`
 `;
 
 const TableLong = styled(Table)`
-  height: 200px;
+  max-height: 200px;
 `;
 
 const TableRow = styled.div`
