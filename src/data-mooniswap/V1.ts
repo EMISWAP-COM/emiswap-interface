@@ -209,7 +209,7 @@ export function useMooniswapTrade(
   const amount =
     inputCurrency?.decimals && inputCurrency?.decimals !== 0
       ? parseAmount
-          ?.multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(inputCurrency?.decimals)))
+          ?.multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(Math.floor(inputCurrency?.decimals))))
           .toFixed(0)
       : parseAmount?.toFixed(0);
   const params = [
