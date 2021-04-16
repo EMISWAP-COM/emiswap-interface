@@ -1,29 +1,29 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 import { Header } from '../styleds';
-import { useSelector } from 'react-redux';
-import { AppState } from '../../../state';
-import { convertBigDecimal } from '../uitls';
+// import { useSelector } from 'react-redux';
+// import { AppState } from '../../../state';
+// import { convertBigDecimal } from '../uitls';
 
-// export const Calculating = styled.div`
-//   position: relative;
-//
-//   &:after {
-//     position: absolute;
-//     content: 'Calculating...';
-//     background: ${({ theme }) => theme.red3};
-//
-//     border-radius: 12px;
-//     padding: 0 8px;
-//     top: -12px;
-//     right: -5px;
-//     text-transform: lowercase;
-//     color: white;
-//     font-weight: 500;
-//     font-size: 12px;
-//     z-index: 10;
-//   }
-// `;
+export const Calculating = styled.div`
+  position: relative;
+
+  &:after {
+    position: absolute;
+    content: 'Calculating...';
+    background: ${({ theme }) => theme.red3};
+
+    border-radius: 12px;
+    padding: 0 8px;
+    top: -12px;
+    right: -5px;
+    text-transform: lowercase;
+    color: white;
+    font-weight: 500;
+    font-size: 12px;
+    z-index: 10;
+  }
+`;
 
 const DarkText = styled.span`
   color: #24272c;
@@ -54,62 +54,76 @@ const RewardsValue = styled(DarkText)`
 `;
 
 export const ESWRewards = () => {
-  const balance = useSelector((state: AppState) => state.cabinets.balance);
-  const grouped = balance?.total?.grouped;
+  // const balance = useSelector((state: AppState) => state.cabinets.balance);
+  // const grouped = balance?.total?.grouped;
 
-  const sumRewardsESW = () => {
-    const referralBonus = grouped.referral_bonus?.ESW || 0;
-    const poolRefferalBonus = grouped.pool_referral_bonus?.ESW || 0;
+  // const sumRewardsESW = () => {
+  //   const referralBonus = grouped.referral_bonus?.ESW || 0;
+  //   const poolRefferalBonus = grouped.pool_referral_bonus?.ESW || 0;
 
-    const reward = Number(referralBonus) + Number(poolRefferalBonus);
-    return convertBigDecimal(reward.toString());
-  };
+  //   const reward = Number(referralBonus) + Number(poolRefferalBonus);
+  //   return convertBigDecimal(reward.toString());
+  // };
 
-  const evalPoolBonuses = () => {
-    const poolBonus = grouped.pool_bonus?.ESW ?? 0;
-    const poolBonus10x = grouped.pool_bonus_10x?.ESW ?? 0;
-    const sum =
-      (!isNaN(Number(poolBonus)) ? Number(poolBonus) : 0) +
-      (!isNaN(Number(poolBonus)) ? Number(poolBonus10x) : 0);
-    return sum.toFixed(2);
-  };
+  // const evalPoolBonuses = () => {
+  //   const poolBonus = grouped.pool_bonus?.ESW ?? 0;
+  //   const poolBonus10x = grouped.pool_bonus_10x?.ESW ?? 0;
+  //   const sum =
+  //     (!isNaN(Number(poolBonus)) ? Number(poolBonus) : 0) +
+  //     (!isNaN(Number(poolBonus)) ? Number(poolBonus10x) : 0);
+  //   return sum.toFixed(2);
+  // };
 
   return (
     <div>
       <Header>My ESW Rewards</Header>
       <RewardsWrapper>
-        <RewardsItem>
-          <span>Providing Liquidity</span>
-          <div>
-            <RewardsValue>{evalPoolBonuses()}</RewardsValue>
-            &nbsp;ESW
-          </div>
-        </RewardsItem>
+        <Calculating>
+          <RewardsItem>
+            <span>Providing Liquidity</span>
+            <div>
+              {/*<RewardsValue>{evalPoolBonuses()}</RewardsValue>*/}
+              <RewardsValue>0.00</RewardsValue>
+              &nbsp;ESW
+            </div>
+          </RewardsItem>
+        </Calculating>
+        <Calculating>
         <RewardsItem>
           <span>Swapping</span>
           <div>
             <RewardsValue>
-              {convertBigDecimal(balance.total.grouped.pool_swap_bonus?.ESW)}
+              {/* {convertBigDecimal(balance.total.grouped.pool_swap_bonus?.ESW)} */}
+              0.00
             </RewardsValue>
             &nbsp;ESW
           </div>
         </RewardsItem>
+        </Calculating>
+        <Calculating>
         <RewardsItem>
           <span>Referral Reward</span>
           <div>
-            <RewardsValue>{sumRewardsESW()}</RewardsValue>
-            &nbsp;ESW
-          </div>{' '}
-        </RewardsItem>
-        <RewardsItem>
-          <span>Fee Compensation</span>
-          <div>
             <RewardsValue>
-              {convertBigDecimal(balance?.total.grouped.compensation?.ESW)}
+              {/* {sumRewardsESW()} */}
+              0.00
             </RewardsValue>
             &nbsp;ESW
           </div>{' '}
         </RewardsItem>
+        </Calculating>
+        <Calculating>
+        <RewardsItem>
+          <span>Fee Compensation</span>
+          <div>
+            <RewardsValue>
+              {/* {convertBigDecimal(balance?.total.grouped.compensation?.ESW)} */}
+              0.00
+            </RewardsValue>
+            &nbsp;ESW
+          </div>{' '}
+        </RewardsItem>
+        </Calculating>
       </RewardsWrapper>
     </div>
   );
