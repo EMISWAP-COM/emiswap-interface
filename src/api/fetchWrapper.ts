@@ -9,10 +9,16 @@ const handleResponse = (response: Response) => {
     case 200:
     case 201:
       return response.json();
-    case 422:
-      console.log('response', response);
+    case 477:
+      console.log('response 477', response);
       return response.json().then(data => {
-        console.log('data', data, new CustomError(data?.error, data?.payload));
+        console.log('data err', data, new CustomError(data?.error_message, data?.payload));
+        throw new CustomError(data?.error_message, data?.payload);
+      });
+    case 422:
+      console.log('response 422', response);
+      return response.json().then(data => {
+        console.log('data err', data, new CustomError(data?.error, data?.payload));
         throw new CustomError(data?.error, data?.payload);
       });
     default:
