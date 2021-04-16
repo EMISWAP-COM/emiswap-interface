@@ -265,7 +265,10 @@ export function useMooniswapTrade(
 
   const exactAmount = new TokenAmount(
     independentField === Field.INPUT ? outputCurrency : inputCurrency,
-    JSBI.BigInt(results.result.returnAmount),
+    JSBI.BigInt(typeof results.result.returnAmount === 'number'
+      ? Math.floor(results.result.returnAmount)
+      : results.result.returnAmount
+    ),
   );
   const route =
     inputCurrency && pairs && pairs.length > 0 && new Route(pairs, inputCurrency, outputCurrency);
