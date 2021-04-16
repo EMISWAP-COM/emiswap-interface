@@ -216,7 +216,7 @@ export default function WalletModal({
     }
   }, [setWalletView, active, error, connector, walletModalOpen, activePrevious, connectorPrevious]);
 
-  const getGAEvent = name => {
+  const getConnectGAEvent = name => {
     switch (name) {
       case 'MetaMask':
         return () => {
@@ -263,12 +263,59 @@ export default function WalletModal({
     }
   };
 
+  const getConfirmGAEvent = name => {
+    switch (name) {
+      case 'MetaMask':
+        return () => {
+          ReactGA.event({
+            category: 'wallet',
+            action: 'confirm',
+            label: 'metamask',
+          });
+        };
+      case 'WalletConnect':
+        return () => {
+          ReactGA.event({
+            category: 'wallet',
+            action: 'confirm',
+            label: 'walletconnect',
+          });
+        };
+      case 'Open in Coinbase Wallet':
+        return () => {
+          ReactGA.event({
+            category: 'wallet',
+            action: 'confirm',
+            label: 'coinbasewallet',
+          });
+        };
+      case 'Fortmatic':
+        return () => {
+          ReactGA.event({
+            category: 'wallet',
+            action: 'confirm',
+            label: 'fortmatic',
+          });
+        };
+      case 'Portis':
+        return () => {
+          ReactGA.event({
+            category: 'wallet',
+            action: 'confirm',
+            label: 'portis',
+          });
+        };
+      default:
+        return () => {};
+    }
+  };
+
   const tryActivation = async connector => {
     let name = '';
     Object.keys(SUPPORTED_WALLETS).map(key => {
       if (connector === SUPPORTED_WALLETS[key].connector) {
-        const GAEvent = getGAEvent(SUPPORTED_WALLETS[key].name);
-        GAEvent && GAEvent();
+        const connectGAEvent = getConnectGAEvent(SUPPORTED_WALLETS[key].name);
+        connectGAEvent && connectGAEvent();
         return (name = SUPPORTED_WALLETS[key].name);
       }
       return true;
@@ -289,6 +336,16 @@ export default function WalletModal({
 
     activate(connector, undefined, true)
       .then(() => {
+        const confirmGAEvent = getConfirmGAEvent(name);
+        if (confirmGAEvent) {
+          confirmGAEvent();
+        }
+        ReactGA.event({
+          category: 'wallet',
+          action: 'confirm',
+          label: 'everyone',
+        });
+
         ReactGA.event({
           category: 'wallet',
           action: 'connect_success',
