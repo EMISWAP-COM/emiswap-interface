@@ -12,7 +12,6 @@ import Copy from '../Copy';
 import { ExternalLink } from '../../../theme';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
-import { ComingSoon2 } from '../../../base/ui/ComingSoon';
 
 const Container = styled.div`
   font-size: 13px;
@@ -155,8 +154,7 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
     history.push('/claim/ESW');
   };
 
-  // const isCollectDisabled = !balance?.available.ESW;
-  const isCollectDisabled = true;
+  const isCollectDisabled = !balance?.available.ESW;
 
   return (
     <>
@@ -206,11 +204,9 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
           </BalanceWrapper>
           <Options>
             {children}
-            <ComingSoon2>
-              <CollectBtn disabled={isCollectDisabled} onClick={handleClaim}>
-                Collect to my wallet
-              </CollectBtn>
-            </ComingSoon2>
+            <CollectBtn disabled={isCollectDisabled} onClick={handleClaim}>
+              Collect to my wallet
+            </CollectBtn>
           </Options>
         </Main>
         <AccountControl>
