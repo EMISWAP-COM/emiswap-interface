@@ -4,7 +4,7 @@ import { useActiveWeb3React } from './index';
 import Web3 from 'web3';
 import { useLocalStorage } from './useLocalStorage';
 // import { MOCK_USER } from './useClaim';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { fetchWrapper } from '../api/fetchWrapper';
 import { addPopup } from '../state/application/actions';
 
@@ -28,8 +28,12 @@ export function useAuth() {
   const id = user?.info?.id;
   const { library, account } = useActiveWeb3React();
   const [authToken, setAuthToken] = useLocalStorage('auth_token', null);
-
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    setAuthToken(null);
+  }, [account]);
+
   const initSession = useCallback(
     async (userID: string) => {
       try {
