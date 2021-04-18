@@ -32,7 +32,7 @@ export function useAuth() {
 
   useEffect(() => {
     setAuthToken(null);
-  }, [account]);
+  }, [account, setAuthToken]);
 
   const initSession = useCallback(
     async (userID: string) => {
