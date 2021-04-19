@@ -3,8 +3,7 @@ import { AppState } from '../state';
 import { useActiveWeb3React } from './index';
 import Web3 from 'web3';
 import { useLocalStorage } from './useLocalStorage';
-// import { MOCK_USER } from './useClaim';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { fetchWrapper } from '../api/fetchWrapper';
 import { addPopup } from '../state/application/actions';
 
@@ -28,11 +27,8 @@ export function useAuth() {
   const id = user?.info?.id;
   const { library, account } = useActiveWeb3React();
   const [authToken, setAuthToken] = useLocalStorage('auth_token', null);
+  const [storedAccount, setStoredAccount] = useLocalStorage('stored_account', null);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    setAuthToken(null);
-  }, [account, setAuthToken]);
 
   const initSession = useCallback(
     async (userID: string) => {
@@ -94,7 +90,9 @@ export function useAuth() {
   );
 
   const init = useCallback(async () => {
-    if (authToken) {
+    alert('init');
+    const isAccountChanged = account !== storedAccount;
+    if (authToken && !isAccountChanged) {
       const isExpired = Date.now() - authToken.time > 0;
       if (!isExpired) {
         return authToken.token;
@@ -107,6 +105,7 @@ export function useAuth() {
         const sessionToken = await signSession(session.session_id, signature);
         const tokenLifespan = parseJWT(sessionToken.token)?.exp;
         setAuthToken({ time: tokenLifespan * 1000, token: sessionToken.token });
+        setStoredAccount(account);
         return sessionToken.token;
       } catch (e) {
         dispatch(
@@ -123,7 +122,18 @@ export function useAuth() {
         return Promise.reject(e);
       }
     }
-  }, [authToken, account, id, setAuthToken, signToMetamask, dispatch, initSession, signSession]);
+  }, [
+    authToken,
+    account,
+    id,
+    setAuthToken,
+    signToMetamask,
+    dispatch,
+    initSession,
+    signSession,
+    storedAccount,
+    setStoredAccount,
+  ]);
 
   return init;
 }
