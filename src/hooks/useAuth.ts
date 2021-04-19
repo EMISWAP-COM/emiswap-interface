@@ -90,8 +90,8 @@ export function useAuth() {
   );
 
   const init = useCallback(async () => {
-    alert('init');
     const isAccountChanged = account !== storedAccount;
+
     if (authToken && !isAccountChanged) {
       const isExpired = Date.now() - authToken.time > 0;
       if (!isExpired) {

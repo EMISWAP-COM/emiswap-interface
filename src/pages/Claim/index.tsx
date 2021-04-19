@@ -122,7 +122,6 @@ export default function Claim({
   const { available: unfrozenESWbalance } = useSelector(
     (state: AppState) => state.cabinets.balance,
   );
-
   const handleAuth = useAuth();
   const dispatch = useDispatch();
 
@@ -149,70 +148,47 @@ export default function Claim({
   };
 
   const onError = error => {
-    if (error?.code) {
-      return { state: 'errored', error_message: `${error.code} - ${error.message}` };
-    }
-
-    throw error;
+    dispatch(
+      addPopup({
+        key: 'useClaim',
+        content: {
+          status: {
+            name: error.message,
+            isError: true,
+          },
+        },
+      }),
+    );
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    const authToken = await handleAuth();
+
     claimCallback(tokenName, +typedValue)
       .then(data => {
         const { signature, nonce, amount, user_id, id } = data;
         const args = [account, amount, nonce, `0x${signature}`];
 
-        contract.estimateGas
+        return contract.estimateGas
           .mintSigned(...args)
-          .then(gasLimit => {
-            return contract
-              .mintSigned(...args, { gasLimit })
-              .then(response => {
-                addTransaction(response);
-                return response.hash;
-              })
-              .then(onSuccess)
-              .catch(onError);
-          })
+          .then(gasLimit => contract.mintSigned(...args, { gasLimit }))
+          .then(contractResponse => addTransaction(contractResponse))
+          .then(onSuccess)
           .catch(error => {
-            dispatch(
-              addPopup({
-                key: 'useClaim',
-                content: {
-                  status: {
-                    name: error.message,
-                    isError: true,
-                  },
-                },
-              }),
-            );
-            return { state: 'errored', error_message: error.message };
+            onError(error);
+            return { state: 'errored', error_message: `${error?.code} - ${error.message}` };
           })
           .then(transactionResult => {
             const transactionStateEndPoint = `${baseUrl}/v1/private/users/${user_id}/transactions/${id}`;
-            handleAuth().then(token => {
-              fetchWrapper.put(transactionStateEndPoint, {
-                headers: {
-                  authorization: token,
-                },
-                body: JSON.stringify(transactionResult),
-              });
+            fetchWrapper.put(transactionStateEndPoint, {
+              headers: {
+                authorization: authToken,
+              },
+              body: JSON.stringify(transactionResult),
             });
           });
       })
-      .catch(e => {
-        dispatch(
-          addPopup({
-            key: 'claim callback',
-            content: {
-              status: {
-                name: e.message,
-                isError: true,
-              },
-            },
-          }),
-        );
-      });
+      .catch(onError);
   };
 
   const isTransactionDisabled = () => {

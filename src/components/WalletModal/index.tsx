@@ -25,7 +25,6 @@ import { AppState } from '../../state';
 import { Ambassador } from '../AccountDetails/Ambassador';
 import { Owner } from '../AccountDetails/Owner';
 import WarningBlock from '../Warning/WarningBlock';
-import { useAuth } from '../../hooks/useAuth';
 
 const CloseIcon = styled.div`
   display: none;
@@ -186,14 +185,12 @@ export default function WalletModal({
   const toggleWalletModal = useWalletModalToggle();
 
   const previousAccount = usePrevious(account);
-  const handleAuth = useAuth();
   // close on connection, when logged out before
   useEffect(() => {
     if (account && !previousAccount && walletModalOpen) {
       toggleWalletModal();
-      handleAuth();
     }
-  }, [account, previousAccount, toggleWalletModal, walletModalOpen, handleAuth]);
+  }, [account, previousAccount, toggleWalletModal, walletModalOpen]);
 
   // always reset to account view
   useEffect(() => {
