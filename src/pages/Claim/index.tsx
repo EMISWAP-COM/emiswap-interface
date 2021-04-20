@@ -148,6 +148,9 @@ export default function Claim({
   };
 
   const onError = error => {
+    if (error?.code === 4001) {
+      return;
+    }
     dispatch(
       addPopup({
         key: 'useClaim',
