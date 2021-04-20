@@ -157,58 +157,65 @@ export default function Claim({
   };
 
   const handleSubmit = () => {
-    claimCallback(tokenName, +typedValue).then(data => {
-      const { signature, nonce, amount, user_id, id } = data;
-      const args = [account, amount, nonce, `0x${signature}`];
+    claimCallback(tokenName, +typedValue)
+      .then(data => {
+        const { signature, nonce, amount, user_id, id } = data;
+        const args = [account, amount, nonce, `0x${signature}`];
 
-      contract.estimateGas
-        .mintSigned(...args)
-        .then(gasLimit => {
-          return contract
-            .mintSigned(...args, { gasLimit })
-            .then(response => {
-              console.log('mintSigned response', response);
-              addTransaction(response);
-              return response.hash;
-            })
-            .then(onSuccess)
-            .catch(onError);
-        })
-        .catch(error => {
-          console.log('contract.mintSigned unexpected error', error);
-          dispatch(
-            addPopup({
-              key: 'useClaim',
-              content: {
-                status: {
-                  name: error.message,
-                  isError: true,
+        contract.estimateGas
+          .mintSigned(...args)
+          .then(gasLimit => {
+            return contract
+              .mintSigned(...args, { gasLimit })
+              .then(response => {
+                addTransaction(response);
+                return response.hash;
+              })
+              .then(onSuccess)
+              .catch(onError);
+          })
+          .catch(error => {
+            dispatch(
+              addPopup({
+                key: 'useClaim',
+                content: {
+                  status: {
+                    name: error.message,
+                    isError: true,
+                  },
                 },
-              },
-            }),
-          );
-          return { state: 'errored', error_message: error.message };
-        })
-        .then(transactionResult => {
-          const transactionStateEndPoint = `${baseUrl}/v1/private/users/${user_id}/transactions/${id}`;
-
-          handleAuth().then(token => {
-            fetchWrapper.put(transactionStateEndPoint, {
-              headers: {
-                authorization: token,
-              },
-              body: JSON.stringify(transactionResult),
+              }),
+            );
+            return { state: 'errored', error_message: error.message };
+          })
+          .then(transactionResult => {
+            const transactionStateEndPoint = `${baseUrl}/v1/private/users/${user_id}/transactions/${id}`;
+            handleAuth().then(token => {
+              fetchWrapper.put(transactionStateEndPoint, {
+                headers: {
+                  authorization: token,
+                },
+                body: JSON.stringify(transactionResult),
+              });
             });
           });
-        });
-    });
+      })
+      .catch(e => {
+        dispatch(
+          addPopup({
+            key: 'claim callback',
+            content: {
+              status: {
+                name: e.message,
+                isError: true,
+              },
+            },
+          }),
+        );
+      });
   };
 
   const isTransactionDisabled = () => {
-    console.log(unfrozenESWbalance.ESW, formattedUnfrozenBalance, typedValue);
-    // console.log(
-    //   unfrozenESWbalance.ESW
-    //   .toString(), parseUnits(typedValue.toString(), 18))
     if (unfrozenESWbalance.ESW && typedValue) {
       return (
         parseUnits(unfrozenESWbalance.ESW.toString(), 18).lt(

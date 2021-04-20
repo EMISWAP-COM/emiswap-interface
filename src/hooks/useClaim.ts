@@ -1,12 +1,11 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { useESWContract } from './useContract';
 import { useAuth } from './useAuth';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { AppState } from '../state';
 import { useActiveWeb3React } from './index';
 import { parseUnits } from '@ethersproject/units';
 import { fetchWrapper } from '../api/fetchWrapper';
-import { addPopup } from '../state/application/actions';
 
 const ESW_ADDRESS = window['env'].REACT_APP_ESW_ID;
 const ESW_CLAIM_API = window['env'].REACT_APP_ESW_CLAIM_API;
@@ -19,43 +18,26 @@ export function useClaim() {
 
   const handleAuth = useAuth();
 
-  const dispatch = useDispatch();
-
   const claimCallback = (tokenName: string, amount: number) => {
     if (contractESW) {
       return contractESW.walletNonce(account).then((nonce: BigNumber) => {
-        return handleAuth()
-          .then((token: string) => {
-            return fetchWrapper.post(ESW_CLAIM_API, {
-              headers: {
-                authorization: token,
-              },
-              body: JSON.stringify({
-                amount: parseUnits(amount.toString(), 18).toString(),
-                nonce: nonce.add(1).toNumber(),
-                contract_address: ESW_ADDRESS,
-                token_name: tokenName,
-                userID: id,
-                chainID: ESW_CLAIM_CHAIN_ID,
-              }),
-            });
-          })
-          .catch(e => {
-            dispatch(
-              addPopup({
-                key: 'useClaim',
-                content: {
-                  status: {
-                    name: e.message,
-                    isError: true,
-                  },
-                },
-              }),
-            );
+        return handleAuth().then((token: string) => {
+          return fetchWrapper.post(ESW_CLAIM_API, {
+            headers: {
+              authorization: token,
+            },
+            body: JSON.stringify({
+              amount: parseUnits(amount.toString(), 18).toString(),
+              nonce: nonce.add(1).toNumber(),
+              contract_address: ESW_ADDRESS,
+              token_name: tokenName,
+              userID: id,
+              chainID: ESW_CLAIM_CHAIN_ID,
+            }),
           });
+        });
       });
     }
-    return Promise.resolve(undefined);
   };
   return { claimCallback };
 }
