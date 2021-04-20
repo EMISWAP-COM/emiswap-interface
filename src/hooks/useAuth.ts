@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../state';
 import { useActiveWeb3React } from './index';
 import Web3 from 'web3';
-import { useLocalStorage } from './useLocalStorage';
+// import { useLocalStorage } from './useLocalStorage';
 import { useCallback } from 'react';
 import { fetchWrapper } from '../api/fetchWrapper';
 import { addPopup } from '../state/application/actions';
@@ -27,7 +27,6 @@ export function useAuth() {
   const id = user?.info?.id;
   const { library, account } = useActiveWeb3React();
   // const [authToken, setAuthToken] = useLocalStorage('auth_token', null);
-  const [storedAccount, setStoredAccount] = useLocalStorage('stored_account', null);
   const dispatch = useDispatch();
 
   const initSession = useCallback(
@@ -90,10 +89,12 @@ export function useAuth() {
   );
 
   const init = useCallback(async () => {
-    const isAccountChanged = account !== storedAccount;
     const authTokenData = window.localStorage.getItem('auth_token');
-    const authToken = authTokenData ? JSON.parse(authTokenData) : null;
+    const storedAccount = window.localStorage.getItem('stored_account');
+    const isAccountChanged = account !== storedAccount;
 
+    const authToken = authTokenData ? JSON.parse(authTokenData) : null;
+    debugger;
     if (authToken && !isAccountChanged) {
       const isExpired = Date.now() - authToken.time > 0;
       if (!isExpired) {
@@ -111,7 +112,7 @@ export function useAuth() {
         window.localStorage.setItem('auth_token', tokenData);
 
         // setAuthToken({ time: tokenLifespan * 1000, token: sessionToken.token });
-        setStoredAccount(account);
+        window.localStorage.setItem('stored_account', account);
         return sessionToken.token;
       } catch (e) {
         dispatch(
@@ -128,16 +129,7 @@ export function useAuth() {
         return Promise.reject(e);
       }
     }
-  }, [
-    account,
-    id,
-    signToMetamask,
-    dispatch,
-    initSession,
-    signSession,
-    storedAccount,
-    setStoredAccount,
-  ]);
+  }, [account, id, signToMetamask, dispatch, initSession, signSession]);
 
   return init;
 }
