@@ -110,7 +110,7 @@ export function useInvestCallback(
       const amount: string =
         (inputCurrency?.decimals && inputCurrency?.decimals !== 0
           ? inputParseAmount
-              ?.multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(inputCurrency?.decimals)))
+              ?.multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(Math.floor(inputCurrency?.decimals))))
               .toFixed(0)
           : inputParseAmount?.toFixed(0)) || '';
 
@@ -125,7 +125,7 @@ export function useInvestCallback(
                 ?.multiply(
                   JSBI.exponentiate(
                     JSBI.BigInt(10),
-                    JSBI.BigInt(currencies[Field.INPUT]?.decimals),
+                    JSBI.BigInt(Math.floor(currencies[Field.INPUT]?.decimals as number)),
                   ),
                 )
                 .toFixed(0)
