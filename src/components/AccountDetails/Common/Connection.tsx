@@ -154,7 +154,7 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
     history.push('/claim/ESW');
   };
 
-  const isCollectDisabled = !balance?.available.ESW;
+  const isCollectDisabled = !Number(balance?.available.ESW);
 
   return (
     <>
