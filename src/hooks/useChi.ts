@@ -26,7 +26,7 @@ export default function useChiBalance(): JSBI | undefined {
 
 export function useHasChi(minAmount: number): boolean | undefined {
   const balance = useChiBalance();
-  return useMemo(() => balance && JSBI.greaterThan(balance, JSBI.BigInt(minAmount)), [
+  return useMemo(() => balance && JSBI.greaterThan(balance, JSBI.BigInt(Math.floor(minAmount))), [
     balance,
     minAmount,
   ]);

@@ -374,7 +374,7 @@ export function useSwapCallback(
               referralAddress,
             ];
             obj = {
-              value: `0x${BigInt(+formattedAmounts.INPUT * 10 ** WETH!.decimals).toString(16)}`,
+              value: `0x${JSBI.BigInt(Math.floor(+formattedAmounts.INPUT * 10 ** WETH!.decimals)).toString(16)}`,
             };
           } else {
             method = 'swapExactTokensForETH';

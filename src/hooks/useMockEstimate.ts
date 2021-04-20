@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { AppState } from '../state';
 import { useCurrency } from './Tokens';
-import { ZERO_ADDRESS } from '@uniswap/sdk';
+import { JSBI, ZERO_ADDRESS } from '@uniswap/sdk';
 import { useCurrencyBalances } from '../state/wallet/hooks';
 import { useActiveWeb3React } from './index';
 
@@ -15,19 +15,22 @@ export const useMockEstimate = (type: string) => {
     const ethAmount = relevantTokenBalances[0];
     switch (type) {
       case 'swap':
-        isEnough =
-          BigInt((ethAmount?.toExact() as any) * 10 ** 18) >
-          BigInt(gasPrice * 10 ** 9 * window['env'].REACT_APP_MIN_GAS_FOR_SWAP);
+        isEnough = JSBI.greaterThan(
+          JSBI.BigInt(Math.floor((ethAmount?.toExact() as any) * 10 ** 18)),
+          JSBI.BigInt(Math.floor(gasPrice * 10 ** 9 * window['env'].REACT_APP_MIN_GAS_FOR_SWAP))
+        );
         break;
       case 'pool':
-        isEnough =
-          BigInt((ethAmount?.toExact() as any) * 10 ** 18) >
-          BigInt(gasPrice * 10 ** 9 * window['env'].REACT_APP_MIN_GAS_FOR_POOL);
+        isEnough = JSBI.greaterThan(
+          JSBI.BigInt(Math.floor((ethAmount?.toExact() as any) * 10 ** 18)),
+          JSBI.BigInt(Math.floor(gasPrice * 10 ** 9 * window['env'].REACT_APP_MIN_GAS_FOR_POOL))
+        );
         break;
       case 'invest':
-        isEnough =
-          BigInt((ethAmount?.toExact() as any) * 10 ** 18) >
-          BigInt(gasPrice * 10 ** 9 * window['env'].REACT_APP_MIN_GAS_FOR_INVEST);
+        isEnough = JSBI.greaterThan(
+          JSBI.BigInt(Math.floor((ethAmount?.toExact() as any) * 10 ** 18)),
+          JSBI.BigInt(Math.floor(gasPrice * 10 ** 9 * window['env'].REACT_APP_MIN_GAS_FOR_INVEST))
+        );
         break;
     }
   }
