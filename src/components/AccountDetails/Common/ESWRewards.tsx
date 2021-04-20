@@ -83,7 +83,8 @@ export const ESWRewards = () => {
             <span>Providing Liquidity</span>
             <div>
               {/*<RewardsValue>{evalPoolBonuses()}</RewardsValue>*/}
-              0.00 &nbsp;ESW
+              <RewardsValue> 0.00</RewardsValue>
+              &nbsp;ESW
             </div>
           </RewardsItem>
         </Calculating>
