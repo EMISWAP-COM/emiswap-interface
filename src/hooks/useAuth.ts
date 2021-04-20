@@ -26,7 +26,7 @@ export function useAuth() {
   const user = useSelector((state: AppState) => state.user);
   const id = user?.info?.id;
   const { library, account } = useActiveWeb3React();
-  const [authToken, setAuthToken] = useLocalStorage('auth_token', null);
+  // const [authToken, setAuthToken] = useLocalStorage('auth_token', null);
   const [storedAccount, setStoredAccount] = useLocalStorage('stored_account', null);
   const dispatch = useDispatch();
 
@@ -91,6 +91,8 @@ export function useAuth() {
 
   const init = useCallback(async () => {
     const isAccountChanged = account !== storedAccount;
+    const authTokenData = window.localStorage.getItem('auth_token');
+    const authToken = authTokenData ? JSON.parse(authTokenData) : null;
 
     if (authToken && !isAccountChanged) {
       const isExpired = Date.now() - authToken.time > 0;
@@ -104,7 +106,11 @@ export function useAuth() {
         const signature = await signToMetamask(session.auth_message, account);
         const sessionToken = await signSession(session.session_id, signature);
         const tokenLifespan = parseJWT(sessionToken.token)?.exp;
-        setAuthToken({ time: tokenLifespan * 1000, token: sessionToken.token });
+
+        const tokenData = JSON.stringify({ time: tokenLifespan * 1000, token: sessionToken.token });
+        window.localStorage.setItem('auth_token', tokenData);
+
+        // setAuthToken({ time: tokenLifespan * 1000, token: sessionToken.token });
         setStoredAccount(account);
         return sessionToken.token;
       } catch (e) {
@@ -123,10 +129,8 @@ export function useAuth() {
       }
     }
   }, [
-    authToken,
     account,
     id,
-    setAuthToken,
     signToMetamask,
     dispatch,
     initSession,
