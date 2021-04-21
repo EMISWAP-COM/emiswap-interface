@@ -20,7 +20,7 @@ export const Level = styled.div`
   color: #ffffff;
   font-size: 0.7rem;
   padding: 1px 3px 1px 2px;
-  margin: 0 6px;
+  margin-right: 6px;
 `;
 
 export const MenuItem = styled(RowBetween)`
