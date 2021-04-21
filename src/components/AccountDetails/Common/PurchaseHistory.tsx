@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components/macro';
 import { Header } from '../styleds';
 import { useSelector } from 'react-redux';
@@ -45,7 +45,7 @@ const TableRow = styled.div`
   }
 `;
 
-const Date = styled.div`
+const DateField = styled.div`
   min-width: 8.5rem;
 `;
 
@@ -100,8 +100,38 @@ const NoContent = styled.div`
 
 export const PurchaseHistory = () => {
   const { referrals } = useSelector((state: AppState) => state.cabinets.performance);
-  const { histories } = useSelector((state: AppState) => state.cabinets.balance);
+  const { histories, details } = useSelector((state: AppState) => state.cabinets.balance);
   const deposit = histories?.deposits;
+  const {
+    compensation = [],
+    pool_bonus = [],
+    pool_bonus_10x = [],
+    pool_swap_bonus = [],
+    pool_referral_bonus = [],
+  } = details;
+
+  const bonuses = { pool_bonus, pool_bonus_10x, pool_swap_bonus, pool_referral_bonus };
+
+  const swapping = useMemo(
+    () =>
+      Object.entries(bonuses)
+        .flatMap(([bonusName, bonuses]) => {
+          return bonuses.map(bonus => ({ ...bonus, bonusName }));
+        })
+        .sort((transactionA, transactionB) => {
+          const dateA = new Date(transactionA.created_at).getTime();
+          const dateB = new Date(transactionB.created_at).getTime();
+
+          if (dateA && dateB) {
+            return dateA - dateB;
+          }
+
+          return 0;
+        }),
+    [pool_bonus, pool_bonus_10x, pool_swap_bonus, pool_referral_bonus],
+  );
+
+  console.log('------', swapping);
 
   return (
     <>
@@ -109,8 +139,8 @@ export const PurchaseHistory = () => {
       <Table amount={deposit.length}>
         {deposit &&
           deposit.map(({ amount, token, created_at, transaction_hash }) => (
-            <TableRow key={transaction_hash}>
-              <Date>{convertDate(created_at, DateFormat.full)}</Date>
+            <TableRow key={transaction_hash + created_at}>
+              <DateField>{convertDate(created_at, DateFormat.full)}</DateField>
               <LevelWrapper>
                 <Cost>
                   <span>{convertBigDecimal(amount)}</span>&nbsp; {token}
@@ -131,8 +161,8 @@ export const PurchaseHistory = () => {
         {referrals &&
           referrals.map(({ deposits, level }) => {
             return deposits.map(({ transaction_hash, amount, token, created_at }) => (
-              <TableRow key={transaction_hash}>
-                <Date>{convertDate(created_at, DateFormat.full)}</Date>
+              <TableRow key={transaction_hash + created_at}>
+                <DateField>{convertDate(created_at, DateFormat.full)}</DateField>
                 <LevelWrapper>
                   <Level>{level}lvl</Level>
                   <Cost>
@@ -150,6 +180,47 @@ export const PurchaseHistory = () => {
           </TableRow>
         )}
       </TableLong>
+
+      <Header>Your Fee Compensation History</Header>
+      <Table amount={deposit.length}>
+        {compensation.map(({ amount, token, created_at, transaction_hash }) => (
+          <TableRow key={transaction_hash + created_at}>
+            <DateField>{convertDate(created_at, DateFormat.full)}</DateField>
+            <LevelWrapper>
+              <Cost>
+                <span>{convertBigDecimal(amount)}</span>&nbsp; {token}
+              </Cost>
+            </LevelWrapper>
+            <Wallet>{shortenHash(transaction_hash, 7)}</Wallet>
+          </TableRow>
+        ))}
+        {!deposit.length && (
+          <TableRow>
+            <NoContent>No content</NoContent>
+          </TableRow>
+        )}
+      </Table>
+
+      <Header>Your Swapping History</Header>
+      <Table amount={deposit.length}>
+        {swapping &&
+          swapping.map(({ amount, token, created_at, transaction_hash }) => (
+            <TableRow key={transaction_hash + created_at}>
+              <DateField>{convertDate(created_at, DateFormat.full)}</DateField>
+              <LevelWrapper>
+                <Cost>
+                  <span>{convertBigDecimal(amount)}</span>&nbsp; {token}
+                </Cost>
+              </LevelWrapper>
+              <Wallet>{shortenHash(transaction_hash, 7)}</Wallet>
+            </TableRow>
+          ))}
+        {!deposit.length && (
+          <TableRow>
+            <NoContent>No content</NoContent>
+          </TableRow>
+        )}
+      </Table>
     </>
   );
 };

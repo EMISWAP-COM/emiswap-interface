@@ -41,6 +41,11 @@ interface Balance {
   details: {
     locked: LockedDeposit;
     deposit: Deposit[];
+    compensation: Deposit[];
+    pool_bonus: Deposit[];
+    pool_bonus_10x: Deposit[];
+    pool_swap_bonus: Deposit[];
+    pool_referral_bonus: Deposit[];
   };
   total_fee_compensation: string;
   available: PaymentOperationTokens;
@@ -152,6 +157,11 @@ const initialState: CabinetState = {
     details: {
       locked: {} as LockedDeposit,
       deposit: [] as Deposit[],
+      compensation: [],
+      pool_bonus: [],
+      pool_bonus_10x: [],
+      pool_swap_bonus: [],
+      pool_referral_bonus: [],
     },
     total_fee_compensation: '',
     available: {},
