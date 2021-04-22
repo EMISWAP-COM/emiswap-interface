@@ -74,10 +74,8 @@ export default function CrowdsaleCurrencyList({
                   '-'
                 )}
               </Text>
-            ) : account ? (
-              <Loader />
             ) : (
-              '-'
+              (account && allBalances?.length) ? (<Loader/>) : ('-')
             )}
           </AutoColumn>
         </StyledMenuItem>
