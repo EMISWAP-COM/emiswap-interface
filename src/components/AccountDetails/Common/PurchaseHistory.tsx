@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { convertBigDecimal, convertDate, DateFormat, shortenHash } from '../uitls';
 import { Level } from '../styleds';
-import { marginLeft } from 'styled-system';
 
 const Table = styled.div<{ amount?: number }>`
   color: ${({ theme }) => theme.grey6};
@@ -151,28 +150,23 @@ export const PurchaseHistory = () => {
     pool_referral_bonus = [],
   } = details;
 
-  const bonuses = { pool_bonus, pool_bonus_10x, pool_swap_bonus, pool_referral_bonus };
+  const swapping = useMemo(() => {
+    const bonuses = { pool_bonus, pool_bonus_10x, pool_swap_bonus, pool_referral_bonus };
+    return Object.entries(bonuses)
+      .flatMap(([bonusName, bonuses]) => {
+        return bonuses.map(bonus => ({ ...bonus, bonusName }));
+      })
+      .sort((transactionA, transactionB) => {
+        const dateA = new Date(transactionA.created_at).getTime();
+        const dateB = new Date(transactionB.created_at).getTime();
 
-  const swapping = useMemo(
-    () =>
-      Object.entries(bonuses)
-        .flatMap(([bonusName, bonuses]) => {
-          return bonuses.map(bonus => ({ ...bonus, bonusName }));
-        })
-        .sort((transactionA, transactionB) => {
-          const dateA = new Date(transactionA.created_at).getTime();
-          const dateB = new Date(transactionB.created_at).getTime();
+        if (dateA && dateB) {
+          return dateA - dateB;
+        }
 
-          if (dateA && dateB) {
-            return dateA - dateB;
-          }
-
-          return 0;
-        }),
-    [pool_bonus, pool_bonus_10x, pool_swap_bonus, pool_referral_bonus],
-  );
-
-  console.log('------', swapping);
+        return 0;
+      });
+  }, [pool_bonus, pool_bonus_10x, pool_swap_bonus, pool_referral_bonus]);
 
   return (
     <>
