@@ -53,7 +53,8 @@ const TableRow = styled.div`
 `;
 
 const DateField = styled.div`
-  min-width: 9rem;
+  width: 8.2rem;
+
   @media screen and (max-width: 1200px) {
     position: relative;
     left: -1rem;
@@ -64,7 +65,16 @@ const DateField = styled.div`
 
 const LevelWrapper = styled.div`
   display: flex;
-  width: 7.3rem;
+  width: 6.5rem;
+
+  @media screen and (max-width: 1200px) {
+    justify-content: flex-end;
+  }
+`;
+
+const LevelWrapperLabeled = styled.div`
+  display: flex;
+  width: 8rem;
 
   @media screen and (max-width: 1200px) {
     justify-content: flex-end;
@@ -137,6 +147,10 @@ const Label = styled.span`
     display: flex;
   }
 `;
+const BonusName = styled.span`
+  width: 7rem;
+  text-overflow: ellipsis;
+`;
 
 export const PurchaseHistory = () => {
   const { referrals } = useSelector((state: AppState) => state.cabinets.performance);
@@ -174,7 +188,7 @@ export const PurchaseHistory = () => {
       <TableTitles>
         <DateField>Timestamp</DateField>
         <LevelWrapper>Purchased tokens</LevelWrapper>
-        <Wallet marginLeft={170}>Txhash</Wallet>
+        <Wallet marginLeft={312}>Txhash</Wallet>
       </TableTitles>
       <Table amount={deposit.length}>
         {deposit &&
@@ -193,7 +207,7 @@ export const PurchaseHistory = () => {
               </Cell>
               <Cell>
                 <Label>Txhash</Label>
-                <Wallet marginLeft={170}>{shortenHash(transaction_hash)}</Wallet>
+                <Wallet marginLeft={312}>{shortenHash(transaction_hash)}</Wallet>
               </Cell>
             </TableRow>
           ))}
@@ -207,8 +221,8 @@ export const PurchaseHistory = () => {
       <Header>Referral Purchase History</Header>
       <TableTitles>
         <DateField>Timestamp</DateField>
-        <LevelWrapper>Purchased tokens</LevelWrapper>
-        <Wallet marginLeft={170}>Txhash</Wallet>
+        <LevelWrapperLabeled>Purchased tokens</LevelWrapperLabeled>
+        <Wallet marginLeft={288}>Txhash</Wallet>
       </TableTitles>
       <Table amount={referrals.length}>
         {referrals &&
@@ -220,16 +234,16 @@ export const PurchaseHistory = () => {
                 </Cell>
                 <Cell>
                   <Label>Purchased tokens</Label>
-                  <LevelWrapper>
+                  <LevelWrapperLabeled>
                     <Level>{level}lvl</Level>
                     <Cost>
                       <span>{convertBigDecimal(amount)}</span>&nbsp; {token}
                     </Cost>
-                  </LevelWrapper>
+                  </LevelWrapperLabeled>
                 </Cell>
                 <Cell>
                   <Label>Txhash</Label>
-                  <Wallet marginLeft={170}>{shortenHash(transaction_hash)}</Wallet>
+                  <Wallet marginLeft={288}>{shortenHash(transaction_hash)}</Wallet>
                 </Cell>
               </TableRow>
             ));
@@ -246,7 +260,7 @@ export const PurchaseHistory = () => {
         <DateField>Timestamp</DateField>
         <LevelWrapper>Transaction fee</LevelWrapper>
         <LevelWrapper>Received tokens</LevelWrapper>
-        <Wallet marginLeft={53}>Txhash</Wallet>
+        <Wallet marginLeft={208}>Txhash</Wallet>
       </TableTitles>
       <TableCompensation amount={deposit.length}>
         {compensation.map(({ amount, token, created_at, transaction_hash }) => (
@@ -259,7 +273,7 @@ export const PurchaseHistory = () => {
 
               <LevelWrapper>
                 <Cost>
-                  <span>-</span>&nbsp; USD
+                  <span>-</span>&nbsp; DAI
                 </Cost>
               </LevelWrapper>
             </Cell>
@@ -274,7 +288,7 @@ export const PurchaseHistory = () => {
             </Cell>
             <Cell>
               <Label>Txhash</Label>
-              <Wallet marginLeft={53}>{shortenHash(transaction_hash)}</Wallet>
+              <Wallet marginLeft={208}>{shortenHash(transaction_hash)}</Wallet>
             </Cell>
           </TableRow>
         ))}
@@ -285,17 +299,18 @@ export const PurchaseHistory = () => {
         )}
       </TableCompensation>
 
-      <Header>Your Swapping History</Header>
+      <Header>Your Swapping Reward History</Header>
       <TableTitles>
         <DateField>Timestamp</DateField>
         <LevelWrapper>Swapped tokens</LevelWrapper>
-        <LevelWrapper>USDT Equivalent</LevelWrapper>
-        <LevelWrapper>Compensation</LevelWrapper>
+        <LevelWrapper>DAI Equivalent</LevelWrapper>
+        <LevelWrapper>Reward</LevelWrapper>
+        <LevelWrapper>Bonus Program</LevelWrapper>
         <Wallet>Txhash</Wallet>
       </TableTitles>
       <TableSwapping amount={deposit.length}>
         {swapping &&
-          swapping.map(({ amount, token, created_at, transaction_hash }) => (
+          swapping.map(({ amount, token, created_at, transaction_hash, amount_dai, bonusName }) => (
             <TableRow key={transaction_hash + created_at}>
               <Cell>
                 <DateField>{convertDate(created_at, DateFormat.full)}</DateField>
@@ -304,24 +319,30 @@ export const PurchaseHistory = () => {
                 <Label>Swapped tokens</Label>
                 <LevelWrapper>
                   <Cost>
-                    <span>-</span>&nbsp; USD
+                    <span>-</span>&nbsp;
                   </Cost>
                 </LevelWrapper>
               </Cell>
               <Cell>
-                <Label>USDT Equivalent</Label>
+                <Label>DAI Equivalent</Label>
                 <LevelWrapper>
                   <Cost>
-                    <span>-</span>&nbsp; USD
+                    <span>{convertBigDecimal(amount_dai)}</span>&nbsp; DAI
                   </Cost>
                 </LevelWrapper>
               </Cell>
               <Cell>
-                <Label>Compensation</Label>
+                <Label>Reward</Label>
                 <LevelWrapper>
                   <Cost>
                     <span>{convertBigDecimal(amount)}</span>&nbsp; {token}
                   </Cost>
+                </LevelWrapper>
+              </Cell>
+              <Cell>
+                <Label>Bonus program</Label>
+                <LevelWrapper>
+                  <BonusName>{bonusName}</BonusName>&nbsp;
                 </LevelWrapper>
               </Cell>
               <Cell>

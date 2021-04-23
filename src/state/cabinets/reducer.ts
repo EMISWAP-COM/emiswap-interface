@@ -85,6 +85,7 @@ interface Deposit {
   created_at: string;
   available_at: string;
   amount: string;
+  amount_dai: string | null;
 }
 
 type LockedDeposit = {
