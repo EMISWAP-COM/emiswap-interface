@@ -91,6 +91,10 @@ const Table = styled.div`
   }
 `;
 
+const Amount = styled.span`
+  margin-right: 6px;
+`;
+
 const Referrals = styled(Table)``;
 
 const ReferralPurchases = styled(Table)``;
@@ -136,15 +140,15 @@ export const ReferralPerformance = () => {
           <Title>Total Referrals</Title>
           <Cell>{normalizeNumber(referrals.length)}</Cell>
           <Cell>
-            {normalizeNumber(level1?.referrals_count)}
+            <Amount>{normalizeNumber(level1?.referrals_count)}</Amount>
             <Level>1lvl</Level>
           </Cell>
           <Cell>
-            {normalizeNumber(level2?.referrals_count)}
+            <Amount>{normalizeNumber(level2?.referrals_count)}</Amount>
             <Level>2lvl</Level>
           </Cell>
           <Cell>
-            {normalizeNumber(level3?.referrals_count)}
+            <Amount>{normalizeNumber(level3?.referrals_count)}</Amount>
             <Level>3lvl</Level>
           </Cell>
         </Referrals>
@@ -153,15 +157,15 @@ export const ReferralPerformance = () => {
           <Title>Total Ref. Purchases, ESW</Title>
           <Cell>{convertBigDecimal(total.bought.ESW)}</Cell>
           <Cell>
-            {convertBigDecimal(level1?.bought.ESW)}
+            <Amount>{convertBigDecimal(level1?.bought.ESW)}</Amount>
             <Level>1lvl</Level>
           </Cell>
           <Cell>
-            {convertBigDecimal(level2?.bought.ESW)}
+            <Amount>{convertBigDecimal(level2?.bought.ESW)}</Amount>
             <Level>2lvl</Level>
           </Cell>
           <Cell>
-            {convertBigDecimal(level3?.bought.ESW)}
+            <Amount>{convertBigDecimal(level3?.bought.ESW)}</Amount>
             <Level>3lvl</Level>
           </Cell>
         </ReferralPurchases>
