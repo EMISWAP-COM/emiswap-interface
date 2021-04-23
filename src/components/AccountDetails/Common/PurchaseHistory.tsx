@@ -278,7 +278,7 @@ export const PurchaseHistory = () => {
             </Cell>
           </TableRow>
         ))}
-        {!deposit.length && (
+        {!compensation.length && (
           <TableRow>
             <NoContent>No content</NoContent>
           </TableRow>
@@ -330,7 +330,7 @@ export const PurchaseHistory = () => {
               </Cell>
             </TableRow>
           ))}
-        {!deposit.length && (
+        {!swapping.length && (
           <TableRow>
             <NoContent>No content</NoContent>
           </TableRow>
