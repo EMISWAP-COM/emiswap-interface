@@ -464,9 +464,6 @@ export default () => {
     const win = window.open('https://crowdsale.emidao.org/whitepaper', '_blank');
     win.focus();
   };
-  const btnClick2 = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
   const btnClick3 = () => {
     const win = window.open('https://crowdsale.emidao.org/presentation', '_blank');
     win.focus();
