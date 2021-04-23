@@ -5,6 +5,8 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { convertBigDecimal, convertDate, DateFormat, shortenHash } from '../uitls';
 import { Level } from '../styleds';
+import { ExternalLink } from '../../../theme';
+import { useActiveWeb3React } from '../../../hooks';
 
 const Table = styled.div<{ amount?: number }>`
   color: ${({ theme }) => theme.grey6};
@@ -153,19 +155,17 @@ const BonusName = styled.span`
 `;
 
 export const PurchaseHistory = () => {
+  const { chainId } = useActiveWeb3React();
   const { referrals } = useSelector((state: AppState) => state.cabinets.performance);
   const { histories, details } = useSelector((state: AppState) => state.cabinets.balance);
   const deposit = histories?.deposits;
-  const {
-    compensation = [],
-    pool_bonus = [],
-    pool_bonus_10x = [],
-    pool_swap_bonus = [],
-    pool_referral_bonus = [],
-  } = details;
+  const { compensation = [], swap_bonus_10x = [], swap_bonus = [] } = details;
+
+  const ETHERSCAN_BASE_URL =
+    chainId === 42 ? 'https://kovan.etherscan.io/' : 'https://etherscan.io/';
 
   const swapping = useMemo(() => {
-    const bonuses = { pool_bonus, pool_bonus_10x, pool_swap_bonus, pool_referral_bonus };
+    const bonuses = { swap_bonus_10x, swap_bonus };
     return Object.entries(bonuses)
       .flatMap(([bonusName, bonuses]) => {
         return bonuses.map(bonus => ({ ...bonus, bonusName }));
@@ -180,7 +180,7 @@ export const PurchaseHistory = () => {
 
         return 0;
       });
-  }, [pool_bonus, pool_bonus_10x, pool_swap_bonus, pool_referral_bonus]);
+  }, [swap_bonus_10x, swap_bonus]);
 
   return (
     <>
@@ -207,7 +207,9 @@ export const PurchaseHistory = () => {
               </Cell>
               <Cell>
                 <Label>Txhash</Label>
-                <Wallet marginLeft={312}>{shortenHash(transaction_hash)}</Wallet>
+                <ExternalLink href={`${ETHERSCAN_BASE_URL}/tx/${transaction_hash}`}>
+                  <Wallet marginLeft={312}>{shortenHash(transaction_hash)}</Wallet>
+                </ExternalLink>
               </Cell>
             </TableRow>
           ))}
@@ -243,7 +245,9 @@ export const PurchaseHistory = () => {
                 </Cell>
                 <Cell>
                   <Label>Txhash</Label>
-                  <Wallet marginLeft={288}>{shortenHash(transaction_hash)}</Wallet>
+                  <ExternalLink href={`${ETHERSCAN_BASE_URL}/tx/${transaction_hash}`}>
+                    <Wallet marginLeft={288}>{shortenHash(transaction_hash)}</Wallet>
+                  </ExternalLink>
                 </Cell>
               </TableRow>
             ));
@@ -288,7 +292,9 @@ export const PurchaseHistory = () => {
             </Cell>
             <Cell>
               <Label>Txhash</Label>
-              <Wallet marginLeft={208}>{shortenHash(transaction_hash)}</Wallet>
+              <ExternalLink href={`${ETHERSCAN_BASE_URL}/tx/${transaction_hash}`}>
+                <Wallet marginLeft={208}>{shortenHash(transaction_hash)}</Wallet>
+              </ExternalLink>
             </Cell>
           </TableRow>
         ))}
@@ -347,7 +353,9 @@ export const PurchaseHistory = () => {
               </Cell>
               <Cell>
                 <Label>Txhash</Label>
-                <Wallet>{shortenHash(transaction_hash)}</Wallet>
+                <ExternalLink href={`${ETHERSCAN_BASE_URL}/tx/${transaction_hash}`}>
+                  <Wallet>{shortenHash(transaction_hash)}</Wallet>
+                </ExternalLink>
               </Cell>
             </TableRow>
           ))}

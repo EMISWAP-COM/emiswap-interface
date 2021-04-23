@@ -46,6 +46,8 @@ interface Balance {
     pool_bonus_10x: Deposit[];
     pool_swap_bonus: Deposit[];
     pool_referral_bonus: Deposit[];
+    swap_bonus: Deposit[];
+    swap_bonus_10x: Deposit[];
   };
   total_fee_compensation: string;
   available: PaymentOperationTokens;
@@ -163,6 +165,8 @@ const initialState: CabinetState = {
       pool_bonus_10x: [],
       pool_swap_bonus: [],
       pool_referral_bonus: [],
+      swap_bonus: [],
+      swap_bonus_10x: [],
     },
     total_fee_compensation: '',
     available: {},
