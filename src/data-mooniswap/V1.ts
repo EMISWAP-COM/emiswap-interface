@@ -209,7 +209,9 @@ export function useMooniswapTrade(
   const amount =
     inputCurrency?.decimals && inputCurrency?.decimals !== 0
       ? parseAmount
-          ?.multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(Math.floor(inputCurrency?.decimals))))
+          ?.multiply(
+            JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(Math.floor(inputCurrency?.decimals))),
+          )
           .toFixed(0)
       : parseAmount?.toFixed(0);
   const params = [
@@ -265,9 +267,10 @@ export function useMooniswapTrade(
 
   const exactAmount = new TokenAmount(
     independentField === Field.INPUT ? outputCurrency : inputCurrency,
-    JSBI.BigInt(typeof results.result.returnAmount === 'number'
-      ? Math.floor(results.result.returnAmount)
-      : results.result.returnAmount
+    JSBI.BigInt(
+      typeof results.result.returnAmount === 'number'
+        ? Math.floor(results.result.returnAmount)
+        : results.result.returnAmount,
     ),
   );
   const route =
