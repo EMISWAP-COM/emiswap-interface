@@ -270,52 +270,100 @@ const Body = styled.div`
 
   .chart-block {
     display: flex;
+    
+    .chart-pie {
+      margin-top: 50px;
+      margin-left: auto;
+    }
 
     &__color-block {
       border-radius: 10px;
       width: 32px;
       height: 32px;
     }
+    
     &__color0 {
-      background: #c79d6a;
+      background: #A5DA6F;
     }
+    
     &__color1 {
       background: #074223;
+
     }
     &__color2 {
       background: #006450;
     }
+    
     &__color3 {
-      background: #ffc925;
+     background: #09CE95;
     }
+    
     &__color4 {
       background: #58ae00;
     }
+    
     &__color5 {
-      background: #09ce95;
+      background: #7BBBDF;
+    }
+    
+    &__color6 {
+      background: #FFAC7D;
+    }
+    
+    &__color7 {
+      background: #FFD541;
+    }
+    
+    &__color8 {
+      background: #8096E3;
     }
 
     &__text-line {
       display: flex;
       margin-bottom: 21px;
     }
+    
+     &__item-name {
+      margin-right: 80px;
+    }
+    
+    &__item-value {
+      margin-left: auto !important;
+    }
 
     .grey-text {
       margin-left: 10px;
     }
+    
+    @media screen and (max-width: 1300px) {
+       &__item-name {
+        margin-right: 10px;
+      }
+    }
 
     @media screen and (max-width: 1000px) {
       flex-direction: column-reverse;
+      
       .chart-pie {
-        width: 200px;
+        width: 80%;
+        max-width: 300px;
         margin: 0 auto 30px;
         img {
           width: 100%;
         }
       }
+      
+      .chart-block__info {
+        max-width: 400px;
+        margin: auto;
+      }
     }
 
     @media screen and (max-width: 500px) {
+      .chart-block__info {
+        // margin: 0 20px 0 15px;
+      }
+      
       &__text-line {
         flex-wrap: wrap;
         justify-content: center;
@@ -329,6 +377,7 @@ const Body = styled.div`
   }
 
   .chart-description {
+    margin-top: 38px;
     font-family: Roboto;
     font-style: normal;
     font-weight: 300;
@@ -336,6 +385,11 @@ const Body = styled.div`
     line-height: 160%;
     letter-spacing: 0.01em;
     color: #555959;
+    
+    @media screen and (max-width: 1000px) {
+    margin-top: 16px;
+     text-align: center;
+    }
   }
 
   .last-block {
@@ -523,101 +577,65 @@ export default () => {
         </Body>
       </Accordion>
       <Accordion
-        header="Crowdsale Information"
-        btnText="Participate in crowdsale"
-        btnClick={btnClick2}
-        openClass="isOpen2"
-      >
-        <Body>
-          <div className="card-blocks">
-            <div className="card width1_5">
-              <div className="card-title">
-                Price
-                <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle" />
-              </div>
-              <div className="card-description">0.11 DAI</div>
-            </div>
-            <div className="card width1_5">
-              <div className="card-title">
-                Total Supply
-                <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle" />
-              </div>
-              <div className="card-description">200,000,000 ESW</div>
-            </div>
-            <div className="card width1_5">
-              <div className="card-title">
-                Crowdsale Allocation
-                <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle" />
-              </div>
-              <div className="card-description">Crowdsale Allocation 20% or 40,000,000 ESW</div>
-            </div>
-            <div className="card width1_5">
-              <div className="card-title">
-                Vesting
-                <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle" />
-              </div>
-              <div className="card-description">1 year with quarterly unlock by equal shares</div>
-            </div>
-            <div className="card width1_5">
-              <div className="card-title">
-                Token Type
-                <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle" />
-              </div>
-              <div className="card-description">ERC-20</div>
-            </div>
-          </div>
-          <div className="h4 mt46">
-            Users will be able to buy ESW tokens using following cryptocurrencies: DAI, USDT, USDC,
-            USDB, ETH, EMRX, WETH, WBTC, renBTC.{' '}
-          </div>
-        </Body>
-      </Accordion>
-      <Accordion
         header="Token Allocation Schedule"
-        btnText="Vesting Schedule"
+        btnText="Read White Paper"
         btnClick={btnClick3}
         openClass="isOpen3"
       >
         <Body>
-          <div className="grey-text mb24">Total Supply - 200,000,000 ESW</div>
           <div className="chart-block">
             <div className="chart-block__info">
               <div className="chart-block__text-line">
                 <div className="chart-block__color-block chart-block__color0" />
-                <div className="grey-text">- Protocol Security and Maintenance -</div>
-                <div className="grey-text grey-text-bold"> 30% (60,000,000 ESW)</div>
+                <div className="grey-text chart-block__item-name">Pre-Seed</div>
+                <div className="grey-text grey-text-bold chart-block__item-value">1.5%</div>
               </div>
               <div className="chart-block__text-line">
                 <div className="chart-block__color-block chart-block__color1" />
-                <div className="grey-text">- EmiSwap Decentralized Developers Community -</div>
-                <div className="grey-text grey-text-bold"> 20% (40,000,000 ESW)</div>
+                <div className="grey-text chart-block__item-name">Seed</div>
+                <div className="grey-text grey-text-bold chart-block__item-value">4.5%</div>
               </div>
               <div className="chart-block__text-line">
                 <div className="chart-block__color-block chart-block__color2" />
-                <div className="grey-text">- Ecosystem Growth and Community Building -</div>
-                <div className="grey-text grey-text-bold"> 22% (44,000,000 ESW)</div>
+                <div className="grey-text chart-block__item-name">Private A</div>
+                <div className="grey-text grey-text-bold chart-block__item-value">6%</div>
               </div>
               <div className="chart-block__text-line">
                 <div className="chart-block__color-block chart-block__color3" />
-                <div className="grey-text">- Crowdsale Participants -</div>
-                <div className="grey-text grey-text-bold"> 20% (40,000,000 ESW)</div>
+                <div className="grey-text chart-block__item-name">Launchpad Sales</div>
+                <div className="grey-text grey-text-bold chart-block__item-value">8%</div>
               </div>
               <div className="chart-block__text-line">
                 <div className="chart-block__color-block chart-block__color4" />
-                <div className="grey-text">- Advisers and Ambassadors -</div>
-                <div className="grey-text grey-text-bold"> 5% (10,000,000 ESW)</div>
+                <div className="grey-text chart-block__item-name">Early Liquidity Providers & Swappersors</div>
+                <div className="grey-text grey-text-bold chart-block__item-value">3%</div>
               </div>
               <div className="chart-block__text-line">
                 <div className="chart-block__color-block chart-block__color5" />
-                <div className="grey-text">- Early Liquidity Providers -</div>
-                <div className="grey-text grey-text-bold"> 3% (6,000,000 ESW)</div>
+                <div className="grey-text chart-block__item-name">Protocol Security & Maintenance</div>
+                <div className="grey-text grey-text-bold chart-block__item-value">30%</div>
+              </div>
+              <div className="chart-block__text-line">
+                <div className="chart-block__color-block chart-block__color6" />
+                <div className="grey-text chart-block__item-name">Ecosystem Growth & Community Extension</div>
+                <div className="grey-text grey-text-bold chart-block__item-value">22%</div>
+              </div>
+              <div className="chart-block__text-line">
+                <div className="chart-block__color-block chart-block__color7" />
+                <div className="grey-text chart-block__item-name">EmiSwap Decentralized Developers Community</div>
+                <div className="grey-text grey-text-bold chart-block__item-value">20%</div>
+              </div>
+              <div className="chart-block__text-line">
+                <div className="chart-block__color-block chart-block__color8" />
+                <div className="grey-text chart-block__item-name">Advisors, Ambassadors & Community Building</div>
+                <div className="grey-text grey-text-bold chart-block__item-value">5%</div>
               </div>
             </div>
             <div className="chart-pie">
               <img src={PieChart} alt="PieChart" />
             </div>
           </div>
-          <div className="chart-description">Learn more about ESW tokens vesting.</div>
+          <div className="chart-description">To know more about ESW tokens vesting.</div>
         </Body>
       </Accordion>
     </div>
