@@ -1,4 +1,4 @@
-import { Token, TokenAmount, ZERO_ADDRESS } from '@uniswap/sdk';
+import { JSBI, Token, TokenAmount, ZERO_ADDRESS } from '@uniswap/sdk';
 import React, { useCallback, useContext, useState } from 'react';
 import { Plus } from 'react-feather';
 import ReactGA from 'react-ga';
@@ -171,10 +171,10 @@ export default function AddLiquidity({
         referralAddress,
       ];
       optionalArgs = {
-        value: `0x${BigInt(
+        value: `0x${JSBI.BigInt(
           parsedAmounts[
             notEthValue === Field.CURRENCY_A ? Field.CURRENCY_B : Field.CURRENCY_A
-          ]?.raw.toString(),
+          ]?.raw.toString() || 0,
         ).toString(16)}`,
       };
     }
@@ -258,10 +258,10 @@ export default function AddLiquidity({
         referralAddress,
       ];
       optionalArgs = {
-        value: `0x${BigInt(
+        value: `0x${JSBI.BigInt(
           parsedAmounts[
             notEthValue === Field.CURRENCY_A ? Field.CURRENCY_B : Field.CURRENCY_A
-          ]?.raw.toString(),
+          ]?.raw.toString() || 0,
         ).toString(16)}`,
       };
     }

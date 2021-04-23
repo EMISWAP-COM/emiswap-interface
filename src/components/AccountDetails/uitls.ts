@@ -37,7 +37,7 @@ export const normalizeNumber = (number: number) => {
 };
 
 export function shortenHash(hash: string, chars = 4): string {
-  return `${hash.substring(0, chars + 2)}...${hash.substring(42 - chars)}`;
+  return `${hash.substring(0, chars + 2)}...${hash.substring(66 - chars)}`;
 }
 
 const getShortDate = (date: string) => {
