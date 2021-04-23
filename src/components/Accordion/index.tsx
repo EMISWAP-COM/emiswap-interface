@@ -93,7 +93,7 @@ const Body = styled.div`
 
   .isOpen3 {
     margin-top: 40px;
-    height: 440px;
+    height: 600px;
   }
 
   .isOpen4 {
@@ -111,7 +111,7 @@ const Body = styled.div`
     }
 
     .isOpen3 {
-      height: 460px;
+      height: 600px;
     }
 
     .isOpen4 {
@@ -129,7 +129,7 @@ const Body = styled.div`
     }
 
     .isOpen3 {
-      height: 680px;
+      height: 900px;
     }
 
     .isOpen4 {

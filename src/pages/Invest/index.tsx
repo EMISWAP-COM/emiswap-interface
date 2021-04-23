@@ -410,6 +410,14 @@ const ConnectReferralText = styled.div`
   margin-top: 8px;
 `;
 
+const PrivateSaleText = styled.div`
+  max-width: 300px;
+  font-size: 15px;
+  line-height: 21px;
+  color: #89919A;
+  margin: 8px auto 10px auto;
+`;
+
 export function RedirectPathToInvestOnly({ location }: RouteComponentProps) {
   return <Redirect to={{ ...location, pathname: '/invest' }} />;
 }
@@ -1041,7 +1049,7 @@ const Invest = () => {
       return 'Please choose a token';
     }
     if (Number(typedValue) > 0 && Number(outputAmount) === 0) {
-      return 'Sorry, you are reaching the limits of our crowdsale. Please try to buy less ESW';
+      return 'Sorry, you are reaching the limits of our private. Please try to buy less ESW';
     }
     if (notEnoughBalance) {
       return `Not enough balance`;
@@ -1181,6 +1189,9 @@ const Invest = () => {
               )}
             </BottomGrouping>
           </AutoColumn>
+          <PrivateSaleText>
+            Private sale stage for investors who want to purchase ESW worth $25,000 and more.
+          </PrivateSaleText>
           {account ? (
             <ReferralLink />
           ) : (
