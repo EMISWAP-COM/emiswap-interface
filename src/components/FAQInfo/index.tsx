@@ -274,6 +274,11 @@ const Body = styled.div`
     .chart-pie {
       margin-top: 50px;
       margin-left: auto;
+      
+      &__img {
+        width: 400px;
+        max-width: 100%
+      }
     }
 
     &__color-block {
@@ -629,7 +634,7 @@ export default () => {
               </div>
             </div>
             <div className="chart-pie">
-              <img src={PieChart} alt="PieChart" />
+              <img className="chart-pie__img" src={PieChart} alt="PieChart" />
             </div>
           </div>
           <div className="chart-description">To know more about ESW tokens vesting.</div>
