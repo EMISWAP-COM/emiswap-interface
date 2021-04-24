@@ -261,7 +261,7 @@ const Body = styled.div`
 `;
 
 export default (props: AccordionProps) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const handleSwitchAccordion = () => {
     setIsOpen(!isOpen);
   };
