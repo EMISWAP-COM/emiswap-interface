@@ -12,7 +12,7 @@ export interface AccordionProps {
   headerClass?: string;
   openClass: string;
 }
-
+//TODO убрать мракобесию с фиксированной высотой для каждого блока.
 const Body = styled.div`
   background: #ffffff;
   border: 1px solid #eaeeee;
@@ -106,6 +106,11 @@ const Body = styled.div`
     height: 850px;
   }
 
+  .isOpen6 {
+    margin-top: 40px;
+    height: 640px;
+  }
+
   @media screen and (max-width: 1300px) {
     .isOpen1 {
       height: 690px;
@@ -125,6 +130,10 @@ const Body = styled.div`
 
     .isOpen5 {
       height: 1000px;
+    }
+    .isOpen6 {
+      margin-top: 40px;
+      height: 700px;
     }
   }
 

@@ -8,6 +8,7 @@ import YellowCircle from '../../assets/svg/FAQIcon/yellowCircle.svg';
 import PieChart from '../../assets/svg/pie_chart.svg';
 import { EarlyBird } from './EarlyBird';
 import { useHistory } from 'react-router';
+import { NFTCards } from './NFTCards';
 
 const Body = styled.div`
   .title {
@@ -485,7 +486,7 @@ export default () => {
       behavior: 'smooth',
     });
   };
-
+  //TODO перевести на styleds components блоки как EarlyBird and NFTCards
   return (
     <div className="for-scroll-faq">
       <Accordion
@@ -538,6 +539,15 @@ export default () => {
             <b>6,000,000 ESW</b>
           </div>
         </Body>
+      </Accordion>
+      <Accordion
+        header="NFT Magic Cards for Liquidity Providers"
+        openClass="isOpen6"
+        btnText="Provide Liquidity"
+        btnClick={handleLiquidityCLick}
+        // headerClass="blink1-text"
+      >
+        <NFTCards />
       </Accordion>
       <Accordion
         header="Introduction to EmiSwap"

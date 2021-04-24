@@ -2,57 +2,15 @@ import React from 'react';
 import styled from 'styled-components/macro';
 import Reward10x from '../../assets/svg/FAQIcon/10xReward.svg';
 import ExtraReward from '../../assets/svg/FAQIcon/extraReward.svg';
-
-const Wrapper = styled.div`
-  display: grid;
-  grid-column-gap: 46px;
-  grid-template-columns: repeat(2, 1fr);
-
-  @media screen and (max-width: 1000px) {
-    display: block;
-    text-align: left;
-  }
-`;
-
-const Block = styled.div`
-  margin-bottom: 20px;
-`;
+import { Wrapper, Block, BlockLong, Title, Text } from './styleds';
 
 const BlockWithIcon = styled(Block)`
   display: flex;
   align-items: flex-start;
 `;
 
-const BlockLong = styled(Block)`
-  grid-column: span 2;
-`;
-
 const BlockContent = styled.div`
   margin-left: 20px;
-`;
-
-const Title = styled.div`
-  font-family: 'IBM Plex Sans';
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 32px;
-  color: #000000;
-  margin-bottom: 15px;
-
-  @media screen and (max-width: 1000px) {
-    font-size: 16px;
-  }
-`;
-const Text = styled.div`
-  font-family: Roboto;
-  font-weight: 300;
-  font-size: 18px;
-  line-height: 32px;
-  color: ${({ theme }) => theme.text1};
-
-  @media screen and (max-width: 1000px) {
-    font-size: 14px;
-  }
 `;
 
 export const EarlyBird = () => {
