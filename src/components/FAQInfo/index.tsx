@@ -7,6 +7,7 @@ import Coins from '../../assets/svg/FAQIcon/coins.svg';
 import YellowCircle from '../../assets/svg/FAQIcon/yellowCircle.svg';
 import PieChart from '../../assets/svg/pie_chart.svg';
 import { EarlyBird } from './EarlyBird';
+import { useHistory } from 'react-router';
 
 const Body = styled.div`
   .title {
@@ -465,6 +466,8 @@ const Body = styled.div`
 `;
 
 export default () => {
+  const history = useHistory();
+
   const btnClick1 = () => {
     const win = window.open('https://crowdsale.emidao.org/whitepaper', '_blank');
     win.focus();
@@ -473,9 +476,26 @@ export default () => {
     const win = window.open('https://crowdsale.emidao.org/presentation', '_blank');
     win.focus();
   };
+
+  const handleLiquidityCLick = () => {
+    history.push('/invest');
+    window.scroll({
+      top: 200,
+      behavior: 'smooth',
+    });
+  };
+
   return (
     <div className="for-scroll-faq">
-      <EarlyBird />
+      <Accordion
+        header="Early bird bonuses for Liquidity Providers"
+        openClass="isOpen5"
+        btnText="Provide Liquidity"
+        btnClick={handleLiquidityCLick}
+        // headerClass="blink1-text"
+      >
+        <EarlyBird />
+      </Accordion>
       <Accordion
         header="Early Swappers and Liquidity Providers Rewards"
         openClass="isOpen4"

@@ -101,6 +101,11 @@ const Body = styled.div`
     height: 310px;
   }
 
+  .isOpen5 {
+    margin-top: 40px;
+    height: 850px;
+  }
+
   @media screen and (max-width: 1300px) {
     .isOpen1 {
       height: 690px;
@@ -116,6 +121,10 @@ const Body = styled.div`
 
     .isOpen4 {
       height: 370px;
+    }
+
+    .isOpen5 {
+      height: 1000px;
     }
   }
 
@@ -135,6 +144,9 @@ const Body = styled.div`
     .isOpen4 {
       height: 370px;
     }
+    .isOpen5 {
+      height: calc(1450px - 50vw);
+    }
   }
 
   @media screen and (max-width: 500px) {
@@ -152,6 +164,9 @@ const Body = styled.div`
 
     .isOpen4 {
       height: 710px;
+    }
+    .isOpen5 {
+      height: calc(3050px - 350vw);
     }
   }
 
