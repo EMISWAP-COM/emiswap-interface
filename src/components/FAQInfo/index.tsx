@@ -6,6 +6,7 @@ import Board from '../../assets/svg/FAQIcon/board.svg';
 import Coins from '../../assets/svg/FAQIcon/coins.svg';
 import YellowCircle from '../../assets/svg/FAQIcon/yellowCircle.svg';
 import PieChart from '../../assets/svg/pie_chart.svg';
+import { EarlyBird } from './EarlyBird';
 
 const Body = styled.div`
   .title {
@@ -270,14 +271,14 @@ const Body = styled.div`
 
   .chart-block {
     display: flex;
-    
+
     .chart-pie {
       margin-top: 50px;
       margin-left: auto;
-      
+
       &__img {
         width: 400px;
-        max-width: 100%
+        max-width: 100%;
       }
     }
 
@@ -286,52 +287,51 @@ const Body = styled.div`
       width: 32px;
       height: 32px;
     }
-    
+
     &__color0 {
-      background: #A5DA6F;
+      background: #a5da6f;
     }
-    
+
     &__color1 {
       background: #074223;
-
     }
     &__color2 {
       background: #006450;
     }
-    
+
     &__color3 {
-     background: #09CE95;
+      background: #09ce95;
     }
-    
+
     &__color4 {
       background: #58ae00;
     }
-    
+
     &__color5 {
-      background: #7BBBDF;
+      background: #7bbbdf;
     }
-    
+
     &__color6 {
-      background: #FFAC7D;
+      background: #ffac7d;
     }
-    
+
     &__color7 {
-      background: #FFD541;
+      background: #ffd541;
     }
-    
+
     &__color8 {
-      background: #8096E3;
+      background: #8096e3;
     }
 
     &__text-line {
       display: flex;
       margin-bottom: 21px;
     }
-    
-     &__item-name {
+
+    &__item-name {
       margin-right: 80px;
     }
-    
+
     &__item-value {
       margin-left: auto !important;
     }
@@ -339,16 +339,16 @@ const Body = styled.div`
     .grey-text {
       margin-left: 10px;
     }
-    
+
     @media screen and (max-width: 1300px) {
-       &__item-name {
+      &__item-name {
         margin-right: 10px;
       }
     }
 
     @media screen and (max-width: 1000px) {
       flex-direction: column-reverse;
-      
+
       .chart-pie {
         width: 80%;
         max-width: 300px;
@@ -357,7 +357,7 @@ const Body = styled.div`
           width: 100%;
         }
       }
-      
+
       .chart-block__info {
         max-width: 400px;
         margin: auto;
@@ -368,7 +368,7 @@ const Body = styled.div`
       .chart-block__info {
         // margin: 0 20px 0 15px;
       }
-      
+
       &__text-line {
         flex-wrap: wrap;
         justify-content: center;
@@ -390,10 +390,10 @@ const Body = styled.div`
     line-height: 160%;
     letter-spacing: 0.01em;
     color: #555959;
-    
+
     @media screen and (max-width: 1000px) {
-    margin-top: 16px;
-     text-align: center;
+      margin-top: 16px;
+      text-align: center;
     }
   }
 
@@ -475,6 +475,7 @@ export default () => {
   };
   return (
     <div className="for-scroll-faq">
+      <EarlyBird />
       <Accordion
         header="Early Swappers and Liquidity Providers Rewards"
         openClass="isOpen4"
@@ -609,27 +610,37 @@ export default () => {
               </div>
               <div className="chart-block__text-line">
                 <div className="chart-block__color-block chart-block__color4" />
-                <div className="grey-text chart-block__item-name">Early Liquidity Providers & Swappersors</div>
+                <div className="grey-text chart-block__item-name">
+                  Early Liquidity Providers & Swappersors
+                </div>
                 <div className="grey-text grey-text-bold chart-block__item-value">3%</div>
               </div>
               <div className="chart-block__text-line">
                 <div className="chart-block__color-block chart-block__color5" />
-                <div className="grey-text chart-block__item-name">Protocol Security & Maintenance</div>
+                <div className="grey-text chart-block__item-name">
+                  Protocol Security & Maintenance
+                </div>
                 <div className="grey-text grey-text-bold chart-block__item-value">30%</div>
               </div>
               <div className="chart-block__text-line">
                 <div className="chart-block__color-block chart-block__color6" />
-                <div className="grey-text chart-block__item-name">Ecosystem Growth & Community Extension</div>
+                <div className="grey-text chart-block__item-name">
+                  Ecosystem Growth & Community Extension
+                </div>
                 <div className="grey-text grey-text-bold chart-block__item-value">22%</div>
               </div>
               <div className="chart-block__text-line">
                 <div className="chart-block__color-block chart-block__color7" />
-                <div className="grey-text chart-block__item-name">EmiSwap Decentralized Developers Community</div>
+                <div className="grey-text chart-block__item-name">
+                  EmiSwap Decentralized Developers Community
+                </div>
                 <div className="grey-text grey-text-bold chart-block__item-value">20%</div>
               </div>
               <div className="chart-block__text-line">
                 <div className="chart-block__color-block chart-block__color8" />
-                <div className="grey-text chart-block__item-name">Advisors, Ambassadors & Community Building</div>
+                <div className="grey-text chart-block__item-name">
+                  Advisors, Ambassadors & Community Building
+                </div>
                 <div className="grey-text grey-text-bold chart-block__item-value">5%</div>
               </div>
             </div>
