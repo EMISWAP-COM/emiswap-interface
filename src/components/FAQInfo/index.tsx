@@ -453,6 +453,7 @@ const Body = styled.div`
     line-height: 160%;
     letter-spacing: 0.01em;
     color: #555959;
+    margin-bottom: 20px;
 
     @media screen and (max-width: 1000px) {
       font-size: 16px;
@@ -497,9 +498,11 @@ export default () => {
         <EarlyBird />
       </Accordion>
       <Accordion
-        header="Early Swappers and Liquidity Providers Rewards"
+        header="Early bird bonuses for Swappers"
         openClass="isOpen4"
         headerClass="blink1-text"
+        btnText="Provide Liquidity"
+        btnClick={handleLiquidityCLick}
       >
         <Body>
           <div className="last-block">
@@ -508,13 +511,9 @@ export default () => {
               <div className="text-block">
                 <div className="h4 mb16">Rewards for Liquidity Providers</div>
                 <div className="text-block__text">
-                  From the 11th to the 100th day after the launch <b>30,000 ESW</b> will be
-                  proportionally distributed among LP’s for <b>1 million DAI</b> trading volume.
-                </div>
-                <div className="text-block__text">
-                  From the 11th to the 40th day after the launch <b>6,150 ESW</b> will be issued
-                  additionally every 1000 blocks and will be distributed among LP’s in proportion to
-                  the amount of liquidity provided.
+                  From the <b>11th to the 40th day</b> after the launch <b>6,150 ESW</b> will be
+                  issued additionally every  1000 blocks and will be distributed among LP  in
+                  proportion to the amount of liquidity
                 </div>
               </div>
             </div>
@@ -523,11 +522,16 @@ export default () => {
               <div className="text-block">
                 <div className="h4 mb16">Rewards for Swappers</div>
                 <div className="text-block__text">
-                  From the 11th to the 100th day after the launch Swappers are rewarded with{' '}
-                  <b>16 ESW</b> for every <b>1,000 DAI</b> of personal trading volume.
+                  From the <b>11th to the 100th day</b> after the launch swappers are rewarded with{' '}
+                  <b>16 ESW</b> for personal turnover of <b>1,000 DAI</b>
                 </div>
               </div>
             </div>
+          </div>
+          <div className="h4 mb16">Gas fees refund</div>
+          <div className="last-string">
+            <b>EmiSwap</b> compensates <b>for 100% of the Ethereum</b> fees paid for any operation
+            on the exchange in its native <b>ESW tokens.</b>
           </div>
           <div className="last-string">
             The EmiSwap early liquidity provider and swap allocation fund is capped at{' '}

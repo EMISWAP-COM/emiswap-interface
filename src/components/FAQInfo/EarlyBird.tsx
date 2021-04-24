@@ -37,6 +37,7 @@ const Title = styled.div`
   font-size: 20px;
   line-height: 32px;
   color: #000000;
+  margin-bottom: 15px;
 
   @media screen and (max-width: 1000px) {
     font-size: 16px;
@@ -62,8 +63,9 @@ export const EarlyBird = () => {
         <BlockContent>
           <Title>x10 rewards for early birds</Title>
           <Text>
-            From the 11th to the 100th day after the launch 30 000 ESW are proportionally
-            distributed among LPs for 1 million DAI trading volume.
+            From the <strong>11th to the 100th day</strong> after the launch{' '}
+            <strong>30 000 ESW</strong> are proportionally distributed among LPs for 1 million{' '}
+            <strong>DAI trading</strong> volume.
           </Text>
         </BlockContent>
       </BlockWithIcon>
@@ -72,37 +74,41 @@ export const EarlyBird = () => {
         <BlockContent>
           <Title>Extra rewards</Title>
           <Text>
-            From the 11th to the 40th day after the launch 6,150 ESW will be issued additionally
-            every 1000 blocks and will be distributed among LPs in proportion to the amount of
-            liquidity provided.
+            From the <strong>11th to the 40th day</strong> after the launch{' '}
+            <strong>6,150 ESW</strong> will be issued additionally every{' '}
+            <strong>1000 blocks</strong> and will be distributed among <strong>LPs</strong> in
+            proportion to the amount of liquidity provided.
           </Text>
         </BlockContent>
       </BlockWithIcon>
       <BlockLong>
         <Title>Gas fees refund</Title>
         <Text>
-          EmiSwap compensates for 100% of the Ethereum fees paid for any operation on the exchange
-          in its native ESW tokens.
+          <strong>EmiSwap</strong> compensates <strong>for 100% of the Ethereum</strong> fees paid
+          for any operation on the exchange in its native <strong>ESW tokens.</strong>
         </Text>
       </BlockLong>
       <div>
-        <Title>Gas fees refund</Title>
+        <Title>Calculations example</Title>
         <ul>
           <li>
-            <Text>You provide liquidity worth $100,000 for ETH/DAI token pair.</Text>
+            <Text>
+              You provide liquidity worth <strong>$100,000</strong> for ETH/DAI token pair.
+            </Text>
           </li>
           <li>
             <Text>You pay 100 USDT for gas and get 9090 ESW  as a compensation.</Text>
           </li>
           <li>
             <Text>
-              Total liquidity on EmiSwap is 20,000,000 DAI, which  means your share is 0.5%.
+              Total liquidity on EmiSwap is <strong>20,000,000 DAI</strong>, which  means your share
+              is <strong>0.5%.</strong>
             </Text>
           </li>
           <li>
             <Text>
-              Daily trading volume is 3,000,000 DAI, thus 7,500 DAI  is distributed among LPs on a
-              daily basis. You receive 37,5 DAI every day.
+              Daily trading volume is <strong>3,000,000 DAI</strong>, thus 7,500 DAI  is distributed
+              among LPs on a daily basis. You receive  <strong>37,5 DAI</strong> every day.
             </Text>
           </li>
           <li>
@@ -117,21 +123,21 @@ export const EarlyBird = () => {
         <ul>
           <li>
             <Text>
-              Furthermore, liquidity providers get 6,150 ESW for every 1,000 blocks. There are 6,800
-              blocks daily, so 41,820 ESW  will be distributed among LPs. Your reward is 201 ESW
-              daily.
+              Furthermore, liquidity providers get <strong>6,150 ESW</strong> for every 1,000
+              blocks. There are 6,800 blocks daily, so 41,820 ESW  will be distributed among LPs.
+              Your reward is <strong>201 ESW daily.</strong>
             </Text>
           </li>
           <li>
             <Text>
-              Your daily reward in this case is 37,5 DAI + 651 ESW. You  also get additional income
-              from ESW holdings, 0.05% daily.
+              Your <strong>daily reward in this case is 37,5 DAI + 651 ESW.</strong> You  also get
+              additional income from ESW holdings, <strong>0.05% daily.</strong>
             </Text>
           </li>
           <li>
             <Text>
-              In this case, you will earn 1125 DAI + 19,530 ESW monthly  (in case all the conditions
-              described in this example are met).
+              In this case, you will earn <strong>1125 DAI + 19,530 ESW</strong> monthly  (in case
+              all the conditions described in this example are met).
             </Text>
           </li>
         </ul>
@@ -145,9 +151,9 @@ export const EarlyBird = () => {
       </BlockLong>
       <BlockLong>
         <Text>
-          Disclaimer: Note that this is just an example that demonstrates a possible scenario that
-          doesn’t take ESW price growth into consideration. We can never forecast either trading
-          volumes or total liquidity figures.
+          <strong>Disclaimer:</strong> Note that this is just an example that demonstrates a
+          possible scenario that doesn’t take ESW price growth into consideration. We can never
+          forecast either trading volumes or total liquidity figures.
         </Text>
       </BlockLong>
     </Wrapper>
