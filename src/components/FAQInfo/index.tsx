@@ -514,8 +514,8 @@ export default () => {
                 <div className="h4 mb16">Rewards for Liquidity Providers</div>
                 <div className="text-block__text">
                   From the <b>11th to the 40th day</b> after the launch <b>6,150 ESW</b> will be
-                  issued additionally every  1000 blocks and will be distributed among LP  in
-                  proportion to the amount of liquidity
+                  issued additionally every 1000 blocks and will be distributed among LP in proportion to the amount of
+                  liquidity
                 </div>
               </div>
             </div>
