@@ -103,12 +103,12 @@ const Body = styled.div`
 
   .isOpen5 {
     margin-top: 40px;
-    height: 850px;
+    height: 900px;
   }
 
   .isOpen6 {
     margin-top: 40px;
-    height: 640px;
+    height: 700px;
   }
 
   @media screen and (max-width: 1300px) {
@@ -131,6 +131,7 @@ const Body = styled.div`
     .isOpen5 {
       height: 1000px;
     }
+    
     .isOpen6 {
       margin-top: 40px;
       height: 700px;
@@ -153,8 +154,13 @@ const Body = styled.div`
     .isOpen4 {
       height: 370px;
     }
+    
     .isOpen5 {
       height: calc(1450px - 50vw);
+    }
+    
+    .isOpen6 {
+      height: 800px;
     }
   }
 
@@ -168,14 +174,18 @@ const Body = styled.div`
     }
 
     .isOpen3 {
-      height: 1150px;
+      height: 1050px;
+      text-align: left !important;
     }
 
     .isOpen4 {
       height: 710px;
+      text-align: left !important;
     }
+    
     .isOpen5 {
-      height: calc(3050px - 350vw);
+      height: calc(2650px - 350vw);
+      text-align: left !important;
     }
   }
 

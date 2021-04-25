@@ -376,10 +376,16 @@ const Body = styled.div`
         justify-content: center;
 
         .grey-text {
-          width: 100%;
+          // width: 100%;
           margin-left: 5px;
         }
       }
+      
+      &__item-name {
+        margin-left: 10px !important;
+        max-width: 60%;
+      }
+      
     }
   }
 
@@ -414,7 +420,7 @@ const Body = styled.div`
           font-style: normal;
           font-weight: 300;
           font-size: 18px;
-          line-height: 32px;
+          line-height: 26px;
           letter-spacing: 0.01em;
           color: #555959;
           margin-bottom: 20px;
@@ -434,6 +440,8 @@ const Body = styled.div`
       &__block {
         flex-direction: column;
         align-items: center;
+        margin-bottom: 32px;
+        
         .text-block {
           margin-left: 0;
 

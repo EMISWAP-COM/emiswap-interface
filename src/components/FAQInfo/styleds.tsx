@@ -40,5 +40,6 @@ export const Text = styled.div`
 
   @media screen and (max-width: 1000px) {
     font-size: 14px;
+    line-height: 21px;
   }
 `;
