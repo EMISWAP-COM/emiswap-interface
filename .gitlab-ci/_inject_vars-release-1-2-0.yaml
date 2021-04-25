@@ -47,8 +47,8 @@ inject_vars:
   emiswap-oracle:
     fullnameOverride: emiswap-oracle
     image:
-      repository: registry.gitlab.com/emidao/emiswap/oracle/emiswap-oracle-development
-      tag: latest
+      repository:  registry.gitlab.com/emidao/emiswap/oracle/emiswap-oracle-feature-es-553-pool-balances
+      tag: 7915be0e
       pullPolicy: Always
     imagePullSecrets:
       - name: gitlab-foreign-project-registry
