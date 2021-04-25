@@ -80,7 +80,7 @@ export const NFTCards = () => {
           We divided the path to reach <strong>$100 million TVL</strong> (total value locked in = liquidity locked)
           into 1000 milestones, e.g. <strong>$100,000 TVL, $200,000 TVL, $300,000 TVL</strong>, etc., plus one extra
           milestone that will grant you a Mythic Card.
-          <br />
+          <br/>
           The people who provide liquidity and cross every milestone <strong>will be rewarded with our
           limited-edition NFT Magic Cards</strong> issued specifically for this campaign. There will be:
         </Text>
@@ -88,7 +88,7 @@ export const NFTCards = () => {
       <BlockWithCardsDesktop>
         {cardLabels.map(label => (
           <Card key={label}>
-            <CardImg src={UnknownMythic} alt={''} />
+            <CardImg src={UnknownMythic} alt={''}/>
             <CardLabel>{label}</CardLabel>
           </Card>
         ))}
@@ -99,7 +99,7 @@ export const NFTCards = () => {
         </Card>
         <div>
           {cardLabels.map(label => (
-            <CardLabel>{label}</CardLabel>
+            <CardLabel key={label}>{label}</CardLabel>
           ))}
         </div>
       </BlockWithCardsMobile>

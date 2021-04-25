@@ -9,6 +9,7 @@ import PieChart from '../../assets/svg/pie_chart.svg';
 import { EarlyBird } from './EarlyBird';
 import { useHistory } from 'react-router';
 import { NFTCards } from './NFTCards';
+import { PrivateRound } from './PrivateRount';
 
 const Body = styled.div`
   .title {
@@ -388,21 +389,7 @@ const Body = styled.div`
       
     }
   }
-
-  .chart-description {
-    margin-top: 38px;
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: 300;
-    font-size: 18px;
-    line-height: 160%;
-    letter-spacing: 0.01em;
-    color: #555959;
-
-    @media screen and (max-width: 1000px) {
-      margin-top: 16px;
-      text-align: center;
-    }
+  
   }
 
   .last-block {
@@ -494,6 +481,11 @@ export default () => {
       behavior: 'smooth',
     });
   };
+
+  const handleLeanMoreLiquidityClick = () => {
+    window.open('https://emiswap.medium.com/why-are-liquidity-providers-rushing-to-emiswap-496801dc846f', '_blank');
+  };
+
   //TODO перевести на styleds components блоки как EarlyBird and NFTCards
   return (
     <div className="for-scroll-faq">
@@ -502,7 +494,8 @@ export default () => {
         openClass="isOpen5"
         btnText="Provide Liquidity"
         btnClick={handleLiquidityCLick}
-        // headerClass="blink1-text"
+        btnSecondText="Learn More"
+        btnSecondClick={handleLeanMoreLiquidityClick}
       >
         <EarlyBird />
       </Accordion>
@@ -622,6 +615,12 @@ export default () => {
         </Body>
       </Accordion>
       <Accordion
+        header="Private Round details"
+        openClass="isOpen7"
+      >
+        <PrivateRound/>
+      </Accordion>
+      <Accordion
         header="Token Allocation Schedule"
         btnText="Read White Paper"
         btnClick={btnClick3}
@@ -690,7 +689,6 @@ export default () => {
               <img className="chart-pie__img" src={PieChart} alt="PieChart" />
             </div>
           </div>
-          <div className="chart-description">To know more about ESW tokens vesting.</div>
         </Body>
       </Accordion>
     </div>

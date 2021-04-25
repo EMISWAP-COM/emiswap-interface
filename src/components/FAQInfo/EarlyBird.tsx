@@ -55,18 +55,18 @@ export const EarlyBird = () => {
             </Text>
           </li>
           <li>
-            <Text>You pay 100 USDT for gas and get 9090 ESW  as a compensation.</Text>
+            <Text>You pay 100 USDT for gas and get 9090 ESW as a compensation.</Text>
           </li>
           <li>
             <Text>
-              Total liquidity on EmiSwap is <strong>20,000,000 DAI</strong>, which  means your share
+              Total liquidity on EmiSwap is <strong>20,000,000 DAI</strong>, which means your share
               is <strong>0.5%.</strong>
             </Text>
           </li>
           <li>
             <Text>
-              Daily trading volume is <strong>3,000,000 DAI</strong>, thus 7,500 DAI  is distributed
-              among LPs on a daily basis. You receive  <strong>37,5 DAI</strong> every day.
+              Daily trading volume is <strong>3,000,000 DAI</strong>, thus 7,500 DAI is distributed
+              among LPs on a daily basis. You receive <strong>37,5 DAI</strong> every day.
             </Text>
           </li>
           <li>
@@ -82,19 +82,19 @@ export const EarlyBird = () => {
           <li>
             <Text>
               Furthermore, liquidity providers get <strong>6,150 ESW</strong> for every 1,000
-              blocks. There are 6,800 blocks daily, so 41,820 ESW  will be distributed among LPs.
+              blocks. There are 6,800 blocks daily, so 41,820 ESW will be distributed among LPs.
               Your reward is <strong>201 ESW daily.</strong>
             </Text>
           </li>
           <li>
             <Text>
-              Your <strong>daily reward in this case is 37,5 DAI + 651 ESW.</strong> You  also get
+              Your <strong>daily reward in this case is 37,5 DAI + 651 ESW.</strong> You also get
               additional income from ESW holdings, <strong>0.05% daily.</strong>
             </Text>
           </li>
           <li>
             <Text>
-              In this case, you will earn <strong>1125 DAI + 19,530 ESW</strong> monthly  (in case
+              In this case, you will earn <strong>1125 DAI + 19,530 ESW</strong> monthly (in case
               all the conditions described in this example are met).
             </Text>
           </li>
@@ -103,7 +103,7 @@ export const EarlyBird = () => {
       <BlockLong>
         <Text>
           According to our calculations, once TVL on EmiSwap reaches 20 million DAI, the price of
-          the ESW token will increase from 0,11 DAI  to 0,4 DAI. In the case described, this makes a
+          the ESW token will increase from 0,11 DAI to 0,4 DAI. In the case described, this makes a
           107% APY for providing liquidity on EmiSwap (excluding 0.05% rewards for ESW tokens).
         </Text>
       </BlockLong>
