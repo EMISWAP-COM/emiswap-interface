@@ -136,7 +136,8 @@ export default function Menu() {
           </MenuItem>
           <MenuItem
             id="link"
-            href="https://hacken.io/wp-content/uploads/2021/02/18022021_Emiswap_SC_Audit_Report.pdf"
+            // href="https://hacken.io/wp-content/uploads/2021/02/18022021_Emiswap_SC_Audit_Report.pdf"
+            href="/docs/06042021_Emiswap_SC_Audit_Report.pdf"
             target="_blank"
           >
             <BookOpen size={14} />
