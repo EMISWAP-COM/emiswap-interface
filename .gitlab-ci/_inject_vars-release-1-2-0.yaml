@@ -52,6 +52,28 @@ inject_vars:
       pullPolicy: Always
     imagePullSecrets:
       - name: gitlab-foreign-project-registry
+    workers:
+      blockchain_block_events:
+        cmd: ['bundle','exec','rake', 'workers:run[blockchain_block_events]']
+        resources:
+          requests: { cpu: 0.05, memory: '256Mi' }
+          limits: { cpu: 0.5, memory: '768Mi' }
+      blockchain_block:
+        cmd: ['bundle','exec','rake', 'workers:run[blockchain_block]']
+        resources:
+          requests: { cpu: 0.05, memory: '256Mi' }
+          limits: { cpu: 0.5, memory: '768Mi' }
+      blockchain_event:
+        cmd: ['bundle','exec','rake', 'workers:run[blockchain_event]']
+      rates_creator:
+        cmd: ['bundle','exec','rake', 'workers:run[rates_creator]']
+      gas_tracker:
+        cmd: ['bundle','exec','rake', 'workers:run[gas_tracker]']
+      pool_balancer:
+        cmd: [ 'bundle','exec','rake', 'workers:run[pool_balancer]' ]
+      pool_block_bonus_payments:
+        cmd: [ 'bundle','exec','rake', 'workers:run[pool_block_bonus_payments]' ]
+
 
   emiswap-nft:
     image:
