@@ -34,6 +34,9 @@ interface Balance {
       compensation?: PaymentOperationTokens;
       referral_bonus?: PaymentOperationTokens;
       pool_referral_bonus?: PaymentOperationTokens;
+      pool_block_bonus?: PaymentOperationTokens;
+      swap_bonus?: PaymentOperationTokens;
+      swap_bonus_10x?: PaymentOperationTokens;
     };
     locked: PaymentOperationTokens;
     unlocked: PaymentOperationTokens;
@@ -153,6 +156,9 @@ const initialState: CabinetState = {
         pool_swap_bonus: {},
         compensation: {},
         referral_bonus: {},
+        pool_block_bonus: {},
+        swap_bonus: {},
+        swap_bonus_10x: {},
       },
       locked: {},
       unlocked: {},
