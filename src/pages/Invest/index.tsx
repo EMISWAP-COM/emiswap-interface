@@ -414,7 +414,7 @@ const PrivateSaleText = styled.div`
   max-width: 300px;
   font-size: 15px;
   line-height: 21px;
-  color: #89919A;
+  color: #89919a;
   margin: 8px auto 10px auto;
 `;
 

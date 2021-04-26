@@ -1,4 +1,3 @@
-import { BigNumber } from '@ethersproject/bignumber';
 import { useESWContract } from './useContract';
 import { useAuth } from './useAuth';
 import { useSelector } from 'react-redux';
@@ -18,24 +17,23 @@ export function useClaim() {
 
   const handleAuth = useAuth();
 
-  const claimCallback = (tokenName: string, amount: number) => {
+  const claimCallback = async (tokenName: string, amount: number) => {
     if (contractESW) {
-      return contractESW.walletNonce(account).then((nonce: BigNumber) => {
-        return handleAuth().then((token: string) => {
-          return fetchWrapper.post(ESW_CLAIM_API, {
-            headers: {
-              authorization: token,
-            },
-            body: JSON.stringify({
-              amount: parseUnits(amount.toString(), 18).toString(),
-              nonce: nonce.add(1).toNumber(),
-              contract_address: ESW_ADDRESS,
-              token_name: tokenName,
-              userID: id,
-              chainID: ESW_CLAIM_CHAIN_ID,
-            }),
-          });
-        });
+      const nonce = await contractESW.walletNonce(account);
+      const token = await handleAuth();
+
+      return fetchWrapper.post(ESW_CLAIM_API, {
+        headers: {
+          authorization: token,
+        },
+        body: JSON.stringify({
+          amount: parseUnits(amount.toString(), 18).toString(),
+          nonce: nonce.add(1).toNumber(),
+          contract_address: ESW_ADDRESS,
+          token_name: tokenName,
+          userID: id,
+          chainID: ESW_CLAIM_CHAIN_ID,
+        }),
       });
     }
   };
