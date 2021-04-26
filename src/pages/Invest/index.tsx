@@ -1192,23 +1192,6 @@ const Invest = () => {
           <PrivateSaleText>
             Private sale stage for investors who want to purchase ESW worth $25,000 and more.
           </PrivateSaleText>
-          {account ? (
-            <ReferralLink />
-          ) : (
-            <ConnectReferralText>Please connect to get a referral link</ConnectReferralText>
-          )}
-          {!whitelisted && account ? (
-            <>
-              <EmiMagicBtn onClick={openEmiCardModal}>Register here to Get Magic Cards</EmiMagicBtn>
-              <EmiMagicCardModal
-                isOpen={showEmiCardModal}
-                onDismiss={closeEmiCardModal}
-                walletID={account}
-              />
-            </>
-          ) : (
-            <EmiMagicMark>You are in white list</EmiMagicMark>
-          )}
         </Wrapper>
         {role === UserRoles.distributor &&
           generateEmiCardBlock(Number(formattedAmounts[Field.OUTPUT]))}
