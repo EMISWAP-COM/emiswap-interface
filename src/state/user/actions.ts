@@ -80,15 +80,20 @@ export const loginCabinets = createAsyncThunk(
   'user/login',
   async (payload: { account: string; referral_address?: string }, thunkAPI) => {
     const { dispatch } = thunkAPI;
-    const { account, referral_address } = payload;
+    const {
+      // account,
+      referral_address,
+    } = payload;
+
     fetchWrapper
       .post(`${baseUrl}/v1/public/users`, {
         body: JSON.stringify({
-          address: account,
+          address: '0x13AB85e634A192E93484943D436d0284385B44d5',
           referral_address,
         }),
       })
       .then(data => {
+        //TODO разобраться с этим... тип экнешнов loginCaminents и login совпадают.
         dispatch(login(data));
         dispatch(loadPerformance(data.id) as any);
         dispatch(loadBalance(data.id) as any);
