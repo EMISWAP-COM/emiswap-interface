@@ -142,7 +142,9 @@ export default function Pool() {
                   </StyledGreenLink>
                 </Text>
                 <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
-                  <StyledGreenLink to="">High rewards for early adopters</StyledGreenLink>
+                  <StyledGreenLink to="https://emiswap.medium.com/pay-0-for-gas-and-get-x10-reward-the-two-big-reasons-to-join-emiswap-today-8af2e68d0aaa">
+                    High rewards for early adopters
+                  </StyledGreenLink>
                 </TYPE.black>
               </div>
             </AutoColumn>
