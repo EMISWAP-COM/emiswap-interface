@@ -6,6 +6,10 @@ import Board from '../../assets/svg/FAQIcon/board.svg';
 import Coins from '../../assets/svg/FAQIcon/coins.svg';
 import YellowCircle from '../../assets/svg/FAQIcon/yellowCircle.svg';
 import PieChart from '../../assets/svg/pie_chart.svg';
+import { EarlyBird } from './EarlyBird';
+import { useHistory } from 'react-router';
+import { NFTCards } from './NFTCards';
+import { PrivateRound } from './PrivateRount';
 
 const Body = styled.div`
   .title {
@@ -373,26 +377,16 @@ const Body = styled.div`
         justify-content: center;
 
         .grey-text {
-          width: 100%;
+          // width: 100%;
           margin-left: 5px;
         }
       }
-    }
-  }
-
-  .chart-description {
-    margin-top: 38px;
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: 300;
-    font-size: 18px;
-    line-height: 160%;
-    letter-spacing: 0.01em;
-    color: #555959;
-
-    @media screen and (max-width: 1000px) {
-      margin-top: 16px;
-      text-align: center;
+      
+      &__item-name {
+        margin-left: 10px !important;
+        max-width: 60%;
+      }
+      
     }
   }
 
@@ -411,7 +405,7 @@ const Body = styled.div`
           font-style: normal;
           font-weight: 300;
           font-size: 18px;
-          line-height: 32px;
+          line-height: 26px;
           letter-spacing: 0.01em;
           color: #555959;
           margin-bottom: 20px;
@@ -431,6 +425,8 @@ const Body = styled.div`
       &__block {
         flex-direction: column;
         align-items: center;
+        margin-bottom: 32px;
+        
         .text-block {
           margin-left: 0;
 
@@ -451,6 +447,7 @@ const Body = styled.div`
     line-height: 160%;
     letter-spacing: 0.01em;
     color: #555959;
+    margin-bottom: 20px;
 
     @media screen and (max-width: 1000px) {
       font-size: 16px;
@@ -464,6 +461,8 @@ const Body = styled.div`
 `;
 
 export default () => {
+  const history = useHistory();
+
   const btnClick1 = () => {
     const win = window.open('https://crowdsale.emidao.org/whitepaper', '_blank');
     win.focus();
@@ -472,12 +471,39 @@ export default () => {
     const win = window.open('https://crowdsale.emidao.org/presentation', '_blank');
     win.focus();
   };
+
+  const handleLiquidityCLick = () => {
+    history.push('/invest');
+    window.scroll({
+      top: 200,
+      behavior: 'smooth',
+    });
+  };
+
+  const handleLeanMoreLiquidityClick = () => {
+    window.open('https://emiswap.medium.com/why-are-liquidity-providers-rushing-to-emiswap-496801dc846f', '_blank');
+  };
+
+  //TODO перевести на styleds components блоки как EarlyBird and NFTCards
   return (
     <div className="for-scroll-faq">
       <Accordion
-        header="Early Swappers and Liquidity Providers Rewards"
+        header="Early bird bonuses for Liquidity Providers"
+        openClass="isOpen5"
+        headerClass="blink1-text"
+        btnText="Provide Liquidity"
+        btnClick={handleLiquidityCLick}
+        btnSecondText="Learn More"
+        btnSecondClick={handleLeanMoreLiquidityClick}
+      >
+        <EarlyBird />
+      </Accordion>
+      <Accordion
+        header="Early bird bonuses for Swappers"
         openClass="isOpen4"
         headerClass="blink1-text"
+        btnText="Provide Liquidity"
+        btnClick={handleLiquidityCLick}
       >
         <Body>
           <div className="last-block">
@@ -486,13 +512,9 @@ export default () => {
               <div className="text-block">
                 <div className="h4 mb16">Rewards for Liquidity Providers</div>
                 <div className="text-block__text">
-                  From the 11th to the 100th day after the launch <b>30,000 ESW</b> will be
-                  proportionally distributed among LP’s for <b>1 million DAI</b> trading volume.
-                </div>
-                <div className="text-block__text">
-                  From the 11th to the 40th day after the launch <b>6,150 ESW</b> will be issued
-                  additionally every 1000 blocks and will be distributed among LP’s in proportion to
-                  the amount of liquidity provided.
+                  From the <b>11th to the 40th day</b> after the launch <b>6,150 ESW</b> will be
+                  issued additionally every 1000 blocks and will be distributed among LP in proportion to the amount of
+                  liquidity
                 </div>
               </div>
             </div>
@@ -501,17 +523,32 @@ export default () => {
               <div className="text-block">
                 <div className="h4 mb16">Rewards for Swappers</div>
                 <div className="text-block__text">
-                  From the 11th to the 100th day after the launch Swappers are rewarded with{' '}
-                  <b>16 ESW</b> for every <b>1,000 DAI</b> of personal trading volume.
+                  From the <b>11th to the 100th day</b> after the launch swappers are rewarded with{' '}
+                  <b>16 ESW</b> for personal turnover of <b>1,000 DAI</b>
                 </div>
               </div>
             </div>
+          </div>
+          <div className="h4 mb16">Gas fees refund</div>
+          <div className="last-string">
+            <b>EmiSwap</b> compensates <b>for 100% of the Ethereum</b> fees paid for any operation
+            on the exchange in its native <b>ESW tokens.</b>
           </div>
           <div className="last-string">
             The EmiSwap early liquidity provider and swap allocation fund is capped at{' '}
             <b>6,000,000 ESW</b>
           </div>
         </Body>
+      </Accordion>
+      <Accordion
+        header="NFT Magic Cards for Liquidity Providers"
+        openClass="isOpen6"
+        headerClass="blink1-text"
+        btnText="Provide Liquidity"
+        btnClick={handleLiquidityCLick}
+        // headerClass="blink1-text"
+      >
+        <NFTCards />
       </Accordion>
       <Accordion
         header="Introduction to EmiSwap"
@@ -576,6 +613,12 @@ export default () => {
             </div>
           </div>
         </Body>
+      </Accordion>
+      <Accordion
+        header="Private Round details"
+        openClass="isOpen7"
+      >
+        <PrivateRound/>
       </Accordion>
       <Accordion
         header="Token Allocation Schedule"
@@ -646,7 +689,6 @@ export default () => {
               <img className="chart-pie__img" src={PieChart} alt="PieChart" />
             </div>
           </div>
-          <div className="chart-description">To know more about ESW tokens vesting.</div>
         </Body>
       </Accordion>
     </div>
