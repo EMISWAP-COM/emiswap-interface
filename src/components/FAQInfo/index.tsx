@@ -492,6 +492,7 @@ export default () => {
       <Accordion
         header="Early bird bonuses for Liquidity Providers"
         openClass="isOpen5"
+        headerClass="blink1-text"
         btnText="Provide Liquidity"
         btnClick={handleLiquidityCLick}
         btnSecondText="Learn More"
@@ -544,6 +545,7 @@ export default () => {
       <Accordion
         header="NFT Magic Cards for Liquidity Providers"
         openClass="isOpen6"
+        headerClass="blink1-text"
         btnText="Provide Liquidity"
         btnClick={handleLiquidityCLick}
         // headerClass="blink1-text"
