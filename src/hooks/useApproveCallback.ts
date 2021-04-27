@@ -139,7 +139,7 @@ export function useApproveCallbackFromTrade(
       swapState[Field.OUTPUT].currencyId === ZERO_ADDRESS;
 
     spenderAddress =
-      trade.route.path.length === 2 && tradeIncludesETH
+      tradeIncludesETH || trade.route.path.length > 2
         ? EMI_ROUTER_ADRESSES[chainId]
         : trade.route.pairs[0].poolAddress;
   }
