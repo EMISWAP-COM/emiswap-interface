@@ -61,6 +61,7 @@ import { useMockEstimate } from '../../hooks/useMockEstimate';
 
 const GasFeeText = styled.div`
   margin-top: 8px;
+  color: #89919A;
 `;
 
 export default function Swap() {

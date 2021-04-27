@@ -276,11 +276,11 @@ const Body = styled.div`
     display: flex;
 
     .chart-pie {
-      margin-top: 50px;
+      margin-top: 80px;
       margin-left: auto;
 
       &__img {
-        width: 400px;
+        width: 330px;
         max-width: 100%;
       }
     }
@@ -328,24 +328,36 @@ const Body = styled.div`
 
     &__text-line {
       display: flex;
+      position: relative;
       margin-bottom: 21px;
     }
 
     &__item-name {
       margin-right: 80px;
     }
-
+    
     &__item-value {
       margin-left: auto !important;
+      margin-right: 80px;
+    }
+
+    &__item-percent {
+      position: absolute;
+      right: 0;
     }
 
     .grey-text {
       margin-left: 10px;
+      line-height: 1.4;
     }
 
     @media screen and (max-width: 1300px) {
       &__item-name {
-        margin-right: 10px;
+        margin-right: 30px;
+      }
+      
+      &__item-value {
+        margin-right: 50px;
       }
     }
 
@@ -367,14 +379,14 @@ const Body = styled.div`
       }
     }
 
-    @media screen and (max-width: 500px) {
+    @media screen and (max-width: 450px) {
       .chart-block__info {
         // margin: 0 20px 0 15px;
       }
 
       &__text-line {
         flex-wrap: wrap;
-        justify-content: center;
+        justify-content: flex-start;
 
         .grey-text {
           // width: 100%;
@@ -383,8 +395,21 @@ const Body = styled.div`
       }
       
       &__item-name {
+        max-width: 70%;
         margin-left: 10px !important;
-        max-width: 60%;
+      }
+      
+      &__item-value {
+        width: 60%;
+        margin-top: 4px;
+        margin-left: 42px !important;
+        margin-right: 0;
+      }
+      
+      &__item-percent {
+        position: relative;
+        margin-left: auto !important;
+        margin-right: 10px;
       }
       
     }
@@ -631,58 +656,67 @@ export default () => {
             <div className="chart-block__info">
               <div className="chart-block__text-line">
                 <div className="chart-block__color-block chart-block__color0" />
-                <div className="grey-text chart-block__item-name">Pre-Seed</div>
-                <div className="grey-text grey-text-bold chart-block__item-value">1.5%</div>
+                <div className="grey-text chart-block__item-name">Pre-Seed (completed)</div>
+                <div className="grey-text chart-block__item-value">3M</div>
+                <div className="grey-text grey-text-bold chart-block__item-percent">1.5%</div>
               </div>
               <div className="chart-block__text-line">
                 <div className="chart-block__color-block chart-block__color1" />
-                <div className="grey-text chart-block__item-name">Seed</div>
-                <div className="grey-text grey-text-bold chart-block__item-value">4.5%</div>
+                <div className="grey-text chart-block__item-name">Seed (completed)</div>
+                <div className="grey-text chart-block__item-value">9M</div>
+                <div className="grey-text grey-text-bold chart-block__item-percent">4.5%</div>
               </div>
               <div className="chart-block__text-line">
                 <div className="chart-block__color-block chart-block__color2" />
                 <div className="grey-text chart-block__item-name">Private A</div>
-                <div className="grey-text grey-text-bold chart-block__item-value">6%</div>
+                <div className="grey-text chart-block__item-value">12M</div>
+                <div className="grey-text grey-text-bold chart-block__item-percent">6%</div>
               </div>
               <div className="chart-block__text-line">
                 <div className="chart-block__color-block chart-block__color3" />
                 <div className="grey-text chart-block__item-name">Launchpad Sales</div>
-                <div className="grey-text grey-text-bold chart-block__item-value">8%</div>
+                <div className="grey-text chart-block__item-value">16M</div>
+                <div className="grey-text grey-text-bold chart-block__item-percent">8%</div>
               </div>
               <div className="chart-block__text-line">
                 <div className="chart-block__color-block chart-block__color4" />
                 <div className="grey-text chart-block__item-name">
                   Early Liquidity Providers & Swappersors
                 </div>
-                <div className="grey-text grey-text-bold chart-block__item-value">3%</div>
+                <div className="grey-text chart-block__item-value">6M</div>
+                <div className="grey-text grey-text-bold chart-block__item-percent">3%</div>
               </div>
               <div className="chart-block__text-line">
                 <div className="chart-block__color-block chart-block__color5" />
                 <div className="grey-text chart-block__item-name">
                   Protocol Security & Maintenance
                 </div>
-                <div className="grey-text grey-text-bold chart-block__item-value">30%</div>
+                <div className="grey-text chart-block__item-value">60M</div>
+                <div className="grey-text grey-text-bold chart-block__item-percent">30%</div>
               </div>
               <div className="chart-block__text-line">
                 <div className="chart-block__color-block chart-block__color6" />
                 <div className="grey-text chart-block__item-name">
                   Ecosystem Growth & Community Extension
                 </div>
-                <div className="grey-text grey-text-bold chart-block__item-value">22%</div>
+                <div className="grey-text chart-block__item-value">44M</div>
+                <div className="grey-text grey-text-bold chart-block__item-percent">22%</div>
               </div>
               <div className="chart-block__text-line">
                 <div className="chart-block__color-block chart-block__color7" />
                 <div className="grey-text chart-block__item-name">
                   EmiSwap Decentralized Developers Community
                 </div>
-                <div className="grey-text grey-text-bold chart-block__item-value">20%</div>
+                <div className="grey-text chart-block__item-value">40M</div>
+                <div className="grey-text grey-text-bold chart-block__item-percent">20%</div>
               </div>
               <div className="chart-block__text-line">
                 <div className="chart-block__color-block chart-block__color8" />
                 <div className="grey-text chart-block__item-name">
                   Advisors, Ambassadors & Community Building
                 </div>
-                <div className="grey-text grey-text-bold chart-block__item-value">5%</div>
+                <div className="grey-text chart-block__item-value">10M</div>
+                <div className="grey-text grey-text-bold chart-block__item-percent">5%</div>
               </div>
             </div>
             <div className="chart-pie">

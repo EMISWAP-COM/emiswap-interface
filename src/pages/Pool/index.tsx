@@ -28,6 +28,7 @@ const StyledHr = styled.hr`
 `;
 
 const GasFeeText = styled.div`
+  color: #89919A;
 `;
 
 export default function Pool() {
