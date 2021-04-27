@@ -5,25 +5,25 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { convertBigDecimal } from '../uitls';
 
-export const Calculating = styled.div`
-  position: relative;
-
-  &:after {
-    position: absolute;
-    content: 'Calculating...';
-    background: ${({ theme }) => theme.red3};
-
-    border-radius: 12px;
-    padding: 0 8px;
-    top: -12px;
-    right: -5px;
-    text-transform: lowercase;
-    color: white;
-    font-weight: 500;
-    font-size: 12px;
-    z-index: 10;
-  }
-`;
+// export const Calculating = styled.div`
+//   position: relative;
+//
+//   &:after {
+//     position: absolute;
+//     content: 'Calculating...';
+//     background: ${({ theme }) => theme.red3};
+//
+//     border-radius: 12px;
+//     padding: 0 8px;
+//     top: -12px;
+//     right: -5px;
+//     text-transform: lowercase;
+//     color: white;
+//     font-weight: 500;
+//     font-size: 12px;
+//     z-index: 10;
+//   }
+// `;
 
 const DarkText = styled.span`
   color: #24272c;
@@ -84,15 +84,13 @@ export const ESWRewards = () => {
     <div>
       <Header>My ESW Rewards</Header>
       <RewardsWrapper>
-        <Calculating>
-          <RewardsItem>
-            <span>Providing Liquidity</span>
-            <div>
-              <RewardsValue>{sumPoolBonuses()}</RewardsValue>
-              &nbsp;ESW
-            </div>
-          </RewardsItem>
-        </Calculating>
+        <RewardsItem>
+          <span>Providing Liquidity</span>
+          <div>
+            <RewardsValue>{sumPoolBonuses()}</RewardsValue>
+            &nbsp;ESW
+          </div>
+        </RewardsItem>
         <RewardsItem>
           <span>Swapping</span>
           <div>
