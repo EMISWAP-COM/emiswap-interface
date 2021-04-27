@@ -17,6 +17,7 @@ import { useTokenContract } from './useContract';
 import { useActiveWeb3React } from './index';
 import { ONE_SPLIT_ADDRESSES } from '../constants/one-split';
 import { AppState } from '../state';
+import { EMI_ROUTER_ADRESSES } from '../constants/emi/addresses';
 
 export enum ApprovalState {
   UNKNOWN,
@@ -130,18 +131,19 @@ export function useApproveCallbackFromTrade(
     () => (trade ? computeSlippageAdjustedAmounts(trade, allowedSlippage)[Field.INPUT] : undefined),
     [trade, allowedSlippage],
   );
-  // const tradeIsV1 = getTradeVersion(trade) === Version.v1
-  // const v1ExchangeAddress = useV1TradeExchangeAddress(trade)
+
   let spenderAddress;
+
   if (trade && chainId) {
+    const tradeIncludesETH =
+      swapState[Field.INPUT].currencyId === ZERO_ADDRESS ||
+      swapState[Field.OUTPUT].currencyId === ZERO_ADDRESS;
+
     spenderAddress =
-      trade.route.path.length <= 2 &&
-      swapState[Field.INPUT].currencyId !== ZERO_ADDRESS &&
-      swapState[Field.OUTPUT].currencyId !== ZERO_ADDRESS
-        ? trade?.route.pairs[0].poolAddress
-        : ONE_SPLIT_ADDRESSES[chainId];
-  } else {
-    spenderAddress = ONE_SPLIT_ADDRESSES[ChainId.KOVAN];
+      trade.route.path.length === 2 && tradeIncludesETH
+        ? EMI_ROUTER_ADRESSES[chainId]
+        : trade.route.pairs[0].poolAddress;
   }
+
   return useApproveCallback(amountToApprove, spenderAddress);
 }
