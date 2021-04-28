@@ -41,8 +41,8 @@ import {
 } from '../../state/swap/hooks';
 import {
   useExpertModeManager,
-  useUserSlippageTolerance,
   useTokenWarningDismissal,
+  useUserSlippageTolerance,
 } from '../../state/user/hooks';
 import { CursorPointer, StyledButtonNavigation, TYPE } from '../../theme';
 import { maxAmountSpend } from '../../utils/maxAmountSpend';
@@ -89,7 +89,6 @@ export default function Swap() {
     currencies,
     error,
   } = useDerivedSwapInfo();
-  console.log('connect', useActiveWeb3React());
 
   let distribution: any[] = [];
   // mcck distibution
@@ -288,12 +287,14 @@ export default function Swap() {
   const priceImpactSeverity = warningSeverity(priceImpactWithoutFee);
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
   // never show if price impact is above threshold in non expert mode
+
   const showApproveFlow =
-    !error &&
-    (approval === ApprovalState.NOT_APPROVED ||
+    (approval === ApprovalState.UNKNOWN ||
+      approval === ApprovalState.NOT_APPROVED ||
       approval === ApprovalState.PENDING ||
       (approvalSubmitted && approval === ApprovalState.APPROVED)) &&
     !(priceImpactSeverity > 3 && !expertMode);
+
   function modalHeader() {
     return (
       <SwapModalHeader
@@ -510,6 +511,8 @@ export default function Swap() {
                     <Dots>Approving</Dots>
                   ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
                     'Approved'
+                  ) : approval === ApprovalState.UNKNOWN ? (
+                    <Dots>Approve checking</Dots>
                   ) : (
                     'Approve ' + currencies[Field.INPUT]?.symbol
                   )}
