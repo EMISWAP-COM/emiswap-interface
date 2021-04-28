@@ -2,7 +2,7 @@ import { JSBI, TokenAmount } from '@uniswap/sdk';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { ArrowDown, ArrowUp } from 'react-feather';
 import { Text } from 'rebass';
-import { ThemeContext } from 'styled-components';
+import styled, { ThemeContext } from 'styled-components';
 import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button';
 import Card, { GreyCard } from '../../components/Card';
 import { AutoColumn } from '../../components/Column';
@@ -41,8 +41,8 @@ import {
 } from '../../state/swap/hooks';
 import {
   useExpertModeManager,
-  useUserSlippageTolerance,
   useTokenWarningDismissal,
+  useUserSlippageTolerance,
 } from '../../state/user/hooks';
 import { CursorPointer, StyledButtonNavigation, TYPE } from '../../theme';
 import { maxAmountSpend } from '../../utils/maxAmountSpend';
@@ -54,11 +54,15 @@ import {
 import AppBody from '../AppBody';
 import { ClickableText } from '../Pool/styleds';
 import { isUseOneSplitContract } from '../../utils';
-import ReferralLink from '../../components/RefferalLink';
 import GasConsumption from '../../components/swap/GasConsumption';
 import { BigNumber } from '@ethersproject/bignumber';
 import { AdvancedSwapDetails } from '../../components/swap/AdvancedSwapDetails';
 import { useMockEstimate } from '../../hooks/useMockEstimate';
+
+const GasFeeText = styled.div`
+  margin-top: 8px;
+  color: #89919A;
+`;
 
 export default function Swap() {
   useDefaultsFromURLSearch();
@@ -89,7 +93,6 @@ export default function Swap() {
     currencies,
     error,
   } = useDerivedSwapInfo();
-  console.log('connect', useActiveWeb3React());
 
   let distribution: any[] = [];
   // mcck distibution
@@ -288,12 +291,14 @@ export default function Swap() {
   const priceImpactSeverity = warningSeverity(priceImpactWithoutFee);
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
   // never show if price impact is above threshold in non expert mode
+
   const showApproveFlow =
-    !error &&
-    (approval === ApprovalState.NOT_APPROVED ||
+    (approval === ApprovalState.UNKNOWN ||
+      approval === ApprovalState.NOT_APPROVED ||
       approval === ApprovalState.PENDING ||
       (approvalSubmitted && approval === ApprovalState.APPROVED)) &&
     !(priceImpactSeverity > 3 && !expertMode);
+
   function modalHeader() {
     return (
       <SwapModalHeader
@@ -510,6 +515,8 @@ export default function Swap() {
                     <Dots>Approving</Dots>
                   ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
                     'Approved'
+                  ) : approval === ApprovalState.UNKNOWN ? (
+                    <Dots>Approve checking</Dots>
                   ) : (
                     'Approve ' + currencies[Field.INPUT]?.symbol
                   )}
@@ -564,8 +571,7 @@ export default function Swap() {
               </ErrorText>
             )}
           </BottomGrouping>
-
-          {account ? <ReferralLink /> : 'Please connect to get a referral link.'}
+          <GasFeeText>100% gas fee refund</GasFeeText>
         </Wrapper>
         <AdvancedSwapDetails trade={trade} />
       </AppBody>
