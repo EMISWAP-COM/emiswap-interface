@@ -8,6 +8,14 @@ import { Level } from '../styleds';
 import { ExternalLink } from '../../../theme';
 import { useActiveWeb3React } from '../../../hooks';
 
+export const TableHeader = styled(Header)`
+  margin-bottom: 12px;
+
+  @media screen and (max-width: 1200px) {
+    margin-bottom: 0;
+  }
+`;
+
 const Table = styled.div<{ amount?: number }>`
   color: ${({ theme }) => theme.grey6};
   max-height: 138px;
@@ -17,7 +25,7 @@ const Table = styled.div<{ amount?: number }>`
   @media screen and (max-width: 1200px) {
     max-height: 310px;
     background: none;
-    margin-top: 20px;
+    margin-top: 10px;
   }
   //
   //&::-webkit-scrollbar {
@@ -50,7 +58,8 @@ const TableRow = styled.div`
   @media screen and (max-width: 1200px) {
     flex-direction: column;
     height: auto;
-    padding: 0;
+    margin-bottom: 8px;
+    padding: 0 0 8px 0;
   }
 `;
 
@@ -104,7 +113,7 @@ const Cost = styled.div`
 const Wallet = styled.div<{ marginLeft?: number }>`
   flex: 1;
   width: auto;
-  text-align: left;
+  // text-align: right;
   color: ${({ theme }) => theme.text1};
   // margin-left: ${({ marginLeft }) => marginLeft + 'px'};
   // background: pink;
@@ -130,6 +139,7 @@ const Cell = styled.div`
   // padding-left: 1rem;
   
   &:last-child {
+    // text-align: right;
     // padding-right: 1rem;
   }
   
@@ -139,7 +149,7 @@ const Cell = styled.div`
     width: 100%;
     justify-content: space-between;
     height: 34px;
-    padding: 0 1rem;
+    padding: 0.5rem 1rem;
 
     &:nth-child(2n) {
       background: ${({ theme }) => theme.bg2};
@@ -200,7 +210,7 @@ export const PurchaseHistory = () => {
 
   return (
     <>
-      <Header>Your Purchase History</Header>
+      <TableHeader>Your Purchase History</TableHeader>
       <TableTitles>
         <DateField>Timestamp</DateField>
         <LevelWrapper>Purchased tokens</LevelWrapper>
@@ -224,7 +234,7 @@ export const PurchaseHistory = () => {
               <Cell>
                 <Label>Txhash</Label>
                 <ExternalLink href={`${ETHERSCAN_BASE_URL}/tx/${transaction_hash}`}>
-                  <Wallet marginLeft={312}>{shortenHash(transaction_hash)}</Wallet>
+                  <Wallet marginLeft={312}>{shortenHash(transaction_hash, 12)}</Wallet>
                 </ExternalLink>
               </Cell>
             </TableRow>
@@ -236,7 +246,7 @@ export const PurchaseHistory = () => {
         )}
       </Table>
 
-      <Header>Referral Purchase History</Header>
+      <TableHeader>Referral Purchase History</TableHeader>
       <TableTitles>
         <DateField>Timestamp</DateField>
         <LevelWrapperLabeled>Purchased tokens</LevelWrapperLabeled>
@@ -262,7 +272,7 @@ export const PurchaseHistory = () => {
                 <Cell>
                   <Label>Txhash</Label>
                   <ExternalLink href={`${ETHERSCAN_BASE_URL}/tx/${transaction_hash}`}>
-                    <Wallet marginLeft={288}>{shortenHash(transaction_hash)}</Wallet>
+                    <Wallet marginLeft={288}>{shortenHash(transaction_hash, 12)}</Wallet>
                   </ExternalLink>
                 </Cell>
               </TableRow>
@@ -275,7 +285,7 @@ export const PurchaseHistory = () => {
         )}
       </Table>
 
-      <Header>Your Fee Compensation History</Header>
+      <TableHeader>Your Fee Compensation History</TableHeader>
       <TableTitles>
         <DateField>Timestamp</DateField>
         <LevelWrapper>Transaction fee</LevelWrapper>
@@ -309,7 +319,7 @@ export const PurchaseHistory = () => {
             <Cell>
               <Label>Txhash</Label>
               <ExternalLink href={`${ETHERSCAN_BASE_URL}/tx/${transaction_hash}`}>
-                <Wallet marginLeft={208}>{shortenHash(transaction_hash)}</Wallet>
+                <Wallet marginLeft={208}>{shortenHash(transaction_hash, 8)}</Wallet>
               </ExternalLink>
             </Cell>
           </TableRow>
@@ -321,7 +331,7 @@ export const PurchaseHistory = () => {
         )}
       </TableCompensation>
 
-      <Header>Your Swapping Reward History</Header>
+      <TableHeader>Your Swapping Reward History</TableHeader>
       <TableTitles>
         <DateField>Timestamp</DateField>
         <LevelWrapper>Swapped tokens</LevelWrapper>
