@@ -68,7 +68,7 @@ const DateField = styled.div`
 
 const LevelWrapper = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   flex: 1;
   width: auto;
 
@@ -79,7 +79,7 @@ const LevelWrapper = styled.div`
 
 const LevelWrapperLabeled = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   flex: 1;
   width: auto;
 
@@ -104,7 +104,7 @@ const Cost = styled.div`
 const Wallet = styled.div<{ marginLeft?: number }>`
   flex: 1;
   width: auto;
-  text-align: right;
+  text-align: left;
   color: ${({ theme }) => theme.text1};
   // margin-left: ${({ marginLeft }) => marginLeft + 'px'};
   // background: pink;
@@ -126,6 +126,13 @@ const NoContent = styled.div`
 `;
 
 const Cell = styled.div`
+  flex: 1;
+  // padding-left: 1rem;
+  
+  &:last-child {
+    // padding-right: 1rem;
+  }
+  
   @media screen and (max-width: 1200px) {
     display: flex;
     align-items: center;
@@ -141,6 +148,7 @@ const Cell = styled.div`
 `;
 
 const TableTitles = styled(TableRow)`
+  padding: 0 1rem;
   background: ${({ theme }) => theme.bg2};
   height: 30px;
   border-bottom: none;
@@ -158,7 +166,7 @@ const Label = styled.span`
   }
 `;
 const BonusName = styled.span`
-  width: 7rem;
+  // width: 7rem;
   text-overflow: ellipsis;
 `;
 
