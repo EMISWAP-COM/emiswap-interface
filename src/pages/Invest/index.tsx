@@ -47,10 +47,6 @@ import Enterprise from '../../assets/svg/CardIcon/enterprise.svg';
 import Gold from '../../assets/svg/CardIcon/gold.svg';
 import Silver from '../../assets/svg/CardIcon/silver.svg';
 import Question from '../../assets/svg/FAQIcon/question.svg';
-import EmiMagicBackground from '../../assets/svg/EmiMagicBackground.svg';
-import EmiMagicCardModal from '../../components/EmiMagicCardModal';
-import useParsedQueryString from '../../hooks/useParsedQueryString';
-import ReferralLink from '../../components/RefferalLink';
 import { AppState } from '../../state';
 import { UserRoles } from '../../components/WalletModal';
 import { getPriceToNextStep } from './utils';
@@ -364,38 +360,6 @@ const EmiCard = styled.div`
   }
 `;
 
-const EmiMagicBtn = styled.div`
-  background: url('${EmiMagicBackground}');
-  background-repeat: no-repeat;
-  width: 100%;
-  background-size: cover;
-  border-radius: 8px;
-  height: 56px;
-  color: #FFF;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  user-select: none;
-  margin-top: 10px;
-`;
-
-const EmiMagicMark = styled.div`
-  background: url('${EmiMagicBackground}');
-  background-repeat: no-repeat;
-  width: 100%;
-  background-size: cover;
-  border-radius: 8px;
-  height: 56px;
-  color: #FFF;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  user-select: none;
-  margin-top: 10px;
-  opacity: .5;
-`;
-
 const EmiCardHeader = styled.div`
   color: #e50606;
   font-size: 1rem;
@@ -404,10 +368,6 @@ const EmiCardHeader = styled.div`
     text-decoration: underline;
     cursor: pointer;
   }
-`;
-
-const ConnectReferralText = styled.div`
-  margin-top: 8px;
 `;
 
 const PrivateSaleText = styled.div`
@@ -423,8 +383,6 @@ export function RedirectPathToInvestOnly({ location }: RouteComponentProps) {
 }
 
 const Invest = () => {
-  const { bonusform } = useParsedQueryString();
-
   useDefaultsFromURLSearch();
 
   const { account, chainId } = useActiveWeb3React();
@@ -567,18 +525,7 @@ const Invest = () => {
 
   // errors
   const [showInverted, setShowInverted] = useState<boolean>(false);
-  const [showEmiCardModal, setShowEmiCardModal] = useState<boolean>(bonusform === 'open');
 
-  const { whitelisted } = useSelector((state: AppState) => state.user.info);
-
-  const openEmiCardModal = () => {
-    ReactGA.event({
-      category: 'Magic_NFT',
-      action: 'click_MagicNFT',
-    });
-    setShowEmiCardModal(true);
-  };
-  const closeEmiCardModal = () => setShowEmiCardModal(false);
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
   // never show if price impact is above threshold in non expert mode
   const showApproveFlow =
@@ -975,7 +922,7 @@ const Invest = () => {
             {ESW > 0 ? (
               <EmiCardHeader>
                 Please, &nbsp;
-                <span onClick={() => setShowEmiCardModal(true)}>Register in the Whitelist</span>
+                <span>Register in the Whitelist</span>
                 &nbsp; to Get:
               </EmiCardHeader>
             ) : (
@@ -1192,23 +1139,6 @@ const Invest = () => {
           <PrivateSaleText>
             Private sale stage for investors who want to purchase ESW worth $25,000 and more.
           </PrivateSaleText>
-          {account ? (
-            <ReferralLink />
-          ) : (
-            <ConnectReferralText>Please connect to get a referral link</ConnectReferralText>
-          )}
-          {!whitelisted && account ? (
-            <>
-              <EmiMagicBtn onClick={openEmiCardModal}>Register here to Get Magic Cards</EmiMagicBtn>
-              <EmiMagicCardModal
-                isOpen={showEmiCardModal}
-                onDismiss={closeEmiCardModal}
-                walletID={account}
-              />
-            </>
-          ) : (
-            <EmiMagicMark>You are in white list</EmiMagicMark>
-          )}
         </Wrapper>
         {role === UserRoles.distributor &&
           generateEmiCardBlock(Number(formattedAmounts[Field.OUTPUT]))}

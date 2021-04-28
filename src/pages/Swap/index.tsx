@@ -2,7 +2,7 @@ import { JSBI, TokenAmount } from '@uniswap/sdk';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { ArrowDown, ArrowUp } from 'react-feather';
 import { Text } from 'rebass';
-import { ThemeContext } from 'styled-components';
+import styled, { ThemeContext } from 'styled-components';
 import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button';
 import Card, { GreyCard } from '../../components/Card';
 import { AutoColumn } from '../../components/Column';
@@ -54,11 +54,15 @@ import {
 import AppBody from '../AppBody';
 import { ClickableText } from '../Pool/styleds';
 import { isUseOneSplitContract } from '../../utils';
-import ReferralLink from '../../components/RefferalLink';
 import GasConsumption from '../../components/swap/GasConsumption';
 import { BigNumber } from '@ethersproject/bignumber';
 import { AdvancedSwapDetails } from '../../components/swap/AdvancedSwapDetails';
 import { useMockEstimate } from '../../hooks/useMockEstimate';
+
+const GasFeeText = styled.div`
+  margin-top: 8px;
+  color: #89919A;
+`;
 
 export default function Swap() {
   useDefaultsFromURLSearch();
@@ -567,8 +571,7 @@ export default function Swap() {
               </ErrorText>
             )}
           </BottomGrouping>
-
-          {account ? <ReferralLink /> : 'Please connect to get a referral link.'}
+          <GasFeeText>100% gas fee refund</GasFeeText>
         </Wrapper>
         <AdvancedSwapDetails trade={trade} />
       </AppBody>
