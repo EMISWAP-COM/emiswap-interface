@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { MaxUint256 } from '@ethersproject/constants';
 import { TransactionResponse } from '@ethersproject/providers';
-import { Trade, TokenAmount, ETHER, ChainId, ZERO_ADDRESS } from '@uniswap/sdk';
+import { Trade, TokenAmount, ETHER, ZERO_ADDRESS } from '@uniswap/sdk';
 import { BigNumber } from '@ethersproject/bignumber';
 import { useTokenAllowance } from '../data/Allowances';
 import { Field } from '../state/swap/actions';
@@ -15,8 +15,8 @@ import { computeSlippageAdjustedAmounts } from '../utils/prices';
 import { calculateGasMargin } from '../utils';
 import { useTokenContract } from './useContract';
 import { useActiveWeb3React } from './index';
-import { ONE_SPLIT_ADDRESSES } from '../constants/one-split';
 import { AppState } from '../state';
+import { EMI_ROUTER_ADRESSES } from '../constants/emi/addresses';
 
 export enum ApprovalState {
   UNKNOWN,
@@ -43,24 +43,44 @@ export function useApproveCallback(
   const swapState = useSelector<AppState, AppState['swap']>(state => state.swap);
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
-    if (!amountToApprove || !spender) return ApprovalState.UNKNOWN;
+    if (!amountToApprove || !spender) {
+      console.log('(!amountToApprove || !spender)', ApprovalState.UNKNOWN);
+
+      return ApprovalState.UNKNOWN;
+    }
+
     if (
       (amountToApprove.token.equals(ETHER) || swapState[Field.INPUT].currencyId === ZERO_ADDRESS) &&
       !isPool
-    )
+    ) {
+      console.log('что-то сложное', ApprovalState.APPROVED);
+
       return ApprovalState.APPROVED;
+    }
     // we might not have enough data to know whether or not we need to approve
-    if (!currentAllowance) return ApprovalState.UNKNOWN;
-    if (!spender) return ApprovalState.UNKNOWN;
+    if (!currentAllowance) {
+      console.log('!currentAllowance', ApprovalState.UNKNOWN);
+
+      return ApprovalState.UNKNOWN;
+    }
 
     // amountToApprove will be defined if currentAllowance is
-    return currentAllowance.lessThan(amountToApprove)
+
+    const status = currentAllowance.lessThan(amountToApprove)
       ? pendingApproval
         ? ApprovalState.PENDING
         : ApprovalState.NOT_APPROVED
       : ApprovalState.APPROVED;
+
+    console.log('END ----------', status);
+
+    return status;
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [amountToApprove, currentAllowance, pendingApproval, spender, allTransactions]);
+
+  console.log('----------', approvalState);
+
   const tokenContract = useTokenContract(token?.isEther ? undefined : token?.address);
   const addTransaction = useTransactionAdder();
 
@@ -130,18 +150,19 @@ export function useApproveCallbackFromTrade(
     () => (trade ? computeSlippageAdjustedAmounts(trade, allowedSlippage)[Field.INPUT] : undefined),
     [trade, allowedSlippage],
   );
-  // const tradeIsV1 = getTradeVersion(trade) === Version.v1
-  // const v1ExchangeAddress = useV1TradeExchangeAddress(trade)
+
   let spenderAddress;
+
   if (trade && chainId) {
+    const tradeIncludesETH =
+      swapState[Field.INPUT].currencyId === ZERO_ADDRESS ||
+      swapState[Field.OUTPUT].currencyId === ZERO_ADDRESS;
+
     spenderAddress =
-      trade.route.path.length <= 2 &&
-      swapState[Field.INPUT].currencyId !== ZERO_ADDRESS &&
-      swapState[Field.OUTPUT].currencyId !== ZERO_ADDRESS
-        ? trade?.route.pairs[0].poolAddress
-        : ONE_SPLIT_ADDRESSES[chainId];
-  } else {
-    spenderAddress = ONE_SPLIT_ADDRESSES[ChainId.KOVAN];
+      tradeIncludesETH || trade.route.path.length > 2
+        ? EMI_ROUTER_ADRESSES[chainId]
+        : trade.route.pairs[0].poolAddress;
   }
+
   return useApproveCallback(amountToApprove, spenderAddress);
 }
