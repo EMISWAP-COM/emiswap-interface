@@ -197,9 +197,6 @@ export default function CurrencyInputPanel({
   }, [setModalOpen]);
 
   const checkError: () => boolean = () => {
-    if (currencyBalance) {
-      console.log(currencyBalance, MIN_ETH, showMaxError);
-    }
     return (
       currencyBalance &&
       currencyBalance.token.isEther &&

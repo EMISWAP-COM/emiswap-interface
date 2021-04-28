@@ -43,24 +43,44 @@ export function useApproveCallback(
   const swapState = useSelector<AppState, AppState['swap']>(state => state.swap);
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
-    if (!amountToApprove || !spender) return ApprovalState.UNKNOWN;
+    if (!amountToApprove || !spender) {
+      console.log('(!amountToApprove || !spender)', ApprovalState.UNKNOWN);
+
+      return ApprovalState.UNKNOWN;
+    }
+
     if (
       (amountToApprove.token.equals(ETHER) || swapState[Field.INPUT].currencyId === ZERO_ADDRESS) &&
       !isPool
-    )
+    ) {
+      console.log('что-то сложное', ApprovalState.APPROVED);
+
       return ApprovalState.APPROVED;
+    }
     // we might not have enough data to know whether or not we need to approve
-    if (!currentAllowance) return ApprovalState.UNKNOWN;
-    if (!spender) return ApprovalState.UNKNOWN;
+    if (!currentAllowance) {
+      console.log('!currentAllowance', ApprovalState.UNKNOWN);
+
+      return ApprovalState.UNKNOWN;
+    }
 
     // amountToApprove will be defined if currentAllowance is
-    return currentAllowance.lessThan(amountToApprove)
+
+    const status = currentAllowance.lessThan(amountToApprove)
       ? pendingApproval
         ? ApprovalState.PENDING
         : ApprovalState.NOT_APPROVED
       : ApprovalState.APPROVED;
+
+    console.log('END ----------', status);
+
+    return status;
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [amountToApprove, currentAllowance, pendingApproval, spender, allTransactions]);
+
+  console.log('----------', approvalState);
+
   const tokenContract = useTokenContract(token?.isEther ? undefined : token?.address);
   const addTransaction = useTransactionAdder();
 

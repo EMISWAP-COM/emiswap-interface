@@ -41,8 +41,8 @@ import {
 } from '../../state/swap/hooks';
 import {
   useExpertModeManager,
-  useUserSlippageTolerance,
   useTokenWarningDismissal,
+  useUserSlippageTolerance,
 } from '../../state/user/hooks';
 import { CursorPointer, StyledButtonNavigation, TYPE } from '../../theme';
 import { maxAmountSpend } from '../../utils/maxAmountSpend';
@@ -166,7 +166,7 @@ export default function Swap() {
   const noRoute = !route;
 
   // check whether the user has approved the router on the input token
-  const [approval, approveCallback] = useApproveCallbackFromTrade(
+  let [approval, approveCallback] = useApproveCallbackFromTrade(
     trade,
     distribution,
     allowedSlippage,
@@ -287,12 +287,14 @@ export default function Swap() {
   const priceImpactSeverity = warningSeverity(priceImpactWithoutFee);
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
   // never show if price impact is above threshold in non expert mode
+
   const showApproveFlow =
-    !error &&
-    (approval === ApprovalState.NOT_APPROVED ||
+    (approval === ApprovalState.UNKNOWN ||
+      approval === ApprovalState.NOT_APPROVED ||
       approval === ApprovalState.PENDING ||
       (approvalSubmitted && approval === ApprovalState.APPROVED)) &&
     !(priceImpactSeverity > 3 && !expertMode);
+
   function modalHeader() {
     return (
       <SwapModalHeader
@@ -510,7 +512,7 @@ export default function Swap() {
                   ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
                     'Approved'
                   ) : (
-                    'Approve ' + currencies[Field.INPUT]?.symbol
+                    <Dots>Approve checking</Dots>
                   )}
                 </ButtonPrimary>
                 <ButtonError
