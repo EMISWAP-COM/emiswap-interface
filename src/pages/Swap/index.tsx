@@ -166,7 +166,7 @@ export default function Swap() {
   const noRoute = !route;
 
   // check whether the user has approved the router on the input token
-  let [approval, approveCallback] = useApproveCallbackFromTrade(
+  const [approval, approveCallback] = useApproveCallbackFromTrade(
     trade,
     distribution,
     allowedSlippage,
@@ -511,8 +511,10 @@ export default function Swap() {
                     <Dots>Approving</Dots>
                   ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
                     'Approved'
-                  ) : (
+                  ) : approval === ApprovalState.UNKNOWN ? (
                     <Dots>Approve checking</Dots>
+                  ) : (
+                    'Approve ' + currencies[Field.INPUT]?.symbol
                   )}
                 </ButtonPrimary>
                 <ButtonError
