@@ -55,7 +55,8 @@ const TableRow = styled.div`
 `;
 
 const DateField = styled.div`
-  width: 8.2rem;
+  flex: 1;
+  width: auto;
 
   @media screen and (max-width: 1200px) {
     position: relative;
@@ -67,7 +68,9 @@ const DateField = styled.div`
 
 const LevelWrapper = styled.div`
   display: flex;
-  width: 6.5rem;
+  justify-content: center;
+  flex: 1;
+  width: auto;
 
   @media screen and (max-width: 1200px) {
     justify-content: flex-end;
@@ -76,7 +79,9 @@ const LevelWrapper = styled.div`
 
 const LevelWrapperLabeled = styled.div`
   display: flex;
-  width: 8rem;
+  justify-content: center;
+  flex: 1;
+  width: auto;
 
   @media screen and (max-width: 1200px) {
     justify-content: flex-end;
@@ -97,9 +102,12 @@ const Cost = styled.div`
 `;
 
 const Wallet = styled.div<{ marginLeft?: number }>`
+  flex: 1;
+  width: auto;
+  text-align: right;
   color: ${({ theme }) => theme.text1};
-  margin-left: ${({ marginLeft }) => marginLeft + 'px'};
-  //background: pink;
+  // margin-left: ${({ marginLeft }) => marginLeft + 'px'};
+  // background: pink;
 
   @media screen and (max-width: 1200px) {
     font-weight: 500;
