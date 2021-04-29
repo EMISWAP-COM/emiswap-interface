@@ -1,15 +1,15 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import styled from 'styled-components/macro';
-import { Header } from '../styleds';
+import { Header, Level } from '../styleds';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { convertBigDecimal, convertDate, DateFormat, shortenHash } from '../uitls';
-import { Level } from '../styleds';
 import { ExternalLink } from '../../../theme';
 import { useActiveWeb3React } from '../../../hooks';
 
-export const TableHeader = styled(Header)`
-  margin-bottom: 12px;
+export const TableHeader = styled(Header)<{ marginTop?: number, marginBottom?: number }>`
+  margin-top: ${({ marginTop }) => (marginTop || 36) + 'px'};
+  margin-bottom: ${({ marginBottom }) => (marginBottom || 12) + 'px'};
 
   @media screen and (max-width: 1200px) {
     margin-bottom: 0;
@@ -75,10 +75,10 @@ const DateField = styled.div`
   }
 `;
 
-const LevelWrapper = styled.div`
+const LevelWrapper = styled.div<{ flex?: number }>`
   display: flex;
   justify-content: flex-start;
-  flex: 1;
+  flex: ${({ flex }) => flex || 1};
   width: auto;
 
   @media screen and (max-width: 1200px) {
@@ -86,10 +86,10 @@ const LevelWrapper = styled.div`
   }
 `;
 
-const LevelWrapperLabeled = styled.div`
+const LevelWrapperLabeled = styled.div<{ flex?: number }>`
   display: flex;
   justify-content: flex-start;
-  flex: 1;
+  flex: ${({ flex }) => flex || 1};
   width: auto;
 
   @media screen and (max-width: 1200px) {
@@ -134,8 +134,8 @@ const NoContent = styled.div`
   }
 `;
 
-const Cell = styled.div`
-  flex: 1;
+const Cell = styled.div<{ flex?: number }>`
+  flex: ${({ flex }) => flex || 1};
   // padding-left: 1rem;
   
   &:last-child {
@@ -180,10 +180,47 @@ const BonusName = styled.span`
   text-overflow: ellipsis;
 `;
 
+const Tabs = styled.div`
+    display: inline-flex;
+    position: absolute;
+    top: -4px;
+    right: 16px;
+    margin-left: auto;
+    border-radius: 6px;
+    background: #E6E7E8;
+    
+    @media screen and (max-width: 1200px) {
+      position: relative;
+      top: 0;
+      right: initial;
+      margin-top: 8px;
+    }
+  `;
+
+const TabItem = styled.div<{ active?: boolean }>`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 120px;
+    padding: 7px 12px;
+    border-radius: 6px;
+    border: 1px solid ${({ active }) => active ? '#E8AF59' : '#E6E7E8'};
+    font-size: 12px;
+    font-weight: 500;
+    background: ${({ active }) => active ? '#FFD541' : '#E6E7E8'};
+    color: ${({ active }) => active ? '#24272C' : '#555959'} !important;
+    box-shadow: ${({ active }) => active ? '0px 2px 6px rgba(0, 0, 0, 0.07)' : 'none'};
+    cursor: pointer;
+  `;
+
 export const PurchaseHistory = () => {
   const { chainId } = useActiveWeb3React();
   const { referrals } = useSelector((state: AppState) => state.cabinets.performance);
   const { histories, details } = useSelector((state: AppState) => state.cabinets.balance);
+
+  const [liquidityTabActive, setLiquidityTabActive] = useState<string>('10x');
+  const [poolBonus, setPoolBonus] = useState<any>(histories?.deposits);
+
   const deposit = histories?.deposits;
   const { compensation = [], swap_bonus_10x = [], swap_bonus = [] } = details;
 
@@ -210,6 +247,86 @@ export const PurchaseHistory = () => {
 
   return (
     <>
+      <div style={{position: 'relative'}}>
+        <TableHeader marginBottom={24}>Your Liquidity Reward History</TableHeader>
+        <Tabs>
+          <TabItem
+            active={liquidityTabActive === 'airdrops'}
+            onClick={() => setLiquidityTabActive('airdrops')}
+          >
+            LP Airdrops
+          </TabItem>
+          <TabItem
+            active={liquidityTabActive === '10x'}
+            onClick={() => setLiquidityTabActive('10x')}
+          >
+            10X Early Bird Refund
+          </TabItem>
+        </Tabs>
+        <TableTitles>
+          <DateField>Date</DateField>
+          <LevelWrapper flex={1.5}>Swapped tokens, DAI</LevelWrapper>
+          <LevelWrapper>Pool</LevelWrapper>
+          <LevelWrapper>Part in Pool</LevelWrapper>
+          <LevelWrapper>ESW Price</LevelWrapper>
+          <LevelWrapper>Reward, ESW</LevelWrapper>
+        </TableTitles>
+        <Table amount={poolBonus.length}>
+          {poolBonus && poolBonus.map(({ amount, token, created_at, transaction_hash }, index) => (
+            <TableRow key={transaction_hash + created_at}>
+              <Cell>
+                <DateField>{convertDate(created_at, DateFormat.short_day)}</DateField>
+              </Cell>
+              <Cell flex={1.5}>
+                <Label>Swapped tokens, DAI</Label>
+                <LevelWrapper>
+                  <Cost>
+                    <span>{convertBigDecimal(amount)}</span>&nbsp; {token}
+                  </Cost>
+                </LevelWrapper>
+              </Cell>
+              <Cell>
+                <Label>Pool</Label>
+                <LevelWrapper>
+                  <Cost>
+                    <span>{convertBigDecimal(amount)}</span>&nbsp; {token}
+                  </Cost>
+                </LevelWrapper>
+              </Cell>
+              <Cell>
+                <Label>Part in Pool</Label>
+                <LevelWrapper>
+                  <Cost>
+                    <span>{convertBigDecimal(amount)}</span>&nbsp; {token}
+                  </Cost>
+                </LevelWrapper>
+              </Cell>
+              <Cell>
+                <Label>ESW Price</Label>
+                <LevelWrapper>
+                  <Cost>
+                    <span>{convertBigDecimal(amount)}</span>&nbsp; {token}
+                  </Cost>
+                </LevelWrapper>
+              </Cell>
+              <Cell>
+                <Label>Reward, ESW</Label>
+                <LevelWrapper>
+                  <Cost>
+                    <span>{convertBigDecimal(amount)}</span>&nbsp; {token}
+                  </Cost>
+                </LevelWrapper>
+              </Cell>
+            </TableRow>
+          ))}
+          {!poolBonus.length && (
+            <TableRow>
+              <NoContent>No content</NoContent>
+            </TableRow>
+          )}
+        </Table>
+      </div>
+
       <TableHeader>Your Purchase History</TableHeader>
       <TableTitles>
         <DateField>Timestamp</DateField>
