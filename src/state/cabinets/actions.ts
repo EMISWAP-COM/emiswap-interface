@@ -100,3 +100,52 @@ export const loadBalance = createAsyncThunk(
     }
   },
 );
+
+// https://emiswap.emirex.co/v1/public/users/c35b1a1c-d38b-466c-b743-c4dea98d7d29/bonus_details/pool_bonus
+export const loadPoolBonus = createAsyncThunk(
+  'cabinets/loadPoolBonus',
+  async (userId: string, { dispatch }) => {
+    const url = `${baseUrl}/v1/public/users/${userId}/bonus_details/pool_bonus`;
+    try {
+      const response = await fetchWrapper.get(url);
+      return response;
+    } catch (e) {
+      dispatch(
+        addPopup({
+          key: 'loadBonusDetails',
+          content: {
+            status: {
+              name: e.message,
+              isError: true,
+            },
+          },
+        }),
+      );
+      return Promise.reject(e);
+    }
+  },
+);
+
+export const loadPoolBonus10X = createAsyncThunk(
+  'cabinets/loadPoolBonus10X',
+  async (userId: string, { dispatch }) => {
+    const url = `${baseUrl}/v1/public/users/${userId}/bonus_details/pool_bonus_10x`;
+    try {
+      const response = await fetchWrapper.get(url);
+      return response;
+    } catch (e) {
+      dispatch(
+        addPopup({
+          key: 'loadBonusDetails',
+          content: {
+            status: {
+              name: e.message,
+              isError: true,
+            },
+          },
+        }),
+      );
+      return Promise.reject(e);
+    }
+  },
+);

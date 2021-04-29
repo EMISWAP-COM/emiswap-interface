@@ -1,6 +1,11 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { UserInfo } from './reducer';
-import { loadBalance, loadPerformance } from '../cabinets/actions';
+import {
+  loadBalance,
+  loadPerformance,
+  loadPoolBonus,
+  loadPoolBonus10X,
+} from '../cabinets/actions';
 import { loadGasPrice } from '../stats/actions';
 import { fetchWrapper } from '../../api/fetchWrapper';
 import { addPopup } from '../application/actions';
@@ -92,6 +97,8 @@ export const loginCabinets = createAsyncThunk(
         dispatch(login(data));
         dispatch(loadPerformance(data.id) as any);
         dispatch(loadBalance(data.id) as any);
+        dispatch(loadPoolBonus(data.id) as any);
+        dispatch(loadPoolBonus10X(data.id) as any);
         dispatch(loadGasPrice() as any);
         if (data.referral_id) {
           dispatch(loadWalletAddress(data.referral_id) as any);

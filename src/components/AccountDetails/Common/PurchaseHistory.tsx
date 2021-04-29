@@ -104,7 +104,7 @@ const Cost = styled.div`
     min-width: auto;
   }
 
-  > span {
+  span {
     font-weight: 600;
     color: #000000;
   }
@@ -184,7 +184,7 @@ const Tabs = styled.div`
     display: inline-flex;
     position: absolute;
     top: -4px;
-    right: 16px;
+    right: 0;
     margin-left: auto;
     border-radius: 6px;
     background: #E6E7E8;
@@ -217,9 +217,9 @@ export const PurchaseHistory = () => {
   const { chainId } = useActiveWeb3React();
   const { referrals } = useSelector((state: AppState) => state.cabinets.performance);
   const { histories, details } = useSelector((state: AppState) => state.cabinets.balance);
+  const { pool_bonus, pool_bonus_10x } = useSelector((state: AppState) => state.cabinets.bonusDetails);
 
   const [liquidityTabActive, setLiquidityTabActive] = useState<string>('10x');
-  const [poolBonus, setPoolBonus] = useState<any>(histories?.deposits);
 
   const deposit = histories?.deposits;
   const { compensation = [], swap_bonus_10x = [], swap_bonus = [] } = details;
@@ -245,6 +245,14 @@ export const PurchaseHistory = () => {
       });
   }, [swap_bonus_10x, swap_bonus]);
 
+  const poolBonusDisplayData = useMemo(() => {
+    if (liquidityTabActive === 'airdrops') {
+      return pool_bonus;
+    } else {
+      return pool_bonus_10x;
+    }
+  }, [liquidityTabActive, pool_bonus, pool_bonus_10x]);
+
   return (
     <>
       <div style={{position: 'relative'}}>
@@ -266,30 +274,31 @@ export const PurchaseHistory = () => {
         <TableTitles>
           <DateField>Date</DateField>
           <LevelWrapper flex={1.5}>Swapped tokens, DAI</LevelWrapper>
-          <LevelWrapper>Pool</LevelWrapper>
+          <LevelWrapper flex={2}>Pool</LevelWrapper>
           <LevelWrapper>Part in Pool</LevelWrapper>
           <LevelWrapper>ESW Price</LevelWrapper>
           <LevelWrapper>Reward, ESW</LevelWrapper>
         </TableTitles>
-        <Table amount={poolBonus.length}>
-          {poolBonus && poolBonus.map(({ amount, token, created_at, transaction_hash }, index) => (
-            <TableRow key={transaction_hash + created_at}>
+        <Table amount={poolBonusDisplayData.length}>
+          {poolBonusDisplayData &&
+            poolBonusDisplayData.map(({ date, name, ews_reward, esw_price, pool_part, swap_turnover }, index) => (
+            <TableRow key={date + name + index}>
               <Cell>
-                <DateField>{convertDate(created_at, DateFormat.short_day)}</DateField>
+                <DateField>{convertDate(date, DateFormat.short_day)}</DateField>
               </Cell>
               <Cell flex={1.5}>
                 <Label>Swapped tokens, DAI</Label>
                 <LevelWrapper>
                   <Cost>
-                    <span>{convertBigDecimal(amount)}</span>&nbsp; {token}
+                    <span>{swap_turnover}</span>
                   </Cost>
                 </LevelWrapper>
               </Cell>
-              <Cell>
+              <Cell flex={2}>
                 <Label>Pool</Label>
                 <LevelWrapper>
                   <Cost>
-                    <span>{convertBigDecimal(amount)}</span>&nbsp; {token}
+                    <div style={{maxWidth: 140}}><span>{name}</span></div>
                   </Cost>
                 </LevelWrapper>
               </Cell>
@@ -297,7 +306,7 @@ export const PurchaseHistory = () => {
                 <Label>Part in Pool</Label>
                 <LevelWrapper>
                   <Cost>
-                    <span>{convertBigDecimal(amount)}</span>&nbsp; {token}
+                    <span>{pool_part}</span>
                   </Cost>
                 </LevelWrapper>
               </Cell>
@@ -305,7 +314,7 @@ export const PurchaseHistory = () => {
                 <Label>ESW Price</Label>
                 <LevelWrapper>
                   <Cost>
-                    <span>{convertBigDecimal(amount)}</span>&nbsp; {token}
+                    <span>{convertBigDecimal(esw_price)}</span>&nbsp; DAI
                   </Cost>
                 </LevelWrapper>
               </Cell>
@@ -313,13 +322,13 @@ export const PurchaseHistory = () => {
                 <Label>Reward, ESW</Label>
                 <LevelWrapper>
                   <Cost>
-                    <span>{convertBigDecimal(amount)}</span>&nbsp; {token}
+                    <span>{convertBigDecimal(ews_reward)}</span>&nbsp; ESW
                   </Cost>
                 </LevelWrapper>
               </Cell>
             </TableRow>
           ))}
-          {!poolBonus.length && (
+          {!poolBonusDisplayData.length && (
             <TableRow>
               <NoContent>No content</NoContent>
             </TableRow>
@@ -336,7 +345,7 @@ export const PurchaseHistory = () => {
       <Table amount={deposit.length}>
         {deposit &&
           deposit.map(({ amount, token, created_at, transaction_hash }, index) => (
-            <TableRow key={transaction_hash + created_at}>
+            <TableRow key={transaction_hash + created_at + index}>
               <Cell>
                 <DateField>{convertDate(created_at, DateFormat.full)}</DateField>
               </Cell>
@@ -372,8 +381,8 @@ export const PurchaseHistory = () => {
       <Table amount={referrals.length}>
         {referrals &&
           referrals.map(({ deposits, level }) => {
-            return deposits.map(({ transaction_hash, amount, token, created_at }) => (
-              <TableRow key={transaction_hash + created_at}>
+            return deposits.map(({ transaction_hash, amount, token, created_at }, index) => (
+              <TableRow key={transaction_hash + created_at + index}>
                 <Cell>
                   <DateField>{convertDate(created_at, DateFormat.full)}</DateField>
                 </Cell>
@@ -410,8 +419,8 @@ export const PurchaseHistory = () => {
         <Wallet marginLeft={208}>Txhash</Wallet>
       </TableTitles>
       <TableCompensation amount={deposit.length}>
-        {compensation.map(({ amount, token, created_at, transaction_hash }) => (
-          <TableRow key={transaction_hash + created_at}>
+        {compensation.map(({ amount, token, created_at, transaction_hash }, index) => (
+          <TableRow key={transaction_hash + created_at + index}>
             <Cell>
               <DateField>{convertDate(created_at, DateFormat.full)}</DateField>
             </Cell>
@@ -459,8 +468,8 @@ export const PurchaseHistory = () => {
       </TableTitles>
       <TableSwapping amount={deposit.length}>
         {swapping &&
-          swapping.map(({ amount, token, created_at, transaction_hash, amount_dai, bonusName }) => (
-            <TableRow key={transaction_hash + created_at}>
+          swapping.map(({ amount, token, created_at, transaction_hash, amount_dai, bonusName }, index) => (
+            <TableRow key={transaction_hash + created_at + index}>
               <Cell>
                 <DateField>{convertDate(created_at, DateFormat.full)}</DateField>
               </Cell>
