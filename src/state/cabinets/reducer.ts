@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { loadBalance, loadPerformance, loadPoolBonus, loadPoolBonus10X } from './actions';
+import { loadBalance, loadPerformance, loadPool, loadPoolBlockBonus, loadPoolBonus, loadPoolBonus10X } from './actions';
 
 interface Unlock {
   amount: string;
@@ -59,6 +59,8 @@ interface Balance {
 }
 
 interface BonusDetails {
+  pool_block_bonus: PoolBonus[],
+  pool: PoolBonus[],
   pool_bonus: PoolBonus[],
   pool_bonus_10x: PoolBonus[],
 }
@@ -195,6 +197,8 @@ const initialState: CabinetState = {
     change_level_info: null,
   },
   bonusDetails: {
+    pool_block_bonus: [],
+    pool: [],
     pool_bonus: [],
     pool_bonus_10x: [],
   },
@@ -214,6 +218,12 @@ export default createReducer(
       // })
       .addCase(loadBalance.fulfilled, (state, action) => {
         state.balance = action.payload;
+      })
+      .addCase(loadPoolBlockBonus.fulfilled, (state, action) => {
+        state.bonusDetails.pool_block_bonus = action.payload;
+      })
+      .addCase(loadPool.fulfilled, (state, action) => {
+        state.bonusDetails.pool = action.payload;
       })
       .addCase(loadPoolBonus.fulfilled, (state, action) => {
         state.bonusDetails.pool_bonus = action.payload;

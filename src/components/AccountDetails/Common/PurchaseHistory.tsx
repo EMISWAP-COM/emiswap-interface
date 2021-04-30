@@ -225,7 +225,7 @@ export const PurchaseHistory = () => {
   const { chainId } = useActiveWeb3React();
   const { referrals } = useSelector((state: AppState) => state.cabinets.performance);
   const { histories, details } = useSelector((state: AppState) => state.cabinets.balance);
-  const { pool_bonus, pool_bonus_10x } = useSelector((state: AppState) => state.cabinets.bonusDetails);
+  const { pool_block_bonus, pool } = useSelector((state: AppState) => state.cabinets.bonusDetails);
 
   const [liquidityTabActive, setLiquidityTabActive] = useState<string>('10x');
 
@@ -255,11 +255,11 @@ export const PurchaseHistory = () => {
 
   const poolBonusDisplayData = useMemo(() => {
     if (liquidityTabActive === 'airdrops') {
-      return pool_bonus;
+      return pool_block_bonus;
     } else {
-      return pool_bonus_10x;
+      return pool;
     }
-  }, [liquidityTabActive, pool_bonus, pool_bonus_10x]);
+  }, [liquidityTabActive, pool_block_bonus, pool]);
 
   return (
     <>
@@ -281,10 +281,18 @@ export const PurchaseHistory = () => {
         </Tabs>
         <TableTitles>
           <DateField>Date</DateField>
-          <LevelWrapper flex={1.5}>Swapped tokens, DAI</LevelWrapper>
-          <LevelWrapper flex={2} style={{justifyContent: 'center'}}>Pool</LevelWrapper>
+          {liquidityTabActive === '10x' && (
+            <LevelWrapper flex={1.5}>Swapped tokens, DAI</LevelWrapper>
+          )}
+          {liquidityTabActive === '10x' ? (
+            <LevelWrapper flex={2} style={{justifyContent: 'center'}}>Pool</LevelWrapper>
+          ) : (
+            <LevelWrapper flex={1.5}>Pool</LevelWrapper>
+          )}
           <LevelWrapper>Part in Pool</LevelWrapper>
-          <LevelWrapper>ESW Price</LevelWrapper>
+          {liquidityTabActive === '10x' && (
+            <LevelWrapper>ESW Price</LevelWrapper>
+          )}
           <LevelWrapper>Reward, ESW</LevelWrapper>
         </TableTitles>
         <Table amount={poolBonusDisplayData.length}>
@@ -294,19 +302,21 @@ export const PurchaseHistory = () => {
               <Cell>
                 <DateField>{convertDate(date, DateFormat.short_day)}</DateField>
               </Cell>
-              <Cell flex={1.5}>
-                <Label>Swapped tokens, DAI</Label>
-                <LevelWrapper>
-                  <Cost>
-                    <span>{convertBigDecimal(swap_turnover)}</span>&nbsp; DAI
-                  </Cost>
-                </LevelWrapper>
-              </Cell>
-              <Cell flex={2}>
+              {liquidityTabActive === '10x' && (
+                <Cell flex={liquidityTabActive === '10x' ? 1.5 : 1}>
+                  <Label>Swapped tokens</Label>
+                  <LevelWrapper>
+                    <Cost>
+                      <span>{convertBigDecimal(swap_turnover)}</span>&nbsp; DAI
+                    </Cost>
+                  </LevelWrapper>
+                </Cell>
+              )}
+              <Cell flex={liquidityTabActive === '10x' ? 2 : 1.5}>
                 <Label>Pool</Label>
-                <PoolCostWrapper>
+                <PoolCostWrapper style={{justifyContent: liquidityTabActive === '10x' ? 'center' : 'flex-start'}}>
                   <Cost>
-                    <div style={{maxWidth: 140}}><span>{name}</span></div>
+                    <div style={{maxWidth: liquidityTabActive === '10x' ? 140 : 200}}><span>{name}</span></div>
                   </Cost>
                 </PoolCostWrapper>
               </Cell>
@@ -318,14 +328,16 @@ export const PurchaseHistory = () => {
                   </Cost>
                 </LevelWrapper>
               </Cell>
-              <Cell>
-                <Label>ESW Price</Label>
-                <LevelWrapper>
-                  <Cost>
-                    <span>{convertBigDecimal(esw_price)}</span>&nbsp; DAI
-                  </Cost>
-                </LevelWrapper>
-              </Cell>
+              {liquidityTabActive === '10x' && (
+                <Cell>
+                  <Label>ESW Price</Label>
+                  <LevelWrapper>
+                    <Cost>
+                      <span>{convertBigDecimal(esw_price)}</span>&nbsp; DAI
+                    </Cost>
+                  </LevelWrapper>
+                </Cell>
+              )}
               <Cell>
                 <Label>Reward, ESW</Label>
                 <LevelWrapper>
