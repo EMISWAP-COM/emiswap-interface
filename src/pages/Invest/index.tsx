@@ -64,6 +64,8 @@ import {
 } from '../../constants/invest';
 import { useMockEstimate } from '../../hooks/useMockEstimate';
 import { ErrorText } from '../../components/swap/styleds';
+import InvestContactForm from '../../components/InvestContactForm';
+import { walletconnect, walletlink } from '../../connectors';
 
 const EmiCard = styled.div`
   position: absolute;
@@ -378,6 +380,24 @@ const PrivateSaleText = styled.div`
   margin: 8px auto 10px auto;
 `;
 
+const LoginFirstText = styled.div`
+  max-width: 300px;
+  font-size: 15px;
+  line-height: 21px;
+  color: #000000;
+  font-weight: 600;
+  margin: 8px auto 10px auto;
+`;
+
+const OnlyInvestorsText = styled.div`
+  max-width: 300px;
+  font-size: 15px;
+  line-height: 21px;
+  color: #e50606;
+  font-weight: 600;
+  margin: 8px auto 10px auto;
+`;
+
 export function RedirectPathToInvestOnly({ location }: RouteComponentProps) {
   return <Redirect to={{ ...location, pathname: '/invest' }} />;
 }
@@ -411,6 +431,7 @@ const Invest = () => {
   const [selectedCardRole, setSelectedCardRole] = useState<number>(0);
   const role: UserRoles = useSelector((state: AppState) => state.user.info?.role);
   const bonusRoleName = useSelector((state: AppState) => state.user.info?.bonus_role_name);
+  const investRequested: boolean = useSelector((state: AppState) => state.user.info?.invest_requested);
 
   const parsedAmounts = {
     [Field.INPUT]: parsedAmount,
@@ -450,6 +471,7 @@ const Invest = () => {
   const [showConfirm, setShowConfirm] = useState<boolean>(false); // show confirmation modal
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false); // waiting for user confirmaion/rejection
   const [txHash, setTxHash] = useState<string>('');
+  const [isRegisterWaitListModalOpen, setIsRegisterWaitListModalOpen] = useState<boolean>(false);
 
   const returnFormatedAmount = (bool: boolean) => {
     if (bool) {
@@ -1130,15 +1152,41 @@ const Invest = () => {
                 </ButtonError>
               )}
               {!isEnough && (
-                <ErrorText fontWeight={500} fontSize="11pt" severity={3}>
+                <ErrorText style={{marginTop: 4}} fontWeight={500} fontSize="11pt" severity={3}>
                   Probably insufficient ETH balance
                 </ErrorText>
               )}
             </BottomGrouping>
           </AutoColumn>
-          <PrivateSaleText>
-            Private sale stage for investors who want to purchase ESW worth $25,000 and more.
-          </PrivateSaleText>
+
+          {(investRequested || !account) ? (
+            <div>
+              <PrivateSaleText>
+                Private sale stage for investors who want to purchase ESW worth $25,000 and more.
+              </PrivateSaleText>
+              {!account && (
+                <LoginFirstText>
+                  You won't be able to invest if you are not in the Waiting list. Please, login first.
+                </LoginFirstText>
+              )}
+            </div>
+          ) : (
+            <div>
+              <OnlyInvestorsText>
+                Sorry, only investors registered in the Waiting list can invest in the Private Stage
+              </OnlyInvestorsText>
+              <ButtonPrimary
+                onClick={() => setIsRegisterWaitListModalOpen(true)}
+              >
+                Register to the Waiting list
+              </ButtonPrimary>
+              <InvestContactForm
+                isOpen={isRegisterWaitListModalOpen}
+                walletID={""}
+                onDismiss={() => setIsRegisterWaitListModalOpen(false)}/>
+            </div>
+          )}
+
         </Wrapper>
         {role === UserRoles.distributor &&
           generateEmiCardBlock(Number(formattedAmounts[Field.OUTPUT]))}

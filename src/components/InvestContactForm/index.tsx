@@ -271,7 +271,7 @@ export default function InvestContactForm({ isOpen, walletID, onDismiss }: EmiMa
   const errorLabel = <span className="modal-body__error-text">Please enter the correct value</span>;
 
   return (
-    <Modal isOpen={true} onDismiss={onDismiss} maxHeight={90} maxWidth={680}>
+    <Modal isOpen={isOpen} onDismiss={onDismiss} maxHeight={90} maxWidth={680}>
       <ModalBody>
         <CloseBtn onClick={onDismiss}>
           <CloseIcon color={'#555959'} />
