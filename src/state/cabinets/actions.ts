@@ -101,6 +101,30 @@ export const loadBalance = createAsyncThunk(
   },
 );
 
+export const loadBonus = createAsyncThunk(
+  'cabinets/loadBonus',
+  async (userId: string, { dispatch }) => {
+    const url = `${baseUrl}/v1/public/users/${userId}/bonus_details`;
+    try {
+      const response = await fetchWrapper.get(url);
+      return response;
+    } catch (e) {
+      dispatch(
+        addPopup({
+          key: 'loadBonus',
+          content: {
+            status: {
+              name: e.message,
+              isError: true,
+            },
+          },
+        }),
+      );
+      return Promise.reject(e);
+    }
+  },
+);
+
 export const loadPoolBlockBonus = createAsyncThunk(
   'cabinets/loadPoolBlockBonus',
   async (userId: string, { dispatch }) => {

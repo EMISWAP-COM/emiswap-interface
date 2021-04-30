@@ -225,7 +225,10 @@ export const PurchaseHistory = () => {
   const { chainId } = useActiveWeb3React();
   const { referrals } = useSelector((state: AppState) => state.cabinets.performance);
   const { histories, details } = useSelector((state: AppState) => state.cabinets.balance);
-  const { pool_block_bonus, pool } = useSelector((state: AppState) => state.cabinets.bonusDetails);
+  const {
+    pool_block_bonuses,
+    pool_bonuses,
+  } = useSelector((state: AppState) => state.cabinets.bonusDetails);
 
   const [liquidityTabActive, setLiquidityTabActive] = useState<string>('10x');
 
@@ -255,11 +258,11 @@ export const PurchaseHistory = () => {
 
   const poolBonusDisplayData = useMemo(() => {
     if (liquidityTabActive === 'airdrops') {
-      return pool_block_bonus;
+      return pool_block_bonuses;
     } else {
-      return pool;
+      return pool_bonuses;
     }
-  }, [liquidityTabActive, pool_block_bonus, pool]);
+  }, [liquidityTabActive, pool_block_bonuses, pool_bonuses]);
 
   return (
     <>
