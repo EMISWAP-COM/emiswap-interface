@@ -6,9 +6,10 @@ import Modal from '../Modal';
 // import EmiCardHeaderImg from '../../assets/images/EmiCardHeaderImgNew.jpg';
 import { SuccessRegistration } from './SuccessRegistration';
 import { CloseIcon } from '../../assets/tsx/CloseIcon';
-// import { fetchWrapper } from '../../api/fetchWrapper';
-// import { useDispatch } from 'react-redux';
-// import { addPopup } from '../../state/application/actions';
+import { fetchWrapper } from '../../api/fetchWrapper';
+import { useDispatch } from 'react-redux';
+import { addPopup } from '../../state/application/actions';
+import WAValidator from 'wallet-address-validator';
 
 const CloseBtn = styled.div`
   position: absolute;
@@ -180,6 +181,7 @@ const ModalBody = styled.div`
     }
   }
 `;
+const baseUrl = window['env'] ? window['env'].REACT_APP_PUBLIC_URL : '';
 
 interface EmiMagicCardModalProps {
   isOpen: boolean;
@@ -187,13 +189,12 @@ interface EmiMagicCardModalProps {
   walletID?: string;
 }
 
-// const baseUrl = window['env'] ? window['env'].REACT_APP_PUBLIC_URL : '';
-
 const defaultValidation = {
   name: true,
   email: true,
   phone: true,
-  investment: true,
+  telegram: true,
+  wallet: true,
 };
 
 //TODO объединить с EmiMagicCardModal. Вынести валидатор в утилсы с декларативной проверкой входящего объекта. Регэкспы тоже из утлис экспортить
@@ -201,87 +202,67 @@ export default function InvestContactForm({ isOpen, walletID, onDismiss }: EmiMa
   const nameRef = useRef(null);
   const emailRef = useRef(null);
   const phoneRef = useRef(null);
-  const investmentRef = useRef(null);
+  const telegramRef = useRef(null);
+  const walletRef = useRef(null);
   const [validation, setValidation] = useState(defaultValidation);
   const [isRegistered, setIsRegistered] = useState(false);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-  const validateForm = (name = '', email = '', phone = '', investment = '') => {
+  const validateForm = (name, email, phone, telegram, wallet) => {
     const newValidator = { ...defaultValidation };
     const nameRegexp = /\D/;
     const emailRegexp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegexp = /^\+[0-9-]+$/;
-    const investmentRegexp = /^[0-9]+$/;
+    const telegramRegexp = /^@[a-z0-9_]+$/;
 
     newValidator.name = nameRegexp.test(name);
     newValidator.email = emailRegexp.test(email);
-    newValidator.phone = phoneRegexp.test(phone);
-    newValidator.investment = investmentRegexp.test(investment);
+    newValidator.phone = phone ? phoneRegexp.test(phone) : true;
+    newValidator.telegram = telegram ? telegramRegexp.test(telegram) : true;
+    newValidator.wallet = WAValidator.validate(wallet, 'ETH');
 
     return newValidator;
   };
 
   const sendForm = () => {
-    const name = nameRef && nameRef.current.value;
-    const email = emailRef && emailRef.current.value;
-    const phone = phoneRef && phoneRef.current.value;
-    const investment = investmentRef && investmentRef.current.value;
+    const name = nameRef.current?.value;
+    const email = emailRef.current?.value;
+    const phone = phoneRef.current?.value;
+    const telegram = telegramRef.current?.value;
+    const wallet = walletRef.current?.value;
 
-    // const utm = localStorage.getItem('UTMMarks');
-
-    const formValidation = validateForm(name, email, phone, investment);
+    const formValidation = validateForm(name, email, phone, telegram, wallet);
     const isValid = Object.values(formValidation).every(Boolean);
 
     if (isValid) {
-      // const urlParams = new URLSearchParams(localStorage.getItem('UTMMarks'));
-      // let utmMakrs = {};
-      // for (let [key, value] of urlParams) {
-      //   if (key.includes('utm')) {
-      //     utmMakrs[key] = value;
-      //   }
-      // }
-      setIsRegistered(true);
-      // fetchWrapper
-      //   .post(`${baseUrl}/v1/public/whitelist${utm || ''}`, {
-      //     body: JSON.stringify({
-      //       name: name,
-      //       email: email,
-      //       telegram: telegram,
-      //       address: address,
-      //       created_at: new Date().toString(),
-      //       utm: utmMakrs,
-      //     }),
-      //   })
-      //   .then(() => {
-      //     setSuccessMessage(Message.success);
-      //     ReactGA.event({
-      //       category: 'whitelist',
-      //       action: 'whitelist_MagicNFT',
-      //     });
-      //     localStorage.removeItem('UTMMarks');
-      //     setIsRegistered(true);
-      //   })
-      //   .catch(e => {
-      //     const validation = e?.payload?.address;
-      //     if (validation && validation[0] === 'duplicate') {
-      //       setSuccessMessage(Message.duplicate);
-      //       setIsRegistered(true);
-      //     } else {
-      //       alert(`Oops, we unable to perform whitelist registration - ${e}`);
-      //       console.log('e', e.payload);
-      //       dispatch(
-      //         addPopup({
-      //           key: 'magicCardModal',
-      //           content: {
-      //             status: {
-      //               name: `Oops, we unable to perform whitelist registration - ${e}`,
-      //               isError: true,
-      //             },
-      //           },
-      //         }),
-      //       );
-      //     }
-      //   });
+      fetchWrapper
+        .post(`${baseUrl}/v1/public/investor_requests`, {
+          body: JSON.stringify({
+            name,
+            email,
+            telegram,
+            address: wallet,
+            number: phone,
+          }),
+        })
+        .then(() => {
+          setIsRegistered(true);
+        })
+        .catch(e => {
+          const message = `${e.message}: ${JSON.stringify(e.payload)}`;
+          console.log('e', message);
+          dispatch(
+            addPopup({
+              key: 'magicCardModal',
+              content: {
+                status: {
+                  name: `Unable to perform registration - ${message}`,
+                  isError: true,
+                },
+              },
+            }),
+          );
+        });
     }
 
     setValidation(formValidation);
@@ -290,7 +271,7 @@ export default function InvestContactForm({ isOpen, walletID, onDismiss }: EmiMa
   const errorLabel = <span className="modal-body__error-text">Please enter the correct value</span>;
 
   return (
-    <Modal isOpen={isOpen} onDismiss={onDismiss} maxHeight={90} maxWidth={680}>
+    <Modal isOpen={true} onDismiss={onDismiss} maxHeight={90} maxWidth={680}>
       <ModalBody>
         <CloseBtn onClick={onDismiss}>
           <CloseIcon color={'#555959'} />
@@ -301,9 +282,9 @@ export default function InvestContactForm({ isOpen, walletID, onDismiss }: EmiMa
           <>
             <div className="modal-body">
               <div className="modal-body__header">Offer for investors who missed the tokensale</div>
-              <div className="modal-body__description">
-                If you are interested in purchasing ESW for less than $25,000, fill out this form.
-              </div>
+              {/*<div className="modal-body__description">*/}
+              {/*  If you are interested in purchasing ESW for less than $25,000, fill out this form.*/}
+              {/*</div>*/}
               <div className="modal-body__input-block">
                 <div className="modal-body__input-label">Name</div>
                 <input
@@ -335,17 +316,27 @@ export default function InvestContactForm({ isOpen, walletID, onDismiss }: EmiMa
                 {!validation.phone && errorLabel}
               </div>
               <div className="modal-body__input-block">
-                <div className="modal-body__input-label">Investment size $</div>
+                <div className="modal-body__input-label">Telegram</div>
                 <input
-                  ref={investmentRef}
-                  className={`modal-body__input${
-                    !validation.investment ? ' modal-body__error' : ''
-                  }`}
+                  ref={telegramRef}
+                  className={`modal-body__input${!validation.telegram ? ' modal-body__error' : ''}`}
+                  type="text"
+                  placeholder="@telegram"
+                />
+                {!validation.telegram && (
+                  <span className="modal-body__error-text">Please enter the correct value</span>
+                )}
+              </div>
+              <div className="modal-body__input-block">
+                <div className="modal-body__input-label">Wallet account</div>
+                <input
+                  ref={walletRef}
+                  className={`modal-body__input${!validation.wallet ? ' modal-body__error' : ''}`}
                   defaultValue={walletID}
                   type="text"
-                  placeholder="5000"
+                  placeholder="0x..."
                 />
-                {!validation.investment && errorLabel}
+                {!validation.wallet && errorLabel}
               </div>
               <div className="modal-body__btn-container">
                 <div className="modal-body__btn" onClick={sendForm}>
