@@ -86,6 +86,14 @@ const LevelWrapper = styled.div<{ flex?: number }>`
   }
 `;
 
+const PoolCostWrapper = styled(LevelWrapper)`
+  justify-content: center;
+
+  @media screen and (max-width: 1200px) {
+    justify-content: flex-end;
+  }
+`;
+
 const LevelWrapperLabeled = styled.div<{ flex?: number }>`
   display: flex;
   justify-content: flex-start;
@@ -274,7 +282,7 @@ export const PurchaseHistory = () => {
         <TableTitles>
           <DateField>Date</DateField>
           <LevelWrapper flex={1.5}>Swapped tokens, DAI</LevelWrapper>
-          <LevelWrapper flex={2}>Pool</LevelWrapper>
+          <LevelWrapper flex={2} style={{justifyContent: 'center'}}>Pool</LevelWrapper>
           <LevelWrapper>Part in Pool</LevelWrapper>
           <LevelWrapper>ESW Price</LevelWrapper>
           <LevelWrapper>Reward, ESW</LevelWrapper>
@@ -290,17 +298,17 @@ export const PurchaseHistory = () => {
                 <Label>Swapped tokens, DAI</Label>
                 <LevelWrapper>
                   <Cost>
-                    <span>{swap_turnover}</span>
+                    <span>{convertBigDecimal(swap_turnover)}</span>&nbsp; DAI
                   </Cost>
                 </LevelWrapper>
               </Cell>
               <Cell flex={2}>
                 <Label>Pool</Label>
-                <LevelWrapper>
+                <PoolCostWrapper>
                   <Cost>
                     <div style={{maxWidth: 140}}><span>{name}</span></div>
                   </Cost>
-                </LevelWrapper>
+                </PoolCostWrapper>
               </Cell>
               <Cell>
                 <Label>Part in Pool</Label>
