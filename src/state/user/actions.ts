@@ -86,10 +86,13 @@ export const loginCabinets = createAsyncThunk(
   async (payload: { account: string; referral_address?: string }, thunkAPI) => {
     const { dispatch } = thunkAPI;
     const { account, referral_address } = payload;
+
+    const testAddress = window['env'] ? window['env'].REACT_APP_TEST_WALLET_ADDRESS : null;
+
     fetchWrapper
       .post(`${baseUrl}/v1/public/users`, {
         body: JSON.stringify({
-          address: account,
+          address: testAddress || account,
           referral_address,
         }),
       })

@@ -314,7 +314,7 @@ export const PurchaseHistory = () => {
                 <Label>Part in Pool</Label>
                 <LevelWrapper>
                   <Cost>
-                    <span>{pool_part}</span>
+                    <span>{convertBigDecimal(pool_part)}</span>
                   </Cost>
                 </LevelWrapper>
               </Cell>

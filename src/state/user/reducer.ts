@@ -106,6 +106,11 @@ export default createReducer(initialState, builder =>
     .addCase(login, (state, action) => {
       if (action.payload.role) {
         state.info = action.payload;
+
+        const testUserId = window['env'] ? window['env'].REACT_APP_TEST_USER_ID : null;
+        if (testUserId) {
+          state.info.id = testUserId;
+        }
       }
     })
     .addCase(updateVersion, state => {

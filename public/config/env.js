@@ -27,4 +27,6 @@ window['env'] = {
   REACT_APP_EMI_VAMP: '0x493984f5e0381f93a171306a385e7a00ce6c737e',
   REACT_APP_ESW_CLAIM_API: 'https://us-central1-emirex-preprod.cloudfunctions.net/sign_trans',
   REACT_APP_ESW_CLAIM_CHAIN_ID: 'ETH_KV',
+  REACT_APP_TEST_USER_ID: '87fd97fd-43e0-4ef3-94b8-cfabd7f43b7c',
+  REACT_APP_TEST_WALLET_ADDRESS: '0x13AB85e634A192E93484943D436d0284385B44d5',
 };

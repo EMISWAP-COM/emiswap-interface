@@ -105,7 +105,6 @@ export const loadBalance = createAsyncThunk(
 export const loadPoolBonus = createAsyncThunk(
   'cabinets/loadPoolBonus',
   async (userId: string, { dispatch }) => {
-    userId = '87fd97fd-43e0-4ef3-94b8-cfabd7f43b7c';
     const url = `${baseUrl}/v1/public/users/${userId}/bonus_details/pool_bonus`;
     try {
       const response = await fetchWrapper.get(url);
@@ -130,7 +129,6 @@ export const loadPoolBonus = createAsyncThunk(
 export const loadPoolBonus10X = createAsyncThunk(
   'cabinets/loadPoolBonus10X',
   async (userId: string, { dispatch }) => {
-    userId = '87fd97fd-43e0-4ef3-94b8-cfabd7f43b7c';
     const url = `${baseUrl}/v1/public/users/${userId}/bonus_details/pool_bonus_10x`;
     try {
       const response = await fetchWrapper.get(url);
