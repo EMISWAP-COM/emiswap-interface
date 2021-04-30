@@ -86,13 +86,14 @@ export function calculateGasMargin(value: BigNumber): BigNumber {
 
 // converts a basis points value to a sdk percent
 export function basisPointsToPercent(num: number): Percent {
-  return new Percent(JSBI.BigInt(num), JSBI.BigInt(10000));
+  return new Percent(JSBI.BigInt(Math.floor(num)), JSBI.BigInt(10000));
 }
 
 export function calculateSlippageAmount(value: TokenAmount, slippage: number): [JSBI, JSBI] {
   if (slippage < 0 || slippage > 10000) {
     throw Error(`Unexpected slippage value: ${slippage}`);
   }
+  slippage = Math.floor(slippage);
   return [
     JSBI.divide(JSBI.multiply(value.raw, JSBI.BigInt(10000 - slippage)), JSBI.BigInt(10000)),
     JSBI.divide(JSBI.multiply(value.raw, JSBI.BigInt(10000 + slippage)), JSBI.BigInt(10000)),

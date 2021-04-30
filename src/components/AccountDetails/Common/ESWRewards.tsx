@@ -5,6 +5,26 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { convertBigDecimal } from '../uitls';
 
+// export const Calculating = styled.div`
+//   position: relative;
+//
+//   &:after {
+//     position: absolute;
+//     content: 'Calculating...';
+//     background: ${({ theme }) => theme.red3};
+//
+//     border-radius: 12px;
+//     padding: 0 8px;
+//     top: -12px;
+//     right: -5px;
+//     text-transform: lowercase;
+//     color: white;
+//     font-weight: 500;
+//     font-size: 12px;
+//     z-index: 10;
+//   }
+// `;
+
 const DarkText = styled.span`
   color: #24272c;
 `;
@@ -45,6 +65,21 @@ export const ESWRewards = () => {
     return convertBigDecimal(reward.toString());
   };
 
+  const sumSwapBonuses = () => {
+    const swapBonus = grouped.swap_bonus?.ESW ?? 0;
+    const swapBonus10x = grouped.swap_bonus_10x?.ESW ?? 0;
+    const sum = Number(swapBonus) + Number(swapBonus10x);
+    return convertBigDecimal(sum.toString());
+  };
+
+  const sumPoolBonuses = () => {
+    const poolBonus = grouped.pool_bonus?.ESW ?? 0;
+    const poolBonus10x = grouped.pool_bonus_10x?.ESW ?? 0;
+    const poolBlockBonus = grouped.pool_block_bonus?.ESW ?? 0;
+    const sum = Number(poolBonus) + Number(poolBonus10x) + Number(poolBlockBonus);
+    return convertBigDecimal(sum.toString());
+  };
+
   return (
     <div>
       <Header>My ESW Rewards</Header>
@@ -52,16 +87,14 @@ export const ESWRewards = () => {
         <RewardsItem>
           <span>Providing Liquidity</span>
           <div>
-            <RewardsValue>{convertBigDecimal(balance.total.grouped.pool_bonus?.ESW)}</RewardsValue>
+            <RewardsValue>{sumPoolBonuses()}</RewardsValue>
             &nbsp;ESW
           </div>
         </RewardsItem>
         <RewardsItem>
           <span>Swapping</span>
           <div>
-            <RewardsValue>
-              {convertBigDecimal(balance.total.grouped.pool_swap_bonus?.ESW)}
-            </RewardsValue>
+            <RewardsValue>{sumSwapBonuses()}</RewardsValue>
             &nbsp;ESW
           </div>
         </RewardsItem>
@@ -70,7 +103,7 @@ export const ESWRewards = () => {
           <div>
             <RewardsValue>{sumRewardsESW()}</RewardsValue>
             &nbsp;ESW
-          </div>{' '}
+          </div>
         </RewardsItem>
         <RewardsItem>
           <span>Fee Compensation</span>
@@ -79,7 +112,7 @@ export const ESWRewards = () => {
               {convertBigDecimal(balance?.total.grouped.compensation?.ESW)}
             </RewardsValue>
             &nbsp;ESW
-          </div>{' '}
+          </div>
         </RewardsItem>
       </RewardsWrapper>
     </div>

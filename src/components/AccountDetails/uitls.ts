@@ -3,23 +3,10 @@ import { injected } from '../../connectors';
 
 export enum DateFormat {
   short = 'Month, D, YYYY',
-  full = 'YYYY-MM-DD HH:MM:SS'
+  full = 'YYYY-MM-DD HH:MM:SS',
 }
 
-const months = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec',
-];
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 export function formatConnectorName(connectorName) {
   const { ethereum } = window;
@@ -38,7 +25,7 @@ export const convertBigDecimal = (bigDecimal: string) => {
   if (!isNaN(Number(bigDecimal))) {
     return Number(bigDecimal).toFixed(2);
   }
-  return '-';
+  return '0.00';
 };
 
 export const normalizeNumber = (number: number) => {
@@ -46,11 +33,11 @@ export const normalizeNumber = (number: number) => {
     return number;
   }
 
-  return '-';
+  return '0';
 };
 
 export function shortenHash(hash: string, chars = 4): string {
-  return `${hash.substring(0, chars + 2)}...${hash.substring(42 - chars)}`;
+  return `${hash.substring(0, chars + 2)}...${hash.substring(66 - chars)}`;
 }
 
 const getShortDate = (date: string) => {
@@ -60,21 +47,18 @@ const getShortDate = (date: string) => {
 
 const getFullDate = (date: string) => {
   const d = new Date(date);
-  const hours = `0${d.getHours()}`.slice(-2)
-  const minutes = `0${d.getMinutes()}`.slice(-2)
-  const seconds = `0${d.getSeconds()}`.slice(-2)
-  const day = `0${d.getDate()}`.slice(-2)
+  const hours = `0${d.getHours()}`.slice(-2);
+  const minutes = `0${d.getMinutes()}`.slice(-2);
+  const seconds = `0${d.getSeconds()}`.slice(-2);
+  const day = `0${d.getDate()}`.slice(-2);
 
-  return `${day}-${
-    months[d.getMonth()]
-  }-${d.getFullYear()}, ${hours}:${minutes}:${seconds}`;
-}
+  return `${day}-${months[d.getMonth()]}-${d.getFullYear()}, ${hours}:${minutes}:${seconds}`;
+};
 
 const convertToISOSafari = (dateString: string) => {
-
   try {
     if (Date.parse(dateString)) {
-      return dateString
+      return dateString;
     }
 
     const normalizedDateString = dateString
@@ -83,34 +67,31 @@ const convertToISOSafari = (dateString: string) => {
       .concat('+00:00');
 
     if (Date.parse(normalizedDateString)) {
-      return normalizedDateString
+      return normalizedDateString;
     }
 
-    return null
+    return null;
   } catch (e) {
-    console.log(e)
-    return null
+    console.log(e);
+    return null;
   }
-}
-
-export const convertDate = (dateSourceString: string, format: string) => {
-
-  const date = convertToISOSafari(dateSourceString)
-
-  if (date) {
-
-    switch (format) {
-      case DateFormat.short:
-        return getShortDate(date)
-      case DateFormat.full:
-        return getFullDate(date)
-      default:
-        return getShortDate(date)
-
-    }
-  }
-
-  return '-'
-
 };
 
+export const convertDate = (dateSourceString: string, format: string) => {
+  if (!dateSourceString) return '-';
+
+  const date = convertToISOSafari(dateSourceString);
+
+  if (date) {
+    switch (format) {
+      case DateFormat.short:
+        return getShortDate(date);
+      case DateFormat.full:
+        return getFullDate(date);
+      default:
+        return getShortDate(date);
+    }
+  }
+
+  return '-';
+};

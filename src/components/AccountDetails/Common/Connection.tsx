@@ -139,8 +139,9 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
   const sumESW = () => {
     const walletESW = balance?.wallet.ESW || 0;
     const availableESW = balance?.available.ESW || 0;
+    const lockedESW = balance?.total.locked.ESW || 0;
 
-    const sum = Number(walletESW) + Number(availableESW);
+    const sum = Number(walletESW) + Number(availableESW) + Number(lockedESW);
 
     return convertBigDecimal(sum.toString());
   };
@@ -153,7 +154,7 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
     history.push('/claim/ESW');
   };
 
-  const isCollectDisabled = !balance?.available.ESW;
+  const isCollectDisabled = !Number(balance?.available.ESW);
 
   return (
     <>

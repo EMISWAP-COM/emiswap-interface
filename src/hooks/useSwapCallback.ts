@@ -18,7 +18,7 @@ import {
 } from '../constants/one-split';
 import { MIN_CHI_BALANCE, useHasChi, useIsChiApproved } from './useChi';
 import { ApprovalState } from './useApproveCallback';
-import { expNumberToStr, tokenAmountToString } from '../utils/formats'
+import { expNumberToStr, tokenAmountToString } from '../utils/formats';
 import { useSwapEmiRouter } from './useContract';
 import defaultCoins from '../constants/defaultCoins';
 import { Web3Provider } from '@ethersproject/providers';
@@ -374,7 +374,9 @@ export function useSwapCallback(
               referralAddress,
             ];
             obj = {
-              value: `0x${BigInt(+formattedAmounts.INPUT * 10 ** WETH!.decimals).toString(16)}`,
+              value: `0x${JSBI.BigInt(
+                Math.floor(+formattedAmounts.INPUT * 10 ** WETH!.decimals),
+              ).toString(16)}`,
             };
           } else {
             method = 'swapExactTokensForETH';

@@ -9,7 +9,7 @@ import { Input as NumericalInput } from '../../components/NumericalInput';
 import { InputRow } from '../../components/CurrencyInputPanel';
 import { CursorPointer, TYPE } from '../../theme';
 import { darken } from 'polished';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../state';
 import { Image } from '../../components/CurrencyLogo';
 import { ButtonPrimary } from '../../components/Button';
@@ -21,6 +21,7 @@ import { useWalletModalToggle } from '../../state/application/hooks';
 import { parseUnits } from '@ethersproject/units';
 import { useAuth } from '../../hooks/useAuth';
 import { fetchWrapper } from '../../api/fetchWrapper';
+import { addPopup } from '../../state/application/actions';
 
 const Tittle = styled.div`
   font-weight: 500;
@@ -121,8 +122,8 @@ export default function Claim({
   const { available: unfrozenESWbalance } = useSelector(
     (state: AppState) => state.cabinets.balance,
   );
-
   const handleAuth = useAuth();
+  const dispatch = useDispatch();
 
   //TODO fix TS. Не требует типизировать аргумент функции вообще! Принимал объект, вместо строки и ничего не сказал. Просто упал в препроде
   const formatBalance = balance => {
@@ -134,8 +135,6 @@ export default function Claim({
   };
 
   const formattedUnfrozenBalance = formatBalance(unfrozenESWbalance.ESW);
-
-  console.log('formattedUnfrozenBalance', formattedUnfrozenBalance);
 
   const toggleWalletModal = useWalletModalToggle();
 
@@ -149,59 +148,58 @@ export default function Claim({
   };
 
   const onError = error => {
-    if (error?.code) {
-      return { state: 'errored', error_message: `${error.code} - ${error.message}` };
+    if (error?.code === 4001) {
+      return;
     }
-
-    throw error;
+    dispatch(
+      addPopup({
+        key: 'useClaim',
+        content: {
+          status: {
+            name: error.message,
+            isError: true,
+          },
+        },
+      }),
+    );
   };
 
-  const handleSubmit = () => {
-    claimCallback(tokenName, +typedValue).then(data => {
-      const { signature, nonce, amount, user_id, id } = data;
-      const args = [account, amount, nonce, `0x${signature}`];
+  const handleSubmit = async () => {
+    const authToken = await handleAuth();
 
-      contract.estimateGas
-        .mintSigned(...args)
-        .then(gasLimit => {
-          return contract
-            .mintSigned(...args, { gasLimit })
-            .then(response => {
-              console.log('mintSigned response', response);
-              addTransaction(response);
-              return response.hash;
-            })
-            .then(onSuccess)
-            .catch(onError);
-        })
-        .catch(error => {
-          console.log('contract.mintSigned unexpected error', error);
-          return { state: 'errored', error_message: error.message };
-        })
-        .then(transactionResult => {
-          const transactionStateEndPoint = `${baseUrl}/v1/private/users/${user_id}/transactions/${id}`;
+    claimCallback(tokenName, +typedValue)
+      .then(data => {
+        const { signature, nonce, amount, user_id, id } = data;
+        const args = [account, amount, nonce, `0x${signature}`];
 
-          handleAuth().then(token => {
+        return contract.estimateGas
+          .mintSigned(...args)
+          .then(gasLimit => contract.mintSigned(...args, { gasLimit }))
+          .then(contractResponse => addTransaction(contractResponse))
+          .then(onSuccess)
+          .catch(error => {
+            onError(error);
+            return { state: 'errored', error_message: `${error?.code} - ${error.message}` };
+          })
+          .then(transactionResult => {
+            const transactionStateEndPoint = `${baseUrl}/v1/private/users/${user_id}/transactions/${id}`;
             fetchWrapper.put(transactionStateEndPoint, {
               headers: {
-                authorization: token,
+                authorization: authToken,
               },
               body: JSON.stringify(transactionResult),
             });
           });
-        });
-    });
+      })
+      .catch(onError);
   };
 
   const isTransactionDisabled = () => {
     if (unfrozenESWbalance.ESW && typedValue) {
       return (
-        parseUnits(
-          Number(unfrozenESWbalance.ESW)
-            .toFixed(15)
-            .toString(),
-          18,
-        ).lt(parseUnits(typedValue.toString(), 18)) || parseUnits(typedValue.toString()).isZero()
+        parseUnits(unfrozenESWbalance.ESW.toString(), 18).lt(
+          parseUnits(typedValue.toString(), 18),
+        ) || parseUnits(typedValue.toString()).isZero()
       );
     }
     return true;
