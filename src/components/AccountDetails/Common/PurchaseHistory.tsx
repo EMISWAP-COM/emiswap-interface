@@ -282,7 +282,7 @@ export const PurchaseHistory = () => {
         <TableTitles>
           <DateField>Date</DateField>
           {liquidityTabActive === '10x' && (
-            <LevelWrapper flex={1.5}>Swapped tokens, DAI</LevelWrapper>
+            <LevelWrapper flex={1.5}>Swapped tokens</LevelWrapper>
           )}
           {liquidityTabActive === '10x' ? (
             <LevelWrapper flex={2} style={{justifyContent: 'center'}}>Pool</LevelWrapper>
