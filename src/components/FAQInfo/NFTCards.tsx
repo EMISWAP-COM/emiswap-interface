@@ -9,10 +9,10 @@ const BlockWithCardsDesktop = styled(BlockLong)`
   justify-content: space-between;
   margin-top: 15px;
   margin-bottom: 35px;
-  
-   @media screen and (max-width: 1000px) {
+
+  @media screen and (max-width: 1000px) {
     display: none;
-   }
+  }
 `;
 
 const BlockWithCardsMobile = styled(BlockLong)`
@@ -29,7 +29,7 @@ const Card = styled.div`
   flex-direction: column;
   align-items: center;
   width: 15%;
-  
+
   @media screen and (max-width: 1000px) {
     width: 30%;
     max-width: 200px;
@@ -47,7 +47,7 @@ const CardLabel = styled.span`
   max-width: 130px;
   text-align: center;
   color: #555959;
-  
+
   @media screen and (max-width: 1000px) {
     display: block;
     max-width: 100%;
@@ -70,32 +70,34 @@ export const NFTCards = () => {
     <Wrapper>
       <BlockLong>
         <Text>
-          EmiSwap plans to reach a <strong>$100 million TVL</strong> soon and conquer the market, thus we want to
-          encourage our users to help us achieve this goal so that everyone benefits from the
-          growing ESW price.
+          EmiSwap plans to reach a <strong>$100 million TVL</strong> soon and conquer the market,
+          thus we want to encourage our users to help us achieve this goal so that everyone benefits
+          from the growing ESW price.
         </Text>
       </BlockLong>
       <BlockLong>
         <Text>
-          We divided the path to reach <strong>$100 million TVL</strong> (total value locked in = liquidity locked)
-          into 1000 milestones, e.g. <strong>$100,000 TVL, $200,000 TVL, $300,000 TVL</strong>, etc., plus one extra
-          milestone that will grant you a Mythic Card.
-          <br/>
-          The people who provide liquidity and cross every milestone <strong>will be rewarded with our
-          limited-edition NFT Magic Cards</strong> issued specifically for this campaign. There will be:
+          We divided the path to reach <strong>$100 million TVL</strong> (total value locked in =
+          liquidity locked) into 1000 milestones, e.g.{' '}
+          <strong>$100,000 TVL, $200,000 TVL, $300,000 TVL</strong>, etc., plus one extra milestone
+          that will grant you a Mythic Card.
+          <br />
+          The people who provide liquidity and cross every milestone{' '}
+          <strong>will be rewarded with our limited-edition NFT Magic Cards</strong> issued
+          specifically for this campaign. There will be:
         </Text>
       </BlockLong>
       <BlockWithCardsDesktop>
         {cardLabels.map(label => (
           <Card key={label}>
-            <CardImg src={UnknownMythic} alt={''}/>
+            <CardImg src={UnknownMythic} alt={''} />
             <CardLabel>{label}</CardLabel>
           </Card>
         ))}
       </BlockWithCardsDesktop>
       <BlockWithCardsMobile>
         <Card>
-          <CardImg src={UnknownMythic} alt={''}/>
+          <CardImg src={UnknownMythic} alt={''} />
         </Card>
         <div>
           {cardLabels.map(label => (
@@ -105,9 +107,11 @@ export const NFTCards = () => {
       </BlockWithCardsMobile>
       <Block>
         <Text>
-          <strong>100 cards (1 Legendary, 4 Epic, 15 Rare, 30 Uncommon, and 50 Ordinary) will be released in
-            a limited collection after each big 10 million milestone is reached.</strong> They are never
-          reissued and are thus incredibly valuable for the holders.
+          <strong>
+            100 cards (1 Legendary, 4 Epic, 15 Rare, 30 Uncommon, and 50 Ordinary) will be released
+            in a limited collection after each big 10 million milestone is reached.
+          </strong>{' '}
+          They are never reissued and are thus incredibly valuable for the holders.
         </Text>
       </Block>
       <Block>

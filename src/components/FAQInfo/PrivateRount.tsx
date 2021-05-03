@@ -19,11 +19,11 @@ const CardInfo = styled.div`
   border-radius: 4px;
   background: #ffffff;
   box-shadow: 0px 9px 25px rgba(73, 73, 73, 0.07);
-  
+
   @media screen and (max-width: 1000px) {
     padding: 16px;
   }
-  
+
   @media screen and (max-width: 500px) {
     width: 100%;
     text-align: left;
@@ -31,14 +31,14 @@ const CardInfo = styled.div`
 `;
 
 const CardInfoHead = styled.span`
-    position: relative;
-    font-size: 20px !important;
+  position: relative;
+  font-size: 20px !important;
 `;
 
 const CardInfoHeadCircle = styled.img`
-    position: absolute;
-    left: 0;
-    top: 8px;
+  position: absolute;
+  left: 0;
+  top: 8px;
 `;
 
 const cardsInfo = [
@@ -55,10 +55,14 @@ export const PrivateRound = () => {
       {cardsInfo.map(info => (
         <CardInfo key={info.head}>
           <div className="h4 mb16">
-          <CardInfoHead>
-            {info.head}
-            <CardInfoHeadCircle className="card__YellowCircle" src={YellowCircle} alt="YellowCircle"/>
-          </CardInfoHead>
+            <CardInfoHead>
+              {info.head}
+              <CardInfoHeadCircle
+                className="card__YellowCircle"
+                src={YellowCircle}
+                alt="YellowCircle"
+              />
+            </CardInfoHead>
           </div>
           <div className="card__description-text">{info.text}</div>
         </CardInfo>

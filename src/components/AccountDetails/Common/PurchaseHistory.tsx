@@ -137,12 +137,12 @@ const NoContent = styled.div`
 const Cell = styled.div`
   flex: 1;
   // padding-left: 1rem;
-  
+
   &:last-child {
     // text-align: right;
     // padding-right: 1rem;
   }
-  
+
   @media screen and (max-width: 1200px) {
     display: flex;
     align-items: center;
