@@ -428,7 +428,7 @@ const Invest = () => {
   } = useDerivedInvestInfo();
 
   const [selectedCardRole, setSelectedCardRole] = useState<number>(0);
-  const role: UserRoles = useSelector((state: AppState) => state.user.info?.role);
+  const role: UserRoles | null = useSelector((state: AppState) => state.user.info?.role);
   const bonusRoleName = useSelector((state: AppState) => state.user.info?.bonus_role_name);
   const investRequested: boolean = useSelector(
     (state: AppState) => state.user.info?.invest_requested,
@@ -556,6 +556,22 @@ const Invest = () => {
     (approval === ApprovalState.NOT_APPROVED ||
       approval === ApprovalState.PENDING ||
       (approvalSubmitted && approval === ApprovalState.APPROVED));
+
+  const notEnoughBalance =
+    maxAmountInput && parsedAmount && JSBI.lessThan(maxAmountInput.raw, parsedAmount.raw);
+
+  const getErrorText = (error, notEnoughBalance, currencies) => {
+    if (Object.values(currencies).includes(undefined)) {
+      return 'Please choose a token';
+    }
+    if (Number(typedValue) > 0 && Number(outputAmount) === 0) {
+      return 'Sorry, you are reaching the limits of our private. Please try to buy less ESW';
+    }
+    if (notEnoughBalance) {
+      return `Not enough balance`;
+    }
+    return error;
+  };
 
   function modalHeader() {
     return (
@@ -936,7 +952,7 @@ const Invest = () => {
       return 'block-with-cards';
     };
 
-    const getHeaderToEmiCardBlock = (role: UserRoles, ESW: Number): React.ReactFragment => {
+    const getHeaderToEmiCardBlock = (role: UserRoles | null, ESW: Number): React.ReactFragment => {
       if (role === UserRoles.distributor) {
         return <>Choose your Package</>;
       } else {
@@ -956,7 +972,7 @@ const Invest = () => {
       }
     };
 
-    const getFooterToEmiCardBlock = (role: UserRoles) => {
+    const getFooterToEmiCardBlock = (role: UserRoles | null) => {
       if (role === UserRoles.distributor) {
         return (
           <>
@@ -1002,6 +1018,76 @@ const Invest = () => {
       </EmiCard>
     );
   };
+
+  const generateInvestButtonGroup = () => {
+    return (
+      <>
+        {!investRequested ? (
+          <ButtonError
+            id="invest-button"
+            disabled={true}
+          >
+            <Text fontSize={16} fontWeight={450}>Invest</Text>
+          </ButtonError>
+        ) : (
+          <>
+            {showApproveFlow ? (
+              <RowBetween>
+                <ButtonPrimary
+                  onClick={approveCallback}
+                  disabled={approval !== ApprovalState.NOT_APPROVED || approvalSubmitted}
+                  width="48%"
+                  altDisbaledStyle={approval === ApprovalState.PENDING} // show solid button while waiting
+                >
+                  {approval === ApprovalState.PENDING ? (
+                    <Dots>Approving</Dots>
+                  ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
+                    'Approved'
+                  ) : (
+                    'Approve ' + currencies[Field.INPUT]?.symbol
+                  )}
+                </ButtonPrimary>
+                <ButtonError
+                  onClick={() => {
+                    expertMode ? onInvest() : setShowConfirm(true);
+                  }}
+                  width="48%"
+                  id="invest-button"
+                  disabled={!isValid || approval !== ApprovalState.APPROVED || notEnoughBalance}
+                  error={!isValid || notEnoughBalance}
+                >
+                  <Text fontSize={16} fontWeight={450}>
+                    {notEnoughBalance ? `Not enough balance` : `Invest`}
+                  </Text>
+                </ButtonError>
+              </RowBetween>
+            ) : (
+              <ButtonError
+                onClick={() => {
+                  expertMode ? onInvest() : setShowConfirm(true);
+                }}
+                id="invest-button"
+                disabled={!isValid || notEnoughBalance}
+                error={!!error}
+              >
+                <Text fontSize={16} fontWeight={450}>
+                  {error || notEnoughBalance
+                    ? getErrorText(error, notEnoughBalance, currencies)
+                    : `Invest`}
+                </Text>
+              </ButtonError>
+            )}
+            {!isEnough && (
+              <ErrorText style={{ marginTop: 4 }} fontWeight={500} fontSize="11pt" severity={3}>
+                Probably insufficient ETH balance
+              </ErrorText>
+            )}
+          </>
+        )}
+      </>
+    );
+  };
+
   // text to show while loading
   const pendingText = `Investing ${tokenAmountToString(parsedAmounts[Field.INPUT])} ${
     currencies[Field.INPUT]?.symbol
@@ -1012,20 +1098,6 @@ const Invest = () => {
   const showWarning =
     (!dismissedToken0 && !!currencies[Field.INPUT]) ||
     (!dismissedToken1 && !!currencies[Field.OUTPUT]);
-  const notEnoughBalance =
-    maxAmountInput && parsedAmount && JSBI.lessThan(maxAmountInput.raw, parsedAmount.raw);
-  const getErrorText = (error, notEnoughBalance, currencies) => {
-    if (Object.values(currencies).includes(undefined)) {
-      return 'Please choose a token';
-    }
-    if (Number(typedValue) > 0 && Number(outputAmount) === 0) {
-      return 'Sorry, you are reaching the limits of our private. Please try to buy less ESW';
-    }
-    if (notEnoughBalance) {
-      return `Not enough balance`;
-    }
-    return error;
-  };
 
   return (
     <>
@@ -1102,60 +1174,13 @@ const Invest = () => {
               </AutoColumn>
             </Card>
           </AutoColumn>
+
           <AutoColumn gap={'md'}>
             <BottomGrouping>
               {!account ? (
                 <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
-              ) : showApproveFlow ? (
-                <RowBetween>
-                  <ButtonPrimary
-                    onClick={approveCallback}
-                    disabled={approval !== ApprovalState.NOT_APPROVED || approvalSubmitted}
-                    width="48%"
-                    altDisbaledStyle={approval === ApprovalState.PENDING} // show solid button while waiting
-                  >
-                    {approval === ApprovalState.PENDING ? (
-                      <Dots>Approving</Dots>
-                    ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
-                      'Approved'
-                    ) : (
-                      'Approve ' + currencies[Field.INPUT]?.symbol
-                    )}
-                  </ButtonPrimary>
-                  <ButtonError
-                    onClick={() => {
-                      expertMode ? onInvest() : setShowConfirm(true);
-                    }}
-                    width="48%"
-                    id="invest-button"
-                    disabled={!isValid || approval !== ApprovalState.APPROVED || notEnoughBalance}
-                    error={!isValid || notEnoughBalance}
-                  >
-                    <Text fontSize={16} fontWeight={450}>
-                      {notEnoughBalance ? `Not enough balance` : `Invest`}
-                    </Text>
-                  </ButtonError>
-                </RowBetween>
               ) : (
-                <ButtonError
-                  onClick={() => {
-                    expertMode ? onInvest() : setShowConfirm(true);
-                  }}
-                  id="invest-button"
-                  disabled={!isValid || notEnoughBalance}
-                  error={!!error}
-                >
-                  <Text fontSize={16} fontWeight={450}>
-                    {error || notEnoughBalance
-                      ? getErrorText(error, notEnoughBalance, currencies)
-                      : `Invest`}
-                  </Text>
-                </ButtonError>
-              )}
-              {!isEnough && (
-                <ErrorText style={{ marginTop: 4 }} fontWeight={500} fontSize="11pt" severity={3}>
-                  Probably insufficient ETH balance
-                </ErrorText>
+                generateInvestButtonGroup()
               )}
             </BottomGrouping>
           </AutoColumn>
@@ -1187,6 +1212,7 @@ const Invest = () => {
               />
             </div>
           )}
+
         </Wrapper>
         {role === UserRoles.distributor &&
           generateEmiCardBlock(Number(formattedAmounts[Field.OUTPUT]))}

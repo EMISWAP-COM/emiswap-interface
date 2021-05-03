@@ -24,7 +24,7 @@ export const SuccessRegistration = ({ message }: { message: string }) => {
   return (
     <>
       <GiftImage src={giftSVG} />
-      <Title>Your request has been successfully submitted. We will contact you soon</Title>
+      <Title>Your request has been successfully submitted.<br/>We will contact you soon</Title>
       <Message></Message>
       <Text></Text>
     </>
