@@ -308,7 +308,8 @@ export const PurchaseHistory = () => {
                       <Label>Swapped tokens</Label>
                       <LevelWrapper>
                         <Cost>
-                          <span>{convertBigDecimal(swap_turnover)}</span>&nbsp; DAI
+                          {/*<span>{convertBigDecimal(swap_turnover)}</span>&nbsp; DAI*/}
+                          <span>-</span>
                         </Cost>
                       </LevelWrapper>
                     </Cell>
