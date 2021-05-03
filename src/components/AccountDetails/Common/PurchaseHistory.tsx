@@ -118,13 +118,10 @@ const Cost = styled.div`
   }
 `;
 
-const Wallet = styled.div<{ marginLeft?: number }>`
+const Wallet = styled.div`
   flex: 1;
   width: auto;
-  // text-align: right;
   color: ${({ theme }) => theme.text1};
-  // margin-left: ${({ marginLeft }) => marginLeft + 'px'};
-  // background: pink;
 
   @media screen and (max-width: 1200px) {
     font-weight: 500;
@@ -283,21 +280,22 @@ export const PurchaseHistory = () => {
             10X Early Bird Refund
           </TabItem>
         </Tabs>
-        <TableTitles>
-          <DateField>Date</DateField>
-          {liquidityTabActive === '10x' && <LevelWrapper flex={1.5}>Swapped tokens</LevelWrapper>}
-          {liquidityTabActive === '10x' ? (
-            <LevelWrapper flex={2} style={{ justifyContent: 'center' }}>
-              Pool
-            </LevelWrapper>
-          ) : (
-            <LevelWrapper flex={1.5}>Pool</LevelWrapper>
-          )}
-          <LevelWrapper>Part in Pool</LevelWrapper>
-          {liquidityTabActive === '10x' && <LevelWrapper>ESW Price</LevelWrapper>}
-          <LevelWrapper>Reward, ESW</LevelWrapper>
-        </TableTitles>
+
         <Table amount={poolBonusDisplayData.length}>
+          <TableTitles>
+            <DateField>Date</DateField>
+            {liquidityTabActive === '10x' && <LevelWrapper flex={1.5}>Swapped tokens</LevelWrapper>}
+            {liquidityTabActive === '10x' ? (
+              <LevelWrapper flex={2} style={{ justifyContent: 'center' }}>
+                Pool
+              </LevelWrapper>
+            ) : (
+              <LevelWrapper flex={1.5}>Pool</LevelWrapper>
+            )}
+            <LevelWrapper>Part in Pool</LevelWrapper>
+            {liquidityTabActive === '10x' && <LevelWrapper>ESW Price</LevelWrapper>}
+            <LevelWrapper>Reward, ESW</LevelWrapper>
+          </TableTitles>
           {poolBonusDisplayData &&
             poolBonusDisplayData.map(
               ({ date, name, ews_reward, esw_price, pool_part, swap_turnover }, index) => (
@@ -367,12 +365,13 @@ export const PurchaseHistory = () => {
       </div>
 
       <TableHeader>Your Purchase History</TableHeader>
-      <TableTitles>
-        <DateField>Timestamp</DateField>
-        <LevelWrapper>Purchased tokens</LevelWrapper>
-        <Wallet marginLeft={312}>Txhash</Wallet>
-      </TableTitles>
+
       <Table amount={deposit.length}>
+        <TableTitles>
+          <DateField>Timestamp</DateField>
+          <LevelWrapper>Purchased tokens</LevelWrapper>
+          <Wallet>Txhash</Wallet>
+        </TableTitles>
         {deposit &&
           deposit.map(({ amount, token, created_at, transaction_hash }, index) => (
             <TableRow key={transaction_hash + created_at + index}>
@@ -390,7 +389,7 @@ export const PurchaseHistory = () => {
               <Cell>
                 <Label>Txhash</Label>
                 <ExternalLink href={`${ETHERSCAN_BASE_URL}/tx/${transaction_hash}`}>
-                  <Wallet marginLeft={312}>{shortenHash(transaction_hash, 12)}</Wallet>
+                  <Wallet>{shortenHash(transaction_hash, 12)}</Wallet>
                 </ExternalLink>
               </Cell>
             </TableRow>
@@ -403,11 +402,6 @@ export const PurchaseHistory = () => {
       </Table>
 
       <TableHeader>Referral Purchase History</TableHeader>
-      {/*<TableTitles>*/}
-      {/*  <DateField>Timestamp</DateField>*/}
-      {/*  <LevelWrapperLabeled>Purchased tokens</LevelWrapperLabeled>*/}
-      {/*  <Wallet marginLeft={288}>Txhash</Wallet>*/}
-      {/*</TableTitles>*/}
       <Table amount={referrals.length}>
         <TableTitles>
           <DateField>Timestamp</DateField>
@@ -447,13 +441,14 @@ export const PurchaseHistory = () => {
       </Table>
 
       <TableHeader>Your Fee Compensation History</TableHeader>
-      <TableTitles>
-        <DateField>Timestamp</DateField>
-        <LevelWrapper>Transaction fee</LevelWrapper>
-        <LevelWrapper>Received tokens</LevelWrapper>
-        <Wallet marginLeft={208}>Txhash</Wallet>
-      </TableTitles>
+
       <TableCompensation amount={deposit.length}>
+        <TableTitles>
+          <DateField>Timestamp</DateField>
+          <LevelWrapper>Transaction fee</LevelWrapper>
+          <LevelWrapper>Received tokens</LevelWrapper>
+          <Wallet>Txhash</Wallet>
+        </TableTitles>
         {compensation.map(({ amount, token, created_at, transaction_hash }, index) => (
           <TableRow key={transaction_hash + created_at + index}>
             <Cell>
@@ -480,7 +475,7 @@ export const PurchaseHistory = () => {
             <Cell>
               <Label>Txhash</Label>
               <ExternalLink href={`${ETHERSCAN_BASE_URL}/tx/${transaction_hash}`}>
-                <Wallet marginLeft={208}>{shortenHash(transaction_hash, 8)}</Wallet>
+                <Wallet>{shortenHash(transaction_hash, 8)}</Wallet>
               </ExternalLink>
             </Cell>
           </TableRow>
@@ -493,15 +488,16 @@ export const PurchaseHistory = () => {
       </TableCompensation>
 
       <TableHeader>Your Swapping Reward History</TableHeader>
-      <TableTitles>
-        <DateField>Timestamp</DateField>
-        <LevelWrapper>Swapped tokens</LevelWrapper>
-        <LevelWrapper>DAI Equivalent</LevelWrapper>
-        <LevelWrapper>Reward</LevelWrapper>
-        <LevelWrapper>Bonus Program</LevelWrapper>
-        <Wallet>Txhash</Wallet>
-      </TableTitles>
+
       <TableSwapping amount={deposit.length}>
+        <TableTitles>
+          <DateField>Timestamp</DateField>
+          <LevelWrapper>Swapped tokens</LevelWrapper>
+          <LevelWrapper>DAI Equivalent</LevelWrapper>
+          <LevelWrapper>Reward</LevelWrapper>
+          <LevelWrapper>Bonus Program</LevelWrapper>
+          <Wallet>Txhash</Wallet>
+        </TableTitles>
         {swapping &&
           swapping.map(
             ({ amount, token, created_at, transaction_hash, amount_dai, bonusName }, index) => (
