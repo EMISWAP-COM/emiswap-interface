@@ -213,7 +213,7 @@ export default function InvestContactForm({ isOpen, walletID, onDismiss }: EmiMa
     const nameRegexp = /\D/;
     const emailRegexp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegexp = /^\+[0-9-]+$/;
-    const telegramRegexp = /^@[a-z0-9_]+$/;
+    const telegramRegexp = /^@[A-Za-z0-9_-]+$/;
 
     newValidator.name = nameRegexp.test(name);
     newValidator.email = emailRegexp.test(email);
