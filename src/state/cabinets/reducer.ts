@@ -106,7 +106,7 @@ interface Deposit {
 interface PoolBonus {
   date: string,
   name: string;
-  ews_reward: string;
+  esw_reward: string;
   esw_price: string;
   pool_part: string;
   swap_turnover: string;

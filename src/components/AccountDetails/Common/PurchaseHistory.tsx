@@ -298,7 +298,7 @@ export const PurchaseHistory = () => {
           </TableTitles>
           {poolBonusDisplayData &&
             poolBonusDisplayData.map(
-              ({ date, name, ews_reward, esw_price, pool_part, swap_turnover }, index) => (
+              ({ date, name, esw_reward, esw_price, pool_part, swap_turnover }, index) => (
                 <TableRow key={date + name + index}>
                   <Cell>
                     <DateField>{convertDate(date, DateFormat.short_day)}</DateField>
@@ -345,7 +345,7 @@ export const PurchaseHistory = () => {
                     <Label>Reward, ESW</Label>
                     <LevelWrapper>
                       <Cost>
-                        <span>{convertBigDecimal(ews_reward)}</span>&nbsp; ESW
+                        <span>{convertBigDecimal(esw_reward)}</span>&nbsp; ESW
                       </Cost>
                     </LevelWrapper>
                   </Cell>
