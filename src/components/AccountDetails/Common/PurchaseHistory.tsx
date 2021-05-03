@@ -86,8 +86,8 @@ const LevelWrapper = styled.div<{ flex?: number }>`
   }
 `;
 
-const PoolCostWrapper = styled(LevelWrapper)`
-  justify-content: center;
+const PoolCostWrapper = styled(LevelWrapper)<{tabActive: string}>`
+  justify-content: ${({ tabActive }) =>  tabActive === '10x' ? 'center' : 'flex-start'};
 
   @media screen and (max-width: 1200px) {
     justify-content: flex-end;
@@ -315,11 +315,7 @@ export const PurchaseHistory = () => {
                   )}
                   <Cell flex={liquidityTabActive === '10x' ? 2 : 1.5}>
                     <Label>Pool</Label>
-                    <PoolCostWrapper
-                      style={{
-                        justifyContent: liquidityTabActive === '10x' ? 'center' : 'flex-start',
-                      }}
-                    >
+                    <PoolCostWrapper tabActive={liquidityTabActive}>
                       <Cost>
                         <div style={{ maxWidth: liquidityTabActive === '10x' ? 140 : 200 }}>
                           <span>{name}</span>
