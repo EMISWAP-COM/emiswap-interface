@@ -431,9 +431,9 @@ const Invest = () => {
   const role: UserRoles | null = useSelector((state: AppState) => state.user.info?.role);
   const bonusRoleName = useSelector((state: AppState) => state.user.info?.bonus_role_name);
 
-  /*const investRequested: boolean = useSelector(
+  const investRequested: boolean = useSelector(
     (state: AppState) => state.user.info?.invest_requested,
-  );*/
+  );
   // TODO: Потом на беке добавят логику для этого параметра, пока что хардкод
   const investGranted = false;
 
@@ -1188,7 +1188,7 @@ const Invest = () => {
             </BottomGrouping>
           </AutoColumn>
 
-          {investGranted || !account ? (
+          {investRequested || !account ? (
             <div>
               <PrivateSaleText>
                 Private sale stage for investors who want to purchase ESW worth $25,000 and more.
