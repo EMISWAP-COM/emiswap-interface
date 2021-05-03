@@ -65,7 +65,6 @@ import {
 import { useMockEstimate } from '../../hooks/useMockEstimate';
 import { ErrorText } from '../../components/swap/styleds';
 import InvestContactForm from '../../components/InvestContactForm';
-import { walletconnect, walletlink } from '../../connectors';
 
 const EmiCard = styled.div`
   position: absolute;
@@ -431,7 +430,9 @@ const Invest = () => {
   const [selectedCardRole, setSelectedCardRole] = useState<number>(0);
   const role: UserRoles = useSelector((state: AppState) => state.user.info?.role);
   const bonusRoleName = useSelector((state: AppState) => state.user.info?.bonus_role_name);
-  const investRequested: boolean = useSelector((state: AppState) => state.user.info?.invest_requested);
+  const investRequested: boolean = useSelector(
+    (state: AppState) => state.user.info?.invest_requested,
+  );
 
   const parsedAmounts = {
     [Field.INPUT]: parsedAmount,
@@ -1152,21 +1153,22 @@ const Invest = () => {
                 </ButtonError>
               )}
               {!isEnough && (
-                <ErrorText style={{marginTop: 4}} fontWeight={500} fontSize="11pt" severity={3}>
+                <ErrorText style={{ marginTop: 4 }} fontWeight={500} fontSize="11pt" severity={3}>
                   Probably insufficient ETH balance
                 </ErrorText>
               )}
             </BottomGrouping>
           </AutoColumn>
 
-          {(investRequested || !account) ? (
+          {investRequested || !account ? (
             <div>
               <PrivateSaleText>
                 Private sale stage for investors who want to purchase ESW worth $25,000 and more.
               </PrivateSaleText>
               {!account && (
                 <LoginFirstText>
-                  You won't be able to invest if you are not in the Waiting list. Please, login first.
+                  You won't be able to invest if you are not in the Waiting list. Please, login
+                  first.
                 </LoginFirstText>
               )}
             </div>
@@ -1175,18 +1177,16 @@ const Invest = () => {
               <OnlyInvestorsText>
                 Sorry, only investors registered in the Waiting list can invest in the Private Stage
               </OnlyInvestorsText>
-              <ButtonPrimary
-                onClick={() => setIsRegisterWaitListModalOpen(true)}
-              >
+              <ButtonPrimary onClick={() => setIsRegisterWaitListModalOpen(true)}>
                 Register to the Waiting list
               </ButtonPrimary>
               <InvestContactForm
                 isOpen={isRegisterWaitListModalOpen}
-                walletID={""}
-                onDismiss={() => setIsRegisterWaitListModalOpen(false)}/>
+                walletID={''}
+                onDismiss={() => setIsRegisterWaitListModalOpen(false)}
+              />
             </div>
           )}
-
         </Wrapper>
         {role === UserRoles.distributor &&
           generateEmiCardBlock(Number(formattedAmounts[Field.OUTPUT]))}
