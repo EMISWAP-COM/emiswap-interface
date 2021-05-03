@@ -1182,7 +1182,7 @@ const Invest = () => {
               </ButtonPrimary>
               <InvestContactForm
                 isOpen={isRegisterWaitListModalOpen}
-                walletID={''}
+                walletID={account}
                 onDismiss={() => setIsRegisterWaitListModalOpen(false)}
               />
             </div>
