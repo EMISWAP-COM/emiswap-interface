@@ -33,6 +33,7 @@ export interface UserInfo {
     amount: string;
     role: string;
   };
+  invest_requested: boolean;
 }
 
 export interface UserState {
@@ -98,6 +99,7 @@ export const initialState: UserState = {
       amount: '',
       role: '',
     },
+    invest_requested: false,
   },
 };
 

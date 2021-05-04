@@ -87,7 +87,7 @@ export const StyledInternalLink = styled(Link)`
 `;
 
 export const StyledGreenLink = styled(StyledInternalLink)`
-  color: #11B382;
+  color: #11b382;
 `;
 
 const StyledLink = styled.a`

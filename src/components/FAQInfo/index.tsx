@@ -335,11 +335,11 @@ const Body = styled.div`
     &__item-name {
       margin-right: 80px;
     }
-    
+
     &__item-value {
       margin-left: auto !important;
       margin-right: 80px;
-      
+
       &--mobile {
         display: none;
       }
@@ -359,7 +359,7 @@ const Body = styled.div`
       &__item-name {
         margin-right: 30px;
       }
-      
+
       &__item-value {
         margin-right: 50px;
       }
@@ -397,32 +397,30 @@ const Body = styled.div`
           margin-left: 5px;
         }
       }
-      
+
       &__item-name {
         width: 70%;
         max-width: 70%;
         margin-left: 10px !important;
       }
-      
+
       &__item-value {
         display: none;
         width: 60%;
         margin-top: 4px;
         margin-left: 42px !important;
         margin-right: 0;
-        
+
         &--mobile {
           display: block !important;
         }
-        
       }
-      
+
       &__item-percent {
         position: relative;
         margin-left: auto !important;
         margin-right: 10px;
       }
-      
     }
   }
 
@@ -462,7 +460,7 @@ const Body = styled.div`
         flex-direction: column;
         align-items: center;
         margin-bottom: 32px;
-        
+
         .text-block {
           margin-left: 0;
 
@@ -517,7 +515,10 @@ export default () => {
   };
 
   const handleLeanMoreLiquidityClick = () => {
-    window.open('https://emiswap.medium.com/why-are-liquidity-providers-rushing-to-emiswap-496801dc846f', '_blank');
+    window.open(
+      'https://emiswap.medium.com/why-are-liquidity-providers-rushing-to-emiswap-496801dc846f',
+      '_blank',
+    );
   };
 
   //TODO перевести на styleds components блоки как EarlyBird and NFTCards
@@ -549,8 +550,8 @@ export default () => {
                 <div className="h4 mb16">Rewards for Liquidity Providers</div>
                 <div className="text-block__text">
                   From the <b>11th to the 40th day</b> after the launch <b>6,150 ESW</b> will be
-                  issued additionally every 1000 blocks and will be distributed among LP in proportion to the amount of
-                  liquidity
+                  issued additionally every 1000 blocks and will be distributed among LP in
+                  proportion to the amount of liquidity
                 </div>
               </div>
             </div>
@@ -650,11 +651,8 @@ export default () => {
           </div>
         </Body>
       </Accordion>
-      <Accordion
-        header="Private Round details"
-        openClass="isOpen7"
-      >
-        <PrivateRound/>
+      <Accordion header="Private Round details" openClass="isOpen7">
+        <PrivateRound />
       </Accordion>
       <Accordion
         header="Token Allocation Schedule"
@@ -669,28 +667,36 @@ export default () => {
                 <div className="chart-block__color-block chart-block__color0" />
                 <div className="grey-text chart-block__item-name">Pre-Seed (completed)</div>
                 <div className="grey-text chart-block__item-value">3M</div>
-                <div className="grey-text chart-block__item-value chart-block__item-value--mobile">3,000,000</div>
+                <div className="grey-text chart-block__item-value chart-block__item-value--mobile">
+                  3,000,000
+                </div>
                 <div className="grey-text grey-text-bold chart-block__item-percent">1.5%</div>
               </div>
               <div className="chart-block__text-line">
                 <div className="chart-block__color-block chart-block__color1" />
                 <div className="grey-text chart-block__item-name">Seed (completed)</div>
                 <div className="grey-text chart-block__item-value">9M</div>
-                <div className="grey-text chart-block__item-value chart-block__item-value--mobile">9,000,000</div>
+                <div className="grey-text chart-block__item-value chart-block__item-value--mobile">
+                  9,000,000
+                </div>
                 <div className="grey-text grey-text-bold chart-block__item-percent">4.5%</div>
               </div>
               <div className="chart-block__text-line">
                 <div className="chart-block__color-block chart-block__color2" />
                 <div className="grey-text chart-block__item-name">Private</div>
                 <div className="grey-text chart-block__item-value">12M</div>
-                <div className="grey-text chart-block__item-value chart-block__item-value--mobile">12,000,000</div>
+                <div className="grey-text chart-block__item-value chart-block__item-value--mobile">
+                  12,000,000
+                </div>
                 <div className="grey-text grey-text-bold chart-block__item-percent">6%</div>
               </div>
               <div className="chart-block__text-line">
                 <div className="chart-block__color-block chart-block__color3" />
                 <div className="grey-text chart-block__item-name">Launchpad Sales</div>
                 <div className="grey-text chart-block__item-value">16M</div>
-                <div className="grey-text chart-block__item-value chart-block__item-value--mobile">16,000,000</div>
+                <div className="grey-text chart-block__item-value chart-block__item-value--mobile">
+                  16,000,000
+                </div>
                 <div className="grey-text grey-text-bold chart-block__item-percent">8%</div>
               </div>
               <div className="chart-block__text-line">
@@ -699,7 +705,9 @@ export default () => {
                   Early Liquidity Providers & Swappersors
                 </div>
                 <div className="grey-text chart-block__item-value">6M</div>
-                <div className="grey-text chart-block__item-value chart-block__item-value--mobile">6,000,000</div>
+                <div className="grey-text chart-block__item-value chart-block__item-value--mobile">
+                  6,000,000
+                </div>
                 <div className="grey-text grey-text-bold chart-block__item-percent">3%</div>
               </div>
               <div className="chart-block__text-line">
@@ -708,7 +716,9 @@ export default () => {
                   Protocol Security & Maintenance
                 </div>
                 <div className="grey-text chart-block__item-value">60M</div>
-                <div className="grey-text chart-block__item-value chart-block__item-value--mobile">60,000,000</div>
+                <div className="grey-text chart-block__item-value chart-block__item-value--mobile">
+                  60,000,000
+                </div>
                 <div className="grey-text grey-text-bold chart-block__item-percent">30%</div>
               </div>
               <div className="chart-block__text-line">
@@ -717,7 +727,9 @@ export default () => {
                   Ecosystem Growth & Community Extension
                 </div>
                 <div className="grey-text chart-block__item-value">44M</div>
-                <div className="grey-text chart-block__item-value chart-block__item-value--mobile">44,000,000</div>
+                <div className="grey-text chart-block__item-value chart-block__item-value--mobile">
+                  44,000,000
+                </div>
                 <div className="grey-text grey-text-bold chart-block__item-percent">22%</div>
               </div>
               <div className="chart-block__text-line">
@@ -726,7 +738,9 @@ export default () => {
                   EmiSwap Decentralized Developers Community
                 </div>
                 <div className="grey-text chart-block__item-value">40M</div>
-                <div className="grey-text chart-block__item-value chart-block__item-value--mobile">40,000,000</div>
+                <div className="grey-text chart-block__item-value chart-block__item-value--mobile">
+                  40,000,000
+                </div>
                 <div className="grey-text grey-text-bold chart-block__item-percent">20%</div>
               </div>
               <div className="chart-block__text-line">
@@ -735,7 +749,9 @@ export default () => {
                   Advisors, Ambassadors & Community Building
                 </div>
                 <div className="grey-text chart-block__item-value">10M</div>
-                <div className="grey-text chart-block__item-value chart-block__item-value--mobile">10,000,000</div>
+                <div className="grey-text chart-block__item-value chart-block__item-value--mobile">
+                  10,000,000
+                </div>
                 <div className="grey-text grey-text-bold chart-block__item-percent">5%</div>
               </div>
             </div>
