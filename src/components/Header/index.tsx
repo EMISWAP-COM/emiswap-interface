@@ -295,14 +295,6 @@ export default function Header() {
         </LogoElem>
         <HeaderControls>
           <HeaderElement>
-            <a
-              className="white-btn"
-              href="http://emirex.com/?refid=ID0A9FBA8B3E&utm_source=emiswap_website&utm_medium=main&utm_campaign=button"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Buy Crypto with fiat
-            </a>
             <a className="purple-btn" href={`${window.location.origin}/magic_cards/`}>
               <span>Magic Hall</span>
             </a>
