@@ -391,8 +391,7 @@ const OnlyInvestorsText = styled.div`
   max-width: 300px;
   font-size: 15px;
   line-height: 21px;
-  color: #e50606;
-  font-weight: 600;
+  color: #89919a;
   margin: 8px auto 10px auto;
 `;
 
@@ -1198,7 +1197,7 @@ const Invest = () => {
           ) : (
             <div>
               <OnlyInvestorsText>
-                Sorry, only investors registered in the Waiting list can invest in the Private Stage
+                Sorry, only investors registered in the Waiting list and confirmed can invest in the Private Stage
               </OnlyInvestorsText>
               <ButtonPrimary onClick={() => setIsRegisterWaitListModalOpen(true)}>
                 Register to the Waiting list
