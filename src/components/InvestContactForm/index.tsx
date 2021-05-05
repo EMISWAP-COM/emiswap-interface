@@ -144,6 +144,12 @@ const ModalBody = styled.div`
       border-bottom-color: rgb(17, 179, 130);
       text-decoration: none;
     }
+    
+    &__helper-text {
+      margin-left: 20px;
+      margin-top: 4px;
+      font-size: 14px;
+    }
 
     &__error {
       border: 1px solid red;
@@ -311,8 +317,9 @@ export default function InvestContactForm({ isOpen, walletID, onDismiss }: EmiMa
                   ref={phoneRef}
                   className={`modal-body__input${!validation.phone ? ' modal-body__error' : ''}`}
                   type="text"
-                  placeholder="+ [contry code] - [number]"
+                  placeholder=""
                 />
+                <div className="modal-body__helper-text">Example number: +49000000000000</div>
                 {!validation.phone && errorLabel}
               </div>
               <div className="modal-body__input-block">
