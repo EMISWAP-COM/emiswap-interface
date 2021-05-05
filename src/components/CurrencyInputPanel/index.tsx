@@ -17,11 +17,11 @@ import CrowdsaleCurrencySearchModal from '../SearchModal/CrowdsaleCurrencySearch
 import { tokenAmountToString } from '../../utils/formats';
 import { MIN_ETH } from '../../constants';
 
-const InputRow = styled.div<{ selected: boolean }>`
+export const InputRow = styled.div<{ selected: boolean }>`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: center;
   padding: ${({ selected }) =>
-    selected ? '0.75rem 0.5rem 1.75rem 1rem' : '0.3125rem 0.75rem 1.75rem 1rem'};
+    selected ? '0.75rem 0.5rem 0.75rem 1rem' : '0.3125rem 0.75rem 0.75rem 1rem'};
   position: relative;
 `;
 
@@ -86,13 +86,13 @@ const InputPanel = styled.div<{ hideInput?: boolean }>`
   z-index: 1;
 `;
 
-const Container = styled.div<{ hideInput: boolean }>`
+const Container = styled.div<{ hideInput: boolean; isError: boolean }>`
   border-radius: 8px;
-  border: 1px solid ${({ theme }) => theme.grey1};
+  border: 1px solid ${({ theme, isError }) => theme[isError ? 'red1' : 'grey1']};
   background-color: ${({ theme }) => theme.bg1};
 `;
 
-const StyledTokenName = styled.span<{ active?: boolean }>`
+export const StyledTokenName = styled.span<{ active?: boolean }>`
   ${({ active }) =>
     active ? '  margin: 0 0.25rem 0 0.5rem;' : '  margin: 0.125rem 0.25rem 0 0.25rem;'}
   font-size:  ${({ active }) => (active ? '18px' : '16px')};
@@ -126,11 +126,14 @@ const StyledBalanceMax = styled.button`
 `;
 
 const ErrorText = styled.span`
-  position: absolute;
-  bottom: 0;
-  left: 1rem;
   color: #ff5569;
-  font-size: 13px;
+  text-align: left;
+  margin-top: 8px;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 21px;
 `;
 
 interface CurrencyInputPanelProps {
@@ -155,6 +158,7 @@ interface CurrencyInputPanelProps {
   isDepended?: boolean;
   showMaxError?: boolean;
   currencyBalance?: TokenAmount | undefined;
+  balanceDecimals?: number;
 }
 
 export default function CurrencyInputPanel({
@@ -179,6 +183,7 @@ export default function CurrencyInputPanel({
   isDepended = false,
   showMaxError = false,
   currencyBalance,
+  balanceDecimals = 6,
 }: CurrencyInputPanelProps) {
   const { t } = useTranslation();
 
@@ -191,130 +196,130 @@ export default function CurrencyInputPanel({
     setModalOpen(false);
   }, [setModalOpen]);
 
-  const getErrorText: () => string = () => {
-    if (
+  const checkError: () => boolean = () => {
+    return (
       currencyBalance &&
       currencyBalance.token.isEther &&
       !isDepended &&
       !JSBI.greaterThan(currencyBalance.raw, MIN_ETH) &&
       showMaxError
-    ) {
-      return 'insufficient balance, available: 0';
-    }
-    return '';
+    );
   };
 
   return (
-    <InputPanel id={id}>
-      <Container hideInput={hideInput}>
-        {!hideInput && (
-          <LabelRow>
-            <RowBetween>
-              <TYPE.body color={theme.grey4} fontWeight={400} fontSize={12}>
-                {label}
-              </TYPE.body>
-              {account && (
-                <CursorPointer>
-                  <TYPE.body
-                    onClick={onMax}
-                    color={theme.text2}
-                    fontWeight={500}
-                    fontSize={14}
-                    style={{ display: 'inline' }}
-                  >
-                    {!hideBalance && !!currency && selectedCurrencyBalance
-                      ? 'Balance: ' + tokenAmountToString(selectedCurrencyBalance)
-                      : ' '}
-                  </TYPE.body>
-                </CursorPointer>
-              )}
-            </RowBetween>
-          </LabelRow>
-        )}
-        <InputRow
-          style={hideInput ? { padding: '0', borderRadius: '8px' } : {}}
-          selected={disableCurrencySelect}
-        >
+    <>
+      <InputPanel id={id}>
+        <Container hideInput={hideInput} isError={checkError()}>
           {!hideInput && (
-            <>
-              <NumericalInput
-                className="token-amount-input"
-                value={value}
-                onUserInput={val => {
-                  onUserInput(val);
-                }}
-                disabled={disabled}
-              />
-              {account && currency && showMaxButton && label !== 'To' && (
-                <StyledBalanceMax onClick={onMax}>{'MAX'}</StyledBalanceMax>
-              )}
-            </>
+            <LabelRow>
+              <RowBetween>
+                <TYPE.body color={theme.grey4} fontWeight={400} fontSize={12}>
+                  {label}
+                </TYPE.body>
+                {account && (
+                  <CursorPointer>
+                    <TYPE.body
+                      onClick={onMax}
+                      color={theme.text2}
+                      fontWeight={500}
+                      fontSize={14}
+                      style={{ display: 'inline' }}
+                    >
+                      {!hideBalance && !!currency && selectedCurrencyBalance
+                        ? 'Balance: ' +
+                          tokenAmountToString(selectedCurrencyBalance, balanceDecimals)
+                        : ' '}
+                    </TYPE.body>
+                  </CursorPointer>
+                )}
+              </RowBetween>
+            </LabelRow>
           )}
-          <CurrencySelect
-            selected={!!currency}
-            className="open-currency-select-button"
-            onClick={() => {
-              if (!disableCurrencySelect) {
-                setModalOpen(true);
-              }
-            }}
+          <InputRow
+            style={hideInput ? { padding: '0', borderRadius: '8px' } : {}}
+            selected={disableCurrencySelect}
           >
-            <Aligner>
-              {pair ? (
-                <DoubleCurrencyLogo
-                  currency0={pair.token0}
-                  currency1={pair.token1}
-                  size={24}
-                  margin={true}
+            {!hideInput && (
+              <>
+                <NumericalInput
+                  className="token-amount-input"
+                  value={value}
+                  onUserInput={val => {
+                    onUserInput(val);
+                  }}
+                  disabled={disabled}
                 />
-              ) : currency ? (
-                <CurrencyLogo currency={currency} size={'24px'} />
-              ) : null}
-              {pair ? (
-                <StyledTokenName className="pair-name-container">
-                  {pair?.token0.symbol}:{pair?.token1.symbol}
-                </StyledTokenName>
-              ) : (
-                <StyledTokenName
-                  className="token-symbol-container"
-                  active={Boolean(currency && currency.symbol)}
-                >
-                  {(currency && currency.symbol && currency.symbol.length > 20
-                    ? currency.symbol.slice(0, 4) +
-                      '...' +
-                      currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
-                    : currency?.symbol) || t('selectToken')}
-                </StyledTokenName>
-              )}
-              {!disableCurrencySelect && <StyledDropDown selected={!!currency} />}
-            </Aligner>
-          </CurrencySelect>
-          <ErrorText>{getErrorText()}</ErrorText>
-        </InputRow>
-      </Container>
-      {!disableCurrencySelect &&
-        (isCrowdsale ? (
-          <CrowdsaleCurrencySearchModal
-            isOpen={modalOpen}
-            onDismiss={handleDismissSearch}
-            onCurrencySelect={onCurrencySelect}
-            showSendWithSwap={showSendWithSwap}
-            hiddenCurrency={currency}
-            otherSelectedCurrency={otherCurrency}
-            showCommonBases={showCommonBases}
-          />
-        ) : (
-          <CurrencySearchModal
-            isOpen={modalOpen}
-            onDismiss={handleDismissSearch}
-            onCurrencySelect={onCurrencySelect}
-            showSendWithSwap={showSendWithSwap}
-            hiddenCurrency={currency}
-            otherSelectedCurrency={otherCurrency}
-            showCommonBases={showCommonBases}
-            isMatchEth={isMatchEth}
-          />
-        ))}
-    </InputPanel>
+                {account && currency && showMaxButton && label !== 'To' && (
+                  <StyledBalanceMax onClick={onMax}>{'MAX'}</StyledBalanceMax>
+                )}
+              </>
+            )}
+            <CurrencySelect
+              selected={!!currency}
+              className="open-currency-select-button"
+              onClick={() => {
+                if (!disableCurrencySelect) {
+                  setModalOpen(true);
+                }
+              }}
+            >
+              <Aligner>
+                {pair ? (
+                  <DoubleCurrencyLogo
+                    currency0={pair.token0}
+                    currency1={pair.token1}
+                    size={24}
+                    margin={true}
+                  />
+                ) : currency ? (
+                  <CurrencyLogo currency={currency} size={'24px'} />
+                ) : null}
+                {pair ? (
+                  <StyledTokenName className="pair-name-container">
+                    {pair?.token0.symbol}-{pair?.token1.symbol}
+                  </StyledTokenName>
+                ) : (
+                  <StyledTokenName
+                    className="token-symbol-container"
+                    active={Boolean(currency && currency.symbol)}
+                  >
+                    {(currency && currency.symbol && currency.symbol.length > 20
+                      ? currency.symbol.slice(0, 4) +
+                        '...' +
+                        currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
+                      : currency?.symbol) || t('selectToken')}
+                  </StyledTokenName>
+                )}
+                {!disableCurrencySelect && <StyledDropDown selected={!!currency} />}
+              </Aligner>
+            </CurrencySelect>
+          </InputRow>
+        </Container>
+        {!disableCurrencySelect &&
+          (isCrowdsale ? (
+            <CrowdsaleCurrencySearchModal
+              isOpen={modalOpen}
+              onDismiss={handleDismissSearch}
+              onCurrencySelect={onCurrencySelect}
+              showSendWithSwap={showSendWithSwap}
+              hiddenCurrency={currency}
+              otherSelectedCurrency={otherCurrency}
+              showCommonBases={showCommonBases}
+            />
+          ) : (
+            <CurrencySearchModal
+              isOpen={modalOpen}
+              onDismiss={handleDismissSearch}
+              onCurrencySelect={onCurrencySelect}
+              showSendWithSwap={showSendWithSwap}
+              hiddenCurrency={currency}
+              otherSelectedCurrency={otherCurrency}
+              showCommonBases={showCommonBases}
+              isMatchEth={isMatchEth}
+            />
+          ))}
+      </InputPanel>
+      {checkError() && <ErrorText>insufficient balance</ErrorText>}
+    </>
   );
 }

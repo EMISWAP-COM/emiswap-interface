@@ -23,11 +23,16 @@ const currentTimestamp = () => new Date().getTime();
 
 export interface UserInfo {
   address: string;
-  role: UserRoles | undefined;
+  role: UserRoles | null;
   id: string;
   referral_id: string;
   bonus_role_name?: string;
   walletAddress: string;
+  whitelisted: boolean;
+  next_bonus_role: {
+    amount: string;
+    role: string;
+  };
 }
 
 export interface UserState {
@@ -88,6 +93,11 @@ export const initialState: UserState = {
     role: null,
     referral_id: '',
     walletAddress: '',
+    whitelisted: false,
+    next_bonus_role: {
+      amount: '',
+      role: '',
+    },
   },
 };
 

@@ -145,8 +145,6 @@ const NoUser = styled.div`
   padding: 20px 0;
 `;
 
-
-
 export enum UserRoles {
   client = 'client',
   distributor = 'distributor',
@@ -187,7 +185,6 @@ export default function WalletModal({
   const toggleWalletModal = useWalletModalToggle();
 
   const previousAccount = usePrevious(account);
-
   // close on connection, when logged out before
   useEffect(() => {
     if (account && !previousAccount && walletModalOpen) {
@@ -216,7 +213,7 @@ export default function WalletModal({
     }
   }, [setWalletView, active, error, connector, walletModalOpen, activePrevious, connectorPrevious]);
 
-  const getGAEvent = name => {
+  const getConnectGAEvent = name => {
     switch (name) {
       case 'MetaMask':
         return () => {
@@ -263,12 +260,59 @@ export default function WalletModal({
     }
   };
 
+  const getConfirmGAEvent = name => {
+    switch (name) {
+      case 'MetaMask':
+        return () => {
+          ReactGA.event({
+            category: 'wallet',
+            action: 'confirm',
+            label: 'metamask',
+          });
+        };
+      case 'WalletConnect':
+        return () => {
+          ReactGA.event({
+            category: 'wallet',
+            action: 'confirm',
+            label: 'walletconnect',
+          });
+        };
+      case 'Open in Coinbase Wallet':
+        return () => {
+          ReactGA.event({
+            category: 'wallet',
+            action: 'confirm',
+            label: 'coinbasewallet',
+          });
+        };
+      case 'Fortmatic':
+        return () => {
+          ReactGA.event({
+            category: 'wallet',
+            action: 'confirm',
+            label: 'fortmatic',
+          });
+        };
+      case 'Portis':
+        return () => {
+          ReactGA.event({
+            category: 'wallet',
+            action: 'confirm',
+            label: 'portis',
+          });
+        };
+      default:
+        return () => {};
+    }
+  };
+
   const tryActivation = async connector => {
     let name = '';
     Object.keys(SUPPORTED_WALLETS).map(key => {
       if (connector === SUPPORTED_WALLETS[key].connector) {
-        const GAEvent = getGAEvent(SUPPORTED_WALLETS[key].name);
-        GAEvent && GAEvent();
+        const connectGAEvent = getConnectGAEvent(SUPPORTED_WALLETS[key].name);
+        connectGAEvent && connectGAEvent();
         return (name = SUPPORTED_WALLETS[key].name);
       }
       return true;
@@ -289,6 +333,16 @@ export default function WalletModal({
 
     activate(connector, undefined, true)
       .then(() => {
+        const confirmGAEvent = getConfirmGAEvent(name);
+        if (confirmGAEvent) {
+          confirmGAEvent();
+        }
+        ReactGA.event({
+          category: 'wallet',
+          action: 'confirm',
+          label: 'everyone',
+        });
+
         ReactGA.event({
           category: 'wallet',
           action: 'connect_success',
@@ -431,7 +485,6 @@ export default function WalletModal({
       );
     }
     if (account && user && walletView === WALLET_VIEWS.ACCOUNT) {
-
       switch (user.role) {
         case UserRoles.distributor:
           return (
@@ -453,12 +506,8 @@ export default function WalletModal({
             <NoUser>
               <WarningBlock
                 title={'Login failed'}
-                content={() => <div>Something went wrong.
-                </div>}
-                bottomContent={() => <div>
-                  Please refresh the page and try again.
-                </div>
-                  }
+                content={() => <div>Something went wrong.</div>}
+                bottomContent={() => <div>Please refresh the page and try again.</div>}
               />
             </NoUser>
           );
@@ -466,14 +515,10 @@ export default function WalletModal({
     } else if (account && !user && walletView === WALLET_VIEWS.ACCOUNT) {
       return (
         <>
-          <HeaderRow>
-            Sorry, we couldn't load user info
-          </HeaderRow>
-          <ContentWrapper>
-            account - {account}
-          </ContentWrapper>
+          <HeaderRow>Sorry, we couldn't load user info</HeaderRow>
+          <ContentWrapper>account - {account}</ContentWrapper>
         </>
-      )
+      );
     }
     return (
       <>
@@ -561,7 +606,7 @@ export default function WalletModal({
           <CloseIcon onClick={toggleWalletModal}>
             <CloseColor />
           </CloseIcon>
-        {getModalContent()}
+          {getModalContent()}
         </UpperSection>
       </Wrapper>
     </Modal>

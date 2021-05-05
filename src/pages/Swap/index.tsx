@@ -2,13 +2,13 @@ import { JSBI, TokenAmount } from '@uniswap/sdk';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { ArrowDown, ArrowUp } from 'react-feather';
 import { Text } from 'rebass';
-import { ThemeContext } from 'styled-components';
+import styled, { ThemeContext } from 'styled-components';
 import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button';
 import Card, { GreyCard } from '../../components/Card';
 import { AutoColumn } from '../../components/Column';
 import ConfirmationModal from '../../components/ConfirmationModal';
 import CurrencyInputPanel from '../../components/CurrencyInputPanel';
-import { SwapPoolTabs } from '../../components/NavigationTabs';
+import { SwapPoolTabs, TabNames } from '../../components/NavigationTabs';
 import { AutoRow, RowBetween } from '../../components/Row';
 import BetterTradeLink from '../../components/swap/BetterTradeLink';
 import confirmPriceImpactWithoutFee from '../../components/swap/confirmPriceImpactWithoutFee';
@@ -41,8 +41,8 @@ import {
 } from '../../state/swap/hooks';
 import {
   useExpertModeManager,
-  useUserSlippageTolerance,
   useTokenWarningDismissal,
+  useUserSlippageTolerance,
 } from '../../state/user/hooks';
 import { CursorPointer, StyledButtonNavigation, TYPE } from '../../theme';
 import { maxAmountSpend } from '../../utils/maxAmountSpend';
@@ -54,12 +54,15 @@ import {
 import AppBody from '../AppBody';
 import { ClickableText } from '../Pool/styleds';
 import { isUseOneSplitContract } from '../../utils';
-import ReferralLink from '../../components/RefferalLink';
 import GasConsumption from '../../components/swap/GasConsumption';
 import { BigNumber } from '@ethersproject/bignumber';
 import { AdvancedSwapDetails } from '../../components/swap/AdvancedSwapDetails';
-import WarningBlock, { StyledButton } from '../../components/Warning/WarningBlock';
 import { useMockEstimate } from '../../hooks/useMockEstimate';
+
+const GasFeeText = styled.div`
+  margin-top: 8px;
+  color: #89919a;
+`;
 
 export default function Swap() {
   useDefaultsFromURLSearch();
@@ -288,12 +291,14 @@ export default function Swap() {
   const priceImpactSeverity = warningSeverity(priceImpactWithoutFee);
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
   // never show if price impact is above threshold in non expert mode
+
   const showApproveFlow =
-    !error &&
-    (approval === ApprovalState.NOT_APPROVED ||
+    (approval === ApprovalState.UNKNOWN ||
+      approval === ApprovalState.NOT_APPROVED ||
       approval === ApprovalState.PENDING ||
       (approvalSubmitted && approval === ApprovalState.APPROVED)) &&
     !(priceImpactSeverity > 3 && !expertMode);
+
   function modalHeader() {
     return (
       <SwapModalHeader
@@ -338,36 +343,11 @@ export default function Swap() {
   const notEnoughBalance =
     maxAmountInput && parsedAmount && JSBI.lessThan(maxAmountInput.raw, parsedAmount.raw);
 
-  const warningBottomContent = () => {
-    return (
-      <StyledButton href={'https://link.medium.com/gNa3ztuvkdb'} target="_blank">
-        <span> READ MORE </span> {'>>'}
-      </StyledButton>
-    );
-  };
-
-  const warningContent = () => {
-    return (
-      <p>
-        The beta testing runs for about 2 weeks, and the users who join us within this period will
-        have 50,000 ESW distributed among them during the first week after the official launch.
-      </p>
-    );
-  };
-
   return (
     <>
-      {showWarning ? (
-        <TokenWarningCards currencies={currencies} />
-      ) : (
-        <WarningBlock
-          title="EMISWAP soft launch"
-          content={warningContent}
-          bottomContent={warningBottomContent}
-        />
-      )}
+      {showWarning && <TokenWarningCards currencies={currencies} />}
       <AppBody disabled={showWarning}>
-        <SwapPoolTabs active={'swap'} />
+        <SwapPoolTabs active={TabNames.SWAP} />
         <Wrapper id="swap-page">
           <ConfirmationModal
             isOpen={showConfirm}
@@ -535,6 +515,8 @@ export default function Swap() {
                     <Dots>Approving</Dots>
                   ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
                     'Approved'
+                  ) : approval === ApprovalState.UNKNOWN ? (
+                    <Dots>Approve checking</Dots>
                   ) : (
                     'Approve ' + currencies[Field.INPUT]?.symbol
                   )}
@@ -589,8 +571,7 @@ export default function Swap() {
               </ErrorText>
             )}
           </BottomGrouping>
-
-          {account ? <ReferralLink /> : 'Please connect to get a referral link.'}
+          <GasFeeText>100% gas fee refund</GasFeeText>
         </Wrapper>
         <AdvancedSwapDetails trade={trade} />
       </AppBody>

@@ -18,6 +18,7 @@ const WordmarkStyled = styled.div`
       U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
   }
 
+  margin-bottom: 50px;
   color: ${({ theme }) => theme.yellow3};
 
   .mainWordmark {
@@ -67,10 +68,5 @@ const WordmarkStyled = styled.div`
 `;
 
 export default function Wordmark() {
-  return (
-    <WordmarkStyled>
-      <h1 className="mainWordmark">EmiSwap</h1>
-      <h4 className="mainHeader">Cutting-edge AMM decentralized exchange</h4>
-    </WordmarkStyled>
-  );
+  return <WordmarkStyled></WordmarkStyled>;
 }

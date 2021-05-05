@@ -86,6 +86,10 @@ export const StyledInternalLink = styled(Link)`
   }
 `;
 
+export const StyledGreenLink = styled(StyledInternalLink)`
+  color: #11b382;
+`;
+
 const StyledLink = styled.a`
   cursor: pointer;
   color: inherit;
@@ -157,11 +161,16 @@ export const CursorPointer = styled.div`
 
 const BackArrowLink = styled(StyledInternalLink)`
   color: ${({ theme }) => theme.text1};
+  display: flex;
+  align-items: center;
+  :hover {
+    text-decoration: none;
+  }
 `;
 export function BackArrow({ to }: { to: string }) {
   return (
     <BackArrowLink to={to}>
-      <ArrowLeft />
+      <ArrowLeft /> <p>Back</p>
     </BackArrowLink>
   );
 }

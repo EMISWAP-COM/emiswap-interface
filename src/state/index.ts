@@ -15,7 +15,7 @@ import stats from './stats/reducer';
 
 import { updateVersion } from './user/actions';
 
-const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists', 'invest'];
+const PERSISTED_KEYS: string[] = ['transactions', 'lists', 'invest'];
 
 const store = configureStore({
   reducer: {

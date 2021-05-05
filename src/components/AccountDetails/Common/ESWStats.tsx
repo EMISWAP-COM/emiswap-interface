@@ -1,12 +1,12 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { CommingSoon } from '../../../base/ui/CommingSoon';
 import { AppState } from '../../../state';
 import { TYPE } from '../../../theme';
-import { convertBigDecimal, convertDate, DateFormat } from '../uitls'
-import {  WalletAction } from '../styleds';
-
+import { convertBigDecimal, convertDate, DateFormat } from '../uitls';
+import { WalletAction } from '../styleds';
+import { useHistory } from 'react-router';
+import { useWalletModalToggle } from '../../../state/application/hooks';
 
 const DateBlock = styled.span`
   font-family: 'IBM Plex Sans';
@@ -136,48 +136,60 @@ const BottomRow = styled.div`
   }
 `;
 
-export const ESWStats = () => {
-  const balance = useSelector((state: AppState) => state.cabinets.balance);
+//TODO выпилить после релиза март 31го.
 
-  const unfrozen = convertBigDecimal(balance?.available);
-  const frozen = convertBigDecimal(String(balance?.locked));
-  const nextUnlockAmount = convertBigDecimal(balance?.nearest_unlock?.amount);
-  const unlockDate = balance?.nearest_unlock?.unlock_date === undefined ? null : convertDate(balance?.nearest_unlock?.unlock_date, DateFormat.short);
-  const total = convertBigDecimal(balance?.amount);
-  return (
-    <>
-      <TYPE.mediumHeader>My ESW Performance</TYPE.mediumHeader>
-      <Wrapper>
-        <TopRows>
-          <RowItem>
-            <div className="item-top">Total ESW</div>
-            <div className="item-bottom">{total}</div>
-          </RowItem>
-          <RowItem>
-            <div className="item-top">Unfrozen</div>
-            <div className="item-bottom">{unfrozen}</div>
-          </RowItem>
-          <RowItem>
-            <div className="item-top">Frozen</div>
-            <div className="item-bottom">{frozen}</div>
-          </RowItem>
-          <RowItem>
-            <div className="item-top">Next unlock amount</div>
-            <div className="item-bottom">{nextUnlockAmount}</div>
-          </RowItem>
-          <RowItem>
-            <div className="item-top no-border">Next unlock date</div>
-            <div className="item-bottom">
-              <DateBlock>{unlockDate}</DateBlock>
-            </div>
-          </RowItem>
-        </TopRows>
-        <BottomRow>
-          <CommingSoon>
-            <WalletAction>Collect to my wallet</WalletAction>
-          </CommingSoon>
-        </BottomRow>
-      </Wrapper>
-    </>
-  );
-};
+// export const ESWStats = () => {
+//   const balance = useSelector((state: AppState) => state.cabinets.balance);
+//
+//   const unfrozen = convertBigDecimal(balance?.available.ESW);
+//   const frozen = convertBigDecimal(String(balance?.locked.ESW));
+//   const nextUnlockAmount = convertBigDecimal(balance?.nearest_unlock?.amount);
+//   const unlockDate =
+//     balance?.nearest_unlock?.unlock_date === undefined
+//       ? null
+//       : convertDate(balance?.nearest_unlock?.unlock_date, DateFormat.short);
+//
+//   const total = convertBigDecimal(balance?.amount);
+//   const history = useHistory();
+//   const toggle = useWalletModalToggle();
+//
+//   const handleClaim = () => {
+//     toggle();
+//     history.push('/claim/ESW');
+//   };
+//
+//   return (
+//     <>
+//       <TYPE.mediumHeader>My ESW Performance</TYPE.mediumHeader>
+//       <Wrapper>
+//         <TopRows>
+//           <RowItem>
+//             <div className="item-top">Total ESW</div>
+//             <div className="item-bottom">{total}</div>
+//           </RowItem>
+//           <RowItem>
+//             <div className="item-top">Unfrozen</div>
+//             <div className="item-bottom">{unfrozen}</div>
+//           </RowItem>
+//           <RowItem>
+//             <div className="item-top">Frozen</div>
+//             <div className="item-bottom">{frozen}</div>
+//           </RowItem>
+//           <RowItem>
+//             <div className="item-top">Next unlock amount</div>
+//             <div className="item-bottom">{nextUnlockAmount}</div>
+//           </RowItem>
+//           <RowItem>
+//             <div className="item-top no-border">Next unlock date</div>
+//             <div className="item-bottom">
+//               <DateBlock>{unlockDate}</DateBlock>
+//             </div>
+//           </RowItem>
+//         </TopRows>
+//         <BottomRow>
+//           <WalletAction onClick={handleClaim}>Collect to my wallet</WalletAction>
+//         </BottomRow>
+//       </Wrapper>
+//     </>
+//   );
+// };

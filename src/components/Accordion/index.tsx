@@ -9,9 +9,12 @@ export interface AccordionProps {
   children: React.ReactNode;
   btnClick?: () => void;
   btnText?: string;
+  btnSecondClick?: () => void;
+  btnSecondText?: string;
+  headerClass?: string;
   openClass: string;
 }
-
+//TODO убрать мракобесию с фиксированной высотой для каждого блока.
 const Body = styled.div`
   background: #ffffff;
   border: 1px solid #eaeeee;
@@ -43,6 +46,7 @@ const Body = styled.div`
 
     @media screen and (max-width: 600px) {
       font-size: 16px;
+      line-height: 1.4;
     }
   }
 
@@ -92,12 +96,27 @@ const Body = styled.div`
 
   .isOpen3 {
     margin-top: 40px;
-    height: 440px;
+    height: 600px;
   }
 
   .isOpen4 {
     margin-top: 40px;
     height: 310px;
+  }
+
+  .isOpen5 {
+    margin-top: 40px;
+    height: 900px;
+  }
+
+  .isOpen6 {
+    margin-top: 40px;
+    height: 750px;
+  }
+
+  .isOpen7 {
+    height: 250px;
+    padding: 0;
   }
 
   @media screen and (max-width: 1300px) {
@@ -110,11 +129,23 @@ const Body = styled.div`
     }
 
     .isOpen3 {
-      height: 460px;
+      height: 600px;
     }
 
     .isOpen4 {
       height: 370px;
+    }
+
+    .isOpen5 {
+      height: 1000px;
+    }
+
+    .isOpen6 {
+      height: 750px;
+    }
+
+    .isOpen7 {
+      height: 390px;
     }
   }
 
@@ -128,11 +159,19 @@ const Body = styled.div`
     }
 
     .isOpen3 {
-      height: 680px;
+      height: 900px;
     }
 
     .isOpen4 {
       height: 370px;
+    }
+
+    .isOpen5 {
+      height: calc(1300px - 50vw);
+    }
+
+    .isOpen6 {
+      height: 800px;
     }
   }
 
@@ -146,11 +185,28 @@ const Body = styled.div`
     }
 
     .isOpen3 {
-      height: 1150px;
+      height: 1050px;
+      text-align: left !important;
     }
 
     .isOpen4 {
       height: 710px;
+      text-align: left !important;
+    }
+
+    .isOpen5 {
+      height: calc(2750px - 350vw);
+      text-align: left !important;
+    }
+
+    .isOpen7 {
+      height: 610px;
+    }
+  }
+
+  @media screen and (max-width: 375px) {
+    .isOpen5 {
+      height: calc(2750px - 390vw);
     }
   }
 
@@ -185,6 +241,10 @@ const Body = styled.div`
       text-align: center;
       letter-spacing: 0.02em;
       color: #141717;
+
+      &--second {
+        margin-left: 50px;
+      }
     }
 
     &__line {
@@ -195,6 +255,13 @@ const Body = styled.div`
     }
 
     @media screen and (max-width: 600px) {
+      display: block;
+      height: auto;
+
+      &__btn {
+        margin: 0 auto 16px auto !important;
+      }
+
       &__line {
         display: none;
       }
@@ -203,6 +270,35 @@ const Body = styled.div`
 
   .hidden {
     display: none;
+  }
+
+  .blink1-text {
+    -webkit-animation: blink1 3s linear infinite;
+    animation: blink1 3s linear infinite;
+  }
+
+  @-webkit-keyframes blink1 {
+    0% {
+      color: rgba(34, 34, 34, 1);
+    }
+    50% {
+      color: rgba(34, 34, 34, 0);
+    }
+    100% {
+      color: rgba(34, 34, 34, 1);
+    }
+  }
+
+  @keyframes blink1 {
+    0% {
+      color: rgba(34, 34, 34, 1);
+    }
+    50% {
+      color: rgba(34, 34, 34, 0);
+    }
+    100% {
+      color: rgba(34, 34, 34, 1);
+    }
   }
 `;
 
@@ -217,7 +313,7 @@ export default (props: AccordionProps) => {
       <div className="header" onClick={handleSwitchAccordion}>
         <div className="header__left">
           <img src={Question} alt="" />
-          <div className="h4">{props.header}</div>
+          <div className={`h4 ${props.headerClass}`}>{props.header}</div>
         </div>
         <div className="header__open-icon">
           <img src={isOpen ? ArrowUp : ArrowDown} alt="" />
@@ -230,6 +326,11 @@ export default (props: AccordionProps) => {
           <div className="btn-line__btn" onClick={props.btnClick}>
             {props.btnText}
           </div>
+          {props.btnSecondText && (
+            <div className="btn-line__btn btn-line__btn--second" onClick={props.btnSecondClick}>
+              {props.btnSecondText}
+            </div>
+          )}
           <div className="btn-line__line" />
         </div>
       )}

@@ -29,7 +29,7 @@ import {
 import { useExpertModeManager, useTokenWarningDismissal } from '../../state/user/hooks';
 import { maxAmountSpendInvest } from '../../utils/maxAmountSpend';
 import AppBody from '../AppBody';
-import { SwapPoolTabs } from '../../components/NavigationTabs';
+import { SwapPoolTabs, TabNames } from '../../components/NavigationTabs';
 import { EMISWAP_CROWDSALE_ADDRESS } from '../../constants/abis/crowdsale';
 import { Redirect, RouteComponentProps } from 'react-router-dom';
 import { tokenAmountToString } from '../../utils/formats';
@@ -46,11 +46,6 @@ import Enterprise from '../../assets/svg/CardIcon/enterprise.svg';
 import Gold from '../../assets/svg/CardIcon/gold.svg';
 import Silver from '../../assets/svg/CardIcon/silver.svg';
 import Question from '../../assets/svg/FAQIcon/question.svg';
-import EmiMagicBackground from '../../assets/svg/EmiMagicBackground.svg';
-import EmiMagicCardModal from '../../components/EmiMagicCardModal';
-import WarningBlock, { StyledButton } from '../../components/Warning/WarningBlock';
-import useParsedQueryString from '../../hooks/useParsedQueryString';
-import ReferralLink from '../../components/RefferalLink';
 import { AppState } from '../../state';
 import { UserRoles } from '../../components/WalletModal';
 import { getPriceToNextStep } from './utils';
@@ -61,6 +56,7 @@ import {
   diamondCount,
   enterpriseCount,
   goldCount,
+  investMinESW,
   PackageNames,
   partnerCount,
   silverCount,
@@ -363,22 +359,6 @@ const EmiCard = styled.div`
   }
 `;
 
-const EmiMagicBtn = styled.div`
-  background: url('${EmiMagicBackground}');
-  background-repeat: no-repeat;
-  width: 100%;
-  background-size: cover;
-  border-radius: 8px;
-  height: 56px;
-  color: #FFF;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  user-select: none;
-  margin-top: 10px;
-`;
-
 const EmiCardHeader = styled.div`
   color: #e50606;
   font-size: 1rem;
@@ -389,13 +369,19 @@ const EmiCardHeader = styled.div`
   }
 `;
 
+const PrivateSaleText = styled.div`
+  max-width: 300px;
+  font-size: 15px;
+  line-height: 21px;
+  color: #89919a;
+  margin: 8px auto 10px auto;
+`;
+
 export function RedirectPathToInvestOnly({ location }: RouteComponentProps) {
   return <Redirect to={{ ...location, pathname: '/invest' }} />;
 }
 
 const Invest = () => {
-  const { bonusform } = useParsedQueryString();
-
   useDefaultsFromURLSearch();
 
   const { account, chainId } = useActiveWeb3React();
@@ -489,7 +475,6 @@ const Invest = () => {
     }
   }, [approval, approvalSubmitted]);
 
-
   // the callback to execute the invest
   const [investCallback] = useInvest(
     chainId,
@@ -539,15 +524,7 @@ const Invest = () => {
 
   // errors
   const [showInverted, setShowInverted] = useState<boolean>(false);
-  const [showEmiCardModal, setShowEmiCardModal] = useState<boolean>(bonusform === 'open');
-  const openEmiCardModal = () => {
-    ReactGA.event({
-      category: 'Magic_NFT',
-      action: 'click_MagicNFT',
-    });
-    setShowEmiCardModal(true);
-  };
-  const closeEmiCardModal = () => setShowEmiCardModal(false);
+
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
   // never show if price impact is above threshold in non expert mode
   const showApproveFlow =
@@ -666,7 +643,10 @@ const Invest = () => {
       bodyNode = (
         <div className="block-with-cards__cards">
           {distributorCardList.map(el => {
-            const isDisabled = bonusRoleName ? el.value <= accountAmounts[bonusRoleName] : false;
+            let isDisabled = bonusRoleName ? el.value <= accountAmounts[bonusRoleName] : false;
+            if (el.value < investMinESW) {
+              isDisabled = true;
+            }
             return (
               <div
                 className={`emicard ${
@@ -941,7 +921,7 @@ const Invest = () => {
             {ESW > 0 ? (
               <EmiCardHeader>
                 Please, &nbsp;
-                <span onClick={() => setShowEmiCardModal(true)}>Register in the Whitelist</span>
+                <span>Register in the Whitelist</span>
                 &nbsp; to Get:
               </EmiCardHeader>
             ) : (
@@ -1015,7 +995,7 @@ const Invest = () => {
       return 'Please choose a token';
     }
     if (Number(typedValue) > 0 && Number(outputAmount) === 0) {
-      return 'Sorry, you are reaching the limits of our crowdsale. Please try to buy less ESW';
+      return 'Sorry, you are reaching the limits of our private. Please try to buy less ESW';
     }
     if (notEnoughBalance) {
       return `Not enough balance`;
@@ -1023,39 +1003,14 @@ const Invest = () => {
     return error;
   };
 
-  const warningBottomContent = () => {
-    return (
-      <StyledButton href={'https://link.medium.com/gNa3ztuvkdb'} target="_blank">
-        <span> READ MORE </span> {'>>'}
-      </StyledButton>
-    );
-  };
-
-  const warningContent = () => {
-    return (
-      <p>
-        The beta testing runs for about 2 weeks, and the users who join us within this period will
-        have 50,000 ESW distributed among them during the first week after the official launch.
-      </p>
-    );
-  };
-
   return (
     <>
-      {showWarning ? (
-        <TokenWarningCards currencies={currencies} />
-      ) : (
-        <WarningBlock
-          title="EMISWAP soft launch"
-          content={warningContent}
-          bottomContent={warningBottomContent}
-        />
-      )}
+      {showWarning && <TokenWarningCards currencies={currencies} />}
       <AppBody
         disabled={showWarning}
         className={`invest-mobile ${role === UserRoles.distributor ? 'mb650' : ''}`}
       >
-        <SwapPoolTabs active={'invest'} />
+        <SwapPoolTabs active={TabNames.INVEST} />
         <Wrapper id="invest-page">
           <ConfirmationModal
             isOpen={showConfirm}
@@ -1180,15 +1135,12 @@ const Invest = () => {
               )}
             </BottomGrouping>
           </AutoColumn>
-          {account ? <ReferralLink /> : 'Please connect to get a referral link.'}
-          <EmiMagicBtn onClick={openEmiCardModal}>Register here to Get Magic Cards</EmiMagicBtn>
-            <EmiMagicCardModal
-              isOpen={showEmiCardModal}
-              onDismiss={closeEmiCardModal}
-              walletID={account}
-            />
+          <PrivateSaleText>
+            Private sale stage for investors who want to purchase ESW worth $25,000 and more.
+          </PrivateSaleText>
         </Wrapper>
-        {generateEmiCardBlock(Number(formattedAmounts[Field.OUTPUT]))}
+        {role === UserRoles.distributor &&
+          generateEmiCardBlock(Number(formattedAmounts[Field.OUTPUT]))}
       </AppBody>
     </>
   );

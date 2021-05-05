@@ -52,13 +52,13 @@ export const BodyWrapper = styled.div<{ disabled?: boolean; data?: string }>`
 
   &.invest-mobile {
     @media screen and (max-width: 1200px) {
-      margin-bottom: 650px;
+      // margin-bottom: 650px;
     }
     @media screen and (max-width: 500px) {
-      margin-bottom: 600px;
+      // margin-bottom: 600px;
     }
     @media screen and (max-width: 390px) {
-      margin-bottom: 630px;
+      // margin-bottom: 630px;
     }
   }
   &.mb650 {

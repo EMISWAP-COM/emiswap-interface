@@ -1,24 +1,26 @@
 import React, { useRef, useState } from 'react';
-import styled from "styled-components";
+import styled from 'styled-components';
 import WAValidator from 'wallet-address-validator';
 import ReactGA from 'react-ga';
 import Modal from '../Modal';
 import EmiCardHeaderImg from '../../assets/images/EmiCardHeaderImgNew.jpg';
-import { SuccessRegistration } from './SuccessRegistration'
-import {CloseIcon} from '../../assets/tsx/CloseIcon'
+import { SuccessRegistration } from './SuccessRegistration';
+import { CloseIcon } from '../../assets/tsx/CloseIcon';
+import { fetchWrapper } from '../../api/fetchWrapper';
+import { useDispatch } from 'react-redux';
+import { addPopup } from '../../state/application/actions';
 
 const CloseBtn = styled.div`
-    position: absolute;
-    right: 20px;
-    top: 20px;
-    cursor: pointer;
-    
-    @media screen and (max-width: 375px) {
-      top: 15px;
-      right: 15px;
-    }
-`
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  cursor: pointer;
 
+  @media screen and (max-width: 375px) {
+    top: 15px;
+    right: 15px;
+  }
+`;
 
 const ModalBody = styled.div`
   width: 100%;
@@ -26,10 +28,9 @@ const ModalBody = styled.div`
   flex-direction: column;
   align-items: center;
   position: relative;
-    
+
   @media screen and (max-width: 600px) {
     font-size: 12px;
-
   }
 
   img {
@@ -187,7 +188,14 @@ interface EmiMagicCardModalProps {
   walletID?: string;
 }
 
+const baseUrl = window['env'] ? window['env'].REACT_APP_PUBLIC_URL : '';
+
 const defaultValidation = { name: false, email: false, telegram: false, address: false };
+
+enum Message {
+  success = 'Now you are whitelisted and you still have time to be one of the first 1,000 to claim the bonus!',
+  duplicate = 'You have already been whitelisted a while ago...',
+}
 
 export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMagicCardModalProps) {
   const nameRef = useRef(null);
@@ -195,12 +203,14 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
   const telegramRef = useRef(null);
   const addressRef = useRef(null);
   const [validation, setValidation] = useState(defaultValidation);
-  const [isRegistered, setIsRegistered] = useState(false)
+  const [isRegistered, setIsRegistered] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const dispatch = useDispatch();
 
   const validateForm = (name = '', email = '', telegram = '', address = '') => {
     let isValid = false;
     const newValidator = { ...defaultValidation };
-    const nameRegexp = /\D/
+    const nameRegexp = /\D/;
     const emailRegexp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const telegramRegexp = /^@[a-z0-9_]+$/;
     if (!nameRegexp.test(name)) {
@@ -240,47 +250,53 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
     if (!validateForm(name, email, telegram, address)) {
       setValidation(defaultValidation);
       const urlParams = new URLSearchParams(localStorage.getItem('UTMMarks'));
-      let utmMakrs = {}
-      for ( let [key, value] of urlParams) {
+      let utmMakrs = {};
+      for (let [key, value] of urlParams) {
         if (key.includes('utm')) {
-          utmMakrs[key] = value
+          utmMakrs[key] = value;
         }
       }
-      //TODO сделать единый фечт интерфейс для проекта, когда выделят время)
-      fetch(`/v1/public/whitelist${utm || ''}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: name,
-          email: email,
-          telegram: telegram,
-          address: address,
-          created_at: new Date().toString(),
-          utm: utmMakrs
-        }),
-      })
-        .then(response => {
-          const respMessage = response.text()
-          if (response.status !== 200 && response.status !== 201) {
-            throw new Error(response.status.toString())
-          }
-          return respMessage
+      fetchWrapper
+        .post(`${baseUrl}/v1/public/whitelist${utm || ''}`, {
+          body: JSON.stringify({
+            name: name,
+            email: email,
+            telegram: telegram,
+            address: address,
+            created_at: new Date().toString(),
+            utm: utmMakrs,
+          }),
         })
-        .then(contents => {
+        .then(() => {
+          setSuccessMessage(Message.success);
           ReactGA.event({
             category: 'whitelist',
             action: 'whitelist_MagicNFT',
           });
           localStorage.removeItem('UTMMarks');
-          setIsRegistered(true)
+          setIsRegistered(true);
         })
-        .catch((e) => {
-            alert(`Oops, we unable to perform whitelist registration - ${e}`)
-            console.log('Can’t access /v1/public/whitelist response. Blocked by browser?')
+        .catch(e => {
+          const validation = e?.payload?.address;
+          if (validation && validation[0] === 'duplicate') {
+            setSuccessMessage(Message.duplicate);
+            setIsRegistered(true);
+          } else {
+            alert(`Oops, we unable to perform whitelist registration - ${e}`);
+            console.log('e', e.payload);
+            dispatch(
+              addPopup({
+                key: 'magicCardModal',
+                content: {
+                  status: {
+                    name: `Oops, we unable to perform whitelist registration - ${e}`,
+                    isError: true,
+                  },
+                },
+              }),
+            );
           }
-        );
+        });
     }
   };
   return (
@@ -289,7 +305,9 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
         <CloseBtn onClick={onDismiss}>
           <CloseIcon color={isRegistered ? '#555959' : '#ffffff'} />
         </CloseBtn>
-        {isRegistered ? <SuccessRegistration/> : (
+        {isRegistered ? (
+          <SuccessRegistration message={successMessage} />
+        ) : (
           <>
             <img src={EmiCardHeaderImg} alt="EmiCardHeaderImg" />
             <div className="modal-body">
@@ -368,7 +386,6 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
             </div>
           </>
         )}
-
       </ModalBody>
     </Modal>
   );
