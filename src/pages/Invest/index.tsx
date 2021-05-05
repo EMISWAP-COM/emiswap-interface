@@ -388,7 +388,7 @@ const LoginFirstText = styled.div`
 `;
 
 const OnlyInvestorsText = styled.div`
-  max-width: 300px;
+  max-width: 320px;
   font-size: 15px;
   line-height: 21px;
   color: #89919a;
