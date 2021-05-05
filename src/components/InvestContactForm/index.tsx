@@ -317,9 +317,8 @@ export default function InvestContactForm({ isOpen, walletID, onDismiss }: EmiMa
                   ref={phoneRef}
                   className={`modal-body__input${!validation.phone ? ' modal-body__error' : ''}`}
                   type="text"
-                  placeholder=""
+                  placeholder="+49000000000000"
                 />
-                <div className="modal-body__helper-text">Example number: +49000000000000</div>
                 {!validation.phone && errorLabel}
               </div>
               <div className="modal-body__input-block">
