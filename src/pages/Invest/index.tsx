@@ -31,7 +31,6 @@ import { maxAmountSpendInvest } from '../../utils/maxAmountSpend';
 import AppBody from '../AppBody';
 import { SwapPoolTabs, TabNames } from '../../components/NavigationTabs';
 import { EMISWAP_CROWDSALE_ADDRESS } from '../../constants/abis/crowdsale';
-import { Redirect, RouteComponentProps } from 'react-router-dom';
 // import { MAX_NUM_DECIMALS } from '../../constants';
 import { tokenAmountToString } from '../../utils/formats';
 import OrdinaryIcon from '../../assets/svg/CardIcon/ordinary.svg';
@@ -396,10 +395,6 @@ const OnlyInvestorsText = styled.div`
   font-weight: 600;
   margin: 8px auto 10px auto;
 `;
-
-export function RedirectPathToInvestOnly({ location }: RouteComponentProps) {
-  return <Redirect to={{ ...location, pathname: '/invest' }} />;
-}
 
 const Invest = () => {
   useDefaultsFromURLSearch();
