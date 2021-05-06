@@ -3,6 +3,7 @@ import { injected } from '../../connectors';
 
 export enum DateFormat {
   short = 'Month, D, YYYY',
+  short_day = 'DD Month YY',
   full = 'YYYY-MM-DD HH:MM:SS',
 }
 
@@ -43,6 +44,11 @@ export function shortenHash(hash: string, chars = 4): string {
 const getShortDate = (date: string) => {
   const newDate = new Date(date);
   return `${months[newDate.getMonth()]} ${newDate.getDate()}, ${newDate.getFullYear()}`;
+};
+
+const getShortDayDate = (date: string) => {
+  const newDate = new Date(date);
+  return `${newDate.getDate()} ${months[newDate.getMonth()]} ${newDate.getFullYear()}`;
 };
 
 const getFullDate = (date: string) => {
@@ -86,6 +92,8 @@ export const convertDate = (dateSourceString: string, format: string) => {
     switch (format) {
       case DateFormat.short:
         return getShortDate(date);
+      case DateFormat.short_day:
+        return getShortDayDate(date);
       case DateFormat.full:
         return getFullDate(date);
       default:

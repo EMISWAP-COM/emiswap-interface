@@ -68,8 +68,5 @@ const WordmarkStyled = styled.div`
 `;
 
 export default function Wordmark() {
-  return (
-    <WordmarkStyled>
-    </WordmarkStyled>
-  );
+  return <WordmarkStyled></WordmarkStyled>;
 }
