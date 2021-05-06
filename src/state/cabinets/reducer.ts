@@ -1,5 +1,9 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { loadBalance, loadPerformance } from './actions';
+import {
+  loadBalance,
+  loadBonus,
+  loadPerformance,
+} from './actions';
 
 interface Unlock {
   amount: string;
@@ -58,9 +62,15 @@ interface Balance {
   change_level_info: ChangeLevel | null;
 }
 
+interface BonusDetails {
+  pool_block_bonuses: PoolBonus[],
+  pool_bonuses: PoolBonus[],
+}
+
 interface CabinetState {
   performance: ReferralPerformance;
   balance: Balance;
+  bonusDetails: BonusDetails;
   purchaseHistory: PurchaseHistory[];
   referralHistory: ReferralPurchaseHistory[];
 }
@@ -91,6 +101,15 @@ interface Deposit {
   available_at: string;
   amount: string;
   amount_dai: string | null;
+}
+
+interface PoolBonus {
+  date: string,
+  name: string;
+  esw_reward: string;
+  esw_price: string;
+  pool_part: string;
+  swap_turnover: string;
 }
 
 type LockedDeposit = {
@@ -179,6 +198,10 @@ const initialState: CabinetState = {
     nearest_unlock: null,
     change_level_info: null,
   },
+  bonusDetails: {
+    pool_block_bonuses: [],
+    pool_bonuses: [],
+  },
   purchaseHistory: [] as PurchaseHistory[],
   referralHistory: [] as ReferralPurchaseHistory[],
 };
@@ -195,8 +218,11 @@ export default createReducer(
       // })
       .addCase(loadBalance.fulfilled, (state, action) => {
         state.balance = action.payload;
-      }),
-  // .addCase(loadReferralPurchaseHistory.fulfilled, (state, action) => {
-  //   state.referralHistory = action.payload;
-  // }),
+      })
+      .addCase(loadBonus.fulfilled, (state, action) => {
+        state.bonusDetails = action.payload;
+      })
+      // .addCase(loadReferralPurchaseHistory.fulfilled, (state, action) => {
+      //   state.referralHistory = action.payload;
+      // }),
 );

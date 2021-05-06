@@ -113,7 +113,7 @@ const Body = styled.div`
     margin-top: 40px;
     height: 750px;
   }
-  
+
   .isOpen7 {
     height: 250px;
     padding: 0;
@@ -139,11 +139,11 @@ const Body = styled.div`
     .isOpen5 {
       height: 1000px;
     }
-    
+
     .isOpen6 {
       height: 750px;
     }
-    
+
     .isOpen7 {
       height: 390px;
     }
@@ -165,16 +165,16 @@ const Body = styled.div`
     .isOpen4 {
       height: 370px;
     }
-    
+
     .isOpen5 {
       height: calc(1300px - 50vw);
     }
-    
+
     .isOpen6 {
       height: 800px;
     }
   }
-  
+
   @media screen and (max-width: 500px) {
     .isOpen1 {
       height: 1160px;
@@ -193,17 +193,17 @@ const Body = styled.div`
       height: 710px;
       text-align: left !important;
     }
-    
+
     .isOpen5 {
       height: calc(2750px - 350vw);
       text-align: left !important;
     }
-    
+
     .isOpen7 {
       height: 610px;
     }
   }
-  
+
   @media screen and (max-width: 375px) {
     .isOpen5 {
       height: calc(2750px - 390vw);
@@ -241,11 +241,10 @@ const Body = styled.div`
       text-align: center;
       letter-spacing: 0.02em;
       color: #141717;
-      
+
       &--second {
         margin-left: 50px;
       }
-      
     }
 
     &__line {
@@ -258,11 +257,11 @@ const Body = styled.div`
     @media screen and (max-width: 600px) {
       display: block;
       height: auto;
-      
+
       &__btn {
         margin: 0 auto 16px auto !important;
       }
-      
+
       &__line {
         display: none;
       }
