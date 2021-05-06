@@ -1,4 +1,9 @@
-inject_vars:
+# almost production environemnt with staging env vars
+emirex_charts:
+  app:
+    - emiswap-ui
+
+chart_vars:
   emiswap-ui:
     fullnameOverride: emiswap-ui
     image:
@@ -13,8 +18,8 @@ inject_vars:
         REACT_APP_NETWORK_URL: 'https://kovan.infura.io/v3/2b7c5bba80094418abf5e746ba10dac0',
         REACT_APP_PORTIS_ID: '9db2fb8f-577f-4af1-8a50-20ebb262b115',
         REACT_APP_FORTMATIC_KEY: 'pk_test_503A6AA72877C8DE',
-        REACT_APP_GOOGLE_ANALYTICS_ID: '251318938',
-        REACT_APP_EMISWAP_VAULT_ADDRESS: '0xe5f877477c7e8fff8e7c3162ec07f53c458fe472',
+        REACT_APP_GOOGLE_ANALYTICS_ID: 'UA-146884842-7',
+        REACT_APP_EMISWAP_VAULT_ADDRESS: '0x65F4A1af012afEB0Be2D22EDD805dCf558ac9C31',
         REACT_APP_EMISWAP_FACTORY_ADDRESS: '0xb9Cba89F4caFa60f9040D6d495a56344F37EBA23',
         REACT_APP_UNISWAP_V2_FACTORY_ADDRESS: '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f',
         REACT_APP_UNISWAP_V2_HELPER_ADDRESS: '0xd9145CCE52D386f254917e481eB44e9943F39138',
@@ -24,7 +29,7 @@ inject_vars:
         REACT_APP_ESW_ID: '0xb2C5E8b761c03AfaDcF848020F1A9e7c4E58dB04',
         REACT_APP_ANALYTICS_URL: 'https://moon.firstbridge.online/',
         REACT_APP_CODE_LINK: 'https://github.com/EMISWAP-COM',
-        REACT_APP_PUBLIC_URL: 'https://emiswap.emirex.co',
+        REACT_APP_PUBLIC_URL: 'https://emiswap-ui-feature-es-722-referral-link.testingtruedao.com',
         REACT_APP_MIN_GAS_FOR_SWAP: '320000',
         REACT_APP_MIN_GAS_FOR_POOL: '320000',
         REACT_APP_MIN_GAS_FOR_INVEST: '90000',
@@ -33,36 +38,7 @@ inject_vars:
         REACT_APP_EMI_ROUTER_RINKEBY: '0xe5c8e363de97840d5996e1e8db8b5facda0f1e21',
         REACT_APP_EMI_ROUTER_GÖRLI: '0xe5c8e363de97840d5996e1e8db8b5facda0f1e21',
         REACT_APP_EMI_ROUTER_KOVAN: '0x3c756Eed6DC66F7013923AC50aB236111a9494bD',
-        REACT_APP_EMI_VAMP: '0x09aff00ed78b18dcd5cbd444a563e9329f459c7a',
-        REACT_APP_ESW_CLAIM_API: 'https://us-central1-emirex-preprod.cloudfunctions.net/sign_trans',
-        REACT_APP_ESW_CLAIM_CHAIN_ID: 'ETH_KV'
+        REACT_APP_EMI_VAMP: '0x493984f5e0381f93a171306a385e7a00ce6c737e',
+        REACT_APP_ESW_CLAIM_API: "https://us-central1-emirex-preprod.cloudfunctions.net/sign_trans",
+        REACT_APP_ESW_CLAIM_CHAIN_ID: "ETH_KV"
       };
-
-  postgresql:
-    image:
-      tag: 13.1.0
-    global:
-      storageClass: csi-krbd-sc
-
-  emiswap-oracle:
-    fullnameOverride: emiswap-oracle
-    image:
-      repository: registry.gitlab.com/emidao/emiswap/oracle/emiswap-oracle-release-1-3-0
-      tag: latest
-      pullPolicy: Always
-    imagePullSecrets:
-      - name: gitlab-foreign-project-registry
-
-  emiswap-nft:
-    image:
-      repository: registry.gitlab.com/emidao/emiswap/eminft/eminft-development
-      tag: latest
-      pullPolicy: Always
-    imagePullSecrets:
-      - name: gitlab-foreign-project-registry
-    basePath: /magic_cards
-    ingress:
-      hosts:
-        - host: '{{ env_fqdn }}'
-          paths:
-            - /magic_cards
