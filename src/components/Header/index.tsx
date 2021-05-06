@@ -179,7 +179,13 @@ const AccountElement = styled.div<{ active: boolean }>`
   color: ${({ theme }) => theme.grey3};
   border-radius: 12px;
   white-space: nowrap;
-  width: 100%;
+  // width: 100%;
+  
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    max-width: 440px;
+    margin: auto;
+  }
 
   :focus {
     border: 1px solid blue;
