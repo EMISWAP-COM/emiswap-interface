@@ -136,26 +136,31 @@ export default function MigrateV1() {
     };
   }, [selected, tokens, formatedTokenList]);
 
+  const isShowLoader = (
+    !formatedTokenList.length
+    && lpTokensDetailedInfo.length
+    && balances.every(balance => balance === undefined)
+  ) || isLoading;
+
+  const isTokensNotFound = balances.every(balance => {
+    return +amountToString(balance, 10) === 0;
+  });
+
   return (
     <>
       <AppBody>
-        <SwapPoolTabs active={TabNames.MIGRATE} />
+        <SwapPoolTabs active={TabNames.MIGRATE}/>
         {account && <StyledSubTitle>You have</StyledSubTitle>}
         <AutoColumn gap="lg" justify="center">
           {!account ? (
             <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
-          ) : (!formatedTokenList.length &&
-              lpTokensDetailedInfo.length &&
-              balances.every(balance => balance === undefined)) ||
-            isLoading ? (
+          ) : isShowLoader ? (
             <>
               <WrapperLoader>
-                <Loader size="100px" />
+                <Loader size="100px"/>
               </WrapperLoader>
             </>
-          ) : balances.every(balance => {
-              return +amountToString(balance, 10) === 0;
-            }) ? (
+          ) : isTokensNotFound ? (
             <TYPE.body>No LP tokens found</TYPE.body>
           ) : (
             <>
@@ -180,7 +185,7 @@ export default function MigrateV1() {
             </>
           )}
 
-          <StyledHr />
+          <StyledHr/>
           <Text textAlign="center" fontSize={14} style={{ padding: '.5rem 0 .5rem 0' }}>
             {'Discover EmiSwap Crowdsale'}{' '}
             <ExternalLink

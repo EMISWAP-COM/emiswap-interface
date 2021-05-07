@@ -25,7 +25,7 @@ export function useLpTokens(): {
     const fetchInfo = async () => {
       try {
         setIsLoading(true);
-        const length = await contract?.lpTokensInfoLength();
+        const length = await contract?.lpTokensInfoLength;
         let promiseArr = [];
         for (let i = 0; i < length; i++) {
           promiseArr.push(contract?.lpTokensInfo(i));
@@ -38,7 +38,10 @@ export function useLpTokens(): {
           listPair.map((el, idx) => ({ addresses: el, base: lpTokensInfo[idx].lpToken })),
         );
         setIsLoading(false);
+        console.log(balances);
       } catch (e) {
+        console.log(contract);
+        console.log(e);
         throw new Error('Failed to migrate ');
       }
     };
