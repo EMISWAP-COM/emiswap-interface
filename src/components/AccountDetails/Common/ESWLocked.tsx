@@ -81,7 +81,7 @@ export const ESWLocked = () => {
           <img alt="timer" src={timer} />
           <LockedItemWrapper>
             <span>Next unlock date</span>
-            <DarkText>{convertDate(nextUnlock?.created_at, DateFormat.full)}</DarkText>
+            <DarkText>{convertDate(nextUnlock?.available_at, DateFormat.full)}</DarkText>
           </LockedItemWrapper>
         </LockedItem>
       </LockedWrapper>

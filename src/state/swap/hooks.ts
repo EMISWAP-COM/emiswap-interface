@@ -1,6 +1,6 @@
 import useToggledVersion, { Version } from '../../hooks/useToggledVersion';
 import { parseUnits } from '@ethersproject/units';
-import { Token, TokenAmount, JSBI, Trade, ZERO_ADDRESS } from '@uniswap/sdk';
+import { ChainId, JSBI, Token, TokenAmount, Trade, ZERO_ADDRESS } from '@uniswap/sdk';
 import { ParsedQs } from 'qs';
 import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,7 +24,7 @@ import { SwapState } from './reducer';
 import { useUserSlippageTolerance } from '../user/hooks';
 import { computeSlippageAdjustedAmounts } from '../../utils/prices';
 import { BigNumber } from '@ethersproject/bignumber';
-import { KOVAN_WETH } from '../../constants';
+import { KOVAN_WETH, WETH } from '../../constants';
 
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>(state => state.swap);
@@ -109,7 +109,7 @@ export function useDerivedSwapInfo(): {
   v1Trade: Trade | undefined;
   mooniswapTrade: [Trade, BigNumber[]] | [undefined, undefined] | undefined;
 } {
-  const { account } = useActiveWeb3React();
+  const { account, chainId } = useActiveWeb3React();
 
   const toggledVersion = useToggledVersion();
 
@@ -128,12 +128,15 @@ export function useDerivedSwapInfo(): {
   const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
     inputCurrency ?? undefined,
     outputCurrency ?? undefined,
-    eth ?? undefined
+    eth ?? undefined,
   ]);
 
   const isExactIn: boolean = independentField === Field.INPUT;
-  const newInputCurrency = inputCurrency?.isEther ? KOVAN_WETH : inputCurrency;
-  const newOutputCurrency = outputCurrency?.isEther ? KOVAN_WETH : outputCurrency;
+
+  const wethAddress = chainId === ChainId.MAINNET ? WETH : KOVAN_WETH;
+
+  const newInputCurrency = inputCurrency?.isEther ? wethAddress : inputCurrency;
+  const newOutputCurrency = outputCurrency?.isEther ? wethAddress : outputCurrency;
   const parsedAmount = tryParseAmount(
     typedValue,
     (isExactIn ? newInputCurrency : outputCurrency) ?? undefined,

@@ -1,5 +1,5 @@
 import React, { useEffect, Suspense } from 'react';
-import { HashRouter, Route, Switch } from 'react-router-dom';
+import { HashRouter, Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 import Wordmark from '../components/Wordmark';
 import Logo from '../components/Logo';
 import styled from 'styled-components';
@@ -20,7 +20,7 @@ import PoolFinder from './PoolFinder';
 import RemoveLiquidity from './RemoveLiquidity';
 import { RedirectOldRemoveLiquidityPathStructure } from './RemoveLiquidity/redirects';
 import Swap from './Swap';
-import Invest, { RedirectPathToInvestOnly } from './Invest';
+import Invest from './Invest';
 import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects';
 import ReferralUrlParser from '../referral-url-parser';
 // import MigrateV1 from './MigrateV1';
@@ -64,6 +64,10 @@ const BodyWrapper = styled.div`
 
   z-index: 1;
 `;
+
+export function RedirectPathToSwap({ location }: RouteComponentProps) {
+  return <Redirect to={{ ...location, pathname: '/swap' }} />;
+}
 
 export default function App() {
   useEffect(() => {
@@ -128,7 +132,7 @@ export default function App() {
                     <Route exact strict path="/migrate" component={MigrateV1} />
                     <Route exact strict path="/migrate/:address" component={MigrateV1Exchange} />
                     <Route exact strict path="/claim/:tokenName" component={Claim} />
-                    <Route component={RedirectPathToInvestOnly} />
+                    <Route component={RedirectPathToSwap} />
                   </Switch>
                 </ErrorBoundary>
               </Web3ReactManager>

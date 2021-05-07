@@ -67,7 +67,7 @@ export function useESWBalances(
   return useMemo(
     () =>
       addresses.reduce<{ [address: string]: TokenAmount }>((memo, address, i) => {
-        const value = BigInt(0);
+        const value = JSBI.BigInt(0);
         if (value) memo[address] = new TokenAmount(ETHER, JSBI.BigInt(value.toString()));
         return memo;
       }, {}),

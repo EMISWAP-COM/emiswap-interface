@@ -1,5 +1,9 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { loadBalance, loadPerformance } from './actions';
+import {
+  loadBalance,
+  loadBonus,
+  loadPerformance,
+} from './actions';
 
 interface Unlock {
   amount: string;
@@ -21,14 +25,22 @@ type PaymentOperationTokens = {
 };
 
 interface Balance {
+  histories: {
+    deposits: Deposit[];
+    referral_bonus: Deposit[];
+  };
   wallet: PaymentOperationTokens;
   total: {
     grouped: {
       pool_bonus?: PaymentOperationTokens;
+      pool_bonus_10x?: PaymentOperationTokens;
       pool_swap_bonus?: PaymentOperationTokens;
       compensation?: PaymentOperationTokens;
       referral_bonus?: PaymentOperationTokens;
       pool_referral_bonus?: PaymentOperationTokens;
+      pool_block_bonus?: PaymentOperationTokens;
+      swap_bonus?: PaymentOperationTokens;
+      swap_bonus_10x?: PaymentOperationTokens;
     };
     locked: PaymentOperationTokens;
     unlocked: PaymentOperationTokens;
@@ -36,6 +48,13 @@ interface Balance {
   details: {
     locked: LockedDeposit;
     deposit: Deposit[];
+    compensation: Deposit[];
+    pool_bonus: Deposit[];
+    pool_bonus_10x: Deposit[];
+    pool_swap_bonus: Deposit[];
+    pool_referral_bonus: Deposit[];
+    swap_bonus: Deposit[];
+    swap_bonus_10x: Deposit[];
   };
   total_fee_compensation: string;
   available: PaymentOperationTokens;
@@ -43,9 +62,15 @@ interface Balance {
   change_level_info: ChangeLevel | null;
 }
 
+interface BonusDetails {
+  pool_block_bonuses: PoolBonus[],
+  pool_bonuses: PoolBonus[],
+}
+
 interface CabinetState {
   performance: ReferralPerformance;
   balance: Balance;
+  bonusDetails: BonusDetails;
   purchaseHistory: PurchaseHistory[];
   referralHistory: ReferralPurchaseHistory[];
 }
@@ -73,7 +98,18 @@ interface Deposit {
   transaction_hash: string;
   token: TokenKey;
   created_at: string;
+  available_at: string;
   amount: string;
+  amount_dai: string | null;
+}
+
+interface PoolBonus {
+  date: string,
+  name: string;
+  esw_reward: string;
+  esw_price: string;
+  pool_part: string;
+  swap_turnover: string;
 }
 
 type LockedDeposit = {
@@ -127,12 +163,21 @@ const initialState: CabinetState = {
     reward: {} as Reward,
   } as ReferralPerformance,
   balance: {
+    histories: {
+      deposits: [],
+      referral_bonus: [],
+    },
     wallet: {},
     total: {
       grouped: {
         pool_bonus: {},
+        pool_bonus_10x: {},
+        pool_swap_bonus: {},
         compensation: {},
         referral_bonus: {},
+        pool_block_bonus: {},
+        swap_bonus: {},
+        swap_bonus_10x: {},
       },
       locked: {},
       unlocked: {},
@@ -140,11 +185,22 @@ const initialState: CabinetState = {
     details: {
       locked: {} as LockedDeposit,
       deposit: [] as Deposit[],
+      compensation: [],
+      pool_bonus: [],
+      pool_bonus_10x: [],
+      pool_swap_bonus: [],
+      pool_referral_bonus: [],
+      swap_bonus: [],
+      swap_bonus_10x: [],
     },
     total_fee_compensation: '',
     available: {},
     nearest_unlock: null,
     change_level_info: null,
+  },
+  bonusDetails: {
+    pool_block_bonuses: [],
+    pool_bonuses: [],
   },
   purchaseHistory: [] as PurchaseHistory[],
   referralHistory: [] as ReferralPurchaseHistory[],
@@ -162,8 +218,11 @@ export default createReducer(
       // })
       .addCase(loadBalance.fulfilled, (state, action) => {
         state.balance = action.payload;
-      }),
-  // .addCase(loadReferralPurchaseHistory.fulfilled, (state, action) => {
-  //   state.referralHistory = action.payload;
-  // }),
+      })
+      .addCase(loadBonus.fulfilled, (state, action) => {
+        state.bonusDetails = action.payload;
+      })
+      // .addCase(loadReferralPurchaseHistory.fulfilled, (state, action) => {
+      //   state.referralHistory = action.payload;
+      // }),
 );

@@ -6,6 +6,7 @@ import { ButtonSecondary } from '../Button';
 
 export const Header = styled.div`
   margin-top: 36px;
+  margin-bottom: 12px;
   color: ${({ theme }) => theme.text1};
 
   @media screen and (max-width: 1200px) {
@@ -20,7 +21,7 @@ export const Level = styled.div`
   color: #ffffff;
   font-size: 0.7rem;
   padding: 1px 3px 1px 2px;
-  margin-left: 6px;
+  margin-right: 6px;
 `;
 
 export const MenuItem = styled(RowBetween)`

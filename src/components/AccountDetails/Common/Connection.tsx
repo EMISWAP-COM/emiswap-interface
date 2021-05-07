@@ -139,8 +139,9 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
   const sumESW = () => {
     const walletESW = balance?.wallet.ESW || 0;
     const availableESW = balance?.available.ESW || 0;
+    const lockedESW = balance?.total.locked.ESW || 0;
 
-    const sum = Number(walletESW) + Number(availableESW);
+    const sum = Number(walletESW) + Number(availableESW) + Number(lockedESW);
 
     return convertBigDecimal(sum.toString());
   };
@@ -152,6 +153,8 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
     toggle();
     history.push('/claim/ESW');
   };
+
+  const isCollectDisabled = !Number(balance?.available.ESW);
 
   return (
     <>
@@ -201,7 +204,9 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
           </BalanceWrapper>
           <Options>
             {children}
-            <CollectBtn onClick={handleClaim}>Collect to my wallet</CollectBtn>
+            <CollectBtn disabled={isCollectDisabled} onClick={handleClaim}>
+              Collect to my wallet
+            </CollectBtn>
           </Options>
         </Main>
         <AccountControl>

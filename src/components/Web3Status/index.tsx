@@ -34,13 +34,17 @@ const IconWrapper = styled.div<{ size?: number }>`
 
 const Web3StatusGeneric = styled(ButtonSecondary)`
   ${({ theme }) => theme.flexRowNoWrap}
-  width: 100%;
+  width: 270px;
   align-items: center;
   padding: 0.35rem 0.5rem;
   border-radius: 4px;
   cursor: pointer;
   user-select: none;
   height: 40px;
+  
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
 
   :focus {
     outline: none;
