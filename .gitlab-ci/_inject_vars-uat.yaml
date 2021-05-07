@@ -1,7 +1,7 @@
 # almost production environemnt with staging env vars
 emirex_charts:
   app:
-  - emiswap-ui
+    - emiswap-ui
 
 chart_vars:
   emiswap-ui:
@@ -11,7 +11,7 @@ chart_vars:
       tag: "{{ lookup('env', '_img_tag') }}"
       pullPolicy: IfNotPresent
     imagePullSecrets:
-    - name: "{{ lookup('env', 'CI_PROJECT_PATH_SLUG') }}"
+      - name: "{{ lookup('env', 'CI_PROJECT_PATH_SLUG') }}"
     env_js: |
       window.env = {
         REACT_APP_CHAIN_ID: '42',
@@ -39,6 +39,6 @@ chart_vars:
         REACT_APP_EMI_ROUTER_GÖRLI: '0xe5c8e363de97840d5996e1e8db8b5facda0f1e21',
         REACT_APP_EMI_ROUTER_KOVAN: '0x3c756Eed6DC66F7013923AC50aB236111a9494bD',
         REACT_APP_EMI_VAMP: '0x493984f5e0381f93a171306a385e7a00ce6c737e',
-        REACT_APP_ESW_CLAIM_API: "https://us-central1-emirex-preprod.cloudfunctions.net/sign_trans",
+        REACT_APP_ESW_CLAIM_API: "https://sign.testingtruedao.com",
         REACT_APP_ESW_CLAIM_CHAIN_ID: "ETH_KV"
       };
