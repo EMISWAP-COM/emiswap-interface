@@ -64,6 +64,7 @@ import {
 import { useMockEstimate } from '../../hooks/useMockEstimate';
 import { ErrorText } from '../../components/swap/styleds';
 import InvestContactForm from '../../components/InvestContactForm';
+import ReferralLink from '../../components/RefferalLink';
 
 const EmiCard = styled.div`
   position: absolute;
@@ -1020,11 +1021,10 @@ const Invest = () => {
     return (
       <>
         {!investGranted ? (
-          <ButtonError
-            id="invest-button"
-            disabled={true}
-          >
-            <Text fontSize={16} fontWeight={450}>Invest</Text>
+          <ButtonError id="invest-button" disabled={true}>
+            <Text fontSize={16} fontWeight={450}>
+              Invest
+            </Text>
           </ButtonError>
         ) : (
           <>
@@ -1197,7 +1197,8 @@ const Invest = () => {
           ) : (
             <div>
               <OnlyInvestorsText>
-                Sorry, only investors registered in the Waiting list and confirmed can invest in the Private Stage
+                Sorry, only investors registered in the Waiting list and confirmed can invest in the
+                Private Stage
               </OnlyInvestorsText>
               <ButtonPrimary onClick={() => setIsRegisterWaitListModalOpen(true)}>
                 Register to the Waiting list
@@ -1209,7 +1210,7 @@ const Invest = () => {
               />
             </div>
           )}
-
+          {account ? <ReferralLink /> : 'Please connect to get a referral link.'}
         </Wrapper>
         {role === UserRoles.distributor &&
           generateEmiCardBlock(Number(formattedAmounts[Field.OUTPUT]))}
