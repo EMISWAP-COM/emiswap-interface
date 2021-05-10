@@ -353,7 +353,7 @@ export default function WalletModal({
           label: 'success',
         });
 
-        ReactPixel.track('track', 'wallet_connect_success')
+        ReactPixel.track('wallet_connect_success')
       })
       .catch(error => {
         if (error instanceof UnsupportedChainIdError) {
