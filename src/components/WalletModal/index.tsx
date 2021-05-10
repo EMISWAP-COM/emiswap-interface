@@ -25,6 +25,9 @@ import { AppState } from '../../state';
 import { Ambassador } from '../AccountDetails/Ambassador';
 import { Owner } from '../AccountDetails/Owner';
 import WarningBlock from '../Warning/WarningBlock';
+import ReactPixel from 'react-facebook-pixel'
+
+
 
 const CloseIcon = styled.div`
   display: none;
@@ -337,6 +340,7 @@ export default function WalletModal({
         if (confirmGAEvent) {
           confirmGAEvent();
         }
+
         ReactGA.event({
           category: 'wallet',
           action: 'confirm',
@@ -348,6 +352,8 @@ export default function WalletModal({
           action: 'connect_success',
           label: 'success',
         });
+
+        ReactPixel.track('track', 'wallet_connect_success')
       })
       .catch(error => {
         if (error instanceof UnsupportedChainIdError) {
