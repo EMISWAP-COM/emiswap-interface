@@ -22,7 +22,7 @@ import { ErrorBoundary } from './components/ErrorBoundary/ErrorBoundary';
 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName);
 
-if ('ethereum' in window) {
+if (window.ethereum && (window.ethereum as any).hasOwnProperty('autoRefreshOnNetworkChange')) {
   (window.ethereum as any).autoRefreshOnNetworkChange = false;
 }
 
