@@ -1,43 +1,44 @@
-import { JSBI, TokenAmount } from '@uniswap/sdk';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
-import ReactGA from 'react-ga';
-import { Text } from 'rebass';
-import { ThemeContext } from 'styled-components';
-import { useSelector } from 'react-redux';
-import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button';
-import Card from '../../components/Card';
-import { AutoColumn } from '../../components/Column';
-import ConfirmationModal from '../../components/ConfirmationModal';
-import CurrencyInputPanel from '../../components/CurrencyInputPanel';
-import { RowBetween } from '../../components/Row';
-import { BottomGrouping, Dots, Wrapper } from '../../components/invest/styleds';
-import InvestModalFooter from '../../components/invest/InvestModalFooter';
-import InvestModalHeader from '../../components/invest/InvestModalHeader';
-import TradePrice from '../../components/invest/TradePrice';
-import { TokenWarningCards } from '../../components/TokenWarningCard';
-import { useActiveWeb3React } from '../../hooks';
-import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback';
-import { useInvest } from '../../hooks/useInvestCallback';
-import { useWalletModalToggle } from '../../state/application/hooks';
-import { Field } from '../../state/invest/actions';
+import { JSBI, TokenAmount } from '@uniswap/sdk'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
+import ReactGA from 'react-ga'
+import { Text } from 'rebass'
+import { ThemeContext } from 'styled-components'
+import { useSelector } from 'react-redux'
+import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button'
+import Card from '../../components/Card'
+import { AutoColumn } from '../../components/Column'
+import ConfirmationModal from '../../components/ConfirmationModal'
+import CurrencyInputPanel from '../../components/CurrencyInputPanel'
+import { RowBetween } from '../../components/Row'
+import { BottomGrouping, Dots, Wrapper } from '../../components/invest/styleds'
+import InvestModalFooter from '../../components/invest/InvestModalFooter'
+import InvestModalHeader from '../../components/invest/InvestModalHeader'
+import TradePrice from '../../components/invest/TradePrice'
+import { TokenWarningCards } from '../../components/TokenWarningCard'
+import { useActiveWeb3React } from '../../hooks'
+import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
+import { useInvest } from '../../hooks/useInvestCallback'
+import { useWalletModalToggle } from '../../state/application/hooks'
+import { Field } from '../../state/invest/actions'
 import {
   useDefaultsFromURLSearch,
   useDerivedInvestInfo,
   useInvestActionHandlers,
-  useInvestState,
-} from '../../state/invest/hooks';
-import { useExpertModeManager, useTokenWarningDismissal } from '../../state/user/hooks';
-import { maxAmountSpendInvest } from '../../utils/maxAmountSpend';
-import AppBody from '../AppBody';
-import { SwapPoolTabs, TabNames } from '../../components/NavigationTabs';
-import { EMISWAP_CROWDSALE_ADDRESS } from '../../constants/abis/crowdsale';
-import { tokenAmountToString } from '../../utils/formats';
-import { AppState } from '../../state';
-import { UserRoles } from '../../components/WalletModal';
-import { useMockEstimate } from '../../hooks/useMockEstimate';
-import { ErrorText } from '../../components/swap/styleds';
-import { EmiCardsBlock } from './EmiCardsBlock';
-import { InvestBottomInfo } from './InvestBottomInfo';
+  useInvestState
+} from '../../state/invest/hooks'
+import { useExpertModeManager, useTokenWarningDismissal } from '../../state/user/hooks'
+import { maxAmountSpendInvest } from '../../utils/maxAmountSpend'
+import AppBody from '../AppBody'
+import { SwapPoolTabs, TabNames } from '../../components/NavigationTabs'
+import { EMISWAP_CROWDSALE_ADDRESS } from '../../constants/abis/crowdsale'
+import { tokenAmountToString } from '../../utils/formats'
+import { AppState } from '../../state'
+import { UserRoles } from '../../components/WalletModal'
+import { useMockEstimate } from '../../hooks/useMockEstimate'
+import { ErrorText } from '../../components/swap/styleds'
+import { EmiCardsBlock } from './EmiCardsBlock'
+import { InvestRules } from './InvestRules'
+import { InvestRequestStatus } from '../../state/user/reducer'
 
 const Invest = () => {
   useDefaultsFromURLSearch();
@@ -66,14 +67,14 @@ const Invest = () => {
   } = useDerivedInvestInfo();
 
   const role: UserRoles | null = useSelector((state: AppState) => state.user.info?.role);
-  // TODO: Потом на беке добавят логику для этого параметра, пока что хардкод
-  const investGranted = false;
+  const investRequestStatus = useSelector((state: AppState) => state.user.info?.invest_request_state);
+
+  const investGranted = investRequestStatus === InvestRequestStatus.ACCEPTED;
 
   const parsedAmounts = {
     [Field.INPUT]: parsedAmount,
     [Field.OUTPUT]: parsedOutputAmount,
   };
-  const isValid = !error;
 
   const handleTypeInput = useCallback(
     (value: string) => {
@@ -131,6 +132,8 @@ const Invest = () => {
   const maxAmountInput: TokenAmount | undefined = maxAmountSpendInvest(
     currencyBalances[Field.INPUT],
   );
+
+
   const atMaxAmountInput = Boolean(
     maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput),
   );
@@ -178,19 +181,13 @@ const Invest = () => {
       approval === ApprovalState.PENDING ||
       (approvalSubmitted && approval === ApprovalState.APPROVED));
 
-  const notEnoughBalance = maxAmountInput &&
-    parsedAmount && JSBI.lessThan(maxAmountInput.raw, parsedAmount.raw);
 
-  const getErrorText = (error: string | undefined, notEnoughBalance: boolean | undefined, currencies: any) => {
-    if (Object.values(currencies).includes(undefined)) {
-      return 'Please choose a token';
-    }
+  const getErrorText = (error: string | undefined, currencies: any) => {
+
     if (Number(typedValue) > 0 && Number(outputAmount) === 0) {
       return 'Sorry, you are reaching the limits of our private. Please try to buy less ESW';
     }
-    if (notEnoughBalance) {
-      return `Not enough balance`;
-    }
+
     return error;
   };
 
@@ -221,68 +218,59 @@ const Invest = () => {
   const generateInvestButtonGroup = () => {
     return (
       <>
-        {!investGranted ? (
-          <ButtonError
-            id="invest-button"
-            disabled={true}
-          >
-            <Text fontSize={16} fontWeight={450}>Invest</Text>
-          </ButtonError>
+        {showApproveFlow ? (
+          <RowBetween>
+            <ButtonPrimary
+              onClick={approveCallback}
+              disabled={approval !== ApprovalState.NOT_APPROVED || approvalSubmitted}
+              width="48%"
+              altDisbaledStyle={approval === ApprovalState.PENDING} // show solid button while waiting
+            >
+              {approval === ApprovalState.PENDING ? (
+                <Dots>Approving</Dots>
+              ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
+                'Approved'
+              ) : (
+                'Approve ' + currencies[Field.INPUT]?.symbol
+              )}
+            </ButtonPrimary>
+            <ButtonError
+              onClick={() => {
+                expertMode ? onInvest() : setShowConfirm(true);
+              }}
+              width="48%"
+              id="invest-button"
+              disabled={!!error || approval !== ApprovalState.APPROVED }
+              error={!!error}
+            >
+              <Text fontSize={16} fontWeight={450}>
+                {error
+                  ? getErrorText(error, currencies)
+                  : `Invest`}
+              </Text>
+            </ButtonError>
+          </RowBetween>
         ) : (
-          <>
-            {showApproveFlow ? (
-              <RowBetween>
-                <ButtonPrimary
-                  onClick={approveCallback}
-                  disabled={approval !== ApprovalState.NOT_APPROVED || approvalSubmitted}
-                  width="48%"
-                  altDisbaledStyle={approval === ApprovalState.PENDING} // show solid button while waiting
-                >
-                  {approval === ApprovalState.PENDING ? (
-                    <Dots>Approving</Dots>
-                  ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
-                    'Approved'
-                  ) : (
-                    'Approve ' + currencies[Field.INPUT]?.symbol
-                  )}
-                </ButtonPrimary>
-                <ButtonError
-                  onClick={() => {
-                    expertMode ? onInvest() : setShowConfirm(true);
-                  }}
-                  width="48%"
-                  id="invest-button"
-                  disabled={!isValid || approval !== ApprovalState.APPROVED || notEnoughBalance}
-                  error={!isValid || notEnoughBalance}
-                >
-                  <Text fontSize={16} fontWeight={450}>
-                    {notEnoughBalance ? `Not enough balance` : `Invest`}
-                  </Text>
-                </ButtonError>
-              </RowBetween>
-            ) : (
-              <ButtonError
-                onClick={() => {
-                  expertMode ? onInvest() : setShowConfirm(true);
-                }}
-                id="invest-button"
-                disabled={!isValid || notEnoughBalance}
-                error={!!error}
-              >
-                <Text fontSize={16} fontWeight={450}>
-                  {error || notEnoughBalance
-                    ? getErrorText(error, notEnoughBalance, currencies)
-                    : `Invest`}
-                </Text>
-              </ButtonError>
-            )}
-            {!isEnough && (
-              <ErrorText style={{ marginTop: 4 }} fontWeight={500} fontSize="11pt" severity={3}>
-                Probably insufficient ETH balance
-              </ErrorText>
-            )}
-          </>
+          <ButtonError
+            onClick={() => {
+              expertMode ? onInvest() : setShowConfirm(true);
+            }}
+            id="invest-button"
+            disabled={!!error}
+            error={!!error}
+          >
+            <Text fontSize={16} fontWeight={450}>
+              {error
+                ? getErrorText(error, currencies)
+                : `Invest`}
+            </Text>
+          </ButtonError>
         )}
+        {/*{!isEnough && (*/}
+        {/*  <ErrorText style={{ marginTop: 4 }} fontWeight={500} fontSize="11pt" severity={3}>*/}
+        {/*    Probably insufficient ETH balance*/}
+        {/*  </ErrorText>*/}
+        {/*)}*/}
       </>
     );
   };
@@ -383,7 +371,7 @@ const Invest = () => {
             </BottomGrouping>
           </AutoColumn>
 
-          <InvestBottomInfo/>
+          <InvestRules/>
 
         </Wrapper>
         {role === UserRoles.distributor &&

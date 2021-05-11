@@ -16,7 +16,7 @@ window['env'] = {
   REACT_APP_ANALYTICS_URL: 'https://moon.firstbridge.online/',
   REACT_APP_CODE_LINK: 'https://github.com/EMISWAP-COM',
   // REACT_APP_PUBLIC_URL: 'https://emiswap-oracle-release-1-3-0.emirex.co/',
-  REACT_APP_PUBLIC_URL: 'https://emiswap.emirex.co',
+  REACT_APP_PUBLIC_URL: 'https://emiswap.testingtruedao.com',
   REACT_APP_MIN_GAS_FOR_SWAP: '320000',
   REACT_APP_MIN_GAS_FOR_POOL: '320000',
   REACT_APP_MIN_GAS_FOR_INVEST: '90000',

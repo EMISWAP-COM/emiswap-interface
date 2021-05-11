@@ -24,6 +24,7 @@ import { InvestState } from './reducer';
 import { TokenAddressMap, WrappedTokenInfo } from '../lists/hooks';
 import { ESW } from '../../constants';
 import { investMinESW } from '../../constants/invest';
+import { maxAmountSpendInvest } from '../../utils/maxAmountSpend'
 
 const num2str = (value: number, decimals: number): string => {
   return value.toLocaleString('en', {
@@ -148,6 +149,7 @@ export function useDerivedInvestInfo(): {
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
   } = useInvestState();
 
+
   const inputCurrency = useCurrency(inputCurrencyId);
   const outputCurrency = useCurrency(outputCurrencyId);
 
@@ -179,9 +181,14 @@ export function useDerivedInvestInfo(): {
   const isSmallInvestment =
     parsedOutputAmount && parsedOutputAmount.lessThan(JSBI.BigInt(investMinESW));
 
+
   let error: string | undefined;
   if (!account) {
     error = 'Connect Wallet';
+  }
+
+  if (Object.values(currencies).includes(undefined)) {
+    error = error ?? 'Please choose a token';
   }
 
   if (!parsedAmount) {
@@ -196,11 +203,24 @@ export function useDerivedInvestInfo(): {
     error = error ?? 'Enter a recipient';
   }
 
-  // compare input balance to max input based on version
-  const [balanceIn, amountIn] = [currencyBalances[Field.INPUT], null];
 
-  if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
-    error = 'Insufficient ' + amountIn.token.symbol + ' balance';
+  const maxAmountInput: TokenAmount | undefined = maxAmountSpendInvest(
+    currencyBalances[Field.INPUT],
+  );
+
+  const notEnoughBalance = maxAmountInput &&
+    parsedAmount && JSBI.lessThan(maxAmountInput.raw, parsedAmount.raw);
+
+
+  // compare input balance to max input based on version
+  const [balanceIn, maxIn] = [currencyBalances[Field.INPUT], maxAmountInput];
+
+
+
+console.log('// compare input balance to max input based on version', notEnoughBalance)
+  if (notEnoughBalance) {
+    error = 'Insufficient ' + maxIn.token.symbol + ' balance';
+    console.log('insufficient', error)
   }
 
   if (isSmallInvestment) {
