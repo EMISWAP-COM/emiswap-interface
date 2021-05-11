@@ -21,11 +21,13 @@ export function useLpTokens(): {
     .flat()
     .filter((el, idx, arr) => arr.findIndex(address => address === el) === idx);
   const { tokens, balances } = useMultipleTokenInfo(formattedAddresses, lpTokensInfo);
+
   useEffect(() => {
     const fetchInfo = async () => {
       try {
         setIsLoading(true);
-        const length = await contract?.lpTokensInfoLength;
+        const length = await contract?.lpTokensInfoLength();
+        console.log(length);
         let promiseArr = [];
         for (let i = 0; i < length; i++) {
           promiseArr.push(contract?.lpTokensInfo(i));
@@ -38,7 +40,7 @@ export function useLpTokens(): {
           listPair.map((el, idx) => ({ addresses: el, base: lpTokensInfo[idx].lpToken })),
         );
         setIsLoading(false);
-        console.log(balances);
+        console.log(lpTokensDetailedInfo);
       } catch (e) {
         console.log(contract);
         console.log(e);
@@ -47,6 +49,7 @@ export function useLpTokens(): {
     };
     fetchInfo();
   }, [contract, dispatch]);
+
   return useMemo(() => {
     return { lpTokensDetailedInfo, lpTokensInfo, balances, tokens, isLoading };
   }, [balances, isLoading, lpTokensInfo, lpTokensDetailedInfo, tokens]);

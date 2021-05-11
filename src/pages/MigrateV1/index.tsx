@@ -146,6 +146,8 @@ export default function MigrateV1() {
     return +amountToString(balance, 10) === 0;
   });
 
+  console.log(balances);
+
   return (
     <>
       <AppBody>
