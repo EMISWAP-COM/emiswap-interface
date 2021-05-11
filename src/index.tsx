@@ -19,6 +19,17 @@ import InvestUpdater from './state/invest/updater';
 import ThemeProvider, { FixedGlobalStyle, ThemedGlobalStyle } from './theme';
 import HttpsRedirect from './https-redirect';
 import { ErrorBoundary } from './components/ErrorBoundary/ErrorBoundary';
+import ReactPixel from 'react-facebook-pixel';
+
+const advancedMatching = { em: 'some@email.com' } as any;
+const options = {
+  autoConfig: true,
+  debug: true,
+};
+ReactPixel.init('980043795863508', advancedMatching, options);
+ReactPixel.pageView();
+
+
 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName);
 
