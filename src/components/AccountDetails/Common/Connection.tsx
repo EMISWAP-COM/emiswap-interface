@@ -12,6 +12,9 @@ import Copy from '../Copy';
 import { ExternalLink } from '../../../theme';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
+import { useWeb3React } from '@web3-react/core';
+import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
+import { walletconnect, walletlink } from '../../../connectors';
 
 const Container = styled.div`
   font-size: 13px;
@@ -42,14 +45,18 @@ const Account = styled(DarkText)`
 
 const WalletInfo = styled.div`
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
 `;
 
 const Wallet = styled.div`
-  margin-top: 5px;
   display: flex;
+  width: 100%;
+  margin-top: 5px;
+  margin-bottom: 5px;
 `;
+
 const BalanceWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -85,6 +92,49 @@ const Options = styled.div`
 const ActionBtn = styled(WalletAction)`
   height: 32px;
 `;
+
+const ChangeActionsBlock = styled.div`
+  display: flex;
+    
+  @media screen and (max-width: 800px) {
+    order: 2;
+    width: 100%;
+    margin: 8px 0 16px 0;
+  }
+`;
+
+const ChangeAddressBtn = styled(ActionBtn)`
+  height: 32px;
+  border: 1px solid #DBDEDE !important;
+  background: #FFFFFF !important;
+  
+  &:hover, &:focus, &:active {
+    background: #FFFFFF;
+    box-shadow: none;
+  }
+  
+  @media screen and (max-width: 800px) {
+    width: calc(50% - 5px);
+    margin-left: 0;
+  }
+`;
+
+const ChangeWalletBtn = styled(ActionBtn)`
+  margin-left: 8px !important;
+  background: #9A56D1 !important;
+  border: 1px solid #9A56D1 !important;
+  color: #FFFFFF;
+  
+  &:hover, &:focus, &:active {
+    background: #9A56D1 !important;
+    box-shadow: none;
+  }
+  
+  @media screen and (max-width: 800px) {
+    width: calc(50% - 5px);
+  }
+`;
+
 const CollectBtn = styled(ActionBtn)`
   min-width: 180px;
   margin-bottom: 10px;
@@ -133,6 +183,7 @@ interface Props {
 
 export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) => {
   const { chainId, account, connector } = useActiveWeb3React();
+  const { activate, deactivate, error } = useWeb3React();
 
   const balance = useSelector((state: AppState) => state.cabinets.balance);
 
@@ -156,26 +207,46 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
 
   const isCollectDisabled = !Number(balance?.available.ESW);
 
+  // TODO: Вынести функцию, когда разберемся с перезагрузкой
+  const changeAddress = async () => {
+    const provider = await connector.getProvider();
+
+    console.log(provider);
+
+    if (provider?.close) {
+      provider.close();
+    } else {
+      deactivate();
+    }
+
+    // TODO: Тут перезагружается страница, заново не показать окно подключения
+   /* activate(connector, undefined, true)
+      .then(() => {
+
+      });*/
+  };
+
   return (
     <>
       <Container>
         <Main>
-          <WalletInfo>
-            <span>
-              Connected with <DarkText>{formatConnectorName(connector)}</DarkText>
-            </span>
-            <ActionBtn
-              onClick={() => {
-                openOptions();
-              }}
-            >
-              Change
-            </ActionBtn>
-          </WalletInfo>
-          <Wallet>
-            <StatusIcon connectorName={connector} />
-            <Account>{ENSName || shortenAddress(account)}</Account>
-          </Wallet>
+            <WalletInfo>
+              <span>
+                Connected with <DarkText>{formatConnectorName(connector)}</DarkText>
+              </span>
+              <ChangeActionsBlock>
+                <ChangeAddressBtn onClick={changeAddress}>
+                  Change address
+                </ChangeAddressBtn>
+                <ChangeWalletBtn onClick={() => openOptions()}>
+                  Change wallet
+                </ChangeWalletBtn>
+              </ChangeActionsBlock>
+              <Wallet>
+                <StatusIcon connectorName={connector} />
+                <Account>{ENSName || shortenAddress(account)}</Account>
+              </Wallet>
+            </WalletInfo>
           <BalanceWrapper>
             <BalanceItem>
               <span>Total</span>
