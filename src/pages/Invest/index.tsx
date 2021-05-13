@@ -1,4 +1,4 @@
-import { JSBI, TokenAmount } from '@uniswap/sdk'
+import { TokenAmount } from '@uniswap/sdk'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import ReactGA from 'react-ga'
 import { Text } from 'rebass'
@@ -34,7 +34,7 @@ import { EMISWAP_CROWDSALE_ADDRESS } from '../../constants/abis/crowdsale'
 import { tokenAmountToString } from '../../utils/formats'
 import { AppState } from '../../state'
 import { UserRoles } from '../../components/WalletModal'
-import { useMockEstimate } from '../../hooks/useMockEstimate'
+import { useTransactionPrice } from '../../hooks/useTransactionPrice'
 import { ErrorText } from '../../components/swap/styleds'
 import { EmiCardsBlock } from './EmiCardsBlock'
 import { InvestRules } from './InvestRules'
@@ -46,7 +46,7 @@ const Invest = () => {
   const { account, chainId } = useActiveWeb3React();
   const theme = useContext(ThemeContext);
 
-  const [isEnough] = useMockEstimate('pool');
+  const [isTransactionFeeCovered] = useTransactionPrice('invest');
 
   // toggle wallet when disconnected
   const toggleWalletModal = useWalletModalToggle();
@@ -175,21 +175,11 @@ const Invest = () => {
 
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
   // never show if price impact is above threshold in non expert mode
-  const showApproveFlow =
+  const showApproveFlow = investGranted &&
     !error &&
     (approval === ApprovalState.NOT_APPROVED ||
       approval === ApprovalState.PENDING ||
       (approvalSubmitted && approval === ApprovalState.APPROVED));
-
-
-  const getErrorText = (error: string | undefined, currencies: any) => {
-
-    if (Number(typedValue) > 0 && Number(outputAmount) === 0) {
-      return 'Sorry, you are reaching the limits of our private. Please try to buy less ESW';
-    }
-
-    return error;
-  };
 
   function modalHeader() {
     return (
@@ -218,60 +208,46 @@ const Invest = () => {
   const generateInvestButtonGroup = () => {
     return (
       <>
-        {showApproveFlow ? (
           <RowBetween>
-            <ButtonPrimary
+            {showApproveFlow && (
+              <ButtonPrimary
               onClick={approveCallback}
               disabled={approval !== ApprovalState.NOT_APPROVED || approvalSubmitted}
-              width="48%"
               altDisbaledStyle={approval === ApprovalState.PENDING} // show solid button while waiting
-            >
-              {approval === ApprovalState.PENDING ? (
-                <Dots>Approving</Dots>
-              ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
-                'Approved'
-              ) : (
-                'Approve ' + currencies[Field.INPUT]?.symbol
-              )}
-            </ButtonPrimary>
+              >
+                {approval === ApprovalState.PENDING ? (
+                  <Dots>Approving</Dots>
+                ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
+                  'Approved'
+                ) : (
+                  'Approve ' + currencies[Field.INPUT]?.symbol
+                )}
+              </ButtonPrimary>
+              )
+            }
             <ButtonError
               onClick={() => {
                 expertMode ? onInvest() : setShowConfirm(true);
               }}
-              width="48%"
               id="invest-button"
               disabled={!!error || approval !== ApprovalState.APPROVED }
-              error={!!error}
+              error={investGranted && !!error}
             >
               <Text fontSize={16} fontWeight={450}>
-                {error
-                  ? getErrorText(error, currencies)
+                {investGranted && error
+                  ? error
                   : `Invest`}
               </Text>
             </ButtonError>
+
           </RowBetween>
-        ) : (
-          <ButtonError
-            onClick={() => {
-              expertMode ? onInvest() : setShowConfirm(true);
-            }}
-            id="invest-button"
-            disabled={!!error}
-            error={!!error}
-          >
-            <Text fontSize={16} fontWeight={450}>
-              {error
-                ? getErrorText(error, currencies)
-                : `Invest`}
-            </Text>
-          </ButtonError>
+        {!error && !isTransactionFeeCovered && (
+          <ErrorText style={{ marginTop: 4 }} fontWeight={500} fontSize="11pt" severity={3}>
+            Probably insufficient ETH for transaction fee
+          </ErrorText>
         )}
-        {/*{!isEnough && (*/}
-        {/*  <ErrorText style={{ marginTop: 4 }} fontWeight={500} fontSize="11pt" severity={3}>*/}
-        {/*    Probably insufficient ETH balance*/}
-        {/*  </ErrorText>*/}
-        {/*)}*/}
       </>
+
     );
   };
 

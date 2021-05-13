@@ -182,28 +182,6 @@ export function useDerivedInvestInfo(): {
     parsedOutputAmount && parsedOutputAmount.lessThan(JSBI.BigInt(investMinESW));
 
 
-  let error: string | undefined;
-  if (!account) {
-    error = 'Connect Wallet';
-  }
-
-  if (Object.values(currencies).includes(undefined)) {
-    error = error ?? 'Please choose a token';
-  }
-
-  if (!parsedAmount) {
-    error = error ?? 'Enter amount';
-  }
-
-  if (!currencies[Field.INPUT] || !currencies[Field.OUTPUT]) {
-    error = error ?? 'Select a token';
-  }
-
-  if (!to) {
-    error = error ?? 'Enter a recipient';
-  }
-
-
   const maxAmountInput: TokenAmount | undefined = maxAmountSpendInvest(
     currencyBalances[Field.INPUT],
   );
@@ -212,14 +190,32 @@ export function useDerivedInvestInfo(): {
     parsedAmount && JSBI.lessThan(maxAmountInput.raw, parsedAmount.raw);
 
 
-  // compare input balance to max input based on version
-  const [balanceIn, maxIn] = [currencyBalances[Field.INPUT], maxAmountInput];
+  let error: string | undefined;
+  if (!account) {
+    error = 'Connect Wallet';
+  }
 
+  if (Object.values(currencies).includes(undefined)) {
+    error = error ?? 'Select a token';
+  }
 
+  if (!parsedAmount) {
+    error = error ?? 'Enter amount';
+  }
 
-console.log('// compare input balance to max input based on version', notEnoughBalance)
+  if (Number(typedValue) > 0 && Number(outputAmount) === 0) {
+    error = error ?? 'Try to buy less ESW, you are reaching the limits of our private';
+  }
+  // if (!currencies[Field.INPUT] || !currencies[Field.OUTPUT]) {
+  //   error = error ?? 'Select a token';
+  // }
+
+  if (!to) {
+    error = error ?? 'Enter a recipient';
+  }
+
   if (notEnoughBalance) {
-    error = 'Insufficient ' + maxIn.token.symbol + ' balance';
+    error = 'Insufficient ' + maxAmountInput.token.symbol + ' balance';
     console.log('insufficient', error)
   }
 
