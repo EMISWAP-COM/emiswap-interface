@@ -44,8 +44,6 @@ export function useApproveCallback(
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
     if (!amountToApprove || !spender) {
-      console.log('(!amountToApprove || !spender)', ApprovalState.UNKNOWN);
-
       return ApprovalState.UNKNOWN;
     }
 
@@ -53,14 +51,11 @@ export function useApproveCallback(
       (amountToApprove.token.equals(ETHER) || swapState[Field.INPUT].currencyId === ZERO_ADDRESS) &&
       !isPool
     ) {
-      console.log('что-то сложное', ApprovalState.APPROVED);
 
       return ApprovalState.APPROVED;
     }
     // we might not have enough data to know whether or not we need to approve
     if (!currentAllowance) {
-      console.log('!currentAllowance', ApprovalState.UNKNOWN);
-
       return ApprovalState.UNKNOWN;
     }
 
