@@ -13,8 +13,6 @@ import { ExternalLink } from '../../../theme';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { useWeb3React } from '@web3-react/core';
-import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
-import { walletconnect, walletlink } from '../../../connectors';
 
 const Container = styled.div`
   font-size: 13px;
@@ -183,7 +181,10 @@ interface Props {
 
 export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) => {
   const { chainId, account, connector } = useActiveWeb3React();
-  const { activate, deactivate, error } = useWeb3React();
+  const {deactivate } = useWeb3React();
+
+  const history = useHistory();
+  const toggle = useWalletModalToggle();
 
   const balance = useSelector((state: AppState) => state.cabinets.balance);
 
@@ -197,9 +198,6 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
     return convertBigDecimal(sum.toString());
   };
 
-  const history = useHistory();
-  const toggle = useWalletModalToggle();
-
   const handleClaim = () => {
     toggle();
     history.push('/claim/ESW');
@@ -207,23 +205,16 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
 
   const isCollectDisabled = !Number(balance?.available.ESW);
 
-  // TODO: Вынести функцию, когда разберемся с перезагрузкой
   const changeAddress = async () => {
     const provider = await connector.getProvider();
 
-    console.log(provider);
-
     if (provider?.close) {
+      localStorage.setItem('showWalletModal', 'true');
       provider.close();
     } else {
       deactivate();
+      openOptions();
     }
-
-    // TODO: Тут перезагружается страница, заново не показать окно подключения
-   /* activate(connector, undefined, true)
-      .then(() => {
-
-      });*/
   };
 
   return (

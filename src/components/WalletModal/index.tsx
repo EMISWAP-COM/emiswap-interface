@@ -188,6 +188,17 @@ export default function WalletModal({
   const toggleWalletModal = useWalletModalToggle();
 
   const previousAccount = usePrevious(account);
+
+  useEffect(() => {
+    if (localStorage.getItem('showWalletModal')) {
+      setTimeout(() => {
+        setWalletView(WALLET_VIEWS.OPTIONS);
+        toggleWalletModal();
+        localStorage.removeItem('showWalletModal');
+      });
+    }
+  });
+
   // close on connection, when logged out before
   useEffect(() => {
     if (account && !previousAccount && walletModalOpen) {
