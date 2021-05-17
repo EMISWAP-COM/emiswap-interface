@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { convertBigDecimal, formatConnectorName } from '../uitls';
 import { WalletAction } from '../styleds';
 import styled from 'styled-components/macro';
@@ -13,6 +13,9 @@ import { ExternalLink } from '../../../theme';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { useWeb3React } from '@web3-react/core';
+import Modal from '../../Modal';
+import { ButtonPrimary } from '../../Button';
+import { injected } from '../../../connectors';
 
 const Container = styled.div`
   font-size: 13px;
@@ -114,6 +117,7 @@ const ChangeAddressBtn = styled(ActionBtn)`
   @media screen and (max-width: 800px) {
     width: calc(50% - 5px);
     margin-left: 0;
+    padding: 4px 2px;
   }
 `;
 
@@ -130,6 +134,7 @@ const ChangeWalletBtn = styled(ActionBtn)`
   
   @media screen and (max-width: 800px) {
     width: calc(50% - 5px);
+    margin-left: auto;
   }
 `;
 
@@ -174,6 +179,37 @@ const AddressLink = styled(ExternalLink)`
   }
 `;
 
+const ModalContent = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+  padding: 24px;
+`;
+
+const ModalButtons = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 16px;
+`;
+
+const ChangeCancelBtn = styled(ActionBtn)`
+  margin: 0 0 0 8px !important;
+  border: 1px solid #DBDEDE !important;
+  background: #FFFFFF !important;
+  
+  &:hover, &:focus, &:active {
+    background: #FFFFFF;
+    box-shadow: none;
+  }
+`;
+
+const ChangeConfirmBtn = styled(ActionBtn)`
+  margin: 0 8px 0 0 !important;
+  background-color: ${({ theme }) => theme.primary1} !important;
+`;
+
 interface Props {
   ENSName?: string;
   openOptions: () => void;
@@ -181,12 +217,17 @@ interface Props {
 
 export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) => {
   const { chainId, account, connector } = useActiveWeb3React();
-  const {deactivate } = useWeb3React();
+  const { deactivate } = useWeb3React();
 
   const history = useHistory();
   const toggle = useWalletModalToggle();
 
   const balance = useSelector((state: AppState) => state.cabinets.balance);
+
+  const [isConfirmChangeModalOpen, setConfirmChangeModalOpen] = useState(false);
+
+  const isMetamask = connector === injected;
+  const isCollectDisabled = !Number(balance?.available.ESW);
 
   const sumESW = () => {
     const walletESW = balance?.wallet.ESW || 0;
@@ -203,8 +244,6 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
     history.push('/claim/ESW');
   };
 
-  const isCollectDisabled = !Number(balance?.available.ESW);
-
   const changeAddress = async () => {
     const provider = await connector.getProvider();
 
@@ -217,27 +256,51 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
     }
   };
 
+  const confirmChangeModal = () => {
+    return (
+      <Modal
+        isOpen={isConfirmChangeModalOpen}
+        maxHeight={90}
+        maxWidth={680}
+        onDismiss={() => setConfirmChangeModalOpen(false)}
+      >
+        <ModalContent>
+          <div>To change your Wallet Address, you will be logged out</div>
+
+          <ModalButtons>
+            <ChangeConfirmBtn onClick={changeAddress}>Confirm</ChangeConfirmBtn>
+            <ChangeCancelBtn onClick={() => setConfirmChangeModalOpen(false)}>Cancel</ChangeCancelBtn>
+          </ModalButtons>
+        </ModalContent>
+
+      </Modal>
+    );
+  };
+
   return (
     <>
       <Container>
         <Main>
-            <WalletInfo>
+          <WalletInfo>
               <span>
                 Connected with <DarkText>{formatConnectorName(connector)}</DarkText>
               </span>
-              <ChangeActionsBlock>
-                <ChangeAddressBtn onClick={changeAddress}>
+            {confirmChangeModal()}
+            <ChangeActionsBlock>
+              {!isMetamask && (
+                <ChangeAddressBtn onClick={() => setConfirmChangeModalOpen(true)}>
                   Change address
                 </ChangeAddressBtn>
-                <ChangeWalletBtn onClick={() => openOptions()}>
-                  Change wallet
-                </ChangeWalletBtn>
-              </ChangeActionsBlock>
-              <Wallet>
-                <StatusIcon connectorName={connector} />
-                <Account>{ENSName || shortenAddress(account)}</Account>
-              </Wallet>
-            </WalletInfo>
+              )}
+              <ChangeWalletBtn onClick={() => openOptions()}>
+                Change wallet
+              </ChangeWalletBtn>
+            </ChangeActionsBlock>
+            <Wallet>
+              <StatusIcon connectorName={connector}/>
+              <Account>{ENSName || shortenAddress(account)}</Account>
+            </Wallet>
+          </WalletInfo>
           <BalanceWrapper>
             <BalanceItem>
               <span>Total</span>
@@ -255,13 +318,15 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
               <span>Locked at Emiswap </span>
               <div>
                 <BalanceValue>{convertBigDecimal(balance?.total.locked.ESW)}</BalanceValue>&nbsp;ESW
-              </div>{' '}
+              </div>
+              {' '}
             </BalanceItem>
             <BalanceItem>
               <span>Available to collect</span>
               <div>
                 <BalanceValue>{convertBigDecimal(balance?.available.ESW)}</BalanceValue>&nbsp;ESW
-              </div>{' '}
+              </div>
+              {' '}
             </BalanceItem>
           </BalanceWrapper>
           <Options>
@@ -276,7 +341,7 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
             <span style={{ marginLeft: '4px' }}>Copy Address</span>
           </Copy>
           <AddressLink href={getEtherscanLink(chainId, ENSName || account, 'address')}>
-            <LinkIcon size={16} />
+            <LinkIcon size={16}/>
             <span style={{ marginLeft: '4px' }}>View on Etherscan</span>
           </AddressLink>
         </AccountControl>
