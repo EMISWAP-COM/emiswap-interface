@@ -14,7 +14,6 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { useWeb3React } from '@web3-react/core';
 import Modal from '../../Modal';
-import { ButtonPrimary } from '../../Button';
 import { injected } from '../../../connectors';
 
 const Container = styled.div`
