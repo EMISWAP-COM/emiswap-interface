@@ -30,4 +30,4 @@ export const ESW_PER_USD = 0.115;
 // export const investMinESW = 227272;
 export const INVEST_MIN_USD = 25000;
 
-export const investMinESW = INVEST_MIN_USD/ESW_PER_USD;
+export const investMinESW = Math.trunc(INVEST_MIN_USD/ESW_PER_USD);
