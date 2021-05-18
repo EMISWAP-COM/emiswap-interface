@@ -38,7 +38,7 @@ import { PoolPriceBar } from './PoolPriceBar';
 import { tokenAmountToString } from '../../utils/formats';
 import { useEmiRouter } from '../../hooks/useContract';
 import { ErrorText } from '../../components/swap/styleds';
-import { useMockEstimate } from '../../hooks/useMockEstimate';
+import { useTransactionPrice } from '../../hooks/useTransactionPrice';
 import { useReferralAddress } from '../../hooks/useReferralAddress';
 
 export default function AddLiquidity({
@@ -77,7 +77,7 @@ export default function AddLiquidity({
 
   const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity);
 
-  const [isEnough] = useMockEstimate('pool');
+  const [isEnough] = useTransactionPrice('pool');
 
   const isValid = !error;
   // modal and loading

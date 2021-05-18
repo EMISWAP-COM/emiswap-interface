@@ -24,6 +24,7 @@ import { InvestState } from './reducer';
 import { TokenAddressMap, WrappedTokenInfo } from '../lists/hooks';
 import { ESW } from '../../constants';
 import { investMinESW } from '../../constants/invest';
+import { maxAmountSpendInvest } from '../../utils/maxAmountSpend'
 
 const num2str = (value: number, decimals: number): string => {
   return value.toLocaleString('en', {
@@ -148,6 +149,7 @@ export function useDerivedInvestInfo(): {
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
   } = useInvestState();
 
+
   const inputCurrency = useCurrency(inputCurrencyId);
   const outputCurrency = useCurrency(outputCurrencyId);
 
@@ -179,28 +181,42 @@ export function useDerivedInvestInfo(): {
   const isSmallInvestment =
     parsedOutputAmount && parsedOutputAmount.lessThan(JSBI.BigInt(investMinESW));
 
+
+  const maxAmountInput: TokenAmount | undefined = maxAmountSpendInvest(
+    currencyBalances[Field.INPUT],
+  );
+
+  const notEnoughBalance = maxAmountInput &&
+    parsedAmount && JSBI.lessThan(maxAmountInput.raw, parsedAmount.raw);
+
+
   let error: string | undefined;
   if (!account) {
     error = 'Connect Wallet';
+  }
+
+  if (Object.values(currencies).includes(undefined)) {
+    error = error ?? 'Select a token';
   }
 
   if (!parsedAmount) {
     error = error ?? 'Enter amount';
   }
 
-  if (!currencies[Field.INPUT] || !currencies[Field.OUTPUT]) {
-    error = error ?? 'Select a token';
+  if (Number(typedValue) > 0 && Number(outputAmount) === 0) {
+    error = error ?? 'Try to buy less ESW, you are reaching the limits of our private';
   }
+  // if (!currencies[Field.INPUT] || !currencies[Field.OUTPUT]) {
+  //   error = error ?? 'Select a token';
+  // }
 
   if (!to) {
     error = error ?? 'Enter a recipient';
   }
 
-  // compare input balance to max input based on version
-  const [balanceIn, amountIn] = [currencyBalances[Field.INPUT], null];
-
-  if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
-    error = 'Insufficient ' + amountIn.token.symbol + ' balance';
+  if (notEnoughBalance) {
+    error = 'Insufficient ' + maxAmountInput.token.symbol + ' balance';
+    console.log('insufficient', error)
   }
 
   if (isSmallInvestment) {
