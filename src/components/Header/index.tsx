@@ -109,7 +109,8 @@ const LogoElem = styled(HeaderElement)`
   ${({ theme }) => theme.mediaWidth.upToTabletop`
     background-color: white;
     width: calc(100% - 156px);
-    padding-right: 0px;
+    padding: 22px 0px 22px 16px;
+    border-radius: 0;
   `};
 `;
 
@@ -208,6 +209,7 @@ const NetworkCard = styled(YellowCard)`
 
 const UniIcon = styled.div`
   width: 175px;
+  height: 47px;
   transition: transform 0.3s ease;
   :hover {
     transform: rotate(-5deg);
