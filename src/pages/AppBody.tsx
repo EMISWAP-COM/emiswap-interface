@@ -1,6 +1,5 @@
 import React from 'react';
 import Wordmark from '../components/Wordmark';
-import Logo from '../components/Logo';
 import styled from 'styled-components';
 import PolygonSvg from '../assets/images/polygon.svg';
 import BonusProgram from '../components/BonusProgram';
@@ -110,7 +109,6 @@ export default function AppBody({
     <ThemeProvider theme={theme}>
       <HeadersPlusBodyWrapper>
         <div className="onlyDesktop">
-          <Logo />
           <Wordmark />
         </div>
         <BodyWrapper className={className} data="test" disabled={disabled}>
