@@ -57,7 +57,7 @@ import { isUseOneSplitContract } from '../../utils';
 import GasConsumption from '../../components/swap/GasConsumption';
 import { BigNumber } from '@ethersproject/bignumber';
 import { AdvancedSwapDetails } from '../../components/swap/AdvancedSwapDetails';
-import { useMockEstimate } from '../../hooks/useMockEstimate';
+import { useTransactionPrice } from '../../hooks/useTransactionPrice';
 
 const GasFeeText = styled.div`
   margin-top: 8px;
@@ -159,7 +159,7 @@ export default function Swap() {
       : parsedAmounts[dependentField]?.toSignificant(6) ?? '',
   };
 
-  const [isEnough] = useMockEstimate('swap');
+  const [isEnough] = useTransactionPrice('swap');
 
   const route = trade?.route;
   const userHasSpecifiedInputOutput = Boolean(
