@@ -47,7 +47,7 @@ inject_vars:
   emiswap-oracle:
     fullnameOverride: emiswap-oracle
     image:
-      repository: registry.gitlab.com/emidao/emiswap/oracle/emiswap-oracle-development
+      repository: registry.gitlab.com/emidao/emiswap/oracle/emiswap-oracle-production
       tag: latest
       pullPolicy: Always
     imagePullSecrets:
