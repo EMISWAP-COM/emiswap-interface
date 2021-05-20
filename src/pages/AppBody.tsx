@@ -17,7 +17,7 @@ export const BodyWrapper = styled.div<{ disabled?: boolean; data?: string }>`
   position: relative;
   max-width: 440px;
   width: 100%;
-  background: #272530;
+  background: ${({ theme }) => theme.dark1};
   filter: drop-shadow(0px 0px 10px rgba(169, 115, 255, 0.32));
   border-radius: 24px;
   padding: 34px 30px 40px;

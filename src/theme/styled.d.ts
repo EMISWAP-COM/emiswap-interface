@@ -66,7 +66,9 @@ export interface Colors {
   lightGrey: Color;
   red: Color;
   green: Color;
+  blue: Color;
   border1: Color;
+  dark1: Color;
 }
 
 export interface Grids {

@@ -28,7 +28,7 @@ export const GreyCard = styled(Card)`
 `;
 
 export const OutlineCard = styled(Card)`
-  border: 1px solid ${({ theme }) => theme.advancedBG};
+  border: 1px solid ${({ theme }) => theme.border1};
 `;
 
 export const YellowCard = styled(Card)`
