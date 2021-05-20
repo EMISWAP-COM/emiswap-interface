@@ -51,11 +51,11 @@ export const ButtonPrimary = styled(Base)`
   }
   &:disabled {
     background-color: ${({ theme, altDisbaledStyle }) =>
-      altDisbaledStyle ? theme.primary1 : theme.bg3};
+      altDisbaledStyle ? theme.primary1 : 'transparent'};
     color: ${({ theme, altDisbaledStyle }) => (altDisbaledStyle ? 'white' : theme.text3)};
+    border: 1px solid ${({ theme }) => theme.darkWhite}
     cursor: auto;
     box-shadow: none;
-    border: 1px solid transparent;
     outline: none;
   }
 `;

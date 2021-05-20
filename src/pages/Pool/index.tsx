@@ -9,7 +9,7 @@ import FullPositionCard from '../../components/PositionCard';
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks';
 import { StyledGreenLink, TYPE } from '../../theme';
 import { Text } from 'rebass';
-import { LightGreyCard, OutlineCard } from '../../components/Card';
+import { OutlineCard } from '../../components/Card';
 import { RowBetween } from '../../components/Row';
 import { ButtonPrimary } from '../../components/Button';
 import { AutoColumn } from '../../components/Column';
@@ -105,11 +105,11 @@ export default function Pool() {
                   </TYPE.body>
                 </OutlineCard>
               ) : v2IsLoading ? (
-                <LightGreyCard padding="40px">
-                  <TYPE.body color={theme.text3} textAlign="center">
+                <OutlineCard padding="40px">
+                  <TYPE.body color={theme.darkText} textAlign="center">
                     <Dots>Loading</Dots>
                   </TYPE.body>
-                </LightGreyCard>
+                </OutlineCard>
               ) : allV2PairsWithLiquidity?.length > 0 ? (
                 <>
                   {allV2PairsWithLiquidity.map(v2Pair => (
@@ -117,11 +117,11 @@ export default function Pool() {
                   ))}
                 </>
               ) : (
-                <LightGreyCard padding="40px">
-                  <TYPE.body color={theme.text3} textAlign="center">
+                <OutlineCard padding="40px">
+                  <TYPE.body color={theme.darkText} textAlign="center">
                     No liquidity found.
                   </TYPE.body>
-                </LightGreyCard>
+                </OutlineCard>
               )}
               <ButtonPrimary
                 id="join-pool-button"
