@@ -60,6 +60,9 @@ export interface Colors {
   whiteTransparent: Color;
   purple: Color;
   purpleBoxShadow: Color;
+  darkWhite: Color;
+  darkText: Color;
+  darkGrey: Color;
 }
 
 export interface Grids {

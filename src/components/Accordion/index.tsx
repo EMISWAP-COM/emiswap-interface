@@ -16,7 +16,7 @@ export interface AccordionProps {
 }
 //TODO убрать мракобесию с фиксированной высотой для каждого блока.
 const Body = styled.div`
-  background: #ffffff;
+  background: rgba(0, 0, 0, 0.7);
   border: 1px solid #eaeeee;
   box-sizing: border-box;
   box-shadow: 0 2px 10px -2px rgba(231, 215, 175, 0.3), 0px 21px 20px -15px rgba(140, 125, 85, 0.05);
@@ -42,7 +42,7 @@ const Body = styled.div`
     font-size: 20px;
     line-height: 32px;
     letter-spacing: -0.01em;
-    color: #000000;
+    color: #fff;
 
     @media screen and (max-width: 600px) {
       font-size: 16px;
@@ -224,7 +224,7 @@ const Body = styled.div`
     height: 48px;
 
     &__btn {
-      background: #ffd541;
+      background: ${({theme}) => theme.purple};
       border-radius: 4px;
       width: 245px;
       height: 48px;
@@ -240,7 +240,12 @@ const Body = styled.div`
       line-height: 18px;
       text-align: center;
       letter-spacing: 0.02em;
-      color: #141717;
+      color: ${({theme}) => theme.white};
+
+      &:hover,
+      &:focus {
+        box-shadow: ${({ theme }) => theme.purpleBoxShadow};
+      }
 
       &--second {
         margin-left: 50px;
@@ -291,13 +296,13 @@ const Body = styled.div`
 
   @keyframes blink1 {
     0% {
-      color: rgba(34, 34, 34, 1);
+      color: rgba(255, 255, 255, 1);
     }
     50% {
-      color: rgba(34, 34, 34, 0);
+      color: rgba(255, 255, 255, 0);
     }
     100% {
-      color: rgba(34, 34, 34, 1);
+      color: rgba(255, 255, 255, 1);
     }
   }
 `;

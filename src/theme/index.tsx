@@ -97,6 +97,9 @@ export function colors(darkMode: boolean): Colors {
     whiteTransparent: 'rgba(255, 255, 255, 0.4)',
     purple: '#7A2DF4',
     purpleBoxShadow: '0px 4px 8px rgba(169, 115, 255, 0.32)',
+    darkWhite: '#E8E7EF',
+    darkText: '#B7B7CA',
+    darkGrey: '#393946',
 
     // dont wanna forget these blue yet
     // blue4: darkMode ? '#153d6f70' : '#C4D9F8',
