@@ -41,7 +41,7 @@ const Web3StatusGeneric = styled(ButtonSecondary)`
   cursor: pointer;
   user-select: none;
   height: 40px;
-  
+
   @media screen and (max-width: 768px) {
     width: 100%;
   }
@@ -84,14 +84,15 @@ const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
   ${({ faded }) =>
     faded &&
     css`
-      background-color: ${({ theme }) => theme.primary1};
-      border: 1px solid ${({ theme }) => theme.primary1};
-      color: ${({ theme }) => theme.grey2};
+      background-color: transparent;
+      border: 1px solid ${({ theme }) => theme.whiteTransparent};
+      color: ${({ theme }) => theme.white};
 
       :hover,
       :focus {
-        border: 1px solid ${({ theme }) => darken(0.05, theme.yellow4)};
-        color: ${({ theme }) => darken(0.05, theme.primaryText1)};
+        border-color: ${({ theme }) => theme.purple};
+        background-color: transparent;
+        color: ${({ theme }) => theme.white};
       }
     `}
 `;

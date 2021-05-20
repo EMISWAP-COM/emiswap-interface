@@ -57,6 +57,9 @@ export interface Colors {
   yellow3: Color;
   yellow4: Color;
   horse: Color;
+  whiteTransparent: Color;
+  purple: Color;
+  purpleBoxShadow: Color;
 }
 
 export interface Grids {

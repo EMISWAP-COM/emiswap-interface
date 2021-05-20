@@ -10,7 +10,7 @@ import LogoDark from '../../assets/svg/logo_dark.svg';
 import { useActiveWeb3React } from '../../hooks';
 import { useDarkModeManager } from '../../state/user/hooks';
 import { useETHBalances } from '../../state/wallet/hooks';
-import { YellowCard } from '../Card';
+import { WhiteCard } from '../Card';
 import Settings from '../Settings';
 import Menu from '../Menu';
 import Row, { RowBetween } from '../Row';
@@ -66,7 +66,7 @@ const HeaderElement = styled.div`
     height: 40px;
     padding: 12px 22px;
     text-decoration: none;
-    background: #9a56d1;
+    background: ${({ theme }) => theme.purple};
     border-radius: 4px;
     font-family: IBM Plex Sans;
     font-style: normal;
@@ -79,6 +79,11 @@ const HeaderElement = styled.div`
     letter-spacing: 0.02em;
     color: #ffffff;
     margin-right: 10px;
+
+    &:hover,
+    &:focus {
+      box-shadow: ${({ theme }) => theme.purpleBoxShadow};
+    }
   }
 
   .purple-btn > span {
@@ -176,12 +181,12 @@ const AccountElement = styled.div<{ active: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: ${({ theme, active }) => (!active ? theme.bg1 : 'transparent')};
+  background-color: transparent;
   color: ${({ theme }) => theme.grey3};
   border-radius: 12px;
   white-space: nowrap;
   // width: 100%;
-  
+
   @media screen and (max-width: 768px) {
     width: 100%;
     max-width: 440px;
@@ -200,7 +205,7 @@ const TestnetWrapper = styled.div`
   pointer-events: auto;
 `;
 
-const NetworkCard = styled(YellowCard)`
+const NetworkCard = styled(WhiteCard)`
   width: fit-content;
   margin-right: 10px;
   border-radius: 12px;

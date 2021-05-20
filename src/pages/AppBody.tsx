@@ -1,7 +1,6 @@
 import React from 'react';
 import Wordmark from '../components/Wordmark';
 import styled from 'styled-components';
-import PolygonSvg from '../assets/images/polygon.svg';
 import BonusProgram from '../components/BonusProgram';
 import { ThemeProvider } from 'emotion-theming';
 import theme from '@rebass/preset';
@@ -12,24 +11,6 @@ export const HeadersPlusBodyWrapper = styled.div<{ disabled?: boolean }>`
   max-width: 440px;
   width: 100%;
   text-align: center;
-
-  :after {
-    content: '';
-    background: center / contain no-repeat url('${PolygonSvg}');
-    position: absolute;
-    top: -5px;
-    left: 50%;
-    margin-right: -50%;
-    transform: translate(-50%, 0%);
-    width: 875px;
-    height: 857px;
-    z-index: -1;
-
-    ${({ theme }) => theme.mediaWidth.upToSmall`
-      display: none;
-    `};
-  }
-
 `;
 
 export const BodyWrapper = styled.div<{ disabled?: boolean; data?: string }>`
