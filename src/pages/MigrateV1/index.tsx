@@ -159,8 +159,8 @@ export default function MigrateV1() {
               <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
             ) : !isMetaMask ? (
               <>
-                <StyledSubTitle>Sorry, but liquidity migration is only supported in the MetaMask wallet.
-                  Please, connect with your MetaMask wallet for full experience.
+                <StyledSubTitle>Functionality of Liquidity migration is supported only with the MetaMask Wallet.
+                  Please use this wallet to enjoy this opportunity.
                 </StyledSubTitle>
                 <ButtonGreen
                   style={{ width: '100%', padding: '15px 16px' }}
