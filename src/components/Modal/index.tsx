@@ -6,7 +6,6 @@ import { Spring } from 'react-spring/renderprops';
 import { DialogOverlay, DialogContent } from '@reach/dialog';
 import { isMobile } from 'react-device-detect';
 import '@reach/dialog/styles.css';
-import { transparentize } from 'polished';
 import { useGesture } from 'react-use-gesture';
 
 const AnimatedDialogOverlay = animated(DialogOverlay);
