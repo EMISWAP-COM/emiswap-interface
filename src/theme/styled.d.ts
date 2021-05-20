@@ -63,6 +63,10 @@ export interface Colors {
   darkWhite: Color;
   darkText: Color;
   darkGrey: Color;
+  lightGrey: Color;
+  red: Color;
+  green: Color;
+  border1: Color;
 }
 
 export interface Grids {

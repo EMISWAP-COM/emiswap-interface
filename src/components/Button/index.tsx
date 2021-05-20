@@ -64,22 +64,16 @@ export const ButtonPrimary = styled(Base)`
 `;
 
 export const ButtonLight = styled(Base)`
-  background-color: ${({ theme }) => theme.primary1};
-  color: ${({ theme }) => theme.grey2};
+  background-color: ${({ theme }) => theme.purple};
+  color: ${({ theme }) => theme.white};
   font-size: 16px;
   font-weight: 450;
   line-height: 24px;
   letter-spacing: 0.02em;
-  &:focus {
-    box-shadow: 0 0 0 1pt ${({ theme, disabled }) => !disabled && darken(0.03, theme.yellow4)};
-    background-color: ${({ theme, disabled }) => !disabled && darken(0.03, theme.yellow4)};
-  }
-  &:hover {
-    background-color: ${({ theme, disabled }) => !disabled && darken(0.03, theme.yellow4)};
-  }
+  &:focus,
+  &:hover,
   &:active {
-    box-shadow: 0 0 0 1pt ${({ theme, disabled }) => !disabled && darken(0.05, theme.yellow4)};
-    background-color: ${({ theme, disabled }) => !disabled && darken(0.05, theme.yellow4)};
+    box-shadow: ${({ theme }) => theme.purpleBoxShadow};
   }
   :disabled {
     opacity: 0.4;

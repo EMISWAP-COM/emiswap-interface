@@ -100,6 +100,10 @@ export function colors(darkMode: boolean): Colors {
     darkWhite: '#E8E7EF',
     darkText: '#B7B7CA',
     darkGrey: '#393946',
+    lightGrey: '#615C69',
+    red: '#E85E59',
+    green: '#54B489',
+    border1: '#4A4757',
 
     // dont wanna forget these blue yet
     // blue4: darkMode ? '#153d6f70' : '#C4D9F8',

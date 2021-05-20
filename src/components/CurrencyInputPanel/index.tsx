@@ -1,7 +1,7 @@
 import { Token, Pair, TokenAmount, JSBI } from '@uniswap/sdk';
 import React, { useState, useContext, useCallback } from 'react';
 import styled, { ThemeContext } from 'styled-components';
-import { darken } from 'polished';
+import { darken, lighten } from 'polished';
 import { useCurrencyBalance } from '../../state/wallet/hooks';
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal';
 import CurrencyLogo from '../CurrencyLogo';
@@ -30,8 +30,8 @@ const CurrencySelect = styled.button<{ selected: boolean }>`
   height: 2rem;
   font-size: 20px;
   font-weight: 500;
-  background-color: ${({ selected, theme }) => (selected ? theme.grey5 : theme.primary1)};
-  color: ${({ selected, theme }) => (selected ? theme.text1 : theme.grey2)};
+  background-color: ${({ selected, theme }) => (selected ? theme.darkGrey : theme.purple)};
+  color: ${({ theme }) => theme.white};
   border-radius: 12px;
   box-shadow: ${({ selected }) => (selected ? 'none' : '0px 6px 10px rgba(0, 0, 0, 0.075)')};
   outline: none;
@@ -44,7 +44,7 @@ const CurrencySelect = styled.button<{ selected: boolean }>`
   :focus,
   :hover {
     background-color: ${({ selected, theme }) =>
-      selected ? darken(0.05, theme.grey5) : darken(0.05, theme.primary1)};
+      selected ? lighten(0.1, theme.darkGrey) : lighten(0.1, theme.purple)};
   }
 `;
 
@@ -73,7 +73,7 @@ const StyledDropDown = styled(DropDown)<{ selected: boolean }>`
   height: 35%;
 
   path {
-    stroke: ${({ selected, theme }) => (selected ? theme.text1 : theme.grey2)};
+    stroke: ${({ theme }) => theme.white};
     stroke-width: 1.5px;
   }
 `;
@@ -82,14 +82,12 @@ const InputPanel = styled.div<{ hideInput?: boolean }>`
   ${({ theme }) => theme.flexColumnNoWrap}
   position: relative;
   border-radius: ${({ hideInput }) => (hideInput ? '8px' : '20px')};
-  background-color: ${({ theme }) => theme.bg2};
   z-index: 1;
 `;
 
 const Container = styled.div<{ hideInput: boolean; isError: boolean }>`
   border-radius: 8px;
-  border: 1px solid ${({ theme, isError }) => theme[isError ? 'red1' : 'grey1']};
-  background-color: ${({ theme }) => theme.bg1};
+  border: 1px solid ${({ theme, isError }) => theme[isError ? 'red' : 'border1']};
 `;
 
 export const StyledTokenName = styled.span<{ active?: boolean }>`
@@ -102,21 +100,21 @@ export const StyledTokenName = styled.span<{ active?: boolean }>`
 
 const StyledBalanceMax = styled.button`
   height: 2rem;
-  background-color: ${({ theme }) => theme.primary5};
-  border: 1px solid transparent;
+  background-color: ${({ theme }) => theme.red};
   border-radius: 0.5rem;
   font-size: 0.875rem;
   transition: all 0.3s ease-in-out;
+  border: 0
 
   font-weight: 500;
   cursor: pointer;
   margin-right: 0.5rem;
-  color: ${({ theme }) => theme.red3};
+  color: ${({ theme }) => theme.white};
   :hover {
-    border: 1px solid ${({ theme }) => theme.red3};
+    background-color: ${({ theme }) => lighten(0.1, theme.red)}
   }
   :focus {
-    border: 1px solid ${({ theme }) => theme.red3};
+    background-color: ${({ theme }) => lighten(0.1, theme.red)}
     outline: none;
   }
 
@@ -213,14 +211,14 @@ export default function CurrencyInputPanel({
           {!hideInput && (
             <LabelRow>
               <RowBetween>
-                <TYPE.body color={theme.grey4} fontWeight={400} fontSize={12}>
+                <TYPE.body color={theme.white} fontWeight={400} fontSize={12}>
                   {label}
                 </TYPE.body>
                 {account && (
                   <CursorPointer>
                     <TYPE.body
                       onClick={onMax}
-                      color={theme.text2}
+                      color={theme.white}
                       fontWeight={500}
                       fontSize={14}
                       style={{ display: 'inline' }}
