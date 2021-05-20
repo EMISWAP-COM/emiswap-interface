@@ -112,8 +112,7 @@ const LogoElem = styled(HeaderElement)`
     width: calc(100% - 124px);
   `};
   ${({ theme }) => theme.mediaWidth.upToTabletop`
-    background-color: white;
-    width: calc(100% - 156px);
+    width: calc(100% - 160px);
     padding: 22px 0px 22px 16px;
     border-radius: 0;
   `};
@@ -124,7 +123,7 @@ const StyledMagicButton = styled.a`
   position: relative;
   border: none;
   height: 40px;
-  background-color: #9a56d1;
+  background-color: ${({ theme }) => theme.purple};;
   align-items: center;
   transition: all 0.3s ease-in-out;
 
@@ -154,7 +153,6 @@ const HeaderElementWrap = styled.div`
     padding-right: 16px;
     height: 55px;
     box-sizing: content-box;
-    background-color: white;
   `};
 `;
 

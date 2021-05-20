@@ -18,7 +18,7 @@ export const PrivateSaleText = styled.div`
   max-width: 300px;
   font-size: 15px;
   line-height: 21px;
-  color: ${({ theme }) => theme.darkText};;
+  color: ${({ theme }) => theme.darkText};
   margin: 8px auto 10px auto;
 `;
 
@@ -26,7 +26,7 @@ export const LoginFirstText = styled.div`
   max-width: 300px;
   font-size: 15px;
   line-height: 21px;
-  color: ${({ theme }) => theme.white};;
+  color: ${({ theme }) => theme.white};
   font-weight: 600;
   margin: 8px auto 10px auto;
 `;
