@@ -264,6 +264,7 @@ const BalanceText = styled(Text)`
   letter-spacing: 0.02em;
   display: flex;
   align-items: center;
+  color: ${({ theme }) => theme.white};
 
   ${({ theme }) => theme.mediaWidth.upToTabletop`
     display: none;

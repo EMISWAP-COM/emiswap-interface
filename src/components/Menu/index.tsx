@@ -46,9 +46,8 @@ const StyledMenu = styled.div`
 
 const MenuFlyout = styled.span`
   min-width: 13.025rem;
-  background-color: ${({ theme }) => theme.bg3};
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0.01), 0 4px 8px rgba(0, 0, 0, 0.04),
-    0 16px 24px rgba(0, 0, 0, 0.04), 0 24px 32px rgba(0, 0, 0, 0.01);
+  background-color: ${({ theme }) => theme.dark1};
+  filter: ${({ theme }) => theme.dark1ShadowFilter};
   border-radius: 0.5rem;
   padding: 0.5rem;
   display: flex;
@@ -63,9 +62,9 @@ const MenuFlyout = styled.span`
 const MenuItem = styled(ExternalLink)`
   flex: 1;
   padding: 0.5rem 0.5rem;
-  color: ${({ theme }) => theme.text2};
+  color: ${({ theme }) => theme.white};
   :hover {
-    color: ${({ theme }) => theme.text1};
+    color: ${({ theme }) => theme.darkWhite};
     cursor: pointer;
     text-decoration: none;
   }
