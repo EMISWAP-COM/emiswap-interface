@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components/macro';
 import Reward10x from '../../assets/svg/FAQIcon/10xReward.svg';
 import ExtraReward from '../../assets/svg/FAQIcon/extraReward.svg';
-import { Wrapper, Block, BlockLong, Title, Text } from './styleds';
+import { Wrapper, Block, BlockLong, Title, Text, DarkText } from './styleds';
 
 const BlockWithIcon = styled(Block)`
   display: flex;
@@ -20,11 +20,11 @@ export const EarlyBird = () => {
         <img src={Reward10x} alt="" />
         <BlockContent>
           <Title>x10 rewards for early birds</Title>
-          <Text>
+          <DarkText>
             From the <strong>11th to the 100th day</strong> after the launch{' '}
             <strong>30 000 ESW</strong> are proportionally distributed among LPs for 1 million{' '}
             <strong>DAI trading</strong> volume.
-          </Text>
+          </DarkText>
         </BlockContent>
       </BlockWithIcon>
       <BlockWithIcon>

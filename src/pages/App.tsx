@@ -19,7 +19,7 @@ import PoolFinder from './PoolFinder';
 import RemoveLiquidity from './RemoveLiquidity';
 import { RedirectOldRemoveLiquidityPathStructure } from './RemoveLiquidity/redirects';
 import Swap from './Swap';
-import Invest from './Invest';
+// TODO removed Invest tab until further notice. import Invest from './Invest';
 import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects';
 import ReferralUrlParser from '../referral-url-parser';
 // import MigrateV1 from './MigrateV1';
@@ -97,7 +97,8 @@ export default function App() {
               <Web3ReactManager>
                 <ErrorBoundary title={'Oops, try again later...'} onDismiss={() => {}}>
                   <Switch>
-                    <Route exact strict path="/invest" component={Invest} />
+                    {/* TODO removed Invest tab until further notice.
+                    <Route exact strict path="/invest" component={Invest} />*/}
                     <Route exact strict path="/swap" component={Swap} />
                     <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
                     <Route exact strict path="/send" component={RedirectPathToSwapOnly} />

@@ -12,11 +12,12 @@ import Copy from '../Copy';
 import { ExternalLink } from '../../../theme';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
+import { darken } from 'polished';
 
 const Container = styled.div`
   font-size: 13px;
-  color: ${({ theme }) => theme.grey6};
-  border: 1px solid #dbdede;
+  color: ${({ theme }) => theme.darkText};
+  border: 1px solid ${({ theme }) => theme.darkGrey};
   border-radius: 12px;
 
   @media screen and (max-width: 1200px) {
@@ -33,7 +34,7 @@ const Main = styled.div`
 `;
 
 const DarkText = styled.span`
-  color: ${({ theme }) => theme.grey3};
+  color: ${({ theme }) => theme.white};
 `;
 
 const Account = styled(DarkText)`
@@ -44,6 +45,7 @@ const WalletInfo = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  color: ${({ theme }) => theme.white}
 `;
 
 const Wallet = styled.div`
@@ -63,7 +65,9 @@ const BalanceWrapper = styled.div`
 
 const BalanceItem = styled.div`
   padding: 14px;
-  background: #f7f8fa;
+  background: ${({ theme }) => theme.darkGrey};
+
+
 `;
 const BalanceValue = styled(DarkText)`
   font-size: 16px;
@@ -95,7 +99,7 @@ const AccountControl = styled.div`
   height: 53px;
   font-weight: 450;
   font-size: 1.25rem;
-  background: #f7f8fa;
+  background: ${({ theme }) => theme.darkGrey};
 
   a:hover {
     text-decoration: underline;
@@ -118,11 +122,11 @@ const AccountControl = styled.div`
 
 const AddressLink = styled(ExternalLink)`
   font-size: 0.825rem;
-  color: ${({ theme }) => theme.text3};
+  color: ${({ theme }) => theme.blue};
   margin-left: 1rem;
   display: flex;
   :hover {
-    color: ${({ theme }) => theme.text2};
+    color: ${({ theme }) => darken(0.3, theme.blue)};
   }
 `;
 
@@ -162,7 +166,7 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
         <Main>
           <WalletInfo>
             <span>
-              Connected with <DarkText>{formatConnectorName(connector)}</DarkText>
+              Connected with {formatConnectorName(connector)}
             </span>
             <ActionBtn
               onClick={() => {
