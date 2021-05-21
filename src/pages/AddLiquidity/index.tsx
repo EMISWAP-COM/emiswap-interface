@@ -6,7 +6,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { Text } from 'rebass';
 import { ThemeContext } from 'styled-components';
 import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button';
-import { BlueCard, GreyCard, LightCard } from '../../components/Card';
+import { BlueCard, OutlineCard, LightCard } from '../../components/Card';
 import { AutoColumn, ColumnCenter } from '../../components/Column';
 import ConfirmationModal from '../../components/ConfirmationModal';
 import CurrencyInputPanel from '../../components/CurrencyInputPanel';
@@ -482,21 +482,19 @@ export default function AddLiquidity({
               currencies[Field.CURRENCY_B] &&
               pairState !== PairState.INVALID && (
                 <>
-                  <GreyCard padding="0px" borderRadius={'20px'}>
                     <RowBetween padding="1rem">
-                      <TYPE.subHeader fontWeight={500} fontSize={14}>
+                      <TYPE.subHeader color={theme.darkWhite} fontWeight={500} fontSize={14}>
                         {noLiquidity ? 'Initial prices' : 'Prices'} and pool share
                       </TYPE.subHeader>
                     </RowBetween>{' '}
-                    <LightCard padding="1rem" borderRadius={'20px'}>
+                    <OutlineCard padding="1rem" borderRadius={'20px'}>
                       <PoolPriceBar
                         currencies={currencies}
                         poolTokenPercentage={poolTokenPercentage}
                         noLiquidity={noLiquidity}
                         price={price}
                       />
-                    </LightCard>
-                  </GreyCard>
+                  </OutlineCard>
                 </>
               )}
 

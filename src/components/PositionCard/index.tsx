@@ -1,10 +1,10 @@
 import { JSBI, Pair, Percent } from '@uniswap/sdk';
 import { darken } from 'polished';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { ChevronDown, ChevronUp } from 'react-feather';
 import { Link } from 'react-router-dom';
 import { Text } from 'rebass';
-import styled from 'styled-components';
+import styled, { ThemeContext } from 'styled-components';
 import { useTotalSupply } from '../../data/TotalSupply';
 
 import { useActiveWeb3React } from '../../hooks';
@@ -13,7 +13,7 @@ import { currencyId } from '../../utils/currencyId';
 import { unwrappedToken } from '../../utils/wrappedCurrency';
 import { ButtonSecondary } from '../Button';
 
-import Card, { GreyCard } from '../Card';
+import Card, { OutlineCard } from '../Card';
 import { AutoColumn } from '../Column';
 import CurrencyLogo from '../CurrencyLogo';
 import DoubleCurrencyLogo from '../DoubleLogo';
@@ -45,6 +45,7 @@ interface PositionCardProps {
 }
 
 export function MinimalPositionCard({ pair, showUnwrapped = false, border }: PositionCardProps) {
+  const theme = useContext(ThemeContext);
   const { account } = useActiveWeb3React();
 
   const currency0 = showUnwrapped ? pair.token0 : unwrappedToken(pair.token0);
@@ -70,11 +71,11 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
   return (
     <>
       {userPoolBalance && (
-        <GreyCard border={border}>
+        <OutlineCard border={border}>
           <AutoColumn gap="12px">
             <FixedHeightRow>
               <RowFixed>
-                <Text fontWeight={500} fontSize={16}>
+                <Text color={theme.darkWhite} fontWeight={500} fontSize={16}>
                   Your position
                 </Text>
               </RowFixed>
@@ -87,24 +88,24 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
                   margin={true}
                   size={20}
                 />
-                <Text fontWeight={500} fontSize={20}>
+                <Text color={theme.darkWhite} fontWeight={500} fontSize={20}>
                   {currency0.symbol}/{currency1.symbol}
                 </Text>
               </RowFixed>
               <RowFixed>
-                <Text fontWeight={500} fontSize={20}>
+                <Text color={theme.darkWhite} fontWeight={500} fontSize={20}>
                   {userPoolBalance ? tokenAmountToString(userPoolBalance, 4) : '-'}
                 </Text>
               </RowFixed>
             </FixedHeightRow>
             <AutoColumn gap="4px">
               <FixedHeightRow>
-                <Text color="#888D9B" fontSize={16} fontWeight={500}>
+                <Text color={theme.darkWhite} fontSize={16} fontWeight={500}>
                   {currency0.symbol}:
                 </Text>
                 {token0Deposited ? (
                   <RowFixed>
-                    <Text color="#888D9B" fontSize={16} fontWeight={500} marginLeft={'6px'}>
+                    <Text color={theme.darkWhite} fontSize={16} fontWeight={500} marginLeft={'6px'}>
                       {tokenAmountToString(token0Deposited)}
                     </Text>
                   </RowFixed>
@@ -113,12 +114,12 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
                 )}
               </FixedHeightRow>
               <FixedHeightRow>
-                <Text color="#888D9B" fontSize={16} fontWeight={500}>
+                <Text color={theme.darkWhite} fontSize={16} fontWeight={500}>
                   {currency1.symbol}:
                 </Text>
                 {token1Deposited ? (
                   <RowFixed>
-                    <Text color="#888D9B" fontSize={16} fontWeight={500} marginLeft={'6px'}>
+                    <Text color={theme.darkWhite} fontSize={16} fontWeight={500} marginLeft={'6px'}>
                       {tokenAmountToString(token1Deposited)}
                     </Text>
                   </RowFixed>
@@ -128,7 +129,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
               </FixedHeightRow>
             </AutoColumn>
           </AutoColumn>
-        </GreyCard>
+        </OutlineCard>
       )}
     </>
   );
