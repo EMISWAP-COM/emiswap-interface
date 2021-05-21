@@ -15,6 +15,7 @@ import Loader from '../../components/Loader';
 import { amountToString } from './utils';
 import { useActiveWeb3React } from '../../hooks';
 import { useWalletModalToggle } from '../../state/application/hooks';
+import { formatConnectorName } from '../../components/AccountDetails/uitls'
 
 const StyledSubTitle = styled.p`
   text-align: left;
@@ -77,7 +78,7 @@ const StyledMenuItemMigrate = styled(StyledMenuItem)<{ selected?: boolean }>`
 
 export default function MigrateV1() {
   const theme = useContext(ThemeContext);
-  const { account } = useActiveWeb3React();
+  const { account, connector } = useActiveWeb3React();
   const history = useHistory();
   const toggleWalletModal = useWalletModalToggle();
   const [selected, setSelected] = useState(null);
@@ -136,62 +137,83 @@ export default function MigrateV1() {
     };
   }, [selected, tokens, formatedTokenList]);
 
+  const isMetaMask = formatConnectorName(connector) === 'MetaMask'
+
+  const isShowLoader = (
+    !formatedTokenList.length
+    && lpTokensDetailedInfo.length
+    && balances.every(balance => balance === undefined)
+  ) || isLoading;
+
+  const isTokensNotFound = balances.every(balance => {
+    return +amountToString(balance, 10) === 0;
+  });
+
   return (
     <>
       <AppBody>
-        <SwapPoolTabs active={TabNames.MIGRATE} />
-        {account && <StyledSubTitle>You have</StyledSubTitle>}
-        <AutoColumn gap="lg" justify="center">
-          {!account ? (
-            <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
-          ) : (!formatedTokenList.length &&
-              lpTokensDetailedInfo.length &&
-              balances.every(balance => balance === undefined)) ||
-            isLoading ? (
-            <>
-              <WrapperLoader>
-                <Loader size="100px" />
-              </WrapperLoader>
-            </>
-          ) : balances.every(balance => {
-              return +amountToString(balance, 10) === 0;
-            }) ? (
-            <TYPE.body>No LP tokens found</TYPE.body>
-          ) : (
-            <>
-              <StyledFixedSizeList
-                width="auto"
-                height={300}
-                itemCount={formatedTokenList.length}
-                itemSize={50}
-                style={{ width: '100%', margin: '0 30px' }}
-              >
-                {CurrencyRow}
-              </StyledFixedSizeList>
-              <ButtonGreen
-                style={{ width: '100%', padding: '15px 16px' }}
-                disabled={selected === null}
-                onClick={handleRedirect}
-              >
-                <Text fontWeight={500} fontSize={16}>
-                  Migrate
-                </Text>
-              </ButtonGreen>
-            </>
-          )}
+        <SwapPoolTabs active={TabNames.MIGRATE}/>
+          {account && isMetaMask && <StyledSubTitle>You have</StyledSubTitle>}
+          <AutoColumn gap="lg" justify="center">
+            {!account ? (
+              <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
+            ) : !isMetaMask ? (
+              <>
+                <StyledSubTitle>Functionality of Liquidity migration is supported only with the MetaMask Wallet.
+                  Please use this wallet to enjoy this opportunity.
+                </StyledSubTitle>
+                <ButtonGreen
+                  style={{ width: '100%', padding: '15px 16px' }}
+                  disabled
+                >
+                  <Text fontWeight={500} fontSize={16}>
+                    Migrate
+                  </Text>
+                </ButtonGreen>
+              </>
+              ) : isShowLoader ? (
+              <>
+                <WrapperLoader>
+                  <Loader size="100px"/>
+                </WrapperLoader>
+              </>
+            ) : isTokensNotFound ? (
+              <TYPE.body>No LP tokens found</TYPE.body>
+            ) : (
+              <>
+                <StyledFixedSizeList
+                  width="auto"
+                  height={300}
+                  itemCount={formatedTokenList.length}
+                  itemSize={50}
+                  style={{ width: '100%', margin: '0 30px' }}
+                >
+                  {CurrencyRow}
+                </StyledFixedSizeList>
+                <ButtonGreen
+                  style={{ width: '100%', padding: '15px 16px' }}
+                  disabled={selected === null}
+                  onClick={handleRedirect}
+                >
+                  <Text fontWeight={500} fontSize={16}>
+                    Migrate
+                  </Text>
+                </ButtonGreen>
+              </>
+            )}
 
-          <StyledHr />
-          <Text textAlign="center" fontSize={14} style={{ padding: '.5rem 0 .5rem 0' }}>
-            {'Discover EmiSwap Crowdsale'}{' '}
-            <ExternalLink
-              id="import-pool-link"
-              href="https://crowdsale.emidao.org/en"
-              style={{ color: theme.green1, textDecoration: 'none' }}
-            >
-              {'Terms'}
-            </ExternalLink>
-          </Text>
-        </AutoColumn>
+            <StyledHr/>
+            <Text textAlign="center" fontSize={14} style={{ padding: '.5rem 0 .5rem 0' }}>
+              {'Discover EmiSwap Crowdsale'}{' '}
+              <ExternalLink
+                id="import-pool-link"
+                href="https://crowdsale.emidao.org/en"
+                style={{ color: theme.green1, textDecoration: 'none' }}
+              >
+                {'Terms'}
+              </ExternalLink>
+            </Text>
+          </AutoColumn>
       </AppBody>
     </>
   );
