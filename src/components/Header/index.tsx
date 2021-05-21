@@ -123,7 +123,7 @@ const StyledMagicButton = styled.a`
   position: relative;
   border: none;
   height: 40px;
-  background-color: ${({ theme }) => theme.purple};;
+  background-color: ${({ theme }) => theme.purple};
   align-items: center;
   transition: all 0.3s ease-in-out;
 

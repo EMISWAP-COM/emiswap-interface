@@ -2,7 +2,7 @@ import { Fraction, JSBI, Token, TokenAmount } from '@uniswap/sdk';
 import React, { useEffect, useState } from 'react';
 import { Redirect, RouteComponentProps } from 'react-router';
 import { Text } from 'rebass';
-import { ButtonGreen, ButtonLight, ButtonPrimary } from '../../components/Button';
+import { ButtonLight, ButtonPrimary } from '../../components/Button';
 import CurrencyLogo from '../../components/CurrencyLogo';
 import QuestionHelper from '../../components/QuestionHelper';
 import { AutoRow, RowBetween, RowFixed } from '../../components/Row';
@@ -70,7 +70,7 @@ const TokensInfoBlock = styled.div`
   align-items: center;
 `;
 
-const ButtonGreenConfirm = styled(ButtonGreen)`
+const ButtonGreenConfirm = styled(ButtonPrimary)`
   padding: 15px 16px;
   margin: 20px auto 10px;
   max-width: 60%;
@@ -271,7 +271,7 @@ export default function MigrateV1Exchange({
             {!account ? (
               <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
             ) : (
-              <ButtonGreen
+              <ButtonPrimary
                 style={{ width: '100%', padding: '15px 16px' }}
                 disabled={approval !== ApprovalState.APPROVED || notEnoughBalance}
                 onClick={isPairExist ? handleMigrate : showConfirmModal}
@@ -279,7 +279,7 @@ export default function MigrateV1Exchange({
                 <Text fontWeight={500} fontSize={16}>
                   {notEnoughBalance ? 'Not enough balance' : 'Migrate'}
                 </Text>
-              </ButtonGreen>
+              </ButtonPrimary>
             )}
           </>
         )}

@@ -22,7 +22,7 @@ import { Dots } from '../../components/swap/styleds';
 
 const StyledHr = styled.hr`
   width: 100%;
-  background: ${({ theme }) => theme.lightGrey};;
+  background: ${({ theme }) => theme.lightGrey};
   border: none;
   height: 1px;
 `;
