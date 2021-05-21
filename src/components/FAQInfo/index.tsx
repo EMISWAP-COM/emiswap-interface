@@ -7,7 +7,6 @@ import Coins from '../../assets/svg/FAQIcon/coins.svg';
 import YellowCircle from '../../assets/svg/FAQIcon/yellowCircle.svg';
 import PieChart from '../../assets/svg/pie_chart.svg';
 import { EarlyBird } from './EarlyBird';
-import { useHistory } from 'react-router';
 import { NFTCards } from './NFTCards';
 import { PrivateRound } from './PrivateRount';
 
@@ -495,8 +494,6 @@ const Body = styled.div`
 `;
 
 export default () => {
-  const history = useHistory();
-
   const btnClick1 = () => {
     const win = window.open('https://crowdsale.emidao.org/whitepaper', '_blank');
     win.focus();
@@ -506,13 +503,14 @@ export default () => {
     win.focus();
   };
 
+  /* TODO removed Invest tab until further notice.
   const handleLiquidityCLick = () => {
     history.push('/invest');
     window.scroll({
       top: 200,
       behavior: 'smooth',
     });
-  };
+  };*/
 
   const handleLeanMoreLiquidityClick = () => {
     window.open(
@@ -528,8 +526,9 @@ export default () => {
         header="Early bird bonuses for Liquidity Providers"
         openClass="isOpen5"
         headerClass="blink1-text"
+        /* TODO removed Invest tab until further notice.
         btnText="Provide Liquidity"
-        btnClick={handleLiquidityCLick}
+        btnClick={handleLiquidityCLick}*/
         btnSecondText="Learn More"
         btnSecondClick={handleLeanMoreLiquidityClick}
       >
@@ -539,8 +538,9 @@ export default () => {
         header="Early bird bonuses for Swappers"
         openClass="isOpen4"
         headerClass="blink1-text"
+        /* TODO removed Invest tab until further notice.
         btnText="Provide Liquidity"
-        btnClick={handleLiquidityCLick}
+        btnClick={handleLiquidityCLick}*/
       >
         <Body>
           <div className="last-block">
@@ -581,8 +581,9 @@ export default () => {
         header="NFT Magic Cards for Liquidity Providers"
         openClass="isOpen6"
         headerClass="blink1-text"
+        /* TODO removed Invest tab until further notice.
         btnText="Provide Liquidity"
-        btnClick={handleLiquidityCLick}
+        btnClick={handleLiquidityCLick}*/
         // headerClass="blink1-text"
       >
         <NFTCards />

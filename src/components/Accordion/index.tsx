@@ -241,21 +241,17 @@ const Body = styled.div`
       text-align: center;
       letter-spacing: 0.02em;
       color: ${({theme}) => theme.white};
+      margin: 0 30px;
 
       &:hover,
       &:focus {
         box-shadow: ${({ theme }) => theme.purpleBoxShadow};
-      }
-
-      &--second {
-        margin-left: 50px;
       }
     }
 
     &__line {
       width: 200px;
       height: 1px;
-      margin: 0 34px;
       background: #dbdede;
     }
 
@@ -325,14 +321,16 @@ export default (props: AccordionProps) => {
         </div>
       </div>
       <div className={`body ${isOpen ? props.openClass : ''}`}>{props.children}</div>
-      {props.btnText && (
+      {(props.btnText || props.btnSecondText) && (
         <div className={`btn-line ${isOpen ? '' : 'hidden'}`}>
           <div className="btn-line__line" />
-          <div className="btn-line__btn" onClick={props.btnClick}>
+          {props.btnText && (
+            <div className="btn-line__btn" onClick={props.btnClick}>
             {props.btnText}
           </div>
+          )}
           {props.btnSecondText && (
-            <div className="btn-line__btn btn-line__btn--second" onClick={props.btnSecondClick}>
+            <div className="btn-line__btn" onClick={props.btnSecondClick}>
               {props.btnSecondText}
             </div>
           )}
