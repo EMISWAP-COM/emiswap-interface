@@ -63,6 +63,7 @@ export enum TabNames {
   MIGRATE,
   INVEST,
 }
+//TODO refactor. Component index.tsx must return single component
 
 export function SwapPoolTabs({ active }: { active: TabNames }) {
   const { t } = useTranslation();
@@ -74,13 +75,13 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
       <StyledNavLink id={`pool-nav-link`} to={'/pool'} isActive={() => active === TabNames.POOL}>
         {t('pool')}
       </StyledNavLink>
-      {/*<StyledNavLink*/}
-      {/*  id={`migrate-nav-link`}*/}
-      {/*  to={'/migrate'}*/}
-      {/*  isActive={() => active === TabNames.MIGRATE}*/}
-      {/*>*/}
-      {/*  {t('migrate')}*/}
-      {/*</StyledNavLink>*/}
+      <StyledNavLink
+        id={`migrate-nav-link`}
+        to={'/migrate'}
+        isActive={() => active === TabNames.MIGRATE}
+      >
+        {t('migrate')}
+      </StyledNavLink>
       <StyledNavLink
         id={`pool-nav-link`}
         to={'/invest'}

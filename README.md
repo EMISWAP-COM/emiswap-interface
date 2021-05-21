@@ -55,3 +55,4 @@ see <https://www.gnu.org/licenses/>.
 Copyright © 2021, [EmiSwap](https://emiswap.com/).
 
 Released under GNU General Public License v3.0
+.

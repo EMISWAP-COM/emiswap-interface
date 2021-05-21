@@ -292,38 +292,38 @@ const Body = styled.div`
     }
 
     &__color0 {
-      background: #a5da6f;
+      background: #D4D3FF;
     }
 
     &__color1 {
-      background: #074223;
+      background: #47FF37;
     }
     &__color2 {
-      background: #006450;
+      background: #37FFDB;
     }
 
     &__color3 {
-      background: #09ce95;
+      background: #A973FF;
     }
 
     &__color4 {
-      background: #58ae00;
+      background: #147AF1;
     }
 
     &__color5 {
-      background: #7bbbdf;
+      background: #5D09E1;
     }
 
     &__color6 {
-      background: #ffac7d;
+      background: #E478FF;
     }
 
     &__color7 {
-      background: #ffd541;
+      background: #57D7FF;
     }
 
     &__color8 {
-      background: #8096e3;
+      background: #8479FF;
     }
 
     &__text-line {
