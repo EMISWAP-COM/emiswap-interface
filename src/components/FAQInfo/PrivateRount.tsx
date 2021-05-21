@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components/macro';
 
 import YellowCircle from '../../assets/svg/FAQIcon/yellowCircle.svg';
+import { ESW_PER_USD } from '../../constants/invest';
 
 const CardBlocks = styled.div`
   display: flex;
@@ -46,7 +47,7 @@ const CardDescriptionText = styled.div`
 `;
 
 const cardsInfo = [
-  { head: '0.23 DAI', text: 'Price' },
+  { head: `${ESW_PER_USD} DAI`, text: 'Price' },
   { head: '200,000,000 ESW', text: 'Total Supply' },
   { head: '6% or 12M ESW ', text: 'Private Round allocation' },
   { head: 'Vesting period', text: '15% instantly; 85% quarter unlock by equal shares' },
