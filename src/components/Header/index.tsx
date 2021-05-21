@@ -109,7 +109,8 @@ const LogoElem = styled(HeaderElement)`
   ${({ theme }) => theme.mediaWidth.upToTabletop`
     background-color: white;
     width: calc(100% - 156px);
-    padding-right: 0px;
+    padding: 22px 0px 22px 16px;
+    border-radius: 0;
   `};
 `;
 
@@ -207,10 +208,16 @@ const NetworkCard = styled(YellowCard)`
 `;
 
 const UniIcon = styled.div`
+  width: 175px;
+  height: 47px;
   transition: transform 0.3s ease;
   :hover {
     transform: rotate(-5deg);
   }
+`;
+
+const LogoImg = styled.img`
+  width: 100%;
 `;
 
 const HeaderControls = styled.div`
@@ -292,7 +299,7 @@ export default function Header() {
         <LogoElem>
           <Title href=".">
             <UniIcon>
-              <img src={isDark ? LogoDark : Logo} alt="logo" />
+              <LogoImg src={isDark ? LogoDark : Logo} alt="logo" />
             </UniIcon>
             <TitleText>
               {/*<img style={{ marginLeft: '4px', marginTop: '4px' }} src={isDark ? WordmarkDark : Wordmark} alt="logo" width="160px"/>*/}

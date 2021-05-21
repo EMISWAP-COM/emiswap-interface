@@ -1,7 +1,6 @@
 import React, { useEffect, Suspense } from 'react';
 import { HashRouter, Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 import Wordmark from '../components/Wordmark';
-import Logo from '../components/Logo';
 import styled from 'styled-components';
 import GoogleAnalyticsReporter from '../components/analytics/GoogleAnalyticsReporter';
 import Header from '../components/Header';
@@ -87,7 +86,6 @@ export default function App() {
           <Route component={DarkModeQueryParamReader} />
           <AppWrapper>
             <LogoWrapper>
-              <Logo mobile={true} />
               <Wordmark />
             </LogoWrapper>
             <HeaderWrapper>
