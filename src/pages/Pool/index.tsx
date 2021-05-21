@@ -9,7 +9,7 @@ import FullPositionCard from '../../components/PositionCard';
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks';
 import { StyledGreenLink, TYPE } from '../../theme';
 import { Text } from 'rebass';
-import { LightGreyCard } from '../../components/Card';
+import { OutlineCard } from '../../components/Card';
 import { RowBetween } from '../../components/Row';
 import { ButtonPrimary } from '../../components/Button';
 import { AutoColumn } from '../../components/Column';
@@ -22,13 +22,13 @@ import { Dots } from '../../components/swap/styleds';
 
 const StyledHr = styled.hr`
   width: 100%;
-  background: #eaeeee;
+  background: ${({ theme }) => theme.lightGrey};
   border: none;
   height: 1px;
 `;
 
 const GasFeeText = styled.div`
-  color: #89919a;
+  color: ${({ theme }) => theme.darkText};
 `;
 
 export default function Pool() {
@@ -93,23 +93,23 @@ export default function Pool() {
           <>
             <AutoColumn gap="12px" style={{ width: '100%' }}>
               <RowBetween padding={'0 8px'}>
-                <Text color={theme.text1} fontWeight={500}>
+                <Text color={theme.white} fontWeight={500}>
                   Your Liquidity
                 </Text>
                 <Question text="When you add liquidity, you are given pool tokens that represent your share. If you don’t see a pool you joined in this list, try importing a pool below." />
               </RowBetween>
               {!account ? (
-                <LightGreyCard padding="40px">
-                  <TYPE.body color={theme.text3} textAlign="center">
+                <OutlineCard padding="40px">
+                  <TYPE.body color={theme.darkText} textAlign="center">
                     Connect to a wallet to view your liquidity.
                   </TYPE.body>
-                </LightGreyCard>
+                </OutlineCard>
               ) : v2IsLoading ? (
-                <LightGreyCard padding="40px">
-                  <TYPE.body color={theme.text3} textAlign="center">
+                <OutlineCard padding="40px">
+                  <TYPE.body color={theme.darkText} textAlign="center">
                     <Dots>Loading</Dots>
                   </TYPE.body>
-                </LightGreyCard>
+                </OutlineCard>
               ) : allV2PairsWithLiquidity?.length > 0 ? (
                 <>
                   {allV2PairsWithLiquidity.map(v2Pair => (
@@ -117,11 +117,11 @@ export default function Pool() {
                   ))}
                 </>
               ) : (
-                <LightGreyCard padding="40px">
-                  <TYPE.body color={theme.text3} textAlign="center">
+                <OutlineCard padding="40px">
+                  <TYPE.body color={theme.darkText} textAlign="center">
                     No liquidity found.
                   </TYPE.body>
-                </LightGreyCard>
+                </OutlineCard>
               )}
               <ButtonPrimary
                 id="join-pool-button"
@@ -136,7 +136,7 @@ export default function Pool() {
               <GasFeeText>100% gas fee refund</GasFeeText>
               <StyledHr />
               <div>
-                <Text textAlign="center" fontSize={14} style={{ padding: '.5rem 0 .5rem 0' }}>
+                <Text color={theme.darkText} textAlign="center" fontSize={14} style={{ padding: '.5rem 0 .5rem 0' }}>
                   {"Don't see a pool you joined?"}{' '}
                   <StyledGreenLink id="import-pool-link" to={false ? '/migrate' : '/find'}>
                     {'Import it.'}

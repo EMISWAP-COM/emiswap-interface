@@ -3,14 +3,14 @@ import styled from 'styled-components';
 import { escapeRegExp } from '../../utils';
 
 const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: string }>`
-  color: ${({ error, theme }) => (error ? theme.red1 : theme.grey3)};
+  color: ${({ error, theme }) => (error ? theme.red : theme.white)};
   width: 0;
   position: relative;
   font-weight: 450;
   outline: none;
   border: none;
   flex: 1 1 auto;
-  background-color: ${({ theme }) => theme.bg1};
+  background-color: transparent;
   font-size: ${({ fontSize }) => fontSize ?? '18px'};
   line-height: 27px;
   letter-spacing: 0.02em;
@@ -35,7 +35,7 @@ const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: s
   }
 
   ::placeholder {
-    color: ${({ theme }) => theme.text4};
+    color: ${({ theme }) => theme.darkWhite};
   }
 `;
 

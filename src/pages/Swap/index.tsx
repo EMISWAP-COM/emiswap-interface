@@ -61,7 +61,7 @@ import { useTransactionPrice } from '../../hooks/useTransactionPrice';
 
 const GasFeeText = styled.div`
   margin-top: 8px;
-  color: #89919a;
+  color: ${({ theme }) => theme.darkText};
 `;
 
 export default function Swap() {
@@ -404,8 +404,8 @@ export default function Swap() {
                         size="16"
                         color={
                           currencies[Field.INPUT] && currencies[Field.OUTPUT]
-                            ? theme.grey6
-                            : theme.text2
+                            ? theme.green
+                            : theme.darkWhite
                         }
                       />
                       <span style={{ marginLeft: '-3px' }}>
@@ -413,8 +413,8 @@ export default function Swap() {
                           size="16"
                           color={
                             currencies[Field.INPUT] && currencies[Field.OUTPUT]
-                              ? theme.grey6
-                              : theme.text2
+                              ? theme.red
+                              : theme.darkWhite
                           }
                         />
                       </span>

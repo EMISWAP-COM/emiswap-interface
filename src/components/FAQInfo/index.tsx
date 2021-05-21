@@ -7,7 +7,6 @@ import Coins from '../../assets/svg/FAQIcon/coins.svg';
 import YellowCircle from '../../assets/svg/FAQIcon/yellowCircle.svg';
 import PieChart from '../../assets/svg/pie_chart.svg';
 import { EarlyBird } from './EarlyBird';
-import { useHistory } from 'react-router';
 import { NFTCards } from './NFTCards';
 import { PrivateRound } from './PrivateRount';
 
@@ -19,7 +18,7 @@ const Body = styled.div`
     font-size: 18px;
     line-height: 160%;
     letter-spacing: 0.01em;
-    color: #555959;
+    color: ${({theme}) => theme.white};
     margin-bottom: 40px;
 
     @media screen and (max-width: 1000px) {
@@ -34,7 +33,7 @@ const Body = styled.div`
     font-size: 20px;
     line-height: 32px;
     letter-spacing: -0.01em;
-    color: #000000;
+    color: ${({theme}) => theme.white};
 
     @media screen and (max-width: 1000px) {
       font-size: 16px;
@@ -88,7 +87,7 @@ const Body = styled.div`
         font-size: 18px;
         line-height: 32px;
         letter-spacing: -0.01em;
-        color: #555959;
+        color: ${({theme}) => theme.darkText};
       }
     }
 
@@ -146,10 +145,8 @@ const Body = styled.div`
     justify-content: space-between;
 
     .card {
-      background: #ffffff;
-      border: 1px solid #eaeeee;
+      background: ${({theme}) => theme.darkGrey};
       box-sizing: border-box;
-      box-shadow: 0px 9px 25px rgba(73, 73, 73, 0.07);
       border-radius: 4px;
 
       .card-title {
@@ -175,7 +172,7 @@ const Body = styled.div`
         font-weight: normal;
         font-size: 14px;
         line-height: 21px;
-        color: #89919a;
+        color: ${({theme}) => theme.darkText};
       }
 
       .card-description {
@@ -194,12 +191,14 @@ const Body = styled.div`
 
       span {
         position: relative;
+        z-index: 0;
       }
 
       &__YellowCircle {
         position: absolute;
         right: -13px;
         top: 7px;
+        z-index: -1;
       }
     }
 
@@ -260,7 +259,7 @@ const Body = styled.div`
     font-size: 20px;
     line-height: 32px;
     letter-spacing: -0.01em;
-    color: #555959;
+    color: ${({theme}) => theme.darkWhite};
 
     @media screen and (max-width: 1300px) {
       font-size: 14px;
@@ -268,7 +267,7 @@ const Body = styled.div`
   }
 
   .grey-text-bold {
-    color: #24272c;
+    color: ${({theme}) => theme.white};
     font-weight: 500;
   }
 
@@ -292,38 +291,38 @@ const Body = styled.div`
     }
 
     &__color0 {
-      background: #a5da6f;
+      background: #D4D3FF;
     }
 
     &__color1 {
-      background: #074223;
+      background: #47FF37;
     }
     &__color2 {
-      background: #006450;
+      background: #37FFDB;
     }
 
     &__color3 {
-      background: #09ce95;
+      background: #A973FF;
     }
 
     &__color4 {
-      background: #58ae00;
+      background: #147AF1;
     }
 
     &__color5 {
-      background: #7bbbdf;
+      background: #5D09E1;
     }
 
     &__color6 {
-      background: #ffac7d;
+      background: #E478FF;
     }
 
     &__color7 {
-      background: #ffd541;
+      background: #57D7FF;
     }
 
     &__color8 {
-      background: #8096e3;
+      background: #8479FF;
     }
 
     &__text-line {
@@ -441,7 +440,7 @@ const Body = styled.div`
           font-size: 18px;
           line-height: 26px;
           letter-spacing: 0.01em;
-          color: #555959;
+          color: ${({theme}) => theme.darkText};
           margin-bottom: 20px;
 
           @media screen and (max-width: 1000px) {
@@ -480,7 +479,7 @@ const Body = styled.div`
     font-size: 18px;
     line-height: 160%;
     letter-spacing: 0.01em;
-    color: #555959;
+    color: ${({theme}) => theme.darkWhite};
     margin-bottom: 20px;
 
     @media screen and (max-width: 1000px) {
@@ -495,8 +494,6 @@ const Body = styled.div`
 `;
 
 export default () => {
-  const history = useHistory();
-
   const btnClick1 = () => {
     const win = window.open('https://crowdsale.emidao.org/whitepaper', '_blank');
     win.focus();
@@ -506,13 +503,14 @@ export default () => {
     win.focus();
   };
 
+  /* TODO removed Invest tab until further notice.
   const handleLiquidityCLick = () => {
     history.push('/invest');
     window.scroll({
       top: 200,
       behavior: 'smooth',
     });
-  };
+  };*/
 
   const handleLeanMoreLiquidityClick = () => {
     window.open(
@@ -528,8 +526,9 @@ export default () => {
         header="Early bird bonuses for Liquidity Providers"
         openClass="isOpen5"
         headerClass="blink1-text"
+        /* TODO removed Invest tab until further notice.
         btnText="Provide Liquidity"
-        btnClick={handleLiquidityCLick}
+        btnClick={handleLiquidityCLick}*/
         btnSecondText="Learn More"
         btnSecondClick={handleLeanMoreLiquidityClick}
       >
@@ -539,8 +538,9 @@ export default () => {
         header="Early bird bonuses for Swappers"
         openClass="isOpen4"
         headerClass="blink1-text"
+        /* TODO removed Invest tab until further notice.
         btnText="Provide Liquidity"
-        btnClick={handleLiquidityCLick}
+        btnClick={handleLiquidityCLick}*/
       >
         <Body>
           <div className="last-block">
@@ -581,8 +581,9 @@ export default () => {
         header="NFT Magic Cards for Liquidity Providers"
         openClass="isOpen6"
         headerClass="blink1-text"
+        /* TODO removed Invest tab until further notice.
         btnText="Provide Liquidity"
-        btnClick={handleLiquidityCLick}
+        btnClick={handleLiquidityCLick}*/
         // headerClass="blink1-text"
       >
         <NFTCards />

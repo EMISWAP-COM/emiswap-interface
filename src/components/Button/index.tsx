@@ -39,47 +39,35 @@ const Base = styled(RebassButton)<{
 `;
 
 export const ButtonPrimary = styled(Base)`
-  background-color: ${({ theme }) => theme.primary1};
-  color: ${({ theme }) => theme.grey2};
-  &:focus {
-    box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.05, theme.primary1)};
-    background-color: ${({ theme }) => darken(0.05, theme.primary1)};
-  }
-  &:hover {
-    background-color: ${({ theme }) => darken(0.05, theme.primary1)};
-  }
+  background-color: ${({ theme }) => theme.purple};
+  color: ${({ theme }) => theme.white};
+  &:focus,
+  &:hover,
   &:active {
-    box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.1, theme.primary1)};
-    background-color: ${({ theme }) => darken(0.1, theme.primary1)};
+    box-shadow: ${({ theme }) => theme.purpleBoxShadow};
   }
   &:disabled {
     background-color: ${({ theme, altDisbaledStyle }) =>
-      altDisbaledStyle ? theme.primary1 : theme.bg3};
+      altDisbaledStyle ? theme.primary1 : 'transparent'};
     color: ${({ theme, altDisbaledStyle }) => (altDisbaledStyle ? 'white' : theme.text3)};
+    border: 1px solid ${({ theme }) => theme.darkWhite}
     cursor: auto;
     box-shadow: none;
-    border: 1px solid transparent;
     outline: none;
   }
 `;
 
 export const ButtonLight = styled(Base)`
-  background-color: ${({ theme }) => theme.primary1};
-  color: ${({ theme }) => theme.grey2};
+  background-color: ${({ theme }) => theme.purple};
+  color: ${({ theme }) => theme.white};
   font-size: 16px;
   font-weight: 450;
   line-height: 24px;
   letter-spacing: 0.02em;
-  &:focus {
-    box-shadow: 0 0 0 1pt ${({ theme, disabled }) => !disabled && darken(0.03, theme.yellow4)};
-    background-color: ${({ theme, disabled }) => !disabled && darken(0.03, theme.yellow4)};
-  }
-  &:hover {
-    background-color: ${({ theme, disabled }) => !disabled && darken(0.03, theme.yellow4)};
-  }
+  &:focus,
+  &:hover,
   &:active {
-    box-shadow: 0 0 0 1pt ${({ theme, disabled }) => !disabled && darken(0.05, theme.yellow4)};
-    background-color: ${({ theme, disabled }) => !disabled && darken(0.05, theme.yellow4)};
+    box-shadow: ${({ theme }) => theme.purpleBoxShadow};
   }
   :disabled {
     opacity: 0.4;
@@ -126,30 +114,20 @@ export const ButtonGreen = styled(Base)`
 `;
 
 export const ButtonSecondary = styled(Base)`
-  background-color: ${({ theme }) => theme.primary1};
-  color: ${({ theme }) => theme.primaryText1};
+  background-color: ${({ theme }) => theme.purple};
+  color: ${({ theme }) => theme.white};
   font-size: 16px;
   border-radius: 4px;
   padding: ${({ padding }) => (padding ? padding : '10px 12px')};
 
   &:hover,
-  &:focus {
-    border: 1px solid ${({ theme }) => darken(0.05, theme.yellow4)};
+  &:focus,
+  &:active {
+    box-shadow: ${({ theme }) => theme.purpleBoxShadow};
   }
 
-  &:focus {
-    box-shadow: 0 0 0 1pt ${({ theme }) => theme.yellow4};
-    background-color: ${({ theme }) => theme.yellow4};
-  }
-  &:hover {
-    background-color: ${({ theme }) => theme.yellow4};
-  }
-  &:active {
-    box-shadow: 0 0 0 1pt ${({ theme }) => theme.yellow4};
-    background-color: ${({ theme }) => theme.yellow4};
-  }
   &:disabled {
-    background-color: ${({ theme }) => theme.primary1};
+    border: 1px solid ${({ theme }) => theme.darkWhite};
     opacity: 50%;
     cursor: auto;
   }

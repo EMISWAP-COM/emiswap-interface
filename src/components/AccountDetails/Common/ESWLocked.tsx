@@ -9,7 +9,7 @@ import { AppState } from '../../../state';
 import { convertBigDecimal, convertDate, DateFormat } from '../uitls';
 
 const DarkText = styled.span`
-  color: ${({ theme }) => theme.grey3};
+  color: ${({ theme }) => theme.white};
 `;
 const LockedWrapper = styled.div`
   font-size: 13px;
@@ -31,7 +31,7 @@ const LockedItem = styled.div`
   display: flex;
   align-items: center;
   padding: 14px;
-  background: #f7f8fa;
+  background: ${({ theme }) => theme.darkGrey};
 `;
 
 const LockedItemWrapper = styled.div`
