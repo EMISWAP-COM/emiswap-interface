@@ -117,30 +117,20 @@ export const ButtonGreen = styled(Base)`
 `;
 
 export const ButtonSecondary = styled(Base)`
-  background-color: ${({ theme }) => theme.primary1};
-  color: ${({ theme }) => theme.primaryText1};
+  background-color: ${({ theme }) => theme.purple};
+  color: ${({ theme }) => theme.white};
   font-size: 16px;
   border-radius: 4px;
   padding: ${({ padding }) => (padding ? padding : '10px 12px')};
 
   &:hover,
-  &:focus {
-    border: 1px solid ${({ theme }) => darken(0.05, theme.yellow4)};
+  &:focus,
+  &:active {
+    box-shadow: ${({ theme }) => theme.purpleBoxShadow};
   }
 
-  &:focus {
-    box-shadow: 0 0 0 1pt ${({ theme }) => theme.yellow4};
-    background-color: ${({ theme }) => theme.yellow4};
-  }
-  &:hover {
-    background-color: ${({ theme }) => theme.yellow4};
-  }
-  &:active {
-    box-shadow: 0 0 0 1pt ${({ theme }) => theme.yellow4};
-    background-color: ${({ theme }) => theme.yellow4};
-  }
   &:disabled {
-    background-color: ${({ theme }) => theme.primary1};
+    border: 1px solid ${({ theme }) => theme.darkWhite};
     opacity: 50%;
     cursor: auto;
   }
