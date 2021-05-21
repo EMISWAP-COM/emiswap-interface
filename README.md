@@ -29,7 +29,7 @@ To have the interface default to a different network when a wallet is not connec
 3. Change `REACT_APP_NETWORK_URL` to e.g.
    `"https://{YOUR_NETWORK_ID}.infura.io/v3/{YOUR_INFURA_KEY}"`
 
-Note that the interface only works on mainent where all contracts are deployed. The interface will
+Note that the interface only works on main net where all contracts are deployed. The interface will
 not work on other networks.
 
 #### Contributions
@@ -55,3 +55,4 @@ see <https://www.gnu.org/licenses/>.
 Copyright © 2021, [EmiSwap](https://emiswap.com/).
 
 Released under GNU General Public License v3.0
+.

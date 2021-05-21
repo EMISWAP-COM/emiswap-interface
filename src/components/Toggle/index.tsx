@@ -5,16 +5,16 @@ const ToggleElement = styled.span<{ isActive?: boolean; isOnSwitch?: boolean }>`
   padding: 0.25rem 0.5rem;
   border-radius: 14px;
   background: ${({ theme, isActive, isOnSwitch }) =>
-    isActive ? (isOnSwitch ? theme.green5 : theme.text4) : 'none'};
+    isActive ? (isOnSwitch ? theme.purple : theme.lightGrey) : 'none'};
   color: ${({ theme, isActive, isOnSwitch }) =>
-    isActive ? (isOnSwitch ? theme.white : theme.text2) : theme.text3};
+    isActive ? (isOnSwitch ? theme.white : theme.darkWhite) : theme.text3};
   font-size: 0.825rem;
   font-weight: 400;
 `;
 
 const StyledToggle = styled.a<{ isActive?: boolean; activeElement?: boolean }>`
   border-radius: 16px;
-  border: 1px solid ${({ theme, isActive }) => (isActive ? theme.green5 : theme.text4)};
+  border: 1px solid ${({ theme, isActive }) => (isActive ? theme.purple : theme.lightGrey)};
   display: flex;
   width: fit-content;
   cursor: pointer;

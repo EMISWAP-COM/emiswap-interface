@@ -26,7 +26,7 @@ const StyledMenuIcon = styled(Settings)`
   width: 20px;
 
   > * {
-    stroke: ${({ theme }) => theme.green4};
+    stroke: ${({ theme }) => theme.white};
   }
 `;
 
@@ -48,10 +48,10 @@ const StyledMenuButton = styled.button`
   height: 100%;
   border: none;
   background-color: transparent;
+  border: 1px solid ${({ theme }) => theme.whiteTransparent};
   margin: 0;
   padding: 0;
   height: 40px;
-  background-color: ${({ theme }) => theme.green2};
   display: flex;
   align-items: center;
   transition: all 0.3s ease-in-out;
@@ -63,7 +63,7 @@ const StyledMenuButton = styled.button`
   :focus {
     cursor: pointer;
     outline: none;
-    background-color: ${({ theme }) => theme.green3};
+    border-color: ${({ theme }) => theme.purple};
   }
 `;
 const EmojiWrapper = styled.div`
@@ -94,11 +94,8 @@ const OptionGrid = styled.div`
 
 const MenuFlyout = styled.span`
   min-width: 20.125rem;
-  background-color: ${({ theme }) => theme.bg1};
-  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04),
-    0px 16px 24px rgba(0, 0, 0, 0.04), 0px 24px 32px rgba(0, 0, 0, 0.01);
-
-  border: 1px solid ${({ theme }) => theme.bg3};
+  background-color: ${({ theme }) => theme.dark1};
+  filter: ${({ theme }) => theme.dark1ShadowFilter};
 
   border-radius: 0.5rem;
   display: flex;
@@ -326,7 +323,7 @@ export default function SettingsTab() {
       {open && (
         <MenuFlyout>
           <AutoColumn gap="md" style={{ padding: '1rem' }}>
-            <Text fontWeight={600} fontSize={14}>
+            <Text color={theme.white} fontWeight={600} fontSize={14}>
               Transaction Settings
             </Text>
             <SlippageTabs
@@ -336,12 +333,12 @@ export default function SettingsTab() {
               setDeadline={setDeadline}
             />
 
-            <Text fontWeight={600} fontSize={14}>
+            <Text fontWeight={600} fontSize={14} color={theme.white}>
               Interface Settings
             </Text>
             <RowBetween>
               <RowFixed>
-                <TYPE.black fontWeight={400} fontSize={14} color={theme.text2}>
+                <TYPE.black fontWeight={400} fontSize={14} color={theme.darkWhite}>
                   Toggle Expert Mode
                 </TYPE.black>
                 <QuestionHelper text="Bypasses confirmation modals and allows high slippage trades. Use at your own risk." />

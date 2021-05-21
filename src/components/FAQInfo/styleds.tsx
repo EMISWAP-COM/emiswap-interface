@@ -24,7 +24,7 @@ export const Title = styled.div`
   font-weight: 500;
   font-size: 20px;
   line-height: 32px;
-  color: #000000;
+  color: ${({theme}) => theme.white};
   margin-bottom: 15px;
 
   @media screen and (max-width: 1000px) {
@@ -36,10 +36,13 @@ export const Text = styled.div`
   font-weight: 300;
   font-size: 18px;
   line-height: 32px;
-  color: ${({ theme }) => theme.text1};
+  color: ${({ theme }) => theme.darkWhite};
 
   @media screen and (max-width: 1000px) {
     font-size: 14px;
     line-height: 21px;
   }
+`;
+export const DarkText = styled(Text)`
+  color: ${({ theme }) => theme.darkText};
 `;

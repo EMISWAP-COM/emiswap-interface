@@ -8,7 +8,7 @@ import { RowFixed } from '../../components/Row';
 import { Text } from 'rebass';
 import { ExternalLink, TYPE } from '../../theme';
 import { useHistory } from 'react-router-dom';
-import { ButtonGreen, ButtonLight } from '../../components/Button';
+import { ButtonPrimary, ButtonLight } from '../../components/Button';
 import DoubleCurrencyLogo from '../../components/DoubleLogo';
 import { useLpTokens } from '../../hooks/useLpTokens';
 import Loader from '../../components/Loader';
@@ -18,6 +18,7 @@ import { useWalletModalToggle } from '../../state/application/hooks';
 import { formatConnectorName } from '../../components/AccountDetails/uitls'
 
 const StyledSubTitle = styled.p`
+  color: ${({ theme }) => theme.white};
   text-align: left;
   padding: 0.75rem;
   margin: 0;
@@ -28,7 +29,7 @@ const StyledSubTitle = styled.p`
 
 const StyledHr = styled.hr`
   width: 100%;
-  background: #eaeeee;
+  background: ${({ theme }) => theme.lightGrey};
   border: none;
   height: 1px;
 `;
@@ -54,16 +55,16 @@ const WrapperLoader = styled.div`
 
 const StyledMenuItemMigrate = styled(StyledMenuItem)<{ selected?: boolean }>`
   .balance {
-    color: ${({ theme, selected }) => theme[selected ? 'green1' : 'grey1']};
+    color: ${({ theme, selected }) => theme[selected ? 'purple' : 'white']};
   }
-  color: ${({ theme, selected }) => theme[selected ? 'green1' : 'text1']};
+  color: ${({ theme, selected }) => theme[selected ? 'purple' : 'white']};
   transition: none;
   opacity: ${({ selected }) => (selected ? 'inherit' : 'none')};
 
   :hover {
-    color: ${({ theme }) => theme.green1};
+    color: ${({ theme }) => theme.purple};
     .balance {
-      color: ${({ theme }) => theme.green1};
+      color: ${({ theme }) => theme.purple};
     }
   }
   @media screen and (max-width: 375px) {
@@ -162,14 +163,14 @@ export default function MigrateV1() {
                 <StyledSubTitle>Functionality of Liquidity migration is supported only with the MetaMask Wallet.
                   Please use this wallet to enjoy this opportunity.
                 </StyledSubTitle>
-                <ButtonGreen
+                <ButtonPrimary
                   style={{ width: '100%', padding: '15px 16px' }}
                   disabled
                 >
                   <Text fontWeight={500} fontSize={16}>
                     Migrate
                   </Text>
-                </ButtonGreen>
+                </ButtonPrimary>
               </>
               ) : isShowLoader ? (
               <>
@@ -190,7 +191,7 @@ export default function MigrateV1() {
                 >
                   {CurrencyRow}
                 </StyledFixedSizeList>
-                <ButtonGreen
+                <ButtonPrimary
                   style={{ width: '100%', padding: '15px 16px' }}
                   disabled={selected === null}
                   onClick={handleRedirect}
@@ -198,17 +199,17 @@ export default function MigrateV1() {
                   <Text fontWeight={500} fontSize={16}>
                     Migrate
                   </Text>
-                </ButtonGreen>
+                </ButtonPrimary>
               </>
             )}
 
             <StyledHr/>
-            <Text textAlign="center" fontSize={14} style={{ padding: '.5rem 0 .5rem 0' }}>
+            <Text color={theme.darkText} textAlign="center" fontSize={14} style={{ padding: '.5rem 0 .5rem 0' }}>
               {'Discover EmiSwap Crowdsale'}{' '}
               <ExternalLink
                 id="import-pool-link"
                 href="https://crowdsale.emidao.org/en"
-                style={{ color: theme.green1, textDecoration: 'none' }}
+                style={{ color: theme.blue, textDecoration: 'none' }}
               >
                 {'Terms'}
               </ExternalLink>

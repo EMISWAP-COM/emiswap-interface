@@ -87,7 +87,7 @@ export const StyledInternalLink = styled(Link)`
 `;
 
 export const StyledGreenLink = styled(StyledInternalLink)`
-  color: #11b382;
+  color: ${({ theme }) => theme.blue};
 `;
 
 const StyledLink = styled.a`
@@ -178,7 +178,7 @@ export function BackArrow({ to }: { to: string }) {
 export const StyledButtonNavigation = styled.div`
   height: 24px;
   width: 100%;
-  background: #eaeeee;
+  background: #4A4757;
   opacity: 0.5;
   border-radius: 16px;
   display: flex;

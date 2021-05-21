@@ -21,7 +21,7 @@ const Section = styled(AutoColumn)`
 `;
 
 const BottomSection = styled(Section)`
-  background-color: ${({ theme }) => theme.bg2};
+  background-color: ${({ theme }) => theme.darkGrey};
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
 `;
@@ -129,10 +129,10 @@ export default function ConfirmationModal({
       <Wrapper>
         <Section>
           <RowBetween>
-            <Text fontWeight={500} fontSize={20}>
+            <Text color={theme.white} fontWeight={500} fontSize={20}>
               {title}
             </Text>
-            <CloseIcon onClick={onDismiss} />
+            <CloseIcon color={theme.white} onClick={onDismiss} />
           </RowBetween>
           {topContent()}
         </Section>
