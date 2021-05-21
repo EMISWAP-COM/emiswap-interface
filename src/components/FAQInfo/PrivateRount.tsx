@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components/macro';
 
 import YellowCircle from '../../assets/svg/FAQIcon/yellowCircle.svg';
+import { ESW_PER_USD } from '../../constants/invest';
 
 const CardBlocks = styled.div`
   display: flex;
@@ -15,10 +16,8 @@ const CardInfo = styled.div`
   width: 210px;
   margin: 8px;
   padding: 24px;
-  border: 1px solid #eaeeee;
   border-radius: 4px;
-  background: #ffffff;
-  box-shadow: 0px 9px 25px rgba(73, 73, 73, 0.07);
+  background: ${({theme}) => theme.darkGrey};
 
   @media screen and (max-width: 1000px) {
     padding: 16px;
@@ -33,16 +32,22 @@ const CardInfo = styled.div`
 const CardInfoHead = styled.span`
   position: relative;
   font-size: 20px !important;
+  z-index: 0;
 `;
 
 const CardInfoHeadCircle = styled.img`
   position: absolute;
   left: 0;
   top: 8px;
+  z-index: -1;
+`;
+
+const CardDescriptionText = styled.div`
+  color: ${({theme}) => theme.darkText};
 `;
 
 const cardsInfo = [
-  { head: '0.23 DAI', text: 'Price' },
+  { head: `${ESW_PER_USD} DAI`, text: 'Price' },
   { head: '200,000,000 ESW', text: 'Total Supply' },
   { head: '6% or 12M ESW ', text: 'Private Round allocation' },
   { head: 'Vesting period', text: '15% instantly; 85% quarter unlock by equal shares' },
@@ -64,7 +69,7 @@ export const PrivateRound = () => {
               />
             </CardInfoHead>
           </div>
-          <div className="card__description-text">{info.text}</div>
+          <CardDescriptionText>{info.text}</CardDescriptionText>
         </CardInfo>
       ))}
     </CardBlocks>

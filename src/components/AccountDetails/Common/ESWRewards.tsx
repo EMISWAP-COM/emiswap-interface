@@ -26,11 +26,11 @@ import { convertBigDecimal } from '../uitls';
 // `;
 
 const DarkText = styled.span`
-  color: #24272c;
+  color: ${({ theme }) => theme.white};
 `;
 const RewardsWrapper = styled.div`
   font-size: 13px;
-  color: ${({ theme }) => theme.grey6};
+  color: ${({ theme }) => theme.darkText};
 
   margin-top: 12px;
   display: grid;
@@ -46,7 +46,7 @@ const RewardsWrapper = styled.div`
 
 const RewardsItem = styled.div`
   padding: 14px;
-  background: ${({ theme }) => theme.bg2};
+  background: ${({ theme }) => theme.darkGrey};
 `;
 const RewardsValue = styled(DarkText)`
   font-size: 16px;

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import UnicornSvg from '../../../assets/images/bg.svg'
+import backgroundCurvedLines from '../../../assets/images/backgroundCurvedLines.svg'
 
 export const AppWrapper = styled.div`
   display: flex;
@@ -7,5 +7,9 @@ export const AppWrapper = styled.div`
   align-items: flex-start;
   overflow-x: hidden;
   // height: 100vh;
-  background: center / cover no-repeat url('${UnicornSvg}');
+  background-image: url('${backgroundCurvedLines}');
+  background-color: #000;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 `;
