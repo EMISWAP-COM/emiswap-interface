@@ -34,7 +34,7 @@ const IconWrapper = styled.div<{ size?: number }>`
 
 const Web3StatusGeneric = styled(ButtonSecondary)`
   ${({ theme }) => theme.flexRowNoWrap}
-  width: 270px;
+  width: 240px;
   align-items: center;
   padding: 0.35rem 0.5rem;
   border-radius: 4px;
