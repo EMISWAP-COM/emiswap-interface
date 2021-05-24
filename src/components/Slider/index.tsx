@@ -19,11 +19,11 @@ const StyledRangeInput = styled.input<{ value: number }>`
     -webkit-appearance: none;
     height: 28px;
     width: 28px;
-    background-color: #565a69;
+    background-color: ${({ theme }) => theme.darkWhite};
     border-radius: 100%;
     border: none;
     transform: translateY(-50%);
-    color: ${({ theme }) => theme.bg1};
+    color: ${({ theme }) => theme.darkWhite};
 
     &:hover,
     &:focus {
@@ -38,7 +38,7 @@ const StyledRangeInput = styled.input<{ value: number }>`
     background-color: #565a69;
     border-radius: 100%;
     border: none;
-    color: ${({ theme }) => theme.bg1};
+    color: ${({ theme }) => theme.darkWhite};
 
     &:hover,
     &:focus {
@@ -52,7 +52,7 @@ const StyledRangeInput = styled.input<{ value: number }>`
     width: 28px;
     background-color: #565a69;
     border-radius: 100%;
-    color: ${({ theme }) => theme.bg1};
+    color: ${({ theme }) => theme.darkWhite};
 
     &:hover,
     &:focus {
@@ -64,10 +64,10 @@ const StyledRangeInput = styled.input<{ value: number }>`
   &::-webkit-slider-runnable-track {
     background: linear-gradient(
       90deg,
-      ${({ theme }) => theme.bg5},
-      ${({ theme }) => theme.bg5} ${({ value }) => value}%,
-      ${({ theme }) => theme.bg3} ${({ value }) => value}%,
-      ${({ theme }) => theme.bg3}
+      ${({ theme }) => theme.darkWhite},
+      ${({ theme }) => theme.darkWhite} ${({ value }) => value}%,
+      ${({ theme }) => theme.lightGrey} ${({ value }) => value}%,
+      ${({ theme }) => theme.lightGrey}
     );
     height: 2px;
   }
@@ -75,10 +75,10 @@ const StyledRangeInput = styled.input<{ value: number }>`
   &::-moz-range-track {
     background: linear-gradient(
       90deg,
-      ${({ theme }) => theme.bg5},
-      ${({ theme }) => theme.bg5} ${({ value }) => value}%,
-      ${({ theme }) => theme.bg3} ${({ value }) => value}%,
-      ${({ theme }) => theme.bg3}
+      ${({ theme }) => theme.darkWhite},
+      ${({ theme }) => theme.darkWhite} ${({ value }) => value}%,
+      ${({ theme }) => theme.lightGrey} ${({ value }) => value}%,
+      ${({ theme }) => theme.lightGrey}
     );
     height: 2px;
   }
@@ -88,14 +88,14 @@ const StyledRangeInput = styled.input<{ value: number }>`
     border-color: transparent;
     color: transparent;
 
-    background: ${({ theme }) => theme.bg5};
+    background: ${({ theme }) => theme.darkWhite};
     height: 2px;
   }
   &::-ms-fill-lower {
-    background: ${({ theme }) => theme.bg5};
+    background: ${({ theme }) => theme.darkWhite};
   }
   &::-ms-fill-upper {
-    background: ${({ theme }) => theme.bg3};
+    background: ${({ theme }) => theme.lightGrey};
   }
 `;
 
