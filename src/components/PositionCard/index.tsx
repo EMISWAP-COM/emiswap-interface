@@ -4,7 +4,7 @@ import React, { useContext, useState } from 'react';
 import { ChevronDown, ChevronUp } from 'react-feather';
 import { Link } from 'react-router-dom';
 import { Text } from 'rebass';
-import styled, { ThemeContext } from 'styled-components';
+import styled, { ThemeContext } from 'styled-components/macro';
 import { useTotalSupply } from '../../data/TotalSupply';
 
 import { useActiveWeb3React } from '../../hooks';
@@ -34,7 +34,7 @@ export const HoverCard = styled(Card)`
 `;
 
 const YellowText = styled.p`
-  color: ${({ theme }) => theme.primary1};
+  color: ${({ theme }) => theme.blue};
   text-decoration: underline;
 `;
 
