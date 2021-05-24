@@ -7,7 +7,7 @@ import { RouteComponentProps } from 'react-router';
 import { Text } from 'rebass';
 import { ThemeContext } from 'styled-components';
 import { ButtonConfirmed, ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button';
-import { LightCard } from '../../components/Card';
+import { OutlineCard } from '../../components/Card';
 import { AutoColumn, ColumnCenter } from '../../components/Column';
 import ConfirmationModal from '../../components/ConfirmationModal';
 import CurrencyInputPanel from '../../components/CurrencyInputPanel';
@@ -456,10 +456,10 @@ export default function RemoveLiquidity({
             title="You will receive"
           />
           <AutoColumn gap="md">
-            <LightCard>
+            <OutlineCard>
               <AutoColumn gap="20px">
                 <RowBetween>
-                  <Text fontWeight={500}>Amount</Text>
+                  <Text fontWeight={500} color={theme.darkWhite}>Amount</Text>
                   <ClickableText
                     fontWeight={500}
                     onClick={() => {
@@ -470,7 +470,7 @@ export default function RemoveLiquidity({
                   </ClickableText>
                 </RowBetween>
                 <Row style={{ alignItems: 'flex-end' }}>
-                  <Text fontSize={72} fontWeight={500}>
+                  <Text fontSize={72} fontWeight={500} color={theme.darkWhite}>
                     {formattedAmounts[Field.LIQUIDITY_PERCENT]}%
                   </Text>
                 </Row>
@@ -509,32 +509,32 @@ export default function RemoveLiquidity({
                   </>
                 )}
               </AutoColumn>
-            </LightCard>
+            </OutlineCard>
             {!showDetailed && (
               <>
                 <ColumnCenter>
-                  <ArrowDown size="16" color={theme.text2} />
+                  <ArrowDown size="16" color={theme.darkWhite} />
                 </ColumnCenter>
-                <LightCard>
+                <OutlineCard>
                   <AutoColumn gap="10px">
                     <RowBetween>
-                      <Text fontSize={24} fontWeight={500}>
+                      <Text fontSize={24} fontWeight={500} color={theme.darkWhite}>
                         {formattedAmounts[Field.CURRENCY_A] || '-'}
                       </Text>
                       <RowFixed>
                         <CurrencyLogo currency={currencyA} style={{ marginRight: '12px' }} />
-                        <Text fontSize={24} fontWeight={500} id="remove-liquidity-tokena-symbol">
+                        <Text fontSize={24} fontWeight={500} color={theme.darkWhite} id="remove-liquidity-tokena-symbol">
                           {currencyA?.symbol}
                         </Text>
                       </RowFixed>
                     </RowBetween>
                     <RowBetween>
-                      <Text fontSize={24} fontWeight={500}>
+                      <Text fontSize={24} fontWeight={500} color={theme.darkWhite}>
                         {formattedAmounts[Field.CURRENCY_B] || '-'}
                       </Text>
                       <RowFixed>
                         <CurrencyLogo currency={currencyB} style={{ marginRight: '12px' }} />
-                        <Text fontSize={24} fontWeight={500} id="remove-liquidity-tokenb-symbol">
+                        <Text fontSize={24} fontWeight={500} color={theme.darkWhite} id="remove-liquidity-tokenb-symbol">
                           {currencyB?.symbol}
                         </Text>
                       </RowFixed>
@@ -576,7 +576,7 @@ export default function RemoveLiquidity({
                     {/*  </RowBetween>*/}
                     {/*) : null}*/}
                   </AutoColumn>
-                </LightCard>
+                </OutlineCard>
               </>
             )}
 

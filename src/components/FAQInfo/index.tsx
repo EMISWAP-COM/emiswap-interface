@@ -525,7 +525,6 @@ export default () => {
       <Accordion
         header="Early bird bonuses for Liquidity Providers"
         openClass="isOpen5"
-        headerClass="blink1-text"
         /* TODO removed Invest tab until further notice.
         btnText="Provide Liquidity"
         btnClick={handleLiquidityCLick}*/
@@ -537,7 +536,6 @@ export default () => {
       <Accordion
         header="Early bird bonuses for Swappers"
         openClass="isOpen4"
-        headerClass="blink1-text"
         /* TODO removed Invest tab until further notice.
         btnText="Provide Liquidity"
         btnClick={handleLiquidityCLick}*/
@@ -580,11 +578,9 @@ export default () => {
       <Accordion
         header="NFT Magic Cards for Liquidity Providers"
         openClass="isOpen6"
-        headerClass="blink1-text"
         /* TODO removed Invest tab until further notice.
         btnText="Provide Liquidity"
         btnClick={handleLiquidityCLick}*/
-        // headerClass="blink1-text"
       >
         <NFTCards />
       </Accordion>
