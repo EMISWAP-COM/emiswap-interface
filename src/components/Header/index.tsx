@@ -2,7 +2,7 @@ import { ChainId } from '@uniswap/sdk';
 import React from 'react';
 import { isMobile, isTablet } from 'react-device-detect';
 import { Text } from 'rebass';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import Logo from '../../assets/svg/logo.svg';
 import LogoDark from '../../assets/svg/logo_dark.svg';
 // import Wordmark from '../../assets/svg/wordmark.svg';
@@ -227,12 +227,7 @@ const HeaderControls = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: calc(100% - 285px);
-  justify-content: flex-end;
-
-  :last-child {
-    margin-left: auto;
-  }
+  margin-left: auto;
 
   ${({ theme }) => theme.mediaWidth.upToMedium`
     order: 3;
@@ -242,7 +237,6 @@ const HeaderControls = styled.div`
 
   ${({ theme }) => theme.mediaWidth.upToTabletop`
   :last-child {
-    margin-left: 0;
     width: 100%;
     background: transparent;
 
