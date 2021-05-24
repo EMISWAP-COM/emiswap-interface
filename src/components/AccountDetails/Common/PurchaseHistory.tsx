@@ -157,7 +157,7 @@ const Cell = styled.div<{ flex?: number }>`
     padding: 0.5rem 1rem;
 
     &:nth-child(2n) {
-      background: ${({ theme }) => theme.bg2};
+      background: ${({ theme }) => theme.darkGrey};
     }
   }
 `;
