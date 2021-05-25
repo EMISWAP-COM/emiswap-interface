@@ -74,6 +74,10 @@ const Body = styled.div`
     overflow: hidden;
     padding: 0 38px;
 
+    .childrenWrapper {
+      margin-top: 40px;
+    }
+
     @media screen and (max-width: 1000px) {
       padding: 0;
     }
@@ -284,7 +288,11 @@ export default (props: AccordionProps) => {
           <img src={isOpen ? ArrowUp : ArrowDown} alt="" />
         </div>
       </div>
-      <div className={`body ${isOpen ? props.openClass : ''}`}>{props.children}</div>
+      <div className={`body ${isOpen ? props.openClass : ''}`}>
+        <div className={'childrenWrapper'}>
+          {props.children}
+        </div>
+      </div>
       {(props.btnText || props.btnSecondText) && (
         <div className={`btn-line ${isOpen ? '' : 'hidden'}`}>
           <div className="btn-line__line" />
