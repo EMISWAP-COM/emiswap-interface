@@ -70,7 +70,7 @@ const Body = styled.div`
 
   .body {
     height: 0;
-    transition: all 1s ease;
+    transition: height 0.5s;
     overflow: hidden;
     padding: 0 38px;
 
@@ -84,32 +84,26 @@ const Body = styled.div`
   }
 
   .isOpen1 {
-    margin-top: 40px;
     height: 630px;
   }
 
   .isOpen2 {
-    margin-top: 40px;
     height: 270px;
   }
 
   .isOpen3 {
-    margin-top: 40px;
     height: 600px;
   }
 
   .isOpen4 {
-    margin-top: 40px;
     height: 310px;
   }
 
   .isOpen5 {
-    margin-top: 40px;
     height: 900px;
   }
 
   .isOpen6 {
-    margin-top: 40px;
     height: 750px;
   }
 
