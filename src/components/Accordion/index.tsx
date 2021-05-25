@@ -15,7 +15,7 @@ export interface AccordionProps {
 }
 //TODO убрать мракобесию с фиксированной высотой для каждого блока.
 const Body = styled.div`
-  background: rgba(0, 0, 0, 0.7);
+  background: #000;
   border: 1px solid #eaeeee;
   box-sizing: border-box;
   box-shadow: 0 2px 10px -2px rgba(231, 215, 175, 0.3), 0px 21px 20px -15px rgba(140, 125, 85, 0.05);
