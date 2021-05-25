@@ -11,5 +11,5 @@ export const AppWrapper = styled.div`
   background-color: #000;
   background-position: top;
   background-repeat: no-repeat;
-  background-size: auto;
+  background-size: 1920px 1390px;
 `;
