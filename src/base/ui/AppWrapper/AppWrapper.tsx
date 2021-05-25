@@ -6,7 +6,7 @@ export const AppWrapper = styled.div`
   flex-flow: column;
   align-items: flex-start;
   overflow-x: hidden;
-  // height: 100vh;
+  min-height: 100vh;
   background-image: url('${backgroundCurvedLines}');
   background-color: #000;
   background-position: top;
