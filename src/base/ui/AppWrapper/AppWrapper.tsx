@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import backgroundCurvedLines from '../../../assets/images/backgroundCurvedLines.svg'
 
 export const AppWrapper = styled.div`
   display: flex;
@@ -7,7 +6,6 @@ export const AppWrapper = styled.div`
   align-items: flex-start;
   overflow-x: hidden;
   // height: 100vh;
-  background-image: url('${backgroundCurvedLines}');
   background-color: #000;
   background-position: top;
   background-repeat: no-repeat;
