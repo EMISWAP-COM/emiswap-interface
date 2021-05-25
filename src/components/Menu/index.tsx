@@ -47,7 +47,7 @@ const StyledMenu = styled.div`
 const MenuFlyout = styled.span`
   min-width: 13.025rem;
   background-color: ${({ theme }) => theme.dark1};
-  filter: ${({ theme }) => theme.dark1ShadowFilter};
+  box-shadow: ${({ theme }) => theme.dark1BoxShadow};
   border-radius: 0.5rem;
   padding: 0.5rem;
   display: flex;
