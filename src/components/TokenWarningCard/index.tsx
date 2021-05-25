@@ -27,7 +27,7 @@ const WarningContainer = styled.div`
   width: 100%;
   padding: 1rem;
   background: ${({ theme }) => theme.dark1};
-  filter: ${({ theme }) => theme.dark1ShadowFilter};
+  box-shadow: ${({ theme }) => theme.dark1BoxShadow};
   box-sizing: border-box;
   border-radius: 20px;
   margin-bottom: 2rem;

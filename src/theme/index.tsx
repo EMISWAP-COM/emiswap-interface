@@ -106,7 +106,7 @@ export function colors(darkMode: boolean): Colors {
     blue: '#37FFDB',
     border1: '#4A4757',
     dark1: '#272530',
-    dark1ShadowFilter: 'drop-shadow(0px 0px 10px rgba(169, 115, 255, 0.32))',
+    dark1BoxShadow: '0px 0px 10px rgba(169, 115, 255, 0.32)',
 
     // dont wanna forget these blue yet
     // blue4: darkMode ? '#153d6f70' : '#C4D9F8',
