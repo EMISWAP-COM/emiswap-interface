@@ -95,7 +95,7 @@ const OptionGrid = styled.div`
 const MenuFlyout = styled.span`
   min-width: 20.125rem;
   background-color: ${({ theme }) => theme.dark1};
-  filter: ${({ theme }) => theme.dark1ShadowFilter};
+  box-shadow: ${({ theme }) => theme.dark1BoxShadow};
 
   border-radius: 0.5rem;
   display: flex;

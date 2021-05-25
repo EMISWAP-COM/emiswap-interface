@@ -14,7 +14,7 @@ const PopoverContainer = styled.div<{ show: boolean }>`
 
   background: ${({ theme }) => theme.dark1};
   border: 1px solid ${({ theme }) => theme.border1};
-  filter: ${({ theme }) => theme.dark1ShadowFilter};
+  box-shadow: ${({ theme }) => theme.dark1BoxShadow};
   color: ${({ theme }) => theme.darkWhite};
   border-radius: 8px;
 `;
