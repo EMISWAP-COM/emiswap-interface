@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 // import { Info, BookOpen, Code, PieChart, MessageCircle } from 'react-feather'
 import { BookOpen, Code, Info, MessageCircle, PieChart } from 'react-feather';
+import WikiIcon from '../../assets/images/wiki.svg'
 import styled from 'styled-components';
 import { ReactComponent as MenuIcon } from '../../assets/images/menu.svg';
 import useToggle from '../../hooks/useToggle';
@@ -68,7 +69,8 @@ const MenuItem = styled(ExternalLink)`
     cursor: pointer;
     text-decoration: none;
   }
-  > svg {
+  > svg,
+  > img {
     margin-right: 8px;
   }
 `;
@@ -105,6 +107,11 @@ export default function Menu() {
           <MenuItem id="link" href="https://about.emiswap.com">
             <Info size={14} />
             About
+          </MenuItem>
+          <MenuItem id="link" href="https://wiki.emiswap.com/">
+            {/* TODO иконка не из react-feather нарушает единообразие*/}
+            <img src={WikiIcon} width={14} height={14} alt="" />
+            Wiki
           </MenuItem>
           <MenuItem id="link" href="https://emiswap.com/analytics">
             <PieChart size={14} />
