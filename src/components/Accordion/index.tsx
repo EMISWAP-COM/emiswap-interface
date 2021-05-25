@@ -15,7 +15,7 @@ export interface AccordionProps {
 }
 //TODO убрать мракобесию с фиксированной высотой для каждого блока.
 const Body = styled.div`
-  background: rgba(0, 0, 0, 0.7);
+  background: #000;
   border: 1px solid #eaeeee;
   box-sizing: border-box;
   box-shadow: 0 2px 10px -2px rgba(231, 215, 175, 0.3), 0px 21px 20px -15px rgba(140, 125, 85, 0.05);
@@ -70,9 +70,13 @@ const Body = styled.div`
 
   .body {
     height: 0;
-    transition: all 1s ease;
+    transition: height 0.5s;
     overflow: hidden;
     padding: 0 38px;
+
+    .childrenWrapper {
+      margin-top: 40px;
+    }
 
     @media screen and (max-width: 1000px) {
       padding: 0;
@@ -84,32 +88,26 @@ const Body = styled.div`
   }
 
   .isOpen1 {
-    margin-top: 40px;
     height: 630px;
   }
 
   .isOpen2 {
-    margin-top: 40px;
     height: 270px;
   }
 
   .isOpen3 {
-    margin-top: 40px;
     height: 600px;
   }
 
   .isOpen4 {
-    margin-top: 40px;
     height: 310px;
   }
 
   .isOpen5 {
-    margin-top: 40px;
     height: 900px;
   }
 
   .isOpen6 {
-    margin-top: 40px;
     height: 750px;
   }
 
@@ -290,7 +288,11 @@ export default (props: AccordionProps) => {
           <img src={isOpen ? ArrowUp : ArrowDown} alt="" />
         </div>
       </div>
-      <div className={`body ${isOpen ? props.openClass : ''}`}>{props.children}</div>
+      <div className={`body ${isOpen ? props.openClass : ''}`}>
+        <div className={'childrenWrapper'}>
+          {props.children}
+        </div>
+      </div>
       {(props.btnText || props.btnSecondText) && (
         <div className={`btn-line ${isOpen ? '' : 'hidden'}`}>
           <div className="btn-line__line" />

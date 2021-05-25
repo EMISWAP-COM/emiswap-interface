@@ -18,7 +18,7 @@ export const BodyWrapper = styled.div<{ disabled?: boolean; data?: string }>`
   max-width: 440px;
   width: 100%;
   background: ${({ theme }) => theme.dark1};
-  filter: ${({theme}) => theme.dark1ShadowFilter};
+  box-shadow: ${({ theme }) => theme.dark1BoxShadow};
   border-radius: 24px;
   padding: 34px 30px 40px;
   opacity: ${({ disabled }) => (disabled ? '0.4' : '1')};
