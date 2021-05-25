@@ -12,5 +12,5 @@ export const AppWrapper = styled.div`
   background-position: top;
   background-repeat: no-repeat;
   background-size: 1920px 1390px;
-  background-attachment: fixed;
+  shape-rendering: optimizeSpeed;
 `;
