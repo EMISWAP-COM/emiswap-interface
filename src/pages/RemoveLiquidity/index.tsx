@@ -639,7 +639,7 @@ export default function RemoveLiquidity({
                   <div />
                   <div>
                     1 {currencyB?.symbol} ={' '}
-                    {tokenB ? tokenAmountToString(pair.priceOf(tokenB).invert()) : '-'}{' '}
+                    {tokenB ? tokenAmountToString(pair.priceOf(tokenB)) : '-'}{' '}
                     {currencyA?.symbol}
                   </div>
                 </RowBetween>
