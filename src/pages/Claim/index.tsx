@@ -8,7 +8,7 @@ import QuestionHelper from '../../components/QuestionHelper';
 import { Input as NumericalInput } from '../../components/NumericalInput';
 import { InputRow } from '../../components/CurrencyInputPanel';
 import { CursorPointer, TYPE } from '../../theme';
-import { darken } from 'polished';
+import { lighten } from 'polished';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../state';
 import { Image } from '../../components/CurrencyLogo';
@@ -34,8 +34,7 @@ const StyledArrowLeft = styled(ArrowLeft)`
 
 const Container = styled.div<{ hideInput: boolean }>`
   border-radius: 8px;
-  border: 1px solid ${({ theme }) => theme.grey1};
-  background-color: ${({ theme }) => theme.bg1};
+  border: 1px solid ${({ theme }) => theme.border1};
 `;
 
 const LabelRow = styled.div`
@@ -53,8 +52,8 @@ const TokenInfoBlock = styled.div`
   height: 2rem;
   font-size: 20px;
   font-weight: 500;
-  background-color: ${({ theme }) => theme.grey5};
-  color: ${({ theme }) => theme.grey2};
+  background-color: ${({ theme }) => theme.darkGrey};
+  color: ${({ theme }) => theme.white};
   border-radius: 12px;
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.075);
   outline: none;
@@ -70,7 +69,7 @@ const TokenInfoBlock = styled.div`
 
   :focus,
   :hover {
-    background-color: ${({ theme }) => darken(0.05, theme.grey5)};
+    background-color: ${({ theme }) => lighten(0.1, theme.darkGrey)};
   }
 `;
 
@@ -81,7 +80,7 @@ const StyledTokenName = styled.span`
 
 const StyledBalanceMax = styled.button`
   height: 2rem;
-  background-color: ${({ theme }) => theme.primary5};
+  background-color: ${({ theme }) => theme.red};
   border: 1px solid transparent;
   border-radius: 0.5rem;
   font-size: 0.875rem;
@@ -90,7 +89,7 @@ const StyledBalanceMax = styled.button`
   font-weight: 500;
   cursor: pointer;
   margin-right: 0.5rem;
-  color: ${({ theme }) => theme.red3};
+  color: ${({ theme }) => theme.white};
 
   :hover {
     border: 1px solid ${({ theme }) => theme.red3};
@@ -223,7 +222,7 @@ export default function Claim({
           <CursorPointer>
             <TYPE.body
               onClick={onMax}
-              color={theme.text2}
+              color={theme.darkWhite}
               fontWeight={500}
               fontSize={14}
               style={{ display: 'inline' }}
