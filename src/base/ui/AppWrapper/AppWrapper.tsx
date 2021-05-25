@@ -9,7 +9,7 @@ export const AppWrapper = styled.div`
   // height: 100vh;
   background-image: url('${backgroundCurvedLines}');
   background-color: #000;
-  background-position: center;
+  background-position: top;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: auto;
 `;
