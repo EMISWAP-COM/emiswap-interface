@@ -1,5 +1,5 @@
 import { JSBI, Pair, Percent } from '@uniswap/sdk';
-import { darken } from 'polished';
+import { lighten } from 'polished';
 import React, { useContext, useState } from 'react';
 import { ChevronDown, ChevronUp } from 'react-feather';
 import { Link } from 'react-router-dom';
@@ -27,9 +27,9 @@ export const FixedHeightRow = styled(RowBetween)`
 `;
 
 export const HoverCard = styled(Card)`
-  border: 1px solid ${({ theme }) => theme.bg2};
+  border: 1px solid ${({ theme }) => theme.border1};
   :hover {
-    border: 1px solid ${({ theme }) => darken(0.06, theme.bg2)};
+    border: 1px solid ${({ theme }) => lighten(0.06, theme.border1)};
   }
 `;
 
@@ -136,6 +136,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
 }
 
 export default function FullPositionCard({ pair, border }: PositionCardProps) {
+  const theme = useContext(ThemeContext);
   const { account } = useActiveWeb3React();
 
   const currency0 = unwrappedToken(pair.token0);
@@ -176,7 +177,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
               margin={true}
               size={20}
             />
-            <Text fontWeight={500} fontSize={20}>
+            <Text color={theme.darkWhite} fontWeight={500} fontSize={20}>
               {!currency0 || !currency1 ? (
                 <Dots>Loading</Dots>
               ) : (
@@ -186,9 +187,9 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
           </RowFixed>
           <RowFixed>
             {showMore ? (
-              <ChevronUp size="20" style={{ marginLeft: '10px' }} />
+              <ChevronUp color={theme.darkWhite} size="20" style={{ marginLeft: '10px' }} />
             ) : (
-              <ChevronDown size="20" style={{ marginLeft: '10px' }} />
+              <ChevronDown color={theme.darkWhite} size="20" style={{ marginLeft: '10px' }} />
             )}
           </RowFixed>
         </FixedHeightRow>
@@ -196,13 +197,13 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
           <AutoColumn gap="8px">
             <FixedHeightRow>
               <RowFixed>
-                <Text fontSize={16} fontWeight={500}>
+                <Text color={theme.darkWhite} fontSize={16} fontWeight={500}>
                   Pooled {currency0.symbol}:
                 </Text>
               </RowFixed>
               {token0Deposited ? (
                 <RowFixed>
-                  <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
+                  <Text color={theme.darkWhite} fontSize={16} fontWeight={500} marginLeft={'6px'}>
                     {tokenAmountToString(token0Deposited)}
                   </Text>
                   <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={currency0} />
@@ -214,13 +215,13 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
 
             <FixedHeightRow>
               <RowFixed>
-                <Text fontSize={16} fontWeight={500}>
+                <Text color={theme.darkWhite} fontSize={16} fontWeight={500}>
                   Pooled {currency1.symbol}:
                 </Text>
               </RowFixed>
               {token1Deposited ? (
                 <RowFixed>
-                  <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
+                  <Text color={theme.darkWhite} fontSize={16} fontWeight={500} marginLeft={'6px'}>
                     {tokenAmountToString(token1Deposited)}
                   </Text>
                   <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={currency1} />
@@ -230,18 +231,18 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
               )}
             </FixedHeightRow>
             <FixedHeightRow>
-              <Text fontSize={16} fontWeight={500}>
+              <Text color={theme.darkWhite} fontSize={16} fontWeight={500}>
                 Your pool tokens:
               </Text>
-              <Text fontSize={16} fontWeight={500}>
+              <Text color={theme.darkWhite} fontSize={16} fontWeight={500}>
                 {userPoolBalance ? tokenAmountToString(userPoolBalance, 4) : '-'}
               </Text>
             </FixedHeightRow>
             <FixedHeightRow>
-              <Text fontSize={16} fontWeight={500}>
+              <Text color={theme.darkWhite} fontSize={16} fontWeight={500}>
                 Your pool share:
               </Text>
-              <Text fontSize={16} fontWeight={500}>
+              <Text color={theme.darkWhite} fontSize={16} fontWeight={500}>
                 {poolTokenPercentage ? poolTokenPercentage.toFixed(2) + '%' : '-'}
               </Text>
             </FixedHeightRow>
