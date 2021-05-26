@@ -53,7 +53,7 @@ const StyledDialogContent = styled(
     margin: 0 0 2rem 0;
     border: 1px solid ${({ theme }) => theme.border1};
     background-color: ${({ theme }) => theme.dark1};
-    box-shadow: ${({ theme }) => theme.dark1BoxShadow};
+    box-shadow: ${({ theme }) => theme.modalBoxShadow};
     padding: 0;
     width: 54vw;
     overflow: scroll;

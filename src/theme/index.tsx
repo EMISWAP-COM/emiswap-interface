@@ -107,6 +107,7 @@ export function colors(darkMode: boolean): Colors {
     border1: '#4A4757',
     dark1: '#272530',
     dark1BoxShadow: '0px 0px 10px rgba(169, 115, 255, 0.32)',
+    modalBoxShadow: '0px 0px 8px 4px #7a2df4',
 
     // dont wanna forget these blue yet
     // blue4: darkMode ? '#153d6f70' : '#C4D9F8',

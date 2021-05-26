@@ -70,6 +70,7 @@ export interface Colors {
   border1: Color;
   dark1: Color;
   dark1BoxShadow: Color;
+  modalBoxShadow: Color;
 }
 
 export interface Grids {
