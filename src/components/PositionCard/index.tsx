@@ -197,7 +197,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
           <AutoColumn gap="8px">
             <FixedHeightRow>
               <RowFixed>
-                <Text color={theme.darkWhite} fontSize={16} fontWeight={500}>
+                <Text color={theme.darkText} fontSize={16} fontWeight={500}>
                   Pooled {currency0.symbol}:
                 </Text>
               </RowFixed>
@@ -215,7 +215,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
 
             <FixedHeightRow>
               <RowFixed>
-                <Text color={theme.darkWhite} fontSize={16} fontWeight={500}>
+                <Text color={theme.darkText} fontSize={16} fontWeight={500}>
                   Pooled {currency1.symbol}:
                 </Text>
               </RowFixed>
@@ -231,7 +231,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
               )}
             </FixedHeightRow>
             <FixedHeightRow>
-              <Text color={theme.darkWhite} fontSize={16} fontWeight={500}>
+              <Text color={theme.darkText} fontSize={16} fontWeight={500}>
                 Your pool tokens:
               </Text>
               <Text color={theme.darkWhite} fontSize={16} fontWeight={500}>
@@ -239,7 +239,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
               </Text>
             </FixedHeightRow>
             <FixedHeightRow>
-              <Text color={theme.darkWhite} fontSize={16} fontWeight={500}>
+              <Text color={theme.darkText} fontSize={16} fontWeight={500}>
                 Your pool share:
               </Text>
               <Text color={theme.darkWhite} fontSize={16} fontWeight={500}>
