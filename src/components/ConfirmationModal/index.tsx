@@ -1,9 +1,8 @@
 import React, { useContext } from 'react';
-import styled, { ThemeContext } from 'styled-components';
+import styled, { ThemeContext } from 'styled-components/macro';
 import Modal from '../Modal';
-import { ExternalLink } from '../../theme';
+import { ExternalLink, CloseIcon, Spinner } from '../../theme';
 import { Text } from 'rebass';
-import { CloseIcon, Spinner } from '../../theme/components';
 import { RowBetween } from '../Row';
 import { AlertTriangle, ArrowUpCircle } from 'react-feather';
 import { ButtonPrimary } from '../Button';
@@ -75,17 +74,17 @@ export default function ConfirmationModal({
             </RowBetween>
             <ConfirmedIcon>
               {transactionBroadcast ? (
-                <ArrowUpCircle strokeWidth={0.5} size={90} color={theme.primary1} />
+                <ArrowUpCircle strokeWidth={0.5} size={90} color={theme.purple} />
               ) : (
                 <CustomLightSpinner src={Circle} alt="loader" size={'90px'} />
               )}
             </ConfirmedIcon>
             <AutoColumn gap="12px" justify={'center'}>
-              <Text fontWeight={500} fontSize={20}>
+              <Text color={theme.white} fontWeight={500} fontSize={20}>
                 {transactionBroadcast ? 'Transaction Submitted' : 'Waiting For Confirmation'}
               </Text>
               <AutoColumn gap="12px" justify={'center'}>
-                <Text fontWeight={600} fontSize={14} color="" textAlign="center">
+                <Text fontWeight={600} fontSize={14} color={theme.darkText} textAlign="center">
                   {pendingText}
                 </Text>
               </AutoColumn>
@@ -93,7 +92,7 @@ export default function ConfirmationModal({
               {transactionBroadcast ? (
                 <>
                   <ExternalLink href={getEtherscanLink(chainId, hash, 'transaction')}>
-                    <Text fontWeight={500} fontSize={14} color={theme.primary1}>
+                    <Text fontWeight={500} fontSize={14} color={theme.blue}>
                       View on Etherscan
                     </Text>
                   </ExternalLink>
@@ -104,7 +103,7 @@ export default function ConfirmationModal({
                   </ButtonPrimary>
                 </>
               ) : (
-                <Text fontSize={12} color="#565A69" textAlign="center">
+                <Text fontSize={12} color={theme.darkText} textAlign="center">
                   Confirm this transaction in your wallet
                 </Text>
               )}
