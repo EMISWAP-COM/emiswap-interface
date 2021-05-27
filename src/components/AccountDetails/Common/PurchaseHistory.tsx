@@ -16,7 +16,7 @@ export const TableHeader = styled(Header)<{ marginTop?: number; marginBottom?: n
   }
 `;
 
-const Table = styled.div<{ amount?: number }>`
+const Table = styled.div`
   color: ${({ theme }) => theme.white};
   max-height: 138px;
   align-items: center;
@@ -280,7 +280,7 @@ export const PurchaseHistory = () => {
           </TabItem>
         </Tabs>
 
-        <Table amount={poolBonusDisplayData.length}>
+        <Table>
           <TableTitles>
             <DateField>Date</DateField>
             {liquidityTabActive === '10x' && <LevelWrapper flex={1.5}>Swapped tokens</LevelWrapper>}
@@ -362,7 +362,7 @@ export const PurchaseHistory = () => {
 
       <TableHeader>Your Purchase History</TableHeader>
 
-      <Table amount={deposit.length}>
+      <Table>
         <TableTitles>
           <DateField>Timestamp</DateField>
           <LevelWrapper>Purchased tokens</LevelWrapper>
@@ -398,7 +398,7 @@ export const PurchaseHistory = () => {
       </Table>
 
       <TableHeader>Referral Purchase History</TableHeader>
-      <Table amount={referrals.length}>
+      <Table>
         <TableTitles>
           <DateField>Timestamp</DateField>
           <LevelWrapperLabeled>Purchased tokens</LevelWrapperLabeled>
@@ -438,7 +438,7 @@ export const PurchaseHistory = () => {
 
       <TableHeader>Your Fee Compensation History</TableHeader>
 
-      <TableCompensation amount={deposit.length}>
+      <TableCompensation>
         <TableTitles>
           <DateField>Timestamp</DateField>
           <LevelWrapper>Transaction fee</LevelWrapper>
@@ -485,7 +485,7 @@ export const PurchaseHistory = () => {
 
       <TableHeader>Your Swapping Reward History</TableHeader>
 
-      <TableSwapping amount={deposit.length}>
+      <TableSwapping>
         <TableTitles>
           <DateField>Timestamp</DateField>
           <LevelWrapper>Swapped tokens</LevelWrapper>
@@ -546,6 +546,45 @@ export const PurchaseHistory = () => {
           </TableRow>
         )}
       </TableSwapping>
+
+      <TableHeader>Special Reward History</TableHeader>
+
+      <Table>
+        <TableTitles>
+          <DateField>Date</DateField>
+          <LevelWrapper>Reward in ESW</LevelWrapper>
+          <LevelWrapper>Purpose</LevelWrapper>
+        </TableTitles>
+        {details.compensation &&
+        details.compensation.map(
+            ({ created_at, amount, token }, index) => (
+              <TableRow key={index}>
+                <Cell>
+                  <DateField>{convertDate(created_at, DateFormat.short_day)}</DateField>
+                </Cell>
+                <Cell>
+                  <Label>Reward in ESW</Label>
+                  <LevelWrapper>
+                    <Cost>
+                      <span>{convertBigDecimal(amount)}</span>&nbsp; {token}
+                    </Cost>
+                  </LevelWrapper>
+                </Cell>
+                <Cell>
+                  <Label>Purpose</Label>
+                  <LevelWrapper>
+                    -
+                  </LevelWrapper>
+                </Cell>
+              </TableRow>
+            ),
+          )}
+        {!swapping.length && (
+          <TableRow>
+            <NoContent>No content</NoContent>
+          </TableRow>
+        )}
+      </Table>
     </>
   );
 };
