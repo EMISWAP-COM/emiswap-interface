@@ -524,7 +524,6 @@ export default () => {
     <div className="for-scroll-faq">
       <Accordion
         header="Early bird bonuses for Liquidity Providers"
-        openClass="isOpen5"
         /* TODO removed Invest tab until further notice.
         btnText="Provide Liquidity"
         btnClick={handleLiquidityCLick}*/
@@ -535,7 +534,6 @@ export default () => {
       </Accordion>
       <Accordion
         header="Early bird bonuses for Swappers"
-        openClass="isOpen4"
         /* TODO removed Invest tab until further notice.
         btnText="Provide Liquidity"
         btnClick={handleLiquidityCLick}*/
@@ -577,7 +575,6 @@ export default () => {
       </Accordion>
       <Accordion
         header="NFT Magic Cards for Liquidity Providers"
-        openClass="isOpen6"
         /* TODO removed Invest tab until further notice.
         btnText="Provide Liquidity"
         btnClick={handleLiquidityCLick}*/
@@ -588,7 +585,6 @@ export default () => {
         header="Introduction to EmiSwap"
         btnText="Read White Paper"
         btnClick={btnClick1}
-        openClass="isOpen1"
       >
         <Body>
           <div className="title">
@@ -648,14 +644,13 @@ export default () => {
           </div>
         </Body>
       </Accordion>
-      <Accordion header="Private Round details" openClass="isOpen7">
+      <Accordion header="Private Round details">
         <PrivateRound />
       </Accordion>
       <Accordion
         header="Token Allocation Schedule"
         btnText="Read White Paper"
         btnClick={btnClick3}
-        openClass="isOpen3"
       >
         <Body>
           <div className="chart-block">

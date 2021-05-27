@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import Question from '../../assets/svg/FAQIcon/question.svg';
 import ArrowDown from '../../assets/svg/FAQIcon/arrowDown.svg';
 import ArrowUp from '../../assets/svg/FAQIcon/arrowUp.svg';
@@ -11,265 +11,123 @@ export interface AccordionProps {
   btnText?: string;
   btnSecondClick?: () => void;
   btnSecondText?: string;
-  openClass: string;
 }
-//TODO убрать мракобесию с фиксированной высотой для каждого блока.
-const Body = styled.div`
+
+const StyledAccordion = styled.div`
   background: #000;
   border: 1px solid #eaeeee;
   box-sizing: border-box;
   box-shadow: 0 2px 10px -2px rgba(231, 215, 175, 0.3), 0px 21px 20px -15px rgba(140, 125, 85, 0.05);
   border-radius: 12px;
   padding: 27px 30px;
-  margin-bottom: 8px;
+  margin: 10px auto;
+`
 
-  @media screen and (max-width: 1000px) {
-    max-width: calc(100% - 20px);
-    margin: 10px auto;
+const StyledHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+`
+
+const StyledHeaderLeft = styled.div`
+  display: flex;
+  align-items: center;
+
+  img {
+    margin-right: 18px;
   }
+`
 
-  @media screen and (max-width: 600px) {
-    max-width: 100%;
-    margin: 10px auto;
-    padding: 10px;
-  }
+const StyledHeaderOpenIcon = styled.div`
+  height: 32px;
+`
 
-  .h4 {
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 20px;
-    line-height: 32px;
-    letter-spacing: -0.01em;
-    color: #fff;
+const StyledHeaderTitle = styled.div`
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 32px;
+  letter-spacing: -0.01em;
+  color: #fff;
 
-    @media screen and (max-width: 600px) {
-      font-size: 16px;
-      line-height: 1.4;
-    }
-  }
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    font-size: 16px;
+    line-height: 1.4;
+  `};
+`
 
-  .header {
-    display: flex;
-    justify-content: space-between;
-    cursor: pointer;
+const StyledAccordionContent = styled.div<{isOpen: boolean}>`
+  max-height: ${({isOpen}) => isOpen ? '1500px' : '0px'}; // 1500px is max existing content height
+  transition: max-height 1s;
+  overflow: hidden;
+  padding: 0 38px;
 
-    &__left {
-      display: flex;
-      align-items: center;
-
-      img {
-        margin-right: 18px;
-      }
-    }
-
-    &__open-icon {
-      height: 32px;
-    }
-  }
-
-  .body {
-    height: 0;
-    transition: height 0.5s;
-    overflow: hidden;
-    padding: 0 38px;
-
-    .childrenWrapper {
-      margin-top: 40px;
-    }
-
-    @media screen and (max-width: 1000px) {
-      padding: 0;
-    }
-
-    @media screen and (max-width: 500px) {
-      text-align: center;
-    }
-  }
-
-  .isOpen1 {
-    height: 630px;
-  }
-
-  .isOpen2 {
-    height: 270px;
-  }
-
-  .isOpen3 {
-    height: 600px;
-  }
-
-  .isOpen4 {
-    height: 310px;
-  }
-
-  .isOpen5 {
-    height: 900px;
-  }
-
-  .isOpen6 {
-    height: 750px;
-  }
-
-  .isOpen7 {
-    height: 250px;
+  ${({ theme }) => theme.mediaWidth.upToMedium`
     padding: 0;
+  `};
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    text-align: center;
+  `};
+`
+
+const StyledChildrenWrapper = styled.div`
+  margin: 40px 0;
+`
+
+const StyledButtonsWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 48px;
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    display: block;
+    height: auto;
+  `};
+`
+
+const StyledButton = styled.div`
+  background: ${({theme}) => theme.purple};
+  border-radius: 4px;
+  width: 245px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  text-align: center;
+  letter-spacing: 0.02em;
+  color: ${({theme}) => theme.white};
+  margin: 0 30px;
+
+  &:hover,
+  &:focus {
+    box-shadow: ${({ theme }) => theme.purpleBoxShadow};
   }
 
-  @media screen and (max-width: 1300px) {
-    .isOpen1 {
-      height: 690px;
-    }
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    margin: 0 auto 16px auto;
+  `};
+`
 
-    .isOpen2 {
-      height: 420px;
-    }
+const StyledLine = styled.div`
+  width: 200px;
+  height: 1px;
+  background: #dbdede;
 
-    .isOpen3 {
-      height: 600px;
-    }
-
-    .isOpen4 {
-      height: 370px;
-    }
-
-    .isOpen5 {
-      height: 1000px;
-    }
-
-    .isOpen6 {
-      height: 750px;
-    }
-
-    .isOpen7 {
-      height: 390px;
-    }
-  }
-
-  @media screen and (max-width: 1000px) {
-    .isOpen1 {
-      height: 1110px;
-    }
-
-    .isOpen2 {
-      height: 590px;
-    }
-
-    .isOpen3 {
-      height: 900px;
-    }
-
-    .isOpen4 {
-      height: 370px;
-    }
-
-    .isOpen5 {
-      height: calc(1300px - 50vw);
-    }
-
-    .isOpen6 {
-      height: 800px;
-    }
-  }
-
-  @media screen and (max-width: 500px) {
-    .isOpen1 {
-      height: 1160px;
-    }
-
-    .isOpen2 {
-      height: 900px;
-    }
-
-    .isOpen3 {
-      height: 1050px;
-      text-align: left !important;
-    }
-
-    .isOpen4 {
-      height: 710px;
-      text-align: left !important;
-    }
-
-    .isOpen5 {
-      height: calc(2750px - 350vw);
-      text-align: left !important;
-    }
-
-    .isOpen7 {
-      height: 610px;
-    }
-  }
-
-  @media screen and (max-width: 375px) {
-    .isOpen5 {
-      height: calc(2750px - 390vw);
-    }
-  }
-
-  @media screen and (max-width: 320px) {
-    .isOpen1 {
-      height: 1240px;
-    }
-  }
-
-  .btn-line {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 48px;
-
-    &__btn {
-      background: ${({theme}) => theme.purple};
-      border-radius: 4px;
-      width: 245px;
-      height: 48px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      user-select: none;
-      font-family: 'IBM Plex Sans', Arial, sans-serif;
-      font-style: normal;
-      font-weight: 500;
-      font-size: 14px;
-      line-height: 18px;
-      text-align: center;
-      letter-spacing: 0.02em;
-      color: ${({theme}) => theme.white};
-      margin: 0 30px;
-
-      &:hover,
-      &:focus {
-        box-shadow: ${({ theme }) => theme.purpleBoxShadow};
-      }
-    }
-
-    &__line {
-      width: 200px;
-      height: 1px;
-      background: #dbdede;
-    }
-
-    @media screen and (max-width: 600px) {
-      display: block;
-      height: auto;
-
-      &__btn {
-        margin: 0 auto 16px auto !important;
-      }
-
-      &__line {
-        display: none;
-      }
-    }
-  }
-
-  .hidden {
+  ${({ theme }) => theme.mediaWidth.upToSmall`
     display: none;
-  }
-`;
+  `};
+`
 
 export default (props: AccordionProps) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -278,37 +136,37 @@ export default (props: AccordionProps) => {
   };
 
   return (
-    <Body>
-      <div className="header" onClick={handleSwitchAccordion}>
-        <div className="header__left">
+    <StyledAccordion>
+      <StyledHeader onClick={handleSwitchAccordion}>
+        <StyledHeaderLeft>
           <img src={Question} alt="" />
-          <div className={'h4'}>{props.header}</div>
-        </div>
-        <div className="header__open-icon">
+          <StyledHeaderTitle>{props.header}</StyledHeaderTitle>
+        </StyledHeaderLeft>
+        <StyledHeaderOpenIcon>
           <img src={isOpen ? ArrowUp : ArrowDown} alt="" />
-        </div>
-      </div>
-      <div className={`body ${isOpen ? props.openClass : ''}`}>
-        <div className={'childrenWrapper'}>
+        </StyledHeaderOpenIcon>
+      </StyledHeader>
+      <StyledAccordionContent isOpen={isOpen}>
+        <StyledChildrenWrapper>
           {props.children}
-        </div>
-      </div>
-      {(props.btnText || props.btnSecondText) && (
-        <div className={`btn-line ${isOpen ? '' : 'hidden'}`}>
-          <div className="btn-line__line" />
-          {props.btnText && (
-            <div className="btn-line__btn" onClick={props.btnClick}>
-            {props.btnText}
-          </div>
-          )}
-          {props.btnSecondText && (
-            <div className="btn-line__btn" onClick={props.btnSecondClick}>
-              {props.btnSecondText}
-            </div>
-          )}
-          <div className="btn-line__line" />
-        </div>
-      )}
-    </Body>
+        </StyledChildrenWrapper>
+        {(props.btnText || props.btnSecondText) && (
+          <StyledButtonsWrapper>
+            <StyledLine />
+            {props.btnText && (
+              <StyledButton onClick={props.btnClick}>
+                {props.btnText}
+              </StyledButton>
+            )}
+            {props.btnSecondText && (
+              <StyledButton onClick={props.btnSecondClick}>
+                {props.btnSecondText}
+              </StyledButton>
+            )}
+            <StyledLine />
+          </StyledButtonsWrapper>
+        )}
+      </StyledAccordionContent>
+    </StyledAccordion>
   );
 };
