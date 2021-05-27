@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import styled from 'styled-components/macro';
 import Question from '../../assets/svg/FAQIcon/question.svg';
 import ArrowDown from '../../assets/svg/FAQIcon/arrowDown.svg';
@@ -57,9 +57,8 @@ const StyledHeaderTitle = styled.div`
   `};
 `
 
-const StyledAccordionContent = styled.div<{isOpen: boolean}>`
-  max-height: ${({isOpen}) => isOpen ? '1500px' : '0px'}; // 1500px is max existing content height
-  transition: max-height 0.5s;
+const StyledAccordionContent = styled.div`
+  transition: height 0.5s;
   overflow: hidden;
   padding: 0 38px;
 
@@ -131,9 +130,19 @@ const StyledLine = styled.div`
 
 export default (props: AccordionProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const contentRef = useRef<HTMLDivElement>();
+  const contentHeightRef = useRef<number>();
+
   const handleSwitchAccordion = () => {
-    setIsOpen(!isOpen);
+    const isNowOpen = !isOpen;
+    setIsOpen(isNowOpen);
+    contentRef.current.style.height = isNowOpen ? `${contentHeightRef.current}px` : '0px';
   };
+
+  useLayoutEffect(() => {
+    contentHeightRef.current = contentRef.current.clientHeight;
+    contentRef.current.style.height = '0px';
+  }, []);
 
   return (
     <StyledAccordion>
@@ -146,7 +155,7 @@ export default (props: AccordionProps) => {
           <img src={isOpen ? ArrowUp : ArrowDown} alt="" />
         </StyledHeaderOpenIcon>
       </StyledHeader>
-      <StyledAccordionContent isOpen={isOpen}>
+      <StyledAccordionContent ref={contentRef}>
         <StyledChildrenWrapper>
           {props.children}
         </StyledChildrenWrapper>
