@@ -59,7 +59,7 @@ const StyledHeaderTitle = styled.div`
 
 const StyledAccordionContent = styled.div<{isOpen: boolean}>`
   max-height: ${({isOpen}) => isOpen ? '1500px' : '0px'}; // 1500px is max existing content height
-  transition: max-height 1s;
+  transition: max-height 0.5s;
   overflow: hidden;
   padding: 0 38px;
 
