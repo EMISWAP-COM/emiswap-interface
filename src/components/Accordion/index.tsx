@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import styled from 'styled-components/macro';
 import Question from '../../assets/svg/FAQIcon/question.svg';
 import ArrowDown from '../../assets/svg/FAQIcon/arrowDown.svg';
@@ -142,7 +142,7 @@ export default (props: AccordionProps) => {
     // Then asynchronously set this value as content height so transition could work
     if (isNowOpen) {
       contentRef.current.style.height = 'auto';
-      const contentHeight = contentRef.current.clientHeight
+      const contentHeight = contentRef.current.clientHeight;
       contentRef.current.style.height = '0px';
       setTimeout(() => {
         contentRef.current.style.height = `${contentHeight}px`;
@@ -151,6 +151,24 @@ export default (props: AccordionProps) => {
       contentRef.current.style.height = '0px';
     }
   };
+
+  // Recalculate content height on resize if accordion is opened
+  useLayoutEffect(() => {
+    const resizeHandler = () => {
+      if (isOpen) {
+        contentRef.current.style.height = 'auto';
+        const contentHeight = contentRef.current.clientHeight
+        setTimeout(() => {
+          contentRef.current.style.height = `${contentHeight}px`;
+        });
+      }
+    }
+
+    window.addEventListener('resize', resizeHandler);
+    return () => {
+      window.removeEventListener('resize', resizeHandler);
+    };
+  }, [isOpen])
 
   return (
     <StyledAccordion>
