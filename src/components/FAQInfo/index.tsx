@@ -339,6 +339,7 @@ const Body = styled.div`
     &__item-value {
       margin-left: auto !important;
       margin-right: 80px;
+      text-align: left;
 
       &--mobile {
         display: none;
