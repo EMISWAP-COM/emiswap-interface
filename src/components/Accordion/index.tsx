@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components/macro';
 import Question from '../../assets/svg/FAQIcon/question.svg';
 import ArrowDown from '../../assets/svg/FAQIcon/arrowDown.svg';
@@ -58,6 +58,7 @@ const StyledHeaderTitle = styled.div`
 `
 
 const StyledAccordionContent = styled.div`
+  height: 0px;
   transition: height 0.5s;
   overflow: hidden;
   padding: 0 38px;
@@ -131,18 +132,24 @@ const StyledLine = styled.div`
 export default (props: AccordionProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const contentRef = useRef<HTMLDivElement>();
-  const contentHeightRef = useRef<number>();
 
   const handleSwitchAccordion = () => {
     const isNowOpen = !isOpen;
     setIsOpen(isNowOpen);
-    contentRef.current.style.height = isNowOpen ? `${contentHeightRef.current}px` : '0px';
-  };
 
-  useLayoutEffect(() => {
-    contentHeightRef.current = contentRef.current.clientHeight;
-    contentRef.current.style.height = '0px';
-  }, []);
+    // Synchronously change content height to auto and then zero to get the value.
+    // Then asynchronously set this value as content height so transition could work
+    if (isNowOpen) {
+      contentRef.current.style.height = 'auto';
+      const contentHeight = contentRef.current.clientHeight
+      contentRef.current.style.height = '0px';
+      setTimeout(() => {
+        contentRef.current.style.height = `${contentHeight}px`;
+      });
+    } else {
+      contentRef.current.style.height = '0px';
+    }
+  };
 
   return (
     <StyledAccordion>
