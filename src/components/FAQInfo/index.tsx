@@ -333,6 +333,7 @@ const Body = styled.div`
 
     &__item-name {
       margin-right: 80px;
+      text-align: left;
     }
 
     &__item-value {
