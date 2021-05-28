@@ -11,6 +11,7 @@ export interface AccordionProps {
   btnText?: string;
   btnSecondClick?: () => void;
   btnSecondText?: string;
+  isContentFullWidth?: boolean;
 }
 
 const StyledAccordion = styled.div`
@@ -57,11 +58,11 @@ const StyledHeaderTitle = styled.div`
   `};
 `
 
-const StyledAccordionContent = styled.div`
+const StyledAccordionContent = styled.div<{isContentFullWidth?: boolean}>`
   height: 0px;
   transition: height 0.5s;
   overflow: hidden;
-  padding: 0 38px;
+  padding: ${({isContentFullWidth}) => isContentFullWidth ? '0 0' : '0 38px'};
 
   ${({ theme }) => theme.mediaWidth.upToMedium`
     padding: 0;
@@ -162,7 +163,7 @@ export default (props: AccordionProps) => {
           <img src={isOpen ? ArrowUp : ArrowDown} alt="" />
         </StyledHeaderOpenIcon>
       </StyledHeader>
-      <StyledAccordionContent ref={contentRef}>
+      <StyledAccordionContent ref={contentRef} isContentFullWidth={props.isContentFullWidth}>
         <StyledChildrenWrapper>
           {props.children}
         </StyledChildrenWrapper>

@@ -644,7 +644,7 @@ export default () => {
           </div>
         </Body>
       </Accordion>
-      <Accordion header="Private Round details">
+      <Accordion header="Private Round details" isContentFullWidth={true}>
         <PrivateRound />
       </Accordion>
       <Accordion
