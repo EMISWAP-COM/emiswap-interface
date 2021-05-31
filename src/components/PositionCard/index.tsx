@@ -1,4 +1,4 @@
-import { JSBI, Pair, Percent } from '@uniswap/sdk';
+import { ETHER, JSBI, Pair, Percent } from '@uniswap/sdk';
 import { lighten } from 'polished';
 import React, { useContext, useState } from 'react';
 import { ChevronDown, ChevronUp } from 'react-feather';
@@ -21,6 +21,7 @@ import { AutoRow, RowBetween, RowFixed } from '../Row';
 import { Dots } from '../swap/styleds';
 import { tokenAmountToString } from '../../utils/formats';
 import { ExternalLink } from '../../theme';
+import { WETH } from '../../constants';
 
 export const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -166,14 +167,17 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
         ]
       : [undefined, undefined];
 
+  const currency0SymbolToDisplay = currency0.symbol === WETH.symbol ? ETHER.symbol : currency0.symbol
+  const currency1SymbolToDisplay = currency1.symbol === WETH.symbol ? ETHER.symbol : currency1.symbol
+
   return (
     <HoverCard border={border}>
       <AutoColumn gap="12px">
         <FixedHeightRow onClick={() => setShowMore(!showMore)} style={{ cursor: 'pointer' }}>
           <RowFixed>
             <DoubleCurrencyLogo
-              currency0={currency0}
-              currency1={currency1}
+              currency0={currency0.symbol === WETH.symbol ? ETHER : currency0}
+              currency1={currency1.symbol === WETH.symbol ? ETHER : currency1}
               margin={true}
               size={20}
             />
@@ -181,7 +185,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
               {!currency0 || !currency1 ? (
                 <Dots>Loading</Dots>
               ) : (
-                `${currency0.symbol}/${currency1.symbol}`
+                `${currency0SymbolToDisplay}/${currency1SymbolToDisplay}`
               )}
             </Text>
           </RowFixed>
@@ -198,7 +202,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
             <FixedHeightRow>
               <RowFixed>
                 <Text color={theme.darkText} fontSize={16} fontWeight={500}>
-                  Pooled {currency0.symbol}:
+                  Pooled {currency0SymbolToDisplay}:
                 </Text>
               </RowFixed>
               {token0Deposited ? (
@@ -216,7 +220,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
             <FixedHeightRow>
               <RowFixed>
                 <Text color={theme.darkText} fontSize={16} fontWeight={500}>
-                  Pooled {currency1.symbol}:
+                  Pooled {currency1SymbolToDisplay}:
                 </Text>
               </RowFixed>
               {token1Deposited ? (
