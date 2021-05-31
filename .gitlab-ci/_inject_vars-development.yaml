@@ -9,7 +9,7 @@ inject_vars:
       tag: "{{ lookup('env', '_img_tag') | string | quote }}"
       pullPolicy: Always
     imagePullSecrets:
-    - name: "{{ lookup('env', '_env_name') }}"
+      - name: gitlab-foreign-project-registry
     env:
       app_bugsnag_token: "9df906f1f861575615450187642a267e"
       start_block_number: 22794339
