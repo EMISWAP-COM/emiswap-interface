@@ -12,16 +12,16 @@ inject_vars:
       - name: gitlab-foreign-project-registry
     env:
       app_bugsnag_token: "9df906f1f861575615450187642a267e"
-      start_block_number: 22794339
-      app_blockchain_block_confirmation: 6
-      app_blockchain_block_start_number: 22794339
-      app_blockchain_block_limit_save: 100
-      app_blockchain_block_num_threads: 15
-      app_blockchain_block_events_load_limit: 1000
-      app_blockchain_block_events_load_threads: 15
-      app_db_timeout: 60
-      app_db_pool_timeout: 60
-      app_db_max_connections: 25
+      start_block_number: "22794339"
+      app_blockchain_block_confirmation: "6"
+      app_blockchain_block_start_number: "25178068"
+      app_blockchain_block_limit_save: "100"
+      app_blockchain_block_num_threads: "15"
+      app_blockchain_block_events_load_limit: "1000"
+      app_blockchain_block_events_load_threads: "15"
+      app_db_timeout: "60"
+      app_db_pool_timeout: "60"
+      app_db_max_connections: "25"
       app_env: development
       app_contracts_emi_price: '0x80807258d5b507b3e07a17048df72324627b0a5b'
       app_contracts_esw: '0xe37Ae239a84110009426071B7828A6fbd6be5F45'
@@ -167,8 +167,7 @@ inject_vars:
         REACT_APP_EMI_ROUTER_KOVAN: '0x3c756Eed6DC66F7013923AC50aB236111a9494bD',
         REACT_APP_EMI_VAMP: '0x09aff00ed78b18dcd5cbd444a563e9329f459c7a',
         REACT_APP_ESW_CLAIM_API: 'https://sign.emiswap.com',
-        REACT_APP_ESW_CLAIM_CHAIN_ID: 'ETH_KV',
-        APP_BLOCKCHAIN_BLOCK_START_NUMBER: "25178068"
+        REACT_APP_ESW_CLAIM_CHAIN_ID: 'ETH_KV'
       };
 
   postgresql:
