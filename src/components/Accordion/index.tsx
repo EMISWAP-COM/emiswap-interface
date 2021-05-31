@@ -11,12 +11,11 @@ export interface AccordionProps {
   btnText?: string;
   btnSecondClick?: () => void;
   btnSecondText?: string;
-  headerClass?: string;
   openClass: string;
 }
 //TODO убрать мракобесию с фиксированной высотой для каждого блока.
 const Body = styled.div`
-  background: #ffffff;
+  background: #000;
   border: 1px solid #eaeeee;
   box-sizing: border-box;
   box-shadow: 0 2px 10px -2px rgba(231, 215, 175, 0.3), 0px 21px 20px -15px rgba(140, 125, 85, 0.05);
@@ -42,7 +41,7 @@ const Body = styled.div`
     font-size: 20px;
     line-height: 32px;
     letter-spacing: -0.01em;
-    color: #000000;
+    color: #fff;
 
     @media screen and (max-width: 600px) {
       font-size: 16px;
@@ -71,9 +70,13 @@ const Body = styled.div`
 
   .body {
     height: 0;
-    transition: all 1s ease;
+    transition: height 0.5s;
     overflow: hidden;
     padding: 0 38px;
+
+    .childrenWrapper {
+      margin-top: 40px;
+    }
 
     @media screen and (max-width: 1000px) {
       padding: 0;
@@ -85,32 +88,26 @@ const Body = styled.div`
   }
 
   .isOpen1 {
-    margin-top: 40px;
     height: 630px;
   }
 
   .isOpen2 {
-    margin-top: 40px;
     height: 270px;
   }
 
   .isOpen3 {
-    margin-top: 40px;
     height: 600px;
   }
 
   .isOpen4 {
-    margin-top: 40px;
     height: 310px;
   }
 
   .isOpen5 {
-    margin-top: 40px;
     height: 900px;
   }
 
   .isOpen6 {
-    margin-top: 40px;
     height: 750px;
   }
 
@@ -224,7 +221,7 @@ const Body = styled.div`
     height: 48px;
 
     &__btn {
-      background: #ffd541;
+      background: ${({theme}) => theme.purple};
       border-radius: 4px;
       width: 245px;
       height: 48px;
@@ -240,17 +237,18 @@ const Body = styled.div`
       line-height: 18px;
       text-align: center;
       letter-spacing: 0.02em;
-      color: #141717;
+      color: ${({theme}) => theme.white};
+      margin: 0 30px;
 
-      &--second {
-        margin-left: 50px;
+      &:hover,
+      &:focus {
+        box-shadow: ${({ theme }) => theme.purpleBoxShadow};
       }
     }
 
     &__line {
       width: 200px;
       height: 1px;
-      margin: 0 34px;
       background: #dbdede;
     }
 
@@ -271,35 +269,6 @@ const Body = styled.div`
   .hidden {
     display: none;
   }
-
-  .blink1-text {
-    -webkit-animation: blink1 3s linear infinite;
-    animation: blink1 3s linear infinite;
-  }
-
-  @-webkit-keyframes blink1 {
-    0% {
-      color: rgba(34, 34, 34, 1);
-    }
-    50% {
-      color: rgba(34, 34, 34, 0);
-    }
-    100% {
-      color: rgba(34, 34, 34, 1);
-    }
-  }
-
-  @keyframes blink1 {
-    0% {
-      color: rgba(34, 34, 34, 1);
-    }
-    50% {
-      color: rgba(34, 34, 34, 0);
-    }
-    100% {
-      color: rgba(34, 34, 34, 1);
-    }
-  }
 `;
 
 export default (props: AccordionProps) => {
@@ -313,21 +282,27 @@ export default (props: AccordionProps) => {
       <div className="header" onClick={handleSwitchAccordion}>
         <div className="header__left">
           <img src={Question} alt="" />
-          <div className={`h4 ${props.headerClass}`}>{props.header}</div>
+          <div className={'h4'}>{props.header}</div>
         </div>
         <div className="header__open-icon">
           <img src={isOpen ? ArrowUp : ArrowDown} alt="" />
         </div>
       </div>
-      <div className={`body ${isOpen ? props.openClass : ''}`}>{props.children}</div>
-      {props.btnText && (
+      <div className={`body ${isOpen ? props.openClass : ''}`}>
+        <div className={'childrenWrapper'}>
+          {props.children}
+        </div>
+      </div>
+      {(props.btnText || props.btnSecondText) && (
         <div className={`btn-line ${isOpen ? '' : 'hidden'}`}>
           <div className="btn-line__line" />
-          <div className="btn-line__btn" onClick={props.btnClick}>
+          {props.btnText && (
+            <div className="btn-line__btn" onClick={props.btnClick}>
             {props.btnText}
           </div>
+          )}
           {props.btnSecondText && (
-            <div className="btn-line__btn btn-line__btn--second" onClick={props.btnSecondClick}>
+            <div className="btn-line__btn" onClick={props.btnSecondClick}>
               {props.btnSecondText}
             </div>
           )}

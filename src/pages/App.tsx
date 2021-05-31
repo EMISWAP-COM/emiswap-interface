@@ -1,7 +1,6 @@
 import React, { useEffect, Suspense } from 'react';
 import { HashRouter, Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 import Wordmark from '../components/Wordmark';
-import Logo from '../components/Logo';
 import styled from 'styled-components';
 import GoogleAnalyticsReporter from '../components/analytics/GoogleAnalyticsReporter';
 import Header from '../components/Header';
@@ -20,7 +19,7 @@ import PoolFinder from './PoolFinder';
 import RemoveLiquidity from './RemoveLiquidity';
 import { RedirectOldRemoveLiquidityPathStructure } from './RemoveLiquidity/redirects';
 import Swap from './Swap';
-import Invest from './Invest';
+// TODO removed Invest tab until further notice. import Invest from './Invest';
 import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects';
 import ReferralUrlParser from '../referral-url-parser';
 // import MigrateV1 from './MigrateV1';
@@ -28,6 +27,8 @@ import ReferralUrlParser from '../referral-url-parser';
 import { AppWrapper } from '../base/ui/AppWrapper/AppWrapper';
 import { ErrorBoundary } from '../components/ErrorBoundary/ErrorBoundary';
 import Claim from './Claim';
+import MigrateV1 from './MigrateV1';
+import MigrateV1Exchange from './MigrateV1/MigrateV1Exchange';
 
 const LogoWrapper = styled.div`
   display: none;
@@ -85,7 +86,6 @@ export default function App() {
           <Route component={DarkModeQueryParamReader} />
           <AppWrapper>
             <LogoWrapper>
-              <Logo mobile={true} />
               <Wordmark />
             </LogoWrapper>
             <HeaderWrapper>
@@ -97,7 +97,8 @@ export default function App() {
               <Web3ReactManager>
                 <ErrorBoundary title={'Oops, try again later...'} onDismiss={() => {}}>
                   <Switch>
-                    <Route exact strict path="/invest" component={Invest} />
+                    {/* TODO removed Invest tab until further notice.
+                    <Route exact strict path="/invest" component={Invest} />*/}
                     <Route exact strict path="/swap" component={Swap} />
                     <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
                     <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
@@ -127,8 +128,8 @@ export default function App() {
                       path="/remove/:currencyIdA/:currencyIdB"
                       component={RemoveLiquidity}
                     />
-                    {/*<Route exact strict path="/migrate" component={MigrateV1} />*/}
-                    {/*<Route exact strict path="/migrate/:address" component={MigrateV1Exchange} />*/}
+                    <Route exact strict path="/migrate" component={MigrateV1} />
+                    <Route exact strict path="/migrate/:address" component={MigrateV1Exchange} />
                     <Route exact strict path="/claim/:tokenName" component={Claim} />
                     <Route component={RedirectPathToSwap} />
                   </Switch>

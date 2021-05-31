@@ -21,6 +21,13 @@ import { UserRoles } from '../../components/WalletModal';
 
 const currentTimestamp = () => new Date().getTime();
 
+export enum InvestRequestStatus {
+  PENDING = 'pending',
+  REJECTED = 'rejected',
+  ACCEPTED = 'accepted',
+  SENT = 'sent'
+}
+
 export interface UserInfo {
   address: string;
   role: UserRoles | null;
@@ -34,6 +41,7 @@ export interface UserInfo {
     role: string;
   };
   invest_requested: boolean;
+  invest_request_state: null | InvestRequestStatus;
 }
 
 export interface UserState {
@@ -100,6 +108,7 @@ export const initialState: UserState = {
       role: '',
     },
     invest_requested: false,
+    invest_request_state: null,
   },
 };
 

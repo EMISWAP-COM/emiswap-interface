@@ -67,14 +67,14 @@ const HeaderRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
   padding: 34px 30px;
   font-weight: 500;
-  color: ${props => (props.color === 'blue' ? ({ theme }) => theme.green5 : 'inherit')};
+  color: ${({theme, color}) => (color === 'blue' ? theme.green5 : theme.white)};
   ${({ theme }) => theme.mediaWidth.upToMedium`
     padding: 1rem;
   `};
 `;
 
 const ContentWrapper = styled.div`
-  background-color: ${({ theme }) => theme.bg2};
+  background-color: ${({ theme }) => theme.dark1};
   padding: 2rem;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
@@ -112,6 +112,7 @@ const Blurb = styled.div`
     margin: 1rem;
     font-size: 12px;
   `};
+  color: ${({ theme }) => theme.darkWhite};
 `;
 
 const OptionGrid = styled.div`
@@ -133,6 +134,7 @@ const TermsRow = styled.div`
   margin-bottom: 10px;
   display: flex;
   justify-content: center;
+  color: ${({ theme }) => theme.darkWhite}
 `;
 
 const WarningRow = styled.div`

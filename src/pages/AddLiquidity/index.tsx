@@ -6,7 +6,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { Text } from 'rebass';
 import { ThemeContext } from 'styled-components';
 import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button';
-import { BlueCard, GreyCard, LightCard } from '../../components/Card';
+import { BlueCard, OutlineCard, LightCard } from '../../components/Card';
 import { AutoColumn, ColumnCenter } from '../../components/Column';
 import ConfirmationModal from '../../components/ConfirmationModal';
 import CurrencyInputPanel from '../../components/CurrencyInputPanel';
@@ -38,7 +38,7 @@ import { PoolPriceBar } from './PoolPriceBar';
 import { tokenAmountToString } from '../../utils/formats';
 import { useEmiRouter } from '../../hooks/useContract';
 import { ErrorText } from '../../components/swap/styleds';
-import { useMockEstimate } from '../../hooks/useMockEstimate';
+import { useTransactionPrice } from '../../hooks/useTransactionPrice';
 import { useReferralAddress } from '../../hooks/useReferralAddress';
 
 export default function AddLiquidity({
@@ -77,7 +77,7 @@ export default function AddLiquidity({
 
   const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity);
 
-  const [isEnough] = useMockEstimate('pool');
+  const [isEnough] = useTransactionPrice('pool');
 
   const isValid = !error;
   // modal and loading
@@ -313,7 +313,7 @@ export default function AddLiquidity({
       <AutoColumn gap="20px">
         <LightCard mt="20px" borderRadius="20px">
           <RowFlat>
-            <Text fontSize="48px" fontWeight={500} lineHeight="42px" marginRight={10}>
+            <Text color={theme.darkWhite} fontSize="48px" fontWeight={500} lineHeight="42px" marginRight={10}>
               {currencies[Field.CURRENCY_A]?.symbol + '/' + currencies[Field.CURRENCY_B]?.symbol}
             </Text>
             <DoubleCurrencyLogo
@@ -327,7 +327,7 @@ export default function AddLiquidity({
     ) : (
       <AutoColumn gap="20px">
         <RowFlat style={{ marginTop: '20px' }}>
-          <Text fontSize="48px" fontWeight={500} lineHeight="42px" marginRight={10}>
+          <Text color={theme.darkWhite} fontSize="48px" fontWeight={500} lineHeight="42px" marginRight={10}>
             {tokenAmountToString(liquidityMinted)}
           </Text>
           <DoubleCurrencyLogo
@@ -337,14 +337,14 @@ export default function AddLiquidity({
           />
         </RowFlat>
         <Row>
-          <Text fontSize="24px">
+          <Text color={theme.darkWhite} fontSize="24px">
             {currencies[Field.CURRENCY_A]?.symbol +
               '/' +
               currencies[Field.CURRENCY_B]?.symbol +
               ' Pool Tokens'}
           </Text>
         </Row>
-        <TYPE.italic fontSize={12} textAlign="left" padding={'8px 0 0 0 '}>
+        <TYPE.italic color={theme.darkWhite} fontSize={12} textAlign="left" padding={'8px 0 0 0 '}>
           {`Output is estimated. If the price changes by more than ${allowedSlippage /
             100}% your transaction will revert.`}
         </TYPE.italic>
@@ -482,21 +482,19 @@ export default function AddLiquidity({
               currencies[Field.CURRENCY_B] &&
               pairState !== PairState.INVALID && (
                 <>
-                  <GreyCard padding="0px" borderRadius={'20px'}>
                     <RowBetween padding="1rem">
-                      <TYPE.subHeader fontWeight={500} fontSize={14}>
+                      <TYPE.subHeader color={theme.darkWhite} fontWeight={500} fontSize={14}>
                         {noLiquidity ? 'Initial prices' : 'Prices'} and pool share
                       </TYPE.subHeader>
                     </RowBetween>{' '}
-                    <LightCard padding="1rem" borderRadius={'20px'}>
+                    <OutlineCard padding="1rem" borderRadius={'20px'}>
                       <PoolPriceBar
                         currencies={currencies}
                         poolTokenPercentage={poolTokenPercentage}
                         noLiquidity={noLiquidity}
                         price={price}
                       />
-                    </LightCard>
-                  </GreyCard>
+                  </OutlineCard>
                 </>
               )}
 

@@ -41,7 +41,7 @@ import { convertBigDecimal, normalizeNumber } from '../uitls';
 const Wrapper = styled.div`
   width: 100%;
   margin-bottom: 20px;
-  border-top: ${({ theme }) => `1px solid ${theme.grey1}`};
+  border-top: ${({ theme }) => `1px solid ${theme.lightGrey}`};
 
   @media screen and (max-width: 1200px) {
     display: flex;
@@ -58,8 +58,8 @@ const Cell = styled.div`
   align-items: center;
   justify-content: flex-end;
   width: 16%;
-  color: ${({ theme }) => theme.grey3};
-  border-bottom: ${({ theme }) => `1px solid ${theme.grey1}`};
+  color: ${({ theme }) => theme.white};
+  border-bottom: ${({ theme }) => `1px solid ${theme.lightGrey}`};
 
   @media screen and (max-width: 1200px) {
     justify-content: flex-start;
@@ -72,7 +72,7 @@ const Title = styled(Cell)`
   width: 150px;
   font-size: 0.8rem;
   font-weight: normal;
-  color: ${({ theme }) => theme.grey6};
+  color: ${({ theme }) => theme.white};
 
   @media screen and (max-width: 1200px) {
     padding-right: 20px;

@@ -26,13 +26,14 @@ const ProfileStatus = styled.div`
   align-items:
   background: lightgreen;
   gap: 12px;
+  color: ${({ theme }) => theme.darkText};
 
   @media screen and (max-width: 1200px) {
     padding: 0 0 1rem 0;
   }
 
   span {
-  color: ${({ theme }) => theme.grey3};
+    color: ${({ theme }) => theme.white};
     font-weight: 700;
     text-transform: uppercase;
   }

@@ -6,7 +6,6 @@ import { Spring } from 'react-spring/renderprops';
 import { DialogOverlay, DialogContent } from '@reach/dialog';
 import { isMobile } from 'react-device-detect';
 import '@reach/dialog/styles.css';
-import { transparentize } from 'polished';
 import { useGesture } from 'react-use-gesture';
 
 const AnimatedDialogOverlay = animated(DialogOverlay);
@@ -52,9 +51,9 @@ const StyledDialogContent = styled(
   &[data-reach-dialog-content] {
     border: none!important;
     margin: 0 0 2rem 0;
-    border: 1px solid ${({ theme }) => theme.bg1};
-    background-color: ${({ theme }) => theme.bg1};
-    box-shadow: 0 4px 8px 0 ${({ theme }) => transparentize(0.95, theme.shadow1)};
+    border: 1px solid ${({ theme }) => theme.border1};
+    background-color: ${({ theme }) => theme.dark1};
+    box-shadow: ${({ theme }) => theme.modalBoxShadow};
     padding: 0;
     width: 54vw;
     overflow: scroll;

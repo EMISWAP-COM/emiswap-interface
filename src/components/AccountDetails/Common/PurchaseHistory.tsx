@@ -17,7 +17,7 @@ export const TableHeader = styled(Header)<{ marginTop?: number; marginBottom?: n
 `;
 
 const Table = styled.div<{ amount?: number }>`
-  color: ${({ theme }) => theme.grey6};
+  color: ${({ theme }) => theme.white};
   max-height: 138px;
   align-items: center;
   overflow-y: auto;
@@ -114,14 +114,14 @@ const Cost = styled.div`
 
   span {
     font-weight: 600;
-    color: #000000;
+    color: ${({ theme }) => theme.white};
   }
 `;
 
 const Wallet = styled.div`
   flex: 1;
   width: auto;
-  color: ${({ theme }) => theme.text1};
+  color: ${({ theme }) => theme.white};
 
   @media screen and (max-width: 1200px) {
     font-weight: 500;
@@ -157,7 +157,7 @@ const Cell = styled.div<{ flex?: number }>`
     padding: 0.5rem 1rem;
 
     &:nth-child(2n) {
-      background: ${({ theme }) => theme.bg2};
+      background: ${({ theme }) => theme.darkGrey};
     }
   }
 `;
@@ -166,7 +166,7 @@ const TableTitles = styled(TableRow)`
   position: sticky;
   top: 0;
   padding: 0 1rem;
-  background: ${({ theme }) => theme.bg2};
+  background: ${({ theme }) => theme.darkGrey};
   height: 30px;
   border-bottom: none;
 
@@ -194,7 +194,7 @@ const Tabs = styled.div`
   right: 0;
   margin-left: auto;
   border-radius: 6px;
-  background: #e6e7e8;
+  background: ${({ theme }) => theme.darkGrey};
 
   @media screen and (max-width: 1200px) {
     position: relative;
@@ -211,11 +211,10 @@ const TabItem = styled.div<{ active?: boolean }>`
   min-width: 120px;
   padding: 7px 12px;
   border-radius: 6px;
-  border: 1px solid ${({ active }) => (active ? '#E8AF59' : '#E6E7E8')};
   font-size: 12px;
   font-weight: 500;
-  background: ${({ active }) => (active ? '#FFD541' : '#E6E7E8')};
-  color: ${({ active }) => (active ? '#24272C' : '#555959')} !important;
+  background: ${({ active, theme }) => (active ? theme.purple : theme.darkGrey)};
+  color: ${({ theme }) => theme.white} !important;
   box-shadow: ${({ active }) => (active ? '0px 2px 6px rgba(0, 0, 0, 0.07)' : 'none')};
   cursor: pointer;
 `;

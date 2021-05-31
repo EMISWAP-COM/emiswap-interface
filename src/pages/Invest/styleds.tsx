@@ -13,3 +13,29 @@ export const TabsTitle = styled.div`
   line-height: 36px;
   font-weight: 450;
 `;
+
+export const PrivateSaleText = styled.div`
+  max-width: 300px;
+  font-size: 15px;
+  line-height: 21px;
+  color: ${({ theme }) => theme.darkText};
+  margin: 8px auto 10px auto;
+`;
+
+export const LoginFirstText = styled.div`
+  max-width: 300px;
+  font-size: 15px;
+  line-height: 21px;
+  color: ${({ theme }) => theme.white};
+  font-weight: 600;
+  margin: 8px auto 10px auto;
+`;
+
+export const OnlyInvestorsText = styled.div`
+  max-width: 320px;
+  font-size: 15px;
+  line-height: 21px;
+  color: #89919a;
+  margin: 8px auto 10px auto;
+`;
+

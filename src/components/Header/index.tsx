@@ -2,7 +2,7 @@ import { ChainId } from '@uniswap/sdk';
 import React from 'react';
 import { isMobile, isTablet } from 'react-device-detect';
 import { Text } from 'rebass';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import Logo from '../../assets/svg/logo.svg';
 import LogoDark from '../../assets/svg/logo_dark.svg';
 // import Wordmark from '../../assets/svg/wordmark.svg';
@@ -10,7 +10,7 @@ import LogoDark from '../../assets/svg/logo_dark.svg';
 import { useActiveWeb3React } from '../../hooks';
 import { useDarkModeManager } from '../../state/user/hooks';
 import { useETHBalances } from '../../state/wallet/hooks';
-import { YellowCard } from '../Card';
+import { WhiteCard } from '../Card';
 import Settings from '../Settings';
 import Menu from '../Menu';
 import Row, { RowBetween } from '../Row';
@@ -66,7 +66,7 @@ const HeaderElement = styled.div`
     height: 40px;
     padding: 12px 22px;
     text-decoration: none;
-    background: #9a56d1;
+    background: ${({ theme }) => theme.purple};
     border-radius: 4px;
     font-family: IBM Plex Sans;
     font-style: normal;
@@ -79,6 +79,11 @@ const HeaderElement = styled.div`
     letter-spacing: 0.02em;
     color: #ffffff;
     margin-right: 10px;
+
+    &:hover,
+    &:focus {
+      box-shadow: ${({ theme }) => theme.purpleBoxShadow};
+    }
   }
 
   .purple-btn > span {
@@ -107,9 +112,9 @@ const LogoElem = styled(HeaderElement)`
     width: calc(100% - 124px);
   `};
   ${({ theme }) => theme.mediaWidth.upToTabletop`
-    background-color: white;
-    width: calc(100% - 156px);
-    padding-right: 0px;
+    width: calc(100% - 160px);
+    padding: 22px 0px 22px 16px;
+    border-radius: 0;
   `};
 `;
 
@@ -118,7 +123,7 @@ const StyledMagicButton = styled.a`
   position: relative;
   border: none;
   height: 40px;
-  background-color: #9a56d1;
+  background-color: ${({ theme }) => theme.purple};
   align-items: center;
   transition: all 0.3s ease-in-out;
 
@@ -148,7 +153,6 @@ const HeaderElementWrap = styled.div`
     padding-right: 16px;
     height: 55px;
     box-sizing: content-box;
-    background-color: white;
   `};
 `;
 
@@ -175,12 +179,12 @@ const AccountElement = styled.div<{ active: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: ${({ theme, active }) => (!active ? theme.bg1 : 'transparent')};
+  background-color: transparent;
   color: ${({ theme }) => theme.grey3};
   border-radius: 12px;
   white-space: nowrap;
   // width: 100%;
-  
+
   @media screen and (max-width: 768px) {
     width: 100%;
     max-width: 440px;
@@ -199,7 +203,7 @@ const TestnetWrapper = styled.div`
   pointer-events: auto;
 `;
 
-const NetworkCard = styled(YellowCard)`
+const NetworkCard = styled(WhiteCard)`
   width: fit-content;
   margin-right: 10px;
   border-radius: 12px;
@@ -207,22 +211,23 @@ const NetworkCard = styled(YellowCard)`
 `;
 
 const UniIcon = styled.div`
+  width: 175px;
+  height: 47px;
   transition: transform 0.3s ease;
   :hover {
     transform: rotate(-5deg);
   }
 `;
 
+const LogoImg = styled.img`
+  width: 100%;
+`;
+
 const HeaderControls = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: calc(100% - 285px);
-  justify-content: flex-end;
-
-  :last-child {
-    margin-left: auto;
-  }
+  margin-left: auto;
 
   ${({ theme }) => theme.mediaWidth.upToMedium`
     order: 3;
@@ -232,7 +237,6 @@ const HeaderControls = styled.div`
 
   ${({ theme }) => theme.mediaWidth.upToTabletop`
   :last-child {
-    margin-left: 0;
     width: 100%;
     background: transparent;
 
@@ -254,6 +258,7 @@ const BalanceText = styled(Text)`
   letter-spacing: 0.02em;
   display: flex;
   align-items: center;
+  color: ${({ theme }) => theme.white};
 
   ${({ theme }) => theme.mediaWidth.upToTabletop`
     display: none;
@@ -292,7 +297,7 @@ export default function Header() {
         <LogoElem>
           <Title href=".">
             <UniIcon>
-              <img src={isDark ? LogoDark : Logo} alt="logo" />
+              <LogoImg src={isDark ? LogoDark : Logo} alt="logo" />
             </UniIcon>
             <TitleText>
               {/*<img style={{ marginLeft: '4px', marginTop: '4px' }} src={isDark ? WordmarkDark : Wordmark} alt="logo" width="160px"/>*/}

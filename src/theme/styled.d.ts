@@ -57,6 +57,20 @@ export interface Colors {
   yellow3: Color;
   yellow4: Color;
   horse: Color;
+  whiteTransparent: Color;
+  purple: Color;
+  purpleBoxShadow: Color;
+  darkWhite: Color;
+  darkText: Color;
+  darkGrey: Color;
+  lightGrey: Color;
+  red: Color;
+  green: Color;
+  blue: Color;
+  border1: Color;
+  dark1: Color;
+  dark1BoxShadow: Color;
+  modalBoxShadow: Color;
 }
 
 export interface Grids {

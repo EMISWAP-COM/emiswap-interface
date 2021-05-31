@@ -5,7 +5,7 @@ import { JSBI, ZERO_ADDRESS } from '@uniswap/sdk';
 import { useCurrencyBalances } from '../state/wallet/hooks';
 import { useActiveWeb3React } from './index';
 
-export const useMockEstimate = (type: string) => {
+export const useTransactionPrice = (type: string) => {
   const gasPrice = useSelector((state: AppState) => state.stats.gasPrice.safe_gas_price);
   const { account } = useActiveWeb3React();
   const eth = useCurrency(ZERO_ADDRESS);

@@ -34,14 +34,14 @@ const IconWrapper = styled.div<{ size?: number }>`
 
 const Web3StatusGeneric = styled(ButtonSecondary)`
   ${({ theme }) => theme.flexRowNoWrap}
-  width: 270px;
+  width: 240px;
   align-items: center;
   padding: 0.35rem 0.5rem;
   border-radius: 4px;
   cursor: pointer;
   user-select: none;
   height: 40px;
-  
+
   @media screen and (max-width: 768px) {
     width: 100%;
   }
@@ -84,29 +84,28 @@ const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
   ${({ faded }) =>
     faded &&
     css`
-      background-color: ${({ theme }) => theme.primary1};
-      border: 1px solid ${({ theme }) => theme.primary1};
-      color: ${({ theme }) => theme.grey2};
+      background-color: transparent;
+      border: 1px solid ${({ theme }) => theme.whiteTransparent};
+      color: ${({ theme }) => theme.white};
 
       :hover,
       :focus {
-        border: 1px solid ${({ theme }) => darken(0.05, theme.yellow4)};
-        color: ${({ theme }) => darken(0.05, theme.primaryText1)};
+        border-color: ${({ theme }) => theme.purple};
+        background-color: transparent;
+        color: ${({ theme }) => theme.white};
       }
     `}
 `;
 
 const Web3StatusConnected = styled(Web3StatusGeneric)<{ pending?: boolean }>`
-  background-color: ${({ pending, theme }) => (pending ? theme.green5 : theme.primary1)};
-  border: 1px solid ${({ pending, theme }) => (pending ? theme.green5 : theme.primary1)};
-  color: ${({ pending, theme }) => (pending ? theme.white : theme.grey2)};
+  background-color: ${({ pending, theme }) => (pending ? theme.green5 : theme.purple)};
+  border: 0 !important;
+  color: ${({ theme }) => theme.white};
   font-weight: 500;
   :hover,
   :focus {
-    background-color: ${({ pending, theme }) =>
-      darken(0.05, pending ? theme.green5 : theme.primary1)};
-    border: 1px solid transparent;
-    box-shadow: none;
+    background-color: ${({ pending, theme }) => (pending ? theme.green5 : theme.purple)};
+    box-shadow: ${({ theme }) => theme.purpleBoxShadow}
   }
 `;
 
