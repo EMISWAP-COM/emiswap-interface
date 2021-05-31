@@ -168,7 +168,7 @@ inject_vars:
         REACT_APP_EMI_VAMP: '0x09aff00ed78b18dcd5cbd444a563e9329f459c7a',
         REACT_APP_ESW_CLAIM_API: 'https://sign.emiswap.com',
         REACT_APP_ESW_CLAIM_CHAIN_ID: 'ETH_KV',
-        APP_BLOCKCHAIN_BLOCK_START_NUMBER: '25173554'
+        APP_BLOCKCHAIN_BLOCK_START_NUMBER: "25178068"
       };
 
   postgresql:
