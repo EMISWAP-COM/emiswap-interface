@@ -1,5 +1,5 @@
 inject_vars:
-    emiswap-oracle:
+  emiswap-oracle:
     resources:
       requests: { cpu: 1, memory: '768Mi' }
       limits: { cpu: 1, memory: '768Mi' }
