@@ -5,8 +5,8 @@ inject_vars:
       limits: { cpu: 1, memory: '768Mi' }
     fullnameOverride: emiswap-oracle
     image:
-      repository: "{{ lookup('env', '_img_repo') }}/{{ lookup( 'env', '_img_name') }}"
-      tag: "{{ lookup('env', '_img_tag') | string | quote }}"
+      repository: registry.gitlab.com/emidao/emiswap/oracle/emiswap-oracle-production
+      tag: latest
       pullPolicy: Always
     imagePullSecrets:
       - name: gitlab-foreign-project-registry
