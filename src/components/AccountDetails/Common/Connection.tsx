@@ -16,6 +16,7 @@ import { useWeb3React } from '@web3-react/core';
 import Modal from '../../Modal';
 import { injected } from '../../../connectors';
 import { darken } from 'polished';
+import { FortmaticConnector } from '../../../connectors/Fortmatic';
 
 const Container = styled.div`
   font-size: 13px;
@@ -109,11 +110,12 @@ const ChangeActionsBlock = styled.div`
 
 const ChangeAddressBtn = styled(ActionBtn)`
   height: 32px;
-  border: 1px solid #DBDEDE !important;
-  background: #FFFFFF !important;
+  border: 1px solid rgb(97, 92, 105) !important;
+  background-color: transparent;
+  color: #FFFFFF;
   
   &:hover, &:focus, &:active {
-    background: #FFFFFF;
+    background-color: transparent;
     box-shadow: none;
   }
   
@@ -126,12 +128,12 @@ const ChangeAddressBtn = styled(ActionBtn)`
 
 const ChangeWalletBtn = styled(ActionBtn)`
   margin-left: 8px !important;
-  background: #9A56D1 !important;
-  border: 1px solid #9A56D1 !important;
+  background-color: ${({ theme }) => theme.purple} !important;
+  border: 1px solid ${({ theme }) => theme.purple} !important;
   color: #FFFFFF;
   
   &:hover, &:focus, &:active {
-    background: #9A56D1 !important;
+    background: ${({ theme }) => theme.purple} !important;
     box-shadow: none;
   }
   
@@ -188,6 +190,7 @@ const ModalContent = styled.div`
   flex-wrap: wrap;
   width: 100%;
   padding: 24px;
+  color: ${({ theme }) => theme.white}
 `;
 
 const ModalButtons = styled.div`
@@ -199,18 +202,20 @@ const ModalButtons = styled.div`
 
 const ChangeCancelBtn = styled(ActionBtn)`
   margin: 0 0 0 8px !important;
-  border: 1px solid #DBDEDE !important;
-  background: #FFFFFF !important;
+  border: 1px solid rgb(97, 92, 105) !important;
+  background-color: transparent;
+  color: #FFFFFF;
   
   &:hover, &:focus, &:active {
-    background: #FFFFFF;
+    background-color: transparent;
     box-shadow: none;
   }
 `;
 
 const ChangeConfirmBtn = styled(ActionBtn)`
   margin: 0 8px 0 0 !important;
-  background-color: ${({ theme }) => theme.primary1} !important;
+  background-color: ${({ theme }) => theme.purple} !important;
+  border: 1px solid ${({ theme }) => theme.purple} !important;
 `;
 
 interface Props {
@@ -250,7 +255,11 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
   const changeAddress = async () => {
     const provider = await connector.getProvider();
 
-    if (provider?.close) {
+    if (connector instanceof FortmaticConnector && connector?.fortmatic) {
+      connector.fortmatic?.user.logout();
+      deactivate();
+      openOptions();
+    } else if (provider?.close) {
       localStorage.setItem('showWalletModal', 'true');
       provider.close();
     } else {
@@ -290,7 +299,7 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
             </span>
             {confirmChangeModal()}
             <ChangeActionsBlock>
-              {!isMetamask && (
+              {(!isMetamask || true) && (
                 <ChangeAddressBtn onClick={() => setConfirmChangeModalOpen(true)}>
                   Change address
                 </ChangeAddressBtn>
