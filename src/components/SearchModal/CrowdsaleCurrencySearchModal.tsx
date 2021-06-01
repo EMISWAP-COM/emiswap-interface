@@ -11,7 +11,7 @@ import React, {
 import { isMobile } from 'react-device-detect';
 import { useTranslation } from 'react-i18next';
 import { Text } from 'rebass';
-import { ThemeContext } from 'styled-components';
+import { ThemeContext } from 'styled-components/macro';
 import Card from '../../components/Card';
 import { useActiveWeb3React } from '../../hooks';
 import { useToken } from '../../hooks/Tokens';
