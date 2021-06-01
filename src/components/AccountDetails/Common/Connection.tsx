@@ -14,7 +14,6 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { useWeb3React } from '@web3-react/core';
 import Modal from '../../Modal';
-import { injected } from '../../../connectors';
 import { darken } from 'polished';
 import { FortmaticConnector } from '../../../connectors/Fortmatic';
 
@@ -234,7 +233,7 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
 
   const [isConfirmChangeModalOpen, setConfirmChangeModalOpen] = useState(false);
 
-  const isMetamask = connector === injected;
+  // const isMetamask = connector === injected;
   const isCollectDisabled = !Number(balance?.available.ESW);
 
   const sumESW = () => {
@@ -259,6 +258,9 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
       connector.fortmatic?.user.logout();
       deactivate();
       openOptions();
+    /*} else if (connector === injected) {
+      // TODO: Реализация смены кошельков в метамаске
+      metaMaskChangeAccount();*/
     } else if (provider?.close) {
       localStorage.setItem('showWalletModal', 'true');
       provider.close();
@@ -299,11 +301,9 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
             </span>
             {confirmChangeModal()}
             <ChangeActionsBlock>
-              {(!isMetamask || true) && (
-                <ChangeAddressBtn onClick={() => setConfirmChangeModalOpen(true)}>
-                  Change address
-                </ChangeAddressBtn>
-              )}
+              <ChangeAddressBtn onClick={() => setConfirmChangeModalOpen(true)}>
+                Change address
+              </ChangeAddressBtn>
               <ChangeWalletBtn onClick={() => openOptions()}>
                 Change wallet
               </ChangeWalletBtn>
