@@ -51,7 +51,6 @@ export function useApproveCallback(
       (amountToApprove.token.equals(ETHER) || swapState[Field.INPUT].currencyId === ZERO_ADDRESS) &&
       !isPool
     ) {
-
       return ApprovalState.APPROVED;
     }
     // we might not have enough data to know whether or not we need to approve

@@ -25,7 +25,7 @@ export enum InvestRequestStatus {
   PENDING = 'pending',
   REJECTED = 'rejected',
   ACCEPTED = 'accepted',
-  SENT = 'sent'
+  SENT = 'sent',
 }
 
 export interface UserInfo {

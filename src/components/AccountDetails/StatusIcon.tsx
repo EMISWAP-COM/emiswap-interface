@@ -1,14 +1,13 @@
-import { fortmatic, injected, portis, walletconnect, walletlink } from '../../connectors'
-import Identicon from '../Identicon'
-import WalletConnectIcon from '../../assets/images/walletConnectIcon.svg'
-import CoinbaseWalletIcon from '../../assets/images/coinbaseWalletIcon.svg'
-import FortmaticIcon from '../../assets/images/fortmaticIcon.png'
-import PortisIcon from '../../assets/images/portisIcon.png'
-import React from 'react'
-import styled from 'styled-components'
+import { fortmatic, injected, portis, walletconnect, walletlink } from '../../connectors';
+import Identicon from '../Identicon';
+import WalletConnectIcon from '../../assets/images/walletConnectIcon.svg';
+import CoinbaseWalletIcon from '../../assets/images/coinbaseWalletIcon.svg';
+import FortmaticIcon from '../../assets/images/fortmaticIcon.png';
+import PortisIcon from '../../assets/images/portisIcon.png';
+import React from 'react';
+import styled from 'styled-components';
 import { AbstractConnector } from '@web3-react/abstract-connector';
-import { ButtonSecondary } from '../Button'
-
+import { ButtonSecondary } from '../Button';
 
 const IconWrapper = styled.div<{ size?: number }>`
   ${({ theme }) => theme.flexColumnNoWrap};
@@ -42,7 +41,7 @@ const MainWalletAction = styled(WalletAction)`
 `;
 
 interface Props {
-  connectorName: AbstractConnector
+  connectorName: AbstractConnector;
 }
 
 export function StatusIcon({ connectorName }: Props) {

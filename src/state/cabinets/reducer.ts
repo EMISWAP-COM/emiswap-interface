@@ -1,9 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import {
-  loadBalance,
-  loadBonus,
-  loadPerformance,
-} from './actions';
+import { loadBalance, loadBonus, loadPerformance } from './actions';
 
 interface Unlock {
   amount: string;
@@ -63,8 +59,8 @@ interface Balance {
 }
 
 interface BonusDetails {
-  pool_block_bonuses: PoolBonus[],
-  pool_bonuses: PoolBonus[],
+  pool_block_bonuses: PoolBonus[];
+  pool_bonuses: PoolBonus[];
 }
 
 interface CabinetState {
@@ -104,7 +100,7 @@ interface Deposit {
 }
 
 interface PoolBonus {
-  date: string,
+  date: string;
   name: string;
   esw_reward: string;
   esw_price: string;
@@ -221,8 +217,8 @@ export default createReducer(
       })
       .addCase(loadBonus.fulfilled, (state, action) => {
         state.bonusDetails = action.payload;
-      })
-      // .addCase(loadReferralPurchaseHistory.fulfilled, (state, action) => {
-      //   state.referralHistory = action.payload;
-      // }),
+      }),
+  // .addCase(loadReferralPurchaseHistory.fulfilled, (state, action) => {
+  //   state.referralHistory = action.payload;
+  // }),
 );

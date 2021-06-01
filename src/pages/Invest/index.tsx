@@ -1,44 +1,44 @@
-import { TokenAmount } from '@uniswap/sdk'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
-import ReactGA from 'react-ga'
-import { Text } from 'rebass'
-import { ThemeContext } from 'styled-components'
-import { useSelector } from 'react-redux'
-import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button'
-import Card from '../../components/Card'
-import { AutoColumn } from '../../components/Column'
-import ConfirmationModal from '../../components/ConfirmationModal'
-import CurrencyInputPanel from '../../components/CurrencyInputPanel'
-import { RowBetween } from '../../components/Row'
-import { BottomGrouping, Dots, Wrapper } from '../../components/invest/styleds'
-import InvestModalFooter from '../../components/invest/InvestModalFooter'
-import InvestModalHeader from '../../components/invest/InvestModalHeader'
-import TradePrice from '../../components/invest/TradePrice'
-import { TokenWarningCards } from '../../components/TokenWarningCard'
-import { useActiveWeb3React } from '../../hooks'
-import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
-import { useInvest } from '../../hooks/useInvestCallback'
-import { useWalletModalToggle } from '../../state/application/hooks'
-import { Field } from '../../state/invest/actions'
+import { TokenAmount } from '@uniswap/sdk';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import ReactGA from 'react-ga';
+import { Text } from 'rebass';
+import { ThemeContext } from 'styled-components';
+import { useSelector } from 'react-redux';
+import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button';
+import Card from '../../components/Card';
+import { AutoColumn } from '../../components/Column';
+import ConfirmationModal from '../../components/ConfirmationModal';
+import CurrencyInputPanel from '../../components/CurrencyInputPanel';
+import { RowBetween } from '../../components/Row';
+import { BottomGrouping, Dots, Wrapper } from '../../components/invest/styleds';
+import InvestModalFooter from '../../components/invest/InvestModalFooter';
+import InvestModalHeader from '../../components/invest/InvestModalHeader';
+import TradePrice from '../../components/invest/TradePrice';
+import { TokenWarningCards } from '../../components/TokenWarningCard';
+import { useActiveWeb3React } from '../../hooks';
+import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback';
+import { useInvest } from '../../hooks/useInvestCallback';
+import { useWalletModalToggle } from '../../state/application/hooks';
+import { Field } from '../../state/invest/actions';
 import {
   useDefaultsFromURLSearch,
   useDerivedInvestInfo,
   useInvestActionHandlers,
-  useInvestState
-} from '../../state/invest/hooks'
-import { useExpertModeManager, useTokenWarningDismissal } from '../../state/user/hooks'
-import { maxAmountSpendInvest } from '../../utils/maxAmountSpend'
-import AppBody from '../AppBody'
-import { SwapPoolTabs, TabNames } from '../../components/NavigationTabs'
-import { EMISWAP_CROWDSALE_ADDRESS } from '../../constants/abis/crowdsale'
-import { tokenAmountToString } from '../../utils/formats'
-import { AppState } from '../../state'
-import { UserRoles } from '../../components/WalletModal'
-import { useTransactionPrice } from '../../hooks/useTransactionPrice'
-import { ErrorText } from '../../components/swap/styleds'
-import { EmiCardsBlock } from './EmiCardsBlock'
-import { InvestRules } from './InvestRules'
-import { InvestRequestStatus } from '../../state/user/reducer'
+  useInvestState,
+} from '../../state/invest/hooks';
+import { useExpertModeManager, useTokenWarningDismissal } from '../../state/user/hooks';
+import { maxAmountSpendInvest } from '../../utils/maxAmountSpend';
+import AppBody from '../AppBody';
+import { SwapPoolTabs, TabNames } from '../../components/NavigationTabs';
+import { EMISWAP_CROWDSALE_ADDRESS } from '../../constants/abis/crowdsale';
+import { tokenAmountToString } from '../../utils/formats';
+import { AppState } from '../../state';
+import { UserRoles } from '../../components/WalletModal';
+import { useTransactionPrice } from '../../hooks/useTransactionPrice';
+import { ErrorText } from '../../components/swap/styleds';
+import { EmiCardsBlock } from './EmiCardsBlock';
+import { InvestRules } from './InvestRules';
+import { InvestRequestStatus } from '../../state/user/reducer';
 
 const Invest = () => {
   useDefaultsFromURLSearch();
@@ -67,7 +67,9 @@ const Invest = () => {
   } = useDerivedInvestInfo();
 
   const role: UserRoles | null = useSelector((state: AppState) => state.user.info?.role);
-  const investRequestStatus = useSelector((state: AppState) => state.user.info?.invest_request_state);
+  const investRequestStatus = useSelector(
+    (state: AppState) => state.user.info?.invest_request_state,
+  );
 
   const investGranted = investRequestStatus === InvestRequestStatus.ACCEPTED;
 
@@ -133,7 +135,6 @@ const Invest = () => {
     currencyBalances[Field.INPUT],
   );
 
-
   const atMaxAmountInput = Boolean(
     maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput),
   );
@@ -175,7 +176,8 @@ const Invest = () => {
 
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
   // never show if price impact is above threshold in non expert mode
-  const showApproveFlow = investGranted &&
+  const showApproveFlow =
+    investGranted &&
     !error &&
     (approval === ApprovalState.NOT_APPROVED ||
       approval === ApprovalState.PENDING ||
@@ -208,46 +210,41 @@ const Invest = () => {
   const generateInvestButtonGroup = () => {
     return (
       <>
-          <RowBetween>
-            {showApproveFlow && (
-              <ButtonPrimary
+        <RowBetween>
+          {showApproveFlow && (
+            <ButtonPrimary
               onClick={approveCallback}
               disabled={approval !== ApprovalState.NOT_APPROVED || approvalSubmitted}
               altDisbaledStyle={approval === ApprovalState.PENDING} // show solid button while waiting
-              >
-                {approval === ApprovalState.PENDING ? (
-                  <Dots>Approving</Dots>
-                ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
-                  'Approved'
-                ) : (
-                  'Approve ' + currencies[Field.INPUT]?.symbol
-                )}
-              </ButtonPrimary>
-              )
-            }
-            <ButtonError
-              onClick={() => {
-                expertMode ? onInvest() : setShowConfirm(true);
-              }}
-              id="invest-button"
-              disabled={!!error || approval !== ApprovalState.APPROVED }
-              error={investGranted && !!error}
             >
-              <Text fontSize={16} fontWeight={450}>
-                {investGranted && error
-                  ? error
-                  : `Invest`}
-              </Text>
-            </ButtonError>
-
-          </RowBetween>
+              {approval === ApprovalState.PENDING ? (
+                <Dots>Approving</Dots>
+              ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
+                'Approved'
+              ) : (
+                'Approve ' + currencies[Field.INPUT]?.symbol
+              )}
+            </ButtonPrimary>
+          )}
+          <ButtonError
+            onClick={() => {
+              expertMode ? onInvest() : setShowConfirm(true);
+            }}
+            id="invest-button"
+            disabled={!!error || approval !== ApprovalState.APPROVED}
+            error={investGranted && !!error}
+          >
+            <Text fontSize={16} fontWeight={450}>
+              {investGranted && error ? error : `Invest`}
+            </Text>
+          </ButtonError>
+        </RowBetween>
         {!error && !isTransactionFeeCovered && (
           <ErrorText style={{ marginTop: 4 }} fontWeight={500} fontSize="11pt" severity={3}>
             Probably insufficient ETH for transaction fee
           </ErrorText>
         )}
       </>
-
     );
   };
 
@@ -258,17 +255,18 @@ const Invest = () => {
 
   const [dismissedToken0] = useTokenWarningDismissal(chainId, currencies[Field.INPUT]);
   const [dismissedToken1] = useTokenWarningDismissal(chainId, currencies[Field.OUTPUT]);
-  const showWarning = (!dismissedToken0 && !!currencies[Field.INPUT]) ||
+  const showWarning =
+    (!dismissedToken0 && !!currencies[Field.INPUT]) ||
     (!dismissedToken1 && !!currencies[Field.OUTPUT]);
 
   return (
     <>
-      {showWarning && <TokenWarningCards currencies={currencies}/>}
+      {showWarning && <TokenWarningCards currencies={currencies} />}
       <AppBody
         disabled={showWarning}
         className={`invest-mobile ${role === UserRoles.distributor ? 'mb650' : ''}`}
       >
-        <SwapPoolTabs active={TabNames.INVEST}/>
+        <SwapPoolTabs active={TabNames.INVEST} />
         <Wrapper id="invest-page">
           <ConfirmationModal
             isOpen={showConfirm}
@@ -297,7 +295,7 @@ const Invest = () => {
               disabled={role === UserRoles.distributor}
               onMax={() => {
                 maxAmountInput &&
-                onUserInput(Field.INPUT, maxAmountInput.toExact(), currencies[Field.INPUT]);
+                  onUserInput(Field.INPUT, maxAmountInput.toExact(), currencies[Field.INPUT]);
               }}
               onCurrencySelect={currency => {
                 setApprovalSubmitted(false); // reset 2 step UI for approvals
@@ -347,16 +345,15 @@ const Invest = () => {
             </BottomGrouping>
           </AutoColumn>
 
-          <InvestRules/>
-
+          <InvestRules />
         </Wrapper>
-        {role === UserRoles.distributor &&
-        <EmiCardsBlock
-          outputNum={Number(formattedAmounts[Field.OUTPUT])}
-          formattedAmounts={formattedAmounts}
-          handleTypeInputOUTPUT={handleTypeInputOUTPUT}
-        />
-        }
+        {role === UserRoles.distributor && (
+          <EmiCardsBlock
+            outputNum={Number(formattedAmounts[Field.OUTPUT])}
+            formattedAmounts={formattedAmounts}
+            handleTypeInputOUTPUT={handleTypeInputOUTPUT}
+          />
+        )}
       </AppBody>
     </>
   );

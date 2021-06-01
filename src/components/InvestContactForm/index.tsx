@@ -144,7 +144,7 @@ const ModalBody = styled.div`
       border-bottom-color: rgb(17, 179, 130);
       text-decoration: none;
     }
-    
+
     &__helper-text {
       margin-left: 20px;
       margin-top: 4px;
@@ -287,7 +287,9 @@ export default function InvestContactForm({ isOpen, walletID, onDismiss }: EmiMa
         ) : (
           <>
             <div className="modal-body">
-              <div className="modal-body__header">Register to the Waiting list to participate in the Private Stage</div>
+              <div className="modal-body__header">
+                Register to the Waiting list to participate in the Private Stage
+              </div>
               {/*<div className="modal-body__description">*/}
               {/*  If you are interested in purchasing ESW for less than $25,000, fill out this form.*/}
               {/*</div>*/}

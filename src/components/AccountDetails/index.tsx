@@ -18,7 +18,7 @@ import { injected, walletlink } from '../../connectors';
 import { ReactComponent as Close } from '../../assets/images/x.svg';
 import { ExternalLink, LinkStyledButton, TYPE } from '../../theme';
 import { formatConnectorName } from './uitls';
-import { StatusIcon } from './StatusIcon'
+import { StatusIcon } from './StatusIcon';
 
 const HeaderRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
@@ -29,7 +29,6 @@ const HeaderRow = styled.div`
     padding: 1rem;
   `};
 `;
-
 
 const UpperSection = styled.div`
   position: relative;
@@ -69,7 +68,7 @@ const AccountGroupingRow = styled.div`
   color: ${({ theme }) => theme.text1};
 
   div {
-    ${({ theme }) => theme.flexRowNoWrap}
+    ${({ theme }) => theme.flexRowNoWrap};
     align-items: center;
   }
 `;
@@ -95,7 +94,7 @@ const YourAccount = styled.div`
 `;
 
 const LowerSection = styled.div`
-  ${({ theme }) => theme.flexColumnNoWrap}
+  ${({ theme }) => theme.flexColumnNoWrap};
   padding: 1.5rem;
   flex-grow: 1;
   overflow: auto;
@@ -221,8 +220,6 @@ export default function AccountDetails({
     crowdSaleReferralRewardAlreadyMinted,
     crowdSaleReferralRewardAvailableForMinting,
   } = useAccountInfo();
-
-
 
   const clearAllTransactionsCallback = useCallback(
     (event: React.MouseEvent) => {

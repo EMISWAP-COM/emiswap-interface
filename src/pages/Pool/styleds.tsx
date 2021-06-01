@@ -26,7 +26,7 @@ export const MaxButton = styled.button<{ width: string }>`
   overflow: hidden;
   color: ${({ theme }) => theme.darkWhite};
   :hover,
-  :focus{
+  :focus {
     box-shadow: ${({ theme }) => theme.purpleBoxShadow};
     outline: none;
   }

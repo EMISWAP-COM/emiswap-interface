@@ -24,7 +24,6 @@ interface Props {
 }
 
 export const EmiCardsBlock = ({ outputNum, formattedAmounts, handleTypeInputOUTPUT }: Props) => {
-
   const [selectedCardRole, setSelectedCardRole] = useState<number>(0);
 
   const role: UserRoles | null = useSelector((state: AppState) => state.user.info?.role);
@@ -142,35 +141,35 @@ export const EmiCardsBlock = ({ outputNum, formattedAmounts, handleTypeInputOUTP
       bodyNode = (
         <div className="block-with-cards__cards">
           <div className="emicard">
-            <img className="emicard__img" src={OrdinaryIcon} alt="Ordinary"/>
+            <img className="emicard__img" src={OrdinaryIcon} alt="Ordinary" />
             <div className="emicard__info">
               <div className="emicard__title">Ordinary</div>
               <div className="emicard__description">Non less than {ordinaryCount} ESW</div>
             </div>
           </div>
           <div className="emicard">
-            <img className="emicard__img" src={UncommonIcon} alt="Uncommon"/>
+            <img className="emicard__img" src={UncommonIcon} alt="Uncommon" />
             <div className="emicard__info">
               <div className="emicard__title">Uncommon</div>
               <div className="emicard__description">Non less than {uncommonCount} ESW</div>
             </div>
           </div>
           <div className="emicard">
-            <img className="emicard__img" src={RareIcon} alt="Rare"/>
+            <img className="emicard__img" src={RareIcon} alt="Rare" />
             <div className="emicard__info">
               <div className="emicard__title">Rare</div>
               <div className="emicard__description">Non less than {rareCount} ESW</div>
             </div>
           </div>
           <div className="emicard">
-            <img className="emicard__img" src={EpicIcon} alt="Epic"/>
+            <img className="emicard__img" src={EpicIcon} alt="Epic" />
             <div className="emicard__info">
               <div className="emicard__title">Epic</div>
               <div className="emicard__description">Non less than {epicCount} ESW</div>
             </div>
           </div>
           <div className="emicard">
-            <img className="emicard__img" src={LegendaryIcon} alt="Legendary"/>
+            <img className="emicard__img" src={LegendaryIcon} alt="Legendary" />
             <div className="emicard__info">
               <div className="emicard__title">Legendary</div>
               <div className="emicard__description">Non less than {legendaryCount} ESW</div>
@@ -184,7 +183,7 @@ export const EmiCardsBlock = ({ outputNum, formattedAmounts, handleTypeInputOUTP
         bodyNode = (
           <div className="block-with-cards__cards">
             <div className="block-with-current-cards">
-              <img className="block-with-current-cards__img" src={OrdinaryIcon} alt="Ordinary"/>
+              <img className="block-with-current-cards__img" src={OrdinaryIcon} alt="Ordinary" />
               <div className="block-with-current-cards__info">
                 <div className="block-with-current-cards__title">
                   {NunOfCard} {'Ordinary'}
@@ -194,7 +193,7 @@ export const EmiCardsBlock = ({ outputNum, formattedAmounts, handleTypeInputOUTP
             </div>
             {NunOfCard < 4 && (
               <div className="emicard">
-                <img className="emicard__img" src={OrdinaryIcon} alt="Ordinary"/>
+                <img className="emicard__img" src={OrdinaryIcon} alt="Ordinary" />
                 <div className="emicard__info">
                   <div className="emicard__description-card">
                     Make purchase of <b className="green-color ml-5">{NumByGetMoreCard} ESW</b>
@@ -206,7 +205,7 @@ export const EmiCardsBlock = ({ outputNum, formattedAmounts, handleTypeInputOUTP
               </div>
             )}
             <div className="emicard">
-              <img className="emicard__img" src={UncommonIcon} alt="Uncommon"/>
+              <img className="emicard__img" src={UncommonIcon} alt="Uncommon" />
               <div className="emicard__info">
                 <div className="emicard__description-card">
                   Make purchase of <b className="green-color ml-5">{uncommonCount} ESW</b>
@@ -224,7 +223,7 @@ export const EmiCardsBlock = ({ outputNum, formattedAmounts, handleTypeInputOUTP
         bodyNode = (
           <div className="block-with-cards__cards">
             <div className="block-with-current-cards">
-              <img className="block-with-current-cards__img" src={UncommonIcon} alt="Uncommon"/>
+              <img className="block-with-current-cards__img" src={UncommonIcon} alt="Uncommon" />
               <div className="block-with-current-cards__info">
                 <div className="block-with-current-cards__title">
                   {NunOfCard} {'Uncommon'}
@@ -234,7 +233,7 @@ export const EmiCardsBlock = ({ outputNum, formattedAmounts, handleTypeInputOUTP
             </div>
             {NunOfCard < 4 && (
               <div className="emicard">
-                <img className="emicard__img" src={UncommonIcon} alt="Uncommon"/>
+                <img className="emicard__img" src={UncommonIcon} alt="Uncommon" />
                 <div className="emicard__info">
                   <div className="emicard__description-card">
                     Make purchase of <b className="green-color ml-5">{NumByGetMoreCard} ESW</b>
@@ -246,7 +245,7 @@ export const EmiCardsBlock = ({ outputNum, formattedAmounts, handleTypeInputOUTP
               </div>
             )}
             <div className="emicard">
-              <img className="emicard__img" src={RareIcon} alt="Rare"/>
+              <img className="emicard__img" src={RareIcon} alt="Rare" />
               <div className="emicard__info">
                 <div className="emicard__description-card">
                   Make purchase of <b className="green-color ml-5">{rareCount} ESW</b>
@@ -264,7 +263,7 @@ export const EmiCardsBlock = ({ outputNum, formattedAmounts, handleTypeInputOUTP
         bodyNode = (
           <div className="block-with-cards__cards">
             <div className="block-with-current-cards">
-              <img className="block-with-current-cards__img" src={RareIcon} alt="Rare"/>
+              <img className="block-with-current-cards__img" src={RareIcon} alt="Rare" />
               <div className="block-with-current-cards__info">
                 <div className="block-with-current-cards__title">
                   {NunOfCard} {'Rare'}
@@ -274,7 +273,7 @@ export const EmiCardsBlock = ({ outputNum, formattedAmounts, handleTypeInputOUTP
             </div>
             {NunOfCard < 4 && (
               <div className="emicard">
-                <img className="emicard__img" src={RareIcon} alt="Ordinary"/>
+                <img className="emicard__img" src={RareIcon} alt="Ordinary" />
                 <div className="emicard__info">
                   <div className="emicard__description-card">
                     Make purchase of <b className="green-color ml-5">{NumByGetMoreCard} ESW</b>
@@ -286,7 +285,7 @@ export const EmiCardsBlock = ({ outputNum, formattedAmounts, handleTypeInputOUTP
               </div>
             )}
             <div className="emicard">
-              <img className="emicard__img" src={EpicIcon} alt="Epic"/>
+              <img className="emicard__img" src={EpicIcon} alt="Epic" />
               <div className="emicard__info">
                 <div className="emicard__description-card">
                   Make purchase of <b className="green-color ml-5">{epicCount} ESW</b>
@@ -304,7 +303,7 @@ export const EmiCardsBlock = ({ outputNum, formattedAmounts, handleTypeInputOUTP
         bodyNode = (
           <div className="block-with-cards__cards">
             <div className="block-with-current-cards">
-              <img className="block-with-current-cards__img" src={EpicIcon} alt="Epic"/>
+              <img className="block-with-current-cards__img" src={EpicIcon} alt="Epic" />
               <div className="block-with-current-cards__info">
                 <div className="block-with-current-cards__title">
                   {NunOfCard} {'Epic'}
@@ -314,7 +313,7 @@ export const EmiCardsBlock = ({ outputNum, formattedAmounts, handleTypeInputOUTP
             </div>
             {NunOfCard < 4 && (
               <div className="emicard">
-                <img className="emicard__img" src={EpicIcon} alt="Ordinary"/>
+                <img className="emicard__img" src={EpicIcon} alt="Ordinary" />
                 <div className="emicard__info">
                   <div className="emicard__description-card">
                     Make purchase of <b className="green-color ml-5">{NumByGetMoreCard} ESW</b>
@@ -326,7 +325,7 @@ export const EmiCardsBlock = ({ outputNum, formattedAmounts, handleTypeInputOUTP
               </div>
             )}
             <div className="emicard">
-              <img className="emicard__img" src={LegendaryIcon} alt="Legendary"/>
+              <img className="emicard__img" src={LegendaryIcon} alt="Legendary" />
               <div className="emicard__info">
                 <div className="emicard__description-card">
                   Make purchase of <b className="green-color ml-5">{legendaryCount} ESW</b>
@@ -344,7 +343,7 @@ export const EmiCardsBlock = ({ outputNum, formattedAmounts, handleTypeInputOUTP
         bodyNode = (
           <div className="block-with-cards__cards">
             <div className="block-with-current-cards">
-              <img className="block-with-current-cards__img" src={LegendaryIcon} alt="Legendary"/>
+              <img className="block-with-current-cards__img" src={LegendaryIcon} alt="Legendary" />
               <div className="block-with-current-cards__info">
                 <div className="block-with-current-cards__title">
                   {NunOfCard} {'Legendary'}
@@ -353,7 +352,7 @@ export const EmiCardsBlock = ({ outputNum, formattedAmounts, handleTypeInputOUTP
               </div>
             </div>
             <div className="emicard">
-              <img className="emicard__img" src={LegendaryIcon} alt="Ordinary"/>
+              <img className="emicard__img" src={LegendaryIcon} alt="Ordinary" />
               <div className="emicard__info">
                 <div className="emicard__description-card">
                   Make purchase of <b className="green-color ml-5">{NumByGetMoreCard} ESW</b>
@@ -375,8 +374,8 @@ export const EmiCardsBlock = ({ outputNum, formattedAmounts, handleTypeInputOUTP
     if (role === UserRoles.distributor) {
       return (
         <>
-          <div className="arrow-left arrow-position-1"/>
-          <div className="arrow-left-white arrow-position-1"/>
+          <div className="arrow-left arrow-position-1" />
+          <div className="arrow-left-white arrow-position-1" />
         </>
       );
     } else {
@@ -391,7 +390,7 @@ export const EmiCardsBlock = ({ outputNum, formattedAmounts, handleTypeInputOUTP
             rel="noopener noreferrer"
             className="block-with-cards__btn"
           >
-            <img className="block-with-cards__btn-img" src={Question} alt="Question"/>
+            <img className="block-with-cards__btn-img" src={Question} alt="Question" />
             What is NFT Magic Card?
           </a>
           <div
@@ -416,5 +415,4 @@ export const EmiCardsBlock = ({ outputNum, formattedAmounts, handleTypeInputOUTP
       {getFooter(role)}
     </EmiCard>
   );
-
 };

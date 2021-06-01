@@ -313,7 +313,13 @@ export default function AddLiquidity({
       <AutoColumn gap="20px">
         <LightCard mt="20px" borderRadius="20px">
           <RowFlat>
-            <Text color={theme.darkWhite} fontSize="48px" fontWeight={500} lineHeight="42px" marginRight={10}>
+            <Text
+              color={theme.darkWhite}
+              fontSize="48px"
+              fontWeight={500}
+              lineHeight="42px"
+              marginRight={10}
+            >
               {currencies[Field.CURRENCY_A]?.symbol + '/' + currencies[Field.CURRENCY_B]?.symbol}
             </Text>
             <DoubleCurrencyLogo
@@ -327,7 +333,13 @@ export default function AddLiquidity({
     ) : (
       <AutoColumn gap="20px">
         <RowFlat style={{ marginTop: '20px' }}>
-          <Text color={theme.darkWhite} fontSize="48px" fontWeight={500} lineHeight="42px" marginRight={10}>
+          <Text
+            color={theme.darkWhite}
+            fontSize="48px"
+            fontWeight={500}
+            lineHeight="42px"
+            marginRight={10}
+          >
             {tokenAmountToString(liquidityMinted)}
           </Text>
           <DoubleCurrencyLogo
@@ -482,18 +494,18 @@ export default function AddLiquidity({
               currencies[Field.CURRENCY_B] &&
               pairState !== PairState.INVALID && (
                 <>
-                    <RowBetween padding="1rem">
-                      <TYPE.subHeader color={theme.darkWhite} fontWeight={500} fontSize={14}>
-                        {noLiquidity ? 'Initial prices' : 'Prices'} and pool share
-                      </TYPE.subHeader>
-                    </RowBetween>{' '}
-                    <OutlineCard padding="1rem" borderRadius={'20px'}>
-                      <PoolPriceBar
-                        currencies={currencies}
-                        poolTokenPercentage={poolTokenPercentage}
-                        noLiquidity={noLiquidity}
-                        price={price}
-                      />
+                  <RowBetween padding="1rem">
+                    <TYPE.subHeader color={theme.darkWhite} fontWeight={500} fontSize={14}>
+                      {noLiquidity ? 'Initial prices' : 'Prices'} and pool share
+                    </TYPE.subHeader>
+                  </RowBetween>{' '}
+                  <OutlineCard padding="1rem" borderRadius={'20px'}>
+                    <PoolPriceBar
+                      currencies={currencies}
+                      poolTokenPercentage={poolTokenPercentage}
+                      noLiquidity={noLiquidity}
+                      price={price}
+                    />
                   </OutlineCard>
                 </>
               )}

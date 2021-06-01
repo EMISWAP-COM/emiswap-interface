@@ -13,7 +13,9 @@ export function useLpTokens(): {
 } {
   const contract = useVampContract();
   const [lpTokensInfo, setLpTokensInfo] = useState<any[]>([]);
-  const [lpTokensDetailedInfo, setLpTokensDetailedInfot] = useState<{ addresses: string[]; base: string }[]>([]);
+  const [lpTokensDetailedInfo, setLpTokensDetailedInfot] = useState<
+    { addresses: string[]; base: string }[]
+  >([]);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const formattedAddresses = lpTokensDetailedInfo

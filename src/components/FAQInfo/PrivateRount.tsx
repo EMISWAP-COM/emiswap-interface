@@ -17,7 +17,7 @@ const CardInfo = styled.div`
   margin: 8px;
   padding: 24px;
   border-radius: 4px;
-  background: ${({theme}) => theme.darkGrey};
+  background: ${({ theme }) => theme.darkGrey};
 
   @media screen and (max-width: 1000px) {
     padding: 16px;
@@ -57,7 +57,7 @@ const CardInfoHeadCircle = styled.img`
 `;
 
 const CardDescriptionText = styled.div`
-  color: ${({theme}) => theme.darkText};
+  color: ${({ theme }) => theme.darkText};
 `;
 
 const cardsInfo = [

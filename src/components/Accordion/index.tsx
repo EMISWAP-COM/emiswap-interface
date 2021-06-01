@@ -22,13 +22,13 @@ const StyledAccordion = styled.div`
   border-radius: 12px;
   padding: 27px 30px;
   margin: 10px auto;
-`
+`;
 
 const StyledHeader = styled.div`
   display: flex;
   justify-content: space-between;
   cursor: pointer;
-`
+`;
 
 const StyledHeaderLeft = styled.div`
   display: flex;
@@ -37,11 +37,11 @@ const StyledHeaderLeft = styled.div`
   img {
     margin-right: 18px;
   }
-`
+`;
 
 const StyledHeaderOpenIcon = styled.div`
   height: 32px;
-`
+`;
 
 const StyledHeaderTitle = styled.div`
   font-family: 'IBM Plex Sans', sans-serif;
@@ -56,13 +56,13 @@ const StyledHeaderTitle = styled.div`
     font-size: 16px;
     line-height: 1.4;
   `};
-`
+`;
 
-const StyledAccordionContent = styled.div<{isContentFullWidth?: boolean}>`
+const StyledAccordionContent = styled.div<{ isContentFullWidth?: boolean }>`
   height: 0px;
   transition: height 0.5s;
   overflow: hidden;
-  padding: ${({isContentFullWidth}) => isContentFullWidth ? '0 0' : '0 38px'};
+  padding: ${({ isContentFullWidth }) => (isContentFullWidth ? '0 0' : '0 38px')};
 
   ${({ theme }) => theme.mediaWidth.upToMedium`
     padding: 0;
@@ -71,11 +71,11 @@ const StyledAccordionContent = styled.div<{isContentFullWidth?: boolean}>`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     text-align: center;
   `};
-`
+`;
 
 const StyledChildrenWrapper = styled.div`
   margin: 40px 0;
-`
+`;
 
 const StyledButtonsWrapper = styled.div`
   display: flex;
@@ -88,10 +88,10 @@ const StyledButtonsWrapper = styled.div`
     display: block;
     height: auto;
   `};
-`
+`;
 
 const StyledButton = styled.div`
-  background: ${({theme}) => theme.purple};
+  background: ${({ theme }) => theme.purple};
   border-radius: 4px;
   width: 245px;
   height: 48px;
@@ -107,7 +107,7 @@ const StyledButton = styled.div`
   line-height: 18px;
   text-align: center;
   letter-spacing: 0.02em;
-  color: ${({theme}) => theme.white};
+  color: ${({ theme }) => theme.white};
   margin: 0 30px;
 
   &:hover,
@@ -118,7 +118,7 @@ const StyledButton = styled.div`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     margin: 0 auto 16px auto;
   `};
-`
+`;
 
 const StyledLine = styled.div`
   width: 200px;
@@ -128,7 +128,7 @@ const StyledLine = styled.div`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     display: none;
   `};
-`
+`;
 
 export default (props: AccordionProps) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -157,18 +157,18 @@ export default (props: AccordionProps) => {
     const resizeHandler = () => {
       if (isOpen) {
         contentRef.current.style.height = 'auto';
-        const contentHeight = contentRef.current.clientHeight
+        const contentHeight = contentRef.current.clientHeight;
         setTimeout(() => {
           contentRef.current.style.height = `${contentHeight}px`;
         });
       }
-    }
+    };
 
     window.addEventListener('resize', resizeHandler);
     return () => {
       window.removeEventListener('resize', resizeHandler);
     };
-  }, [isOpen])
+  }, [isOpen]);
 
   return (
     <StyledAccordion>
@@ -182,21 +182,13 @@ export default (props: AccordionProps) => {
         </StyledHeaderOpenIcon>
       </StyledHeader>
       <StyledAccordionContent ref={contentRef} isContentFullWidth={props.isContentFullWidth}>
-        <StyledChildrenWrapper>
-          {props.children}
-        </StyledChildrenWrapper>
+        <StyledChildrenWrapper>{props.children}</StyledChildrenWrapper>
         {(props.btnText || props.btnSecondText) && (
           <StyledButtonsWrapper>
             <StyledLine />
-            {props.btnText && (
-              <StyledButton onClick={props.btnClick}>
-                {props.btnText}
-              </StyledButton>
-            )}
+            {props.btnText && <StyledButton onClick={props.btnClick}>{props.btnText}</StyledButton>}
             {props.btnSecondText && (
-              <StyledButton onClick={props.btnSecondClick}>
-                {props.btnSecondText}
-              </StyledButton>
+              <StyledButton onClick={props.btnSecondClick}>{props.btnSecondText}</StyledButton>
             )}
             <StyledLine />
           </StyledButtonsWrapper>

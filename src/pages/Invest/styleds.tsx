@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const Tabs = styled.div`
-  ${({ theme }) => theme.flexRowNoWrap}
+  ${({ theme }) => theme.flexRowNoWrap};
   align-items: center;
   border-radius: 3rem;
   justify-content: space-evenly;
@@ -38,4 +38,3 @@ export const OnlyInvestorsText = styled.div`
   color: #89919a;
   margin: 8px auto 10px auto;
 `;
-

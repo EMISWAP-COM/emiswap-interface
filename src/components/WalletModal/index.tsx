@@ -25,9 +25,7 @@ import { AppState } from '../../state';
 import { Ambassador } from '../AccountDetails/Ambassador';
 import { Owner } from '../AccountDetails/Owner';
 import WarningBlock from '../Warning/WarningBlock';
-import ReactPixel from 'react-facebook-pixel'
-
-
+import ReactPixel from 'react-facebook-pixel';
 
 const CloseIcon = styled.div`
   display: none;
@@ -57,7 +55,7 @@ const CloseColor = styled(Close)`
 `;
 
 const Wrapper = styled.div`
-  ${({ theme }) => theme.flexColumnNoWrap}
+  ${({ theme }) => theme.flexColumnNoWrap};
   margin: 0;
   padding: 0;
   width: 100%;
@@ -67,7 +65,7 @@ const HeaderRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
   padding: 34px 30px;
   font-weight: 500;
-  color: ${({theme, color}) => (color === 'blue' ? theme.green5 : theme.white)};
+  color: ${({ theme, color }) => (color === 'blue' ? theme.green5 : theme.white)};
   ${({ theme }) => theme.mediaWidth.upToMedium`
     padding: 1rem;
   `};
@@ -93,7 +91,7 @@ const UpperSection = styled.div`
   }
 
   h5:last-child {
-    margin-bottom: 0px;
+    margin-bottom: 0;
   }
 
   h4 {
@@ -103,7 +101,7 @@ const UpperSection = styled.div`
 `;
 
 const Blurb = styled.div`
-  ${({ theme }) => theme.flexRowNoWrap}
+  ${({ theme }) => theme.flexRowNoWrap};
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
@@ -134,7 +132,7 @@ const TermsRow = styled.div`
   margin-bottom: 10px;
   display: flex;
   justify-content: center;
-  color: ${({ theme }) => theme.darkWhite}
+  color: ${({ theme }) => theme.darkWhite};
 `;
 
 const WarningRow = styled.div`
@@ -355,7 +353,7 @@ export default function WalletModal({
           label: 'success',
         });
 
-        ReactPixel.track('wallet_connect_success')
+        ReactPixel.track('wallet_connect_success');
       })
       .catch(error => {
         if (error instanceof UnsupportedChainIdError) {

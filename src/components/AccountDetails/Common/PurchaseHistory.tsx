@@ -86,8 +86,8 @@ const LevelWrapper = styled.div<{ flex?: number }>`
   }
 `;
 
-const PoolCostWrapper = styled(LevelWrapper)<{tabActive: string}>`
-  justify-content: ${({ tabActive }) =>  tabActive === '10x' ? 'center' : 'flex-start'};
+const PoolCostWrapper = styled(LevelWrapper)<{ tabActive: string }>`
+  justify-content: ${({ tabActive }) => (tabActive === '10x' ? 'center' : 'flex-start')};
 
   @media screen and (max-width: 1200px) {
     justify-content: flex-end;

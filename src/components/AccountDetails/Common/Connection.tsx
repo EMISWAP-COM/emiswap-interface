@@ -45,7 +45,7 @@ const WalletInfo = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: ${({ theme }) => theme.white}
+  color: ${({ theme }) => theme.white};
 `;
 
 const Wallet = styled.div`
@@ -66,8 +66,6 @@ const BalanceWrapper = styled.div`
 const BalanceItem = styled.div`
   padding: 14px;
   background: ${({ theme }) => theme.darkGrey};
-
-
 `;
 const BalanceValue = styled(DarkText)`
   font-size: 16px;
@@ -165,9 +163,7 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
       <Container>
         <Main>
           <WalletInfo>
-            <span>
-              Connected with {formatConnectorName(connector)}
-            </span>
+            <span>Connected with {formatConnectorName(connector)}</span>
             <ActionBtn
               onClick={() => {
                 openOptions();

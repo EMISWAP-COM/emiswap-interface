@@ -24,7 +24,7 @@ import {
   updateUserExpertMode,
   updateUserSlippageTolerance,
 } from './actions';
-import { useDefaultTokenList} from '../lists/hooks';
+import { useDefaultTokenList } from '../lists/hooks';
 import { isDefaultToken } from '../../utils';
 import { useTokens } from '../../hooks/useTokens';
 

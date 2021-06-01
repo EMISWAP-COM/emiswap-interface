@@ -46,7 +46,7 @@ const CardLabel = styled.span`
   font-size: 14px;
   max-width: 130px;
   text-align: center;
-  color: ${({theme}) => theme.white};
+  color: ${({ theme }) => theme.white};
 
   @media screen and (max-width: 1000px) {
     display: block;

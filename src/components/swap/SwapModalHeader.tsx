@@ -37,7 +37,12 @@ export default function SwapModalHeader({
         </TruncatedText>
         <RowFixed gap="4px">
           <CurrencyLogo currency={currencies[Field.INPUT]} size={'24px'} />
-          <Text color={theme.darkWhite} fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
+          <Text
+            color={theme.darkWhite}
+            fontSize={24}
+            fontWeight={500}
+            style={{ marginLeft: '10px' }}
+          >
             {currencies[Field.INPUT]?.symbol}
           </Text>
         </RowFixed>
@@ -55,7 +60,12 @@ export default function SwapModalHeader({
         </TruncatedText>
         <RowFixed gap="4px">
           <CurrencyLogo currency={currencies[Field.OUTPUT]} size={'24px'} />
-          <Text color={theme.darkWhite} fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
+          <Text
+            color={theme.darkWhite}
+            fontSize={24}
+            fontWeight={500}
+            style={{ marginLeft: '10px' }}
+          >
             {currencies[Field.OUTPUT]?.symbol}
           </Text>
         </RowFixed>

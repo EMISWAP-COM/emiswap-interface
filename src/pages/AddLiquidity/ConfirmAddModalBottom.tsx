@@ -28,17 +28,25 @@ export function ConfirmAddModalBottom({
   return (
     <>
       <RowBetween>
-        <TYPE.body color={theme.darkWhite}>{currencies[Field.CURRENCY_A]?.symbol} Deposited</TYPE.body>
+        <TYPE.body color={theme.darkWhite}>
+          {currencies[Field.CURRENCY_A]?.symbol} Deposited
+        </TYPE.body>
         <RowFixed>
           <CurrencyLogo currency={currencies[Field.CURRENCY_A]} style={{ marginRight: '8px' }} />
-          <TYPE.body color={theme.darkWhite}>{tokenAmountToString(parsedAmounts[Field.CURRENCY_A])}</TYPE.body>
+          <TYPE.body color={theme.darkWhite}>
+            {tokenAmountToString(parsedAmounts[Field.CURRENCY_A])}
+          </TYPE.body>
         </RowFixed>
       </RowBetween>
       <RowBetween>
-        <TYPE.body color={theme.darkWhite}>{currencies[Field.CURRENCY_B]?.symbol} Deposited</TYPE.body>
+        <TYPE.body color={theme.darkWhite}>
+          {currencies[Field.CURRENCY_B]?.symbol} Deposited
+        </TYPE.body>
         <RowFixed>
           <CurrencyLogo currency={currencies[Field.CURRENCY_B]} style={{ marginRight: '8px' }} />
-          <TYPE.body color={theme.darkWhite}>{tokenAmountToString(parsedAmounts[Field.CURRENCY_B])}</TYPE.body>
+          <TYPE.body color={theme.darkWhite}>
+            {tokenAmountToString(parsedAmounts[Field.CURRENCY_B])}
+          </TYPE.body>
         </RowFixed>
       </RowBetween>
       <RowBetween>
@@ -59,7 +67,9 @@ export function ConfirmAddModalBottom({
       </RowBetween>
       <RowBetween>
         <TYPE.body color={theme.darkWhite}>Share of Pool:</TYPE.body>
-        <TYPE.body color={theme.darkWhite}>{noLiquidity ? '100' : tokenAmountToString(poolTokenPercentage, 4)}%</TYPE.body>
+        <TYPE.body color={theme.darkWhite}>
+          {noLiquidity ? '100' : tokenAmountToString(poolTokenPercentage, 4)}%
+        </TYPE.body>
       </RowBetween>
       <ButtonPrimary style={{ margin: '20px 0 0 0' }} onClick={onAdd}>
         <Text color={theme.darkWhite} fontWeight={500} fontSize={20}>

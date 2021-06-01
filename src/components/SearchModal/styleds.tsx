@@ -42,7 +42,7 @@ export const MenuItem = styled(RowBetween)`
   cursor: ${({ disabled }) => !disabled && 'pointer'};
   pointer-events: ${({ disabled }) => disabled && 'none'};
   transition: all 0.3s ease-in-out;
-    border: 1px solid transparent;
+  border: 1px solid transparent;
   :hover {
     border: 1px solid ${({ theme }) => theme.border1};
   }

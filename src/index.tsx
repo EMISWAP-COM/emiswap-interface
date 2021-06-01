@@ -29,8 +29,6 @@ const options = {
 ReactPixel.init('980043795863508', advancedMatching, options);
 ReactPixel.pageView();
 
-
-
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName);
 
 if (window.ethereum && (window.ethereum as any).hasOwnProperty('autoRefreshOnNetworkChange')) {

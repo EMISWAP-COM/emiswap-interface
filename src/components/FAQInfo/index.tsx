@@ -18,7 +18,7 @@ const Body = styled.div`
     font-size: 18px;
     line-height: 160%;
     letter-spacing: 0.01em;
-    color: ${({theme}) => theme.white};
+    color: ${({ theme }) => theme.white};
     margin-bottom: 40px;
 
     @media screen and (max-width: 1000px) {
@@ -33,7 +33,7 @@ const Body = styled.div`
     font-size: 20px;
     line-height: 32px;
     letter-spacing: -0.01em;
-    color: ${({theme}) => theme.white};
+    color: ${({ theme }) => theme.white};
 
     @media screen and (max-width: 1000px) {
       font-size: 16px;
@@ -87,7 +87,7 @@ const Body = styled.div`
         font-size: 18px;
         line-height: 32px;
         letter-spacing: -0.01em;
-        color: ${({theme}) => theme.darkText};
+        color: ${({ theme }) => theme.darkText};
       }
     }
 
@@ -145,7 +145,7 @@ const Body = styled.div`
     justify-content: space-between;
 
     .card {
-      background: ${({theme}) => theme.darkGrey};
+      background: ${({ theme }) => theme.darkGrey};
       box-sizing: border-box;
       border-radius: 4px;
 
@@ -172,7 +172,7 @@ const Body = styled.div`
         font-weight: normal;
         font-size: 14px;
         line-height: 21px;
-        color: ${({theme}) => theme.darkText};
+        color: ${({ theme }) => theme.darkText};
       }
 
       .card-description {
@@ -259,7 +259,7 @@ const Body = styled.div`
     font-size: 20px;
     line-height: 32px;
     letter-spacing: -0.01em;
-    color: ${({theme}) => theme.darkWhite};
+    color: ${({ theme }) => theme.darkWhite};
 
     @media screen and (max-width: 1300px) {
       font-size: 14px;
@@ -267,7 +267,7 @@ const Body = styled.div`
   }
 
   .grey-text-bold {
-    color: ${({theme}) => theme.white};
+    color: ${({ theme }) => theme.white};
     font-weight: 500;
   }
 
@@ -291,38 +291,38 @@ const Body = styled.div`
     }
 
     &__color0 {
-      background: #D4D3FF;
+      background: #d4d3ff;
     }
 
     &__color1 {
-      background: #47FF37;
+      background: #47ff37;
     }
     &__color2 {
-      background: #37FFDB;
+      background: #37ffdb;
     }
 
     &__color3 {
-      background: #A973FF;
+      background: #a973ff;
     }
 
     &__color4 {
-      background: #147AF1;
+      background: #147af1;
     }
 
     &__color5 {
-      background: #5D09E1;
+      background: #5d09e1;
     }
 
     &__color6 {
-      background: #E478FF;
+      background: #e478ff;
     }
 
     &__color7 {
-      background: #57D7FF;
+      background: #57d7ff;
     }
 
     &__color8 {
-      background: #8479FF;
+      background: #8479ff;
     }
 
     &__text-line {
@@ -442,7 +442,7 @@ const Body = styled.div`
           font-size: 18px;
           line-height: 26px;
           letter-spacing: 0.01em;
-          color: ${({theme}) => theme.darkText};
+          color: ${({ theme }) => theme.darkText};
           margin-bottom: 20px;
 
           @media screen and (max-width: 1000px) {
@@ -481,7 +481,7 @@ const Body = styled.div`
     font-size: 18px;
     line-height: 160%;
     letter-spacing: 0.01em;
-    color: ${({theme}) => theme.darkWhite};
+    color: ${({ theme }) => theme.darkWhite};
     margin-bottom: 20px;
 
     @media screen and (max-width: 1000px) {

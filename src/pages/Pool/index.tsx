@@ -136,7 +136,12 @@ export default function Pool() {
               <GasFeeText>100% gas fee refund</GasFeeText>
               <StyledHr />
               <div>
-                <Text color={theme.darkText} textAlign="center" fontSize={14} style={{ padding: '.5rem 0 .5rem 0' }}>
+                <Text
+                  color={theme.darkText}
+                  textAlign="center"
+                  fontSize={14}
+                  style={{ padding: '.5rem 0 .5rem 0' }}
+                >
                   {"Don't see a pool you joined?"}{' '}
                   <StyledGreenLink id="import-pool-link" to={false ? '/migrate' : '/find'}>
                     {'Import it.'}

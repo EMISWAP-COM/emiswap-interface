@@ -327,7 +327,12 @@ export default function RemoveLiquidity({
           </Text>
           <RowFixed gap="4px">
             <CurrencyLogo currency={currencyA} size={'24px'} />
-            <Text color={theme.darkWhite} fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
+            <Text
+              color={theme.darkWhite}
+              fontSize={24}
+              fontWeight={500}
+              style={{ marginLeft: '10px' }}
+            >
               {currencyA?.symbol}
             </Text>
           </RowFixed>
@@ -341,7 +346,12 @@ export default function RemoveLiquidity({
           </Text>
           <RowFixed gap="4px">
             <CurrencyLogo currency={currencyB} size={'24px'} />
-            <Text color={theme.darkWhite} fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
+            <Text
+              color={theme.darkWhite}
+              fontSize={24}
+              fontWeight={500}
+              style={{ marginLeft: '10px' }}
+            >
               {currencyB?.symbol}
             </Text>
           </RowFixed>
@@ -459,7 +469,9 @@ export default function RemoveLiquidity({
             <OutlineCard>
               <AutoColumn gap="20px">
                 <RowBetween>
-                  <Text fontWeight={500} color={theme.darkWhite}>Amount</Text>
+                  <Text fontWeight={500} color={theme.darkWhite}>
+                    Amount
+                  </Text>
                   <ClickableText
                     fontWeight={500}
                     onClick={() => {
@@ -523,7 +535,12 @@ export default function RemoveLiquidity({
                       </Text>
                       <RowFixed>
                         <CurrencyLogo currency={currencyA} style={{ marginRight: '12px' }} />
-                        <Text fontSize={24} fontWeight={500} color={theme.darkWhite} id="remove-liquidity-tokena-symbol">
+                        <Text
+                          fontSize={24}
+                          fontWeight={500}
+                          color={theme.darkWhite}
+                          id="remove-liquidity-tokena-symbol"
+                        >
                           {currencyA?.symbol}
                         </Text>
                       </RowFixed>
@@ -534,7 +551,12 @@ export default function RemoveLiquidity({
                       </Text>
                       <RowFixed>
                         <CurrencyLogo currency={currencyB} style={{ marginRight: '12px' }} />
-                        <Text fontSize={24} fontWeight={500} color={theme.darkWhite} id="remove-liquidity-tokenb-symbol">
+                        <Text
+                          fontSize={24}
+                          fontWeight={500}
+                          color={theme.darkWhite}
+                          id="remove-liquidity-tokenb-symbol"
+                        >
                           {currencyB?.symbol}
                         </Text>
                       </RowFixed>
@@ -639,8 +661,7 @@ export default function RemoveLiquidity({
                   <div />
                   <div>
                     1 {currencyB?.symbol} ={' '}
-                    {tokenB ? tokenAmountToString(pair.priceOf(tokenB)) : '-'}{' '}
-                    {currencyA?.symbol}
+                    {tokenB ? tokenAmountToString(pair.priceOf(tokenB)) : '-'} {currencyA?.symbol}
                   </div>
                 </RowBetween>
               </div>

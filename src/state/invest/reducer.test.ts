@@ -6,6 +6,7 @@ describe('invest reducer', () => {
   let store: Store<InvestState>;
 
   beforeEach(() => {
+    // @ts-ignore // todo: Fix this test
     store = createStore(reducer, {
       [Field.OUTPUT]: { currencyId: '' },
       [Field.INPUT]: { currencyId: '' },

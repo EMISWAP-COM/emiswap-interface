@@ -24,7 +24,7 @@ import { InvestState } from './reducer';
 import { TokenAddressMap, WrappedTokenInfo } from '../lists/hooks';
 import { ESW } from '../../constants';
 import { investMinESW } from '../../constants/invest';
-import { maxAmountSpendInvest } from '../../utils/maxAmountSpend'
+import { maxAmountSpendInvest } from '../../utils/maxAmountSpend';
 
 const num2str = (value: number, decimals: number): string => {
   return value.toLocaleString('en', {
@@ -149,7 +149,6 @@ export function useDerivedInvestInfo(): {
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
   } = useInvestState();
 
-
   const inputCurrency = useCurrency(inputCurrencyId);
   const outputCurrency = useCurrency(outputCurrencyId);
 
@@ -181,14 +180,12 @@ export function useDerivedInvestInfo(): {
   const isSmallInvestment =
     parsedOutputAmount && parsedOutputAmount.lessThan(JSBI.BigInt(investMinESW));
 
-
   const maxAmountInput: TokenAmount | undefined = maxAmountSpendInvest(
     currencyBalances[Field.INPUT],
   );
 
-  const notEnoughBalance = maxAmountInput &&
-    parsedAmount && JSBI.lessThan(maxAmountInput.raw, parsedAmount.raw);
-
+  const notEnoughBalance =
+    maxAmountInput && parsedAmount && JSBI.lessThan(maxAmountInput.raw, parsedAmount.raw);
 
   let error: string | undefined;
   if (!account) {
@@ -216,7 +213,7 @@ export function useDerivedInvestInfo(): {
 
   if (notEnoughBalance) {
     error = 'Insufficient ' + maxAmountInput.token.symbol + ' balance';
-    console.log('insufficient', error)
+    console.log('insufficient', error);
   }
 
   if (isSmallInvestment) {

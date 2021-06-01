@@ -178,7 +178,7 @@ export function BackArrow({ to }: { to: string }) {
 export const StyledButtonNavigation = styled.div`
   height: 24px;
   width: 100%;
-  background: #4A4757;
+  background: #4a4757;
   opacity: 0.5;
   border-radius: 16px;
   display: flex;
