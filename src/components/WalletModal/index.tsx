@@ -194,8 +194,8 @@ export default function WalletModal({
   useEffect(() => {
     if (localStorage.getItem('showWalletModal')) {
       setTimeout(() => {
-        setWalletView(WALLET_VIEWS.OPTIONS);
         toggleWalletModal();
+        setWalletView(WALLET_VIEWS.OPTIONS);
         localStorage.removeItem('showWalletModal');
       });
     }
