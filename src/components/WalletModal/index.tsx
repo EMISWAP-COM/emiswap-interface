@@ -363,6 +363,7 @@ export default function WalletModal({
         } else {
           setPendingError(true);
         }
+        console.error(error);
       });
   };
 
