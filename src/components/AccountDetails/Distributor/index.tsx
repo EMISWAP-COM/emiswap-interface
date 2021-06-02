@@ -122,7 +122,8 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
         </div>
         <Package>
           <div>
-            Package: <ProfileText>{packageNames[bonus_role_name]}</ProfileText>
+            Package:{' '}
+            <ProfileText>{packageNames[bonus_role_name as keyof typeof packageNames]}</ProfileText>
           </div>
           {/* TODO removed Invest tab until further notice.
           <UpgradeBtn onClick={handlePackageUpgrade}>Upgrade</UpgradeBtn>*/}

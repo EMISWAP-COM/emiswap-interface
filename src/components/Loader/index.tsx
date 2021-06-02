@@ -13,7 +13,7 @@ const StyledSVG = styled(ReactLoader)<{ size: string; stroke?: string }>`
  */
 export default function Loader({
   size = '16px',
-  stroke = null,
+  stroke = undefined,
   ...rest
 }: {
   size?: string;

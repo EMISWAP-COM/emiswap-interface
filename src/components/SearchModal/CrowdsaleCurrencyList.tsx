@@ -33,7 +33,7 @@ export default function CrowdsaleCurrencyList({
 }) {
   const { account } = useActiveWeb3React();
   const theme = useContext(ThemeContext);
-  const ETHBalance = useETHBalances([account])[account];
+  const ETHBalance = useETHBalances([account!])[account!];
 
   const CurrencyRow = useMemo(() => {
     return memo(function CurrencyRow({ index, style }: { index: number; style: CSSProperties }) {

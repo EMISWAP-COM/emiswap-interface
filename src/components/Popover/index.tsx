@@ -82,9 +82,9 @@ export interface PopoverProps {
 }
 
 export default function Popover({ content, show, children, placement = 'auto' }: PopoverProps) {
-  const [referenceElement, setReferenceElement] = useState<HTMLDivElement>(null);
-  const [popperElement, setPopperElement] = useState<HTMLDivElement>(null);
-  const [arrowElement, setArrowElement] = useState<HTMLDivElement>(null);
+  const [referenceElement, setReferenceElement] = useState<HTMLDivElement>();
+  const [popperElement, setPopperElement] = useState<HTMLDivElement>();
+  const [arrowElement, setArrowElement] = useState<HTMLDivElement>();
   const { styles, update, attributes } = usePopper(referenceElement, popperElement, {
     placement,
     strategy: 'fixed',
@@ -93,13 +93,16 @@ export default function Popover({ content, show, children, placement = 'auto' }:
       { name: 'arrow', options: { element: arrowElement } },
     ],
   });
-  useInterval(update, show ? 100 : null);
+  useInterval(update!, show ? 100 : null);
 
   return (
     <>
-      <ReferenceElement ref={setReferenceElement}>{children}</ReferenceElement>
+      <ReferenceElement as={ReferenceElement} ref={setReferenceElement}>
+        {children}
+      </ReferenceElement>
       <Portal>
         <PopoverContainer
+          as={PopoverContainer}
           show={show}
           ref={setPopperElement}
           style={styles.popper}
@@ -107,6 +110,7 @@ export default function Popover({ content, show, children, placement = 'auto' }:
         >
           {content}
           <Arrow
+            as={Arrow}
             className={`arrow-${attributes.popper?.['data-popper-placement'] ?? ''}`}
             ref={setArrowElement}
             style={styles.arrow}

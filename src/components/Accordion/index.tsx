@@ -138,29 +138,37 @@ export default (props: AccordionProps) => {
     const isNowOpen = !isOpen;
     setIsOpen(isNowOpen);
 
-    // Synchronously change content height to auto and then zero to get the value.
-    // Then asynchronously set this value as content height so transition could work
-    if (isNowOpen) {
-      contentRef.current.style.height = 'auto';
-      const contentHeight = contentRef.current.clientHeight;
-      contentRef.current.style.height = '0px';
-      setTimeout(() => {
-        contentRef.current.style.height = `${contentHeight}px`;
-      });
-    } else {
-      contentRef.current.style.height = '0px';
+    if (contentRef.current) {
+      // Synchronously change content height to auto and then zero to get the value.
+      // Then asynchronously set this value as content height so transition could work
+      if (isNowOpen) {
+        contentRef.current.style.height = 'auto';
+        const contentHeight = contentRef.current.clientHeight;
+        contentRef.current.style.height = '0px';
+        setTimeout(() => {
+          if (contentRef.current) {
+            contentRef.current.style.height = `${contentHeight}px`;
+          }
+        });
+      } else {
+        contentRef.current.style.height = '0px';
+      }
     }
   };
 
   // Recalculate content height on resize if accordion is opened
   useLayoutEffect(() => {
     const resizeHandler = () => {
-      if (isOpen) {
-        contentRef.current.style.height = 'auto';
-        const contentHeight = contentRef.current.clientHeight;
-        setTimeout(() => {
-          contentRef.current.style.height = `${contentHeight}px`;
-        });
+      if (contentRef.current) {
+        if (isOpen) {
+          contentRef.current.style.height = 'auto';
+          const contentHeight = contentRef.current.clientHeight;
+          setTimeout(() => {
+            if (contentRef.current) {
+              contentRef.current.style.height = `${contentHeight}px`;
+            }
+          });
+        }
       }
     };
 
@@ -181,7 +189,11 @@ export default (props: AccordionProps) => {
           <img src={isOpen ? ArrowUp : ArrowDown} alt="" />
         </StyledHeaderOpenIcon>
       </StyledHeader>
-      <StyledAccordionContent ref={contentRef} isContentFullWidth={props.isContentFullWidth}>
+      <StyledAccordionContent
+        as={StyledAccordionContent}
+        ref={contentRef}
+        isContentFullWidth={props.isContentFullWidth}
+      >
         <StyledChildrenWrapper>{props.children}</StyledChildrenWrapper>
         {(props.btnText || props.btnSecondText) && (
           <StyledButtonsWrapper>

@@ -57,13 +57,11 @@ const OptionsPromo = styled.div`
 `;
 
 interface Props {
-  // toggleWalletModal: () => void;
-  // pendingTransad
   ENSName?: string;
   openOptions: () => void;
 }
 
-const Ambassador: React.FC<Props> = ({ openOptions, ENSName }) => {
+const Ambassador: React.FC<Props> = ({ openOptions }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { id: userId, bonus_role_name = '', next_bonus_role } = useSelector(
@@ -83,7 +81,7 @@ const Ambassador: React.FC<Props> = ({ openOptions, ENSName }) => {
         </div>
         <Package>
           <div>
-            Level: <span>{packageNames[bonus_role_name]}</span>
+            Level: <span>{packageNames[bonus_role_name as keyof typeof packageNames]}</span>
           </div>
         </Package>
       </ProfileStatus>

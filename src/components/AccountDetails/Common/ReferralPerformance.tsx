@@ -5,39 +5,6 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { convertBigDecimal, normalizeNumber } from '../uitls';
 
-// const DarkText = styled.span`
-//   color: ${({ theme }) => theme.grey3};
-// `;
-//
-// const RewardsWrapper = styled.div`
-//   font-size: 13px;
-//   color: ${({ theme }) => theme.grey6};
-//
-//   margin-top: 12px;
-//   margin-bottom: 16px;
-//   display: grid;
-//   grid-template-columns: 3fr 4fr;
-//   grid-gap: 12px;
-//
-//   @media screen and (max-width: 1200px) {
-//     margin-top: 16px;
-//     margin-bottom: 12px;
-//     grid-template-columns: repeat(1, 1fr);
-//     grid-gap: 8px;
-//   }
-// `;
-
-// const RewardsItem = styled.div`
-//   display: flex;
-//   justify-content: space-between;
-//   padding: 14px;
-//   background: #f7f8fa;
-// `;
-// const RewardsValue = styled(DarkText)`
-//   font-size: 16px;
-//   font-weight: 600;
-// `;
-
 const Wrapper = styled.div`
   width: 100%;
   margin-bottom: 20px;
@@ -111,29 +78,6 @@ export const ReferralPerformance = () => {
   return (
     <div>
       <Header>Total Referral Performance</Header>
-      {/*<RewardsWrapper>*/}
-      {/*  <RewardsItem>*/}
-      {/*    <div>*/}
-      {/*      <span>Referral Reward, ESW</span>*/}
-      {/*      <div>*/}
-      {/*        <RewardsValue>{convertBigDecimal(total?.reward.ESW)}</RewardsValue>&nbsp;ESW*/}
-      {/*      </div>*/}
-      {/*    </div>*/}
-      {/*  </RewardsItem>*/}
-      {/*  <RewardsItem>*/}
-      {/*    <div>*/}
-      {/*      <span>Referral Reward, DAI</span>*/}
-      {/*      <div>*/}
-      {/*        <RewardsValue>{convertBigDecimal(total?.reward.DAI)}</RewardsValue>&nbsp;DAI*/}
-      {/*      </div>*/}
-      {/*    </div>*/}
-      {/*    <div>*/}
-      {/*      <CollectBtn onClick={() => console.log('no collect handler')}>*/}
-      {/*        Collect to my wallet*/}
-      {/*      </CollectBtn>*/}
-      {/*    </div>*/}
-      {/*  </RewardsItem>*/}
-      {/*</RewardsWrapper>*/}
 
       <Wrapper>
         <Referrals>
@@ -155,36 +99,20 @@ export const ReferralPerformance = () => {
 
         <ReferralPurchases>
           <Title>Total Ref. Purchases, ESW</Title>
-          <Cell>{convertBigDecimal(total.bought.ESW)}</Cell>
+          <Cell>{convertBigDecimal(total.bought.ESW!)}</Cell>
           <Cell>
-            <Amount>{convertBigDecimal(level1?.bought.ESW)}</Amount>
+            <Amount>{convertBigDecimal(level1?.bought.ESW!)}</Amount>
             <Level>1lvl</Level>
           </Cell>
           <Cell>
-            <Amount>{convertBigDecimal(level2?.bought.ESW)}</Amount>
+            <Amount>{convertBigDecimal(level2?.bought.ESW!)}</Amount>
             <Level>2lvl</Level>
           </Cell>
           <Cell>
-            <Amount>{convertBigDecimal(level3?.bought.ESW)}</Amount>
+            <Amount>{convertBigDecimal(level3?.bought.ESW!)}</Amount>
             <Level>3lvl</Level>
           </Cell>
         </ReferralPurchases>
-        {/*<ReferralPurchases>*/}
-        {/*  <Title>Total Ref. Purchases, DAI</Title>*/}
-        {/*  <Cell>{convertBigDecimal(total.bought.DAI)}</Cell>*/}
-        {/*  <Cell>*/}
-        {/*    {convertBigDecimal(level1?.bought.DAI)}*/}
-        {/*    <Level>1lvl</Level>*/}
-        {/*  </Cell>*/}
-        {/*  <Cell>*/}
-        {/*    {convertBigDecimal(level2?.bought.DAI)}*/}
-        {/*    <Level>2lvl</Level>*/}
-        {/*  </Cell>*/}
-        {/*  <Cell>*/}
-        {/*    {convertBigDecimal(level3?.bought.DAI)}*/}
-        {/*    <Level>3lvl</Level>*/}
-        {/*  </Cell>*/}
-        {/*</ReferralPurchases>*/}
       </Wrapper>
     </div>
   );

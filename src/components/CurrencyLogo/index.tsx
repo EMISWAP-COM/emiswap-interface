@@ -4,10 +4,10 @@ import styled from 'styled-components';
 
 import EthereumLogo from '../../assets/images/ethereum-logo.png';
 
-const getTokenLogoURL = address =>
+const getTokenLogoURL = (address: string) =>
   `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`;
 
-const getTokenLogoURL1inch = async ({ symbol, address }) => {
+const getTokenLogoURL1inch = async ({ symbol, address }: Record<string, string>) => {
   try {
     return require(`../../assets/currencies/${symbol}.png`);
   } catch {
@@ -30,13 +30,13 @@ export const Image = styled.img<{ size: string }>`
   height: ${({ size }) => size};
   background-color: white;
   border-radius: 1rem;
-  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.075);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.075);
 `;
 
 const StyledEthereumLogo = styled.img<{ size: string }>`
   width: ${({ size }) => size};
   height: ${({ size }) => size};
-  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.075);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.075);
   border-radius: 24px;
 `;
 
@@ -77,8 +77,9 @@ export default function CurrencyLogo({
           size={size}
           onError={async () => {
             if (currency instanceof Token) {
-              BAD_URIS[uri] = true;
-              FALLBACK_URIS[currency.address] = await getTokenLogoURL1inch(currency);
+              BAD_URIS[uri as keyof typeof BAD_URIS] = true;
+              // todo: remove type any
+              FALLBACK_URIS[currency.address] = await getTokenLogoURL1inch(currency as any);
             }
             refresh(i => i + 1);
           }}

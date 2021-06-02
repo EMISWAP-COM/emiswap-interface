@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef, useContext, ChangeEvent } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
 import QuestionHelper from '../QuestionHelper';
@@ -13,10 +13,6 @@ enum SlippageError {
   RiskyLow = 'RiskyLow',
   RiskyHigh = 'RiskyHigh',
 }
-
-// enum DeadlineError {
-//   InvalidInput = 'InvalidInput'
-// }
 
 const FancyButton = styled.button`
   color: ${({ theme }) => theme.white};
@@ -75,7 +71,7 @@ const OptionCustom = styled(FancyButton)<{ active?: boolean; warning?: boolean }
   input {
     width: 100%;
     height: 100%;
-    border: 0px;
+    border: 0;
     border-radius: 2rem;
   }
 `;
@@ -94,25 +90,18 @@ export interface SlippageTabsProps {
   setDeadline: (deadline: number) => void;
 }
 
-export default function SlippageTabs({
-  rawSlippage,
-  setRawSlippage,
-  deadline,
-  setDeadline,
-}: SlippageTabsProps) {
+export default function SlippageTabs({ rawSlippage, setRawSlippage }: SlippageTabsProps) {
   const theme = useContext(ThemeContext);
 
   const inputRef = useRef<HTMLInputElement>();
 
   const [slippageInput, setSlippageInput] = useState('');
-  // const [deadlineInput, setDeadlineInput] = useState('')
 
   const slippageInputIsValid =
     slippageInput === '' ||
     (rawSlippage / 100).toFixed(2) === Number.parseFloat(slippageInput).toFixed(2);
-  // const deadlineInputIsValid = deadlineInput === '' || (deadline / 60).toString() === deadlineInput
 
-  let slippageError: SlippageError;
+  let slippageError: SlippageError | undefined = undefined;
   if (slippageInput !== '' && !slippageInputIsValid) {
     slippageError = SlippageError.InvalidInput;
   } else if (slippageInputIsValid && rawSlippage < 50) {
@@ -121,15 +110,11 @@ export default function SlippageTabs({
     slippageError = SlippageError.RiskyHigh;
   }
 
-  // let deadlineError: DeadlineError
-  // if (deadlineInput !== '' && !deadlineInputIsValid) {
-  //   deadlineError = DeadlineError.InvalidInput
-  // }
-
-  function parseCustomSlippage(event) {
+  function parseCustomSlippage(event: ChangeEvent<HTMLInputElement>) {
     setSlippageInput(event.target.value);
 
-    let valueAsIntFromRoundedFloat: number;
+    let valueAsIntFromRoundedFloat: number | undefined = undefined;
+
     try {
       valueAsIntFromRoundedFloat = Number.parseInt(
         (Number.parseFloat(event.target.value) * 100).toString(),
@@ -144,19 +129,6 @@ export default function SlippageTabs({
       setRawSlippage(valueAsIntFromRoundedFloat);
     }
   }
-
-  // function parseCustomDeadline(event) {
-  //   setDeadlineInput(event.target.value)
-  //
-  //   let valueAsInt: number
-  //   try {
-  //     valueAsInt = Number.parseInt(event.target.value) * 60
-  //   } catch {}
-  //
-  //   if (typeof valueAsInt === 'number' && !Number.isNaN(valueAsInt) && valueAsInt > 0) {
-  //     setDeadline(valueAsInt)
-  //   }
-  // }
 
   return (
     <AutoColumn gap="md">
@@ -211,11 +183,12 @@ export default function SlippageTabs({
                 </SlippageEmojiContainer>
               ) : null}
               <Input
+                as={Input}
                 ref={inputRef}
                 placeholder={(rawSlippage / 100).toFixed(2)}
                 value={slippageInput}
                 onBlur={() => {
-                  parseCustomSlippage({ target: { value: (rawSlippage / 100).toFixed(2) } });
+                  parseCustomSlippage({ target: { value: (rawSlippage / 100).toFixed(2) } } as any);
                 }}
                 onChange={parseCustomSlippage}
                 color={!slippageInputIsValid ? 'red' : ''}
@@ -240,31 +213,6 @@ export default function SlippageTabs({
           </RowBetween>
         )}
       </AutoColumn>
-
-      {/*  <AutoColumn gap="sm">*/}
-      {/*    <RowFixed>*/}
-      {/*      <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>*/}
-      {/*        Transaction deadline*/}
-      {/*      </TYPE.black>*/}
-      {/*      <QuestionHelper text="Your transaction will revert if it is pending for more than this long." />*/}
-      {/*    </RowFixed>*/}
-      {/*    <RowFixed>*/}
-      {/*      <OptionCustom style={{ width: '80px' }} tabIndex={-1}>*/}
-      {/*        <Input*/}
-      {/*          color={!!deadlineError ? 'red' : undefined}*/}
-      {/*          onBlur={() => {*/}
-      {/*            parseCustomDeadline({ target: { value: (deadline / 60).toString() } })*/}
-      {/*          }}*/}
-      {/*          placeholder={(deadline / 60).toString()}*/}
-      {/*          value={deadlineInput}*/}
-      {/*          onChange={parseCustomDeadline}*/}
-      {/*        />*/}
-      {/*      </OptionCustom>*/}
-      {/*      <TYPE.body style={{ paddingLeft: '8px' }} fontSize={14}>*/}
-      {/*        minutes*/}
-      {/*      </TYPE.body>*/}
-      {/*    </RowFixed>*/}
-      {/*  </AutoColumn>*/}
     </AutoColumn>
   );
 }

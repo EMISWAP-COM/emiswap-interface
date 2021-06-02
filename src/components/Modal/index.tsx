@@ -9,7 +9,7 @@ import '@reach/dialog/styles.css';
 import { useGesture } from 'react-use-gesture';
 
 const AnimatedDialogOverlay = animated(DialogOverlay);
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 const StyledDialogOverlay = styled(({ mobile, ...rest }) => <AnimatedDialogOverlay {...rest} />)<{
   mobile: boolean;
 }>`
@@ -49,7 +49,7 @@ const StyledDialogContent = styled(
   'aria-label': 'dialog',
 })`
   &[data-reach-dialog-content] {
-    border: none!important;
+    border: none !important;
     margin: 0 0 2rem 0;
     border: 1px solid ${({ theme }) => theme.border1};
     background-color: ${({ theme }) => theme.dark1};
@@ -112,7 +112,7 @@ export default function Modal({
   minHeight = false,
   maxHeight = 50,
   maxWidth = 440,
-  initialFocusRef = null,
+  initialFocusRef = undefined,
   children,
 }: ModalProps) {
   const transitions = useTransition(isOpen, null, {

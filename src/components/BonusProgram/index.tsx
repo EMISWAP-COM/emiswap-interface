@@ -79,9 +79,9 @@ const BonusProgramStyled = styled.div`
   }
 `;
 
-export default function BonusProgram(props) {
+export default function BonusProgram() {
   const handleClick = () => {
-    document.querySelector('.header').scrollIntoView({ behavior: 'smooth' });
+    document.querySelector('.header')?.scrollIntoView({ behavior: 'smooth' });
   };
   return (
     <BonusProgramStyled onClick={handleClick}>

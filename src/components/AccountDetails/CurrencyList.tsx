@@ -37,7 +37,7 @@ const CurrencyList = ({
 }: CurrencyListProps) => {
   const { account } = useActiveWeb3React();
   const theme = useContext(ThemeContext);
-  const ETHBalance = useETHBalances([account])[account];
+  const ETHBalance = useETHBalances([account!])[account!];
 
   const CurrencyRow = useMemo(
     () =>

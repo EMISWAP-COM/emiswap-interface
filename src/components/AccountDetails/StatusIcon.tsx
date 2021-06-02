@@ -44,7 +44,7 @@ interface Props {
   connectorName: AbstractConnector;
 }
 
-export function StatusIcon({ connectorName }: Props) {
+export const StatusIcon: React.FC<Props> = ({ connectorName }) => {
   if (connectorName === injected) {
     return (
       <IconWrapper size={16}>
@@ -85,4 +85,6 @@ export function StatusIcon({ connectorName }: Props) {
       </>
     );
   }
-}
+
+  return null;
+};

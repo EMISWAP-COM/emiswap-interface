@@ -10,7 +10,7 @@ const AccountGroupingRow = styled.div`
   color: ${({ theme }) => theme.text1};
 
   div {
-    ${({ theme }) => theme.flexRowNoWrap}
+    ${({ theme }) => theme.flexRowNoWrap};
     align-items: center;
   }
 `;
@@ -156,11 +156,9 @@ export default function SourcesList({
   totalAcquiredInDAI,
   crowdSaleAcquired,
   crowdSaleAlreadyMinted,
-  crowdSaleAvailableForMinting,
   crowdSaleReferralRewardAcquired,
   crowdSaleReferralRewardAlreadyMinted,
-  crowdSaleReferralRewardAvailableForMinting,
-}) {
+}: Record<string, string>) {
   return (
     <>
       <AccountTotalSectionBody>
@@ -185,16 +183,6 @@ export default function SourcesList({
               </div>
             </AccountTotalSectionTable>
           </AccountGroupingInfoTitleRow>
-          {/* <AccountSectionTable> */}
-          {/* <div>
-              <span>Total ESWc aquired</span>
-              <span>{totalAcquired}</span>
-            </div>
-            <div>
-              <span>Value in DAI</span>
-              <span>{totalAcquiredInDAI}</span>
-            </div> */}
-          {/* </AccountSectionTable> */}
         </AccountSectionBodyPart>
       </AccountTotalSectionBody>
       <AccountSectionHeader>
@@ -212,12 +200,8 @@ export default function SourcesList({
             <div>
               <span>
                 <span>Minted</span>
-                {/* <Question isSetting text="These are already minted ESW tokens that earn you profit." /> */}
               </span>
             </div>
-            {/* <div>
-              <span>Available for minting</span>
-            </div> */}
           </AccountSectionTable>
         </AccountSectionBodyPart>
         <AccountSectionBodyPart>
@@ -232,14 +216,9 @@ export default function SourcesList({
             <div>
               <span>
                 <span>Minted</span>
-                {/* <Question isSetting text="These are already minted ESW tokens that earn you profit." /> */}
               </span>
               <span>{crowdSaleAlreadyMinted}</span>
             </div>
-            {/* <div>
-              <span>Available for minting</span>
-              <span>{crowdSaleAvailableForMinting}</span>
-            </div> */}
           </AccountSectionTable>
         </AccountSectionBodyPart>
 
@@ -255,14 +234,9 @@ export default function SourcesList({
             <div>
               <span>
                 <span>Minted</span>
-                {/* <Question isSetting text="These are already minted ESW tokens that earn you profit." /> */}
               </span>
               <span>coming soon</span>
             </div>
-            {/* <div>
-              <span>Available for minting</span>
-              <span>{crowdSaleReferralRewardAvailableForMinting}</span>
-            </div> */}
           </AccountSectionTable>
         </AccountSectionBodyPart>
         <AccountSectionBodyPart>
@@ -277,14 +251,9 @@ export default function SourcesList({
             <div>
               <span>
                 <span>Minted</span>
-                {/* <Question isSetting text="These are already minted ESW tokens that earn you profit." /> */}
               </span>
               <span>{crowdSaleAlreadyMinted + crowdSaleReferralRewardAlreadyMinted}</span>
             </div>
-            {/* <div>
-              <span>Available for minting</span>
-              <span>{crowdSaleAvailableForMinting + crowdSaleReferralRewardAvailableForMinting}</span>
-            </div> */}
           </AccountSectionTable>
         </AccountSectionBodyPart>
       </AccountSectionBody>

@@ -1,5 +1,4 @@
 import React, { useRef, useEffect } from 'react';
-// import { Info, BookOpen, Code, PieChart, MessageCircle } from 'react-feather'
 import { BookOpen, Code, Info, MessageCircle, PieChart } from 'react-feather';
 import WikiIcon from '../../assets/images/wiki.svg';
 import styled from 'styled-components';
@@ -80,8 +79,8 @@ export default function Menu() {
   const [open, toggle] = useToggle(false);
 
   useEffect(() => {
-    const handleClickOutside = e => {
-      if (node.current?.contains(e.target) ?? false) {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (node.current?.contains(e.target as Node) ?? false) {
         return;
       }
       toggle();
@@ -98,7 +97,7 @@ export default function Menu() {
     };
   }, [open, toggle]);
   return (
-    <StyledMenu ref={node}>
+    <StyledMenu as={StyledMenu} ref={node}>
       <StyledMenuButton onClick={toggle}>
         <StyledMenuIcon />
       </StyledMenuButton>
@@ -141,16 +140,15 @@ export default function Menu() {
             <Info size={14} />
             ESW etherscan
           </MenuItem>
-          <MenuItem
-            id="link"
-            // href="https://hacken.io/wp-content/uploads/2021/02/18022021_Emiswap_SC_Audit_Report.pdf"
-            href="/docs/06042021_Emiswap_SC_Audit_Report.pdf"
-            target="_blank"
-          >
+          <MenuItem id="link" href="/docs/06042021_Emiswap_SC_Audit_Report.pdf" target="_blank">
             <BookOpen size={14} />
             Smart Contract Audit
           </MenuItem>
-          <MenuItem id="link" href={window['env'].REACT_APP_CODE_LINK} target="_blank">
+          <MenuItem
+            id="link"
+            href={window['env' as keyof Window].REACT_APP_CODE_LINK}
+            target="_blank"
+          >
             <Code size={14} />
             Code
           </MenuItem>

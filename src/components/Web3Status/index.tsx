@@ -33,7 +33,7 @@ const IconWrapper = styled.div<{ size?: number }>`
 `;
 
 const Web3StatusGeneric = styled(ButtonSecondary)`
-  ${({ theme }) => theme.flexRowNoWrap}
+  ${({ theme }) => theme.flexRowNoWrap};
   width: 240px;
   align-items: center;
   padding: 0.35rem 0.5rem;
@@ -140,7 +140,7 @@ export default function Web3Status() {
   const { active, account, connector, error } = useWeb3React();
   const contextNetwork = useWeb3React(NetworkContextName);
 
-  const { ENSName } = useENSName(account);
+  const { ENSName } = useENSName(account!);
 
   const allTransactions = useAllTransactions();
 
@@ -153,7 +153,6 @@ export default function Web3Status() {
   const confirmed = sortedRecentTransactions.filter(tx => tx.receipt).map(tx => tx.hash);
 
   const hasPendingTransactions = !!pending.length;
-  // const hasSocks = useHasSocks()
   const toggleWalletModal = useWalletModalToggle();
 
   // handle the logo we want to show with the account
@@ -185,6 +184,8 @@ export default function Web3Status() {
         </IconWrapper>
       );
     }
+
+    return null;
   }
 
   function getWeb3Status() {
@@ -232,7 +233,7 @@ export default function Web3Status() {
     <>
       {getWeb3Status()}
       <WalletModal
-        ENSName={ENSName}
+        ENSName={ENSName!}
         pendingTransactions={pending}
         confirmedTransactions={confirmed}
       />

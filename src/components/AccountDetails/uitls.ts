@@ -9,17 +9,17 @@ export enum DateFormat {
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-export function formatConnectorName(connectorName) {
+export function formatConnectorName(connectorName: any) {
   const { ethereum } = window;
   const isMetaMask = !!(ethereum && ethereum.isMetaMask);
-  const name = Object.keys(SUPPORTED_WALLETS)
+
+  return Object.keys(SUPPORTED_WALLETS)
     .filter(
-      k =>
-        SUPPORTED_WALLETS[k].connector === connectorName &&
-        (connectorName !== injected || isMetaMask === (k === 'METAMASK')),
+      key =>
+        SUPPORTED_WALLETS[key]?.connector === connectorName &&
+        (connectorName !== injected || isMetaMask === (key === 'METAMASK')),
     )
-    .map(k => SUPPORTED_WALLETS[k].name)[0];
-  return name;
+    .map(key => SUPPORTED_WALLETS[key].name)[0];
 }
 
 export const convertBigDecimal = (bigDecimal: string) => {

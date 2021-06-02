@@ -61,7 +61,7 @@ export default function CrowdsaleCurrencySearchModal({
   const allTokens = useAllCoins();
   // if the current input is an address, and we don't have the token in context, try to fetch it and import
   const searchToken = useToken(searchQuery);
-  const searchTokenBalance = useTokenBalance(account, searchToken);
+  const searchTokenBalance = useTokenBalance(account!, searchToken!);
   const allTokenBalances_ = useAllCoinBalances();
   const allTokenBalances = searchToken
     ? {
@@ -87,15 +87,15 @@ export default function CrowdsaleCurrencySearchModal({
     return [
       ...(searchToken ? [searchToken] : []),
       // sort any exact symbol matches first
-      ...sorted.filter(token => token.symbol.toLowerCase() === symbolMatch[0]),
-      ...sorted.filter(token => token.symbol.toLowerCase() !== symbolMatch[0]),
+      ...sorted.filter(token => `${token.symbol}`.toLowerCase() === symbolMatch[0]),
+      ...sorted.filter(token => `${token.symbol}`.toLowerCase() !== symbolMatch[0]),
     ];
   }, [filteredTokens, searchQuery, searchToken, tokenComparator]);
 
   const handleCurrencySelect = useCallback(
     (currency: Token) => {
-      onCurrencySelect(currency);
-      onDismiss();
+      onCurrencySelect && onCurrencySelect(currency);
+      onDismiss && onDismiss();
     },
     [onDismiss, onCurrencySelect],
   );
@@ -131,7 +131,7 @@ export default function CrowdsaleCurrencySearchModal({
     (e: KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Enter' && filteredSortedTokens.length > 0) {
         if (
-          filteredSortedTokens[0].symbol.toLowerCase() === searchQuery.trim().toLowerCase() ||
+          `${filteredSortedTokens[0].symbol}`.toLowerCase() === searchQuery.trim().toLowerCase() ||
           filteredSortedTokens.length === 1
         ) {
           handleCurrencySelect(filteredSortedTokens[0]);
@@ -143,8 +143,8 @@ export default function CrowdsaleCurrencySearchModal({
 
   return (
     <Modal
-      isOpen={isOpen}
-      onDismiss={onDismiss}
+      isOpen={isOpen!}
+      onDismiss={onDismiss!}
       maxHeight={70}
       initialFocusRef={isMobile ? undefined : inputRef}
       minHeight={70}
@@ -159,7 +159,7 @@ export default function CrowdsaleCurrencySearchModal({
                 text="Find a token by searching for its name or symbol or by pasting its address below."
               />
             </Text>
-            <CloseIcon onClick={onDismiss} />
+            <CloseIcon onClick={onDismiss!} />
           </RowBetween>
           <Tooltip
             text="Import any token into your list by pasting the token address into the search field."
@@ -167,6 +167,7 @@ export default function CrowdsaleCurrencySearchModal({
             placement="bottom"
           >
             <SearchInput
+              as={SearchInput}
               type="text"
               id="token-search-input"
               placeholder={t('tokenSearchPlaceholder')}
@@ -198,10 +199,10 @@ export default function CrowdsaleCurrencySearchModal({
         </PaddedColumn>
         <CrowdsaleCurrencyList
           currencies={filteredSortedTokens}
-          allBalances={allTokenBalances}
+          allBalances={allTokenBalances as any}
           onCurrencySelect={handleCurrencySelect}
-          otherCurrency={otherSelectedCurrency}
-          selectedCurrency={hiddenCurrency}
+          otherCurrency={otherSelectedCurrency!}
+          selectedCurrency={hiddenCurrency!}
           showSendWithSwap={showSendWithSwap}
         />
         <div style={{ height: '1px', backgroundColor: theme.bg2, margin: '0 30px' }} />

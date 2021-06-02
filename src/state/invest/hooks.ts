@@ -87,7 +87,7 @@ export function useInvestActionHandlers(): InvestActionHandlers {
   );
 
   const onUserInput = useCallback(
-    (field: Field, typedValue: string, currency: Token) => {
+    (field: Field, typedValue: string, currency?: Token) => {
       if (currency) {
         const minValue = 1 / Math.pow(10, currency.decimals);
         if (Number(typedValue) > 0 && Number(typedValue) < minValue) {
@@ -203,16 +203,13 @@ export function useDerivedInvestInfo(): {
   if (Number(typedValue) > 0 && Number(outputAmount) === 0) {
     error = error ?? 'Try to buy less ESW, you are reaching the limits of our private';
   }
-  // if (!currencies[Field.INPUT] || !currencies[Field.OUTPUT]) {
-  //   error = error ?? 'Select a token';
-  // }
 
   if (!to) {
     error = error ?? 'Enter a recipient';
   }
 
   if (notEnoughBalance) {
-    error = 'Insufficient ' + maxAmountInput.token.symbol + ' balance';
+    error = 'Insufficient ' + maxAmountInput?.token.symbol + ' balance';
     console.log('insufficient', error);
   }
 
@@ -230,7 +227,7 @@ export function useDerivedInvestInfo(): {
     parsedAmount,
     parsedOutputAmount,
     error,
-    isSmallInvestment,
+    isSmallInvestment: !!isSmallInvestment,
   };
 }
 
@@ -253,17 +250,6 @@ function parseIndependentFieldURLParameter(urlParam: any): Field {
     ? Field.OUTPUT
     : Field.INPUT;
 }
-
-// const ENS_NAME_REGEX = /^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)?$/
-// const ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/
-// function validatedRecipient(recipient: any): string | null {
-//   if (typeof recipient !== 'string') return null
-//   const address = isAddress(recipient)
-//   if (address) return address
-//   if (ENS_NAME_REGEX.test(recipient)) return recipient
-//   if (ADDRESS_REGEX.test(recipient)) return recipient
-//   return null
-// }
 
 export function queryParametersToInvestState(parsedQs: ParsedQs): InvestState {
   let inputCurrency = parseCurrencyFromURLParameter(parsedQs.inputCurrency);
@@ -334,7 +320,11 @@ export function listToTokenMap(list: Token[]): TokenAddressMap {
       if (!tokenInfo) {
         return { ...tokenMap };
       }
-      const token = new WrappedTokenInfo(tokenInfo);
+      const token = new WrappedTokenInfo({
+        ...tokenInfo,
+        symbol: `${tokenInfo.symbol}`,
+        name: `${tokenInfo.name}`,
+      });
       if (tokenMap[token.chainId][token.address] !== undefined) throw Error('Duplicate tokens.');
       if (token.address === '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE') {
         return { ...tokenMap };
@@ -355,7 +345,7 @@ export function listToTokenMap(list: Token[]): TokenAddressMap {
 
 export function useCoinCounter(): number {
   const { account, library } = useActiveWeb3React();
-  const contract: Contract | null = getCrowdsaleContract(library, account);
+  const contract: Contract | null = getCrowdsaleContract(library!, account!);
   try {
     return contract.coinCounter();
   } catch (error) {
@@ -366,7 +356,7 @@ export function useCoinCounter(): number {
 
 export function useCoin(index: number) {
   const { account, library } = useActiveWeb3React();
-  const contract: Contract | null = getCrowdsaleContract(library, account);
+  const contract: Contract | null = getCrowdsaleContract(library!, account!);
   try {
     return contract.coin(index);
   } catch (error) {
@@ -377,7 +367,7 @@ export function useCoin(index: number) {
 export function useBuyCoinAmount() {
   const dispatch = useDispatch<AppDispatch>();
   const { chainId, account, library } = useActiveWeb3React();
-  const contract: Contract | null = getCrowdsaleContract(library, account);
+  const contract: Contract | null = getCrowdsaleContract(library!, account!);
 
   const executeBuyCoinAmount = useCallback(
     (field: Field, currency?: Token, amount?: number) => {
@@ -387,7 +377,7 @@ export function useBuyCoinAmount() {
       }
       const coinAmount = num2str(
         amount *
-          Math.pow(10, field === Field.OUTPUT ? ESW[chainId][0].decimals : currency.decimals),
+          Math.pow(10, field === Field.OUTPUT ? ESW[chainId!][0].decimals : currency.decimals),
         0,
       );
       const coinAmountBN = BigNumber.from(coinAmount);
@@ -410,8 +400,8 @@ export function useBuyCoinAmount() {
             const outputAmount = BigNumber.from(response.currentTokenAmount).toString();
             const test = num2str(
               Number(outputAmount) /
-                Math.pow(10, field === Field.INPUT ? ESW[chainId][0].decimals : currency.decimals),
-              field === Field.INPUT ? ESW[chainId][0].decimals : currency.decimals,
+                Math.pow(10, field === Field.INPUT ? ESW[chainId!][0].decimals : currency.decimals),
+              field === Field.INPUT ? ESW[chainId!][0].decimals : currency.decimals,
             );
             dispatch(receiveOutputAmount({ outputAmount: test }));
           });
@@ -424,7 +414,7 @@ export function useBuyCoinAmount() {
 
 export function useCoinGetRate(index: string) {
   const { account, library } = useActiveWeb3React();
-  const contract: Contract | null = getCrowdsaleContract(library, account);
+  const contract: Contract | null = getCrowdsaleContract(library!, account!);
   try {
     return contract.coinRate(index);
   } catch (error) {

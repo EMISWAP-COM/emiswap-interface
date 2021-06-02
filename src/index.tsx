@@ -41,7 +41,8 @@ function getLibrary(provider: any): Web3Provider {
   return library;
 }
 
-const GOOGLE_ANALYTICS_ID: string | undefined = window['env'].REACT_APP_GOOGLE_ANALYTICS_ID;
+const GOOGLE_ANALYTICS_ID: string | undefined =
+  window['env' as keyof Window].REACT_APP_GOOGLE_ANALYTICS_ID;
 if (typeof GOOGLE_ANALYTICS_ID === 'string') {
   ReactGA.initialize(GOOGLE_ANALYTICS_ID, {
     gaOptions: {
@@ -71,7 +72,7 @@ window.addEventListener('error', error => {
 // eslint-disable-next-line no-extend-native
 Object.defineProperty(Array.prototype, 'flat', {
   value: function(depth = 1) {
-    return this.reduce(function(flat, toFlatten) {
+    return this.reduce(function(flat: unknown[], toFlatten: unknown[]) {
       return flat.concat(
         Array.isArray(toFlatten) && depth > 1 ? toFlatten.flat(depth - 1) : toFlatten,
       );

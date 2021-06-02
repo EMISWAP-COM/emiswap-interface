@@ -63,7 +63,7 @@ export default function CommonBases({
       </AutoRow>
       <AutoRow gap="4px">
         <BaseWrapper
-          onClick={() => !currencyEquals(selectedCurrency, ETHER) && onSelect(ETHER)}
+          onClick={() => !currencyEquals(selectedCurrency!, ETHER) && onSelect(ETHER)}
           disable={
             selectedCurrency === ETHER ||
             (selectedCurrency && selectedCurrency.isEther) ||

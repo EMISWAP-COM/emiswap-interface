@@ -32,8 +32,7 @@ export const Input = styled.input`
 `;
 
 export const PaddedColumn = styled(AutoColumn)`
-  padding: 34px 30px 20px;
-  padding-bottom: 12px;
+  padding: 34px 30px 12px;
 `;
 
 export const MenuItem = styled(RowBetween)`

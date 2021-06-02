@@ -2,7 +2,7 @@ import { darken } from 'polished';
 import React from 'react';
 import { MEDIA_WIDTHS } from '../../theme/index';
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const StyledSVG = styled.svg<{
   size: string;
@@ -17,53 +17,60 @@ const StyledSVG = styled.svg<{
   width: 260px;
   opacity: 0.1;
   margin-left: ${({ flip }) => (flip ? '220px;' : '-480px;')}
-  
-  ${({ flip }) => flip && 'transform:scale(-1,1);'} 
-  
+
+  ${({ flip }) => flip && 'transform:scale(-1,1);'}
+
   ${({ mobile }) =>
     mobile
-      ? 'display: none;'
-      : `:hover {
-      opacity: 1;
-      g {
-        transition: .4s;
-        
-        path {
-          transition: .4s;
-          stroke-width: 1;
-        }
-      }
-    }`} 
-  
+      ? css`
+          display: none;
+        `
+      : css`
+          :hover {
+            opacity: 1;
+            g {
+              transition: 0.4s;
+
+              path {
+                transition: 0.4s;
+                stroke-width: 1;
+              }
+            }
+          }
+        `}
+
   ${({ highlight }) =>
     highlight &&
-    `
-      opacity: 1; transition: .5s;
-  `}
- 
+    css`
+      opacity: 1;
+      transition: 0.5s;
+    `}
+
   g {
     path {
-      stroke-width: ${({ highlight }) => (highlight ? '1' : '1')} 
+      stroke-width: ${({ highlight }) => (highlight ? '1' : '1')}
       stroke: ${({ stroke, theme }) => stroke ?? darken(0.3, theme.primary1)};
     }
-  }
-  
+  };
+
   @media (max-width: ${(MEDIA_WIDTHS as any)['upToSmall']}px) {
     ${({ mobile }) =>
       mobile === true
-        ? `
-        display: block;
-        position: fixed;
-        top: -37px;
-        left: -65px;
-        width: 200px;
-        height: auto;
-        opacity: .08;
-        margin: 0;
-        transform:scale(-1,1) rotate(-12deg);
-        z-index: -1;
-      `
-        : 'display: none;'} 
+        ? css`
+            display: block;
+            position: fixed;
+            top: -37px;
+            left: -65px;
+            width: 200px;
+            height: auto;
+            opacity: 0.08;
+            margin: 0;
+            transform: scale(-1, 1) rotate(-12deg);
+            z-index: -1;
+          `
+        : css`
+            display: none;
+          `}
   }
 `;
 
@@ -73,7 +80,7 @@ const StyledSVG = styled.svg<{
  */
 export default function UnicornSvg({
   size = '16px',
-  stroke = null,
+  stroke = undefined,
   flip = false,
   highlight = false,
   mobile = false,

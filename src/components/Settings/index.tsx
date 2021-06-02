@@ -45,12 +45,10 @@ const StyledCloseIcon = styled(X)`
 const StyledMenuButton = styled.button`
   position: relative;
   width: 100%;
-  height: 100%;
   border: none;
   background-color: transparent;
   border: 1px solid ${({ theme }) => theme.whiteTransparent};
   margin: 0;
-  padding: 0;
   height: 40px;
   display: flex;
   align-items: center;
@@ -69,7 +67,7 @@ const StyledMenuButton = styled.button`
 const EmojiWrapper = styled.div`
   position: absolute;
   bottom: -6px;
-  right: 0px;
+  right: 0;
   font-size: 14px;
 `;
 
@@ -103,7 +101,7 @@ const MenuFlyout = styled.span`
   font-size: 1rem;
   position: absolute;
   top: 3rem;
-  right: 0rem;
+  right: 0;
   z-index: 100;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
@@ -169,8 +167,8 @@ export function LanguageSelect({ handleClick }: { handleClick: () => void }) {
       }}
       onClick={handleClick}
     >
-      {langNameMap[langCode] || 'English'}
-      <DropDownIcon selected={true}></DropDownIcon>
+      {langNameMap[langCode as keyof typeof langNameMap] || 'English'}
+      <DropDownIcon selected={true} />
     </span>
   );
 }
@@ -204,8 +202,8 @@ function getLangOptions() {
         active={option.code === selectedLangCode}
         color={option.color}
         // link={option.href}
-        header={langNameMap[option.code]}
-        subheader={null} //use option.descriptio to bring back multi-line
+        header={langNameMap[option.code as keyof typeof langNameMap]}
+        subheader={null} // use option.descriptio to bring back multi-line
         icon={require('../../assets/flags/' + option.iconName)}
       />
     );
@@ -230,8 +228,8 @@ export default function SettingsTab() {
   const [showLangDialog, setShowLangDialog] = useState(false);
 
   useEffect(() => {
-    const handleClickOutside = e => {
-      if (node.current?.contains(e.target)) {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (node.current?.contains(e.target as Node)) {
         return;
       }
       toggle();
@@ -249,7 +247,7 @@ export default function SettingsTab() {
   }, [open, toggle]);
 
   return (
-    <StyledMenu ref={node}>
+    <StyledMenu as={StyledMenu} ref={node}>
       <Modal isOpen={showLangDialog} onDismiss={() => setShowLangDialog(false)} maxHeight={80}>
         <ModalContentWrapper style={{ width: '100%' }}>
           <AutoColumn gap="lg" style={{ width: '100%' }}>

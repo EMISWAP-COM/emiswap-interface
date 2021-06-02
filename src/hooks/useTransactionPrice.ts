@@ -17,19 +17,31 @@ export const useTransactionPrice = (type: string) => {
       case 'swap':
         isEnough = JSBI.greaterThan(
           JSBI.BigInt(Math.floor((ethAmount?.toExact() as any) * 10 ** 18)),
-          JSBI.BigInt(Math.floor(gasPrice * 10 ** 9 * window['env'].REACT_APP_MIN_GAS_FOR_SWAP)),
+          JSBI.BigInt(
+            Math.floor(
+              gasPrice * 10 ** 9 * window['env' as keyof Window].REACT_APP_MIN_GAS_FOR_SWAP,
+            ),
+          ),
         );
         break;
       case 'pool':
         isEnough = JSBI.greaterThan(
           JSBI.BigInt(Math.floor((ethAmount?.toExact() as any) * 10 ** 18)),
-          JSBI.BigInt(Math.floor(gasPrice * 10 ** 9 * window['env'].REACT_APP_MIN_GAS_FOR_POOL)),
+          JSBI.BigInt(
+            Math.floor(
+              gasPrice * 10 ** 9 * window['env' as keyof Window].REACT_APP_MIN_GAS_FOR_POOL,
+            ),
+          ),
         );
         break;
       case 'invest':
         isEnough = JSBI.greaterThan(
           JSBI.BigInt(Math.floor((ethAmount?.toExact() as any) * 10 ** 18)),
-          JSBI.BigInt(Math.floor(gasPrice * 10 ** 9 * window['env'].REACT_APP_MIN_GAS_FOR_INVEST)),
+          JSBI.BigInt(
+            Math.floor(
+              gasPrice * 10 ** 9 * window['env' as keyof Window].REACT_APP_MIN_GAS_FOR_INVEST,
+            ),
+          ),
         );
         break;
     }

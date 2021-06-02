@@ -163,7 +163,7 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
       <Container>
         <Main>
           <WalletInfo>
-            <span>Connected with {formatConnectorName(connector)}</span>
+            <span>Connected with {formatConnectorName(connector as any)}</span>
             <ActionBtn
               onClick={() => {
                 openOptions();
@@ -173,8 +173,8 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
             </ActionBtn>
           </WalletInfo>
           <Wallet>
-            <StatusIcon connectorName={connector} />
-            <Account>{ENSName || shortenAddress(account)}</Account>
+            <StatusIcon connectorName={connector!} />
+            <Account>{ENSName || shortenAddress(account!)}</Account>
           </Wallet>
           <BalanceWrapper>
             <BalanceItem>
@@ -186,19 +186,20 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
             <BalanceItem>
               <span>Wallet</span>
               <div>
-                <BalanceValue>{convertBigDecimal(balance?.wallet.ESW)}</BalanceValue>&nbsp;ESW
+                <BalanceValue>{convertBigDecimal(balance?.wallet.ESW!)}</BalanceValue>&nbsp;ESW
               </div>
             </BalanceItem>
             <BalanceItem>
               <span>Locked at Emiswap </span>
               <div>
-                <BalanceValue>{convertBigDecimal(balance?.total.locked.ESW)}</BalanceValue>&nbsp;ESW
+                <BalanceValue>{convertBigDecimal(balance?.total.locked.ESW!)}</BalanceValue>
+                &nbsp;ESW
               </div>{' '}
             </BalanceItem>
             <BalanceItem>
               <span>Available to collect</span>
               <div>
-                <BalanceValue>{convertBigDecimal(balance?.available.ESW)}</BalanceValue>&nbsp;ESW
+                <BalanceValue>{convertBigDecimal(balance?.available.ESW!)}</BalanceValue>&nbsp;ESW
               </div>{' '}
             </BalanceItem>
           </BalanceWrapper>
@@ -210,10 +211,10 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
           </Options>
         </Main>
         <AccountControl>
-          <Copy toCopy={account}>
+          <Copy toCopy={account!}>
             <span style={{ marginLeft: '4px' }}>Copy Address</span>
           </Copy>
-          <AddressLink href={getEtherscanLink(chainId, ENSName || account, 'address')}>
+          <AddressLink href={getEtherscanLink(chainId!, (ENSName || account)!, 'address')}>
             <LinkIcon size={16} />
             <span style={{ marginLeft: '4px' }}>View on Etherscan</span>
           </AddressLink>

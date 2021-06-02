@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchWrapper } from '../../api/fetchWrapper';
 import { addPopup } from '../application/actions';
 
-const baseUrl = window['env'] ? window['env'].REACT_APP_PUBLIC_URL : '';
+const baseUrl = window['env' as keyof Window].REACT_APP_PUBLIC_URL ?? '';
 
 export const loadGasPrice = createAsyncThunk('stats/loadGasPrice', async (_, { dispatch }) => {
   try {

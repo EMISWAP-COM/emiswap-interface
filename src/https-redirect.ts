@@ -1,13 +1,13 @@
-import PropTypes from 'prop-types';
+import React from 'react';
 
-const isLocalHost = hostname =>
+const isLocalHost = (hostname: string) =>
   !!(
     hostname === 'localhost' ||
     hostname === '[::1]' ||
     hostname.match(/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/)
   );
 
-const HttpsRedirect = ({ disabled, children }) => {
+const HttpsRedirect: React.FC<{ disabled?: boolean }> = ({ disabled, children }) => {
   if (
     !disabled &&
     typeof window !== 'undefined' &&
@@ -19,12 +19,7 @@ const HttpsRedirect = ({ disabled, children }) => {
     return null;
   }
 
-  return children;
-};
-
-HttpsRedirect.propTypes = {
-  children: PropTypes.node,
-  disabled: PropTypes.bool,
+  return React.createElement(React.Fragment, null, children);
 };
 
 export default HttpsRedirect;

@@ -3,7 +3,6 @@
   "description": "EmiSwap Interface",
   "license": "GPL-3.0-or-later",
   "private": true,
-  "homepage": ".",
   "browserslist": {
     "production": [
       ">0.2%",
@@ -22,15 +21,15 @@
     "build:stage": "rm -R -f ./build && env-cmd -f .env.staging react-scripts build && REACTBUILDVERSION=Stage_$(date +%Y-%m-%d)-$(date +%T) && sed -i -- 's/%REACTBUILDVERSION%/'$REACTBUILDVERSION'/g' build/docs/version.txt && echo React Build Version = $REACTBUILDVERSION",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "lint": "eslint '{cypress,src}/**/*.{js,jsx,ts,tsx}'",
+    "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "lint:fix": "yarn run lint -- --fix",
     "lint:js": "eslint . --ext .js,.jsx,ts,tsx",
-    "format": "prettier 'src/**/*.{js,jsx,yml,yaml,ts,tsx,md,graphql,mdx}' --write",
-    "integration-test": "start-server-and-test 'serve build -l 3000' http://localhost:3000 'cypress run'",
+    "format": "prettier 'src/**/*.{js,jsx,ts,tsx,yml,yaml,ts,tsx,md,graphql,mdx}' --write",
+    "integration-test": "start-server-and-test 'serve build -l 3000' http://localhost:3000",
     "prepare": "husky install"
   },
   "lint-staged": {
-    "{cypress,src}/**/*.{js,jsx,ts,tsx}": [
+    "src/**/*.{js,jsx,ts,tsx}": [
       "prettier --write",
       "eslint --no-ignore --max-warnings=0 --fix"
     ]

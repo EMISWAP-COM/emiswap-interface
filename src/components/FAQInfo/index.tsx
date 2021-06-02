@@ -498,11 +498,11 @@ const Body = styled.div`
 export default () => {
   const btnClick1 = () => {
     const win = window.open('https://crowdsale.emidao.org/whitepaper', '_blank');
-    win.focus();
+    win && win.focus();
   };
   const btnClick3 = () => {
     const win = window.open('https://crowdsale.emidao.org/presentation', '_blank');
-    win.focus();
+    win && win.focus();
   };
 
   /* TODO removed Invest tab until further notice.

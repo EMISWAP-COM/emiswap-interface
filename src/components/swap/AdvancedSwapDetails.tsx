@@ -16,7 +16,6 @@ import { tokenAmountToString } from '../../utils/formats';
 function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippage: number }) {
   const theme = useContext(ThemeContext);
   const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade);
-  // const isExactIn = trade.tradeType === TradeType.EXACT_INPUT
   const slippageAdjustedAmounts = computeSlippageAdjustedAmounts(trade, allowedSlippage);
 
   return (
@@ -46,18 +45,6 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
           </RowFixed>
           <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />
         </RowBetween>
-
-        {/*<RowBetween>*/}
-        {/*<RowFixed>*/}
-        {/*  <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>*/}
-        {/*    Liquidity Provider Fee*/}
-        {/*  </TYPE.black>*/}
-        {/*  <QuestionHelper text="A portion of each trade (0.30%) goes to liquidity providers as a protocol incentive." />*/}
-        {/*</RowFixed>*/}
-        {/*<TYPE.black fontSize={14} color={theme.text1}>*/}
-        {/*  {realizedLPFee ? `${realizedLPFee.toSignificant(4)} ${trade.inputAmount.token.symbol}` : '-'}*/}
-        {/*</TYPE.black>*/}
-        {/*</RowBetween>*/}
       </AutoColumn>
     </>
   );
@@ -72,7 +59,7 @@ export function AdvancedSwapDetails({ trade }: AdvancedSwapDetailsProps) {
 
   const [allowedSlippage] = useUserSlippageTolerance();
 
-  const showRoute = trade?.route?.path?.length > 2;
+  const showRoute = trade?.route?.path?.length! > 2;
 
   return (
     <AutoColumn gap="md">
@@ -87,7 +74,7 @@ export function AdvancedSwapDetails({ trade }: AdvancedSwapDetailsProps) {
               </TYPE.black>
               <QuestionHelper text="Routing through these tokens resulted in the best price for your trade." />
             </RowFixed>
-            <SwapRoute trade={trade} />
+            <SwapRoute trade={trade!} />
           </AutoColumn>
         </>
       )}

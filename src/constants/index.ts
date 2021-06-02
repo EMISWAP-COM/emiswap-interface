@@ -3,6 +3,7 @@ import { ChainId, ETHER, JSBI, Percent, Token } from '@uniswap/sdk';
 import { fortmatic, injected, portis, walletconnect, walletlink } from '../connectors';
 import { keccak256 } from '@ethersproject/solidity';
 import { bytecode } from './abis/Emiswap.json';
+import { AbstractConnector } from '@web3-react/abstract-connector';
 
 export const MAX_NUM_DECIMALS = 18;
 export const ROUTER_ADDRESS = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D';
@@ -115,19 +116,49 @@ export const KOVAN_CHI = new Token(
 
 export const ESW: ChainTokenList = {
   [ChainId.MAINNET]: [
-    new Token(ChainId.MAINNET, window['env'].REACT_APP_ESW_ID, 18, 'ESW', 'EmiDAO Token'),
+    new Token(
+      ChainId.MAINNET,
+      window['env' as keyof Window].REACT_APP_ESW_ID,
+      18,
+      'ESW',
+      'EmiDAO Token',
+    ),
   ],
   [ChainId.ROPSTEN]: [
-    new Token(ChainId.ROPSTEN, window['env'].REACT_APP_ESW_ID, 18, 'ESW', 'EmiDAO Token'),
+    new Token(
+      ChainId.ROPSTEN,
+      window['env' as keyof Window].REACT_APP_ESW_ID,
+      18,
+      'ESW',
+      'EmiDAO Token',
+    ),
   ],
   [ChainId.RINKEBY]: [
-    new Token(ChainId.RINKEBY, window['env'].REACT_APP_ESW_ID, 18, 'ESW', 'EmiDAO Token'),
+    new Token(
+      ChainId.RINKEBY,
+      window['env' as keyof Window].REACT_APP_ESW_ID,
+      18,
+      'ESW',
+      'EmiDAO Token',
+    ),
   ],
   [ChainId.GÖRLI]: [
-    new Token(ChainId.GÖRLI, window['env'].REACT_APP_ESW_ID, 18, 'ESW', 'EmiDAO Token'),
+    new Token(
+      ChainId.GÖRLI,
+      window['env' as keyof Window].REACT_APP_ESW_ID,
+      18,
+      'ESW',
+      'EmiDAO Token',
+    ),
   ],
   [ChainId.KOVAN]: [
-    new Token(ChainId.KOVAN, window['env'].REACT_APP_ESW_ID, 18, 'ESW', 'EmiDAO Token'),
+    new Token(
+      ChainId.KOVAN,
+      window['env' as keyof Window].REACT_APP_ESW_ID,
+      18,
+      'ESW',
+      'EmiDAO Token',
+    ),
   ],
 };
 
@@ -186,7 +217,19 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
   ],
 };
 
-const TESTNET_CAPABLE_WALLETS = {
+export interface Wallet {
+  connector?: AbstractConnector;
+  name: string;
+  iconName: string;
+  description: string;
+  href?: string | null;
+  color: string;
+  primary?: boolean;
+  mobile?: boolean;
+  mobileOnly?: boolean;
+}
+
+const TESTNET_CAPABLE_WALLETS: Record<string, Wallet> = {
   INJECTED: {
     connector: injected,
     name: 'Injected',
@@ -206,54 +249,56 @@ const TESTNET_CAPABLE_WALLETS = {
   },
 };
 
-export const SUPPORTED_WALLETS = {
-  ...TESTNET_CAPABLE_WALLETS,
-  ...{
-    WALLET_CONNECT: {
-      connector: walletconnect,
-      name: 'WalletConnect',
-      iconName: 'walletConnectIcon.svg',
-      description: 'Connect to Trust Wallet, Rainbow Wallet and more...',
-      href: null,
-      color: '#4196FC',
-      mobile: true,
-    },
-    WALLET_LINK: {
-      connector: walletlink,
-      name: 'Coinbase Wallet',
-      iconName: 'coinbaseWalletIcon.svg',
-      description: 'Use Coinbase Wallet app on mobile device',
-      href: null,
-      color: '#315CF5',
-    },
-    COINBASE_LINK: {
-      name: 'Open in Coinbase Wallet',
-      iconName: 'coinbaseWalletIcon.svg',
-      description: 'Open in Coinbase Wallet app.',
-      href: 'https://go.cb-w.com/dFdHIRRZS8',
-      color: '#315CF5',
-      mobile: true,
-      mobileOnly: true,
-    },
-    FORTMATIC: {
-      connector: fortmatic,
-      name: 'Fortmatic',
-      iconName: 'fortmaticIcon.png',
-      description: 'Login using Fortmatic hosted wallet',
-      href: null,
-      color: '#6748FF',
-      mobile: true,
-    },
-    Portis: {
-      connector: portis,
-      name: 'Portis',
-      iconName: 'portisIcon.png',
-      description: 'Login using Portis hosted wallet',
-      href: null,
-      color: '#4A6C9B',
-      mobile: true,
-    },
+const WALLETS: Record<string, Wallet> = {
+  WALLET_CONNECT: {
+    connector: walletconnect,
+    name: 'WalletConnect',
+    iconName: 'walletConnectIcon.svg',
+    description: 'Connect to Trust Wallet, Rainbow Wallet and more...',
+    href: null,
+    color: '#4196FC',
+    mobile: true,
   },
+  WALLET_LINK: {
+    connector: walletlink,
+    name: 'Coinbase Wallet',
+    iconName: 'coinbaseWalletIcon.svg',
+    description: 'Use Coinbase Wallet app on mobile device',
+    href: null,
+    color: '#315CF5',
+  },
+  COINBASE_LINK: {
+    name: 'Open in Coinbase Wallet',
+    iconName: 'coinbaseWalletIcon.svg',
+    description: 'Open in Coinbase Wallet app.',
+    href: 'https://go.cb-w.com/dFdHIRRZS8',
+    color: '#315CF5',
+    mobile: true,
+    mobileOnly: true,
+  },
+  FORTMATIC: {
+    connector: fortmatic,
+    name: 'Fortmatic',
+    iconName: 'fortmaticIcon.png',
+    description: 'Login using Fortmatic hosted wallet',
+    href: null,
+    color: '#6748FF',
+    mobile: true,
+  },
+  Portis: {
+    connector: portis,
+    name: 'Portis',
+    iconName: 'portisIcon.png',
+    description: 'Login using Portis hosted wallet',
+    href: null,
+    color: '#4A6C9B',
+    mobile: true,
+  },
+};
+
+export const SUPPORTED_WALLETS: Record<string, Wallet> = {
+  ...TESTNET_CAPABLE_WALLETS,
+  ...WALLETS,
 };
 
 export const NetworkContextName = 'NETWORK';

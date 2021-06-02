@@ -12,14 +12,14 @@ const V1_MOONISWAP_FACTORY_ADDRESSES: { [chainId in ChainId]: string } = {
 };
 
 const V1_EMIROUTER_HELPER_ADDRESSES: { [chainId in ChainId]: string } = {
-  [ChainId.MAINNET]: window['env'].REACT_APP_EMI_ROUTER_MAINNET,
-  [ChainId.ROPSTEN]: window['env'].REACT_APP_EMI_ROUTER_ROPSTEN,
-  [ChainId.RINKEBY]: window['env'].REACT_APP_EMI_ROUTER_RINKEBY,
-  [ChainId.GÖRLI]: window['env'].REACT_APP_EMI_ROUTER_GÖRLI,
-  [ChainId.KOVAN]: window['env'].REACT_APP_EMI_ROUTER_KOVAN,
+  [ChainId.MAINNET]: window['env' as keyof Window].REACT_APP_EMI_ROUTER_MAINNET,
+  [ChainId.ROPSTEN]: window['env' as keyof Window].REACT_APP_EMI_ROUTER_ROPSTEN,
+  [ChainId.RINKEBY]: window['env' as keyof Window].REACT_APP_EMI_ROUTER_RINKEBY,
+  [ChainId.GÖRLI]: window['env' as keyof Window].REACT_APP_EMI_ROUTER_GÖRLI,
+  [ChainId.KOVAN]: window['env' as keyof Window].REACT_APP_EMI_ROUTER_KOVAN,
 };
 
-const VAMP_ADDRESS = window['env'].REACT_APP_EMI_VAMP;
+const VAMP_ADDRESS = window['env' as keyof Window].REACT_APP_EMI_VAMP;
 const V1_FACTORY_INTERFACE = new Interface(V1_MOONISWAP_FACTORY_ABI);
 const V1_EXCHANGE_INTERFACE = new Interface(V1_MOONISWAP_EXCHANGE_ABI);
 

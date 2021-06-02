@@ -130,7 +130,7 @@ export default function AddLiquidity({
   );
 
   const addTransaction = useTransactionAdder();
-  const emiRouterContract = getEmiRouterContract(chainId, library, account);
+  const emiRouterContract = getEmiRouterContract(chainId!, library!, account!);
   const methodName = currencyA?.isEther || currencyB?.isEther ? 'addLiquidityETH' : 'addLiquidity';
   const method = emiRouterContract[methodName];
 

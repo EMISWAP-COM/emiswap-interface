@@ -178,15 +178,13 @@ const WalletAction = styled(ButtonSecondary)`
   }
 `;
 
-function renderTransactions(transactions) {
-  return (
-    <TransactionListWrapper>
-      {transactions.map((hash, i) => {
-        return <Transaction key={i} hash={hash} />;
-      })}
-    </TransactionListWrapper>
-  );
-}
+const renderTransactions = (transactions: any[]) => (
+  <TransactionListWrapper>
+    {transactions.map((hash, i) => {
+      return <Transaction key={i} hash={hash} />;
+    })}
+  </TransactionListWrapper>
+);
 
 interface AccountDetailsProps {
   toggleWalletModal: () => void;
@@ -224,7 +222,7 @@ export default function AccountDetails({
   const clearAllTransactionsCallback = useCallback(
     (event: React.MouseEvent) => {
       event.preventDefault();
-      dispatch(clearAllTransactions({ chainId }));
+      dispatch(clearAllTransactions({ chainId: chainId! }));
     },
     [dispatch, chainId],
   );
@@ -240,7 +238,7 @@ export default function AccountDetails({
           <YourAccount>
             <InfoCard>
               <AccountGroupingRow>
-                <WalletName>Connected with {formatConnectorName(connector)}</WalletName>
+                <WalletName>Connected with {formatConnectorName(connector as any)}</WalletName>
                 <div>
                   {connector !== injected && connector !== walletlink && (
                     <WalletAction
@@ -267,15 +265,15 @@ export default function AccountDetails({
                   {ENSName ? (
                     <>
                       <div>
-                        <StatusIcon connectorName={connector} />
+                        <StatusIcon connectorName={connector!} />
                         <p> {ENSName}</p>
                       </div>
                     </>
                   ) : (
                     <>
                       <div>
-                        <StatusIcon connectorName={connector} />
-                        <p> {shortenAddress(account)}</p>
+                        <StatusIcon connectorName={connector!} />
+                        <p> {shortenAddress(account!)}</p>
                       </div>
                     </>
                   )}
@@ -286,13 +284,13 @@ export default function AccountDetails({
                   <>
                     <AccountControl>
                       <div>
-                        <Copy toCopy={account}>
+                        <Copy toCopy={account!}>
                           <span style={{ marginLeft: '4px' }}>Copy Address</span>
                         </Copy>
                         <AddressLink
                           hasENS={!!ENSName}
                           isENS={true}
-                          href={getEtherscanLink(chainId, ENSName, 'address')}
+                          href={getEtherscanLink(chainId!, ENSName, 'address')}
                         >
                           <LinkIcon size={16} />
                           <span style={{ marginLeft: '4px' }}>View on Etherscan</span>
@@ -304,13 +302,13 @@ export default function AccountDetails({
                   <>
                     <AccountControl>
                       <div>
-                        <Copy toCopy={account}>
+                        <Copy toCopy={account!}>
                           <span style={{ marginLeft: '4px' }}>Copy Address</span>
                         </Copy>
                         <AddressLink
                           hasENS={!!ENSName}
                           isENS={false}
-                          href={getEtherscanLink(chainId, account, 'address')}
+                          href={getEtherscanLink(chainId!, account!, 'address')}
                         >
                           <LinkIcon size={16} />
                           <span style={{ marginLeft: '4px' }}>View on Etherscan</span>
@@ -319,20 +317,17 @@ export default function AccountDetails({
                     </AccountControl>
                   </>
                 )}
-                {/* {formatConnectorName()} */}
               </AccountGroupingRow>
             </InfoCard>
             <SourcesList
-              totalAcquired={totalAcquired}
-              totalAcquiredInDAI={totalAcquiredInDAI}
-              crowdSaleAcquired={crowdSaleAcquired}
-              crowdSaleAlreadyMinted={crowdSaleAlreadyMinted}
-              crowdSaleAvailableForMinting={crowdSaleAvailableForMinting}
-              crowdSaleReferralRewardAcquired={crowdSaleReferralRewardAcquired}
-              crowdSaleReferralRewardAlreadyMinted={crowdSaleReferralRewardAlreadyMinted}
-              crowdSaleReferralRewardAvailableForMinting={
-                crowdSaleReferralRewardAvailableForMinting
-              }
+              totalAcquired={`${totalAcquired}`}
+              totalAcquiredInDAI={`${totalAcquiredInDAI}`}
+              crowdSaleAcquired={`${crowdSaleAcquired}`}
+              crowdSaleAlreadyMinted={`${crowdSaleAlreadyMinted}`}
+              crowdSaleAvailableForMinting={`${crowdSaleAvailableForMinting}`}
+              crowdSaleReferralRewardAcquired={`${crowdSaleReferralRewardAcquired}`}
+              crowdSaleReferralRewardAlreadyMinted={`${crowdSaleReferralRewardAlreadyMinted}`}
+              crowdSaleReferralRewardAvailableForMinting={`${crowdSaleReferralRewardAvailableForMinting}`}
             />
             <TotalEarnDividends
               availableToCollect={availableToCollect}

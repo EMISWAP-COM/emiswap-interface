@@ -1,9 +1,6 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-// import WAValidator from 'wallet-address-validator';
-// import ReactGA from 'react-ga';
 import Modal from '../Modal';
-// import EmiCardHeaderImg from '../../assets/images/EmiCardHeaderImgNew.jpg';
 import { SuccessRegistration } from './SuccessRegistration';
 import { CloseIcon } from '../../assets/tsx/CloseIcon';
 import { fetchWrapper } from '../../api/fetchWrapper';
@@ -136,7 +133,6 @@ const ModalBody = styled.div`
       font-style: normal;
       font-size: 16px;
       line-height: 24px;
-      text-align: center;
     }
 
     &__link {
@@ -187,7 +183,7 @@ const ModalBody = styled.div`
     }
   }
 `;
-const baseUrl = window['env'] ? window['env'].REACT_APP_PUBLIC_URL : '';
+const baseUrl = window['env' as keyof Window].REACT_APP_PUBLIC_URL ?? '';
 
 interface EmiMagicCardModalProps {
   isOpen: boolean;
@@ -205,16 +201,22 @@ const defaultValidation = {
 
 //TODO объединить с EmiMagicCardModal. Вынести валидатор в утилсы с декларативной проверкой входящего объекта. Регэкспы тоже из утлис экспортить
 export default function InvestContactForm({ isOpen, walletID, onDismiss }: EmiMagicCardModalProps) {
-  const nameRef = useRef(null);
-  const emailRef = useRef(null);
-  const phoneRef = useRef(null);
-  const telegramRef = useRef(null);
-  const walletRef = useRef(null);
+  const nameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const phoneRef = useRef<HTMLInputElement>(null);
+  const telegramRef = useRef<HTMLInputElement>(null);
+  const walletRef = useRef<HTMLInputElement>(null);
   const [validation, setValidation] = useState(defaultValidation);
   const [isRegistered, setIsRegistered] = useState(false);
   const dispatch = useDispatch();
 
-  const validateForm = (name, email, phone, telegram, wallet) => {
+  const validateForm = (
+    name: string,
+    email: string,
+    phone: string,
+    telegram: string,
+    wallet: string,
+  ) => {
     const newValidator = { ...defaultValidation };
     const nameRegexp = /\D/;
     const emailRegexp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -237,7 +239,7 @@ export default function InvestContactForm({ isOpen, walletID, onDismiss }: EmiMa
     const telegram = telegramRef.current?.value;
     const wallet = walletRef.current?.value;
 
-    const formValidation = validateForm(name, email, phone, telegram, wallet);
+    const formValidation = validateForm(name!, email!, phone!, telegram!, wallet!);
     const isValid = Object.values(formValidation).every(Boolean);
 
     if (isValid) {

@@ -25,14 +25,17 @@ export default function TradePrice({
 }: TradePriceProps) {
   const theme = useContext(ThemeContext);
   let formattedPrice;
-  if (!showInverted) {
-    formattedPrice = parsedAmounts[Field.OUTPUT]
-      ? tokenAmountToString(parsedAmounts[Field.INPUT]?.divide(parsedAmounts[Field.OUTPUT]))
-      : null;
-  } else {
-    formattedPrice = parsedAmounts[Field.INPUT]
-      ? tokenAmountToString(parsedAmounts[Field.OUTPUT]?.divide(parsedAmounts[Field.INPUT]))
-      : null;
+
+  if (parsedAmounts) {
+    if (!showInverted) {
+      formattedPrice = parsedAmounts[Field.OUTPUT]
+        ? tokenAmountToString(parsedAmounts[Field.INPUT]?.divide(parsedAmounts[Field.OUTPUT]!))
+        : null;
+    } else {
+      formattedPrice = parsedAmounts[Field.INPUT]
+        ? tokenAmountToString(parsedAmounts[Field.OUTPUT]?.divide(parsedAmounts[Field.INPUT]!))
+        : null;
+    }
   }
 
   const show = Boolean(inputCurrency && outputCurrency);

@@ -26,7 +26,7 @@ const StyledSVG = styled(ReactLoader)<{ size: string; stroke?: string }>`
  */
 export default function SingleLoader({
   size = '16px',
-  stroke = null,
+  stroke = undefined,
   ...rest
 }: {
   size?: string;

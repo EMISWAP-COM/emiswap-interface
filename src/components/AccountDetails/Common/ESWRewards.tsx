@@ -5,26 +5,6 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { convertBigDecimal } from '../uitls';
 
-// export const Calculating = styled.div`
-//   position: relative;
-//
-//   &:after {
-//     position: absolute;
-//     content: 'Calculating...';
-//     background: ${({ theme }) => theme.red3};
-//
-//     border-radius: 12px;
-//     padding: 0 8px;
-//     top: -12px;
-//     right: -5px;
-//     text-transform: lowercase;
-//     color: white;
-//     font-weight: 500;
-//     font-size: 12px;
-//     z-index: 10;
-//   }
-// `;
-
 const DarkText = styled.span`
   color: ${({ theme }) => theme.white};
 `;
@@ -109,7 +89,7 @@ export const ESWRewards = () => {
           <span>Fee Compensation</span>
           <div>
             <RewardsValue>
-              {convertBigDecimal(balance?.total.grouped.compensation?.ESW)}
+              {convertBigDecimal(balance?.total.grouped.compensation?.ESW!)}
             </RewardsValue>
             &nbsp;ESW
           </div>

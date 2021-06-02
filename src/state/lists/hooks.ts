@@ -81,7 +81,7 @@ export function useTokenList(url: string): TokenAddressMap {
       ...current,
       tokens: [
         {
-          address: window['env'].REACT_APP_ESW_ID,
+          address: window['env' as keyof Window].REACT_APP_ESW_ID,
           chainId: chainId ?? 42,
           name: 'EmiDAO Token',
           decimals: 18,

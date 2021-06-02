@@ -22,7 +22,8 @@ export function useAllTokens(): [{ [address: string]: Token }, boolean] {
       const filteredTokens = Object.values(allTokens[chainId])
         .filter(
           el =>
-            enableTokensList.includes(el.address) || el.address === window['env'].REACT_APP_ESW_ID,
+            enableTokensList.includes(el.address) ||
+            el.address === window['env' as keyof Window].REACT_APP_ESW_ID,
         )
         .reduce((acc: { [key: string]: WrappedTokenInfo }, val) => {
           acc[val.address] = val;
@@ -136,7 +137,8 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
 export function useCurrency(currencyId: string | undefined): Token | null | undefined {
   const { chainId } = useActiveWeb3React();
 
-  const isESW = currencyId?.toUpperCase() === window['env'].REACT_APP_ESW_ID?.toUpperCase();
+  const isESW =
+    currencyId?.toUpperCase() === window['env' as keyof Window].REACT_APP_ESW_ID?.toUpperCase();
   const defaultCoin = useDefaultCoin(currencyId);
   const isETH = currencyId?.toUpperCase() === ETHER.address.toUpperCase();
   const token = useToken(isESW || isETH ? undefined : currencyId);

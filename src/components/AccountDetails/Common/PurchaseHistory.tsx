@@ -513,7 +513,7 @@ export const PurchaseHistory = () => {
                   <Label>DAI Equivalent</Label>
                   <LevelWrapper>
                     <Cost>
-                      <span>{convertBigDecimal(amount_dai)}</span>&nbsp; DAI
+                      <span>{convertBigDecimal(amount_dai!)}</span>&nbsp; DAI
                     </Cost>
                   </LevelWrapper>
                 </Cell>

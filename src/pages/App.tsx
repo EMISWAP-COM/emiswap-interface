@@ -22,8 +22,6 @@ import Swap from './Swap';
 // TODO removed Invest tab until further notice. import Invest from './Invest';
 import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects';
 import ReferralUrlParser from '../referral-url-parser';
-// import MigrateV1 from './MigrateV1';
-// import MigrateV1Exchange from './MigrateV1/MigrateV1Exchange';
 import { AppWrapper } from '../base/ui/AppWrapper/AppWrapper';
 import { ErrorBoundary } from '../components/ErrorBoundary/ErrorBoundary';
 import Claim from './Claim';
@@ -41,7 +39,7 @@ const LogoWrapper = styled.div`
 `;
 
 const HeaderWrapper = styled.div`
-  ${({ theme }) => theme.flexRowNoWrap}
+  ${({ theme }) => theme.flexRowNoWrap};
   width: 100%;
   justify-content: space-between;
 `;
@@ -55,7 +53,6 @@ const BodyWrapper = styled.div`
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  z-index: 10;
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
       padding: 16px;

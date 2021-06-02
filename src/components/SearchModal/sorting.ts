@@ -36,14 +36,18 @@ function getTokenComparator(
     if (balanceComp !== 0) return balanceComp;
 
     // sort by symbol
-    return tokenA.symbol.toLowerCase() < tokenB.symbol.toLowerCase() ? -1 : 1;
+    const a = `${tokenA.symbol}`.toLowerCase();
+    const b = `${tokenB.symbol}`.toLowerCase();
+    return a.localeCompare(b);
   };
 }
 
 export function useTokenComparator(inverted: boolean): (tokenA: Token, tokenB: Token) => number {
   // const { chainId } = useActiveWeb3React()
   const balances = useAllTokenBalances();
-  const comparator = useMemo(() => getTokenComparator(ETHER, balances ?? {}), [balances]);
+  const comparator = useMemo(() => getTokenComparator(ETHER, (balances as any) ?? ({} as any)), [
+    balances,
+  ]);
   return useMemo(() => {
     if (inverted) {
       return (tokenA: Token, tokenB: Token) => comparator(tokenA, tokenB) * -1;

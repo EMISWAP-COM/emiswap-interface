@@ -27,7 +27,7 @@ const TransactionState = styled(ExternalLink)<{ pending: boolean; success?: bool
   align-items: center;
   text-decoration: none !important;
   border-radius: 0.5rem;
-  padding: 0.25rem 0rem;
+  padding: 0.25rem 0;
   font-weight: 500;
   font-size: 0.825rem;
   color: ${({ theme }) => theme.primary1};
@@ -46,13 +46,14 @@ export default function Transaction({ hash }: { hash: string }) {
   const pending = !allTransactions?.[hash]?.receipt;
   const success =
     !pending &&
-    (allTransactions[hash].receipt.status === 1 ||
-      typeof allTransactions[hash].receipt.status === 'undefined');
+    (allTransactions[hash as keyof typeof allTransactions]?.receipt?.status === 1 ||
+      typeof allTransactions[hash as keyof typeof allTransactions]?.receipt?.status ===
+        'undefined');
 
   return (
     <TransactionWrapper>
       <TransactionState
-        href={getEtherscanLink(chainId, hash, 'transaction')}
+        href={getEtherscanLink(chainId!, hash, 'transaction')}
         pending={pending}
         success={success}
       >

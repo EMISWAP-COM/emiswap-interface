@@ -47,8 +47,8 @@ const ContentWrapper = styled.div`
 const DELAY = 100;
 const Fader = styled.div<{ count: number }>`
   position: absolute;
-  bottom: 0px;
-  left: 0px;
+  bottom: 0;
+  left: 0;
   width: ${({ count }) => `calc(100% - (100% / ${150 / count}))`};
   height: 2px;
   background-color: ${({ theme }) => theme.bg3};
@@ -76,7 +76,7 @@ export default function PopupItem({ content, popKey }: { content: PopupContent; 
   const handleMouseLeave = useCallback(() => setIsRunning(true), []);
 
   let popupContent;
-  let isSuccess;
+  let isSuccess = false;
   if ('txn' in content) {
     const {
       txn: { hash, success, summary },

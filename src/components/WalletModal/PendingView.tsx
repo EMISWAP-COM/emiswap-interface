@@ -86,7 +86,7 @@ export default function PendingView({
               <ErrorButton
                 onClick={() => {
                   setPendingError(false);
-                  tryActivation(connector);
+                  tryActivation(connector!);
                 }}
               >
                 Try Again

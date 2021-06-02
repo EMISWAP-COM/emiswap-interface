@@ -129,7 +129,6 @@ const ModalBody = styled.div`
 
     &__bottom-text {
       margin-top: 20px;
-      text-align: center;
       font-family: Poppins, Arial, sans-serif;
       font-weight: 300;
       color: #434a72;
@@ -188,7 +187,9 @@ interface EmiMagicCardModalProps {
   walletID?: string;
 }
 
-const baseUrl = window['env'] ? window['env'].REACT_APP_PUBLIC_URL : '';
+const baseUrl = window['env' as keyof Window]
+  ? window['env' as keyof Window].REACT_APP_PUBLIC_URL
+  : '';
 
 const defaultValidation = { name: false, email: false, telegram: false, address: false };
 
@@ -198,10 +199,10 @@ enum Message {
 }
 
 export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMagicCardModalProps) {
-  const nameRef = useRef(null);
-  const emailRef = useRef(null);
-  const telegramRef = useRef(null);
-  const addressRef = useRef(null);
+  const nameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const telegramRef = useRef<HTMLInputElement>(null);
+  const addressRef = useRef<HTMLInputElement>(null);
   const [validation, setValidation] = useState(defaultValidation);
   const [isRegistered, setIsRegistered] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
@@ -240,20 +241,20 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
   };
 
   const sendForm = () => {
-    const name = nameRef && nameRef.current.value;
-    const email = emailRef && emailRef.current.value;
-    const telegram = telegramRef && telegramRef.current.value;
-    const address = addressRef && addressRef.current.value;
+    const name = nameRef.current && nameRef.current.value;
+    const email = emailRef.current && emailRef.current.value;
+    const telegram = telegramRef.current && telegramRef.current.value;
+    const address = addressRef.current && addressRef.current.value;
 
     const utm = localStorage.getItem('UTMMarks');
 
-    if (!validateForm(name, email, telegram, address)) {
+    if (!validateForm(name!, email!, telegram!, address!)) {
       setValidation(defaultValidation);
-      const urlParams = new URLSearchParams(localStorage.getItem('UTMMarks'));
-      let utmMakrs = {};
+      const urlParams = new URLSearchParams(localStorage.getItem('UTMMarks')!);
+      let utmMakrs: Record<string, string> = {};
       for (let [key, value] of urlParams) {
         if (key.includes('utm')) {
-          utmMakrs[key] = value;
+          utmMakrs[key as keyof typeof utmMakrs] = value;
         }
       }
       fetchWrapper

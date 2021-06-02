@@ -55,7 +55,7 @@ const TokenInfoBlock = styled.div`
   background-color: ${({ theme }) => theme.darkGrey};
   color: ${({ theme }) => theme.white};
   border-radius: 12px;
-  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.075);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.075);
   outline: none;
   cursor: pointer;
   user-select: none;
@@ -105,12 +105,14 @@ const StyledBalanceMax = styled.button`
   `};
 `;
 
-const baseUrl = window['env'] ? window['env'].REACT_APP_PUBLIC_URL : '';
+const baseUrl = window['env' as keyof Window].REACT_APP_PUBLIC_URL ?? '';
 
 export default function Claim({
   match: {
     params: { tokenName },
   },
+}: {
+  match: { params: { tokenName: string } };
 }) {
   const theme = useContext(ThemeContext);
   const [typedValue, setTypedValue] = useState('0');
@@ -125,6 +127,7 @@ export default function Claim({
   const dispatch = useDispatch();
 
   //TODO fix TS. Не требует типизировать аргумент функции вообще! Принимал объект, вместо строки и ничего не сказал. Просто упал в препроде
+  // @ts-ignore
   const formatBalance = balance => {
     if (!isNaN(Number(balance))) {
       return (Math.trunc(Number(balance) * 1e6) / 1e6).toFixed(6);
@@ -146,7 +149,7 @@ export default function Claim({
     return { state: 'sent' };
   };
 
-  const onError = error => {
+  const onError = (error: { message: string; code: number }) => {
     if (error?.code === 4001) {
       return;
     }
@@ -171,7 +174,7 @@ export default function Claim({
         const { signature, nonce, amount, user_id, id } = data;
         const args = [account, amount, nonce, `0x${signature}`];
 
-        return contract.estimateGas
+        return contract?.estimateGas
           .mintSigned(...args)
           .then(gasLimit => contract.mintSigned(...args, { gasLimit }))
           .then(contractResponse => addTransaction(contractResponse))

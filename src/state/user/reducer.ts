@@ -118,7 +118,7 @@ export default createReducer(initialState, builder =>
       if (action.payload.role) {
         state.info = action.payload;
 
-        const testUserId = window['env'] ? window['env'].REACT_APP_TEST_USER_ID : null;
+        const testUserId = window['env' as keyof Window].REACT_APP_TEST_USER_ID ?? null;
         if (testUserId) {
           state.info.id = testUserId;
         }

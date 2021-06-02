@@ -28,6 +28,7 @@ import { useWalletModalToggle } from '../../state/application/hooks';
 import { useCurrency } from '../../hooks/Tokens';
 import { useTransactionAdder } from '../../state/transactions/hooks';
 import Modal from '../../components/Modal';
+import { TransactionResponse } from '@ethersproject/providers';
 
 const POOL_CURRENCY_AMOUNT_MIN = new Fraction(JSBI.BigInt(1), JSBI.BigInt(1000000));
 
@@ -163,9 +164,9 @@ export default function MigrateV1Exchange({
   const [isPairExist, setIsPairExist] = useState(false);
   const currency0 = useCurrency(tokens[0]);
   const currency1 = useCurrency(tokens[1]);
-  const pair = usePair(currency0, currency1)[1];
-  const selectedCurrencyBalance = useCurrencyBalance(account, inputCurrency);
-  const inputCurrencyBalance = useCurrencyBalance(account, inputCurrency);
+  const pair = usePair(currency0!, currency1!)[1];
+  const selectedCurrencyBalance = useCurrencyBalance(account!, inputCurrency);
+  const inputCurrencyBalance = useCurrencyBalance(account!, inputCurrency);
   const [amount, setAmount] = useState('0');
   const [isConfirmModelOpen, setIsConfirmModelOpen] = useState(false);
   const addTransaction = useTransactionAdder();
@@ -179,7 +180,7 @@ export default function MigrateV1Exchange({
     // base pair tokens
     const [token0, token1] = tokens;
     if (token0 && token1) {
-      contract.isPairAvailable(token0, token1).then(data => setIsPairExist(data));
+      contract?.isPairAvailable(token0, token1).then(setIsPairExist);
     }
   }, [tokens, contract]);
 
@@ -189,12 +190,12 @@ export default function MigrateV1Exchange({
     return <Redirect to="/migrate" />;
   }
 
-  const onSuccess = response => {
+  const onSuccess = (response: TransactionResponse) => {
     setAmount('0');
     addTransaction(response);
   };
 
-  const onError = error => {
+  const onError = (error: { code: number }) => {
     if (error?.code === 4001) {
       throw error;
     } else {
@@ -204,9 +205,9 @@ export default function MigrateV1Exchange({
 
   const handleMigrate = () => {
     const idx = lpTokensInfo.findIndex(el => el === address);
-    if (idx !== -1) {
+    if (idx !== -1 && parsedAmount) {
       const args = [idx.toString(), `${10 ** 18 * +parsedAmount.toExact()}`];
-      contract.estimateGas
+      contract?.estimateGas
         .deposit(...args)
         .then(data => {
           const gasLimit = calculateGasMargin(data);
@@ -287,8 +288,8 @@ export default function MigrateV1Exchange({
       <Modal
         isOpen={isConfirmModelOpen}
         onDismiss={() => setIsConfirmModelOpen(false)}
-        minHeight={null}
-        maxHeight={null}
+        minHeight={undefined}
+        maxHeight={undefined}
         maxWidth={440}
       >
         {pair && (

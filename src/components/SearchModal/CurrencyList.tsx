@@ -43,7 +43,7 @@ export default function CurrencyList({
   const defaultTokens = useDefaultTokenList();
   const addToken = useAddUserToken();
   const removeToken = useRemoveUserAddedToken();
-  const ETHBalance = useETHBalances([account])[account];
+  const ETHBalance = useETHBalances([account!])[account!];
 
   const CurrencyRow = useMemo(() => {
     return memo(function CurrencyRow({ index, style }: { index: number; style: CSSProperties }) {
@@ -99,7 +99,7 @@ export default function CurrencyList({
                     <LinkStyledButton
                       onClick={event => {
                         event.stopPropagation();
-                        if (currency instanceof Token) removeToken(chainId, currency.address);
+                        if (currency instanceof Token) removeToken(chainId!, currency.address);
                       }}
                     >
                       (Remove)

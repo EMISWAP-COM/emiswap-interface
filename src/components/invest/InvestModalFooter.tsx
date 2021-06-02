@@ -29,16 +29,19 @@ export default function InvestModalFooter({
 
   let rate;
   let price;
-  if (!showInverted) {
-    rate = parsedAmounts[Field.OUTPUT]
-      ? tokenAmountToString(parsedAmounts[Field.INPUT]?.divide(parsedAmounts[Field.OUTPUT]))
-      : null;
-    price = `${rate} ${currencies[Field.INPUT]?.symbol} / ${currencies[Field.OUTPUT]?.symbol}`;
-  } else {
-    rate = parsedAmounts[Field.INPUT]
-      ? tokenAmountToString(parsedAmounts[Field.OUTPUT]?.divide(parsedAmounts[Field.INPUT]))
-      : null;
-    price = `${rate} ${currencies[Field.OUTPUT]?.symbol} / ${currencies[Field.INPUT]?.symbol}`;
+
+  if (parsedAmounts) {
+    if (!showInverted) {
+      rate = parsedAmounts[Field.OUTPUT]
+        ? tokenAmountToString(parsedAmounts[Field.INPUT]?.divide(parsedAmounts[Field.OUTPUT]!))
+        : null;
+      price = `${rate} ${currencies[Field.INPUT]?.symbol} / ${currencies[Field.OUTPUT]?.symbol}`;
+    } else {
+      rate = parsedAmounts[Field.INPUT]
+        ? tokenAmountToString(parsedAmounts[Field.OUTPUT]?.divide(parsedAmounts[Field.INPUT]!))
+        : null;
+      price = `${rate} ${currencies[Field.OUTPUT]?.symbol} / ${currencies[Field.INPUT]?.symbol}`;
+    }
   }
 
   return (

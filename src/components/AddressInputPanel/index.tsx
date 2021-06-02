@@ -8,7 +8,7 @@ import { RowBetween } from '../Row';
 import { getEtherscanLink } from '../../utils';
 
 const InputPanel = styled.div`
-  ${({ theme }) => theme.flexColumnNoWrap}
+  ${({ theme }) => theme.flexColumnNoWrap};
   position: relative;
   border-radius: 1.25rem;
   background-color: ${({ theme }) => theme.bg1};
@@ -37,7 +37,6 @@ const Input = styled.input<{ error?: boolean }>`
   outline: none;
   border: none;
   flex: 1 1 auto;
-  width: 0;
   background-color: ${({ theme }) => theme.bg1};
   transition: color 300ms ${({ error }) => (error ? 'step-end' : 'step-start')};
   color: ${({ error, theme }) => (error ? theme.red1 : theme.primary1)};
@@ -48,7 +47,7 @@ const Input = styled.input<{ error?: boolean }>`
   ::placeholder {
     color: ${({ theme }) => theme.text4};
   }
-  padding: 0px;
+  padding: 0;
   -webkit-appearance: textfield;
 
   ::-webkit-search-decoration {
@@ -64,11 +63,6 @@ const Input = styled.input<{ error?: boolean }>`
     color: ${({ theme }) => theme.text4};
   }
 `;
-
-interface Value {
-  address: string;
-  name?: string;
-}
 
 export default function AddressInputPanel({
   id,
@@ -108,7 +102,7 @@ export default function AddressInputPanel({
               </TYPE.black>
               {address && (
                 <ExternalLink
-                  href={getEtherscanLink(chainId, name ?? address, 'address')}
+                  href={getEtherscanLink(chainId!, name ?? address, 'address')}
                   style={{ fontSize: '14px' }}
                 >
                   (View on Etherscan)

@@ -26,6 +26,7 @@ import { Ambassador } from '../AccountDetails/Ambassador';
 import { Owner } from '../AccountDetails/Owner';
 import WarningBlock from '../Warning/WarningBlock';
 import ReactPixel from 'react-facebook-pixel';
+import { AbstractConnector } from '@web3-react/abstract-connector';
 
 const CloseIcon = styled.div`
   display: none;
@@ -84,8 +85,7 @@ const UpperSection = styled.div`
   position: relative;
 
   h5 {
-    margin: 0;
-    margin-bottom: 0.5rem;
+    margin: 0 0 0.5rem;
     font-size: 1rem;
     font-weight: 400;
   }
@@ -163,8 +163,6 @@ const WALLET_VIEWS = {
 };
 
 export default function WalletModal({
-  pendingTransactions,
-  confirmedTransactions,
   ENSName,
 }: {
   pendingTransactions: string[]; // hashes of pending
@@ -176,7 +174,7 @@ export default function WalletModal({
 
   const user = useSelector((state: AppState) => state.user.info);
 
-  useLogin(account);
+  useLogin(account!);
 
   const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT);
 
@@ -216,7 +214,7 @@ export default function WalletModal({
     }
   }, [setWalletView, active, error, connector, walletModalOpen, activePrevious, connectorPrevious]);
 
-  const getConnectGAEvent = name => {
+  const getConnectGAEvent = (name: string) => {
     switch (name) {
       case 'MetaMask':
         return () => {
@@ -263,7 +261,7 @@ export default function WalletModal({
     }
   };
 
-  const getConfirmGAEvent = name => {
+  const getConfirmGAEvent = (name: string) => {
     switch (name) {
       case 'MetaMask':
         return () => {
@@ -310,7 +308,7 @@ export default function WalletModal({
     }
   };
 
-  const tryActivation = async connector => {
+  const tryActivation = async (connector: AbstractConnector) => {
     let name = '';
     Object.keys(SUPPORTED_WALLETS).map(key => {
       if (connector === SUPPORTED_WALLETS[key].connector) {
@@ -326,7 +324,7 @@ export default function WalletModal({
       action: 'Change Wallet',
       label: name,
     });
-    setPendingWallet(connector); // set wallet for pending view
+    setPendingWallet(connector as any); // set wallet for pending view
     setWalletView(WALLET_VIEWS.PENDING);
 
     // if the connector is walletconnect and the user has already tried to connect, manually reset the connector
@@ -399,7 +397,7 @@ export default function WalletModal({
                   setWarning(true);
                   return;
                 }
-                option.connector !== connector && !option.href && tryActivation(option.connector);
+                option.connector !== connector && !option.href && tryActivation(option.connector!);
               }}
               id={`connect-${key}`}
               key={key}
@@ -459,7 +457,7 @@ export default function WalletModal({
 
               option.connector === connector
                 ? setWalletView(WALLET_VIEWS.ACCOUNT)
-                : !option.href && tryActivation(option.connector);
+                : !option.href && tryActivation(option.connector!);
             }}
             key={key}
             active={option.connector === connector}
@@ -564,12 +562,18 @@ export default function WalletModal({
                   I accept {'  '}
                   <DocLink
                     title="Terms of Use"
-                    href={window['env'].REACT_APP_PUBLIC_URL + '/docs/EmiSwap_Terms_of_Use.pdf'}
+                    href={
+                      window['env' as keyof Window].REACT_APP_PUBLIC_URL +
+                      '/docs/EmiSwap_Terms_of_Use.pdf'
+                    }
                   />
                   {'  '} and {'  '}
                   <DocLink
                     title="Privacy Policy"
-                    href={window['env'].REACT_APP_PUBLIC_URL + '/docs/EmiSwap_Privacy_Policy.pdf'}
+                    href={
+                      window['env' as keyof Window].REACT_APP_PUBLIC_URL +
+                      '/docs/EmiSwap_Privacy_Policy.pdf'
+                    }
                   />
                 </b>
               </span>
@@ -604,7 +608,7 @@ export default function WalletModal({
     <Modal
       isOpen={walletModalOpen}
       onDismiss={toggleWalletModal}
-      minHeight={null}
+      minHeight={undefined}
       maxHeight={90}
       maxWidth={720}
     >

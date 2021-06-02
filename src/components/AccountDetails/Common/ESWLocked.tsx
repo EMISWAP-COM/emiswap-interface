@@ -62,7 +62,7 @@ export const ESWLocked = () => {
           <LockedItemWrapper>
             <span>Locked at Emiswap</span>
             <div>
-              <LockedValue>{convertBigDecimal(total.locked.ESW)}</LockedValue>&nbsp;ESW
+              <LockedValue>{convertBigDecimal(total.locked.ESW!)}</LockedValue>&nbsp;ESW
             </div>
           </LockedItemWrapper>
         </LockedItem>
@@ -72,7 +72,7 @@ export const ESWLocked = () => {
           <LockedItemWrapper>
             <span>Next unlock amount</span>
             <div>
-              <LockedValue>{convertBigDecimal(nextUnlock?.amount)}</LockedValue>
+              <LockedValue>{convertBigDecimal(nextUnlock?.amount!)}</LockedValue>
               &nbsp;ESW
             </div>
           </LockedItemWrapper>
@@ -81,7 +81,7 @@ export const ESWLocked = () => {
           <img alt="timer" src={timer} />
           <LockedItemWrapper>
             <span>Next unlock date</span>
-            <DarkText>{convertDate(nextUnlock?.available_at, DateFormat.full)}</DarkText>
+            <DarkText>{convertDate(nextUnlock?.available_at!, DateFormat.full)}</DarkText>
           </LockedItemWrapper>
         </LockedItem>
       </LockedWrapper>

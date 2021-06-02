@@ -47,7 +47,7 @@ export const InvestRules = () => {
           </ButtonPrimary>
           <InvestContactForm
             isOpen={isRegisterWaitListModalOpen}
-            walletID={account}
+            walletID={account!}
             onDismiss={() => setIsRegisterWaitListModalOpen(false)}
           />
         </div>

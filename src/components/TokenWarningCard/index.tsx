@@ -65,7 +65,8 @@ export default function TokenWarningCard({ token, ...rest }: TokenWarningCardPro
         return false;
       }
       return (
-        userToken.symbol.toLowerCase() === tokenSymbol || userToken.name.toLowerCase() === tokenName
+        `${userToken.symbol}`.toLowerCase() === tokenSymbol ||
+        `${userToken.name}`.toLowerCase() === tokenName
       );
     });
   }, [isDefault, token, chainId, allTokens, tokenSymbol, tokenName]);
@@ -87,7 +88,7 @@ export default function TokenWarningCard({ token, ...rest }: TokenWarningCardPro
           </TYPE.main>
           <ExternalLink
             style={{ fontWeight: 400, color: theme.blue }}
-            href={getEtherscanLink(chainId, token.address, 'token')}
+            href={getEtherscanLink(chainId!, token.address, 'token')}
           >
             (View on Etherscan)
           </ExternalLink>
@@ -122,7 +123,7 @@ export function TokenWarningCards({ currencies }: { currencies: { [field in Fiel
   }, [blockRef]);
 
   return (
-    <WarningContainer className="token-warning-container" ref={blockRef}>
+    <WarningContainer as={WarningContainer} className="token-warning-container" ref={blockRef}>
       <AutoColumn gap="lg">
         <AutoRow gap="6px">
           <StyledWarningIcon />
@@ -138,8 +139,8 @@ export function TokenWarningCards({ currencies }: { currencies: { [field in Fiel
         </TYPE.body>
         {Object.keys(currencies).map(field => {
           const dismissed = field === Field.INPUT ? dismissedToken0 : dismissedToken1;
-          return currencies[field] instanceof Token && !dismissed ? (
-            <TokenWarningCard key={field} token={currencies[field]} />
+          return currencies[field as keyof typeof currencies] instanceof Token && !dismissed ? (
+            <TokenWarningCard key={field} token={currencies[field as keyof typeof currencies]} />
           ) : null;
         })}
         <RowBetween>

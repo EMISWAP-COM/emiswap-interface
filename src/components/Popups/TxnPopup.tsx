@@ -41,7 +41,7 @@ export default function TxnPopup({
         <TYPE.body fontWeight={500} color={theme[success ? 'green1' : 'red3']}>
           {summary ?? 'Hash: ' + hash.slice(0, 8) + '...' + hash.slice(58, 65)}
         </TYPE.body>
-        <ExternalLink href={getEtherscanLink(chainId, hash, 'transaction')}>
+        <ExternalLink href={getEtherscanLink(chainId!, hash, 'transaction')}>
           View on Etherscan
         </ExternalLink>
       </AutoColumn>

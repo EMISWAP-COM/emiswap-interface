@@ -22,7 +22,6 @@ export default function SwapModalFooter({
   slippageAdjustedAmounts,
   onSwap,
   parsedAmounts,
-  realizedLPFee,
   priceImpactWithoutFee,
   confirmText,
 }: {
@@ -76,14 +75,14 @@ export default function SwapModalFooter({
           </RowFixed>
           <RowFixed>
             <TYPE.black color={theme.darkWhite} fontSize={14}>
-              {tokenAmountToString(slippageAdjustedAmounts[Field.OUTPUT], 4) ?? '-'}
+              {tokenAmountToString(
+                slippageAdjustedAmounts && slippageAdjustedAmounts[Field.OUTPUT],
+                4,
+              ) ?? '-'}
             </TYPE.black>
-            {parsedAmounts[Field.OUTPUT] && parsedAmounts[Field.INPUT] && (
+            {parsedAmounts && parsedAmounts[Field.OUTPUT] && parsedAmounts[Field.INPUT] && (
               <TYPE.black color={theme.darkWhite} fontSize={14} marginLeft={'4px'}>
                 {parsedAmounts[Field.OUTPUT]?.token?.symbol}
-                {/*{trade?.tradeType === TradeType.EXACT_INPUT*/}
-                {/*? parsedAmounts[Field.OUTPUT]?.token?.symbol*/}
-                {/*: parsedAmounts[Field.INPUT]?.token?.symbol}*/}
               </TYPE.black>
             )}
           </RowFixed>
@@ -97,17 +96,6 @@ export default function SwapModalFooter({
           </RowFixed>
           <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />
         </RowBetween>
-        {/*<RowBetween>*/}
-        {/*  <RowFixed>*/}
-        {/*    <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>*/}
-        {/*      Liquidity Provider Fee*/}
-        {/*    </TYPE.black>*/}
-        {/*    <QuestionHelper text="A portion of each trade (0.30%) goes to liquidity providers as a protocol incentive." />*/}
-        {/*  </RowFixed>*/}
-        {/*  <TYPE.black fontSize={14}>*/}
-        {/*    {realizedLPFee ? realizedLPFee?.toSignificant(6) + ' ' + trade?.inputAmount?.token?.symbol : '-'}*/}
-        {/*  </TYPE.black>*/}
-        {/*</RowBetween>*/}
       </AutoColumn>
 
       <AutoRow>

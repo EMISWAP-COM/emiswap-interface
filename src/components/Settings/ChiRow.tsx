@@ -9,7 +9,13 @@ import { ThemeContext } from 'styled-components';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import Loader from '../Loader';
 
-export function ChiStateControl({ state, approveCHI }) {
+export function ChiStateControl({
+  state,
+  approveCHI,
+}: {
+  state: ApprovalState;
+  approveCHI: () => Promise<unknown>;
+}) {
   const isApproved = state === ApprovalState.APPROVED;
   const [chiEnabledFlag, setChiEnabledFlag] = useLocalStorage('chiEnabled', false);
 
@@ -27,7 +33,7 @@ export function ChiStateControl({ state, approveCHI }) {
       toggle={() => {
         const newValue = !chiEnabledFlag;
         setChiEnabledFlag(newValue);
-        if (newValue === true && !isApproved) {
+        if (newValue && !isApproved) {
           approveCHI().then(() => {
             setChiEnabledFlag(true); // activate after approve
           });
@@ -40,8 +46,7 @@ export function ChiStateControl({ state, approveCHI }) {
 export function ChiRow() {
   const { chainId } = useWeb3React();
   const hasChi = useHasChi(0);
-  const [approvalState, approveCHI] = useIsChiApproved(chainId);
-  //const approveCHI = ()
+  const [approvalState, approveCHI] = useIsChiApproved(chainId!);
 
   const theme = useContext(ThemeContext);
 

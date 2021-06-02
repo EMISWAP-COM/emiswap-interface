@@ -6,9 +6,9 @@ import { useActiveWeb3React } from './index';
 import { parseUnits } from '@ethersproject/units';
 import { fetchWrapper } from '../api/fetchWrapper';
 
-const ESW_ADDRESS = window['env'].REACT_APP_ESW_ID;
-const ESW_CLAIM_API = window['env'].REACT_APP_ESW_CLAIM_API;
-const ESW_CLAIM_CHAIN_ID = window['env'].REACT_APP_ESW_CLAIM_CHAIN_ID;
+const ESW_ADDRESS = window['env' as keyof Window].REACT_APP_ESW_ID;
+const ESW_CLAIM_API = window['env' as keyof Window].REACT_APP_ESW_CLAIM_API;
+const ESW_CLAIM_CHAIN_ID = window['env' as keyof Window].REACT_APP_ESW_CLAIM_CHAIN_ID;
 
 export function useClaim() {
   const { id } = useSelector((state: AppState) => state.user.info);

@@ -231,7 +231,7 @@ export default function Swap() {
     srcAmount &&
       estimate &&
       estimate().then(result => {
-        handleStatusChange(result);
+        handleStatusChange(result as number[]);
       });
 
     // Specify how to clean up after this effect:

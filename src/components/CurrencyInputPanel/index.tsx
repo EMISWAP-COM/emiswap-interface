@@ -18,7 +18,7 @@ import { tokenAmountToString } from '../../utils/formats';
 import { MIN_ETH } from '../../constants';
 
 export const InputRow = styled.div<{ selected: boolean }>`
-  ${({ theme }) => theme.flexRowNoWrap}
+  ${({ theme }) => theme.flexRowNoWrap};
   align-items: center;
   padding: ${({ selected }) =>
     selected ? '0.75rem 0.5rem 0.75rem 1rem' : '0.3125rem 0.75rem 0.75rem 1rem'};
@@ -49,7 +49,7 @@ const CurrencySelect = styled.button<{ selected: boolean }>`
 `;
 
 const LabelRow = styled.div`
-  ${({ theme }) => theme.flexRowNoWrap}
+  ${({ theme }) => theme.flexRowNoWrap};
   align-items: center;
   color: ${({ theme }) => theme.text1};
   font-size: 0.75rem;
@@ -79,7 +79,7 @@ const StyledDropDown = styled(DropDown)<{ selected: boolean }>`
 `;
 
 const InputPanel = styled.div<{ hideInput?: boolean }>`
-  ${({ theme }) => theme.flexColumnNoWrap}
+  ${({ theme }) => theme.flexColumnNoWrap};
   position: relative;
   border-radius: ${({ hideInput }) => (hideInput ? '8px' : '20px')};
   z-index: 1;
@@ -92,8 +92,8 @@ const Container = styled.div<{ hideInput: boolean; isError: boolean }>`
 
 export const StyledTokenName = styled.span<{ active?: boolean }>`
   ${({ active }) =>
-    active ? '  margin: 0 0.25rem 0 0.5rem;' : '  margin: 0.125rem 0.25rem 0 0.25rem;'}
-  font-size:  ${({ active }) => (active ? '18px' : '16px')};
+    active ? '  margin: 0 0.25rem 0 0.5rem;' : '  margin: 0.125rem 0.25rem 0 0.25rem;'};
+  font-size: ${({ active }) => (active ? '18px' : '16px')};
   font-weight: 450;
   line-height: 27px;
 `;
@@ -104,7 +104,7 @@ const StyledBalanceMax = styled.button`
   border-radius: 0.5rem;
   font-size: 0.875rem;
   transition: all 0.3s ease-in-out;
-  border: 0
+  border: 0;
 
   font-weight: 500;
   cursor: pointer;
@@ -165,7 +165,7 @@ export default function CurrencyInputPanel({
   onMax,
   showMaxButton,
   label = 'Input',
-  onCurrencySelect = null,
+  onCurrencySelect = undefined,
   currency = null,
   disableCurrencySelect = false,
   hideBalance = false,
@@ -187,14 +187,14 @@ export default function CurrencyInputPanel({
 
   const [modalOpen, setModalOpen] = useState(false);
   const { account } = useActiveWeb3React();
-  const selectedCurrencyBalance = useCurrencyBalance(account, currency);
+  const selectedCurrencyBalance = useCurrencyBalance(account!, currency!);
   const theme = useContext(ThemeContext);
 
   const handleDismissSearch = useCallback(() => {
     setModalOpen(false);
   }, [setModalOpen]);
 
-  const checkError: () => boolean = () => {
+  const checkError: () => boolean | undefined = () => {
     return (
       currencyBalance &&
       currencyBalance.token.isEther &&
@@ -207,7 +207,7 @@ export default function CurrencyInputPanel({
   return (
     <>
       <InputPanel id={id}>
-        <Container hideInput={hideInput} isError={checkError()}>
+        <Container hideInput={hideInput} isError={checkError()!}>
           {!hideInput && (
             <LabelRow>
               <RowBetween>
@@ -300,8 +300,8 @@ export default function CurrencyInputPanel({
               onDismiss={handleDismissSearch}
               onCurrencySelect={onCurrencySelect}
               showSendWithSwap={showSendWithSwap}
-              hiddenCurrency={currency}
-              otherSelectedCurrency={otherCurrency}
+              hiddenCurrency={currency!}
+              otherSelectedCurrency={otherCurrency!}
               showCommonBases={showCommonBases}
             />
           ) : (
@@ -310,8 +310,8 @@ export default function CurrencyInputPanel({
               onDismiss={handleDismissSearch}
               onCurrencySelect={onCurrencySelect}
               showSendWithSwap={showSendWithSwap}
-              hiddenCurrency={currency}
-              otherSelectedCurrency={otherCurrency}
+              hiddenCurrency={currency!}
+              otherSelectedCurrency={otherCurrency!}
               showCommonBases={showCommonBases}
               isMatchEth={isMatchEth}
             />

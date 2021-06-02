@@ -288,7 +288,7 @@ const Invest = () => {
           <AutoColumn gap={'md'}>
             <CurrencyInputPanel
               label={independentField === Field.OUTPUT ? 'From (estimated)' : 'From'}
-              value={formattedAmounts[Field.INPUT]}
+              value={formattedAmounts[Field.INPUT]!}
               showMaxButton={!atMaxAmountInput}
               currency={currencies[Field.INPUT]}
               onUserInput={handleTypeInput}
@@ -299,7 +299,7 @@ const Invest = () => {
               }}
               onCurrencySelect={currency => {
                 setApprovalSubmitted(false); // reset 2 step UI for approvals
-                onCurrencySelection(Field.INPUT, currency, formattedAmounts[Field.INPUT]);
+                onCurrencySelection(Field.INPUT, currency, formattedAmounts[Field.INPUT]!);
               }}
               otherCurrency={currencies[Field.OUTPUT]}
               id="invest-currency-input"
@@ -307,7 +307,7 @@ const Invest = () => {
             />
             <CurrencyInputPanel
               disabled={role === UserRoles.distributor}
-              value={formattedAmounts[Field.OUTPUT]}
+              value={formattedAmounts[Field.OUTPUT]!}
               onUserInput={handleTypeInputOUTPUT}
               label={independentField === Field.INPUT ? 'To (estimated)' : 'To'}
               showMaxButton={false}

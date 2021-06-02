@@ -11,9 +11,6 @@ const InfoCard = styled.button<{ active?: boolean }>`
   width: 100% !important;
   border-color: ${({ theme, active }) => (active ? 'transparent' : theme.border1)};
 `;
-// &:focus {
-//   box-shadow: 0 0 0 1px ${({ theme }) => theme.primary1};
-// }
 
 const OptionCard = styled(InfoCard as any)`
   display: flex;
@@ -41,7 +38,7 @@ const OptionCardClickable = styled(OptionCard as any)<{ clickable?: boolean }>`
 `;
 
 const GreenCircle = styled.div`
-  ${({ theme }) => theme.flexRowNoWrap}
+  ${({ theme }) => theme.flexRowNoWrap};
   justify-content: center;
   align-items: center;
 
@@ -135,7 +132,7 @@ export default function Option({
           </HeaderText>
           {subheader && <SubHeader>{subheader}</SubHeader>}
         </OptionCardLeft>
-        <IconWrapper size={size}>
+        <IconWrapper size={size!}>
           <img src={icon} alt={'Icon'} />
         </IconWrapper>
       </OptionCardClickable>

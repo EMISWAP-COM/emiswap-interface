@@ -5,8 +5,6 @@ import { Text } from 'rebass';
 import styled from 'styled-components/macro';
 import Logo from '../../assets/svg/logo.svg';
 import LogoDark from '../../assets/svg/logo_dark.svg';
-// import Wordmark from '../../assets/svg/wordmark.svg';
-// import WordmarkDark from '../../assets/svg/wordmark_white.svg';
 import { useActiveWeb3React } from '../../hooks';
 import { useDarkModeManager } from '../../state/user/hooks';
 import { useETHBalances } from '../../state/wallet/hooks';
@@ -42,9 +40,7 @@ const HeaderElement = styled.div`
     background-color: white;
     margin-right: 10px;
     border-radius: 5px;
-    display: flex;
     justify-content: center;
-    align-items: center;
     text-decoration: none;
     user-select: none;
     cursor: pointer;
@@ -183,7 +179,6 @@ const AccountElement = styled.div<{ active: boolean }>`
   color: ${({ theme }) => theme.grey3};
   border-radius: 12px;
   white-space: nowrap;
-  // width: 100%;
 
   @media screen and (max-width: 768px) {
     width: 100%;
@@ -289,7 +284,7 @@ const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
 
 export default function Header() {
   const { account, chainId } = useActiveWeb3React();
-  const userEthBalance = useETHBalances([account])[account];
+  const userEthBalance = useETHBalances([account!])[account!];
   const [isDark] = useDarkModeManager();
   return (
     <HeaderFrame>
@@ -299,9 +294,7 @@ export default function Header() {
             <UniIcon>
               <LogoImg src={isDark ? LogoDark : Logo} alt="logo" />
             </UniIcon>
-            <TitleText>
-              {/*<img style={{ marginLeft: '4px', marginTop: '4px' }} src={isDark ? WordmarkDark : Wordmark} alt="logo" width="160px"/>*/}
-            </TitleText>
+            <TitleText />
           </Title>
         </LogoElem>
         <HeaderControls>
@@ -309,9 +302,9 @@ export default function Header() {
             <a className="purple-btn" href={`${window.location.origin}/magic_cards/`}>
               <span>Magic Hall</span>
             </a>
-            {!isMobile && !isTablet && NETWORK_LABELS[chainId] && (
+            {!isMobile && !isTablet && NETWORK_LABELS[chainId!] && (
               <TestnetWrapper>
-                <NetworkCard>{NETWORK_LABELS[chainId]}</NetworkCard>
+                <NetworkCard>{NETWORK_LABELS[chainId!]}</NetworkCard>
               </TestnetWrapper>
             )}
             <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>

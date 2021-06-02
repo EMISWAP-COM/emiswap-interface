@@ -11,7 +11,7 @@ const AccountGroupingRow = styled.div`
   color: ${({ theme }) => theme.text1};
 
   div {
-    ${({ theme }) => theme.flexRowNoWrap}
+    ${({ theme }) => theme.flexRowNoWrap};
     align-items: center;
   }
 `;
@@ -112,7 +112,7 @@ export default function TotalEarnDividends({
   frozenTokens,
   nextUnlockAmount,
   nextUnlockDate,
-}) {
+}: Record<string, any>) {
   return (
     <>
       <AccountSectionHeader>
@@ -169,6 +169,7 @@ export default function TotalEarnDividends({
           </AccountSectionTable>
         </AccountSectionBodyPart>
       </AccountSectionBody>
+
       <AccountSectionHeader>
         <AccountButtonPrimary disabled={availableToCollect === 0}>
           Collect to my wallet

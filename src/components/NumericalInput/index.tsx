@@ -18,7 +18,7 @@ const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: s
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding: 0px;
+  padding: 0;
   -webkit-appearance: textfield;
 
   ::-webkit-search-decoration {
@@ -48,7 +48,7 @@ export const Input = React.memo(function InnerInput({
   ...rest
 }: {
   value: string | number;
-  onUserInput: (string) => void;
+  onUserInput: (s: string) => void;
   error?: boolean;
   fontSize?: string;
   align?: 'right' | 'left';
@@ -84,5 +84,3 @@ export const Input = React.memo(function InnerInput({
 });
 
 export default Input;
-
-// const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`) // match escaped "." characters via in a non-capturing group

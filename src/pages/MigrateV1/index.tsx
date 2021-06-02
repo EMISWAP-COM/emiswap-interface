@@ -8,14 +8,14 @@ import { RowFixed } from '../../components/Row';
 import { Text } from 'rebass';
 import { ExternalLink, TYPE } from '../../theme';
 import { useHistory } from 'react-router-dom';
-import { ButtonPrimary, ButtonLight } from '../../components/Button';
+import { ButtonLight, ButtonPrimary } from '../../components/Button';
 import DoubleCurrencyLogo from '../../components/DoubleLogo';
 import { useLpTokens } from '../../hooks/useLpTokens';
 import Loader from '../../components/Loader';
 import { amountToString } from './utils';
 import { useActiveWeb3React } from '../../hooks';
 import { useWalletModalToggle } from '../../state/application/hooks';
-import { formatConnectorName } from '../../components/AccountDetails/uitls'
+import { formatConnectorName } from '../../components/AccountDetails/uitls';
 import { unwrappedToken } from '../../utils/wrappedCurrency';
 
 const StyledSubTitle = styled.p`
@@ -83,7 +83,7 @@ export default function MigrateV1() {
   const { account, connector } = useActiveWeb3React();
   const history = useHistory();
   const toggleWalletModal = useWalletModalToggle();
-  const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState<string | null>(null);
   const { lpTokensDetailedInfo, tokens, balances, isLoading } = useLpTokens();
   const onSelect = (address: string) => {
     setSelected(address);
@@ -95,8 +95,8 @@ export default function MigrateV1() {
         addresses: [address0, address1],
       } = lpTokenDetailedInfoWithBalance;
       return (
-        tokens.find(token => token.address === address0) &&
-        tokens.find(token => token.address === address1) &&
+        tokens.find(token => token?.address === address0) &&
+        tokens.find(token => token?.address === address1) &&
         +amountToString(balances[idx], 10)
       );
     });
@@ -105,14 +105,14 @@ export default function MigrateV1() {
   };
 
   const CurrencyRow = useMemo(() => {
-    return ({ index, style }) => {
+    return ({ index, style }: { index: number; style?: React.CSSProperties }) => {
       const {
         addresses: [address0, address1],
         base,
         balance,
       } = formatedTokenList[index];
-      const token0 = unwrappedToken(tokens.find(el => el.address === address0));
-      const token1 = unwrappedToken(tokens.find(el => el.address === address1));
+      const token0 = unwrappedToken(tokens.find(el => el?.address === address0)!);
+      const token1 = unwrappedToken(tokens.find(el => el?.address === address1)!);
       return (
         <StyledMenuItemMigrate
           style={{ ...style, width: '100%' }}
@@ -128,7 +128,7 @@ export default function MigrateV1() {
               additionalMargin={8}
             />
             <Column>
-              <StyledText>{`${token0.symbol} - ${token1.symbol}`}</StyledText>
+              <StyledText>{`${token0?.symbol} - ${token1?.symbol}`}</StyledText>
             </Column>
           </RowFixed>
           <AutoColumn>

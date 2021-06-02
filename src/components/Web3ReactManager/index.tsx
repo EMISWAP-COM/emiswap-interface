@@ -19,7 +19,7 @@ const Message = styled.h2`
   color: ${({ theme }) => theme.secondary1};
 `;
 
-export default function Web3ReactManager({ children }) {
+export default function Web3ReactManager({ children }: React.PropsWithChildren<{}>) {
   const { t } = useTranslation();
   const { active } = useWeb3React();
   const { active: networkActive, error: networkError, activate: activateNetwork } = useWeb3React(
@@ -74,5 +74,5 @@ export default function Web3ReactManager({ children }) {
     ) : null;
   }
 
-  return children;
+  return <>{children}</>;
 }

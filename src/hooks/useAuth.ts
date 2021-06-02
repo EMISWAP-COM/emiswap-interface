@@ -2,12 +2,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../state';
 import { useActiveWeb3React } from './index';
 import Web3 from 'web3';
-// import { useLocalStorage } from './useLocalStorage';
 import { useCallback } from 'react';
 import { fetchWrapper } from '../api/fetchWrapper';
 import { addPopup } from '../state/application/actions';
 
-const baseUrl = window['env']?.REACT_APP_PUBLIC_URL;
+const baseUrl = window['env' as keyof Window]?.REACT_APP_PUBLIC_URL;
 // 'https://emiswap-oracle-development.emirex.co';
 
 const parseJWT = (token: string) => {
@@ -88,7 +87,7 @@ export function useAuth() {
     [library],
   );
 
-  const init = useCallback(async () => {
+  return useCallback(async () => {
     const authTokenData = window.localStorage.getItem('auth_token');
     const storedAccount = window.localStorage.getItem('stored_account');
     const isAccountChanged = account !== storedAccount;
@@ -130,6 +129,4 @@ export function useAuth() {
       }
     }
   }, [account, id, signToMetamask, dispatch, initSession, signSession]);
-
-  return init;
 }

@@ -18,7 +18,7 @@ export interface SerializedPair {
   token1: SerializedToken;
 }
 
-const baseUrl = window['env'] ? window['env'].REACT_APP_PUBLIC_URL : '';
+const baseUrl = window['env' as keyof Window].REACT_APP_PUBLIC_URL ?? '';
 
 export const login = createAction<UserInfo>('user/login');
 
@@ -82,7 +82,7 @@ export const loginCabinets = createAsyncThunk(
     const { dispatch } = thunkAPI;
     const { account, referral_address } = payload;
 
-    const testAddress = window['env'] ? window['env'].REACT_APP_TEST_WALLET_ADDRESS : null;
+    const testAddress = window['env' as keyof Window].REACT_APP_TEST_WALLET_ADDRESS ?? null;
 
     fetchWrapper
       .post(`${baseUrl}/v1/public/users`, {
