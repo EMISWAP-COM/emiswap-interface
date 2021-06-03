@@ -254,20 +254,26 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
 
   const changeAddress = async () => {
     const provider = await connector.getProvider();
-    
-    if (connector instanceof FortmaticConnector && connector?.fortmatic) {
-      connector.fortmatic?.user.logout();
+
+    const change = () => {
       deactivate();
       openOptions();
+    };
+
+    if (connector instanceof FortmaticConnector && connector?.fortmatic) {
+      connector.fortmatic?.user.logout();
+      change();
     } else if (connector === injected) {
       deactivate();
       await metaMaskChangeAccount();
+      openOptions();
     } else if (provider?.close) {
       localStorage.setItem('showWalletModal', 'true');
       provider.close();
+      console.log('close');
     } else {
-      deactivate();
-      openOptions();
+      change();
+      console.log('change');
     }
   };
 

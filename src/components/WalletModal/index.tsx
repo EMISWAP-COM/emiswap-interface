@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { isMobile } from 'react-device-detect';
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import usePrevious from '../../hooks/usePrevious';
-import { useWalletModalOpen, useWalletModalToggle } from '../../state/application/hooks';
+import { useWalletModalOpen, useWalletModalShow, useWalletModalToggle } from '../../state/application/hooks';
 
 import Modal from '../Modal';
 import PendingView from './PendingView';
@@ -186,6 +186,7 @@ export default function WalletModal({
   const [pendingError, setPendingError] = useState<boolean>();
 
   const walletModalOpen = useWalletModalOpen();
+  const showWalletModal = useWalletModalShow();
   const toggleWalletModal = useWalletModalToggle();
 
   const previousAccount = usePrevious(account);
@@ -200,12 +201,12 @@ export default function WalletModal({
 
       setTimeout(() => {
         setWalletView(WALLET_VIEWS.OPTIONS);
-        toggleWalletModal();
+        showWalletModal();
         localStorage.removeItem('showWalletModal');
         localStorage.removeItem('showWalletModalOpening');
       }, 400);
     }
-  });
+  }, [deactivate, showWalletModal]);
 
   // close on connection, when logged out before
   useEffect(() => {
