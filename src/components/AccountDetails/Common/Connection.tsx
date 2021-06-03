@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { convertBigDecimal, formatConnectorName } from '../uitls';
+import { convertBigDecimal, formatConnectorName, metaMaskChangeAccount } from '../uitls';
 import { WalletAction } from '../styleds';
 import styled from 'styled-components/macro';
 import { useActiveWeb3React } from '../../../hooks';
@@ -16,6 +16,7 @@ import { useWeb3React } from '@web3-react/core';
 import Modal from '../../Modal';
 import { darken } from 'polished';
 import { FortmaticConnector } from '../../../connectors/Fortmatic';
+import { injected } from '../../../connectors';
 
 const Container = styled.div`
   font-size: 13px;
@@ -258,9 +259,9 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
       connector.fortmatic?.user.logout();
       deactivate();
       openOptions();
-    /*} else if (connector === injected) {
-      // TODO: Реализация смены кошельков в метамаске
-      metaMaskChangeAccount();*/
+    } else if (connector === injected) {
+      deactivate();
+      await metaMaskChangeAccount();
     } else if (provider?.close) {
       localStorage.setItem('showWalletModal', 'true');
       provider.close();
@@ -309,7 +310,7 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
               </ChangeWalletBtn>
             </ChangeActionsBlock>
             <Wallet>
-              <StatusIcon connectorName={connector} />
+              <StatusIcon connectorName={connector}/>
               <Account>{ENSName || shortenAddress(account)}</Account>
             </Wallet>
           </WalletInfo>
