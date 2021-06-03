@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
 import DocLink from '../../components/DocLink';
 import styled from 'styled-components';
@@ -14,7 +14,7 @@ import { SUPPORTED_WALLETS } from '../../constants';
 import { ExternalLink } from '../../theme';
 import MetamaskIcon from '../../assets/images/metamask.png';
 import { ReactComponent as Close } from '../../assets/images/x.svg';
-import { injected, fortmatic, portis } from '../../connectors';
+import { fortmatic, injected, portis } from '../../connectors';
 import { OVERLAY_READY } from '../../connectors/Fortmatic';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
@@ -25,8 +25,7 @@ import { AppState } from '../../state';
 import { Ambassador } from '../AccountDetails/Ambassador';
 import { Owner } from '../AccountDetails/Owner';
 import WarningBlock from '../Warning/WarningBlock';
-import ReactPixel from 'react-facebook-pixel'
-
+import ReactPixel from 'react-facebook-pixel';
 
 
 const CloseIcon = styled.div`
@@ -174,13 +173,14 @@ export default function WalletModal({
   ENSName?: string;
 }) {
   // important that these are destructed from the account-specific web3-react context
-  const { active, account, connector, activate, error } = useWeb3React();
+  const { active, account, connector, activate, deactivate, error } = useWeb3React();
 
   const user = useSelector((state: AppState) => state.user.info);
 
   useLogin(account);
 
   const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT);
+  const [showWalletModal, setShowWalletModal] = useState(false);
 
   const [pendingWallet, setPendingWallet] = useState();
 
@@ -192,19 +192,26 @@ export default function WalletModal({
   const previousAccount = usePrevious(account);
 
   useEffect(() => {
-    if (localStorage.getItem('showWalletModal')) {
+    if (
+      localStorage.getItem('showWalletModal')
+      && !localStorage.getItem('showWalletModalOpening')
+    ) {
+      localStorage.setItem('showWalletModalOpening', 'true');
+      deactivate();
+
       setTimeout(() => {
-        toggleWalletModal();
         setWalletView(WALLET_VIEWS.OPTIONS);
+        toggleWalletModal();
         localStorage.removeItem('showWalletModal');
-      });
+        localStorage.removeItem('showWalletModalOpening');
+      }, 400);
     }
-  });
+  }, []);
 
   // close on connection, when logged out before
   useEffect(() => {
     if (account && !previousAccount && walletModalOpen) {
-      toggleWalletModal();
+      // toggleWalletModal();
     }
   }, [account, previousAccount, toggleWalletModal, walletModalOpen]);
 
@@ -380,7 +387,7 @@ export default function WalletModal({
   // close wallet modal if fortmatic modal is active
   useEffect(() => {
     fortmatic.on(OVERLAY_READY, () => {
-      toggleWalletModal();
+      // toggleWalletModal();
     });
   }, [toggleWalletModal]);
 
