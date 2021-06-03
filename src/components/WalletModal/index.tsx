@@ -180,7 +180,6 @@ export default function WalletModal({
   useLogin(account);
 
   const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT);
-  const [showWalletModal, setShowWalletModal] = useState(false);
 
   const [pendingWallet, setPendingWallet] = useState();
 
@@ -206,12 +205,12 @@ export default function WalletModal({
         localStorage.removeItem('showWalletModalOpening');
       }, 400);
     }
-  }, []);
+  });
 
   // close on connection, when logged out before
   useEffect(() => {
     if (account && !previousAccount && walletModalOpen) {
-      // toggleWalletModal();
+      toggleWalletModal();
     }
   }, [account, previousAccount, toggleWalletModal, walletModalOpen]);
 
