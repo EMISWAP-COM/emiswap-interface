@@ -16,8 +16,7 @@ import { amountToString } from './utils';
 import { useActiveWeb3React } from '../../hooks';
 import { useWalletModalToggle } from '../../state/application/hooks';
 import { formatConnectorName } from '../../components/AccountDetails/uitls'
-import { WETH } from '../../constants';
-import { ETHER } from '@uniswap/sdk';
+import { unwrappedToken } from '../../utils/wrappedCurrency';
 
 const StyledSubTitle = styled.p`
   color: ${({ theme }) => theme.white};
@@ -112,10 +111,8 @@ export default function MigrateV1() {
         base,
         balance,
       } = formatedTokenList[index];
-      const token0 = tokens.find(el => el.address === address0);
-      const token1 = tokens.find(el => el.address === address1);
-      const token0SymbolToDisplay = token0.symbol === WETH.symbol ? ETHER.symbol : token0.symbol;
-      const token1SymbolToDisplay = token1.symbol === WETH.symbol ? ETHER.symbol : token1.symbol;
+      const token0 = unwrappedToken(tokens.find(el => el.address === address0));
+      const token1 = unwrappedToken(tokens.find(el => el.address === address1));
       return (
         <StyledMenuItemMigrate
           style={{ ...style, width: '100%' }}
@@ -124,14 +121,14 @@ export default function MigrateV1() {
         >
           <RowFixed>
             <DoubleCurrencyLogo
-              currency0={token0.symbol === WETH.symbol ? ETHER : token0}
-              currency1={token1.symbol === WETH.symbol ? ETHER : token1}
+              currency0={token0}
+              currency1={token1}
               margin={true}
               size={22}
               additionalMargin={8}
             />
             <Column>
-              <StyledText>{`${token0SymbolToDisplay} - ${token1SymbolToDisplay}`}</StyledText>
+              <StyledText>{`${token0.symbol} - ${token1.symbol}`}</StyledText>
             </Column>
           </RowFixed>
           <AutoColumn>
