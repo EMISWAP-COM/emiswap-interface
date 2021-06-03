@@ -254,7 +254,7 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
 
   const changeAddress = async () => {
     const provider = await connector.getProvider();
-
+    
     if (connector instanceof FortmaticConnector && connector?.fortmatic) {
       connector.fortmatic?.user.logout();
       deactivate();
