@@ -12,6 +12,8 @@ import { packageNames } from '../constant';
 import { Connection } from '../Common/Connection';
 import { ESWLocked } from '../Common/ESWLocked';
 import { ESWRewards } from '../Common/ESWRewards';
+import { useWalletModalToggle } from '../../../state/application/hooks';
+import { useHistory } from 'react-router';
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -49,7 +51,6 @@ const Package = styled.div`
   }
 `;
 
-/* TODO removed Invest tab until further notice.
 const UpgradeBtn = styled.span`
   display: block;
   border-radius: 5px;
@@ -69,7 +70,7 @@ const UpgradeBtn = styled.span`
   @media screen and (max-width: 1200px) {
     margin-right: 0;
   }
-`;*/
+`;
 
 const OptionsPromo = styled.div`
   color: ${({ theme }) => theme.red3};
@@ -83,8 +84,8 @@ interface Props {
 
 const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
   const dispatch = useDispatch<AppDispatch>();
-  /* TODO removed Invest tab until further notice.
-  const toggleWalletModal = useWalletModalToggle();*/
+  const history = useHistory();
+  const toggleWalletModal = useWalletModalToggle();
   const { id: userId, bonus_role_name = '', next_bonus_role } = useSelector(
     (state: AppState) => state.user.info,
   );
@@ -94,7 +95,6 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
     dispatch(loadBalance(userId) as any);
   }, [dispatch, userId]);
 
-  /* TODO removed Invest tab until further notice.
   function scrollIntoInvest() {
     const investForm = document.querySelector('#invest-page');
     const headerOffset = 150;
@@ -105,14 +105,13 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
       top: offsetPosition,
       behavior: 'smooth',
     });
-  }*/
+  }
 
-  /* TODO removed Invest tab until further notice.
   const handlePackageUpgrade = () => {
     toggleWalletModal();
     history.push('/invest');
     setTimeout(scrollIntoInvest, 300);
-  };*/
+  };
 
   return (
     <Wrapper>
@@ -124,8 +123,7 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
           <div>
             Package: <ProfileText>{packageNames[bonus_role_name]}</ProfileText>
           </div>
-          {/* TODO removed Invest tab until further notice.
-          <UpgradeBtn onClick={handlePackageUpgrade}>Upgrade</UpgradeBtn>*/}
+          <UpgradeBtn onClick={handlePackageUpgrade}>Upgrade</UpgradeBtn>
         </Package>
       </ProfileStatus>
 

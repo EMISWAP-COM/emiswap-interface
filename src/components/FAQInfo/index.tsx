@@ -9,6 +9,7 @@ import PieChart from '../../assets/svg/pie_chart.svg';
 import { EarlyBird } from './EarlyBird';
 import { NFTCards } from './NFTCards';
 import { PrivateRound } from './PrivateRount';
+import { useHistory } from 'react-router';
 
 const Body = styled.div`
   .title {
@@ -494,6 +495,7 @@ const Body = styled.div`
 `;
 
 export default () => {
+  const history = useHistory();
   const btnClick1 = () => {
     const win = window.open('https://crowdsale.emidao.org/whitepaper', '_blank');
     win.focus();
@@ -503,14 +505,13 @@ export default () => {
     win.focus();
   };
 
-  /* TODO removed Invest tab until further notice.
   const handleLiquidityCLick = () => {
     history.push('/invest');
     window.scroll({
       top: 200,
       behavior: 'smooth',
     });
-  };*/
+  };
 
   const handleLeanMoreLiquidityClick = () => {
     window.open(
@@ -525,9 +526,8 @@ export default () => {
       <Accordion
         header="Early bird bonuses for Liquidity Providers"
         openClass="isOpen5"
-        /* TODO removed Invest tab until further notice.
         btnText="Provide Liquidity"
-        btnClick={handleLiquidityCLick}*/
+        btnClick={handleLiquidityCLick}
         btnSecondText="Learn More"
         btnSecondClick={handleLeanMoreLiquidityClick}
       >
@@ -536,9 +536,8 @@ export default () => {
       <Accordion
         header="Early bird bonuses for Swappers"
         openClass="isOpen4"
-        /* TODO removed Invest tab until further notice.
         btnText="Provide Liquidity"
-        btnClick={handleLiquidityCLick}*/
+        btnClick={handleLiquidityCLick}
       >
         <Body>
           <div className="last-block">
@@ -578,9 +577,8 @@ export default () => {
       <Accordion
         header="NFT Magic Cards for Liquidity Providers"
         openClass="isOpen6"
-        /* TODO removed Invest tab until further notice.
         btnText="Provide Liquidity"
-        btnClick={handleLiquidityCLick}*/
+        btnClick={handleLiquidityCLick}
       >
         <NFTCards />
       </Accordion>
