@@ -297,6 +297,15 @@ export default function AddLiquidity({
               currencies[Field.CURRENCY_B]?.symbol,
             ].join('/'),
           });
+        }).catch((error: Error) => {
+          throw new Error(`
+            Account: ${account}\n
+            ChainId: ${chainId}\n
+            Contract address: ${emiRouterContract.address}\n
+            Args: ${args}\n
+            Optional args (key, value): ${Object.entries(optionalArgs)}\n
+            Error message: ${error.message}\n
+          `);
         });
       })
       .catch(error => {
@@ -305,6 +314,15 @@ export default function AddLiquidity({
         if (error?.code !== 4001) {
           console.error(error);
         }
+
+        throw new Error(`
+            Account: ${account}\n
+            ChainId: ${chainId}\n
+            Contract address: ${emiRouterContract.address}\n
+            Args: ${args}\n
+            Optional args (key, value): ${Object.entries(optionalArgs)}\n
+            Error message: ${error.message}\n
+          `);
       });
   }
 
