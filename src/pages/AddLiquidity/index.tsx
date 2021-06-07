@@ -4,7 +4,7 @@ import { Plus } from 'react-feather';
 import ReactGA from 'react-ga';
 import { RouteComponentProps } from 'react-router-dom';
 import { Text } from 'rebass';
-import { ThemeContext } from 'styled-components';
+import { ThemeContext } from 'styled-components/macro';
 import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button';
 import { BlueCard, OutlineCard, LightCard } from '../../components/Card';
 import { AutoColumn, ColumnCenter } from '../../components/Column';
@@ -273,30 +273,40 @@ export default function AddLiquidity({
           ...optionalArgs,
           gasLimit: calculateGasMargin(estimatedGasLimit),
         }).then((response: any) => {
-          setAttemptingTxn(false);
+          try {
+            setAttemptingTxn(false);
+            addTransaction(response, {
+              summary:
+                'Add ' +
+                tokenAmountToString(parsedAmounts[Field.CURRENCY_A], 3) +
+                ' ' +
+                currencies[Field.CURRENCY_A]?.symbol +
+                ' and ' +
+                tokenAmountToString(parsedAmounts[Field.CURRENCY_B], 3) +
+                ' ' +
+                currencies[Field.CURRENCY_B]?.symbol,
+            });
 
-          addTransaction(response, {
-            summary:
-              'Add ' +
-              tokenAmountToString(parsedAmounts[Field.CURRENCY_A], 3) +
-              ' ' +
-              currencies[Field.CURRENCY_A]?.symbol +
-              ' and ' +
-              tokenAmountToString(parsedAmounts[Field.CURRENCY_B], 3) +
-              ' ' +
-              currencies[Field.CURRENCY_B]?.symbol,
-          });
+            setTxHash(response.hash);
 
-          setTxHash(response.hash);
-
-          ReactGA.event({
-            category: 'Liquidity',
-            action: 'Add',
-            label: [
-              currencies[Field.CURRENCY_A]?.symbol,
-              currencies[Field.CURRENCY_B]?.symbol,
-            ].join('/'),
-          });
+            ReactGA.event({
+              category: 'Liquidity',
+              action: 'Add',
+              label: [
+                currencies[Field.CURRENCY_A]?.symbol,
+                currencies[Field.CURRENCY_B]?.symbol,
+              ].join('/'),
+            });
+          } catch (error) {
+            throw new Error(`
+              Account: ${account}\n
+              ChainId: ${chainId}\n
+              Contract address: ${emiRouterContract.address}\n
+              Args: ${args}\n
+              Optional args (key, value): ${Object.entries(optionalArgs)}\n
+              Error message: ${error.message}\n
+            `);
+          }
         }).catch((error: Error) => {
           throw new Error(`
             Account: ${account}\n
