@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 // import { Info, BookOpen, Code, PieChart, MessageCircle } from 'react-feather'
 import { BookOpen, Code, Info, MessageCircle, PieChart } from 'react-feather';
-import WikiIcon from '../../assets/images/wiki.svg'
+import WikiIcon from '../../assets/images/wiki.svg';
 import styled from 'styled-components';
 import { ReactComponent as MenuIcon } from '../../assets/images/menu.svg';
 import useToggle from '../../hooks/useToggle';
@@ -119,7 +119,7 @@ export default function Menu() {
           </MenuItem>
           <MenuItem
             id="link"
-            href="https://crowdsale.emidao.org/magic-nft?_ga=2.93764061.1534273430.1614249828-363309939.1603872891"
+            href="https://emiswap.medium.com/all-you-need-to-know-about-nft-magic-cards-7c0ec9875800"
             target="_blank"
           >
             <MessageCircle size={14} />
