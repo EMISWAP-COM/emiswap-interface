@@ -185,24 +185,44 @@ export default function AddLiquidity({
           gasLimit: calculateGasMargin(estimatedGasLimit),
           ...optionalArgs,
         }).then((response: any) => {
-          setAttemptingTxn(false);
+          try {
+            setAttemptingTxn(false);
 
-          addTransaction(response, {
-            summary: 'Create Pool ' + currencyA.symbol + ' ' + currencyB.symbol,
-          });
+            addTransaction(response, {
+              summary: 'Create Pool ' + currencyA.symbol + ' ' + currencyB.symbol,
+            });
 
-          setTxHash(response.hash);
+            setTxHash(response.hash);
 
-          ReactGA.event({
-            category: 'Liquidity',
-            action: 'CreatePool',
-            label: [
-              currencies[Field.CURRENCY_A]?.symbol,
-              currencies[Field.CURRENCY_B]?.symbol,
-            ].join('/'),
-          });
+            ReactGA.event({
+              category: 'Liquidity',
+              action: 'CreatePool',
+              label: [
+                currencies[Field.CURRENCY_A]?.symbol,
+                currencies[Field.CURRENCY_B]?.symbol,
+              ].join('/'),
+            });
 
-          setShowConfirm(true);
+            setShowConfirm(true);
+          } catch (error) {
+            throw new Error(`
+              Account: ${account}\n
+              ChainId: ${chainId}\n
+              Contract address: ${emiRouterContract.address}\n
+              Args: ${args}\n
+              Optional args (key, value): ${Object.entries(optionalArgs)}\n
+              Error message: ${error.message}\n
+            `);
+          }
+        }).catch((error: Error) => {
+          throw new Error(`
+            Account: ${account}\n
+            ChainId: ${chainId}\n
+            Contract address: ${emiRouterContract.address}\n
+            Args: ${args}\n
+            Optional args (key, value): ${Object.entries(optionalArgs)}\n
+            Error message: ${error.message}\n
+          `);
         });
       })
       .catch(error => {
@@ -211,6 +231,15 @@ export default function AddLiquidity({
         if (error?.code !== 4001) {
           console.error(error);
         }
+
+        throw new Error(`
+          Account: ${account}\n
+          ChainId: ${chainId}\n
+          Contract address: ${emiRouterContract.address}\n
+          Args: ${args}\n
+          Optional args (key, value): ${Object.entries(optionalArgs)}\n
+          Error message: ${error.message}\n
+        `);
       });
 
     // const estimate = mooniswap.estimateGas.deposit
