@@ -22,7 +22,7 @@ export function formatConnectorName(connectorName) {
   return name;
 }
 
-export async function metaMaskChangeAccount() {
+/*export async function metaMaskChangeAccount() {
   const { ethereum } = window as any;
 
   await ethereum
@@ -38,6 +38,7 @@ export async function metaMaskChangeAccount() {
       }
     });
 }
+*/
 
 export const convertBigDecimal = (bigDecimal: string) => {
   if (!isNaN(Number(bigDecimal))) {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { convertBigDecimal, formatConnectorName, metaMaskChangeAccount } from '../uitls';
-import { WalletAction } from '../styleds';
+import { convertBigDecimal, formatConnectorName } from '../uitls';
+import { MessageTooltip, WalletAction } from '../styleds';
 import styled from 'styled-components/macro';
 import { useActiveWeb3React } from '../../../hooks';
 import { StatusIcon } from '../StatusIcon';
@@ -108,11 +108,17 @@ const ChangeActionsBlock = styled.div`
   }
 `;
 
-const ChangeAddressBtn = styled(ActionBtn)`
+const ChangeAddressTooltip = styled(MessageTooltip)`
+    position: absolute;
+    top: 20px;
+    right: 50px;
+`;
+
+const ChangeAddressBtn = styled(ActionBtn)<{inactive: boolean}>`
   height: 32px;
   border: 1px solid rgb(97, 92, 105) !important;
   background-color: transparent;
-  color: #FFFFFF;
+  color: ${({ inactive }) => inactive ? '#615C69' : '#FFFFFF'};
   
   &:hover, &:focus, &:active {
     background-color: transparent;
@@ -233,8 +239,9 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
   const balance = useSelector((state: AppState) => state.cabinets.balance);
 
   const [isConfirmChangeModalOpen, setConfirmChangeModalOpen] = useState(false);
+  const [isMetamaskChangeMessageVisible, setMetamaskChangeMessageVisible] = useState(false);
 
-  // const isMetamask = connector === injected;
+  const isMetamask = connector === injected;
   const isCollectDisabled = !Number(balance?.available.ESW);
 
   const sumESW = () => {
@@ -252,6 +259,14 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
     history.push('/claim/ESW');
   };
 
+  const handleChangeAddressClick = async () => {
+    if (isMetamask) {
+      setMetamaskChangeMessageVisible(true);
+    } else {
+      setConfirmChangeModalOpen(true);
+    }
+  };
+
   const changeAddress = async () => {
     const provider = await connector.getProvider();
 
@@ -263,10 +278,6 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
     if (connector instanceof FortmaticConnector && connector?.fortmatic) {
       connector.fortmatic?.user.logout();
       change();
-    } else if (connector === injected) {
-      deactivate();
-      await metaMaskChangeAccount();
-      openOptions();
     } else if (provider?.close) {
       localStorage.setItem('showWalletModal', 'true');
       provider.close();
@@ -308,7 +319,12 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
             </span>
             {confirmChangeModal()}
             <ChangeActionsBlock>
-              <ChangeAddressBtn onClick={() => setConfirmChangeModalOpen(true)}>
+              {isMetamaskChangeMessageVisible && (
+                <ChangeAddressTooltip>
+                  You need to change the address inside the Metamask wallet
+                </ChangeAddressTooltip>
+              )}
+              <ChangeAddressBtn inactive={isMetamask} onClick={handleChangeAddressClick}>
                 Change address
               </ChangeAddressBtn>
               <ChangeWalletBtn onClick={() => openOptions()}>
