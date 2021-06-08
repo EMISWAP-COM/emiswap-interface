@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { convertBigDecimal, formatConnectorName } from '../uitls';
-import { MessageTooltip, WalletAction } from '../styleds';
+import { WalletAction } from '../styleds';
 import styled from 'styled-components/macro';
 import { useActiveWeb3React } from '../../../hooks';
 import { StatusIcon } from '../StatusIcon';
@@ -17,6 +17,7 @@ import Modal from '../../Modal';
 import { darken } from 'polished';
 import { FortmaticConnector } from '../../../connectors/Fortmatic';
 import { injected } from '../../../connectors';
+import { MessageTooltip } from '../../../base/ui/MessageTooltip/MessageTooltip';
 
 const Container = styled.div`
   font-size: 13px;
@@ -320,7 +321,7 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
             {confirmChangeModal()}
             <ChangeActionsBlock>
               {isMetamaskChangeMessageVisible && (
-                <ChangeAddressTooltip>
+                <ChangeAddressTooltip onClose={() => setMetamaskChangeMessageVisible(false)}>
                   You need to change the address inside the Metamask wallet
                 </ChangeAddressTooltip>
               )}

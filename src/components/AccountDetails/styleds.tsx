@@ -84,25 +84,3 @@ export const WalletAction = styled(ButtonSecondary)`
     margin-left: auto;
   }
 `;
-
-export const MessageTooltip = styled.div`
-    padding: 12px 16px;
-    border: 1px solid ${({ theme }) => theme.lightGrey};
-    border-radius: 8px;
-    background: ${({ theme }) => theme.darkGrey};
-    
-    &:before {
-      content: '';
-      display: block;
-      position: absolute;
-      left: 50%;
-      top: 39px;
-      width: 9px;
-      height: 9px;
-      border: 1px solid ${({ theme }) => theme.lightGrey};
-      border-top: none;
-      border-right: none;
-      background: ${({ theme }) => theme.darkGrey};
-      transform: rotate(-45deg);
-    }
-`;
