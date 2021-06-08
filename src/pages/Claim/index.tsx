@@ -113,7 +113,10 @@ export default function Claim({
   },
 }) {
   const theme = useContext(ThemeContext);
+
   const [typedValue, setTypedValue] = useState('0');
+  const [isCollectProcessing, setCollectProcessing] = useState(false);
+
   const { account } = useActiveWeb3React();
   const contract = useESWContract();
   const { claimCallback } = useClaim();
@@ -142,11 +145,15 @@ export default function Claim({
   };
 
   const onSuccess = () => {
+    setCollectProcessing(false);
+
     toggleWalletModal();
     return { state: 'sent' };
   };
 
   const onError = error => {
+    setCollectProcessing(false);
+
     if (error?.code === 4001) {
       return;
     }
@@ -164,7 +171,16 @@ export default function Claim({
   };
 
   const handleSubmit = async () => {
-    const authToken = await handleAuth();
+    setCollectProcessing(true);
+
+    let authToken;
+
+    try {
+      authToken = await handleAuth();
+    } catch (e) {
+      setCollectProcessing(false);
+      throw e;
+    }
 
     claimCallback(tokenName, +typedValue)
       .then(data => {
@@ -210,7 +226,7 @@ export default function Claim({
         <HistoryLink to="/pool">
           <StyledArrowLeft />
         </HistoryLink>
-        <Tittle> Collect to my wallet</Tittle>
+        <Tittle>Collect to my wallet</Tittle>
         <QuestionHelper
           text={
             "Press “Collect” to transfer your ESW tokens from the EmiSwap platform to your wallet. You'll continue getting a share from EmiSwap's trading volume in this case as well."
@@ -254,7 +270,7 @@ export default function Claim({
       </Container>
       <ButtonPrimary
         style={{ marginTop: '20px' }}
-        disabled={isTransactionDisabled()}
+        disabled={isTransactionDisabled() || isCollectProcessing}
         onClick={handleSubmit}
       >
         Collect
