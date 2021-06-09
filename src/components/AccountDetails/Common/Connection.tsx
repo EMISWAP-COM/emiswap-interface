@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { convertBigDecimal, formatConnectorName } from '../uitls';
 import { WalletAction } from '../styleds';
 import styled from 'styled-components/macro';
@@ -12,12 +12,8 @@ import Copy from '../Copy';
 import { ExternalLink } from '../../../theme';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
-import { useWeb3React } from '@web3-react/core';
-import Modal from '../../Modal';
 import { darken } from 'polished';
-import { FortmaticConnector } from '../../../connectors/Fortmatic';
-import { injected } from '../../../connectors';
-import { MessageTooltip } from '../../../base/ui/MessageTooltip/MessageTooltip';
+import { ChangeAddress } from './ChangeAddress';
 
 const Container = styled.div`
   font-size: 13px;
@@ -109,30 +105,6 @@ const ChangeActionsBlock = styled.div`
   }
 `;
 
-const ChangeAddressTooltip = styled(MessageTooltip)`
-    position: absolute;
-    top: 20px;
-    right: 50px;
-`;
-
-const ChangeAddressBtn = styled(ActionBtn)<{inactive: boolean}>`
-  height: 32px;
-  border: 1px solid rgb(97, 92, 105) !important;
-  background-color: transparent;
-  color: ${({ inactive }) => inactive ? '#615C69' : '#FFFFFF'};
-  
-  &:hover, &:focus, &:active {
-    background-color: transparent;
-    box-shadow: none;
-  }
-  
-  @media screen and (max-width: 800px) {
-    width: calc(50% - 5px);
-    margin-left: 0;
-    padding: 4px 2px;
-  }
-`;
-
 const ChangeWalletBtn = styled(ActionBtn)`
   margin-left: 8px !important;
   background-color: ${({ theme }) => theme.purple} !important;
@@ -158,7 +130,7 @@ const CollectBtn = styled(ActionBtn)`
 const AccountControl = styled.div`
   display: flex;
   height: 53px;
-  font-weight: 450;
+  font-weight: 400;
   font-size: 1.25rem;
   background: ${({ theme }) => theme.darkGrey};
 
@@ -191,40 +163,6 @@ const AddressLink = styled(ExternalLink)`
   }
 `;
 
-const ModalContent = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  width: 100%;
-  padding: 24px;
-  color: ${({ theme }) => theme.white}
-`;
-
-const ModalButtons = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin-top: 16px;
-`;
-
-const ChangeCancelBtn = styled(ActionBtn)`
-  margin: 0 0 0 8px !important;
-  border: 1px solid rgb(97, 92, 105) !important;
-  background-color: transparent;
-  color: #FFFFFF;
-  
-  &:hover, &:focus, &:active {
-    background-color: transparent;
-    box-shadow: none;
-  }
-`;
-
-const ChangeConfirmBtn = styled(ActionBtn)`
-  margin: 0 8px 0 0 !important;
-  background-color: ${({ theme }) => theme.purple} !important;
-  border: 1px solid ${({ theme }) => theme.purple} !important;
-`;
-
 interface Props {
   ENSName?: string;
   openOptions: () => void;
@@ -232,17 +170,12 @@ interface Props {
 
 export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) => {
   const { chainId, account, connector } = useActiveWeb3React();
-  const { deactivate } = useWeb3React();
 
   const history = useHistory();
   const toggle = useWalletModalToggle();
 
   const balance = useSelector((state: AppState) => state.cabinets.balance);
 
-  const [isConfirmChangeModalOpen, setConfirmChangeModalOpen] = useState(false);
-  const [isMetamaskChangeMessageVisible, setMetamaskChangeMessageVisible] = useState(false);
-
-  const isMetamask = connector === injected;
   const isCollectDisabled = !Number(balance?.available.ESW);
 
   const sumESW = () => {
@@ -260,56 +193,6 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
     history.push('/claim/ESW');
   };
 
-  const handleChangeAddressClick = async () => {
-    if (isMetamask) {
-      setMetamaskChangeMessageVisible(true);
-    } else {
-      setConfirmChangeModalOpen(true);
-    }
-  };
-
-  const changeAddress = async () => {
-    const provider = await connector.getProvider();
-
-    const change = () => {
-      deactivate();
-      openOptions();
-    };
-
-    if (connector instanceof FortmaticConnector && connector?.fortmatic) {
-      connector.fortmatic?.user.logout();
-      change();
-    } else if (provider?.close) {
-      localStorage.setItem('showWalletModal', 'true');
-      provider.close();
-      console.log('close');
-    } else {
-      change();
-      console.log('change');
-    }
-  };
-
-  const confirmChangeModal = () => {
-    return (
-      <Modal
-        isOpen={isConfirmChangeModalOpen}
-        maxHeight={90}
-        maxWidth={680}
-        onDismiss={() => setConfirmChangeModalOpen(false)}
-      >
-        <ModalContent>
-          <div>To change your Wallet Address, you will be logged out</div>
-
-          <ModalButtons>
-            <ChangeConfirmBtn onClick={changeAddress}>Confirm</ChangeConfirmBtn>
-            <ChangeCancelBtn onClick={() => setConfirmChangeModalOpen(false)}>Cancel</ChangeCancelBtn>
-          </ModalButtons>
-        </ModalContent>
-
-      </Modal>
-    );
-  };
-
   return (
     <>
       <Container>
@@ -318,16 +201,8 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
             <span>
               Connected with {formatConnectorName(connector)}
             </span>
-            {confirmChangeModal()}
             <ChangeActionsBlock>
-              {isMetamaskChangeMessageVisible && (
-                <ChangeAddressTooltip onClose={() => setMetamaskChangeMessageVisible(false)}>
-                  You need to change the address inside the Metamask wallet
-                </ChangeAddressTooltip>
-              )}
-              <ChangeAddressBtn inactive={isMetamask} onClick={handleChangeAddressClick}>
-                Change address
-              </ChangeAddressBtn>
+              <ChangeAddress openOptions={openOptions}/>
               <ChangeWalletBtn onClick={() => openOptions()}>
                 Change wallet
               </ChangeWalletBtn>
