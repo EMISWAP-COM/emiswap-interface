@@ -1,8 +1,13 @@
 import styled from 'styled-components';
-import React from 'react';
+import React, { useState } from 'react';
 import { ButtonPrimary } from '../../../components/Button';
 
-export const MessageBlock = styled.div`
+const Container = styled.div`
+  position: relative;
+`;
+
+const MessageBlock = styled.div`
+    position: absolute;
     padding: 12px 16px;
     border: 1px solid ${({ theme }) => theme.lightGrey};
     border-radius: 8px;
@@ -40,7 +45,15 @@ export const MessageBlock = styled.div`
     }
 `;
 
-export const ButtonClose = styled(ButtonPrimary)`
+const MessageText = styled.span`
+  white-space: nowrap;
+  
+  @media screen and (max-width: 600px) {
+    white-space: normal;
+  }
+`;
+
+const ButtonClose = styled(ButtonPrimary)`
   display: none;
   
   @media screen and (max-width: 600px) {
@@ -53,16 +66,92 @@ export const ButtonClose = styled(ButtonPrimary)`
 
 interface Props {
   children: React.ReactNode;
-  onClose: () => void;
-  className?: string;
+  text: string;
+  position: { top?: string, right?: string, bottom?: string, left?: string },
+  onClick?: () => void;
+  onMouseEnter?: () => void;
+  onClose?: () => void;
+  disableTooltip?: boolean;
   buttonText?: string;
 }
 
-export const MessageTooltip: React.FC<Props> = ({ children, onClose, className, buttonText = 'OK' }) => {
+export const MessageTooltip: React.FC<Props> = ({
+  children,
+  text,
+  position,
+  onClick = () => {
+  },
+  onMouseEnter = () => {
+  },
+  onClose = () => {
+  },
+  disableTooltip = false,
+  buttonText = 'OK',
+}) => {
+  const [active, setActive] = useState(false);
+
+  let tooltipTimeout = null;
+
+  const handleClick = async () => {
+    if (disableTooltip) {
+      return;
+    }
+    if (tooltipTimeout) {
+      clearTimeout(tooltipTimeout);
+    }
+    setActive(true);
+
+    onClick();
+  };
+
+  const handleMouseEnter = async () => {
+    if (disableTooltip) {
+      return;
+    }
+    if (tooltipTimeout) {
+      clearTimeout(tooltipTimeout);
+    }
+    setActive(true);
+
+    onMouseEnter();
+  };
+
+  const handleMouseLeave = async () => {
+    if (disableTooltip) {
+      return;
+    }
+    if (tooltipTimeout) {
+      clearTimeout(tooltipTimeout);
+    }
+    tooltipTimeout = setTimeout(() => {
+      setActive(false);
+    }, 500);
+
+    onClose();
+  };
+
+  const handleCloseClick = async () => {
+    if (tooltipTimeout) {
+      clearTimeout(tooltipTimeout);
+    }
+    setActive(false);
+
+    console.log(active);
+
+    onClose();
+  };
+
   return (
-    <MessageBlock className={className}>
-      {children}
-      <ButtonClose onClick={onClose}>{buttonText}</ButtonClose>
-    </MessageBlock>
+    <>
+      {active && (
+        <MessageBlock style={position}>
+          <MessageText>{text}</MessageText>
+          <ButtonClose onClick={handleCloseClick}>{buttonText}</ButtonClose>
+        </MessageBlock>
+      )}
+      <Container onClick={handleClick} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        {children}
+      </Container>
+    </>
   );
 };

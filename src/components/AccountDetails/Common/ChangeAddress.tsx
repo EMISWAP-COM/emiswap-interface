@@ -8,10 +8,10 @@ import styled from 'styled-components';
 import { MessageTooltip } from '../../../base/ui/MessageTooltip/MessageTooltip';
 import { WalletAction } from '../styleds';
 
-const ChangeAddressTooltip = styled(MessageTooltip)`
-    position: absolute;
-    top: 20px;
-    right: 50px;
+const Container = styled.div`
+  @media screen and (max-width: 800px) {
+    width: calc(50% - 5px);
+  }
 `;
 
 const ActionBtn = styled(WalletAction)`
@@ -20,6 +20,7 @@ const ActionBtn = styled(WalletAction)`
 
 const ChangeAddressBtn = styled(ActionBtn)<{ inactive: boolean }>`
   height: 32px;
+  margin-left: 0;
   border: 1px solid rgb(97, 92, 105) !important;
   background-color: transparent;
   color: ${({ inactive }) => inactive ? '#615C69' : '#FFFFFF'};
@@ -30,7 +31,7 @@ const ChangeAddressBtn = styled(ActionBtn)<{ inactive: boolean }>`
   }
   
   @media screen and (max-width: 800px) {
-    width: calc(50% - 5px);
+    width: 100% !important;
     margin-left: 0;
     padding: 4px 2px;
   }
@@ -79,40 +80,12 @@ export const ChangeAddress: React.FC<Props> = ({ openOptions }) => {
   const { deactivate } = useWeb3React();
 
   const [isConfirmChangeModalOpen, setConfirmChangeModalOpen] = useState(false);
-  const [isMetamaskChangeMessageVisible, setMetamaskChangeMessageVisible] = useState(false);
 
   const isMetamask = connector === injected;
 
-  let tooltipTimeout = null;
-
   const handleClick = async () => {
-    if (isMetamask) {
-      if (tooltipTimeout) {
-        clearTimeout(tooltipTimeout);
-      }
-      setMetamaskChangeMessageVisible(true);
-    } else {
+    if (!isMetamask) {
       setConfirmChangeModalOpen(true);
-    }
-  };
-
-  const handleMouseEnter = async () => {
-    if (isMetamask) {
-      if (tooltipTimeout) {
-        clearTimeout(tooltipTimeout);
-      }
-      setMetamaskChangeMessageVisible(true);
-    }
-  };
-
-  const handleMouseLeave = async () => {
-    if (isMetamask) {
-      if (tooltipTimeout) {
-        clearTimeout(tooltipTimeout);
-      }
-      tooltipTimeout = setTimeout(() => {
-        setMetamaskChangeMessageVisible(false);
-      }, 500);
     }
   };
 
@@ -159,22 +132,21 @@ export const ChangeAddress: React.FC<Props> = ({ openOptions }) => {
   };
 
   return (
-    <>
+    <Container>
       {confirmChangeModal()}
-      {isMetamaskChangeMessageVisible && (
-        <ChangeAddressTooltip onClose={() => setMetamaskChangeMessageVisible(false)}>
-          You need to change the address inside the Metamask wallet
-        </ChangeAddressTooltip>
-      )}
-      <ChangeAddressBtn
-        inactive={isMetamask}
-        onClick={handleClick}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
+      <MessageTooltip
+        disableTooltip={!isMetamask}
+        position={{ top: '20px', right: '40px' }}
+        text="You need to change the address inside the Metamask wallet"
       >
-        Change address
-      </ChangeAddressBtn>
-    </>
+        <ChangeAddressBtn
+          inactive={isMetamask}
+          onClick={handleClick}
+        >
+          Change address
+        </ChangeAddressBtn>
+      </MessageTooltip>
+    </Container>
   );
 
 };
