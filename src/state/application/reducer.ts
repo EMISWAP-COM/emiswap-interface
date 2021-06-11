@@ -5,7 +5,7 @@ import {
   removePopup,
   toggleWalletModal,
   toggleSettingsMenu,
-  updateBlockNumber, showWalletModal,
+  updateBlockNumber,
 } from './actions';
 
 type PopupList = Array<{ key: string; show: boolean; content: PopupContent }>;
@@ -33,9 +33,6 @@ export default createReducer(initialState, builder =>
       } else {
         state.blockNumber[chainId] = Math.max(blockNumber, state.blockNumber[chainId]);
       }
-    })
-    .addCase(showWalletModal, state => {
-      state.walletModalOpen = true;
     })
     .addCase(toggleWalletModal, state => {
       state.walletModalOpen = !state.walletModalOpen;

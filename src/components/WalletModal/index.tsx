@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactGA from 'react-ga';
 import DocLink from '../../components/DocLink';
 import styled from 'styled-components';
 import { isMobile } from 'react-device-detect';
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import usePrevious from '../../hooks/usePrevious';
-import { useWalletModalOpen, useWalletModalShow, useWalletModalToggle } from '../../state/application/hooks';
+import { useWalletModalOpen, useWalletModalToggle } from '../../state/application/hooks';
 
 import Modal from '../Modal';
 import PendingView from './PendingView';
@@ -14,7 +14,7 @@ import { SUPPORTED_WALLETS } from '../../constants';
 import { ExternalLink } from '../../theme';
 import MetamaskIcon from '../../assets/images/metamask.png';
 import { ReactComponent as Close } from '../../assets/images/x.svg';
-import { fortmatic, injected, portis } from '../../connectors';
+import { injected, fortmatic, portis } from '../../connectors';
 import { OVERLAY_READY } from '../../connectors/Fortmatic';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
@@ -25,7 +25,8 @@ import { AppState } from '../../state';
 import { Ambassador } from '../AccountDetails/Ambassador';
 import { Owner } from '../AccountDetails/Owner';
 import WarningBlock from '../Warning/WarningBlock';
-import ReactPixel from 'react-facebook-pixel';
+import ReactPixel from 'react-facebook-pixel'
+
 
 
 const CloseIcon = styled.div`
@@ -173,7 +174,7 @@ export default function WalletModal({
   ENSName?: string;
 }) {
   // important that these are destructed from the account-specific web3-react context
-  const { active, account, connector, activate, deactivate, error } = useWeb3React();
+  const { active, account, connector, activate, error } = useWeb3React();
 
   const user = useSelector((state: AppState) => state.user.info);
 
@@ -186,28 +187,9 @@ export default function WalletModal({
   const [pendingError, setPendingError] = useState<boolean>();
 
   const walletModalOpen = useWalletModalOpen();
-  const showWalletModal = useWalletModalShow();
   const toggleWalletModal = useWalletModalToggle();
 
   const previousAccount = usePrevious(account);
-
-  useEffect(() => {
-    if (
-      localStorage.getItem('showWalletModal')
-      && !localStorage.getItem('showWalletModalOpening')
-    ) {
-      localStorage.setItem('showWalletModalOpening', 'true');
-      deactivate();
-
-      setTimeout(() => {
-        setWalletView(WALLET_VIEWS.OPTIONS);
-        showWalletModal();
-        localStorage.removeItem('showWalletModal');
-        localStorage.removeItem('showWalletModalOpening');
-      }, 400);
-    }
-  }, [deactivate, showWalletModal]);
-
   // close on connection, when logged out before
   useEffect(() => {
     if (account && !previousAccount && walletModalOpen) {
@@ -388,7 +370,7 @@ export default function WalletModal({
   // close wallet modal if fortmatic modal is active
   useEffect(() => {
     fortmatic.on(OVERLAY_READY, () => {
-      // toggleWalletModal();
+      toggleWalletModal();
     });
   }, [toggleWalletModal]);
 

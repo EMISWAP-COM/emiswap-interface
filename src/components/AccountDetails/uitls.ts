@@ -22,24 +22,6 @@ export function formatConnectorName(connectorName) {
   return name;
 }
 
-/*export async function metaMaskChangeAccount() {
-  const { ethereum } = window as any;
-
-  await ethereum
-    .request({ method: 'eth_requestAccounts' })
-    .then((data) => {
-      console.log(data);
-    })
-    .catch((error) => {
-      if (error.code === 4001) {
-        console.log('Please connect to MetaMask.');
-      } else {
-        console.error(error);
-      }
-    });
-}
-*/
-
 export const convertBigDecimal = (bigDecimal: string) => {
   if (!isNaN(Number(bigDecimal))) {
     return Number(bigDecimal).toFixed(2);
