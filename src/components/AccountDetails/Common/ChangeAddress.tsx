@@ -7,6 +7,7 @@ import { useWeb3React } from '@web3-react/core';
 import styled from 'styled-components';
 import { MessageTooltip } from '../../../base/ui/MessageTooltip/MessageTooltip';
 import { WalletAction } from '../styleds';
+import { PortisConnector } from '@web3-react/portis-connector';
 
 const Container = styled.div`
   @media screen and (max-width: 800px) {
@@ -100,13 +101,14 @@ export const ChangeAddress: React.FC<Props> = ({ openOptions }) => {
     if (connector instanceof FortmaticConnector && connector?.fortmatic) {
       connector.fortmatic?.user.logout();
       change();
+    } else if (connector instanceof PortisConnector && connector?.portis) {
+      connector.portis.logout();
+      change();
     } else if (provider?.close) {
       localStorage.setItem('showWalletModal', 'true');
       provider.close();
-      console.log('close');
     } else {
       change();
-      console.log('change');
     }
   };
 
