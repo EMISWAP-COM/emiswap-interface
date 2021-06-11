@@ -1,8 +1,4 @@
 # almost production environemnt with staging env vars
-emirex_charts:
-  app:
-    - emiswap-ui
-
 chart_vars:
   emiswap-ui:
     fullnameOverride: emiswap-ui
