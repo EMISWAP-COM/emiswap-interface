@@ -13,6 +13,7 @@ import { ExternalLink } from '../../../theme';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { darken } from 'polished';
+import { ChangeAddress } from './ChangeAddress';
 
 const Container = styled.div`
   font-size: 13px;
@@ -43,15 +44,19 @@ const Account = styled(DarkText)`
 
 const WalletInfo = styled.div`
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   color: ${({ theme }) => theme.white}
 `;
 
 const Wallet = styled.div`
-  margin-top: 5px;
   display: flex;
+  width: 100%;
+  margin-top: 5px;
+  margin-bottom: 5px;
 `;
+
 const BalanceWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -89,6 +94,34 @@ const Options = styled.div`
 const ActionBtn = styled(WalletAction)`
   height: 32px;
 `;
+
+const ChangeActionsBlock = styled.div`
+  display: flex;
+    
+  @media screen and (max-width: 800px) {
+    order: 2;
+    width: 100%;
+    margin: 8px 0 16px 0;
+  }
+`;
+
+const ChangeWalletBtn = styled(ActionBtn)`
+  margin-left: 8px !important;
+  background-color: ${({ theme }) => theme.purple} !important;
+  border: 1px solid ${({ theme }) => theme.purple} !important;
+  color: #FFFFFF;
+  
+  &:hover, &:focus, &:active {
+    background: ${({ theme }) => theme.purple} !important;
+    box-shadow: none;
+  }
+  
+  @media screen and (max-width: 800px) {
+    width: calc(50% - 5px);
+    margin-left: auto;
+  }
+`;
+
 const CollectBtn = styled(ActionBtn)`
   min-width: 180px;
   margin-bottom: 10px;
@@ -97,7 +130,7 @@ const CollectBtn = styled(ActionBtn)`
 const AccountControl = styled.div`
   display: flex;
   height: 53px;
-  font-weight: 450;
+  font-weight: 400;
   font-size: 1.25rem;
   background: ${({ theme }) => theme.darkGrey};
 
@@ -138,7 +171,12 @@ interface Props {
 export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) => {
   const { chainId, account, connector } = useActiveWeb3React();
 
+  const history = useHistory();
+  const toggle = useWalletModalToggle();
+
   const balance = useSelector((state: AppState) => state.cabinets.balance);
+
+  const isCollectDisabled = !Number(balance?.available.ESW);
 
   const sumESW = () => {
     const walletESW = balance?.wallet.ESW || 0;
@@ -150,15 +188,10 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
     return convertBigDecimal(sum.toString());
   };
 
-  const history = useHistory();
-  const toggle = useWalletModalToggle();
-
   const handleClaim = () => {
     toggle();
     history.push('/claim/ESW');
   };
-
-  const isCollectDisabled = !Number(balance?.available.ESW);
 
   return (
     <>
@@ -168,18 +201,17 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
             <span>
               Connected with {formatConnectorName(connector)}
             </span>
-            <ActionBtn
-              onClick={() => {
-                openOptions();
-              }}
-            >
-              Change
-            </ActionBtn>
+            <ChangeActionsBlock>
+              <ChangeAddress openOptions={openOptions}/>
+              <ChangeWalletBtn onClick={() => openOptions()}>
+                Change wallet
+              </ChangeWalletBtn>
+            </ChangeActionsBlock>
+            <Wallet>
+              <StatusIcon connectorName={connector}/>
+              <Account>{ENSName || shortenAddress(account)}</Account>
+            </Wallet>
           </WalletInfo>
-          <Wallet>
-            <StatusIcon connectorName={connector} />
-            <Account>{ENSName || shortenAddress(account)}</Account>
-          </Wallet>
           <BalanceWrapper>
             <BalanceItem>
               <span>Total</span>
@@ -197,13 +229,15 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
               <span>Locked at Emiswap </span>
               <div>
                 <BalanceValue>{convertBigDecimal(balance?.total.locked.ESW)}</BalanceValue>&nbsp;ESW
-              </div>{' '}
+              </div>
+              {' '}
             </BalanceItem>
             <BalanceItem>
               <span>Available to collect</span>
               <div>
                 <BalanceValue>{convertBigDecimal(balance?.available.ESW)}</BalanceValue>&nbsp;ESW
-              </div>{' '}
+              </div>
+              {' '}
             </BalanceItem>
           </BalanceWrapper>
           <Options>
@@ -218,7 +252,7 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
             <span style={{ marginLeft: '4px' }}>Copy Address</span>
           </Copy>
           <AddressLink href={getEtherscanLink(chainId, ENSName || account, 'address')}>
-            <LinkIcon size={16} />
+            <LinkIcon size={16}/>
             <span style={{ marginLeft: '4px' }}>View on Etherscan</span>
           </AddressLink>
         </AccountControl>
