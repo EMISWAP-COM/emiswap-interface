@@ -156,7 +156,7 @@ inject_vars:
         REACT_APP_ESW_ID: '0xe37Ae239a84110009426071B7828A6fbd6be5F45',
         REACT_APP_ANALYTICS_URL: 'https://moon.firstbridge.online/',
         REACT_APP_CODE_LINK: 'https://github.com/EMISWAP-COM',
-        REACT_APP_PUBLIC_URL: 'https://{{ env_fqdn }}',
+        REACT_APP_PUBLIC_URL: 'https://emiswap.testingtruedao.com',
         REACT_APP_MIN_GAS_FOR_SWAP: '320000',
         REACT_APP_MIN_GAS_FOR_POOL: '320000',
         REACT_APP_MIN_GAS_FOR_INVEST: '90000',
