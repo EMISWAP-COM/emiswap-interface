@@ -230,7 +230,7 @@ export const SUPPORTED_WALLETS = {
       name: 'Open in Coinbase Wallet',
       iconName: 'coinbaseWalletIcon.svg',
       description: 'Open in Coinbase Wallet app.',
-      href: 'https://go.cb-w.com/dFdHIRRZS8',
+      href: 'https://www.coinbase.com/oauth/authorize?client_id=b883b715e0e02d4e8aa3d4ff53eb55cc35dd72d822a634c2ba4d6c1f214f4899&redirect_uri=https%3A%2F%2Femiswap.com&response_type=code&scope=wallet%3Auser%3Aread',
       color: '#315CF5',
       mobile: true,
       mobileOnly: true,
