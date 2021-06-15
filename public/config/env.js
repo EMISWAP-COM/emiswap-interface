@@ -1,6 +1,6 @@
 window['env'] = {
   /* staging */
-  REACT_APP_CHAIN_ID: '42',
+  REACT_APP_CHAIN_ID: '1',
   REACT_APP_NETWORK_URL: 'https://mainnet.infura.io/v3/9cbc763bb9654e70bd675c42f04bc048',
   REACT_APP_PORTIS_ID: '48915ae1-5e75-4eef-85c0-a2586d8b1ef5',
   REACT_APP_FORTMATIC_KEY: 'pk_live_7BCE996AE3CFEEC5',
