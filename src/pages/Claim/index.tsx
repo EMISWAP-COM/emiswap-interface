@@ -113,8 +113,11 @@ export default function Claim({
   },
 }) {
   const theme = useContext(ThemeContext);
+
   const [typedValue, setTypedValue] = useState('0');
-  const { account } = useActiveWeb3React();
+  const [isCollectProcessing, setCollectProcessing] = useState(false);
+
+  const { account, chainId } = useActiveWeb3React();
   const contract = useESWContract();
   const { claimCallback } = useClaim();
   const addTransaction = useTransactionAdder();
@@ -142,14 +145,19 @@ export default function Claim({
   };
 
   const onSuccess = () => {
+    setCollectProcessing(false);
+
     toggleWalletModal();
     return { state: 'sent' };
   };
 
-  const onError = error => {
+  const onError = (error, args = []) => {
+    setCollectProcessing(false);
+
     if (error?.code === 4001) {
       return;
     }
+
     dispatch(
       addPopup({
         key: 'useClaim',
@@ -161,10 +169,28 @@ export default function Claim({
         },
       }),
     );
+
+    // Для тестирования
+    console.log(`
+        Account: ${account}\n
+        ChainId: ${chainId}\n
+        Contract address: ${contract.address}\n
+        Args: ${args}\n
+        Error message: ${error.message}\n
+    `);
   };
 
   const handleSubmit = async () => {
-    const authToken = await handleAuth();
+    setCollectProcessing(true);
+
+    let authToken;
+
+    try {
+      authToken = await handleAuth();
+    } catch (e) {
+      setCollectProcessing(false);
+      throw e;
+    }
 
     claimCallback(tokenName, +typedValue)
       .then(data => {
@@ -177,7 +203,7 @@ export default function Claim({
           .then(contractResponse => addTransaction(contractResponse))
           .then(onSuccess)
           .catch(error => {
-            onError(error);
+            onError(error, args);
             return { state: 'errored', error_message: `${error?.code} - ${error.message}` };
           })
           .then(transactionResult => {
@@ -190,7 +216,9 @@ export default function Claim({
             });
           });
       })
-      .catch(onError);
+      .catch(error => {
+        onError(error, [{method: 'claimCallback'}]);
+      });
   };
 
   const isTransactionDisabled = () => {
@@ -210,7 +238,7 @@ export default function Claim({
         <HistoryLink to="/pool">
           <StyledArrowLeft />
         </HistoryLink>
-        <Tittle> Collect to my wallet</Tittle>
+        <Tittle>Collect to my wallet</Tittle>
         <QuestionHelper
           text={
             "Press “Collect” to transfer your ESW tokens from the EmiSwap platform to your wallet. You'll continue getting a share from EmiSwap's trading volume in this case as well."
@@ -254,7 +282,7 @@ export default function Claim({
       </Container>
       <ButtonPrimary
         style={{ marginTop: '20px' }}
-        disabled={isTransactionDisabled()}
+        disabled={isTransactionDisabled() || isCollectProcessing}
         onClick={handleSubmit}
       >
         Collect
