@@ -28,10 +28,10 @@ inject_vars:
       app_pool_exchange_launch_date: '2021-03-31T00:00:00+00:00'
     ingress:
       hosts:
-      - host: "{{ env_fqdn }}"
-        paths:
-        - /v1
-        - /api/v2
+        - host: "{{ env_fqdn }}"
+          paths:
+            - /v1
+            - /api/v2
     workers:
       blockchain_block_events:
         cmd: ['bundle','exec','rake', 'workers:run[blockchain_block_events]']

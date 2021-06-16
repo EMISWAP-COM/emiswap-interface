@@ -9,7 +9,6 @@ import styled from 'styled-components'
 import { AbstractConnector } from '@web3-react/abstract-connector';
 import { ButtonSecondary } from '../Button'
 
-
 const IconWrapper = styled.div<{ size?: number }>`
   ${({ theme }) => theme.flexColumnNoWrap};
   align-items: center;
@@ -46,6 +45,7 @@ interface Props {
 }
 
 export function StatusIcon({ connectorName }: Props) {
+
   if (connectorName === injected) {
     return (
       <IconWrapper size={16}>

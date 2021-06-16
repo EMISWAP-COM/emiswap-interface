@@ -1,5 +1,5 @@
 import { ChainId, Token, TokenAmount, ETHER } from '@uniswap/sdk';
-
+import { WETH } from '../constants';
 export function wrappedCurrency(
   currency: Token | undefined,
   chainId: ChainId | undefined,
@@ -17,7 +17,8 @@ export function wrappedCurrencyAmount(
 }
 
 export function unwrappedToken(token: Token): Token {
-  if (token.equals(ETHER)) return ETHER;
+  if (token.symbol === WETH.symbol) return ETHER;
+
   return token;
 }
 
