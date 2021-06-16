@@ -52,10 +52,3 @@ export const Dots = styled.span`
     }
   }
 `;
-
-export const ButtonText = styled.p`
-  margin: 0 0.5rem 0;
-  font-weight: 450;
-  font-size: 13px;
-  line-height: 19px;
-`;
