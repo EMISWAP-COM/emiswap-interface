@@ -127,7 +127,7 @@ export default function Menu() {
           </MenuItem>
           <MenuItem
             id="link"
-            href="https://crowdsale.emidao.org/whitepaper?_ga=2.106215235.1534273430.1614249828-363309939.1603872891"
+            href="https://about.emiswap.com/whitepaper"
             target="_blank"
           >
             <BookOpen size={14} />

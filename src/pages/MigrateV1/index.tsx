@@ -16,6 +16,7 @@ import { amountToString } from './utils';
 import { useActiveWeb3React } from '../../hooks';
 import { useWalletModalToggle } from '../../state/application/hooks';
 import { formatConnectorName } from '../../components/AccountDetails/uitls'
+import { unwrappedToken } from '../../utils/wrappedCurrency';
 
 const StyledSubTitle = styled.p`
   color: ${({ theme }) => theme.white};
@@ -110,8 +111,8 @@ export default function MigrateV1() {
         base,
         balance,
       } = formatedTokenList[index];
-      const token0 = tokens.find(el => el.address === address0);
-      const token1 = tokens.find(el => el.address === address1);
+      const token0 = unwrappedToken(tokens.find(el => el.address === address0));
+      const token1 = unwrappedToken(tokens.find(el => el.address === address1));
       return (
         <StyledMenuItemMigrate
           style={{ ...style, width: '100%' }}

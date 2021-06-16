@@ -33,6 +33,20 @@ const CardInfoHead = styled.span`
   position: relative;
   font-size: 20px !important;
   z-index: 0;
+
+  margin-bottom: 16px;
+
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 32px;
+  letter-spacing: -0.01em;
+  color: ${({theme}) => theme.white};
+
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    font-size: 16px;
+  `};
 `;
 
 const CardInfoHeadCircle = styled.img`
@@ -59,7 +73,6 @@ export const PrivateRound = () => {
     <CardBlocks>
       {cardsInfo.map(info => (
         <CardInfo key={info.head}>
-          <div className="h4 mb16">
             <CardInfoHead>
               {info.head}
               <CardInfoHeadCircle
@@ -68,7 +81,6 @@ export const PrivateRound = () => {
                 alt="YellowCircle"
               />
             </CardInfoHead>
-          </div>
           <CardDescriptionText>{info.text}</CardDescriptionText>
         </CardInfo>
       ))}

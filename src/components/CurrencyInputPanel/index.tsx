@@ -1,6 +1,6 @@
 import { Token, Pair, TokenAmount, JSBI } from '@uniswap/sdk';
 import React, { useState, useContext, useCallback } from 'react';
-import styled, { ThemeContext } from 'styled-components';
+import styled, { ThemeContext } from 'styled-components/macro';
 import { darken, lighten } from 'polished';
 import { useCurrencyBalance } from '../../state/wallet/hooks';
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal';
