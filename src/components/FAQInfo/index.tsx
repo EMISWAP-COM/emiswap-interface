@@ -497,11 +497,11 @@ const Body = styled.div`
 
 export default () => {
   const btnClick1 = () => {
-    const win = window.open('https://crowdsale.emidao.org/whitepaper', '_blank');
+    const win = window.open('https://about.emiswap.com/whitepaper', '_blank');
     win.focus();
   };
   const btnClick3 = () => {
-    const win = window.open('https://crowdsale.emidao.org/presentation', '_blank');
+    const win = window.open('https://about.emiswap.com/whitepaper', '_blank');
     win.focus();
   };
 
