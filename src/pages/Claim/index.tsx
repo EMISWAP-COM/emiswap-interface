@@ -117,7 +117,7 @@ export default function Claim({
   const [typedValue, setTypedValue] = useState('0');
   const [isCollectProcessing, setCollectProcessing] = useState(false);
 
-  const { account } = useActiveWeb3React();
+  const { account, chainId } = useActiveWeb3React();
   const contract = useESWContract();
   const { claimCallback } = useClaim();
   const addTransaction = useTransactionAdder();
@@ -151,12 +151,13 @@ export default function Claim({
     return { state: 'sent' };
   };
 
-  const onError = error => {
+  const onError = (error, args = []) => {
     setCollectProcessing(false);
 
     if (error?.code === 4001) {
       return;
     }
+
     dispatch(
       addPopup({
         key: 'useClaim',
@@ -168,6 +169,15 @@ export default function Claim({
         },
       }),
     );
+
+    // Для тестирования
+    console.log(`
+        Account: ${account}\n
+        ChainId: ${chainId}\n
+        Contract address: ${contract.address}\n
+        Args: ${args}\n
+        Error message: ${error.message}\n
+    `);
   };
 
   const handleSubmit = async () => {
@@ -193,7 +203,7 @@ export default function Claim({
           .then(contractResponse => addTransaction(contractResponse))
           .then(onSuccess)
           .catch(error => {
-            onError(error);
+            onError(error, args);
             return { state: 'errored', error_message: `${error?.code} - ${error.message}` };
           })
           .then(transactionResult => {
@@ -206,7 +216,9 @@ export default function Claim({
             });
           });
       })
-      .catch(onError);
+      .catch(error => {
+        onError(error, [{method: 'claimCallback'}]);
+      });
   };
 
   const isTransactionDisabled = () => {
