@@ -524,6 +524,9 @@ export default () => {
   //TODO перевести на styleds components блоки как EarlyBird and NFTCards
   return (
     <div className="for-scroll-faq">
+      <Accordion header="Launchpad details" isContentFullWidth={true}>
+        <PrivateRound />
+      </Accordion>
       <Accordion
         header="Early bird bonuses for Liquidity Providers"
         /* TODO removed Invest tab until further notice.
@@ -600,8 +603,7 @@ export default () => {
               <div className="InfoBlockBody">
                 <div className="InfoBlockBody__header h4">ESW</div>
                 <div className="InfoBlockBody__description">
-                  is a governance token that gives holders a right to receive a share of project’s
-                  profit proportionate to the share of token ownership and gives a right to
+                  is a governance token that gives holders a right to receive a share of distributing fees proportionate to the share of token ownership and gives a right to
                   participate in voting on the development of the project.
                 </div>
               </div>
@@ -645,9 +647,6 @@ export default () => {
             </div>
           </div>
         </Body>
-      </Accordion>
-      <Accordion header="Private Round details" isContentFullWidth={true}>
-        <PrivateRound />
       </Accordion>
       <Accordion
         header="Token Allocation Schedule"
