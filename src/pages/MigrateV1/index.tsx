@@ -6,7 +6,7 @@ import Column, { AutoColumn } from '../../components/Column';
 import { StyledFixedSizeList, StyledMenuItem } from '../../components/SearchModal/styleds';
 import { RowFixed } from '../../components/Row';
 import { Text } from 'rebass';
-import { ExternalLink, TYPE } from '../../theme';
+import { StyledGreenLink, TYPE } from '../../theme';
 import { useHistory } from 'react-router-dom';
 import { ButtonLight, ButtonPrimary } from '../../components/Button';
 import DoubleCurrencyLogo from '../../components/DoubleLogo';
@@ -157,7 +157,7 @@ export default function MigrateV1() {
       <AppBody>
         <SwapPoolTabs active={TabNames.MIGRATE}/>
         {account && isMetaMask && <StyledSubTitle>You have</StyledSubTitle>}
-        <AutoColumn gap="lg" justify="center">
+        <AutoColumn gap="sm" justify="center">
           {!account ? (
             <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
           ) : !isMetaMask ? (
@@ -205,17 +205,14 @@ export default function MigrateV1() {
             </>
           )}
 
-          <StyledHr/>
-          <Text color={theme.darkText} textAlign="center" fontSize={14}>
-            {'Discover EmiSwap Crowdsale'}{' '}
-            <ExternalLink
-              id="import-pool-link"
-              href="https://crowdsale.emidao.org/en"
-              style={{ color: theme.blue, textDecoration: 'none' }}
-            >
-              {'Terms'}
-            </ExternalLink>
-          </Text>
+          <StyledHr style={{margin: '24px 0'}}/>
+          <div>
+            <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
+              <StyledGreenLink to="https://wiki.emiswap.com/user-guide/how-to-migrate-liquidity">
+                Wiki How to migrate liquidity?
+              </StyledGreenLink>
+            </TYPE.black>
+          </div>
           <ReferralLink/>
         </AutoColumn>
       </AppBody>

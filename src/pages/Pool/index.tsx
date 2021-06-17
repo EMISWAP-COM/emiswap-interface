@@ -89,7 +89,7 @@ export default function Pool() {
   return (
     <>
       <AppBody>
-        <SwapPoolTabs active={TabNames.POOL} />
+        <SwapPoolTabs active={TabNames.POOL}/>
         <AutoColumn gap="lg" justify="center">
           <>
             <AutoColumn gap="12px" style={{ width: '100%' }}>
@@ -97,7 +97,7 @@ export default function Pool() {
                 <Text color={theme.white} fontWeight={500}>
                   Your Liquidity
                 </Text>
-                <Question text="When you add liquidity, you are given pool tokens that represent your share. If you don’t see a pool you joined in this list, try importing a pool below." />
+                <Question text="When you add liquidity, you are given pool tokens that represent your share. If you don’t see a pool you joined in this list, try importing a pool below."/>
               </RowBetween>
               {!account ? (
                 <OutlineCard padding="40px">
@@ -114,7 +114,7 @@ export default function Pool() {
               ) : allV2PairsWithLiquidity?.length > 0 ? (
                 <>
                   {allV2PairsWithLiquidity.map(v2Pair => (
-                    <FullPositionCard key={v2Pair.liquidityToken.address} pair={v2Pair} />
+                    <FullPositionCard key={v2Pair.liquidityToken.address} pair={v2Pair}/>
                   ))}
                 </>
               ) : (
@@ -135,18 +135,25 @@ export default function Pool() {
                 </Text>
               </ButtonPrimary>
               <GasFeeText>100% gas fee refund</GasFeeText>
-              <StyledHr />
+              <StyledHr/>
               <div>
                 <Text color={theme.darkText} textAlign="center" fontSize={14} style={{ padding: '.5rem 0 .5rem 0' }}>
-                  {"Don't see a pool you joined?"}{' '}
+                  {'Don\'t see a pool you joined?'}{' '}
                   <StyledGreenLink id="import-pool-link" to={false ? '/migrate' : '/find'}>
                     {'Import it.'}
                   </StyledGreenLink>
                 </Text>
                 <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
-                  <StyledGreenLink to="https://emiswap.medium.com/pay-0-for-gas-and-get-x10-reward-the-two-big-reasons-to-join-emiswap-today-8af2e68d0aaa">
-                    High rewards for early adopters
-                  </StyledGreenLink>
+                  <div>
+                    <StyledGreenLink to="https://emiswap.medium.com/pay-0-for-gas-and-get-x10-reward-the-two-big-reasons-to-join-emiswap-today-8af2e68d0aaa">
+                      High rewards for early adopters
+                    </StyledGreenLink>
+                  </div>
+                  <div style={{marginTop: '8px'}}>
+                    <StyledGreenLink to="https://wiki.emiswap.com/user-guide/how-to-provide-liquidity">
+                      Wiki How to provide liquidity?
+                    </StyledGreenLink>
+                  </div>
                 </TYPE.black>
               </div>
               <ReferralLink/>

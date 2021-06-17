@@ -44,7 +44,7 @@ import {
   useTokenWarningDismissal,
   useUserSlippageTolerance,
 } from '../../state/user/hooks';
-import { CursorPointer, StyledButtonNavigation, TYPE } from '../../theme';
+import { CursorPointer, StyledButtonNavigation, StyledGreenLink, TYPE } from '../../theme';
 import { maxAmountSpend } from '../../utils/maxAmountSpend';
 import {
   computeSlippageAdjustedAmounts,
@@ -62,6 +62,7 @@ import ReferralLink from '../../components/RefferalLink';
 
 const GasFeeText = styled.div`
   margin-top: 8px;
+  margin-bottom: 8px;
   color: ${({ theme }) => theme.darkText};
 `;
 
@@ -573,6 +574,11 @@ export default function Swap() {
             )}
           </BottomGrouping>
           <GasFeeText>100% gas fee refund</GasFeeText>
+          <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
+            <StyledGreenLink to="https://wiki.emiswap.com/user-guide/how-to-make-swaps">
+              Wiki How to make swaps?
+            </StyledGreenLink>
+          </TYPE.black>
           <ReferralLink/>
         </Wrapper>
         <AdvancedSwapDetails trade={trade} />
