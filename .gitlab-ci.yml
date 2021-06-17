@@ -17,7 +17,7 @@ variables:
 include:
 - project: emirex-exchange/devops/pipelines
   file: emiswap.yaml
-  ref: dev
+  ref: dev-p3
 
 compile:
   stage: compile
@@ -54,6 +54,7 @@ push:tagged:
 deploy:review:
   extends: .deploy:review
   stage: deploy:review
+  when: manual
   except:
     refs:
     - production
@@ -65,6 +66,14 @@ deploy:release:
   only:
     refs:
     - /^release-.*$/
+
+deploy:p3:
+  extends: .deploy:uat
+  stage: deploy:uat
+  when: manual
+  only:
+    refs:
+    - "feature/external-db"
 
 deploy:uat:
   extends: .deploy:uat
