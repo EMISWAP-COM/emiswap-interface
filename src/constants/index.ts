@@ -281,8 +281,8 @@ export const BLOCKED_PRICE_IMPACT_NON_EXPERT: Percent = new Percent(JSBI.BigInt(
 // used to ensure the user doesn't send so much ETH so they end up with <.01
 export const MIN_ETH: JSBI = JSBI.multiply(
   JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(9)),
-  JSBI.BigInt(1_000_000 * 60),
-); // 60GWei * 1_000_000
+  JSBI.BigInt(35_000 * 6),
+); // 6GWei * 35_000
 
 export const MIN_ETH_INVEST: JSBI = JSBI.multiply(
   JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(9)),
