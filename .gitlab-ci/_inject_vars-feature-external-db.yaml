@@ -1,9 +1,6 @@
 emirex_charts:
   app:
-  - emiswap-oracle
   - emiswap-ui
-  - emiswap-nft
-  - emiswap-landing
 
 
 inject_vars:
