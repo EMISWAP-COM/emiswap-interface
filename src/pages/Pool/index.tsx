@@ -19,6 +19,7 @@ import { usePairs } from '../../data-mooniswap/Reserves';
 import { useTrackedTokenPairs } from '../../state/user/hooks';
 import AppBody from '../AppBody';
 import { Dots } from '../../components/swap/styleds';
+import ReferralLink from '../../components/RefferalLink';
 
 const StyledHr = styled.hr`
   width: 100%;
@@ -148,6 +149,7 @@ export default function Pool() {
                   </StyledGreenLink>
                 </TYPE.black>
               </div>
+              <ReferralLink/>
             </AutoColumn>
           </>
         </AutoColumn>

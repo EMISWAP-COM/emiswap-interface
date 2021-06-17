@@ -58,6 +58,7 @@ import GasConsumption from '../../components/swap/GasConsumption';
 import { BigNumber } from '@ethersproject/bignumber';
 import { AdvancedSwapDetails } from '../../components/swap/AdvancedSwapDetails';
 import { useTransactionPrice } from '../../hooks/useTransactionPrice';
+import ReferralLink from '../../components/RefferalLink';
 
 const GasFeeText = styled.div`
   margin-top: 8px;
@@ -572,6 +573,7 @@ export default function Swap() {
             )}
           </BottomGrouping>
           <GasFeeText>100% gas fee refund</GasFeeText>
+          <ReferralLink/>
         </Wrapper>
         <AdvancedSwapDetails trade={trade} />
       </AppBody>

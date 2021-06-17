@@ -8,15 +8,16 @@ import { RowFixed } from '../../components/Row';
 import { Text } from 'rebass';
 import { ExternalLink, TYPE } from '../../theme';
 import { useHistory } from 'react-router-dom';
-import { ButtonPrimary, ButtonLight } from '../../components/Button';
+import { ButtonLight, ButtonPrimary } from '../../components/Button';
 import DoubleCurrencyLogo from '../../components/DoubleLogo';
 import { useLpTokens } from '../../hooks/useLpTokens';
 import Loader from '../../components/Loader';
 import { amountToString } from './utils';
 import { useActiveWeb3React } from '../../hooks';
 import { useWalletModalToggle } from '../../state/application/hooks';
-import { formatConnectorName } from '../../components/AccountDetails/uitls'
+import { formatConnectorName } from '../../components/AccountDetails/uitls';
 import { unwrappedToken } from '../../utils/wrappedCurrency';
+import ReferralLink from '../../components/RefferalLink';
 
 const StyledSubTitle = styled.p`
   color: ${({ theme }) => theme.white};
@@ -139,7 +140,7 @@ export default function MigrateV1() {
     };
   }, [selected, tokens, formatedTokenList]);
 
-  const isMetaMask = formatConnectorName(connector) === 'MetaMask'
+  const isMetaMask = formatConnectorName(connector) === 'MetaMask';
 
   const isShowLoader = (
     !formatedTokenList.length
@@ -155,67 +156,68 @@ export default function MigrateV1() {
     <>
       <AppBody>
         <SwapPoolTabs active={TabNames.MIGRATE}/>
-          {account && isMetaMask && <StyledSubTitle>You have</StyledSubTitle>}
-          <AutoColumn gap="lg" justify="center">
-            {!account ? (
-              <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
-            ) : !isMetaMask ? (
-              <>
-                <StyledSubTitle>Functionality of Liquidity migration is supported only with the MetaMask Wallet.
-                  Please use this wallet to enjoy this opportunity.
-                </StyledSubTitle>
-                <ButtonPrimary
-                  style={{ width: '100%', padding: '15px 16px' }}
-                  disabled
-                >
-                  <Text fontWeight={500} fontSize={16}>
-                    Migrate
-                  </Text>
-                </ButtonPrimary>
-              </>
-              ) : isShowLoader ? (
-              <>
-                <WrapperLoader>
-                  <Loader size="100px"/>
-                </WrapperLoader>
-              </>
-            ) : isTokensNotFound ? (
-              <TYPE.body>No LP tokens found</TYPE.body>
-            ) : (
-              <>
-                <StyledFixedSizeList
-                  width="auto"
-                  height={300}
-                  itemCount={formatedTokenList.length}
-                  itemSize={50}
-                  style={{ width: '100%', margin: '0 30px' }}
-                >
-                  {CurrencyRow}
-                </StyledFixedSizeList>
-                <ButtonPrimary
-                  style={{ width: '100%', padding: '15px 16px' }}
-                  disabled={selected === null}
-                  onClick={handleRedirect}
-                >
-                  <Text fontWeight={500} fontSize={16}>
-                    Migrate
-                  </Text>
-                </ButtonPrimary>
-              </>
-            )}
-
-            <StyledHr/>
-            <Text color={theme.darkText} textAlign="center" fontSize={14} style={{ padding: '.5rem 0 .5rem 0' }}>
-              {'Discover EmiSwap Crowdsale'}{' '}
-              <ExternalLink
-                id="import-pool-link"
-                href="https://crowdsale.emidao.org/en"
-                style={{ color: theme.blue, textDecoration: 'none' }}
+        {account && isMetaMask && <StyledSubTitle>You have</StyledSubTitle>}
+        <AutoColumn gap="lg" justify="center">
+          {!account ? (
+            <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
+          ) : !isMetaMask ? (
+            <>
+              <StyledSubTitle>Functionality of Liquidity migration is supported only with the MetaMask Wallet.
+                Please use this wallet to enjoy this opportunity.
+              </StyledSubTitle>
+              <ButtonPrimary
+                style={{ width: '100%', padding: '15px 16px' }}
+                disabled
               >
-                {'Terms'}
-              </ExternalLink>
-            </Text>
-          </AutoColumn>
+                <Text fontWeight={500} fontSize={16}>
+                  Migrate
+                </Text>
+              </ButtonPrimary>
+            </>
+          ) : isShowLoader ? (
+            <>
+              <WrapperLoader>
+                <Loader size="100px"/>
+              </WrapperLoader>
+            </>
+          ) : isTokensNotFound ? (
+            <TYPE.body>No LP tokens found</TYPE.body>
+          ) : (
+            <>
+              <StyledFixedSizeList
+                width="auto"
+                height={300}
+                itemCount={formatedTokenList.length}
+                itemSize={50}
+                style={{ width: '100%', margin: '0 30px' }}
+              >
+                {CurrencyRow}
+              </StyledFixedSizeList>
+              <ButtonPrimary
+                style={{ width: '100%', padding: '15px 16px' }}
+                disabled={selected === null}
+                onClick={handleRedirect}
+              >
+                <Text fontWeight={500} fontSize={16}>
+                  Migrate
+                </Text>
+              </ButtonPrimary>
+            </>
+          )}
+
+          <StyledHr/>
+          <Text color={theme.darkText} textAlign="center" fontSize={14}>
+            {'Discover EmiSwap Crowdsale'}{' '}
+            <ExternalLink
+              id="import-pool-link"
+              href="https://crowdsale.emidao.org/en"
+              style={{ color: theme.blue, textDecoration: 'none' }}
+            >
+              {'Terms'}
+            </ExternalLink>
+          </Text>
+          <ReferralLink/>
+        </AutoColumn>
       </AppBody>
     </>
   );

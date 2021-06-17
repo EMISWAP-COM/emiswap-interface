@@ -15,7 +15,6 @@ export const InvestRules = () => {
 
 
   const getMessage = () => {
-
     switch (investRequestStatus) {
       case InvestRequestStatus.PENDING:
       case InvestRequestStatus.SENT:
@@ -27,7 +26,7 @@ export const InvestRules = () => {
       default:
         return 'Sorry, only investors registered in the Waiting list and confirmed can invest in the Private Stage'
     }
-  }
+  };
 
   return (
     <>

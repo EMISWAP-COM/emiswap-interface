@@ -3,36 +3,54 @@ import { useLocation } from 'react-router-dom';
 import styled, { ThemeContext } from 'styled-components';
 import ReactGA from 'react-ga';
 import { RowFixed } from '../Row';
-import { Text } from 'rebass';
-import { TYPE } from '../../theme';
-import Copy from '../AccountDetails/Copy';
 import { useActiveWeb3React } from '../../hooks';
+import { Text } from 'rebass';
+import useCopyClipboard from '../../hooks/useCopyClipboard';
+import { LinkStyledButton } from '../../theme';
+import { CheckCircle, Copy } from 'react-feather';
 
 const ReferralLinkBox = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+  padding: 24px 0 8px 0;
 
   > div:first-child {
     width: 100%;
-    text-align: left;
+    font-size: 20px;
+    text-align: center;
+    color: white;
   }
 `;
 
-const ButtonLightGreen = styled(Copy)`
-  background-color: #54b489;
-  color: ${({ theme }) => theme.green1};
-  width: 100%;
+const CopyIcon = styled(LinkStyledButton)`
   display: flex;
   justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 56px;
+  border: 1px solid #4A4757;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 400;
+  text-decoration: none;
+  color: white;
+  transition: all 0.3s ease-in-out;
+  
+  :hover,
+  :active,
+  :focus {
+    text-decoration: none;
+  }
 `;
 
 export default function ReferralLink() {
   const theme = useContext(ThemeContext);
   const { account } = useActiveWeb3React();
   let location = useLocation();
+  const [isCopied, setCopied] = useCopyClipboard();
 
-  function getRefferalLink(currentUserAddress: string): string {
+  function getReferralLink(currentUserAddress: string): string {
     return `${window.location.origin}/#${location.pathname}?r=${currentUserAddress}`;
   }
 
@@ -45,21 +63,31 @@ export default function ReferralLink() {
 
   return (
     <div>
-      <Text textAlign="center" fontSize={14} style={{ padding: '.5rem 0 .5rem 0' }}>
-        <ReferralLinkBox>
-          {/*<RowFixed>*/}
-          <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
-            Share referral link to Earn cryptocurrency
-          </TYPE.black>
-          {/*<QuestionHelper text="Your transaction will revert if there is a large, unfavorable price movement before it is confirmed." />*/}
-          {/*</RowFixed>*/}
-          <RowFixed style={{ marginTop: '10px', width: '100%' }}>
-            <ButtonLightGreen toCopy={getRefferalLink(account)} onClick={handleGA}>
-              <span style={{ marginLeft: '4px' }}>Copy Referral Link</span>
-            </ButtonLightGreen>
-          </RowFixed>
-        </ReferralLinkBox>
-      </Text>
+      <ReferralLinkBox>
+        <Text fontSize={14} fontWeight={400} color={theme.text2}>
+          Share referral link to Earn cryptocurrency
+        </Text>
+        <RowFixed style={{ marginTop: '10px', width: '100%' }}>
+          <CopyIcon
+            onClick={() => {
+              setCopied(getReferralLink(account));
+              handleGA();
+            }}
+          >
+            {isCopied ? (
+              <>
+                <CheckCircle size={'16'} color={theme.blue}/>
+                <span style={{ marginLeft: '4px' }}>Copied</span>
+              </>
+            ) : (
+              <>
+                <Copy size={'16'} color={theme.blue}/>
+                <span style={{ marginLeft: '4px' }}>Copy Referral Link</span>
+              </>
+            )}
+          </CopyIcon>
+        </RowFixed>
+      </ReferralLinkBox>
     </div>
   );
 }

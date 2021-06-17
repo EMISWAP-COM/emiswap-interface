@@ -29,12 +29,14 @@ const TransactionStatusText = styled.span`
 
 export default function CopyHelper(props: {
   toCopy: string;
+  className?: string;
   children?: React.ReactNode;
   onClick?: () => void;
 }) {
   const [isCopied, setCopied] = useCopyClipboard();
   return (
     <CopyIcon
+      className={props.className}
       onClick={() => {
         setCopied(props.toCopy);
         props.onClick && props.onClick();
