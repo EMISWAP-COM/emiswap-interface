@@ -68,7 +68,7 @@ deploy:release:
     - /^release-.*$/
 
 deploy:p3:
-  extends: .deploy:uat
+  extends: .deploy:p3
   stage: deploy:uat
   when: manual
   only:
