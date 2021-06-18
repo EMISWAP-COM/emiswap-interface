@@ -120,6 +120,8 @@
   "license": "GPL-3.0-or-later",
   "dependencies": {
     "@rebass/preset": "^4.0.5",
+    "@sentry/react": "^6.5.1",
+    "@sentry/tracing": "^6.5.1",
     "emotion-theming": "^10.0.27",
     "env-cmd": "^10.1.0",
     "promise-hook": "^0.1.4",

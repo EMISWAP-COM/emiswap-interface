@@ -5,6 +5,7 @@ import { PortisConnector } from '@web3-react/portis-connector';
 
 import { FortmaticConnector } from './Fortmatic';
 import { NetworkConnector } from './NetworkConnector';
+const CHAIN_ID = window['env'].REACT_APP_CHAIN_ID;
 const NETWORK_URL = window['env'].REACT_APP_NETWORK_URL;
 const FORMATIC_KEY = window['env'].REACT_APP_FORTMATIC_KEY;
 const PORTIS_ID = window['env'].REACT_APP_PORTIS_ID;
@@ -21,13 +22,15 @@ export const injected = new InjectedConnector({
   supportedChainIds: [1, 3, 4, 5, 42],
 });
 
-// mainnet only
+// initialized once, based on the envs - kovan or mainnet. Chain id changes during session have no effect.
+
 export const walletconnect = new WalletConnectConnector({
-  rpc: { 1: NETWORK_URL },
+  rpc: { [CHAIN_ID]: NETWORK_URL },
   bridge: 'https://bridge.walletconnect.org',
   qrcode: true,
   pollingInterval: 15000,
 });
+
 
 // mainnet only
 export const fortmatic = new FortmaticConnector({

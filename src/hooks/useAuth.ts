@@ -94,7 +94,6 @@ export function useAuth() {
     const isAccountChanged = account !== storedAccount;
 
     const authToken = authTokenData ? JSON.parse(authTokenData) : null;
-    debugger;
     if (authToken && !isAccountChanged) {
       const isExpired = Date.now() - authToken.time > 0;
       if (!isExpired) {

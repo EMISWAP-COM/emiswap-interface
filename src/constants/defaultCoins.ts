@@ -2185,7 +2185,7 @@ export default {
       logoURI: 'https://tokens.1inch.exchange/0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0.png',
     },
     {
-      address: '0xE380B174d75974Fd6f425b0A0E9c8489890Cd8F9',
+      address: '0x6b175474e89094c44da98b954eedeac495271d0f',
       chainId: 1,
       name: 'DaiStablecoin',
       symbol: 'DAI',
