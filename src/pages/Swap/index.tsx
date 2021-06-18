@@ -12,13 +12,7 @@ import { SwapPoolTabs, TabNames } from '../../components/NavigationTabs';
 import { AutoRow, RowBetween } from '../../components/Row';
 import BetterTradeLink from '../../components/swap/BetterTradeLink';
 import confirmPriceImpactWithoutFee from '../../components/swap/confirmPriceImpactWithoutFee';
-import {
-  ArrowWrapper,
-  BottomGrouping,
-  Dots,
-  ErrorText,
-  Wrapper,
-} from '../../components/swap/styleds';
+import { ArrowWrapper, BottomGrouping, Dots, ErrorText, Wrapper } from '../../components/swap/styleds';
 import SwapModalFooter from '../../components/swap/SwapModalFooter';
 import SwapModalHeader from '../../components/swap/SwapModalHeader';
 import TradePrice from '../../components/swap/TradePrice';
@@ -39,18 +33,10 @@ import {
   useSwapActionHandlers,
   useSwapState,
 } from '../../state/swap/hooks';
-import {
-  useExpertModeManager,
-  useTokenWarningDismissal,
-  useUserSlippageTolerance,
-} from '../../state/user/hooks';
-import { CursorPointer, StyledButtonNavigation, StyledGreenLink, TYPE } from '../../theme';
+import { useExpertModeManager, useTokenWarningDismissal, useUserSlippageTolerance } from '../../state/user/hooks';
+import { CursorPointer, ExternalGreenLink, StyledButtonNavigation, TYPE } from '../../theme';
 import { maxAmountSpend } from '../../utils/maxAmountSpend';
-import {
-  computeSlippageAdjustedAmounts,
-  computeTradePriceBreakdown,
-  warningSeverity,
-} from '../../utils/prices';
+import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown, warningSeverity } from '../../utils/prices';
 import AppBody from '../AppBody';
 import { ClickableText } from '../Pool/styleds';
 import { isUseOneSplitContract } from '../../utils';
@@ -129,14 +115,14 @@ export default function Swap() {
 
   const parsedAmounts = showWrap
     ? {
-        [Field.INPUT]: parsedAmount,
-        [Field.OUTPUT]: parsedAmount,
-      }
+      [Field.INPUT]: parsedAmount,
+      [Field.OUTPUT]: parsedAmount,
+    }
     : {
-        [Field.INPUT]: parsedAmount,
-        // [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
-        [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
-      };
+      [Field.INPUT]: parsedAmount,
+      // [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
+      [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
+    };
 
   const isValid = !error;
   const dependentField: Field = independentField === Field.INPUT ? Field.OUTPUT : Field.INPUT;
@@ -148,7 +134,8 @@ export default function Swap() {
     [onUserInput],
   );
 
-  const handleNothing = () => {};
+  const handleNothing = () => {
+  };
 
   // modal and loading
   const [showConfirm, setShowConfirm] = useState<boolean>(false); // show confirmation modal
@@ -166,8 +153,8 @@ export default function Swap() {
   const route = trade?.route;
   const userHasSpecifiedInputOutput = Boolean(
     currencies[Field.INPUT] &&
-      currencies[Field.OUTPUT] &&
-      parsedAmounts[independentField]?.greaterThan(JSBI.BigInt(0)),
+    currencies[Field.OUTPUT] &&
+    parsedAmounts[independentField]?.greaterThan(JSBI.BigInt(0)),
   );
   const noRoute = !route;
 
@@ -231,10 +218,10 @@ export default function Swap() {
     }
 
     srcAmount &&
-      estimate &&
-      estimate().then(result => {
-        handleStatusChange(result);
-      });
+    estimate &&
+    estimate().then(result => {
+      handleStatusChange(result);
+    });
 
     // Specify how to clean up after this effect:
     return function cleanup() {
@@ -347,9 +334,9 @@ export default function Swap() {
 
   return (
     <>
-      {showWarning && <TokenWarningCards currencies={currencies} />}
+      {showWarning && <TokenWarningCards currencies={currencies}/>}
       <AppBody disabled={showWarning}>
-        <SwapPoolTabs active={TabNames.SWAP} />
+        <SwapPoolTabs active={TabNames.SWAP}/>
         <Wrapper id="swap-page">
           <ConfirmationModal
             isOpen={showConfirm}
@@ -459,7 +446,7 @@ export default function Swap() {
                       <Text fontWeight={500} fontSize={14} color={theme.text2}>
                         Gas consumption
                       </Text>
-                      {<GasConsumption gas={gas} gasWhenUseChi={gasWhenUseChi} />}
+                      {<GasConsumption gas={gas} gasWhenUseChi={gasWhenUseChi}/>}
                     </RowBetween>
                   ) : (
                     ''
@@ -495,9 +482,9 @@ export default function Swap() {
             ) : showWrap ? (
               <ButtonPrimary disabled={Boolean(wrapError)} onClick={onWrap}>
                 {wrapError ??
-                  (wrapType === WrapType.WRAP
-                    ? 'Wrap'
-                    : wrapType === WrapType.UNWRAP
+                (wrapType === WrapType.WRAP
+                  ? 'Wrap'
+                  : wrapType === WrapType.UNWRAP
                     ? 'Unwrap'
                     : null)}
               </ButtonPrimary>
@@ -541,8 +528,8 @@ export default function Swap() {
                     {notEnoughBalance
                       ? `Not enough balance`
                       : priceImpactSeverity > 3 && !expertMode
-                      ? `Price Impact High`
-                      : `Swap${priceImpactSeverity > 2 ? ' Anyway' : ''}`}
+                        ? `Price Impact High`
+                        : `Swap${priceImpactSeverity > 2 ? ' Anyway' : ''}`}
                   </Text>
                 </ButtonError>
               </RowBetween>
@@ -559,14 +546,14 @@ export default function Swap() {
                   {error
                     ? error
                     : notEnoughBalance
-                    ? `Not enough balance`
-                    : priceImpactSeverity > 3 && !expertMode
-                    ? `Price Impact Too High`
-                    : `Swap${priceImpactSeverity > 2 ? ' Anyway' : ''}`}
+                      ? `Not enough balance`
+                      : priceImpactSeverity > 3 && !expertMode
+                        ? `Price Impact Too High`
+                        : `Swap${priceImpactSeverity > 2 ? ' Anyway' : ''}`}
                 </Text>
               </ButtonError>
             )}
-            {betterTradeLinkVersion && <BetterTradeLink version={betterTradeLinkVersion} />}
+            {betterTradeLinkVersion && <BetterTradeLink version={betterTradeLinkVersion}/>}
             {!isEnough && (
               <ErrorText fontWeight={500} fontSize="11pt" severity={3}>
                 Probably insufficient ETH balance
@@ -575,13 +562,13 @@ export default function Swap() {
           </BottomGrouping>
           <GasFeeText>100% gas fee refund</GasFeeText>
           <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
-            <StyledGreenLink to="https://wiki.emiswap.com/user-guide/how-to-make-swaps">
+            <ExternalGreenLink href="https://wiki.emiswap.com/user-guide/how-to-make-swaps">
               Wiki How to make swaps?
-            </StyledGreenLink>
+            </ExternalGreenLink>
           </TYPE.black>
           <ReferralLink/>
         </Wrapper>
-        <AdvancedSwapDetails trade={trade} />
+        <AdvancedSwapDetails trade={trade}/>
       </AppBody>
     </>
   );

@@ -6,7 +6,7 @@ import Column, { AutoColumn } from '../../components/Column';
 import { StyledFixedSizeList, StyledMenuItem } from '../../components/SearchModal/styleds';
 import { RowFixed } from '../../components/Row';
 import { Text } from 'rebass';
-import { StyledGreenLink, TYPE } from '../../theme';
+import { ExternalGreenLink, TYPE } from '../../theme';
 import { useHistory } from 'react-router-dom';
 import { ButtonLight, ButtonPrimary } from '../../components/Button';
 import DoubleCurrencyLogo from '../../components/DoubleLogo';
@@ -205,12 +205,12 @@ export default function MigrateV1() {
             </>
           )}
 
-          <StyledHr style={{margin: '24px 0'}}/>
+          <StyledHr style={{ margin: '24px 0' }}/>
           <div>
             <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
-              <StyledGreenLink to="https://wiki.emiswap.com/user-guide/how-to-migrate-liquidity">
+              <ExternalGreenLink href="https://wiki.emiswap.com/user-guide/how-to-migrate-liquidity">
                 Wiki How to migrate liquidity?
-              </StyledGreenLink>
+              </ExternalGreenLink>
             </TYPE.black>
           </div>
           <ReferralLink/>

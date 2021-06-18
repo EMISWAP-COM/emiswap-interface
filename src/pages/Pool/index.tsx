@@ -7,7 +7,7 @@ import { SwapPoolTabs, TabNames } from '../../components/NavigationTabs';
 import Question from '../../components/QuestionHelper';
 import FullPositionCard from '../../components/PositionCard';
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks';
-import { StyledGreenLink, TYPE } from '../../theme';
+import { ExternalGreenLink, StyledGreenLink, TYPE } from '../../theme';
 import { Text } from 'rebass';
 import { OutlineCard } from '../../components/Card';
 import { RowBetween } from '../../components/Row';
@@ -145,14 +145,14 @@ export default function Pool() {
                 </Text>
                 <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
                   <div>
-                    <StyledGreenLink to="https://emiswap.medium.com/pay-0-for-gas-and-get-x10-reward-the-two-big-reasons-to-join-emiswap-today-8af2e68d0aaa">
+                    <ExternalGreenLink href="https://emiswap.medium.com/pay-0-for-gas-and-get-x10-reward-the-two-big-reasons-to-join-emiswap-today-8af2e68d0aaa">
                       High rewards for early adopters
-                    </StyledGreenLink>
+                    </ExternalGreenLink>
                   </div>
-                  <div style={{marginTop: '8px'}}>
-                    <StyledGreenLink to="https://wiki.emiswap.com/user-guide/how-to-provide-liquidity">
+                  <div style={{ marginTop: '8px' }}>
+                    <ExternalGreenLink href="https://wiki.emiswap.com/user-guide/how-to-provide-liquidity">
                       Wiki How to provide liquidity?
-                    </StyledGreenLink>
+                    </ExternalGreenLink>
                   </div>
                 </TYPE.black>
               </div>
