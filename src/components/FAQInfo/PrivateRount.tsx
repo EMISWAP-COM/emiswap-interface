@@ -58,6 +58,7 @@ const CardInfoHeadCircle = styled.img`
 
 const CardDescriptionText = styled.div`
   color: ${({theme}) => theme.darkText};
+  position: static;
 `;
 
 const cardsInfo = [
