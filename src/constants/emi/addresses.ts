@@ -6,8 +6,8 @@ export const EmiVampAddress = window['env'].REACT_APP_EMI_VAMP;
 
 export const EMI_ROUTER_ADRESSES: { [chainId in ChainId]: string } = {
   [ChainId.MAINNET]: '0x22B8CCdeEEACB1F3879E36e06af413d44FD79F01',
-  [ChainId.KOVAN]: '0x3c756eed6dc66f7013923ac50ab236111a9494bd',
-  [ChainId.GÖRLI]: '0x3c756eed6dc66f7013923ac50ab236111a9494bd',
-  [ChainId.ROPSTEN]: '0x3c756eed6dc66f7013923ac50ab236111a9494bd',
-  [ChainId.RINKEBY]: '0x3c756eed6dc66f7013923ac50ab236111a9494bd',
+  [ChainId.KOVAN]: '0x7EeE1d070924B8255DAd03ddE989ebBffC1000eB',
+  [ChainId.GÖRLI]: '0x7EeE1d070924B8255DAd03ddE989ebBffC1000eB',
+  [ChainId.ROPSTEN]: '0x7EeE1d070924B8255DAd03ddE989ebBffC1000eB',
+  [ChainId.RINKEBY]: '0x7EeE1d070924B8255DAd03ddE989ebBffC1000eB',
 };
