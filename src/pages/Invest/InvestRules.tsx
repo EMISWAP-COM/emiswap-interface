@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { ButtonPrimary } from '../../components/Button'
+import { ButtonOutlined, ButtonPrimary } from '../../components/Button';
 import { useActiveWeb3React } from '../../hooks'
 import { AppState } from '../../state'
 import InvestContactForm from '../../components/InvestContactForm'
@@ -8,11 +8,9 @@ import { LoginFirstText, OnlyInvestorsText, PrivateSaleText } from './styleds'
 import { InvestRequestStatus } from '../../state/user/reducer'
 
 export const InvestRules = () => {
-
   const { account } = useActiveWeb3React();
   const investRequestStatus = useSelector((state: AppState) => state.user.info?.invest_request_state);
   const [isRegisterWaitListModalOpen, setIsRegisterWaitListModalOpen] = useState<boolean>(false);
-
 
   const getMessage = () => {
 
@@ -27,7 +25,7 @@ export const InvestRules = () => {
       default:
         return 'Sorry, only investors registered in the Waiting list and confirmed can invest in the Private Stage'
     }
-  }
+  };
 
   return (
     <>
@@ -45,10 +43,10 @@ export const InvestRules = () => {
         </OnlyInvestorsText>
       )}
       {!investRequestStatus && (
-        <div>
-          <ButtonPrimary onClick={() => setIsRegisterWaitListModalOpen(true)}>
+        <div style={{marginTop: 24}}>
+          <ButtonOutlined onClick={() => setIsRegisterWaitListModalOpen(true)}>
             Register to the Waiting list
-          </ButtonPrimary>
+          </ButtonOutlined>
           <InvestContactForm
             isOpen={isRegisterWaitListModalOpen}
             walletID={account}

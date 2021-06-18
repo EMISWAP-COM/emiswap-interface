@@ -319,10 +319,9 @@ const Invest = () => {
               disableCurrencySelect
             />
 
-            <Card padding={'.25rem .75rem 0 .75rem'} borderRadius={'20px'}>
               <AutoColumn gap="4px">
                 <RowBetween align="center">
-                  <Text fontWeight={500} fontSize={14} color={theme.text2}>
+                  <Text fontWeight={500} fontSize={16} color={theme.text1}>
                     Price
                   </Text>
                   <TradePrice
@@ -334,7 +333,6 @@ const Invest = () => {
                   />
                 </RowBetween>
               </AutoColumn>
-            </Card>
           </AutoColumn>
 
           <AutoColumn gap={'md'}>
