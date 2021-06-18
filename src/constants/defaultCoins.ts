@@ -3797,7 +3797,7 @@ export default {
         'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x39eAE99E685906fF1C11A962a743440d0a1A6e09/logo.png',
     },
     {
-      address: '0xEe6CE89559d68719366C1a8150C9227910CA8B2F',
+      address: '0x7b5f80e135296144837d5427D562797f72F66754',
       chainId: 42,
       name: 'DaiStablecoin',
       symbol: 'DAI',
@@ -3805,7 +3805,7 @@ export default {
       logoURI: 'https://tokConens.1inch.exchange/0x6b175474e89094c44da98b954eedeac495271d0f.png',
     },
     {
-      address: '0x685E323f912C1a5FE2Ae089D1a743942C458A9E3',
+      address: '0x1c879c2681Cb1c63F6CEBc11A5F2B65Fc8AD23ba',
       chainId: 42,
       name: 'USDCoin',
       symbol: 'USDC',
@@ -3813,7 +3813,7 @@ export default {
       logoURI: 'https://tokens.1inch.exchange/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.png',
     },
     {
-      address: '0xcfc833888943ec8d4b31bccde4d235368014161b',
+      address: '0x1F319B3dE5606D48c46d1a983704f4C0188A1e53',
       chainId: 42,
       name: 'WrappedBTC',
       symbol: 'WBTC',
@@ -3827,6 +3827,14 @@ export default {
       symbol: 'WETH',
       decimals: 18,
       logoURI: 'https://tokens.1inch.exchange/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png',
+    },
+    {
+      address: '0xa64C17e97771705e904C9d74C511d44b9Bc23974',
+      chainId: 42,
+      name: 'TetherUSD',
+      symbol: 'USDT',
+      decimals: 6,
+      logoURI: 'https://tokens.1inch.exchange/0xdac17f958d2ee523a2206206994597c13d831ec7.png',
     },
     // {
     //   address: '0x0000000000000000000000000000000000000000',
