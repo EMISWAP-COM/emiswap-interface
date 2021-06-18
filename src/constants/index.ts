@@ -299,4 +299,4 @@ export const REFERRAL_ADDRESS_STORAGE_KEY = 'referral-address';
 
 export const INIT_CODE_HASH = keccak256(['bytes'], [bytecode]);
 
-export const FACTORY_ADDRESS = '0xb9Cba89F4caFa60f9040D6d495a56344F37EBA23';
+export const FACTORY_ADDRESS = '0xe4917eb85A6C11a56189DbE621433ce5c2a3bfc3';
