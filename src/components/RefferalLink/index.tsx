@@ -64,29 +64,38 @@ export default function ReferralLink() {
   return (
     <div>
       <ReferralLinkBox>
-        <Text fontSize={14} fontWeight={400} color={theme.text2}>
-          Share referral link to Earn cryptocurrency
-        </Text>
-        <RowFixed style={{ marginTop: '10px', width: '100%' }}>
-          <CopyIcon
-            onClick={() => {
-              setCopied(getReferralLink(account));
-              handleGA();
-            }}
-          >
-            {isCopied ? (
-              <>
-                <CheckCircle size={'16'} color={theme.blue}/>
-                <span style={{ marginLeft: '4px' }}>Copied</span>
-              </>
-            ) : (
-              <>
-                <Copy size={'16'} color={theme.blue}/>
-                <span style={{ marginLeft: '4px' }}>Copy Referral Link</span>
-              </>
-            )}
-          </CopyIcon>
-        </RowFixed>
+        {!account ? (
+          <Text fontSize={14} fontWeight={400} color={theme.text2}>
+            Connect to a wallet to get your referral link
+          </Text>
+        ) : (
+          <>
+            <Text fontSize={14} fontWeight={400} color={theme.text2}>
+              Share referral link to earn cryptocurrency
+            </Text>
+            <RowFixed style={{ marginTop: '10px', width: '100%' }}>
+              <CopyIcon
+                onClick={() => {
+                  setCopied(getReferralLink(account));
+                  handleGA();
+                }}
+              >
+                {isCopied ? (
+                  <>
+                    <CheckCircle size={'16'} color={theme.blue}/>
+                    <span style={{ marginLeft: '4px' }}>Copied</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy size={'16'} color={theme.blue}/>
+                    <span style={{ marginLeft: '4px' }}>Copy Referral Link</span>
+                  </>
+                )}
+              </CopyIcon>
+            </RowFixed>
+          </>
+        )}
+
       </ReferralLinkBox>
     </div>
   );
