@@ -283,8 +283,8 @@ export const BLOCKED_PRICE_IMPACT_NON_EXPERT: Percent = new Percent(JSBI.BigInt(
 // used to ensure the user doesn't send so much ETH so they end up with <.01
 export const MIN_ETH: JSBI = JSBI.multiply(
   JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(9)),
-  JSBI.BigInt(1_000_000 * 60),
-); // 60GWei * 1_000_000
+  JSBI.BigInt(180_000 * 6),
+); // 6GWei * 180_000
 
 export const MIN_ETH_INVEST: JSBI = JSBI.multiply(
   JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(9)),
@@ -301,4 +301,4 @@ export const REFERRAL_ADDRESS_STORAGE_KEY = 'referral-address';
 
 export const INIT_CODE_HASH = keccak256(['bytes'], [bytecode]);
 
-export const FACTORY_ADDRESS = '0xb9Cba89F4caFa60f9040D6d495a56344F37EBA23';
+export const FACTORY_ADDRESS = '0xe4917eb85A6C11a56189DbE621433ce5c2a3bfc3';
