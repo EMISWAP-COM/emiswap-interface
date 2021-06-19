@@ -132,16 +132,19 @@ export function useDerivedSwapInfo(): {
 
   const isExactIn: boolean = independentField === Field.INPUT;
 
+  const inputCurrencyWrapped = inputCurrency?.address === eth?.address ? WETH : inputCurrency;
+  const outputCurrencyWrapped = outputCurrency?.address === eth?.address ? WETH : outputCurrency;
+
   const parsedAmount = tryParseAmount(
     typedValue,
-    (isExactIn ? inputCurrency : outputCurrency) ?? undefined,
+    (isExactIn ? inputCurrencyWrapped : outputCurrencyWrapped) ?? undefined,
   );
   const bestTradeExactIn = useTradeExactIn(
     isExactIn ? parsedAmount : undefined,
-    outputCurrency ?? undefined,
+    outputCurrencyWrapped ?? undefined,
   );
   const bestTradeExactOut = useTradeExactOut(
-    inputCurrency ?? undefined,
+    inputCurrencyWrapped ?? undefined,
     !isExactIn ? parsedAmount : undefined,
   );
 
