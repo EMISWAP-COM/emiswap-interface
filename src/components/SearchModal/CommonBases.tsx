@@ -28,6 +28,15 @@ const BaseWrapper = styled.div<{ disable?: boolean }>`
   opacity: ${({ disable }) => disable && '0.4'};
 `;
 
+// filter for task https://emi.myjetbrains.com/youtrack/issue/ES-1114
+const suggestedBases = Object.fromEntries(
+  Object.entries(SUGGESTED_BASES).map(([key, list]) => {
+    return [key, list.filter(t => t?.symbol !== 'ESW')];
+  }),
+);
+
+console.log({ suggestedBases });
+
 export default function CommonBases({
   chainId,
   onSelect,
@@ -76,7 +85,7 @@ export default function CommonBases({
             ETH
           </Text>
         </BaseWrapper>
-        {(chainId ? SUGGESTED_BASES[chainId] : []).map((token: Token) => {
+        {(chainId ? suggestedBases[chainId] : []).map((token: Token) => {
           const selected =
             (selectedCurrency instanceof Token && selectedCurrency.address === token.address) ||
             (token.equals(WETH) &&

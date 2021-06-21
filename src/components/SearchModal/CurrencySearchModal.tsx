@@ -104,6 +104,11 @@ export default function CurrencySearchModal({
     ];
   }, [filteredTokens, searchQuery, searchToken, tokenComparator]);
 
+  // filter for task https://emi.myjetbrains.com/youtrack/issue/ES-1114
+  const sortedTokens = React.useMemo(() => filteredSortedTokens.filter(t => t.symbol !== 'ESW'), [
+    filteredSortedTokens,
+  ]);
+
   const handleCurrencySelect = useCallback(
     (currency: Token) => {
       onCurrencySelect(currency);
@@ -214,7 +219,7 @@ export default function CurrencySearchModal({
           </LoaderBox>
         ) : (
           <CurrencyList
-            currencies={filteredSortedTokens}
+            currencies={sortedTokens}
             allBalances={allTokenBalances}
             onCurrencySelect={handleCurrencySelect}
             otherCurrency={otherSelectedCurrency}

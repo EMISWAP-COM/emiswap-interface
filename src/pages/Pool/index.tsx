@@ -38,7 +38,7 @@ export default function Pool() {
   const trackedTokenPairs = useTrackedTokenPairs();
   const pairs = usePairs(trackedTokenPairs);
 
-  const tokenPairsWithLiquidityTokens = pairs.map(([state, pair]) => {
+  const tokenPairsWithLiquidityTokens = pairs.map(([_state, pair]) => {
     if (!pair) {
       return undefined;
     }
@@ -136,9 +136,14 @@ export default function Pool() {
               <GasFeeText>100% gas fee refund</GasFeeText>
               <StyledHr />
               <div>
-                <Text color={theme.darkText} textAlign="center" fontSize={14} style={{ padding: '.5rem 0 .5rem 0' }}>
+                <Text
+                  color={theme.darkText}
+                  textAlign="center"
+                  fontSize={14}
+                  style={{ padding: '.5rem 0 .5rem 0' }}
+                >
                   {"Don't see a pool you joined?"}{' '}
-                  <StyledGreenLink id="import-pool-link" to={false ? '/migrate' : '/find'}>
+                  <StyledGreenLink id="import-pool-link" to="/find">
                     {'Import it.'}
                   </StyledGreenLink>
                 </Text>
