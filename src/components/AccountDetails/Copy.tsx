@@ -8,7 +8,7 @@ import { CheckCircle, Copy } from 'react-feather';
 
 const CopyIcon = styled(LinkStyledButton)`
   color: ${({ theme }) => theme.blue};
-  flex-shrink: 0;К
+  flex-shrink: 0;
   display: flex;
   text-decoration: none;
   font-size: 0.825rem;
