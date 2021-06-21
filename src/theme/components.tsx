@@ -109,10 +109,31 @@ const StyledLink = styled.a`
   }
 `;
 
+export const ExternalGreenLink = styled(ExternalLink)`
+  font-weight: 500;
+  text-decoration: none;
+  color: ${({ theme }) => theme.blue};
+  cursor: pointer;
+
+  :hover {
+    text-decoration: underline;
+  }
+
+  :focus {
+    outline: none;
+    text-decoration: underline;
+  }
+
+  :active {
+    text-decoration: none;
+  }
+`;
+
 /**
  * Outbound link that handles firing google analytics events
  */
 export function ExternalLink({
+  className = '',
   target = '_blank',
   href,
   rel = 'noopener noreferrer',
@@ -135,7 +156,13 @@ export function ExternalLink({
     },
     [href, target],
   );
-  return <StyledLink target={target} rel={rel} href={href} onClick={handleClick} {...rest} />;
+  return <StyledLink
+    className={className}
+    target={target}
+    rel={rel}
+    href={href}
+    onClick={handleClick} {...rest}
+  />;
 }
 
 const rotate = keyframes`
@@ -167,10 +194,11 @@ const BackArrowLink = styled(StyledInternalLink)`
     text-decoration: none;
   }
 `;
+
 export function BackArrow({ to }: { to: string }) {
   return (
     <BackArrowLink to={to}>
-      <ArrowLeft /> <p>Back</p>
+      <ArrowLeft/> <p>Back</p>
     </BackArrowLink>
   );
 }

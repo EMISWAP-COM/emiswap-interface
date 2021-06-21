@@ -53,6 +53,7 @@ export default createReducer<InvestState>(initialState, builder =>
           // independentField: field,
           independentField: Field.INPUT,
           typedValue: typedValue,
+          // launchpadStatus: initialState.launchpadStatus,
         };
       },
     )
