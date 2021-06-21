@@ -16,26 +16,26 @@ export const InvestRules = () => {
 
     switch (investRequestStatus) {
       case InvestRequestStatus.PENDING:
+        return 'You’re already registered in the Waiting list. ESW token sales will start on June, 28 14:00 UTC.';
       case InvestRequestStatus.SENT:
-        return 'We have received your Private sale’s Waiting List request. Our team will contact you soon.'
+        return 'We have received your Private sale’s Waiting List request. Our team will contact you soon.';
       case InvestRequestStatus.REJECTED:
-        return 'Sorry, your candidacy was rejected on the Private sale’s Waiting List. However, you will be able to invest on Launchpads. Stay tuned!'
+        return 'Sorry, your candidacy was rejected on the Private sale’s Waiting List. However, you will be able to invest on Launchpads. Stay tuned!';
       case InvestRequestStatus.ACCEPTED:
-        return 'Great, your candidacy has been accepted on the Private sale’s Waiting List! Now you can invest in ESW through the EmiSwap website'
+        return 'Great, your candidacy has been accepted on the Private sale’s Waiting List! Now you can invest in ESW through the EmiSwap website';
       default:
-        return 'Sorry, only investors registered in the Waiting list and confirmed can invest in the Private Stage'
+        return 'Sorry, only investors registered in the Waiting list and confirmed can invest in the Private Stage';
     }
   };
 
   return (
     <>
       <PrivateSaleText>
-        Private sale stage for investors who want to purchase ESW worth $25,000 and more.
+        To join launchpad sales on June, 28 14:00 UTC you need to register for the Waiting list.
       </PrivateSaleText>
       {!account ? (
         <LoginFirstText>
-          You won't be able to invest if you are not in the Waiting list. Please, login
-          first.
+          Only Waiting list participants will be able to buy ESW.
         </LoginFirstText>
       ): (
         <OnlyInvestorsText>
