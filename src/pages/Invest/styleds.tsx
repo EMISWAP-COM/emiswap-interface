@@ -31,7 +31,7 @@ export const LoginFirstText = styled.div`
 `;
 
 export const OnlyInvestorsText = styled.div`
-  max-width: 320px;
+  max-width: 340px;
   font-size: 16px;
   line-height: 24px;
   color: ${({ theme }) => theme.white};
