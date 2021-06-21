@@ -24,7 +24,6 @@ export const InvestRules = () => {
   const [isRegisterWaitListModalOpen, setIsRegisterWaitListModalOpen] = useState<boolean>(false);
 
   const getMessage = () => {
-
     switch (investRequestStatus) {
       case InvestRequestStatus.PENDING:
         return 'You’re already registered in the Waiting list. ESW token sales will start on June, 28 14:00 UTC.';

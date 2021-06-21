@@ -123,7 +123,7 @@ export default function Menu() {
             target="_blank"
           >
             <MessageCircle size={14} />
-            NFT Magic EmiCards
+            NFT Magic Cards
           </MenuItem>
           <MenuItem
             id="link"
