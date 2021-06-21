@@ -27,7 +27,6 @@ export enum PackageNames {
 }
 
 export const ESW_PER_USD = 0.185;
-// export const investMinESW = 227272;
-export const INVEST_MIN_USD = 25000;
+export const INVEST_MAX_USD = 500;
 
-export const investMinESW = Math.trunc(INVEST_MIN_USD/ESW_PER_USD);
+export const investMaxESW = Math.trunc(INVEST_MAX_USD/ESW_PER_USD);

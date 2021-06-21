@@ -47,10 +47,9 @@ export const ButtonPrimary = styled(Base)`
     box-shadow: ${({ theme }) => theme.purpleBoxShadow};
   }
   &:disabled {
-    background-color: ${({ theme, altDisbaledStyle }) =>
-      altDisbaledStyle ? theme.primary1 : 'transparent'};
+    background-color: ${({ theme, altDisbaledStyle }) => altDisbaledStyle ? theme.primary1 : 'transparent'};
     color: ${({ theme, altDisbaledStyle }) => (altDisbaledStyle ? 'white' : theme.text3)};
-    border: 1px solid ${({ theme }) => theme.darkWhite}
+    border: 1px solid ${({ theme }) => theme.text3}
     cursor: auto;
     box-shadow: none;
     outline: none;

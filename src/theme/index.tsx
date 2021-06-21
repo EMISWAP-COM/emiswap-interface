@@ -42,7 +42,7 @@ export function colors(darkMode: boolean): Colors {
     black,
 
     // text
-    text1: darkMode ? '#FFFFFF' : '#555959',
+    text1: darkMode ? '#FFFFFF' : '#FFFFFF',
     text2: darkMode ? '#C3C5CB' : '#565A69',
     text3: darkMode ? '#6C7284' : '#888D9B',
     text4: darkMode ? '#565A69' : '#C3C5CB',
@@ -58,6 +58,7 @@ export function colors(darkMode: boolean): Colors {
     //specialty colors
     modalBG: darkMode ? 'rgba(0,0,0,0.85)' : '#03160D',
     advancedBG: darkMode ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.6)',
+    cardBG: '#27272E',
 
     //primary colors
     primary1: darkMode ? '#FFD541' : '#FFD541',
