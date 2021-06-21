@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { ButtonOutlined } from '../../components/Button';
+import { ButtonPrimary } from '../../components/Button';
 import { useActiveWeb3React } from '../../hooks';
 import { AppState } from '../../state';
 import InvestContactForm from '../../components/InvestContactForm';
 import { LoginFirstText, OnlyInvestorsText, PrivateSaleText } from './styleds';
 import { InvestRequestStatus } from '../../state/user/reducer';
 import Question from '../../components/QuestionHelper';
+
+const statuses = [
+  InvestRequestStatus.PENDING,
+  InvestRequestStatus.SENT,
+  InvestRequestStatus.REJECTED,
+  InvestRequestStatus.ACCEPTED,
+];
 
 export const InvestRules = () => {
   const { account } = useActiveWeb3React();
@@ -15,8 +22,6 @@ export const InvestRules = () => {
   const launchpadState = useSelector((state: AppState) => state.launchpad);
 
   const [isRegisterWaitListModalOpen, setIsRegisterWaitListModalOpen] = useState<boolean>(false);
-
-  console.log(launchpadState);
 
   const getMessage = () => {
 
@@ -30,7 +35,12 @@ export const InvestRules = () => {
       case InvestRequestStatus.ACCEPTED:
         return 'Great, your candidacy has been accepted on the Private sale’s Waiting List! Now you can invest in ESW through the EmiSwap website';
       default:
-        return 'Sorry, only investors registered in the Waiting list and confirmed can invest in the Private Stage';
+        return (
+          <>
+            Only Waiting list participants will be able to buy ESW.
+            <Question text="Please note that users from the following countries are restricted from joining launchpad sales: Democratic Republic of the Congo, Côte d'Ivoire, Cuba, Iran, Iraq, Democratic People's Republic of Korea, Liberia, Myanmar, Sudan, Syrian Arab Republic, Venezuela, Zimbabwe, and the USA."/>
+          </>
+        );
     }
   };
 
@@ -45,24 +55,28 @@ export const InvestRules = () => {
 
   return (
     <>
-      <PrivateSaleText>
-        To join launchpad sales on June, 28 14:00 UTC you need to register for the Waiting list.
-      </PrivateSaleText>
+      {!statuses.includes(investRequestStatus) && (
+        <PrivateSaleText>
+          To join launchpad sales on June, 28 14:00 UTC you need to register for the Waiting list.
+        </PrivateSaleText>
+      )}
+
       {!account ? (
         <LoginFirstText>
           Only Waiting list participants will be able to buy ESW.
-          <Question text="Please note that users from the following countries are restricted from joining launchpad sales: Democratic Republic of the Congo, Côte d'Ivoire, Cuba, Iran, Iraq, Democratic People's Republic of Korea, Liberia, Myanmar, Sudan, Syrian Arab Republic, Venezuela, Zimbabwe, and the USA." />
+          <Question text="Please note that users from the following countries are restricted from joining launchpad sales: Democratic Republic of the Congo, Côte d'Ivoire, Cuba, Iran, Iraq, Democratic People's Republic of Korea, Liberia, Myanmar, Sudan, Syrian Arab Republic, Venezuela, Zimbabwe, and the USA."/>
         </LoginFirstText>
       ) : (
         <OnlyInvestorsText>
           {getMessage()}
         </OnlyInvestorsText>
       )}
+
       {!investRequestStatus && (
         <div style={{ marginTop: 24 }}>
-          <ButtonOutlined onClick={() => setIsRegisterWaitListModalOpen(true)}>
+          <ButtonPrimary onClick={() => setIsRegisterWaitListModalOpen(true)}>
             Register to the Waiting list
-          </ButtonOutlined>
+          </ButtonPrimary>
           <InvestContactForm
             isOpen={isRegisterWaitListModalOpen}
             walletID={account}
@@ -70,6 +84,7 @@ export const InvestRules = () => {
           />
         </div>
       )}
+
     </>
   );
 };
