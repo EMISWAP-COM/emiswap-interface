@@ -35,8 +35,6 @@ const suggestedBases = Object.fromEntries(
   }),
 );
 
-console.log({ suggestedBases });
-
 export default function CommonBases({
   chainId,
   onSelect,
