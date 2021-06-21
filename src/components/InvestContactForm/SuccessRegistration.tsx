@@ -31,7 +31,7 @@ export const SuccessRegistration = ({ message }: { message: string }) => {
     <SuccessCard>
       <GiftImage src={giftSVG}/>
       <MessageContainer>
-        <Message>Your request has been successfully submitted.<br/>We will contact you soon</Message>
+        <Message>Your request has been successfully submitted.<br/>You will receive a confirmation by email</Message>
       </MessageContainer>
     </SuccessCard>
   );

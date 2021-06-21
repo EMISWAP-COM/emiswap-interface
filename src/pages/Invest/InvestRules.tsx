@@ -1,16 +1,22 @@
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
-import { ButtonOutlined, ButtonPrimary } from '../../components/Button';
-import { useActiveWeb3React } from '../../hooks'
-import { AppState } from '../../state'
-import InvestContactForm from '../../components/InvestContactForm'
-import { LoginFirstText, OnlyInvestorsText, PrivateSaleText } from './styleds'
-import { InvestRequestStatus } from '../../state/user/reducer'
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { ButtonOutlined } from '../../components/Button';
+import { useActiveWeb3React } from '../../hooks';
+import { AppState } from '../../state';
+import InvestContactForm from '../../components/InvestContactForm';
+import { LoginFirstText, OnlyInvestorsText, PrivateSaleText } from './styleds';
+import { InvestRequestStatus } from '../../state/user/reducer';
+import Question from '../../components/QuestionHelper';
 
 export const InvestRules = () => {
   const { account } = useActiveWeb3React();
+
   const investRequestStatus = useSelector((state: AppState) => state.user.info?.invest_request_state);
+  const launchpadState = useSelector((state: AppState) => state.launchpad);
+
   const [isRegisterWaitListModalOpen, setIsRegisterWaitListModalOpen] = useState<boolean>(false);
+
+  console.log(launchpadState);
 
   const getMessage = () => {
 
@@ -28,6 +34,15 @@ export const InvestRules = () => {
     }
   };
 
+  if (launchpadState.reached_limit) {
+    return (
+      <>
+        <PrivateSaleText style={{ fontWeight: 600, color: 'white' }}>Launchpad sales completed</PrivateSaleText>
+        <PrivateSaleText>Please wait for further announcements</PrivateSaleText>
+      </>
+    );
+  }
+
   return (
     <>
       <PrivateSaleText>
@@ -36,14 +51,15 @@ export const InvestRules = () => {
       {!account ? (
         <LoginFirstText>
           Only Waiting list participants will be able to buy ESW.
+          <Question text="Please note that users from the following countries are restricted from joining launchpad sales: Democratic Republic of the Congo, Côte d'Ivoire, Cuba, Iran, Iraq, Democratic People's Republic of Korea, Liberia, Myanmar, Sudan, Syrian Arab Republic, Venezuela, Zimbabwe, and the USA." />
         </LoginFirstText>
-      ): (
+      ) : (
         <OnlyInvestorsText>
           {getMessage()}
         </OnlyInvestorsText>
       )}
       {!investRequestStatus && (
-        <div style={{marginTop: 24}}>
+        <div style={{ marginTop: 24 }}>
           <ButtonOutlined onClick={() => setIsRegisterWaitListModalOpen(true)}>
             Register to the Waiting list
           </ButtonOutlined>

@@ -181,7 +181,7 @@ export default function InvestContactForm({ isOpen, walletID, onDismiss }: EmiMa
     const nameRegexp = /\D/;
     const emailRegexp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegexp = /^\+[0-9-]+$/;
-    const telegramRegexp = /^@[A-Za-z0-9_-]+$/;
+    const telegramRegexp = /^[A-Za-z0-9_-]+$/;
 
     newValidator.name = nameRegexp.test(name);
     newValidator.email = emailRegexp.test(email);
@@ -295,11 +295,11 @@ export default function InvestContactForm({ isOpen, walletID, onDismiss }: EmiMa
                   <span className="modal-body__error-text">Please enter the correct value</span>
                 )}
               </div>
-              <div className="modal-body__input-block">
+              <div className={`modal-body__input-block ${!validation.wallet ? 'modal-body__input--error' : ''}`}>
                 <div className="modal-body__input-label">Wallet account</div>
                 <input
                   ref={walletRef}
-                  className={`modal-body__input${!validation.wallet ? ' modal-body__error' : ''}`}
+                  className={`modal-body__input`}
                   defaultValue={walletID}
                   type="text"
                   placeholder="0x..."

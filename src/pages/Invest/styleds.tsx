@@ -23,7 +23,7 @@ export const PrivateSaleText = styled.div`
 `;
 
 export const LoginFirstText = styled.div`
-  max-width: 360px;
+  max-width: 300px;
   font-size: 16px;
   line-height: 24px;
   color: ${({ theme }) => theme.white};
