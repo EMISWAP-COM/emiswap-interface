@@ -1,32 +1,38 @@
 import React from 'react';
-import giftSVG from '../../assets/svg/gift.svg';
+import giftSVG from '../../assets/images/gift.png';
 import styled from 'styled-components';
 
+const SuccessCard = styled.div`
+`;
+
 const GiftImage = styled.img`
+  display: block;
   width: 100%;
 `;
 
-const Text = styled.p`
-  text-align: center;
-  margin-bottom: 0;
-  padding: 0 15px;
+const MessageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 112px;
 `;
 
-const Title = styled(Text)`
-  font-size: 1.8em;
-  font-weight: 600;
-`;
-const Message = styled(Text)`
-  font-size: 1.2em;
+const Message = styled.p`
+  font-family: 'IBM Plex Sans';
+  text-align: center;
+  margin: 0;
+  padding: 0 15px;
+  font-size: 20px;
+  line-height: 32px;
 `;
 
 export const SuccessRegistration = ({ message }: { message: string }) => {
   return (
-    <>
-      <GiftImage src={giftSVG} />
-      <Title>Your request has been successfully submitted.<br/>We will contact you soon</Title>
-      <Message></Message>
-      <Text></Text>
-    </>
+    <SuccessCard>
+      <GiftImage src={giftSVG}/>
+      <MessageContainer>
+        <Message>Your request has been successfully submitted.<br/>We will contact you soon</Message>
+      </MessageContainer>
+    </SuccessCard>
   );
 };
