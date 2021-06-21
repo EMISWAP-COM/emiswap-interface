@@ -39,6 +39,7 @@ import { EmiCardsBlock } from './EmiCardsBlock';
 import { InvestRules } from './InvestRules';
 import { InvestRequestStatus } from '../../state/user/reducer';
 import Loader from '../../components/Loader';
+import ReferralLink from '../../components/RefferalLink';
 
 const Invest = () => {
   useDefaultsFromURLSearch();
@@ -357,6 +358,8 @@ const Invest = () => {
               </AutoColumn>
 
               <InvestRules/>
+
+              <ReferralLink/>
             </>
           )}
 

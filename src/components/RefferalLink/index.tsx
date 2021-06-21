@@ -17,7 +17,7 @@ const ReferralLinkBox = styled.div`
 
   > div:first-child {
     width: 100%;
-    font-size: 20px;
+    font-size: 16px;
     text-align: center;
     color: white;
   }
@@ -65,12 +65,12 @@ export default function ReferralLink() {
     <div>
       <ReferralLinkBox>
         {!account ? (
-          <Text fontSize={14} fontWeight={400} color={theme.text2}>
+          <Text fontSize={16} fontWeight={400} color={theme.text2}>
             Connect to a wallet to get your referral link
           </Text>
         ) : (
           <>
-            <Text fontSize={14} fontWeight={400} color={theme.text2}>
+            <Text fontSize={16} fontWeight={400} color={theme.text2}>
               Share referral link to earn cryptocurrency
             </Text>
             <RowFixed style={{ marginTop: '10px', width: '100%' }}>
