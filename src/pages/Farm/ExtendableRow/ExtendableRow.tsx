@@ -1,7 +1,8 @@
 import React, { useCallback, useState } from 'react';
-import { FarmingTimeType } from '../types';
+import { FarmingTimeType, TokenInputType } from '../types';
 import styled from 'styled-components/macro';
 import { ChevronDown, ChevronUp } from 'react-feather';
+import TokenInput from '../TokenInput';
 
 type ExtendableRowProps = {
   coinName: string;
@@ -130,6 +131,33 @@ const StyledExtendableContent = styled.div<{ isVisible: boolean }>`
   `};
 `;
 
+const StyledInputsWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    display: block;
+  `};
+`;
+
+const StyledTokenInputWrapper = styled.div`
+  width: 49%;
+
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    width: 100%;
+    margin-bottom: 16px;
+  `};
+`;
+
+const StyledHr = styled.div`
+  height: 1px;
+  background-color: ${({theme}) => theme.dark1};
+  width: calc(100% + 48px);
+  margin-left: -24px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+`;
+
 const ExtendableRow: React.FC<ExtendableRowProps> = (
   {
     coinName,
@@ -184,7 +212,29 @@ const ExtendableRow: React.FC<ExtendableRowProps> = (
       </StyledExtendButtonDesktop>
     </StyledHeader>
     <StyledExtendableContent isVisible={isRowExtended}>
-      Test
+      <StyledBlocksWrapper>
+        <StyledBlock width={130}>
+          <StyledBlockTitle>Deposit</StyledBlockTitle>
+          <StyledBlockValue>99999</StyledBlockValue>
+        </StyledBlock>
+        <StyledBlock width={180}>
+          <StyledBlockTitle>Projected reward</StyledBlockTitle>
+          <StyledBlockValue>999999</StyledBlockValue>
+        </StyledBlock>
+        <StyledBlock width={130}>
+          <StyledBlockTitle>Balance</StyledBlockTitle>
+          <StyledBlockValue>999999</StyledBlockValue>
+        </StyledBlock>
+        <StyledBlock>
+          <StyledBlockTitle>Available to collect</StyledBlockTitle>
+          <StyledBlockValue>999999</StyledBlockValue>
+        </StyledBlock>
+      </StyledBlocksWrapper>
+      <StyledHr />
+      <StyledInputsWrapper>
+        <StyledTokenInputWrapper><TokenInput type={TokenInputType.Stake} /></StyledTokenInputWrapper>
+        <StyledTokenInputWrapper><TokenInput type={TokenInputType.Collect} isButtonDisabled={true} /></StyledTokenInputWrapper>
+      </StyledInputsWrapper>
     </StyledExtendableContent>
     <StyledExtendButtonMobile onClick={handleExtendClick} isRowExtended={isRowExtended}>
       <StyledMobileChevron>{isRowExtended ? <ChevronUp size={24} /> : <ChevronDown size={24} />}</StyledMobileChevron>

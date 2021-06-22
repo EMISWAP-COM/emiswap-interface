@@ -3,3 +3,8 @@ export enum FarmingTimeType {
   Limited,
   Fixed,
 }
+
+export enum TokenInputType {
+  Stake,
+  Collect,
+}
