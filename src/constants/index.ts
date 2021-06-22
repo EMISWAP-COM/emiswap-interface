@@ -1,6 +1,6 @@
 import { ChainId, ETHER, JSBI, Percent, Token } from '@uniswap/sdk';
 
-import { fortmatic, injected, portis, walletconnect, walletlink } from '../connectors';
+import { fortmatic, injected, portis, walletconnect, /*walletlink*/ } from '../connectors';
 import { keccak256 } from '@ethersproject/solidity';
 import { bytecode } from './abis/Emiswap.json';
 
@@ -11,6 +11,8 @@ export const ROUTER_ADDRESS = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D';
 type ChainTokenList = {
   readonly [chainId in ChainId]: Token[];
 };
+
+const env = window['env'];
 
 export const WETH = new Token(
   ChainId.MAINNET,
@@ -65,28 +67,28 @@ export const CHI = new Token(
 
 export const KOVAN_DAI = new Token(
   ChainId.KOVAN,
-  '0xEe6CE89559d68719366C1a8150C9227910CA8B2F',
+  env.REACT_APP_KOVAN_DAI_ADDRESS,
   18,
   'DAI',
   'Dai Stablecoin',
 );
 export const KOVAN_USDC = new Token(
   ChainId.KOVAN,
-  '0x685E323f912C1a5FE2Ae089D1a743942C458A9E3',
+  env.REACT_APP_KOVAN_USDC_ADDRESS,
   6,
   'USDC',
   'USD//C',
 );
 export const KOVAN_WETH = new Token(
   ChainId.KOVAN,
-  '0x440eB39eCFE6df3A5dCAeC7D9D0A16C875eBD77F',
+  env.REACT_APP_KOVAN_WETH_ADDRESS,
   18,
   'WETH',
   'WrappedEther',
 );
 export const KOVAN_USDT = new Token(
   ChainId.KOVAN,
-  '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+  env.REACT_APP_KOVAN_USDT_ADDRESS,
   6,
   'USDT',
   'Tether USD',
@@ -218,15 +220,15 @@ export const SUPPORTED_WALLETS = {
       color: '#4196FC',
       mobile: true,
     },
-    WALLET_LINK: {
+    /*WALLET_LINK: {
       connector: walletlink,
       name: 'Coinbase Wallet',
       iconName: 'coinbaseWalletIcon.svg',
       description: 'Use Coinbase Wallet app on mobile device',
       href: null,
       color: '#315CF5',
-    },
-    COINBASE_LINK: {
+    },*/
+    /*COINBASE_LINK: {
       name: 'Open in Coinbase Wallet',
       iconName: 'coinbaseWalletIcon.svg',
       description: 'Open in Coinbase Wallet app.',
@@ -234,7 +236,7 @@ export const SUPPORTED_WALLETS = {
       color: '#315CF5',
       mobile: true,
       mobileOnly: true,
-    },
+    },*/
     FORTMATIC: {
       connector: fortmatic,
       name: 'Fortmatic',
@@ -281,8 +283,8 @@ export const BLOCKED_PRICE_IMPACT_NON_EXPERT: Percent = new Percent(JSBI.BigInt(
 // used to ensure the user doesn't send so much ETH so they end up with <.01
 export const MIN_ETH: JSBI = JSBI.multiply(
   JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(9)),
-  JSBI.BigInt(1_000_000 * 60),
-); // 60GWei * 1_000_000
+  JSBI.BigInt(180_000 * 6),
+); // 6GWei * 180_000
 
 export const MIN_ETH_INVEST: JSBI = JSBI.multiply(
   JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(9)),
@@ -299,4 +301,4 @@ export const REFERRAL_ADDRESS_STORAGE_KEY = 'referral-address';
 
 export const INIT_CODE_HASH = keccak256(['bytes'], [bytecode]);
 
-export const FACTORY_ADDRESS = '0xb9Cba89F4caFa60f9040D6d495a56344F37EBA23';
+export const FACTORY_ADDRESS = '0xe4917eb85A6C11a56189DbE621433ce5c2a3bfc3';

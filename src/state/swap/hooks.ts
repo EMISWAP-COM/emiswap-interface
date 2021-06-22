@@ -1,6 +1,6 @@
 import useToggledVersion, { Version } from '../../hooks/useToggledVersion';
 import { parseUnits } from '@ethersproject/units';
-import { JSBI, Token, TokenAmount, Trade, ZERO_ADDRESS } from '@uniswap/sdk';
+import { JSBI, Token, TokenAmount, Trade, ZERO_ADDRESS, ChainId } from '@uniswap/sdk';
 import { ParsedQs } from 'qs';
 import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -132,16 +132,20 @@ export function useDerivedSwapInfo(): {
 
   const isExactIn: boolean = independentField === Field.INPUT;
 
+  //FIXME Сделать нормальное получение WETH в зависимости от сети
+  const inputCurrencyWrapped = inputCurrency?.address === eth?.address ? (chainId === ChainId.MAINNET ? WETH : KOVAN_WETH) : inputCurrency;
+  const outputCurrencyWrapped = outputCurrency?.address === eth?.address ? (chainId === ChainId.MAINNET ? WETH : KOVAN_WETH) : outputCurrency;
+
   const parsedAmount = tryParseAmount(
     typedValue,
-    (isExactIn ? inputCurrency : outputCurrency) ?? undefined,
+    (isExactIn ? inputCurrencyWrapped : outputCurrencyWrapped) ?? undefined,
   );
   const bestTradeExactIn = useTradeExactIn(
     isExactIn ? parsedAmount : undefined,
-    outputCurrency ?? undefined,
+    outputCurrencyWrapped ?? undefined,
   );
   const bestTradeExactOut = useTradeExactOut(
-    inputCurrency ?? undefined,
+    inputCurrencyWrapped ?? undefined,
     !isExactIn ? parsedAmount : undefined,
   );
 
@@ -210,6 +214,13 @@ export function useDerivedSwapInfo(): {
   if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
     error = 'Insufficient ' + balanceIn.token.symbol + ' balance';
   }
+
+  console.log({currencies,
+    currencyBalances,
+    parsedAmount,
+    v2Trade: v2Trade ?? undefined,
+    error,
+    v1Trade});
 
   return {
     currencies,
