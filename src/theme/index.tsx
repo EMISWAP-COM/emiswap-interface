@@ -106,8 +106,10 @@ export function colors(darkMode: boolean): Colors {
     green: '#54B489',
     pink: '#E478FF',
     blue: '#37FFDB',
-    border1: '#4A4757',
+    border1: 'rgb(74, 71, 87)',
+    border1Transparency: 'rgba(74, 71, 87, 0.32)',
     dark1: '#272530',
+    dark2: '#0F0F13',
     dark1BoxShadow: '0px 0px 10px rgba(169, 115, 255, 0.32)',
     modalBoxShadow: '0px 0px 8px 4px #7a2df4',
 
