@@ -5,6 +5,7 @@ import AppBody from '../AppBody';
 import { FarmingTimeType } from './types';
 import ExtendableRow from './ExtendableRow';
 import { RadioGroup } from '../../base/ui/RadioGroup';
+import Tabs from '../../base/ui/Tabs';
 
 const mockData = [
   {
@@ -52,7 +53,7 @@ const mockData = [
     liquidity: 675222177,
     type: FarmingTimeType.Fixed,
   }
-]
+];
 
 const radioList = [
   {
@@ -63,15 +64,36 @@ const radioList = [
     identifier: 'my',
     value: 'My farming',
   },
-]
+];
+
+const tabItems = [
+  {
+    id: 'staking',
+    title: 'Staking',
+  },
+  {
+    id: 'farming',
+    title: 'Farming',
+  },
+  {
+    id: 'nftfarming',
+    title: 'NFT Farming',
+  },
+  {
+    id: 'nftstaking',
+    title: 'NFT Staking',
+  },
+];
 
 export default function Farm() {
   const [radioValue, setRadioValue] = useState<string>('all');
+  const [selectedTab, setSelectedTab] = useState<string>('staking');
 
   return (
     <>
       <AppBody>
         <SwapPoolTabs active={TabNames.FARM} />
+        <Tabs items={tabItems} selectedItemId={selectedTab} onChange={setSelectedTab} />
         <RadioGroup buttonsList={radioList} groupName="farms" value={radioValue} onChange={setRadioValue} />
         {mockData.map((data) =>
           <ExtendableRow
