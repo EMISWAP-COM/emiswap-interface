@@ -24,6 +24,16 @@ const CloseBtn = styled.div`
   }
 `;
 
+const ModalCustom = styled(Modal)`
+  @media screen and (max-width: 600px) {
+    width: 100vw;
+    max-width: 100vw;
+    min-height: 100vh;
+    box-shadow: none;
+    border-radius: 0;
+  }
+`;
+
 const ModalBody = styled.div`
   width: 100%;
   display: flex;
@@ -62,20 +72,30 @@ const ModalBody = styled.div`
       border-radius: 3px;
       background: ${({ theme }) => theme.border1};
     } 
+        
+    @media screen and (max-width: 600px) {
+      width: 100vw;
+      max-width: 100vw;
+      padding: 20px;
+    }
 
     &__header {
       max-width: 300px;
       font-weight: 600;
-      color: ${({ theme }) => theme.text1};
-      font-family: Poppins, sans-serif, Arial;
+      color: ${({ theme }) => theme.white};
       font-style: normal;
       font-size: 20px;
       line-height: 32px;
       margin-bottom: 20px;
+      
+      @media screen and (max-width: 600px) {
+        font-size: 18px;
+        line-height: 24px;
+      }
+      
     }
 
     &__description {
-      font-family: Poppins, Arial, sans-serif;
       font-weight: 600;
       line-height: 24px;
       font-style: normal;
@@ -102,6 +122,11 @@ const ModalBody = styled.div`
       font-style: normal;
       line-height: 14px;
       color: ${({ theme }) => theme.darkText};
+    }
+    
+    &__input-label-required {
+      margin-left: 4px;
+      color: ${({ theme }) => theme.pink};
     }
 
     &__input {
@@ -131,13 +156,11 @@ const ModalBody = styled.div`
     &__bottom-text {
       margin-top: 20px;
       text-align: center;
-      font-family: Poppins, Arial, sans-serif;
       font-weight: 300;
       color: #434a72;
       font-style: normal;
       font-size: 16px;
       line-height: 24px;
-      text-align: center;
     }
 
     &__link {
@@ -253,7 +276,7 @@ export default function InvestContactForm({ isOpen, walletID, onDismiss }: EmiMa
   const errorLabel = <span className="modal-body__error-text">Please enter the correct value</span>;
 
   return (
-    <Modal isOpen={isOpen} onDismiss={onDismiss} maxHeight={90} maxWidth={440}>
+    <ModalCustom isOpen={isOpen} onDismiss={onDismiss} maxHeight={90} maxWidth={440}>
       <ModalBody>
         <CloseBtn onClick={onDismiss}>
           <CloseIcon color={'#ffffff'}/>
@@ -268,7 +291,9 @@ export default function InvestContactForm({ isOpen, walletID, onDismiss }: EmiMa
               {/*  If you are interested in purchasing ESW for less than $25,000, fill out this form.*/}
               {/*</div>*/}
               <div className={`modal-body__input-block ${!validation.name ? 'modal-body__input--error' : ''}`}>
-                <div className="modal-body__input-label">Name</div>
+                <div className="modal-body__input-label">
+                  Name <span className="modal-body__input-label-required">*</span>
+                </div>
                 <input
                   ref={nameRef}
                   className={`modal-body__input`}
@@ -278,7 +303,9 @@ export default function InvestContactForm({ isOpen, walletID, onDismiss }: EmiMa
                 {!validation.name && errorLabel}
               </div>
               <div className={`modal-body__input-block ${!validation.email ? 'modal-body__input--error' : ''}`}>
-                <div className="modal-body__input-label">Email</div>
+                <div className="modal-body__input-label">
+                  Email <span className="modal-body__input-label-required">*</span>
+                </div>
                 <input
                   ref={emailRef}
                   className={`modal-body__input`}
@@ -310,7 +337,9 @@ export default function InvestContactForm({ isOpen, walletID, onDismiss }: EmiMa
                 )}
               </div>
               <div className={`modal-body__input-block ${!validation.wallet ? 'modal-body__input--error' : ''}`}>
-                <div className="modal-body__input-label">Wallet account</div>
+                <div className="modal-body__input-label">
+                  Wallet account <span className="modal-body__input-label-required">*</span>
+                </div>
                 <input
                   ref={walletRef}
                   className={`modal-body__input`}
@@ -329,6 +358,6 @@ export default function InvestContactForm({ isOpen, walletID, onDismiss }: EmiMa
           </>
         )}
       </ModalBody>
-    </Modal>
+    </ModalCustom>
   );
 }
