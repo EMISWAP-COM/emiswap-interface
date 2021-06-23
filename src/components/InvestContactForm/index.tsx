@@ -26,11 +26,11 @@ const CloseBtn = styled.div`
 
 const ModalCustom = styled(Modal)`
   @media screen and (max-width: 600px) {
-    width: 100vw;
-    max-width: 100vw;
-    min-height: 100vh;
-    box-shadow: none;
-    border-radius: 0;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    min-height: 100vh !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
   }
 `;
 
