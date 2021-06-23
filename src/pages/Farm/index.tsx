@@ -1,9 +1,10 @@
-import React  from 'react';
+import React, { useState } from 'react';
 import { SwapPoolTabs, TabNames } from '../../components/NavigationTabs';
 
 import AppBody from '../AppBody';
 import { FarmingTimeType } from './types';
 import ExtendableRow from './ExtendableRow';
+import { RadioGroup } from '../../base/ui/RadioGroup';
 
 const mockData = [
   {
@@ -53,11 +54,25 @@ const mockData = [
   }
 ]
 
+const radioList = [
+  {
+    identifier: 'all',
+    value: 'All farms',
+  },
+  {
+    identifier: 'my',
+    value: 'My farming',
+  },
+]
+
 export default function Farm() {
+  const [radioValue, setRadioValue] = useState<string>('all');
+
   return (
     <>
       <AppBody>
         <SwapPoolTabs active={TabNames.FARM} />
+        <RadioGroup buttonsList={radioList} groupName="farms" value={radioValue} onChange={setRadioValue} />
         {mockData.map((data) =>
           <ExtendableRow
             coinName={data.coinName}
