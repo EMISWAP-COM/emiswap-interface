@@ -47,7 +47,21 @@ const ModalBody = styled.div`
     padding: 32px;
     overflow-y: auto;
     width: 100%;
-    background: ${({ theme }) => theme.cardBG}; 
+    background: ${({ theme }) => theme.cardBG};
+    
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+  
+    ::-webkit-scrollbar-track {
+      background: #7d979433;
+      border-radius: 3px;
+    }
+  
+    ::-webkit-scrollbar-thumb {
+      border-radius: 3px;
+      background: ${({ theme }) => theme.border1};
+    } 
 
     &__header {
       max-width: 300px;
