@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from 'react';
-import styled, { ThemeContext } from 'styled-components/macro';
+import { ThemeContext } from 'styled-components/macro';
 import { Pair, ZERO_ADDRESS } from '@uniswap/sdk';
 import { Link } from 'react-router-dom';
 import { SwapPoolTabs, TabNames } from '../../components/NavigationTabs';
@@ -20,25 +20,19 @@ import { useTrackedTokenPairs } from '../../state/user/hooks';
 import AppBody from '../AppBody';
 import { Dots } from '../../components/swap/styleds';
 
-const StyledHr = styled.hr`
-  width: 100%;
-  background: ${({ theme }) => theme.lightGrey};
-  border: none;
-  height: 1px;
-`;
+import * as Styled from './styleds';
 
-const GasFeeText = styled.div`
-  color: ${({ theme }) => theme.darkText};
-`;
+const MEDIUM_LINK =
+  'https://emiswap.medium.com/pay-0-for-gas-and-get-x10-reward-the-two-big-reasons-to-join-emiswap-today-8af2e68d0aaa';
 
-export default function Pool() {
+const Pool = () => {
   const theme = useContext(ThemeContext);
   const { account } = useActiveWeb3React();
 
   const trackedTokenPairs = useTrackedTokenPairs();
   const pairs = usePairs(trackedTokenPairs);
 
-  const tokenPairsWithLiquidityTokens = pairs.map(([state, pair]) => {
+  const tokenPairsWithLiquidityTokens = pairs.map(([_state, pair]) => {
     if (!pair) {
       return undefined;
     }
@@ -133,17 +127,22 @@ export default function Pool() {
                   Add Liquidity
                 </Text>
               </ButtonPrimary>
-              <GasFeeText>100% gas fee refund</GasFeeText>
-              <StyledHr />
+              <Styled.GasFeeText>100% gas fee refund</Styled.GasFeeText>
+              <Styled.StyledHr />
               <div>
-                <Text color={theme.darkText} textAlign="center" fontSize={14} style={{ padding: '.5rem 0 .5rem 0' }}>
-                  {"Don't see a pool you joined?"}{' '}
-                  <StyledGreenLink id="import-pool-link" to={false ? '/migrate' : '/find'}>
-                    {'Import it.'}
+                <Text
+                  color={theme.darkText}
+                  textAlign="center"
+                  fontSize={14}
+                  style={{ padding: '.5rem 0 .5rem 0' }}
+                >
+                  Don't see a pool you joined?
+                  <StyledGreenLink id="import-pool-link" to="/find">
+                    Import it.
                   </StyledGreenLink>
                 </Text>
                 <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
-                  <StyledGreenLink to="https://emiswap.medium.com/pay-0-for-gas-and-get-x10-reward-the-two-big-reasons-to-join-emiswap-today-8af2e68d0aaa">
+                  <StyledGreenLink to={MEDIUM_LINK}>
                     High rewards for early adopters
                   </StyledGreenLink>
                 </TYPE.black>
@@ -154,4 +153,6 @@ export default function Pool() {
       </AppBody>
     </>
   );
-}
+};
+
+export default Pool;
