@@ -3,7 +3,7 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
 import { Text } from 'rebass';
 import { ThemeContext } from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button';
 import { AutoColumn } from '../../components/Column';
 import ConfirmationModal from '../../components/ConfirmationModal';
@@ -31,7 +31,7 @@ import AppBody from '../AppBody';
 import { SwapPoolTabs, TabNames } from '../../components/NavigationTabs';
 import { EMISWAP_CROWDSALE_ADDRESS } from '../../constants/abis/crowdsale';
 import { tokenAmountToString } from '../../utils/formats';
-import { AppState } from '../../state';
+import { AppDispatch, AppState } from '../../state';
 import { UserRoles } from '../../components/WalletModal';
 import { useTransactionPrice } from '../../hooks/useTransactionPrice';
 import { ErrorText } from '../../components/swap/styleds';
@@ -40,11 +40,13 @@ import { InvestRules } from './InvestRules';
 import { InvestRequestStatus } from '../../state/user/reducer';
 import Loader from '../../components/Loader';
 import ReferralLink from '../../components/RefferalLink';
+import { loadLaunchpadStatus } from '../../state/launchpad/actions';
+import { LaunchpadState } from '../../state/launchpad/reducer';
 
 const Invest = () => {
   useDefaultsFromURLSearch();
 
-  // const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch<AppDispatch>();
 
   const { account, chainId } = useActiveWeb3React();
   const theme = useContext(ThemeContext);
@@ -71,7 +73,7 @@ const Invest = () => {
 
   const role: UserRoles | null = useSelector((state: AppState) => state.user.info?.role);
   const investRequestStatus = useSelector((state: AppState) => state.user.info?.invest_request_state);
-  const launchpadState = useSelector((state: AppState) => state.launchpad);
+  const launchpadState = useSelector((state: AppState) => state.launchpad as LaunchpadState);
 
   const investGranted = investRequestStatus === InvestRequestStatus.ACCEPTED;
 
@@ -125,9 +127,9 @@ const Invest = () => {
     }
   }, [approval, approvalSubmitted]);
 
-  /*useEffect(() => {
+  useEffect(() => {
     dispatch(loadLaunchpadStatus(account) as any);
-  }, [dispatch, account]);*/
+  }, [dispatch, account]);
 
   // the callback to execute the invest
   const [investCallback] = useInvest(

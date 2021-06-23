@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { loadLaunchpadStatus } from './actions';
 
-interface StatsState {
+export interface LaunchpadState {
   loaded: boolean;
   limit: number;
   total: number;
@@ -10,8 +10,8 @@ interface StatsState {
   reached_limit: boolean;
 }
 
-const initialState: StatsState = {
-  loaded: true,   // TODO: Выставить в false, после того как бек этого метода заработает
+const initialState: LaunchpadState = {
+  loaded: false,
   limit: 0,
   total: 0,
   started_at: new Date('2021-06-23'),
@@ -19,7 +19,7 @@ const initialState: StatsState = {
   reached_limit: false,
 };
 
-export default createReducer(initialState, builder =>
+export default createReducer<LaunchpadState>(initialState, builder =>
   builder
     .addCase(loadLaunchpadStatus.fulfilled, (state, action) => {
       return {

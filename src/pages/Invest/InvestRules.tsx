@@ -7,6 +7,7 @@ import InvestContactForm from '../../components/InvestContactForm';
 import { LoginFirstText, OnlyInvestorsText, PrivateSaleText } from './styleds';
 import { InvestRequestStatus } from '../../state/user/reducer';
 import Question from '../../components/QuestionHelper';
+import { LaunchpadState } from '../../state/launchpad/reducer';
 
 const statuses = [
   InvestRequestStatus.PENDING,
@@ -19,7 +20,7 @@ export const InvestRules = () => {
   const { account } = useActiveWeb3React();
 
   const investRequestStatus = useSelector((state: AppState) => state.user.info?.invest_request_state);
-  const launchpadState = useSelector((state: AppState) => state.launchpad);
+  const launchpadState = useSelector((state: AppState) => state.launchpad as LaunchpadState);
 
   const [isRegisterWaitListModalOpen, setIsRegisterWaitListModalOpen] = useState<boolean>(false);
 

@@ -8,7 +8,7 @@ const baseUrl = window['env'] ? window['env'].REACT_APP_PUBLIC_URL : '';
 export const loadLaunchpadStatus = createAsyncThunk(
   'loadLaunchpad/status',
   async (account: unknown, { dispatch }) => {
-    const url = `${baseUrl}/v1/public/launchpad_transactions/status`;
+    const url = `${baseUrl}/v1/public/launchpads/status`;
     try {
       const response = await fetchWrapper.get(url);
       return response;
