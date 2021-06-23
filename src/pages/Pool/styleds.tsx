@@ -11,6 +11,7 @@ export const ClickableText = styled(Text)`
   }
   color: ${({ theme }) => theme.blue};
 `;
+
 export const MaxButton = styled.button<{ width: string }>`
   padding: 0.5rem 1rem;
   background-color: ${({ theme }) => theme.purple};
@@ -26,7 +27,7 @@ export const MaxButton = styled.button<{ width: string }>`
   overflow: hidden;
   color: ${({ theme }) => theme.darkWhite};
   :hover,
-  :focus{
+  :focus {
     box-shadow: ${({ theme }) => theme.purpleBoxShadow};
     outline: none;
   }
@@ -51,4 +52,15 @@ export const Dots = styled.span`
       content: '...';
     }
   }
+`;
+
+export const StyledHr = styled.hr`
+  width: 100%;
+  background: ${({ theme }) => theme.lightGrey};
+  border: none;
+  height: 1px;
+`;
+
+export const GasFeeText = styled.div`
+  color: ${({ theme }) => theme.darkText};
 `;
