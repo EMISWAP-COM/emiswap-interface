@@ -10,6 +10,7 @@ import { fetchWrapper } from '../../api/fetchWrapper';
 import { useDispatch } from 'react-redux';
 import { addPopup } from '../../state/application/actions';
 import WAValidator from 'wallet-address-validator';
+import { ButtonPrimary } from '../Button';
 
 const CloseBtn = styled.div`
   position: absolute;
@@ -20,6 +21,16 @@ const CloseBtn = styled.div`
   @media screen and (max-width: 375px) {
     top: 15px;
     right: 15px;
+  }
+`;
+
+const ModalCustom = styled(Modal)`
+  @media screen and (max-width: 600px) {
+    width: 100vw;
+    max-width: 100vw;
+    min-height: 100vh;
+    box-shadow: none;
+    border-radius: 0;
   }
 `;
 
@@ -42,23 +53,35 @@ const ModalBody = styled.div`
   }
 
   .modal-body {
-    padding: 40px 45px;
+    max-width: 440px;
+    padding: 32px;
     overflow-y: auto;
     width: 100%;
-    background: rgba(255, 255, 255, 0.5);
+    background: ${({ theme }) => theme.cardBG}; 
+    
+    @media screen and (max-width: 600px) {
+      width: 100vw;
+      max-width: 100vw;
+      padding: 20px;
+    }
 
     &__header {
+      max-width: 300px;
       font-weight: 600;
-      color: ${({ theme }) => theme.green5};
-      font-family: Poppins, sans-serif, Arial;
+      color: ${({ theme }) => theme.white};
       font-style: normal;
-      font-size: 32px;
-      line-height: 48px;
+      font-size: 20px;
+      line-height: 32px;
       margin-bottom: 20px;
+      
+      @media screen and (max-width: 600px) {
+        font-size: 18px;
+        line-height: 24px;
+      }
+      
     }
 
     &__description {
-      font-family: Poppins, Arial, sans-serif;
       font-weight: 600;
       line-height: 24px;
       font-style: normal;
@@ -68,75 +91,62 @@ const ModalBody = styled.div`
     }
 
     &__input-block {
-      margin-bottom: 25px;
+      margin-bottom: 24px;
       position: relative;
+      border: 1px solid ${({ theme }) => theme.border1};
+      border-radius: 8px;
+      background: ${({ theme }) => theme.dark1};
+    }
+    
+    &__input--error {
+      border: 1px solid ${({ theme }) => theme.red};
     }
 
     &__input-label {
-      font-size: 16px;
-      font-family: Poppins, Arial, sans-serif;
-      font-weight: 600;
-      padding: 0 20px;
+      font-size: 12px;
+      padding: 14px 16px 7px 16px;
       font-style: normal;
-      line-height: 24px;
-
-      color: #434a72;
+      line-height: 14px;
+      color: ${({ theme }) => theme.darkText};
+    }
+    
+    &__input-label-required {
+      margin-left: 4px;
+      color: ${({ theme }) => theme.pink};
     }
 
     &__input {
-      color: #000000;
+      color: white;
       border: none;
       background: none;
-      border-bottom: 1px solid #d2d2d2;
       height: 60px;
-      padding: 0 20px;
+      padding: 0 16px 8px 16px;
       font-size: 16px;
       line-height: 1.33;
       width: 100%;
       max-height: 35px;
       outline: none;
-    }
-
-    &__btn {
-      color: #ffffff;
-      background-color: ${({ theme }) => theme.green5};
-      border-radius: 60px;
-      font-family: 'IBM Plex Sans', Arial, sans-serif;
-      text-align: center;
-      height: 60px;
-      border: 0 none;
-      font-size: 16px;
-      padding-left: 60px;
-      padding-right: 60px;
-      font-weight: bold;
-      white-space: nowrap;
-      background-image: none;
-      cursor: pointer;
-      margin: 0;
-      box-sizing: border-box;
-      outline: none;
-      display: flex;
-      justify-content: center;
-      align-self: center;
-      align-items: center;
+      
+      ::placeholder {
+        color: #615C69;
+      }
     }
 
     &__btn-container {
       display: flex;
       justify-content: center;
       width: 100%;
+      padding-top: 8px;
     }
 
     &__bottom-text {
       margin-top: 20px;
       text-align: center;
-      font-family: Poppins, Arial, sans-serif;
       font-weight: 300;
       color: #434a72;
       font-style: normal;
       font-size: 16px;
       line-height: 24px;
-      text-align: center;
     }
 
     &__link {
@@ -151,39 +161,14 @@ const ModalBody = styled.div`
       font-size: 14px;
     }
 
-    &__error {
-      border: 1px solid red;
-    }
-
     &__error-text {
-      color: red;
+      color: ${({ theme }) => theme.red};
       position: absolute;
       bottom: -21px;
-      left: 120px;
+      left: 8px;
       right: 0;
       margin: auto 0;
       font-size: 12px;
-    }
-
-    ${({ theme }) => theme.mediaWidth.upToTabletop`
-    padding: 0 25px 20px;
-
-    &__header {
-      font-size: 22px;
-    }
-  `};
-
-    @media screen and (max-width: 375px) {
-      &__header {
-        font-size: 24px;
-        line-height: 36px;
-      }
-
-      &__btn {
-        max-width: 310px;
-        max-height: 47px;
-        font-size: 16px;
-      }
     }
   }
 `;
@@ -219,7 +204,7 @@ export default function InvestContactForm({ isOpen, walletID, onDismiss }: EmiMa
     const nameRegexp = /\D/;
     const emailRegexp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegexp = /^\+[0-9-]+$/;
-    const telegramRegexp = /^@[A-Za-z0-9_-]+$/;
+    const telegramRegexp = /^[A-Za-z0-9_-]+$/;
 
     newValidator.name = nameRegexp.test(name);
     newValidator.email = emailRegexp.test(email);
@@ -277,13 +262,13 @@ export default function InvestContactForm({ isOpen, walletID, onDismiss }: EmiMa
   const errorLabel = <span className="modal-body__error-text">Please enter the correct value</span>;
 
   return (
-    <Modal isOpen={isOpen} onDismiss={onDismiss} maxHeight={90} maxWidth={680}>
+    <ModalCustom isOpen={isOpen} onDismiss={onDismiss} maxHeight={90} maxWidth={440}>
       <ModalBody>
         <CloseBtn onClick={onDismiss}>
-          <CloseIcon color={'#555959'} />
+          <CloseIcon color={'#ffffff'}/>
         </CloseBtn>
         {isRegistered ? (
-          <SuccessRegistration message={''} />
+          <SuccessRegistration message={''}/>
         ) : (
           <>
             <div className="modal-body">
@@ -291,41 +276,45 @@ export default function InvestContactForm({ isOpen, walletID, onDismiss }: EmiMa
               {/*<div className="modal-body__description">*/}
               {/*  If you are interested in purchasing ESW for less than $25,000, fill out this form.*/}
               {/*</div>*/}
-              <div className="modal-body__input-block">
-                <div className="modal-body__input-label">Name</div>
+              <div className={`modal-body__input-block ${!validation.name ? 'modal-body__input--error' : ''}`}>
+                <div className="modal-body__input-label">
+                  Name <span className="modal-body__input-label-required">*</span>
+                </div>
                 <input
                   ref={nameRef}
-                  className={`modal-body__input${!validation.name ? ' modal-body__error' : ''}`}
+                  className={`modal-body__input`}
                   type="text"
                   placeholder="Bob"
                 />
                 {!validation.name && errorLabel}
               </div>
-              <div className="modal-body__input-block">
-                <div className="modal-body__input-label">Email</div>
+              <div className={`modal-body__input-block ${!validation.email ? 'modal-body__input--error' : ''}`}>
+                <div className="modal-body__input-label">
+                  Email <span className="modal-body__input-label-required">*</span>
+                </div>
                 <input
                   ref={emailRef}
-                  className={`modal-body__input${!validation.email ? ' modal-body__error' : ''}`}
+                  className={`modal-body__input`}
                   type="text"
                   placeholder="email@email.com"
                 />
                 {!validation.email && errorLabel}
               </div>
-              <div className="modal-body__input-block">
+              <div className={`modal-body__input-block ${!validation.phone ? 'modal-body__input--error' : ''}`}>
                 <div className="modal-body__input-label">Phone</div>
                 <input
                   ref={phoneRef}
-                  className={`modal-body__input${!validation.phone ? ' modal-body__error' : ''}`}
+                  className={`modal-body__input`}
                   type="text"
                   placeholder="+49000000000000"
                 />
                 {!validation.phone && errorLabel}
               </div>
-              <div className="modal-body__input-block">
+              <div className={`modal-body__input-block ${!validation.telegram ? 'modal-body__input--error' : ''}`}>
                 <div className="modal-body__input-label">Telegram</div>
                 <input
                   ref={telegramRef}
-                  className={`modal-body__input${!validation.telegram ? ' modal-body__error' : ''}`}
+                  className={`modal-body__input`}
                   type="text"
                   placeholder="@telegram"
                 />
@@ -333,11 +322,13 @@ export default function InvestContactForm({ isOpen, walletID, onDismiss }: EmiMa
                   <span className="modal-body__error-text">Please enter the correct value</span>
                 )}
               </div>
-              <div className="modal-body__input-block">
-                <div className="modal-body__input-label">Wallet account</div>
+              <div className={`modal-body__input-block ${!validation.wallet ? 'modal-body__input--error' : ''}`}>
+                <div className="modal-body__input-label">
+                  Wallet account <span className="modal-body__input-label-required">*</span>
+                </div>
                 <input
                   ref={walletRef}
-                  className={`modal-body__input${!validation.wallet ? ' modal-body__error' : ''}`}
+                  className={`modal-body__input`}
                   defaultValue={walletID}
                   type="text"
                   placeholder="0x..."
@@ -345,14 +336,14 @@ export default function InvestContactForm({ isOpen, walletID, onDismiss }: EmiMa
                 {!validation.wallet && errorLabel}
               </div>
               <div className="modal-body__btn-container">
-                <div className="modal-body__btn" onClick={sendForm}>
+                <ButtonPrimary onClick={sendForm}>
                   Submit
-                </div>
+                </ButtonPrimary>
               </div>
             </div>
           </>
         )}
       </ModalBody>
-    </Modal>
+    </ModalCustom>
   );
 }

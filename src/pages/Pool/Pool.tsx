@@ -7,7 +7,7 @@ import { SwapPoolTabs, TabNames } from '../../components/NavigationTabs';
 import Question from '../../components/QuestionHelper';
 import FullPositionCard from '../../components/PositionCard';
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks';
-import { StyledGreenLink, TYPE } from '../../theme';
+import { ExternalGreenLink, StyledGreenLink, TYPE } from '../../theme';
 import { Text } from 'rebass';
 import { OutlineCard } from '../../components/Card';
 import { RowBetween } from '../../components/Row';
@@ -19,6 +19,7 @@ import { usePairs } from '../../data-mooniswap/Reserves';
 import { useTrackedTokenPairs } from '../../state/user/hooks';
 import AppBody from '../AppBody';
 import { Dots } from '../../components/swap/styleds';
+import ReferralLink from '../../components/RefferalLink';
 
 import * as Styled from './styleds';
 
@@ -82,7 +83,7 @@ const Pool = () => {
   return (
     <>
       <AppBody>
-        <SwapPoolTabs active={TabNames.POOL} />
+        <SwapPoolTabs active={TabNames.POOL}/>
         <AutoColumn gap="lg" justify="center">
           <>
             <AutoColumn gap="12px" style={{ width: '100%' }}>
@@ -90,7 +91,7 @@ const Pool = () => {
                 <Text color={theme.white} fontWeight={500}>
                   Your Liquidity
                 </Text>
-                <Question text="When you add liquidity, you are given pool tokens that represent your share. If you don’t see a pool you joined in this list, try importing a pool below." />
+                <Question text="When you add liquidity, you are given pool tokens that represent your share. If you don’t see a pool you joined in this list, try importing a pool below."/>
               </RowBetween>
               {!account ? (
                 <OutlineCard padding="40px">
@@ -107,7 +108,7 @@ const Pool = () => {
               ) : allV2PairsWithLiquidity?.length > 0 ? (
                 <>
                   {allV2PairsWithLiquidity.map(v2Pair => (
-                    <FullPositionCard key={v2Pair.liquidityToken.address} pair={v2Pair} />
+                    <FullPositionCard key={v2Pair.liquidityToken.address} pair={v2Pair}/>
                   ))}
                 </>
               ) : (
@@ -142,11 +143,19 @@ const Pool = () => {
                   </StyledGreenLink>
                 </Text>
                 <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
-                  <StyledGreenLink to={MEDIUM_LINK}>
-                    High rewards for early adopters
-                  </StyledGreenLink>
+                  <div>
+                    <ExternalGreenLink href={MEDIUM_LINK}>
+                      High rewards for early adopters
+                    </ExternalGreenLink>
+                  </div>
+                  <div style={{ marginTop: '8px' }}>
+                    <ExternalGreenLink href="https://wiki.emiswap.com/user-guide/how-to-provide-liquidity">
+                      Wiki How to provide liquidity?
+                    </ExternalGreenLink>
+                  </div>
                 </TYPE.black>
               </div>
+              <ReferralLink/>
             </AutoColumn>
           </>
         </AutoColumn>

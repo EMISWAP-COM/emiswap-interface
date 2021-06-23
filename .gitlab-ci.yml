@@ -54,6 +54,7 @@ push:tagged:
 deploy:review:
   extends: .deploy:review
   stage: deploy:review
+  when: manual
   except:
     refs:
     - production

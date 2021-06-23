@@ -1,4 +1,4 @@
-import { JSBI, Token, TokenAmount, ZERO_ADDRESS } from '@uniswap/sdk';
+import { ChainId, JSBI, Token, TokenAmount, ZERO_ADDRESS } from '@uniswap/sdk';
 import React, { useCallback, useContext, useState } from 'react';
 import { Plus } from 'react-feather';
 import ReactGA from 'react-ga';
@@ -40,6 +40,7 @@ import { useEmiRouter } from '../../hooks/useContract';
 import { ErrorText } from '../../components/swap/styleds';
 import { useTransactionPrice } from '../../hooks/useTransactionPrice';
 import { useReferralAddress } from '../../hooks/useReferralAddress';
+import { Web3Provider } from '@ethersproject/providers';
 
 export default function AddLiquidity({
   match: {
@@ -130,7 +131,11 @@ export default function AddLiquidity({
   );
 
   const addTransaction = useTransactionAdder();
-  const emiRouterContract = getEmiRouterContract(chainId, library, account);
+  const emiRouterContract = getEmiRouterContract(
+    chainId as ChainId,
+    library as Web3Provider,
+    account as string,
+  );
   const methodName = currencyA?.isEther || currencyB?.isEther ? 'addLiquidityETH' : 'addLiquidity';
   const method = emiRouterContract[methodName];
 
@@ -147,9 +152,6 @@ export default function AddLiquidity({
         parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
       ),
     };
-    // BigNumber.from(trade.outputAmount.raw.toString())
-    // .mul(String(10000 - allowedSlippage))
-    // .div(String(10000));
     let args: any[] = [];
     let optionalArgs: any = {};
     if (methodName === 'addLiquidity') {
@@ -184,28 +186,29 @@ export default function AddLiquidity({
         method(...args, {
           gasLimit: calculateGasMargin(estimatedGasLimit),
           ...optionalArgs,
-        }).then((response: any) => {
-          try {
-            setAttemptingTxn(false);
+        })
+          .then((response: any) => {
+            try {
+              setAttemptingTxn(false);
 
-            addTransaction(response, {
-              summary: 'Create Pool ' + currencyA.symbol + ' ' + currencyB.symbol,
-            });
+              addTransaction(response, {
+                summary: 'Create Pool ' + currencyA.symbol + ' ' + currencyB.symbol,
+              });
 
-            setTxHash(response.hash);
+              setTxHash(response.hash);
 
-            ReactGA.event({
-              category: 'Liquidity',
-              action: 'CreatePool',
-              label: [
-                currencies[Field.CURRENCY_A]?.symbol,
-                currencies[Field.CURRENCY_B]?.symbol,
-              ].join('/'),
-            });
+              ReactGA.event({
+                category: 'Liquidity',
+                action: 'CreatePool',
+                label: [
+                  currencies[Field.CURRENCY_A]?.symbol,
+                  currencies[Field.CURRENCY_B]?.symbol,
+                ].join('/'),
+              });
 
-            setShowConfirm(true);
-          } catch (error) {
-            throw new Error(`
+              setShowConfirm(true);
+            } catch (error) {
+              throw new Error(`
               Account: ${account}\n
               ChainId: ${chainId}\n
               Contract address: ${emiRouterContract.address}\n
@@ -213,9 +216,10 @@ export default function AddLiquidity({
               Optional args (key, value): ${Object.entries(optionalArgs)}\n
               Error message: ${error.message}\n
             `);
-          }
-        }).catch((error: Error) => {
-          throw new Error(`
+            }
+          })
+          .catch((error: Error) => {
+            throw new Error(`
             Account: ${account}\n
             ChainId: ${chainId}\n
             Contract address: ${emiRouterContract.address}\n
@@ -223,7 +227,7 @@ export default function AddLiquidity({
             Optional args (key, value): ${Object.entries(optionalArgs)}\n
             Error message: ${error.message}\n
           `);
-        });
+          });
       })
       .catch(error => {
         setAttemptingTxn(false);
@@ -241,8 +245,6 @@ export default function AddLiquidity({
           Error message: ${error.message}\n
         `);
       });
-
-    // const estimate = mooniswap.estimateGas.deposit
   }
 
   async function onAdd() {
@@ -263,9 +265,6 @@ export default function AddLiquidity({
         parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
       ),
     };
-    // BigNumber.from(trade.outputAmount.raw.toString())
-    // .mul(String(10000 - allowedSlippage))
-    // .div(String(10000));
     let args: any[] = [];
     let optionalArgs: any = {};
     if (methodName === 'addLiquidity') {
@@ -301,33 +300,34 @@ export default function AddLiquidity({
         method(...args, {
           ...optionalArgs,
           gasLimit: calculateGasMargin(estimatedGasLimit),
-        }).then((response: any) => {
-          try {
-            setAttemptingTxn(false);
-            addTransaction(response, {
-              summary:
-                'Add ' +
-                tokenAmountToString(parsedAmounts[Field.CURRENCY_A], 3) +
-                ' ' +
-                currencies[Field.CURRENCY_A]?.symbol +
-                ' and ' +
-                tokenAmountToString(parsedAmounts[Field.CURRENCY_B], 3) +
-                ' ' +
-                currencies[Field.CURRENCY_B]?.symbol,
-            });
+        })
+          .then((response: any) => {
+            try {
+              setAttemptingTxn(false);
+              addTransaction(response, {
+                summary:
+                  'Add ' +
+                  tokenAmountToString(parsedAmounts[Field.CURRENCY_A], 3) +
+                  ' ' +
+                  currencies[Field.CURRENCY_A]?.symbol +
+                  ' and ' +
+                  tokenAmountToString(parsedAmounts[Field.CURRENCY_B], 3) +
+                  ' ' +
+                  currencies[Field.CURRENCY_B]?.symbol,
+              });
 
-            setTxHash(response.hash);
+              setTxHash(response.hash);
 
-            ReactGA.event({
-              category: 'Liquidity',
-              action: 'Add',
-              label: [
-                currencies[Field.CURRENCY_A]?.symbol,
-                currencies[Field.CURRENCY_B]?.symbol,
-              ].join('/'),
-            });
-          } catch (error) {
-            throw new Error(`
+              ReactGA.event({
+                category: 'Liquidity',
+                action: 'Add',
+                label: [
+                  currencies[Field.CURRENCY_A]?.symbol,
+                  currencies[Field.CURRENCY_B]?.symbol,
+                ].join('/'),
+              });
+            } catch (error) {
+              throw new Error(`
               Account: ${account}\n
               ChainId: ${chainId}\n
               Contract address: ${emiRouterContract.address}\n
@@ -335,9 +335,10 @@ export default function AddLiquidity({
               Optional args (key, value): ${Object.entries(optionalArgs)}\n
               Error message: ${error.message}\n
             `);
-          }
-        }).catch((error: Error) => {
-          throw new Error(`
+            }
+          })
+          .catch((error: Error) => {
+            throw new Error(`
             Account: ${account}\n
             ChainId: ${chainId}\n
             Contract address: ${emiRouterContract.address}\n
@@ -345,7 +346,7 @@ export default function AddLiquidity({
             Optional args (key, value): ${Object.entries(optionalArgs)}\n
             Error message: ${error.message}\n
           `);
-        });
+          });
       })
       .catch(error => {
         setAttemptingTxn(false);
@@ -370,7 +371,13 @@ export default function AddLiquidity({
       <AutoColumn gap="20px">
         <LightCard mt="20px" borderRadius="20px">
           <RowFlat>
-            <Text color={theme.darkWhite} fontSize="48px" fontWeight={500} lineHeight="42px" marginRight={10}>
+            <Text
+              color={theme.darkWhite}
+              fontSize="48px"
+              fontWeight={500}
+              lineHeight="42px"
+              marginRight={10}
+            >
               {currencies[Field.CURRENCY_A]?.symbol + '/' + currencies[Field.CURRENCY_B]?.symbol}
             </Text>
             <DoubleCurrencyLogo
@@ -384,7 +391,13 @@ export default function AddLiquidity({
     ) : (
       <AutoColumn gap="20px">
         <RowFlat style={{ marginTop: '20px' }}>
-          <Text color={theme.darkWhite} fontSize="48px" fontWeight={500} lineHeight="42px" marginRight={10}>
+          <Text
+            color={theme.darkWhite}
+            fontSize="48px"
+            fontWeight={500}
+            lineHeight="42px"
+            marginRight={10}
+          >
             {tokenAmountToString(liquidityMinted)}
           </Text>
           <DoubleCurrencyLogo
@@ -539,18 +552,18 @@ export default function AddLiquidity({
               currencies[Field.CURRENCY_B] &&
               pairState !== PairState.INVALID && (
                 <>
-                    <RowBetween padding="1rem">
-                      <TYPE.subHeader color={theme.darkWhite} fontWeight={500} fontSize={14}>
-                        {noLiquidity ? 'Initial prices' : 'Prices'} and pool share
-                      </TYPE.subHeader>
-                    </RowBetween>{' '}
-                    <OutlineCard padding="1rem" borderRadius={'20px'}>
-                      <PoolPriceBar
-                        currencies={currencies}
-                        poolTokenPercentage={poolTokenPercentage}
-                        noLiquidity={noLiquidity}
-                        price={price}
-                      />
+                  <RowBetween padding="1rem">
+                    <TYPE.subHeader color={theme.darkWhite} fontWeight={500} fontSize={14}>
+                      {noLiquidity ? 'Initial prices' : 'Prices'} and pool share
+                    </TYPE.subHeader>
+                  </RowBetween>{' '}
+                  <OutlineCard padding="1rem" borderRadius={'20px'}>
+                    <PoolPriceBar
+                      currencies={currencies}
+                      poolTokenPercentage={poolTokenPercentage}
+                      noLiquidity={noLiquidity}
+                      price={price}
+                    />
                   </OutlineCard>
                 </>
               )}
@@ -648,7 +661,6 @@ export default function AddLiquidity({
           </AutoColumn>
           {pair && !noLiquidity && pairState !== PairState.INVALID ? (
             <AutoColumn style={{ minWidth: '20rem', marginTop: '1rem' }}>
-              {/*<MinimalPositionCard showUnwrapped={oneCurrencyIsWETH} pair={pair} />*/}
               <MinimalPositionCard showUnwrapped={false} pair={pair} />
             </AutoColumn>
           ) : null}

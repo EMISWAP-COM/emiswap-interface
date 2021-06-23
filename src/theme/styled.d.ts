@@ -22,6 +22,7 @@ export interface Colors {
 
   modalBG: Color;
   advancedBG: Color;
+  cardBG: Color;
 
   //blues
   primary1: Color;
@@ -66,6 +67,7 @@ export interface Colors {
   lightGrey: Color;
   red: Color;
   green: Color;
+  pink: Color;
   blue: Color;
   border1: Color;
   dark1: Color;

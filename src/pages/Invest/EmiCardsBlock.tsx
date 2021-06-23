@@ -10,7 +10,7 @@ import Question from '../../assets/svg/FAQIcon/question.svg';
 import { AppState } from '../../state';
 import { UserRoles } from '../../components/WalletModal';
 import { getPriceToNextStep } from './utils';
-import { accountAmounts, investMinESW } from '../../constants/invest';
+import { accountAmounts, investMaxESW } from '../../constants/invest';
 import { EmiCard, EmiCardHeader } from './EmiCard';
 import { distributorCardList } from './constants';
 
@@ -111,7 +111,7 @@ export const EmiCardsBlock = ({ outputNum, formattedAmounts, handleTypeInputOUTP
         <div className="block-with-cards__cards">
           {distributorCardList.map(el => {
             let isDisabled = bonusRoleName ? el.value <= accountAmounts[bonusRoleName] : false;
-            if (el.value < investMinESW) {
+            if (el.value > investMaxESW) {
               isDisabled = true;
             }
             return (

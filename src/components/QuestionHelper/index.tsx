@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { HelpCircle as Question } from 'react-feather';
+import Question from '../../assets/svg/question.svg';
 import styled from 'styled-components';
 import Tooltip from '../Tooltip';
 
@@ -31,7 +31,7 @@ export default function QuestionHelper({ text, disabled }: { text: string; disab
     <span style={{ marginLeft: 4 }}>
       <Tooltip text={text} show={show && !disabled}>
         <QuestionWrapper onClick={open} onMouseEnter={open} onMouseLeave={close}>
-          <Question size={16} />
+          <img src={Question} alt=""/>
         </QuestionWrapper>
       </Tooltip>
     </span>

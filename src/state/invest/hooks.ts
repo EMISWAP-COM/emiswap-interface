@@ -20,11 +20,11 @@ import {
   switchCurrencies,
   typeInput,
 } from './actions';
-import { InvestState } from './reducer';
 import { TokenAddressMap, WrappedTokenInfo } from '../lists/hooks';
 import { ESW } from '../../constants';
-import { investMinESW } from '../../constants/invest';
+import { investMaxESW } from '../../constants/invest';
 import { maxAmountSpendInvest } from '../../utils/maxAmountSpend'
+import { InvestState } from './reducer';
 
 const num2str = (value: number, decimals: number): string => {
   return value.toLocaleString('en', {
@@ -137,7 +137,8 @@ export function useDerivedInvestInfo(): {
   parsedAmount: TokenAmount | undefined;
   parsedOutputAmount: TokenAmount | undefined;
   error?: string;
-  isSmallInvestment: boolean;
+  // isSmallInvestment: boolean;
+  isMaxInvestment: boolean | undefined;
 } {
   const { account } = useActiveWeb3React();
 
@@ -178,9 +179,8 @@ export function useDerivedInvestInfo(): {
     [Field.OUTPUT]: outputCurrency ?? undefined,
   };
 
-  const isSmallInvestment =
-    parsedOutputAmount && parsedOutputAmount.lessThan(JSBI.BigInt(investMinESW));
-
+  // const isSmallInvestment = parsedOutputAmount && parsedOutputAmount.lessThan(JSBI.BigInt(investMinESW));
+  const isMaxInvestment = parsedOutputAmount && parsedOutputAmount.greaterThan(JSBI.BigInt(investMaxESW));
 
   const maxAmountInput: TokenAmount | undefined = maxAmountSpendInvest(
     currencyBalances[Field.INPUT],
@@ -219,8 +219,12 @@ export function useDerivedInvestInfo(): {
     console.log('insufficient', error)
   }
 
-  if (isSmallInvestment) {
+  /*if (isSmallInvestment) {
     error = "We've moved to the private sale stage with a minimum investment of $25,000";
+  }*/
+
+  if (isMaxInvestment) {
+    error = "Sorry, there’s a limit of $500 purchase with one wallet";
   }
 
   if (parsedAmount && !parsedOutputAmount) {
@@ -233,7 +237,8 @@ export function useDerivedInvestInfo(): {
     parsedAmount,
     parsedOutputAmount,
     error,
-    isSmallInvestment,
+    // isSmallInvestment,
+    isMaxInvestment,
   };
 }
 
