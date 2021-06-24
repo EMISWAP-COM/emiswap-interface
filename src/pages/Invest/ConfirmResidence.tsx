@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 
 import Checkbox from '../../components/Checkbox';
 import Question from '../../components/QuestionHelper';
+import { useMediaQuery } from '../../hooks';
 
 export interface ConfirmResidentProps {
   tooltip: string;
@@ -26,20 +27,23 @@ const TextWrapper = styled.div`
 `;
 
 const Wrapper = styled.div`
-  margin: 24px auto;
   display: flex;
   text-align: left;
+  margin: 24px auto;
   justify-content: space-between;
 `;
 
-const ConfirmResidence: React.FC<ConfirmResidentProps> = ({ children, tooltip, onChane }) => (
-  <Wrapper>
-    <TextWrapper>
-      <Checkbox onChange={onChane} />
-      <Text children={children} />
-    </TextWrapper>
-    <Question text={tooltip} placement="left" />
-  </Wrapper>
-);
+const ConfirmResidence: React.FC<ConfirmResidentProps> = ({ children, tooltip, onChane }) => {
+  const placement = useMediaQuery('(max-width: 800px)', 'left', 'right');
+  return (
+    <Wrapper>
+      <TextWrapper>
+        <Checkbox onChange={onChane} />
+        <Text children={children} />
+      </TextWrapper>
+      <Question text={tooltip} placement={placement} />
+    </Wrapper>
+  );
+};
 
 export default ConfirmResidence;
