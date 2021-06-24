@@ -42,7 +42,6 @@ import Loader from '../../components/Loader';
 import ReferralLink from '../../components/RefferalLink';
 import { loadLaunchpadStatus } from '../../state/launchpad/actions';
 import { LaunchpadState } from '../../state/launchpad/reducer';
-import { useAuth } from '../../hooks/useAuth';
 import { InvestProgress } from './InvestProgress';
 
 const Invest = () => {
@@ -73,11 +72,10 @@ const Invest = () => {
     error,
   } = useDerivedInvestInfo();
 
-  const handleAuth = useAuth();
-
   const role: UserRoles | null = useSelector((state: AppState) => state.user.info?.role);
   const investRequestStatus = useSelector((state: AppState) => state.user.info?.invest_request_state);
   const launchpadState = useSelector((state: AppState) => state.launchpad as LaunchpadState);
+  const { id: userId } = useSelector((state: AppState) => state.user.info);
 
   const investGranted = investRequestStatus === InvestRequestStatus.ACCEPTED;
 
@@ -132,10 +130,8 @@ const Invest = () => {
   }, [approval, approvalSubmitted]);
 
   useEffect(() => {
-    handleAuth().then(authToken => {
-      dispatch(loadLaunchpadStatus({account, authToken}) as any);
-    });
-  }, [dispatch, handleAuth, account]);
+    dispatch(loadLaunchpadStatus({ account, userId }) as any);
+  }, [dispatch, account, userId]);
 
   // the callback to execute the invest
   const [investCallback] = useInvest(
