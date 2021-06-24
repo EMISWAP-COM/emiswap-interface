@@ -18,6 +18,7 @@ import { ONE_SPLIT_ABI, ONE_SPLIT_ADDRESSES } from '../constants/one-split';
 import { MIGRATOR_ABI, MIGRATOR_ADDRESS } from '../constants/abis/migrator';
 import { EMISWAP_CROWDSALE_ABI, EMISWAP_CROWDSALE_ADDRESS } from '../constants/abis/crowdsale';
 import { EMISWAP_VESTING_ABI, EMISWAP_VESTING_ADDRESS } from '../constants/abis/emiswap-vesting';
+import { REWARD_POOL_ABI, REWARD_POOL_ADDRESS } from '../constants/abis/rewardPool';
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
@@ -193,4 +194,8 @@ export function getCrowdsaleContract(library: Web3Provider, account: string) {
 
 export function getVestingContract(library: Web3Provider, account: string) {
   return getContract(EMISWAP_VESTING_ADDRESS, EMISWAP_VESTING_ABI, library, account);
+}
+
+export function getRewardPoolContract(library: Web3Provider, account: string) {
+  return getContract(REWARD_POOL_ADDRESS, REWARD_POOL_ABI, library, account);
 }

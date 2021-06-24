@@ -1,18 +1,8 @@
 import React, { useCallback, useState } from 'react';
-import { FarmingTimeType, TokenInputType } from '../types';
 import styled from 'styled-components/macro';
 import { ChevronDown, ChevronUp } from 'react-feather';
 import TokenInput from '../TokenInput';
-
-type ExtendableRowProps = {
-  coinName: string;
-  projectedReward: number;
-  apr: number;
-  lockPeriodDays: number;
-  blockReward: number;
-  liquidity: number;
-  type: FarmingTimeType;
-}
+import TokenCollect from '../TokenCollect';
 
 const StyledRow = styled.div`
   background-color: ${({theme}) => theme.border1Transparency};
@@ -158,18 +148,36 @@ const StyledHr = styled.div`
   margin-bottom: 24px;
 `;
 
+const StyledBlueText = styled.div`
+  color: ${({theme}) => theme.blue};
+`;
+
+type ExtendableRowProps = {
+  coinName: string;
+  projectedReward: string;
+  apr: string;
+  blockReward: string;
+  liquidity: string;
+  deposit: string;
+  type: string;
+  onStake: (amount: string) => void;
+  onCollect: () => void;
+}
+
 const ExtendableRow: React.FC<ExtendableRowProps> = (
   {
     coinName,
     projectedReward,
     apr,
-    lockPeriodDays,
     blockReward,
     liquidity,
+    deposit,
     type,
+    onStake,
+    onCollect,
   }
 ) => {
-  const [isRowExtended, setIsRowExtended] = useState(false);
+  const [isRowExtended, setIsRowExtended] = useState(true);
 
   const handleExtendClick = useCallback(() => {
     setIsRowExtended(!isRowExtended);
@@ -190,10 +198,6 @@ const ExtendableRow: React.FC<ExtendableRowProps> = (
           <StyledBlockTitle>APR</StyledBlockTitle>
           <StyledBlockValue>{apr}</StyledBlockValue>
         </StyledBlock>
-        <StyledBlock width={150}>
-          <StyledBlockTitle>Lock period</StyledBlockTitle>
-          <StyledBlockValue>{lockPeriodDays}</StyledBlockValue>
-        </StyledBlock>
         <StyledBlock width={200}>
           <StyledBlockTitle>Block reward</StyledBlockTitle>
           <StyledBlockValue>{blockReward}</StyledBlockValue>
@@ -204,7 +208,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = (
         </StyledBlock>
         <StyledBlock>
           <StyledBlockTitle>Type</StyledBlockTitle>
-          <StyledBlockValue>{type}</StyledBlockValue>
+          <StyledBlockValue><StyledBlueText>{type}</StyledBlueText></StyledBlockValue>
         </StyledBlock>
       </StyledBlocksWrapper>
       <StyledExtendButtonDesktop onClick={handleExtendClick} isRowExtended={isRowExtended}>
@@ -213,27 +217,25 @@ const ExtendableRow: React.FC<ExtendableRowProps> = (
     </StyledHeader>
     <StyledExtendableContent isVisible={isRowExtended}>
       <StyledBlocksWrapper>
-        <StyledBlock width={130}>
+        <StyledBlock width={150}>
           <StyledBlockTitle>Deposit</StyledBlockTitle>
-          <StyledBlockValue>99999</StyledBlockValue>
-        </StyledBlock>
-        <StyledBlock width={180}>
-          <StyledBlockTitle>Projected reward</StyledBlockTitle>
-          <StyledBlockValue>999999</StyledBlockValue>
-        </StyledBlock>
-        <StyledBlock width={130}>
-          <StyledBlockTitle>Balance</StyledBlockTitle>
-          <StyledBlockValue>999999</StyledBlockValue>
+          <StyledBlockValue>{deposit}</StyledBlockValue>
         </StyledBlock>
         <StyledBlock>
-          <StyledBlockTitle>Available to collect</StyledBlockTitle>
-          <StyledBlockValue>999999</StyledBlockValue>
+          <StyledBlockTitle>Projected reward</StyledBlockTitle>
+          <StyledBlockValue>{projectedReward}</StyledBlockValue>
         </StyledBlock>
       </StyledBlocksWrapper>
       <StyledHr />
       <StyledInputsWrapper>
-        <StyledTokenInputWrapper><TokenInput type={TokenInputType.Stake} /></StyledTokenInputWrapper>
-        <StyledTokenInputWrapper><TokenInput type={TokenInputType.Collect} isButtonDisabled={true} /></StyledTokenInputWrapper>
+        <StyledTokenInputWrapper><TokenInput onStake={onStake} /></StyledTokenInputWrapper>
+        <StyledTokenInputWrapper>
+          <TokenCollect
+            deposit={deposit}
+            projectedReward={projectedReward}
+            onCollect={onCollect}
+          />
+        </StyledTokenInputWrapper>
       </StyledInputsWrapper>
     </StyledExtendableContent>
     <StyledExtendButtonMobile onClick={handleExtendClick} isRowExtended={isRowExtended}>

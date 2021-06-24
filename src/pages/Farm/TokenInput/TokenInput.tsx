@@ -5,12 +5,6 @@ import { lighten } from 'polished';
 import Button from '../../../base/ui/Button';
 import CurrencyLogo from '../../../components/CurrencyLogo';
 import { ESW } from '../../../constants';
-import { TokenInputType } from '../types';
-
-type TokenInputProps = {
-  type: TokenInputType;
-  isButtonDisabled?: boolean;
-}
 
 const StyledTokenInputWrapper = styled.div`
   border: 1px solid ${({theme}) => theme.lightGrey};
@@ -30,6 +24,7 @@ const StyledInputHeader = styled.div`
   color: ${({theme}) => theme.darkText};
   font-size: 12px;
   margin-bottom: 8px;
+  text-transform: uppercase;
 `;
 
 const StyledInputContentWrapper = styled.div`
@@ -80,31 +75,26 @@ const StyledTokenName = styled.div`
   margin-left: 8px;
 `;
 
+type TokenInputProps = {
+  isButtonDisabled?: boolean;
+  onStake: (amount: string) => void;
+}
+
 const TokenInput: React.FC<TokenInputProps> = (
   {
-    type,
     isButtonDisabled,
+    onStake,
   }
 ) => {
   const [inputValue, setInputValue] = useState<string>('');
-  let buttonText;
-  let inputHeaderText;
-  switch (type) {
-    case TokenInputType.Stake:
-      buttonText = 'Stake';
-      inputHeaderText = 'ESW to stake';
-      break;
-    case TokenInputType.Collect:
-      buttonText = 'Collect to wallet';
-      inputHeaderText = 'tokens to collect';
-      break;
-  }
 
-  const handleButtonClick = useCallback(() => {}, []);
+  const handleButtonClick = useCallback(() => {
+    onStake(inputValue);
+  }, [onStake, inputValue]);
 
   return (<StyledTokenInputWrapper>
     <StyledInputWrapper>
-      <StyledInputHeader>{inputHeaderText}</StyledInputHeader>
+      <StyledInputHeader>ESW to stake</StyledInputHeader>
       <StyledInputContentWrapper>
         <NumericalInput
           value={inputValue}
@@ -119,7 +109,7 @@ const TokenInput: React.FC<TokenInputProps> = (
         </StyledCurrencySelect>
       </StyledInputContentWrapper>
     </StyledInputWrapper>
-    <Button onClick={handleButtonClick} isDisabled={isButtonDisabled}>{buttonText}</Button>
+    <Button onClick={handleButtonClick} isDisabled={isButtonDisabled}>Stake</Button>
   </StyledTokenInputWrapper>);
 }
 

@@ -1,4 +1,26 @@
-export default {
+export type DefaultCoinsToken = {
+  address: string,
+  chainId: number,
+  name: string,
+  symbol: string,
+  decimals: number,
+  logoURI: string,
+}
+
+type DefaultCoins = {
+  name: string,
+  timestamp: string,
+  version: {
+    major: number,
+    minor: number,
+    patch: number,
+  },
+  keywords: string[],
+  tokens: DefaultCoinsToken[],
+  logoURI: string,
+}
+
+const defaultCoins: DefaultCoins = {
   name: '1inch',
   timestamp: '2020-11-17T17:06:20+00:00',
   version: {
@@ -3836,6 +3858,14 @@ export default {
       decimals: 6,
       logoURI: 'https://tokens.1inch.exchange/0xdac17f958d2ee523a2206206994597c13d831ec7.png',
     },
+    {
+      address: '0xe37Ae239a84110009426071B7828A6fbd6be5F45',
+      chainId: 42,
+      name: 'EmiDAO Token',
+      symbol: 'ESW',
+      decimals: 18,
+      logoURI: '',
+    },
     // {
     //   address: '0x0000000000000000000000000000000000000000',
     //   chainId: 42,
@@ -3847,3 +3877,6 @@ export default {
   ],
   logoURI: 'https://1inch.exchange/assets/images/logo.png',
 };
+
+
+export default defaultCoins;

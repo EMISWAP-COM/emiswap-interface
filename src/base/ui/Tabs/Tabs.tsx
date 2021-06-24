@@ -44,6 +44,7 @@ const Tabs: React.FC<TabsProps> = (
     <StyledTabsWrapper>
       {items.map((item) =>
         <StyledTab
+          key={item.id}
           isSelected={item.id === selectedItemId}
           onClick={handleTabClick(item.id)}
         >{item.title}</StyledTab>)}
