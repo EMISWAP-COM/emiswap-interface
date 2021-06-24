@@ -189,6 +189,7 @@ const AccountElement = styled.div<{ active: boolean }>`
     width: 100%;
     max-width: 440px;
     margin: auto;
+    background: #000000
   }
 
   :focus {
