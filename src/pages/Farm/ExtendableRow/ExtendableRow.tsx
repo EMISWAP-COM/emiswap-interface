@@ -177,7 +177,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = (
     onCollect,
   }
 ) => {
-  const [isRowExtended, setIsRowExtended] = useState(true);
+  const [isRowExtended, setIsRowExtended] = useState(false);
 
   const handleExtendClick = useCallback(() => {
     setIsRowExtended(!isRowExtended);
