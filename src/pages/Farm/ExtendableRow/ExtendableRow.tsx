@@ -3,6 +3,8 @@ import styled from 'styled-components/macro';
 import { ChevronDown, ChevronUp } from 'react-feather';
 import TokenInput from '../TokenInput';
 import TokenCollect from '../TokenCollect';
+import { Token } from '@uniswap/sdk';
+import CurrencyLogo from '../../../components/CurrencyLogo';
 
 const StyledRow = styled.div`
   background-color: ${({theme}) => theme.border1Transparency};
@@ -52,6 +54,8 @@ const StyledBlockTitle = styled.div`
 `;
 
 const StyledBlockValue = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const StyledExtendButtonDesktop = styled.div<{ isRowExtended: boolean }>`
@@ -152,8 +156,17 @@ const StyledBlueText = styled.div`
   color: ${({theme}) => theme.blue};
 `;
 
+const StyledCurrencyLogo = styled.div`
+  margin-right: 12px;
+
+  > img {
+    display: block;
+  }
+`;
+
 type ExtendableRowProps = {
-  coinName: string;
+  stakeToken: Token | undefined;
+  rewardToken: Token | undefined;
   projectedReward: string;
   apr: string;
   blockReward: string;
@@ -166,7 +179,8 @@ type ExtendableRowProps = {
 
 const ExtendableRow: React.FC<ExtendableRowProps> = (
   {
-    coinName,
+    stakeToken,
+    rewardToken,
     projectedReward,
     apr,
     blockReward,
@@ -188,19 +202,28 @@ const ExtendableRow: React.FC<ExtendableRowProps> = (
       <StyledBlocksWrapper>
         <StyledBlock width={150}>
           <StyledBlockTitle>Coin</StyledBlockTitle>
-          <StyledBlockValue>{coinName}</StyledBlockValue>
+          <StyledBlockValue>
+            <StyledCurrencyLogo><CurrencyLogo currency={stakeToken} size={'24px'} /></StyledCurrencyLogo>
+            {stakeToken?.symbol}
+          </StyledBlockValue>
         </StyledBlock>
-        <StyledBlock width={200}>
+        <StyledBlock width={250}>
           <StyledBlockTitle>Projected reward</StyledBlockTitle>
-          <StyledBlockValue>{projectedReward}</StyledBlockValue>
+          <StyledBlockValue>
+            <StyledCurrencyLogo><CurrencyLogo currency={rewardToken} size={'24px'} /></StyledCurrencyLogo>
+            {projectedReward}
+          </StyledBlockValue>
         </StyledBlock>
-        <StyledBlock width={150}>
+        <StyledBlock width={100}>
           <StyledBlockTitle>APR</StyledBlockTitle>
           <StyledBlockValue>{apr}</StyledBlockValue>
         </StyledBlock>
-        <StyledBlock width={200}>
+        <StyledBlock width={250}>
           <StyledBlockTitle>Block reward</StyledBlockTitle>
-          <StyledBlockValue>{blockReward}</StyledBlockValue>
+          <StyledBlockValue>
+            <StyledCurrencyLogo><CurrencyLogo currency={rewardToken} size={'24px'} /></StyledCurrencyLogo>
+            {blockReward}
+          </StyledBlockValue>
         </StyledBlock>
         <StyledBlock width={200}>
           <StyledBlockTitle>Liquidity</StyledBlockTitle>
@@ -219,20 +242,28 @@ const ExtendableRow: React.FC<ExtendableRowProps> = (
       <StyledBlocksWrapper>
         <StyledBlock width={150}>
           <StyledBlockTitle>Deposit</StyledBlockTitle>
-          <StyledBlockValue>{deposit}</StyledBlockValue>
+          <StyledBlockValue>
+            <StyledCurrencyLogo><CurrencyLogo currency={stakeToken} size={'24px'} /></StyledCurrencyLogo>
+            {deposit}
+          </StyledBlockValue>
         </StyledBlock>
         <StyledBlock>
           <StyledBlockTitle>Projected reward</StyledBlockTitle>
-          <StyledBlockValue>{projectedReward}</StyledBlockValue>
+          <StyledBlockValue>
+            <StyledCurrencyLogo><CurrencyLogo currency={rewardToken} size={'24px'} /></StyledCurrencyLogo>
+            {projectedReward}
+          </StyledBlockValue>
         </StyledBlock>
       </StyledBlocksWrapper>
       <StyledHr />
       <StyledInputsWrapper>
-        <StyledTokenInputWrapper><TokenInput onStake={onStake} /></StyledTokenInputWrapper>
+        <StyledTokenInputWrapper><TokenInput token={stakeToken} onStake={onStake} /></StyledTokenInputWrapper>
         <StyledTokenInputWrapper>
           <TokenCollect
             deposit={deposit}
             projectedReward={projectedReward}
+            stakeToken={stakeToken}
+            rewardToken={rewardToken}
             onCollect={onCollect}
           />
         </StyledTokenInputWrapper>

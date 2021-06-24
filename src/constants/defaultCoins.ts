@@ -1,4 +1,4 @@
-export type DefaultCoinsToken = {
+type DefaultCoinsToken = {
   address: string,
   chainId: number,
   name: string,

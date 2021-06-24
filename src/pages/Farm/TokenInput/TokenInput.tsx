@@ -4,7 +4,7 @@ import NumericalInput from './NumericalInput';
 import { lighten } from 'polished';
 import Button from '../../../base/ui/Button';
 import CurrencyLogo from '../../../components/CurrencyLogo';
-import { ESW } from '../../../constants';
+import { Token } from '@uniswap/sdk';
 
 const StyledTokenInputWrapper = styled.div`
   border: 1px solid ${({theme}) => theme.lightGrey};
@@ -77,12 +77,14 @@ const StyledTokenName = styled.div`
 
 type TokenInputProps = {
   isButtonDisabled?: boolean;
+  token: Token | undefined;
   onStake: (amount: string) => void;
 }
 
 const TokenInput: React.FC<TokenInputProps> = (
   {
     isButtonDisabled,
+    token,
     onStake,
   }
 ) => {
@@ -94,7 +96,7 @@ const TokenInput: React.FC<TokenInputProps> = (
 
   return (<StyledTokenInputWrapper>
     <StyledInputWrapper>
-      <StyledInputHeader>ESW to stake</StyledInputHeader>
+      <StyledInputHeader>{token?.symbol} to stake</StyledInputHeader>
       <StyledInputContentWrapper>
         <NumericalInput
           value={inputValue}
@@ -104,8 +106,8 @@ const TokenInput: React.FC<TokenInputProps> = (
         />
         <StyledBalanceMax>MAX</StyledBalanceMax>
         <StyledCurrencySelect>
-          <CurrencyLogo currency={ESW[42][0]} size={'24px'} />
-          <StyledTokenName>ESW</StyledTokenName>
+          <CurrencyLogo currency={token} size={'24px'} />
+          <StyledTokenName>{token?.symbol}</StyledTokenName>
         </StyledCurrencySelect>
       </StyledInputContentWrapper>
     </StyledInputWrapper>

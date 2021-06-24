@@ -1,6 +1,8 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components/macro';
 import Button from '../../../base/ui/Button';
+import { Token } from '@uniswap/sdk';
+import CurrencyLogo from '../../../components/CurrencyLogo';
 
 const StyledTokenInputWrapper = styled.div`
   border: 1px solid ${({theme}) => theme.lightGrey};
@@ -27,13 +29,25 @@ const StyledCollectibleList = styled.div`
 `;
 
 const StyledCollectibleListItem = styled.div`
+  display: flex;
+  align-items: center;
   margin-right: 40px;
+`;
+
+const StyledCurrencyLogo = styled.div`
+  margin-right: 12px;
+
+  > img {
+    display: block;
+  }
 `;
 
 type TokenInputProps = {
   isButtonDisabled?: boolean;
   deposit: string;
   projectedReward: string;
+  stakeToken: Token | undefined;
+  rewardToken: Token | undefined;
   onCollect: () => void;
 }
 
@@ -42,6 +56,8 @@ const TokenCollect: React.FC<TokenInputProps> = (
     isButtonDisabled,
     deposit,
     projectedReward,
+    stakeToken,
+    rewardToken,
     onCollect,
   }
 ) => {
@@ -54,9 +70,11 @@ const TokenCollect: React.FC<TokenInputProps> = (
       <StyledInputHeader>Tokens to collect</StyledInputHeader>
       <StyledCollectibleList>
         <StyledCollectibleListItem>
+          <StyledCurrencyLogo><CurrencyLogo currency={stakeToken} size={'24px'} /></StyledCurrencyLogo>
           {deposit}
         </StyledCollectibleListItem>
         <StyledCollectibleListItem>
+          <StyledCurrencyLogo><CurrencyLogo currency={rewardToken} size={'24px'} /></StyledCurrencyLogo>
           {projectedReward}
         </StyledCollectibleListItem>
       </StyledCollectibleList>

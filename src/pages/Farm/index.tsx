@@ -83,8 +83,8 @@ export default function Farm() {
           </StyledInfo>
         </StyledInfoWrapper>
         <ExtendableRow
-          key={rewardPool.getStakeToken()?.address}
-          coinName={rewardPool.getStakeToken()?.symbol}
+          stakeToken={rewardPool.getStakeToken()}
+          rewardToken={rewardPool.getRewardToken()}
           projectedReward={rewardPool.getReward()}
           apr={'---'}
           blockReward={rewardPool.getBlockReward()}
