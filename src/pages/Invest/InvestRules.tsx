@@ -44,7 +44,7 @@ export const InvestRules = () => {
     }
   };
 
-  if (launchpadState.reached_limit) {
+  if (launchpadState.reached_limit || launchpadState.errors) {
     return (
       <>
         <PrivateSaleText style={{ fontWeight: 600, color: 'white' }}>Launchpad sales completed</PrivateSaleText>

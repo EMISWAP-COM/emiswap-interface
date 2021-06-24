@@ -7,10 +7,15 @@ const baseUrl = window['env'] ? window['env'].REACT_APP_PUBLIC_URL : '';
 
 export const loadLaunchpadStatus = createAsyncThunk(
   'loadLaunchpad/status',
-  async (account: unknown, { dispatch }) => {
+  async (payload: { account: string; authToken: string }, { dispatch }) => {
+    const {authToken} = payload;
     const url = `${baseUrl}/v1/public/launchpads/status`;
     try {
-      const response = await fetchWrapper.get(url);
+      const response = await fetchWrapper.get(url, {
+        headers: {
+          authorization: authToken,
+        },
+      });
       return response;
     } catch (e) {
       dispatch(

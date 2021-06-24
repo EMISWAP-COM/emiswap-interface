@@ -42,6 +42,8 @@ import Loader from '../../components/Loader';
 import ReferralLink from '../../components/RefferalLink';
 import { loadLaunchpadStatus } from '../../state/launchpad/actions';
 import { LaunchpadState } from '../../state/launchpad/reducer';
+import { useAuth } from '../../hooks/useAuth';
+import { InvestProgress } from './InvestProgress';
 
 const Invest = () => {
   useDefaultsFromURLSearch();
@@ -70,6 +72,8 @@ const Invest = () => {
     currencies,
     error,
   } = useDerivedInvestInfo();
+
+  const handleAuth = useAuth();
 
   const role: UserRoles | null = useSelector((state: AppState) => state.user.info?.role);
   const investRequestStatus = useSelector((state: AppState) => state.user.info?.invest_request_state);
@@ -128,8 +132,10 @@ const Invest = () => {
   }, [approval, approvalSubmitted]);
 
   useEffect(() => {
-    dispatch(loadLaunchpadStatus(account) as any);
-  }, [dispatch, account]);
+    handleAuth().then(authToken => {
+      dispatch(loadLaunchpadStatus({account, authToken}) as any);
+    });
+  }, [dispatch, handleAuth, account]);
 
   // the callback to execute the invest
   const [investCallback] = useInvest(
@@ -142,7 +148,6 @@ const Invest = () => {
   const maxAmountInput: TokenAmount | undefined = maxAmountSpendInvest(
     currencyBalances[Field.INPUT],
   );
-
 
   const atMaxAmountInput = Boolean(
     maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput),
@@ -240,7 +245,7 @@ const Invest = () => {
               expertMode ? onInvest() : setShowConfirm(true);
             }}
             id="invest-button"
-            disabled={!!error || approval !== ApprovalState.APPROVED}
+            disabled={!!error || approval !== ApprovalState.APPROVED || launchpadState.errors}
             error={investGranted && !!error}
           >
             <Text fontSize={16} fontWeight={450}>
@@ -329,7 +334,7 @@ const Invest = () => {
 
             <AutoColumn gap="4px">
               <RowBetween align="center">
-                <Text fontWeight={500} fontSize={16} color={theme.text1}>
+                <Text fontWeight={500} fontSize={16} color={theme.white}>
                   Price
                 </Text>
                 <TradePrice
@@ -358,6 +363,8 @@ const Invest = () => {
                   )}
                 </BottomGrouping>
               </AutoColumn>
+
+              <InvestProgress/>
 
               <InvestRules/>
 
