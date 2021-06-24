@@ -7,6 +7,7 @@ import styled, { ThemeContext } from 'styled-components';
 import Row, { RowBetween } from '../../components/Row';
 import { AutoColumn } from '../../components/Column';
 import { StyledHr } from '../Pool/styleds';
+import { numberWithSpaces } from '../../utils/formats';
 
 export const ProgressBar = styled.div`
   box-sizing: border-box;
@@ -35,9 +36,19 @@ export const InvestProgress = () => {
 
   const launchpadState = useSelector((state: AppState) => state.launchpad as LaunchpadState);
 
-  const percent = useMemo(() => (launchpadState.total / launchpadState.limit) * 100, [launchpadState]);
+  const percent: number = useMemo(() => {
+    if (!launchpadState.total || !launchpadState.limit) {
+      return 0;
+    }
+    return (parseInt(launchpadState.total) / parseInt(launchpadState.limit)) * 100;
+  }, [launchpadState]);
 
-  if (!launchpadState.loaded || launchpadState.errors) {
+  const total = numberWithSpaces(launchpadState.total);
+  const limit = numberWithSpaces(launchpadState.limit);
+
+  const launchpadDisable = new Date() < new Date('2021-06-28 14:00:00 UTC');
+
+  if (!launchpadState.loaded || launchpadState.errors || launchpadDisable) {
     return null;
   }
 
@@ -58,7 +69,7 @@ export const InvestProgress = () => {
           {percent} %
         </Text>
         <Text fontWeight={500} fontSize={12} color={theme.white}>
-          {launchpadState.total} / {launchpadState.limit}
+          {total} / {limit}
         </Text>
       </RowBetween>
       <StyledHr style={{ marginTop: 24 }}/>

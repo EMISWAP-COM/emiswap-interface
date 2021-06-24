@@ -24,6 +24,8 @@ export const InvestRules = () => {
 
   const [isRegisterWaitListModalOpen, setIsRegisterWaitListModalOpen] = useState<boolean>(false);
 
+  const waitListDisabled = new Date() > new Date('2021-06-27 14:00:00 UTC');
+
   const getMessage = () => {
     switch (investRequestStatus) {
       case InvestRequestStatus.PENDING:
@@ -61,20 +63,27 @@ export const InvestRules = () => {
         </PrivateSaleText>
       )}
 
-      {!account ? (
-        <LoginFirstText>
-          Only Waiting list participants will be able to buy ESW.
-          <Question text="Please note that users from the following countries are restricted from joining launchpad sales: Democratic Republic of the Congo, Côte d'Ivoire, Cuba, Iran, Iraq, Democratic People's Republic of Korea, Liberia, Myanmar, Sudan, Syrian Arab Republic, Venezuela, Zimbabwe, and the USA."/>
-        </LoginFirstText>
+      {waitListDisabled ? (
+        <OnlyInvestorsText>Sorry, registration to the Waiting list is closed</OnlyInvestorsText>
       ) : (
-        <OnlyInvestorsText>
-          {getMessage()}
-        </OnlyInvestorsText>
+        !account ? (
+          <LoginFirstText>
+            Only Waiting list participants will be able to buy ESW.
+            <Question text="Please note that users from the following countries are restricted from joining launchpad sales: Democratic Republic of the Congo, Côte d'Ivoire, Cuba, Iran, Iraq, Democratic People's Republic of Korea, Liberia, Myanmar, Sudan, Syrian Arab Republic, Venezuela, Zimbabwe, and the USA."/>
+          </LoginFirstText>
+        ) : (
+          <OnlyInvestorsText>
+            {getMessage()}
+          </OnlyInvestorsText>
+        )
       )}
 
       {!investRequestStatus && (
         <div style={{ marginTop: 24 }}>
-          <ButtonPrimary onClick={() => setIsRegisterWaitListModalOpen(true)}>
+          <ButtonPrimary
+            disabled={waitListDisabled}
+            onClick={() => setIsRegisterWaitListModalOpen(true)}
+          >
             Register to the Waiting list
           </ButtonPrimary>
           <InvestContactForm
