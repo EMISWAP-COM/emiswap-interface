@@ -1,7 +1,13 @@
 import React, { useCallback, useState } from 'react';
 import Question from '../../assets/svg/question.svg';
 import styled from 'styled-components';
-import Tooltip from '../Tooltip';
+import Tooltip, { TooltipProps } from '../Tooltip';
+
+export interface QuestionHelperProps {
+  text: string;
+  disabled?: boolean;
+  placement?: TooltipProps['placement'];
+}
 
 const QuestionWrapper = styled.div`
   display: flex;
@@ -21,7 +27,7 @@ const QuestionWrapper = styled.div`
   }
 `;
 
-export default function QuestionHelper({ text, disabled }: { text: string; disabled?: boolean }) {
+const QuestionHelper: React.FC<QuestionHelperProps> = ({ text, disabled, placement }) => {
   const [show, setShow] = useState<boolean>(false);
 
   const open = useCallback(() => setShow(true), [setShow]);
@@ -29,11 +35,13 @@ export default function QuestionHelper({ text, disabled }: { text: string; disab
 
   return (
     <span style={{ marginLeft: 4 }}>
-      <Tooltip text={text} show={show && !disabled}>
+      <Tooltip placement={placement} text={text} show={show && !disabled}>
         <QuestionWrapper onClick={open} onMouseEnter={open} onMouseLeave={close}>
-          <img src={Question} alt=""/>
+          <img src={Question} alt="" />
         </QuestionWrapper>
       </Tooltip>
     </span>
   );
-}
+};
+
+export default QuestionHelper;
