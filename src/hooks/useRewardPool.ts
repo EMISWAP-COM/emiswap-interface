@@ -2,8 +2,8 @@ import { useActiveWeb3React } from './index';
 import { Contract } from '@ethersproject/contracts';
 import { getRewardPoolContract } from '../utils';
 import { BigNumber } from '@ethersproject/bignumber';
-import defaultCoins, { DefaultCoinsToken } from '../constants/defaultCoins';
-import { useState } from 'react';
+import defaultCoins from '../constants/defaultCoins';
+import { useEffect, useMemo, useState } from 'react';
 import { JSBI, Token, TokenAmount } from '@uniswap/sdk';
 import { tokenAmountToString } from '../utils/formats';
 
@@ -17,35 +17,41 @@ const useRewardPool = () => {
     throw new Error('Failed to get an account');
   }
 
-  const contract: Contract | null = getRewardPoolContract(library, account);
+  const contract: Contract | null = useMemo(() => getRewardPoolContract(library, account), [library, account]);
 
   if (!contract) {
     throw new Error('Failed to get a RewardPool contract');
   }
 
-  const [stakeToken, setStakeToken] = useState<DefaultCoinsToken | undefined>(undefined);
-  const updateStakeToken = () => {
+  const [stakeToken, setStakeToken] = useState<Token | undefined>(undefined);
+  useEffect(() => {
     contract.stakeToken().then((value: string) => {
-      setStakeToken(defaultCoins.tokens.find((coin) => coin.address === value));
+      const defaultCoin = defaultCoins.tokens.find((coin) => coin.address === value);
+      if (chainId && defaultCoin) {
+        const token = new Token(chainId, defaultCoin.address, defaultCoin.decimals, defaultCoin.symbol, defaultCoin.name);
+        setStakeToken(token);
+      }
     });
-  }
-  updateStakeToken();
+  }, [chainId, contract])
 
-  const [rewardToken, setRewardToken] = useState<DefaultCoinsToken | undefined>(undefined);
-  const updateRewardToken = () => {
+  const [rewardToken, setRewardToken] = useState<Token | undefined>(undefined);
+  useEffect(() => {
     contract.rewardToken().then((value: string) => {
-      setRewardToken(defaultCoins.tokens.find((coin) => coin.address === value));
+      const defaultCoin = defaultCoins.tokens.find((coin) => coin.address === value);
+      if (chainId && defaultCoin) {
+        const token = new Token(chainId, defaultCoin.address, defaultCoin.decimals, defaultCoin.symbol, defaultCoin.name);
+        setRewardToken(token);
+      }
     });
-  }
-  updateRewardToken();
+  }, [chainId, contract]);
 
   const [balance, setBalance] = useState<string | undefined>(undefined);
-  const updateBalance = () => {
+  useEffect(() => {
     contract.balanceOf(account)
       .then((value: BigNumber) => {
           if (chainId && stakeToken) {
             const tokenAmount = new TokenAmount(
-              new Token(chainId, stakeToken.address, stakeToken.decimals, stakeToken.symbol, stakeToken.name),
+              stakeToken,
               JSBI.BigInt(value.toString())
             );
             return tokenAmountToString(tokenAmount, stakeToken.decimals);
@@ -54,16 +60,15 @@ const useRewardPool = () => {
           }
         }
       ).then((value: string) => setBalance(value));
-  }
-  updateBalance();
+  }, [account, chainId, contract, stakeToken]);
 
   const [reward, setReward] = useState<string | undefined>(undefined);
-  const updateReward = () => {
+  useEffect(() => {
     contract.earned(account)
       .then((value: BigNumber) => {
           if (chainId && rewardToken) {
             const tokenAmount = new TokenAmount(
-              new Token(chainId, rewardToken.address, rewardToken.decimals, rewardToken.symbol, rewardToken.name),
+              rewardToken,
               JSBI.BigInt(value.toString())
             );
             return tokenAmountToString(tokenAmount, rewardToken.decimals);
@@ -72,15 +77,14 @@ const useRewardPool = () => {
           }
         },
       ).then((value: string) => setReward(value));
-  };
-  updateReward();
+  }, [account, chainId, contract, rewardToken]);
 
   const [blockReward, setBlockReward] = useState<string | undefined>(undefined);
-  const updateBlockReward = () => {
+  useEffect(() => {
     contract.rewardRate().then((value: BigNumber) => {
         if (chainId && rewardToken) {
           const tokenAmount = new TokenAmount(
-            new Token(chainId, rewardToken.address, rewardToken.decimals, rewardToken.symbol, rewardToken.name),
+            rewardToken,
             JSBI.BigInt(value.mul(BigNumber.from(13)).toString()),
           );
           return tokenAmountToString(tokenAmount, rewardToken.decimals);
@@ -89,8 +93,7 @@ const useRewardPool = () => {
         }
       },
     ).then((value: string) => setBlockReward(value));
-  };
-  updateBlockReward();
+  }, [chainId, contract, rewardToken]);
 
   const handleStake = (amount: string) => {
     if (stakeToken) {
