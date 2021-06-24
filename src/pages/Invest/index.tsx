@@ -241,7 +241,7 @@ const Invest = () => {
               expertMode ? onInvest() : setShowConfirm(true);
             }}
             id="invest-button"
-            disabled={!!error || approval !== ApprovalState.APPROVED || launchpadState.errors}
+            disabled={!!error || approval !== ApprovalState.APPROVED || launchpadState.errors || !investGranted}
             error={investGranted && !!error}
           >
             <Text fontSize={16} fontWeight={450}>
