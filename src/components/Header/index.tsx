@@ -184,12 +184,12 @@ const AccountElement = styled.div<{ active: boolean }>`
   border-radius: 12px;
   white-space: nowrap;
   // width: 100%;
+  background: #000000;
 
   @media screen and (max-width: 768px) {
     width: 100%;
     max-width: 440px;
     margin: auto;
-    background: #000000
   }
 
   :focus {
