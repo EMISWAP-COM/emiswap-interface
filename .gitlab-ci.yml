@@ -12,7 +12,7 @@ variables:
   _app_name: emiswap-ui
   _img_short_name: emiswap-ui
   _env_name: emiswap-ui-$CI_COMMIT_REF_SLUG
-  _node_image: node:12
+  _node_image: node:16.3.0
 
 include:
 - project: emirex-exchange/devops/pipelines
