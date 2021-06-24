@@ -104,6 +104,7 @@ export function colors(darkMode: boolean): Colors {
     lightGrey: '#615C69',
     red: '#E85E59',
     green: '#54B489',
+    pink: '#E478FF',
     blue: '#37FFDB',
     border1: '#4A4757',
     dark1: '#272530',

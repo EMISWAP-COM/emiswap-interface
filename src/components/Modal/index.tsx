@@ -1,9 +1,9 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import { animated, useTransition, useSpring } from 'react-spring';
+import { animated, useSpring, useTransition } from 'react-spring';
 import { Spring } from 'react-spring/renderprops';
 
-import { DialogOverlay, DialogContent } from '@reach/dialog';
+import { DialogContent, DialogOverlay } from '@reach/dialog';
 import { isMobile } from 'react-device-detect';
 import '@reach/dialog/styles.css';
 import { useGesture } from 'react-use-gesture';
@@ -22,8 +22,8 @@ const StyledDialogOverlay = styled(({ mobile, ...rest }) => <AnimatedDialogOverl
     overflow: hidden;
 
     ${({ mobile }) =>
-      mobile &&
-      css`
+  mobile &&
+  css`
         align-items: flex-end;
       `}
 
@@ -63,18 +63,18 @@ const StyledDialogContent = styled(
     }
 
     ${({ maxWidth }) =>
-      maxWidth &&
-      css`
+  maxWidth &&
+  css`
         max-width: ${maxWidth}px;
       `}
     ${({ maxHeight }) =>
-      maxHeight &&
-      css`
+  maxHeight &&
+  css`
         max-height: ${maxHeight}vh;
       `}
     ${({ minHeight }) =>
-      minHeight &&
-      css`
+  minHeight &&
+  css`
         min-height: ${minHeight}vh;
       `}
     display: flex;
@@ -86,7 +86,7 @@ const StyledDialogContent = styled(
     ${({ theme, mobile }) => theme.mediaWidth.upToSmall`
       width:  85vw;
       ${mobile &&
-        css`
+css`
           width: 100vw;
           border-radius: 20px;
           border-bottom-left-radius: 0;
@@ -104,6 +104,7 @@ interface ModalProps {
   maxWidth?: number;
   initialFocusRef?: React.RefObject<any>;
   children?: React.ReactNode;
+  className?: string;
 }
 
 export default function Modal({
@@ -114,6 +115,7 @@ export default function Modal({
   maxWidth = 440,
   initialFocusRef = null,
   children,
+  className,
 }: ModalProps) {
   const transitions = useTransition(isOpen, null, {
     config: { duration: 200 },
@@ -148,7 +150,7 @@ export default function Modal({
                 mobile={true}
               >
                 {/* prevents the automatic focusing of inputs on mobile by the reach dialog */}
-                {initialFocusRef ? null : <div tabIndex={1} />}
+                {initialFocusRef ? null : <div tabIndex={1}/>}
                 <Spring // animation for entrance and exit
                   from={{
                     transform: isOpen ? 'translateY(200px)' : 'translateY(100px)',
@@ -166,6 +168,7 @@ export default function Modal({
                     >
                       <StyledDialogContent
                         aria-label="dialog content"
+                        className={className}
                         style={props}
                         hidden={true}
                         minHeight={minHeight}
