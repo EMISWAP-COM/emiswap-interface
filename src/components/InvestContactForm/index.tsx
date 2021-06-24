@@ -57,8 +57,8 @@ const ModalBody = styled.div`
     padding: 32px;
     overflow-y: auto;
     width: 100%;
-    background: ${({ theme }) => theme.cardBG}; 
-    
+    background: ${({ theme }) => theme.cardBG};
+
     @media screen and (max-width: 600px) {
       width: 100vw;
       max-width: 100vw;
@@ -73,12 +73,12 @@ const ModalBody = styled.div`
       font-size: 20px;
       line-height: 32px;
       margin-bottom: 20px;
-      
+
       @media screen and (max-width: 600px) {
         font-size: 18px;
         line-height: 24px;
       }
-      
+
     }
 
     &__description {
@@ -97,7 +97,7 @@ const ModalBody = styled.div`
       border-radius: 8px;
       background: ${({ theme }) => theme.dark1};
     }
-    
+
     &__input--error {
       border: 1px solid ${({ theme }) => theme.red};
     }
@@ -109,7 +109,7 @@ const ModalBody = styled.div`
       line-height: 14px;
       color: ${({ theme }) => theme.darkText};
     }
-    
+
     &__input-label-required {
       margin-left: 4px;
       color: ${({ theme }) => theme.pink};
@@ -126,7 +126,7 @@ const ModalBody = styled.div`
       width: 100%;
       max-height: 35px;
       outline: none;
-      
+
       ::placeholder {
         color: #615C69;
       }
@@ -154,7 +154,7 @@ const ModalBody = styled.div`
       border-bottom-color: rgb(17, 179, 130);
       text-decoration: none;
     }
-    
+
     &__helper-text {
       margin-left: 20px;
       margin-top: 4px;
@@ -204,7 +204,7 @@ export default function InvestContactForm({ isOpen, walletID, onDismiss }: EmiMa
     const nameRegexp = /\D/;
     const emailRegexp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegexp = /^\+[0-9-]+$/;
-    const telegramRegexp = /^[A-Za-z0-9_-]+$/;
+    const telegramRegexp = /^@?[A-Za-z0-9_-]+$/;
 
     newValidator.name = nameRegexp.test(name);
     newValidator.email = emailRegexp.test(email);
@@ -219,7 +219,9 @@ export default function InvestContactForm({ isOpen, walletID, onDismiss }: EmiMa
     const name = nameRef.current?.value;
     const email = emailRef.current?.value;
     const phone = phoneRef.current?.value;
-    const telegram = telegramRef.current?.value;
+    const telegram = telegramRef.current?.value.includes('@')
+      ? telegramRef.current?.value.substring(1)
+      : telegramRef.current?.value;
     const wallet = walletRef.current?.value;
 
     const formValidation = validateForm(name, email, phone, telegram, wallet);

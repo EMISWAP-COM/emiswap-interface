@@ -62,12 +62,13 @@ export const InvestRules = () => {
 
   return (
     <>
-      <ConfirmResidence
-        onChane={toggleResidentConfirm}
-        children="I confirm that I am not resident of the restricted countries list"
-        tooltip="Democratic Republic of the Congo, Côte d'Ivoire, Cuba, Iran, Iraq, Democratic People's Republic of Korea, Liberia, Myanmar, Sudan, Syrian Arab Republic, Venezuela, Zimbabwe, and the USA"
-      />
-
+      {!investRequestStatus && (
+        <ConfirmResidence
+          onChane={toggleResidentConfirm}
+          children="I confirm that I am not resident of the restricted countries list"
+          tooltip="Democratic Republic of the Congo, Côte d'Ivoire, Cuba, Iran, Iraq, Democratic People's Republic of Korea, Liberia, Myanmar, Sudan, Syrian Arab Republic, Venezuela, Zimbabwe, and the USA"
+        />
+      )}
       {!statuses.includes(investRequestStatus) && (
         <PrivateSaleText>
           To join launchpad sales on June, 28 14:00 UTC you need to register for the Waiting list.
