@@ -4,9 +4,11 @@ import { getRewardPoolContract } from '../utils';
 import { BigNumber } from '@ethersproject/bignumber';
 import defaultCoins, { DefaultCoinsToken } from '../constants/defaultCoins';
 import { useState } from 'react';
+import { JSBI, Token, TokenAmount } from '@uniswap/sdk';
+import { tokenAmountToString } from '../utils/formats';
 
 const useRewardPool = () => {
-  const { library, account } = useActiveWeb3React();
+  const { chainId, library, account } = useActiveWeb3React();
 
   if (!library) {
     throw new Error('Failed to get a library');
@@ -40,9 +42,17 @@ const useRewardPool = () => {
   const [balance, setBalance] = useState<string | undefined>(undefined);
   const updateBalance = () => {
     contract.balanceOf(account)
-      .then((value: BigNumber) => value
-        .div(BigNumber.from(Math.pow(10, stakeToken?.decimals || 1)))
-        .toString()
+      .then((value: BigNumber) => {
+          if (chainId && stakeToken) {
+            const tokenAmount = new TokenAmount(
+              new Token(chainId, stakeToken.address, stakeToken.decimals, stakeToken.symbol, stakeToken.name),
+              JSBI.BigInt(value.toString())
+            );
+            return tokenAmountToString(tokenAmount, stakeToken.decimals);
+          } else {
+            return '0';
+          }
+        }
       ).then((value: string) => setBalance(value));
   }
   updateBalance();
@@ -50,26 +60,45 @@ const useRewardPool = () => {
   const [reward, setReward] = useState<string | undefined>(undefined);
   const updateReward = () => {
     contract.earned(account)
-      .then((value: BigNumber) => value
-        .div(BigNumber.from(Math.pow(10, rewardToken?.decimals || 18)))
-        .toString()
+      .then((value: BigNumber) => {
+          if (chainId && rewardToken) {
+            const tokenAmount = new TokenAmount(
+              new Token(chainId, rewardToken.address, rewardToken.decimals, rewardToken.symbol, rewardToken.name),
+              JSBI.BigInt(value.toString())
+            );
+            return tokenAmountToString(tokenAmount, rewardToken.decimals);
+          } else {
+            return '0';
+          }
+        },
       ).then((value: string) => setReward(value));
-  }
+  };
   updateReward();
 
   const [blockReward, setBlockReward] = useState<string | undefined>(undefined);
   const updateBlockReward = () => {
-    contract.rewardRate().then((value: BigNumber) => value
-      .mul(BigNumber.from(13))
-      .div(BigNumber.from(Math.pow(10, rewardToken?.decimals || 1)))
-      .toString()
+    contract.rewardRate().then((value: BigNumber) => {
+        if (chainId && rewardToken) {
+          const tokenAmount = new TokenAmount(
+            new Token(chainId, rewardToken.address, rewardToken.decimals, rewardToken.symbol, rewardToken.name),
+            JSBI.BigInt(value.mul(BigNumber.from(13)).toString()),
+          );
+          return tokenAmountToString(tokenAmount, rewardToken.decimals);
+        } else {
+          return '0';
+        }
+      },
     ).then((value: string) => setBlockReward(value));
-  }
+  };
   updateBlockReward();
 
   const handleStake = (amount: string) => {
-    const bigIntAmount = BigNumber.from(amount).mul(BigNumber.from(Math.pow(10, stakeToken?.decimals || 1)));
-    contract.stake(bigIntAmount);
+    if (stakeToken) {
+      const bigIntAmount = BigNumber.from(amount).mul(BigNumber.from(Math.pow(10, stakeToken.decimals)));
+      contract.stake(bigIntAmount);
+    } else {
+      throw new Error('No stake token');
+    }
   }
 
 
