@@ -19,6 +19,7 @@ const StyledCheckbox = styled.input.attrs({ type: 'checkbox' })`
   border-radius: 4px;
   vertical-align: middle;
   display: inline-block;
+  flex-shrink: 0;
 
   :after {
     content: '';

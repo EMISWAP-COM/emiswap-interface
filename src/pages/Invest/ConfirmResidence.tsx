@@ -38,7 +38,7 @@ const ConfirmResidence: React.FC<ConfirmResidentProps> = ({ children, tooltip, o
       <Checkbox onChange={onChane} />
       <Text children={children} />
     </TextWrapper>
-    <Question text={tooltip} placement="right" />
+    <Question text={tooltip} placement="left" />
   </Wrapper>
 );
 
