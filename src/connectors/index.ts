@@ -5,6 +5,7 @@ import { PortisConnector } from '@web3-react/portis-connector';
 
 import { FortmaticConnector } from './Fortmatic';
 import { NetworkConnector } from './NetworkConnector';
+
 const CHAIN_ID = window['env'].REACT_APP_CHAIN_ID;
 const NETWORK_URL = window['env'].REACT_APP_NETWORK_URL;
 const FORMATIC_KEY = window['env'].REACT_APP_FORTMATIC_KEY;

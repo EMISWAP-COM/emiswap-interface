@@ -5,7 +5,7 @@ import {
   PopupContent,
   removePopup,
   toggleWalletModal,
-  toggleSettingsMenu,
+  toggleSettingsMenu, showWalletModal,
 } from './actions';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../index';
@@ -18,6 +18,11 @@ export function useBlockNumber(): number | undefined {
 
 export function useWalletModalOpen(): boolean {
   return useSelector((state: AppState) => state.application.walletModalOpen);
+}
+
+export function useWalletModalShow(): () => void {
+  const dispatch = useDispatch();
+  return useCallback(() => dispatch(showWalletModal()), [dispatch]);
 }
 
 export function useWalletModalToggle(): () => void {
