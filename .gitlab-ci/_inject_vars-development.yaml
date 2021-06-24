@@ -97,39 +97,7 @@ inject_vars:
           client: default
           meta:
             base_uri: http://eth1.staging.emirex.co:8545
-      tokens.yaml: |
-        - name: ESW
-          contract_address: '0x0000000000000000000000000000000000000000'
-          precisions: 18
-          type: system
-        - name: DAI
-          contract_address: '0x0000000000000000000000000000000000000001'
-          precisions: 5
-          type: system
-        - name: WETH
-          contract_address: '0x440eb39ecfe6df3a5dcaec7d9d0a16c875ebd77f'
-          precisions: 5
-          type: deployed
-        - name: MockWBTC
-          contract_address: '0x1F319B3dE5606D48c46d1a983704f4C0188A1e53'
-          precisions: 8
-          type: registered
-        - name: MockUSDC
-          contract_address: '0x1c879c2681Cb1c63F6CEBc11A5F2B65Fc8AD23ba'
-          precisions: 6
-          type: registered
-        - name: MockEMRX
-          contract_address: '0x67059251E818Ae5aBeCF365d6e847a006bf6201e'
-          precisions: 8
-          type: registered
-        - name: DAI
-          contract_address: '0x7b5f80e135296144837d5427D562797f72F66754'
-          precisions: 18
-          type: registered
-        - name: WETH
-          contract_address: '0x440eb39ecfe6df3a5dcaec7d9d0a16c875ebd77f'
-          precisions: 18
-          type: registered
+      
 
   emiswap-ui:
     fullnameOverride: emiswap-ui
