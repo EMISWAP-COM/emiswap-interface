@@ -1,5 +1,5 @@
-import styled from 'styled-components'
-import backgroundCurvedLines from '../../../assets/images/backgroundCurvedLines.svg'
+import styled from 'styled-components/macro';
+import backgroundCurvedLines from '../../../assets/images/backgroundCurvedLines.svg';
 
 export const AppWrapper = styled.div`
   display: flex;

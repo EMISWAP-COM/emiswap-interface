@@ -77,7 +77,10 @@ export const InvestRules = () => {
       {!account ? (
         <LoginFirstText>
           Only Waiting list participants will be able to buy ESW.
-          <Question text="Please note that users from the following countries are restricted from joining launchpad sales: Democratic Republic of the Congo, Côte d'Ivoire, Cuba, Iran, Iraq, Democratic People's Republic of Korea, Liberia, Myanmar, Sudan, Syrian Arab Republic, Venezuela, Zimbabwe, and the USA." />
+          <Question
+            placement="top"
+            text="Please note that users from the following countries are restricted from joining launchpad sales: Democratic Republic of the Congo, Côte d'Ivoire, Cuba, Iran, Iraq, Democratic People's Republic of Korea, Liberia, Myanmar, Sudan, Syrian Arab Republic, Venezuela, Zimbabwe, and the USA."
+          />
         </LoginFirstText>
       ) : (
         <OnlyInvestorsText>{getMessage()}</OnlyInvestorsText>

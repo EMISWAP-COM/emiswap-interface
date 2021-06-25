@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import Checkbox from '../../components/Checkbox';
+import { Checkbox } from '../../base/ui';
 import Question from '../../components/QuestionHelper';
 import { useMediaQuery } from '../../hooks';
 

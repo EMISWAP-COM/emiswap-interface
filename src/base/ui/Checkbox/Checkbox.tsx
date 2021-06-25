@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useToggle } from '../../hooks';
+import { useToggle } from '../../../hooks';
 
 export type CheckboxProps = Omit<
   React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
@@ -47,7 +47,7 @@ const StyledCheckbox = styled.input.attrs({ type: 'checkbox' })`
   }
 `;
 
-const Checkbox: React.FC<CheckboxProps> = React.forwardRef(
+export const Checkbox: React.FC<CheckboxProps> = React.forwardRef(
   ({ type, ref, checked, onChange, ...props }, forwardedRef) => {
     const [isChecked, toggle] = useToggle(checked);
     const changeHandler = React.useCallback(
@@ -63,5 +63,3 @@ const Checkbox: React.FC<CheckboxProps> = React.forwardRef(
     );
   },
 );
-
-export default Checkbox;
