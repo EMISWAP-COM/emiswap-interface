@@ -42,6 +42,7 @@ import Loader from '../../components/Loader';
 import ReferralLink from '../../components/RefferalLink';
 import { LaunchpadState } from '../../state/launchpad/reducer';
 import { InvestProgress } from './InvestProgress';
+import { loadLaunchpadStatus } from '../../state/launchpad/actions';
 
 const Invest = () => {
   useDefaultsFromURLSearch();
@@ -129,7 +130,7 @@ const Invest = () => {
   }, [approval, approvalSubmitted]);
 
   useEffect(() => {
-    // dispatch(loadLaunchpadStatus({ account, userId }) as any);
+    dispatch(loadLaunchpadStatus({ account, userId }) as any);
   }, [dispatch, account, userId]);
 
   // the callback to execute the invest
