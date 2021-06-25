@@ -46,7 +46,7 @@ export const InvestRules = () => {
     }
   };
 
-  if (launchpadState.reached_limit || launchpadState.errors) {
+  if ((launchpadState.reached_limit || launchpadState.errors) && waitListDisabled) {
     return (
       <>
         <PrivateSaleText style={{ fontWeight: 600, color: 'white' }}>Launchpad sales completed</PrivateSaleText>
