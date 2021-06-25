@@ -1,6 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchWrapper } from '../../api/fetchWrapper';
-import { addPopup } from '../application/actions';
 
 // @ts-ignore
 const baseUrl = window['env'] ? window['env'].REACT_APP_PUBLIC_URL : '';
@@ -8,7 +7,7 @@ const baseUrl = window['env'] ? window['env'].REACT_APP_PUBLIC_URL : '';
 export const loadLaunchpadStatus = createAsyncThunk(
   'loadLaunchpad/status',
   async (payload: { account: string; userId: string | null }, { dispatch }) => {
-    const {userId} = payload;
+    const { userId } = payload;
     let url = `${baseUrl}/v1/public/launchpads/status`;
     if (userId) {
       url += `?userId=${userId}`;
@@ -18,7 +17,7 @@ export const loadLaunchpadStatus = createAsyncThunk(
       const response = await fetchWrapper.get(url);
       return response;
     } catch (e) {
-      dispatch(
+      /*dispatch(
         addPopup({
           key: 'launchpadStatus',
           content: {
@@ -28,7 +27,8 @@ export const loadLaunchpadStatus = createAsyncThunk(
             },
           },
         }),
-      );
+      );*/
+      console.log(e);
       return Promise.reject(e);
     }
   },
