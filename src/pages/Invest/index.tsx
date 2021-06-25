@@ -40,7 +40,6 @@ import { InvestRules } from './InvestRules';
 import { InvestRequestStatus } from '../../state/user/reducer';
 import Loader from '../../components/Loader';
 import ReferralLink from '../../components/RefferalLink';
-import { loadLaunchpadStatus } from '../../state/launchpad/actions';
 import { LaunchpadState } from '../../state/launchpad/reducer';
 import { InvestProgress } from './InvestProgress';
 
@@ -130,7 +129,7 @@ const Invest = () => {
   }, [approval, approvalSubmitted]);
 
   useEffect(() => {
-    dispatch(loadLaunchpadStatus({ account, userId }) as any);
+    // dispatch(loadLaunchpadStatus({ account, userId }) as any);
   }, [dispatch, account, userId]);
 
   // the callback to execute the invest
