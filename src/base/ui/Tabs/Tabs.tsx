@@ -5,6 +5,10 @@ const StyledTabsWrapper = styled.div`
   background-color: ${({theme}) => theme.darkGrey};
   display: inline-flex;
   border-radius: 6px;
+
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    width: 100%;
+  `};
 `;
 
 const StyledTab = styled.div<{ isSelected: boolean }>`
@@ -16,6 +20,11 @@ const StyledTab = styled.div<{ isSelected: boolean }>`
   letter-spacing: 0.02em;
 
   ${({theme, isSelected}) => isSelected && `background-color: ${theme.purple}`};
+
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    padding: 15px 10px;
+    flex-grow: 1;
+  `};
 `;
 
 type TabItem = {

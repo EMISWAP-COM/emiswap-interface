@@ -15,6 +15,10 @@ const Tabs = styled.div`
   justify-content: space-evenly;
   width: 380px;
   margin: 0 auto;
+
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    width: 310px;
+  `};
 `;
 
 const activeClassName = 'ACTIVE';

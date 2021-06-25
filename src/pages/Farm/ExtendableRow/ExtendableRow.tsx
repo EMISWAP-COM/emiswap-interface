@@ -56,6 +56,7 @@ const StyledBlockTitle = styled.div`
 const StyledBlockValue = styled.div`
   display: flex;
   align-items: center;
+  overflow: hidden;
 `;
 
 const StyledExtendButtonDesktop = styled.div<{ isRowExtended: boolean }>`
@@ -164,6 +165,12 @@ const StyledCurrencyLogo = styled.div`
   }
 `;
 
+const StyledTruncatedText = styled.span`
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+`;
+
 type ExtendableRowProps = {
   stakeToken: Token | undefined;
   rewardToken: Token | undefined;
@@ -204,34 +211,42 @@ const ExtendableRow: React.FC<ExtendableRowProps> = (
           <StyledBlockTitle>Coin</StyledBlockTitle>
           <StyledBlockValue>
             <StyledCurrencyLogo><CurrencyLogo currency={stakeToken} size={'24px'} /></StyledCurrencyLogo>
-            {stakeToken?.symbol}
+            <StyledTruncatedText>{stakeToken?.symbol}</StyledTruncatedText>
           </StyledBlockValue>
         </StyledBlock>
         <StyledBlock width={250}>
           <StyledBlockTitle>Projected reward</StyledBlockTitle>
           <StyledBlockValue>
             <StyledCurrencyLogo><CurrencyLogo currency={rewardToken} size={'24px'} /></StyledCurrencyLogo>
-            {projectedReward}
+            <StyledTruncatedText>{projectedReward}</StyledTruncatedText>
           </StyledBlockValue>
         </StyledBlock>
         <StyledBlock width={100}>
           <StyledBlockTitle>APR</StyledBlockTitle>
-          <StyledBlockValue>{apr}</StyledBlockValue>
+          <StyledBlockValue>
+            <StyledTruncatedText>{apr}</StyledTruncatedText>
+          </StyledBlockValue>
         </StyledBlock>
         <StyledBlock width={250}>
           <StyledBlockTitle>Block reward</StyledBlockTitle>
           <StyledBlockValue>
             <StyledCurrencyLogo><CurrencyLogo currency={rewardToken} size={'24px'} /></StyledCurrencyLogo>
-            {blockReward}
+            <StyledTruncatedText>
+              <StyledTruncatedText>{blockReward}</StyledTruncatedText>
+            </StyledTruncatedText>
           </StyledBlockValue>
         </StyledBlock>
         <StyledBlock width={200}>
           <StyledBlockTitle>Liquidity</StyledBlockTitle>
-          <StyledBlockValue>{liquidity}</StyledBlockValue>
+          <StyledBlockValue>
+            <StyledTruncatedText>{liquidity}</StyledTruncatedText>
+          </StyledBlockValue>
         </StyledBlock>
         <StyledBlock>
           <StyledBlockTitle>Type</StyledBlockTitle>
-          <StyledBlockValue><StyledBlueText>{type}</StyledBlueText></StyledBlockValue>
+          <StyledBlockValue>
+            <StyledBlueText>{type}</StyledBlueText>
+          </StyledBlockValue>
         </StyledBlock>
       </StyledBlocksWrapper>
       <StyledExtendButtonDesktop onClick={handleExtendClick} isRowExtended={isRowExtended}>
@@ -244,14 +259,14 @@ const ExtendableRow: React.FC<ExtendableRowProps> = (
           <StyledBlockTitle>Deposit</StyledBlockTitle>
           <StyledBlockValue>
             <StyledCurrencyLogo><CurrencyLogo currency={stakeToken} size={'24px'} /></StyledCurrencyLogo>
-            {deposit}
+            <StyledTruncatedText>{deposit}</StyledTruncatedText>
           </StyledBlockValue>
         </StyledBlock>
         <StyledBlock>
           <StyledBlockTitle>Projected reward</StyledBlockTitle>
           <StyledBlockValue>
             <StyledCurrencyLogo><CurrencyLogo currency={rewardToken} size={'24px'} /></StyledCurrencyLogo>
-            {projectedReward}
+            <StyledTruncatedText>{projectedReward}</StyledTruncatedText>
           </StyledBlockValue>
         </StyledBlock>
       </StyledBlocksWrapper>

@@ -26,12 +26,20 @@ const StyledCollectibleList = styled.div`
   font-size: 18px;
   display: flex;
   height: 33px;
+
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    display: block;
+  `};
 `;
 
 const StyledCollectibleListItem = styled.div`
   display: flex;
   align-items: center;
   margin-right: 40px;
+
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    margin-bottom: 5px;
+  `};
 `;
 
 const StyledCurrencyLogo = styled.div`
@@ -40,6 +48,12 @@ const StyledCurrencyLogo = styled.div`
   > img {
     display: block;
   }
+`;
+
+const StyledTruncatedText = styled.span`
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 `;
 
 type TokenInputProps = {
@@ -71,11 +85,11 @@ const TokenCollect: React.FC<TokenInputProps> = (
       <StyledCollectibleList>
         <StyledCollectibleListItem>
           <StyledCurrencyLogo><CurrencyLogo currency={stakeToken} size={'24px'} /></StyledCurrencyLogo>
-          {deposit}
+          <StyledTruncatedText>{deposit}</StyledTruncatedText>
         </StyledCollectibleListItem>
         <StyledCollectibleListItem>
           <StyledCurrencyLogo><CurrencyLogo currency={rewardToken} size={'24px'} /></StyledCurrencyLogo>
-          {projectedReward}
+          <StyledTruncatedText>{projectedReward}</StyledTruncatedText>
         </StyledCollectibleListItem>
       </StyledCollectibleList>
     </StyledInputWrapper>

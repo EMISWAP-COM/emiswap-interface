@@ -14,11 +14,24 @@ const StyledFarmingHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 32px;
+
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    display: block;
+  `};
+`
+const StyledTabs = styled.div`
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    margin-bottom: 32px;
+  `};
 `
 const StyledInfoWrapper = styled.div`
   text-align: left;
   width: 50%;
   margin-bottom: 24px;
+
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    width: auto;
+  `};
 `
 const StyledInfoTitle = styled.div`
   font-size: 16px;
@@ -71,7 +84,7 @@ export default function Farm() {
       <AppBody>
         <SwapPoolTabs active={TabNames.FARM} />
         <StyledFarmingHeader>
-          <Tabs items={tabItems} selectedItemId={selectedTab} onChange={setSelectedTab} />
+          <StyledTabs><Tabs items={tabItems} selectedItemId={selectedTab} onChange={setSelectedTab} /></StyledTabs>
           <RadioGroup buttonsList={radioList} groupName="farms" value={radioValue} onChange={setRadioValue} />
         </StyledFarmingHeader>
         <StyledInfoWrapper>
