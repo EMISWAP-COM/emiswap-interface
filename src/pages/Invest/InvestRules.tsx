@@ -22,9 +22,9 @@ export const InvestRules = () => {
   const investRequestStatus = useSelector((state: AppState) => state.user.info?.invest_request_state);
   const launchpadState = useSelector((state: AppState) => state.launchpad as LaunchpadState);
 
-  const [isRegisterWaitListModalOpen, setIsRegisterWaitListModalOpen] = useState<boolean>(false);
+  const [isRegisterWhiteListModalOpen, setIsRegisterWhiteListModalOpen] = useState<boolean>(false);
 
-  const waitListDisabled = new Date() > new Date('2021-06-27 14:00:00 UTC');
+  const whiteListDisabled = launchpadState.current_at > launchpadState.whitelist_finished_at;
 
   const getMessage = () => {
     switch (investRequestStatus) {
@@ -41,7 +41,7 @@ export const InvestRules = () => {
     return null;
   }
 
-  if ((launchpadState.reached_limit || launchpadState.errors) && waitListDisabled) {
+  if ((launchpadState.reached_limit || launchpadState.errors) && whiteListDisabled) {
     return (
       <>
         <PrivateSaleText style={{ fontWeight: 600, color: 'white' }}>Launchpad sales completed</PrivateSaleText>
@@ -52,7 +52,7 @@ export const InvestRules = () => {
 
   return (
     <>
-      {waitListDisabled ? (
+      {whiteListDisabled ? (
         <>
           <PrivateSaleText>
             To join launchpad sales on June, 28 14:00 UTC you need to register for the Waiting list.
@@ -82,15 +82,15 @@ export const InvestRules = () => {
       {!investRequestStatus && (
         <div style={{ marginTop: 24 }}>
           <ButtonPrimary
-            disabled={waitListDisabled}
-            onClick={() => setIsRegisterWaitListModalOpen(true)}
+            disabled={whiteListDisabled}
+            onClick={() => setIsRegisterWhiteListModalOpen(true)}
           >
             Register to the Waiting list
           </ButtonPrimary>
           <InvestContactForm
-            isOpen={isRegisterWaitListModalOpen}
+            isOpen={isRegisterWhiteListModalOpen}
             walletID={account}
-            onDismiss={() => setIsRegisterWaitListModalOpen(false)}
+            onDismiss={() => setIsRegisterWhiteListModalOpen(false)}
           />
         </div>
       )}

@@ -1,4 +1,4 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchWrapper } from '../../api/fetchWrapper';
 
 // @ts-ignore
@@ -33,3 +33,7 @@ export const loadLaunchpadStatus = createAsyncThunk(
     }
   },
 );
+
+export const successInvest = createAction<{
+  amount: number
+}>('loadLaunchpad/successInvest');

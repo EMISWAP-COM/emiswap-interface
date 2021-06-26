@@ -42,7 +42,7 @@ import Loader from '../../components/Loader';
 import ReferralLink from '../../components/RefferalLink';
 import { LaunchpadState } from '../../state/launchpad/reducer';
 import { InvestProgress } from './InvestProgress';
-import { loadLaunchpadStatus } from '../../state/launchpad/actions';
+import { loadLaunchpadStatus, successInvest } from '../../state/launchpad/actions';
 
 const Invest = () => {
   useDefaultsFromURLSearch();
@@ -157,13 +157,18 @@ const Invest = () => {
     investCallback()
       .then((hash: string) => {
         const isBuyESW = independentField === Field.OUTPUT;
+        const field = Field[isBuyESW ? 'OUTPUT' : 'INPUT'];
+
         setAttemptingTxn(false);
         setTxHash(hash);
+
+        dispatch(successInvest({ amount: parseInt(formattedAmounts[field]) }));
+
         ReactGA.event({
           category: 'Crowdsale',
           action: 'Invest',
-          label: `buy ${formattedAmounts[Field[isBuyESW ? 'OUTPUT' : 'INPUT']]} ${
-            currencies[Field[isBuyESW ? 'OUTPUT' : 'INPUT']]?.symbol
+          label: `buy ${formattedAmounts[field]} ${
+            currencies[field]?.symbol
           }`,
         });
         ReactGA.event({
@@ -171,6 +176,7 @@ const Invest = () => {
           action: 'invest',
           value: Number(parsedAmounts[Field.OUTPUT]?.toExact()),
         });
+
       })
       .catch((error: any) => {
         setAttemptingTxn(false);
@@ -234,8 +240,7 @@ const Invest = () => {
                 'Approve ' + currencies[Field.INPUT]?.symbol
               )}
             </ButtonPrimary>
-          )
-          }
+          )}
           <ButtonError
             onClick={() => {
               expertMode ? onInvest() : setShowConfirm(true);
