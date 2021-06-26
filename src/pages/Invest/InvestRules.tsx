@@ -25,7 +25,9 @@ export const InvestRules = () => {
 
   const [isRegisterWhiteListModalOpen, setIsRegisterWhiteListModalOpen] = useState<boolean>(false);
 
-  const whiteListDisabled = launchpadState.current_at > launchpadState.whitelist_finished_at;
+  const whiteListDisabled =
+    (launchpadState.current_at > launchpadState.whitelist_finished_at)
+    || (launchpadState.current_at > launchpadState.started_at);
 
   const getMessage = () => {
     switch (investRequestStatus) {

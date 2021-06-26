@@ -46,7 +46,7 @@ export const InvestProgress = () => {
   const total = numberWithSpaces(launchpadState.total);
   const limit = numberWithSpaces(launchpadState.limit);
 
-  const launchpadDisable = launchpadState.current_at < launchpadState.finished_at;
+  const launchpadDisable = launchpadState.current_at > launchpadState.finished_at;
 
   if (!launchpadState.loaded || launchpadState.errors || launchpadDisable) {
     return null;
