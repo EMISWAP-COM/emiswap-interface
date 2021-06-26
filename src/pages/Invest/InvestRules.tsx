@@ -66,7 +66,7 @@ export const InvestRules = () => {
         </>
       ) : (
         <>
-          {!investRequestStatus && (
+          {!investRequestStatus && !whiteListDisabled && (
             <ConfirmResidence
               onChane={toggleResidentConfirm}
               children="I confirm that I am not resident of the restricted countries list"
