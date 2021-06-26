@@ -40,7 +40,7 @@ export const InvestProgress = () => {
     if (!launchpadState.total || !launchpadState.limit) {
       return 0;
     }
-    return (parseInt(launchpadState.total) / parseInt(launchpadState.limit)) * 100;
+    return parseInt((parseInt(launchpadState.total) / parseInt(launchpadState.limit) * 100).toString());
   }, [launchpadState]);
 
   const total = numberWithSpaces(launchpadState.total);
