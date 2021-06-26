@@ -222,7 +222,7 @@ export function useDerivedSwapInfo(): {
     v2Trade: v2Trade ?? undefined,
     error,
     v1Trade});
-  
+
   return {
     currencies,
     currencyBalances,

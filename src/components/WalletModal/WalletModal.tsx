@@ -1,19 +1,18 @@
-import React, { useState, useEffect } from 'react';
 import ReactGA from 'react-ga';
-import DocLink from '../../components/DocLink';
-import styled from 'styled-components';
+import ReactPixel from 'react-facebook-pixel';
 import { isMobile } from 'react-device-detect';
+import React, { useState, useEffect } from 'react';
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
+
+import DocLink from '../../components/DocLink';
 import usePrevious from '../../hooks/usePrevious';
 import { useWalletModalOpen, useWalletModalToggle } from '../../state/application/hooks';
-
 import Modal from '../Modal';
 import PendingView from './PendingView';
 import Option from './Option';
 import { SUPPORTED_WALLETS } from '../../constants';
 import { ExternalLink } from '../../theme';
 import MetamaskIcon from '../../assets/images/metamask.png';
-import { ReactComponent as Close } from '../../assets/images/x.svg';
 import { injected, fortmatic, portis } from '../../connectors';
 import { OVERLAY_READY } from '../../connectors/Fortmatic';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
@@ -25,136 +24,20 @@ import { AppState } from '../../state';
 import { Ambassador } from '../AccountDetails/Ambassador';
 import { Owner } from '../AccountDetails/Owner';
 import WarningBlock from '../Warning/WarningBlock';
-import ReactPixel from 'react-facebook-pixel'
 
-
-
-const CloseIcon = styled.div`
-  display: none;
-
-  position: absolute;
-  top: 30px;
-  right: 30px;
-  &:hover {
-    cursor: pointer;
-    opacity: 0.6;
-  }
-
-  ${({ theme }) => theme.mediaWidth.upToMedium`
-    top: 14px;
-    right: 16px;
-  `};
-
-  @media screen and (max-width: 1200px) {
-    display: block;
-  }
-`;
-
-const CloseColor = styled(Close)`
-  path {
-    stroke: ${({ theme }) => theme.text4};
-  }
-`;
-
-const Wrapper = styled.div`
-  ${({ theme }) => theme.flexColumnNoWrap}
-  margin: 0;
-  padding: 0;
-  width: 100%;
-`;
-
-const HeaderRow = styled.div`
-  ${({ theme }) => theme.flexRowNoWrap};
-  padding: 34px 30px;
-  font-weight: 500;
-  color: ${({theme, color}) => (color === 'blue' ? theme.green5 : theme.white)};
-  ${({ theme }) => theme.mediaWidth.upToMedium`
-    padding: 1rem;
-  `};
-`;
-
-const ContentWrapper = styled.div`
-  background-color: ${({ theme }) => theme.dark1};
-  padding: 2rem;
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
-
-  ${({ theme }) => theme.mediaWidth.upToMedium`padding: 1rem`};
-`;
-
-const UpperSection = styled.div`
-  position: relative;
-
-  h5 {
-    margin: 0;
-    margin-bottom: 0.5rem;
-    font-size: 1rem;
-    font-weight: 400;
-  }
-
-  h5:last-child {
-    margin-bottom: 0px;
-  }
-
-  h4 {
-    margin-top: 0;
-    font-weight: 500;
-  }
-`;
-
-const Blurb = styled.div`
-  ${({ theme }) => theme.flexRowNoWrap}
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 2rem;
-  ${({ theme }) => theme.mediaWidth.upToMedium`
-    margin: 1rem;
-    font-size: 12px;
-  `};
-  color: ${({ theme }) => theme.darkWhite};
-`;
-
-const OptionGrid = styled.div`
-  display: grid;
-  grid-gap: 10px;
-  ${({ theme }) => theme.mediaWidth.upToMedium`
-    grid-template-columns: 1fr;
-    grid-gap: 10px;
-  `};
-`;
-
-const HoverText = styled.div`
-  :hover {
-    cursor: pointer;
-  }
-`;
-
-const TermsRow = styled.div`
-  margin-bottom: 10px;
-  display: flex;
-  justify-content: center;
-  color: ${({ theme }) => theme.darkWhite}
-`;
-
-const WarningRow = styled.div`
-  margin-bottom: 15px;
-  color: ${({ theme }) => theme.red1};
-  display: flex;
-  justify-content: center;
-`;
-
-const NoUser = styled.div`
-  display: flex;
-  justify-content: center;
-  padding: 20px 0;
-`;
+import * as Styled from './styled';
 
 export enum UserRoles {
   client = 'client',
   distributor = 'distributor',
   ambassador = 'ambassador',
   owner = 'owner',
+}
+
+export interface WalletModalProps {
+  pendingTransactions: string[]; // hashes of pending
+  confirmedTransactions: string[]; // hashes of confirmed
+  ENSName?: string;
 }
 
 const WALLET_VIEWS = {
@@ -164,15 +47,7 @@ const WALLET_VIEWS = {
   PENDING: 'pending',
 };
 
-export default function WalletModal({
-  pendingTransactions,
-  confirmedTransactions,
-  ENSName,
-}: {
-  pendingTransactions: string[]; // hashes of pending
-  confirmedTransactions: string[]; // hashes of confirmed
-  ENSName?: string;
-}) {
+const WalletModal: React.FC<WalletModalProps> = ({ ENSName }) => {
   // important that these are destructed from the account-specific web3-react context
   const { active, account, connector, activate, error } = useWeb3React();
 
@@ -355,7 +230,7 @@ export default function WalletModal({
           label: 'success',
         });
 
-        ReactPixel.track('wallet_connect_success')
+        ReactPixel.track('wallet_connect_success');
       })
       .catch(error => {
         if (error instanceof UnsupportedChainIdError) {
@@ -480,16 +355,16 @@ export default function WalletModal({
     if (error) {
       return (
         <>
-          <HeaderRow>
+          <Styled.HeaderRow>
             {error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error connecting'}
-          </HeaderRow>
-          <ContentWrapper>
+          </Styled.HeaderRow>
+          <Styled.ContentWrapper>
             {error instanceof UnsupportedChainIdError ? (
               <h5>Please connect to the appropriate Ethereum network.</h5>
             ) : (
               'Error connecting. Try refreshing the page.'
             )}
-          </ContentWrapper>
+          </Styled.ContentWrapper>
         </>
       );
     }
@@ -512,43 +387,43 @@ export default function WalletModal({
           );
         default:
           return (
-            <NoUser>
+            <Styled.NoUser>
               <WarningBlock
                 title={'Login failed'}
                 content={() => <div>Something went wrong.</div>}
                 bottomContent={() => <div>Please refresh the page and try again.</div>}
               />
-            </NoUser>
+            </Styled.NoUser>
           );
       }
     } else if (account && !user && walletView === WALLET_VIEWS.ACCOUNT) {
       return (
         <>
-          <HeaderRow>Sorry, we couldn't load user info</HeaderRow>
-          <ContentWrapper>account - {account}</ContentWrapper>
+          <Styled.HeaderRow>Sorry, we couldn't load user info</Styled.HeaderRow>
+          <Styled.ContentWrapper>account - {account}</Styled.ContentWrapper>
         </>
       );
     }
     return (
       <>
         {walletView !== WALLET_VIEWS.ACCOUNT ? (
-          <HeaderRow color="blue">
-            <HoverText
+          <Styled.HeaderRow color="blue">
+            <Styled.HoverText
               onClick={() => {
                 setPendingError(false);
                 setWalletView(WALLET_VIEWS.ACCOUNT);
               }}
             >
               Back
-            </HoverText>
-          </HeaderRow>
+            </Styled.HoverText>
+          </Styled.HeaderRow>
         ) : (
-          <HeaderRow>
-            <HoverText>Connect to a wallet</HoverText>
-          </HeaderRow>
+          <Styled.HeaderRow>
+            <Styled.HoverText>Connect to a wallet</Styled.HoverText>
+          </Styled.HeaderRow>
         )}
-        <ContentWrapper>
-          <TermsRow>
+        <Styled.ContentWrapper>
+          <Styled.TermsRow>
             <label>
               <input
                 name="isGoing"
@@ -576,8 +451,12 @@ export default function WalletModal({
                 </b>
               </span>
             </label>
-          </TermsRow>
-          {warning ? <WarningRow>Please accept terms and conditions first</WarningRow> : ''}
+          </Styled.TermsRow>
+          {warning ? (
+            <Styled.WarningRow>Please accept terms and conditions first</Styled.WarningRow>
+          ) : (
+            ''
+          )}
 
           {walletView === WALLET_VIEWS.PENDING ? (
             <PendingView
@@ -587,17 +466,17 @@ export default function WalletModal({
               tryActivation={tryActivation}
             />
           ) : (
-            <OptionGrid>{getOptions(termAndConditionsAccepted)}</OptionGrid>
+            <Styled.OptionGrid>{getOptions(termAndConditionsAccepted)}</Styled.OptionGrid>
           )}
           {walletView !== WALLET_VIEWS.PENDING && (
-            <Blurb>
+            <Styled.Blurb>
               <span>New to Ethereum? &nbsp;</span>{' '}
               <ExternalLink href="https://ethereum.org/use/#3-what-is-a-wallet-and-which-one-should-i-use">
                 Learn more about wallets
               </ExternalLink>
-            </Blurb>
+            </Styled.Blurb>
           )}
-        </ContentWrapper>
+        </Styled.ContentWrapper>
       </>
     );
   }
@@ -610,14 +489,16 @@ export default function WalletModal({
       maxHeight={90}
       maxWidth={720}
     >
-      <Wrapper tabIndex={0}>
-        <UpperSection>
-          <CloseIcon onClick={toggleWalletModal}>
-            <CloseColor />
-          </CloseIcon>
+      <Styled.Wrapper tabIndex={0}>
+        <Styled.UpperSection>
+          <Styled.CloseIcon onClick={toggleWalletModal}>
+            <Styled.CloseColor />
+          </Styled.CloseIcon>
           {getModalContent()}
-        </UpperSection>
-      </Wrapper>
+        </Styled.UpperSection>
+      </Styled.Wrapper>
     </Modal>
   );
-}
+};
+
+export default WalletModal;

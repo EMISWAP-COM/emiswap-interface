@@ -100,7 +100,7 @@ const Invest = () => {
 
   // modal and loading
   const [showConfirm, setShowConfirm] = useState<boolean>(false); // show confirmation modal
-  const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false); // waiting for user confirmaion/rejection
+  const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false); // waiting for user confirmation/rejection
   const [txHash, setTxHash] = useState<string>('');
 
   const returnFormattedAmount = (bool: boolean) => {
@@ -192,7 +192,8 @@ const Invest = () => {
 
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
   // never show if price impact is above threshold in non expert mode
-  const showApproveFlow = investGranted &&
+  const showApproveFlow =
+    investGranted &&
     !error &&
     (approval === ApprovalState.NOT_APPROVED ||
       approval === ApprovalState.PENDING ||
@@ -253,7 +254,6 @@ const Invest = () => {
               {investGranted && error ? error : `Invest`}
             </Text>
           </ButtonError>
-
         </RowBetween>
         {!error && !isTransactionFeeCovered && (
           <ErrorText style={{ marginTop: 4 }} fontWeight={500} fontSize="11pt" severity={3}>
@@ -261,7 +261,6 @@ const Invest = () => {
           </ErrorText>
         )}
       </>
-
     );
   };
 
@@ -272,17 +271,18 @@ const Invest = () => {
 
   const [dismissedToken0] = useTokenWarningDismissal(chainId, currencies[Field.INPUT]);
   const [dismissedToken1] = useTokenWarningDismissal(chainId, currencies[Field.OUTPUT]);
-  const showWarning = (!dismissedToken0 && !!currencies[Field.INPUT]) ||
+  const showWarning =
+    (!dismissedToken0 && !!currencies[Field.INPUT]) ||
     (!dismissedToken1 && !!currencies[Field.OUTPUT]);
 
   return (
     <>
-      {showWarning && <TokenWarningCards currencies={currencies}/>}
+      {showWarning && <TokenWarningCards currencies={currencies} />}
       <AppBody
         disabled={showWarning}
         className={`invest-mobile ${role === UserRoles.distributor ? 'mb650' : ''}`}
       >
-        <SwapPoolTabs active={TabNames.INVEST}/>
+        <SwapPoolTabs active={TabNames.INVEST} />
         <Wrapper id="invest-page">
           <ConfirmationModal
             isOpen={showConfirm}
@@ -311,7 +311,7 @@ const Invest = () => {
               disabled={role === UserRoles.distributor}
               onMax={() => {
                 maxAmountInput &&
-                onUserInput(Field.INPUT, maxAmountInput.toExact(), currencies[Field.INPUT]);
+                  onUserInput(Field.INPUT, maxAmountInput.toExact(), currencies[Field.INPUT]);
               }}
               onCurrencySelect={currency => {
                 setApprovalSubmitted(false); // reset 2 step UI for approvals
@@ -351,7 +351,7 @@ const Invest = () => {
 
           {!launchpadState.loaded ? (
             <div style={{ paddingTop: 24 }}>
-              <Loader size="100px"/>
+              <Loader size="100px" />
             </div>
           ) : (
             <>
@@ -369,18 +369,17 @@ const Invest = () => {
 
               <InvestRules/>
 
-              <ReferralLink/>
+              <ReferralLink />
             </>
           )}
-
         </Wrapper>
-        {role === UserRoles.distributor &&
-        <EmiCardsBlock
-          outputNum={Number(formattedAmounts[Field.OUTPUT])}
-          formattedAmounts={formattedAmounts}
-          handleTypeInputOUTPUT={handleTypeInputOUTPUT}
-        />
-        }
+        {role === UserRoles.distributor && (
+          <EmiCardsBlock
+            outputNum={Number(formattedAmounts[Field.OUTPUT])}
+            formattedAmounts={formattedAmounts}
+            handleTypeInputOUTPUT={handleTypeInputOUTPUT}
+          />
+        )}
       </AppBody>
     </>
   );

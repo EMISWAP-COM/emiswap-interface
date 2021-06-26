@@ -83,7 +83,7 @@ const Pool = () => {
   return (
     <>
       <AppBody>
-        <SwapPoolTabs active={TabNames.POOL}/>
+        <SwapPoolTabs active={TabNames.POOL} />
         <AutoColumn gap="lg" justify="center">
           <>
             <AutoColumn gap="12px" style={{ width: '100%' }}>
@@ -91,7 +91,7 @@ const Pool = () => {
                 <Text color={theme.white} fontWeight={500}>
                   Your Liquidity
                 </Text>
-                <Question text="When you add liquidity, you are given pool tokens that represent your share. If you don’t see a pool you joined in this list, try importing a pool below."/>
+                <Question text="When you add liquidity, you are given pool tokens that represent your share. If you don’t see a pool you joined in this list, try importing a pool below." />
               </RowBetween>
               {!account ? (
                 <OutlineCard padding="40px">
@@ -108,7 +108,7 @@ const Pool = () => {
               ) : allV2PairsWithLiquidity?.length > 0 ? (
                 <>
                   {allV2PairsWithLiquidity.map(v2Pair => (
-                    <FullPositionCard key={v2Pair.liquidityToken.address} pair={v2Pair}/>
+                    <FullPositionCard key={v2Pair.liquidityToken.address} pair={v2Pair} />
                   ))}
                 </>
               ) : (
@@ -137,7 +137,7 @@ const Pool = () => {
                   fontSize={14}
                   style={{ padding: '.5rem 0 .5rem 0' }}
                 >
-                  Don't see a pool you joined?
+                  Don't see a pool you joined?{' '}
                   <StyledGreenLink id="import-pool-link" to="/find">
                     Import it.
                   </StyledGreenLink>
@@ -155,7 +155,7 @@ const Pool = () => {
                   </div>
                 </TYPE.black>
               </div>
-              <ReferralLink/>
+              <ReferralLink />
             </AutoColumn>
           </>
         </AutoColumn>

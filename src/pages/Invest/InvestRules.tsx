@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { ButtonPrimary } from '../../components/Button';
-import { useActiveWeb3React } from '../../hooks';
+import { useActiveWeb3React, useToggle } from '../../hooks';
 import { AppState } from '../../state';
 import InvestContactForm from '../../components/InvestContactForm';
 import { OnlyInvestorsText, PrivateSaleText } from './styleds';
 import { InvestRequestStatus } from '../../state/user/reducer';
 import Question from '../../components/QuestionHelper';
-import { LaunchpadState } from '../../state/launchpad/reducer';
+import ConfirmResidence from './ConfirmResidence';
 
 const statuses = [
   InvestRequestStatus.PENDING,
@@ -18,9 +18,10 @@ const statuses = [
 
 export const InvestRules = () => {
   const { account } = useActiveWeb3React();
+  const [isResidentConfirm, toggleResidentConfirm] = useToggle(false);
 
   const investRequestStatus = useSelector((state: AppState) => state.user.info?.invest_request_state);
-  const launchpadState = useSelector((state: AppState) => state.launchpad as LaunchpadState);
+  const launchpadState = useSelector((state: AppState) => state.launchpad);
 
   const [isRegisterWhiteListModalOpen, setIsRegisterWhiteListModalOpen] = useState<boolean>(false);
 
@@ -44,7 +45,9 @@ export const InvestRules = () => {
   if ((launchpadState.reached_limit || launchpadState.errors) && whiteListDisabled) {
     return (
       <>
-        <PrivateSaleText style={{ fontWeight: 600, color: 'white' }}>Launchpad sales completed</PrivateSaleText>
+        <PrivateSaleText style={{ fontWeight: 600, color: 'white' }}>
+          Launchpad sales completed
+        </PrivateSaleText>
         <PrivateSaleText>Please wait for further announcements</PrivateSaleText>
       </>
     );
@@ -61,6 +64,13 @@ export const InvestRules = () => {
         </>
       ) : (
         <>
+          {!investRequestStatus && (
+            <ConfirmResidence
+              onChane={toggleResidentConfirm}
+              children="I confirm that I am not resident of the restricted countries list"
+              tooltip="Democratic Republic of the Congo, Côte d'Ivoire, Cuba, Iran, Iraq, Democratic People's Republic of Korea, Liberia, Myanmar, Sudan, Syrian Arab Republic, Venezuela, Zimbabwe, and the USA"
+            />
+          )}
           {!statuses.includes(investRequestStatus) ? (
             <>
               <PrivateSaleText>
@@ -82,7 +92,7 @@ export const InvestRules = () => {
       {!investRequestStatus && (
         <div style={{ marginTop: 24 }}>
           <ButtonPrimary
-            disabled={whiteListDisabled}
+            disabled={whiteListDisabled || !isResidentConfirm}
             onClick={() => setIsRegisterWhiteListModalOpen(true)}
           >
             Register to the Waiting list
@@ -94,7 +104,6 @@ export const InvestRules = () => {
           />
         </div>
       )}
-
     </>
   );
 };

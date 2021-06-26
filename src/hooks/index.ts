@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import { isMobile } from 'react-device-detect';
 import { injected } from '../connectors';
 import { NetworkContextName } from '../constants';
+export { default as useToggle } from './useToggle';
+export { default as useMediaQuery } from './useMediaQuery';
 
 export function useActiveWeb3React(): Web3ReactContextInterface<Web3Provider> & {
   chainId?: ChainId;
