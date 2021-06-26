@@ -10,7 +10,7 @@ export const loadLaunchpadStatus = createAsyncThunk(
     const { userId } = payload;
     let url = `${baseUrl}/v1/public/launchpads/status`;
     if (userId) {
-      url += `?userId=${userId}`;
+      url += `?user_id=${userId}`;
     }
 
     try {
