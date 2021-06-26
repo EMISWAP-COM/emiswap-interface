@@ -1,19 +1,23 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchWrapper } from '../../api/fetchWrapper';
-import { addPopup } from '../application/actions';
 
 // @ts-ignore
 const baseUrl = window['env'] ? window['env'].REACT_APP_PUBLIC_URL : '';
 
 export const loadLaunchpadStatus = createAsyncThunk(
   'loadLaunchpad/status',
-  async (account: unknown, { dispatch }) => {
-    const url = `${baseUrl}/v1/public/launchpad_transactions/status`;
+  async (payload: { account: string; userId: string | null }, { dispatch }) => {
+    const { userId } = payload;
+    let url = `${baseUrl}/v1/public/launchpads/status`;
+    if (userId) {
+      url += `?user_id=${userId}`;
+    }
+
     try {
       const response = await fetchWrapper.get(url);
       return response;
     } catch (e) {
-      dispatch(
+      /*dispatch(
         addPopup({
           key: 'launchpadStatus',
           content: {
@@ -23,8 +27,13 @@ export const loadLaunchpadStatus = createAsyncThunk(
             },
           },
         }),
-      );
+      );*/
+      console.log(e);
       return Promise.reject(e);
     }
   },
 );
+
+export const successInvest = createAction<{
+  amount: number
+}>('loadLaunchpad/successInvest');

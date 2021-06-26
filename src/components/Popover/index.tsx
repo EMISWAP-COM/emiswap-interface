@@ -91,6 +91,10 @@ export default function Popover({ content, show, children, placement = 'auto' }:
     modifiers: [
       { name: 'offset', options: { offset: [8, 8] } },
       { name: 'arrow', options: { element: arrowElement } },
+      {
+        name: 'preventOverflow',
+        options: { boundary: 'clippingParents', rootBoundary: 'viewport' },
+      },
     ],
   });
   useInterval(update, show ? 100 : null);

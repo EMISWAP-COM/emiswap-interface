@@ -22,14 +22,6 @@ export const PrivateSaleText = styled.div`
   margin: 24px auto 0 auto;
 `;
 
-export const LoginFirstText = styled.div`
-  max-width: 300px;
-  font-size: 16px;
-  line-height: 24px;
-  color: ${({ theme }) => theme.white};
-  margin: 16px auto 0 auto;
-`;
-
 export const OnlyInvestorsText = styled.div`
   max-width: 340px;
   font-size: 16px;

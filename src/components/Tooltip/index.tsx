@@ -9,7 +9,7 @@ const TooltipContainer = styled.div`
   font-weight: 400;
 `;
 
-interface TooltipProps extends Omit<PopoverProps, 'content'> {
+export interface TooltipProps extends Omit<PopoverProps, 'content'> {
   text: string;
 }
 
