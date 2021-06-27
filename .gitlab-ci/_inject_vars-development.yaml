@@ -142,7 +142,7 @@ inject_vars:
           client: default
           meta:
             base_uri: http://eth1.staging.emirex.co:8545
-  
+
   postgresql:
     image:
       tag: 13.1.0

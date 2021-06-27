@@ -24,6 +24,7 @@ const Message = styled.p`
   padding: 0 15px;
   font-size: 20px;
   line-height: 32px;
+  color: white;
 `;
 
 export const SuccessRegistration = ({ message }: { message: string }) => {

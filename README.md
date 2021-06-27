@@ -34,7 +34,7 @@ not work on other networks.
 
 #### Contributions
 
-**Please open all pull requests against the `master` branch.** CI checks will run against all PRs.
+**Please open all pull requests against the `production` branch.** CI checks will run against all PRs.
 
 #### License
 
@@ -55,3 +55,5 @@ see <https://www.gnu.org/licenses/>.
 Copyright © 2021, [EmiSwap](https://emiswap.com/).
 
 Released under GNU General Public License v3.0
+
+

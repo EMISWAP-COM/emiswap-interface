@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import React, { useState } from 'react';
 import { ButtonPrimary } from '../../../components/Button';
 
@@ -7,47 +7,46 @@ const Container = styled.div`
 `;
 
 const MessageBlock = styled.div`
+  position: absolute;
+  padding: 12px 16px;
+  border: 1px solid ${({ theme }) => theme.lightGrey};
+  border-radius: 8px;
+  background: ${({ theme }) => theme.darkGrey};
+
+  &:before {
+    content: '';
+    display: block;
     position: absolute;
-    padding: 12px 16px;
+    left: 50%;
+    top: 39px;
+    width: 9px;
+    height: 9px;
     border: 1px solid ${({ theme }) => theme.lightGrey};
-    border-radius: 8px;
+    border-top: none;
+    border-right: none;
     background: ${({ theme }) => theme.darkGrey};
-    
+    transform: rotate(-45deg);
+  }
+
+  @media screen and (max-width: 600px) {
+    position: fixed !important;
+    bottom: 0;
+    width: 100%;
+    top: inherit !important;
+    right: 0 !important;
+    padding: 24px 32px;
+    font-size: 20px;
+    border-radius: 24px 24px 0 0;
+
     &:before {
-      content: '';
-      display: block;
-      position: absolute;
-      left: 50%;
-      top: 39px;
-      width: 9px;
-      height: 9px;
-      border: 1px solid ${({ theme }) => theme.lightGrey};
-      border-top: none;
-      border-right: none;
-      background: ${({ theme }) => theme.darkGrey};
-      transform: rotate(-45deg);
+      display: none;
     }
-    
-    @media screen and (max-width: 600px) {
-      position: fixed !important;
-      bottom: 0;
-      width: 100%;
-      top: inherit !important;
-      right: 0 !important;
-      padding: 24px 32px;
-      font-size: 20px;
-      border-radius: 24px 24px 0 0;
-      
-      &:before {
-        display: none;
-      }
-      
-    }
+  }
 `;
 
 const MessageText = styled.span`
   white-space: nowrap;
-  
+
   @media screen and (max-width: 600px) {
     white-space: normal;
   }
@@ -55,7 +54,7 @@ const MessageText = styled.span`
 
 const ButtonClose = styled(ButtonPrimary)`
   display: none;
-  
+
   @media screen and (max-width: 600px) {
     display: block;
     width: 100%;
@@ -64,10 +63,10 @@ const ButtonClose = styled(ButtonPrimary)`
   }
 `;
 
-interface Props {
+export interface MessageTooltipProps {
   children: React.ReactNode;
   text: string;
-  position: { top?: string, right?: string, bottom?: string, left?: string },
+  position: { top?: string; right?: string; bottom?: string; left?: string };
   onClick?: () => void;
   onMouseEnter?: () => void;
   onClose?: () => void;
@@ -75,16 +74,13 @@ interface Props {
   buttonText?: string;
 }
 
-export const MessageTooltip: React.FC<Props> = ({
+export const MessageTooltip: React.FC<MessageTooltipProps> = ({
   children,
   text,
   position,
-  onClick = () => {
-  },
-  onMouseEnter = () => {
-  },
-  onClose = () => {
-  },
+  onClick = () => void 0,
+  onMouseEnter = () => void 0,
+  onClose = () => void 0,
   disableTooltip = false,
   buttonText = 'OK',
 }) => {
@@ -149,7 +145,11 @@ export const MessageTooltip: React.FC<Props> = ({
           <ButtonClose onClick={handleCloseClick}>{buttonText}</ButtonClose>
         </MessageBlock>
       )}
-      <Container onClick={handleClick} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+      <Container
+        onClick={handleClick}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
         {children}
       </Container>
     </>

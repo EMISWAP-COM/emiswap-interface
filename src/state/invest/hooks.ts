@@ -25,6 +25,7 @@ import { ESW } from '../../constants';
 import { investMaxESW } from '../../constants/invest';
 import { maxAmountSpendInvest } from '../../utils/maxAmountSpend'
 import { InvestState } from './reducer';
+import { LaunchpadState } from '../launchpad/reducer';
 
 const num2str = (value: number, decimals: number): string => {
   return value.toLocaleString('en', {
@@ -150,6 +151,7 @@ export function useDerivedInvestInfo(): {
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
   } = useInvestState();
 
+  const launchpadState = useSelector((state: AppState) => state.launchpad as LaunchpadState);
 
   const inputCurrency = useCurrency(inputCurrencyId);
   const outputCurrency = useCurrency(outputCurrencyId);
@@ -225,6 +227,10 @@ export function useDerivedInvestInfo(): {
 
   if (isMaxInvestment) {
     error = "Sorry, there’s a limit of $500 purchase with one wallet";
+  }
+
+  if (launchpadState.user_deposits_count > 0) {
+    error = "You’ve already made a purchase. Users can not join launchpad sales several times";
   }
 
   if (parsedAmount && !parsedOutputAmount) {
