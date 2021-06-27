@@ -14,7 +14,7 @@ chart_vars:
     env_js: |
       window.env = {
                 REACT_APP_CHAIN_ID: '1',
-        REACT_APP_NETWORK_URL: 'https://mainnet.infura.io/v3/2b7c5bba80094418abf5e746ba10dac0',
+        REACT_APP_NETWORK_URL: 'https://eth1.emiswap.com',
         REACT_APP_PORTIS_ID: '80945dc9-abef-4258-bf12-8e90b57a1d01',
         REACT_APP_FORTMATIC_KEY: 'pk_live_367A5E34E52789B6',
         REACT_APP_GOOGLE_ANALYTICS_ID: 'UA-146884842-3',
