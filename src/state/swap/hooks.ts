@@ -26,6 +26,8 @@ import { computeSlippageAdjustedAmounts } from '../../utils/prices';
 import { BigNumber } from '@ethersproject/bignumber';
 import { KOVAN_WETH, WETH } from '../../constants';
 
+const DEBUG = false;
+
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>(state => state.swap);
 }
@@ -134,8 +136,18 @@ export function useDerivedSwapInfo(): {
   const isExactIn: boolean = independentField === Field.INPUT;
 
   //FIXME Сделать нормальное получение WETH в зависимости от сети
-  const inputCurrencyWrapped = inputCurrency?.address === eth?.address ? (chainId === ChainId.MAINNET ? WETH : KOVAN_WETH) : inputCurrency;
-  const outputCurrencyWrapped = outputCurrency?.address === eth?.address ? (chainId === ChainId.MAINNET ? WETH : KOVAN_WETH) : outputCurrency;
+  const inputCurrencyWrapped =
+    inputCurrency?.address === eth?.address
+      ? chainId === ChainId.MAINNET
+        ? WETH
+        : KOVAN_WETH
+      : inputCurrency;
+  const outputCurrencyWrapped =
+    outputCurrency?.address === eth?.address
+      ? chainId === ChainId.MAINNET
+        ? WETH
+        : KOVAN_WETH
+      : outputCurrency;
 
   const parsedAmount = tryParseAmount(
     typedValue,
@@ -216,12 +228,15 @@ export function useDerivedSwapInfo(): {
     error = 'Insufficient ' + balanceIn.token.symbol + ' balance';
   }
 
-  console.log({currencies,
-    currencyBalances,
-    parsedAmount,
-    v2Trade: v2Trade ?? undefined,
-    error,
-    v1Trade});
+  DEBUG &&
+    console.log({
+      currencies,
+      currencyBalances,
+      parsedAmount,
+      v2Trade: v2Trade ?? undefined,
+      error,
+      v1Trade,
+    });
 
   return {
     currencies,
