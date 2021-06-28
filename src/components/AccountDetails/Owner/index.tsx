@@ -1,18 +1,19 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components/macro';
+
+import { loadBalance, loadPerformance } from '../../../state/cabinets/actions';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { AppDispatch, AppState } from '../../../state';
-import { loadBalance, loadPerformance } from '../../../state/cabinets/actions';
 
 import { ExternalLink } from '../../../theme';
 
 import {
-  EswHoldingRewards,
   Connection,
-  FarmingRewards,
+  EswHoldingRewards,
   ESWLocked,
   ESWRewards,
+  FarmingRewards,
   PurchaseHistory,
   ReferralPerformance,
 } from '../Common';

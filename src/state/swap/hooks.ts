@@ -26,6 +26,8 @@ import { computeSlippageAdjustedAmounts } from '../../utils/prices';
 import { BigNumber } from '@ethersproject/bignumber';
 import { KOVAN_WETH, WETH } from '../../constants';
 
+const DEBUG = false;
+
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>(state => state.swap);
 }
@@ -226,14 +228,15 @@ export function useDerivedSwapInfo(): {
     error = 'Insufficient ' + balanceIn.token.symbol + ' balance';
   }
 
-  console.info({
-    currencies,
-    currencyBalances,
-    parsedAmount,
-    v2Trade: v2Trade ?? undefined,
-    error,
-    v1Trade,
-  });
+  DEBUG &&
+    console.log({
+      currencies,
+      currencyBalances,
+      parsedAmount,
+      v2Trade: v2Trade ?? undefined,
+      error,
+      v1Trade,
+    });
 
   return {
     currencies,
