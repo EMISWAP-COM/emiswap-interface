@@ -10,6 +10,8 @@ import { useActiveWeb3React } from '../../../hooks';
 import { tokenAmountToString } from '../../../utils/formats';
 import { maxAmountSpend } from '../../../utils/maxAmountSpend';
 import { tryParseAmount } from '../../../state/swap/hooks';
+import { ApprovalState, useApproveCallback } from '../../../hooks/useApproveCallback';
+import { EMI_ROUTER_ADRESSES } from '../../../constants/emi/addresses';
 
 const StyledTokenInputWrapper = styled.div`
   border: 1px solid ${({theme}) => theme.lightGrey};
@@ -90,7 +92,7 @@ const TokenInput: React.FC<TokenInputProps> = (
     onStake,
   }
 ) => {
-  const { account } = useActiveWeb3React();
+  const { account, chainId } = useActiveWeb3React();
   const [inputValue, setInputValue] = useState<string>('');
 
   const handleButtonClick = useCallback(() => {
@@ -98,19 +100,19 @@ const TokenInput: React.FC<TokenInputProps> = (
   }, [onStake, inputValue]);
 
   const balance = useTokenBalance(account, token);
+  const maxAmount = maxAmountSpend(balance);
 
   const handleMaxButtonClick = useCallback(() => {
-    setInputValue(maxAmountSpend(balance).toExact());
-  }, [balance]);
-
-
+    setInputValue(maxAmount.toExact());
+  }, [maxAmount]);
 
   const isInsufficientBalance = useMemo(() => {
     const parsedAmount = tryParseAmount(inputValue, token);
-    const maxAmount = maxAmountSpend(balance);
 
     return maxAmount && parsedAmount && JSBI.lessThan(maxAmount.raw, parsedAmount.raw);
-  }, [balance, inputValue, token]);
+  }, [inputValue, token, maxAmount]);
+
+  const [approvalState, doApprove] = useApproveCallback(maxAmount, EMI_ROUTER_ADRESSES[chainId]);
 
   return (<StyledTokenInputWrapper>
     <StyledInputWrapper>
@@ -132,7 +134,11 @@ const TokenInput: React.FC<TokenInputProps> = (
         </StyledCurrencySelect>
       </StyledInputContentWrapper>
     </StyledInputWrapper>
-    <Button onClick={handleButtonClick} isDisabled={isInsufficientBalance}>{isInsufficientBalance ? 'Insufficient balance' : 'Stake'}</Button>
+    {approvalState === ApprovalState.UNKNOWN && <Button isDisabled={true}>Checking approval...</Button>}
+    {approvalState === ApprovalState.NOT_APPROVED && <Button onClick={doApprove}>Approve {token?.symbol}</Button>}
+    {approvalState === ApprovalState.PENDING && <Button isDisabled={true}>Approval in progress...</Button>}
+    {approvalState === ApprovalState.APPROVED &&
+      <Button onClick={handleButtonClick} isDisabled={isInsufficientBalance}>{isInsufficientBalance ? 'Insufficient balance' : 'Stake'}</Button>}
   </StyledTokenInputWrapper>);
 }
 

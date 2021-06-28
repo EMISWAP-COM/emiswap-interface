@@ -21,7 +21,7 @@ const StyledButton = styled.button<{ isDisabled: boolean }>`
 `;
 
 type ButtonProps = {
-  onClick: () => void;
+  onClick?: () => void;
   isDisabled?: boolean;
 }
 
