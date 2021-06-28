@@ -43,9 +43,9 @@ export default createReducer<LaunchpadState>(initialState, builder =>
         ...action.payload,
         loaded: true,
         errors: null,
-        current_at: new Date(current_at),
-        started_at: new Date(started_at),
-        finished_at: new Date(finished_at),
+        current_at: new Date(current_at ?? initialState.current_at),
+        started_at: new Date(started_at ?? initialState.started_at),
+        finished_at: new Date(finished_at ?? initialState.finished_at),
         user_deposits_amount: parseInt((+user_deposits_amount * ESW_PER_USD).toFixed()).toString(),
         total: parseInt((+total * ESW_PER_USD).toFixed()).toString(),
       };
