@@ -44,7 +44,7 @@ export const InvestRules = () => {
     return null;
   }
 
-  if ((launchpadState.reached_limit || launchpadState.errors) && whiteListDisabled) {
+  if ((launchpadState.reached_limit /*|| launchpadState.errors*/) && whiteListDisabled) {
     return (
       <>
         <PrivateSaleText style={{ fontWeight: 600, color: 'white' }}>
