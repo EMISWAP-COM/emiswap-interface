@@ -40,11 +40,11 @@ export const InvestRules = () => {
     }
   };
 
-  if (!launchpadState.reached_limit && investRequestStatus === InvestRequestStatus.ACCEPTED) {
+  if (!(launchpadState.limit < launchpadState.total) && investRequestStatus === InvestRequestStatus.ACCEPTED) {
     return null;
   }
 
-  if ((launchpadState.reached_limit /*|| launchpadState.errors*/) && whiteListDisabled) {
+  if ((launchpadState.limit < launchpadState.total /*|| launchpadState.errors*/) && whiteListDisabled) {
     return (
       <>
         <PrivateSaleText style={{ fontWeight: 600, color: 'white' }}>
