@@ -40,12 +40,11 @@ export const InvestRules = () => {
     }
   };
 
-  console.log("launchpadState.limit < launchpadState.total: ", launchpadState.limit, launchpadState.total)
   if (!(launchpadState.limit < launchpadState.total) && investRequestStatus === InvestRequestStatus.ACCEPTED) {
     return null;
   }
 
-  if ((launchpadState.limit < launchpadState.total /*|| launchpadState.errors*/) && whiteListDisabled) {
+  if ((launchpadState.limit < launchpadState.total)/* && whiteListDisabled*/) {
     return (
       <>
         <PrivateSaleText style={{ fontWeight: 600, color: 'white' }}>
