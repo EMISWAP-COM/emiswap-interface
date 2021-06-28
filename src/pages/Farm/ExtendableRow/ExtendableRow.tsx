@@ -183,8 +183,8 @@ type ExtendableRowProps = {
   liquidity: string;
   deposit: string;
   type: string;
-  onStake: (amount: string) => void;
-  onCollect: () => void;
+  onStake: (amount: string) => Promise<unknown>;
+  onCollect: () => Promise<unknown>;
 }
 
 const ExtendableRow: React.FC<ExtendableRowProps> = (

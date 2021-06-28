@@ -1,8 +1,9 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components/macro';
 import Button from '../../../base/ui/Button';
 import { Token } from '@uniswap/sdk';
 import CurrencyLogo from '../../../components/CurrencyLogo';
+import { useCompletedTransactionsCount } from '../../../state/transactions/hooks';
 
 const StyledTokenInputWrapper = styled.div`
   border: 1px solid ${({theme}) => theme.lightGrey};
@@ -61,7 +62,7 @@ type TokenInputProps = {
   projectedReward: string;
   stakeToken: Token | undefined;
   rewardToken: Token | undefined;
-  onCollect: () => void;
+  onCollect: () => Promise<unknown>;
 }
 
 const TokenCollect: React.FC<TokenInputProps> = (
@@ -73,9 +74,28 @@ const TokenCollect: React.FC<TokenInputProps> = (
     onCollect,
   }
 ) => {
+  const [isCollectInProgress, setIsCollectInProgress] = useState<boolean>(false);
+
+  const isCollectButtonDisabled = !Number(deposit) || isCollectInProgress;
+
+  let collectButtonText = 'Collect ot wallet';
+  if (isCollectInProgress) {
+    collectButtonText = 'Collecting...';
+  }
+
+  // This counter is used to update isCollectInProgress whenever transaction finishes
+  const completedTransactionsCount = useCompletedTransactionsCount();
+
   const handleButtonClick = useCallback(() => {
-    onCollect();
+    setIsCollectInProgress(true);
+    onCollect().catch(() => {
+      setIsCollectInProgress(false);
+    });
   }, [onCollect]);
+
+  useEffect(() => {
+    setIsCollectInProgress(false);
+  }, [completedTransactionsCount]);
 
   return (<StyledTokenInputWrapper>
     <StyledInputWrapper>
@@ -91,7 +111,7 @@ const TokenCollect: React.FC<TokenInputProps> = (
         </StyledCollectibleListItem>
       </StyledCollectibleList>
     </StyledInputWrapper>
-    <Button onClick={handleButtonClick} isDisabled={!Number(deposit)}>Collect ot wallet</Button>
+    <Button onClick={handleButtonClick} isDisabled={isCollectButtonDisabled}>{collectButtonText}</Button>
   </StyledTokenInputWrapper>);
 }
 

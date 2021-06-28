@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components/macro';
 import NumericalInput from './NumericalInput';
 import { lighten } from 'polished';
@@ -12,6 +12,7 @@ import { maxAmountSpend } from '../../../utils/maxAmountSpend';
 import { tryParseAmount } from '../../../state/swap/hooks';
 import { ApprovalState, useApproveCallback } from '../../../hooks/useApproveCallback';
 import { EMI_ROUTER_ADRESSES } from '../../../constants/emi/addresses';
+import { useCompletedTransactionsCount } from '../../../state/transactions/hooks';
 
 const StyledTokenInputWrapper = styled.div`
   border: 1px solid ${({theme}) => theme.lightGrey};
@@ -83,7 +84,7 @@ const StyledBalance = styled.div`
 
 type TokenInputProps = {
   token: Token | undefined;
-  onStake: (amount: string) => void;
+  onStake: (amount: string) => Promise<unknown>;
 }
 
 const TokenInput: React.FC<TokenInputProps> = (
@@ -94,10 +95,20 @@ const TokenInput: React.FC<TokenInputProps> = (
 ) => {
   const { account, chainId } = useActiveWeb3React();
   const [inputValue, setInputValue] = useState<string>('');
+  const [isStakeInProgress, setIsStakeInProgress] = useState<boolean>(false);
+
+  // This counter is used to update isStakeInProgress whenever transaction finishes
+  const completedTransactionsCount = useCompletedTransactionsCount();
 
   const handleButtonClick = useCallback(() => {
-    onStake(inputValue);
+    setIsStakeInProgress(true);
+    onStake(inputValue).catch(() => setIsStakeInProgress(false));
   }, [onStake, inputValue]);
+
+  useEffect(() => {
+    setIsStakeInProgress(false);
+    setInputValue('');
+  }, [completedTransactionsCount]);
 
   const balance = useTokenBalance(account, token);
   const maxAmount = maxAmountSpend(balance);
@@ -113,6 +124,16 @@ const TokenInput: React.FC<TokenInputProps> = (
   }, [inputValue, token, maxAmount]);
 
   const [approvalState, doApprove] = useApproveCallback(maxAmount, EMI_ROUTER_ADRESSES[chainId]);
+
+  const isStakeButtonDisabled = isInsufficientBalance || inputValue === '' || isStakeInProgress;
+
+  let stakeButtonText = 'Stake';
+  if (isInsufficientBalance) {
+    stakeButtonText = 'Insufficient balance';
+  }
+  if (isStakeInProgress) {
+    stakeButtonText = 'Staking...';
+  }
 
   return (<StyledTokenInputWrapper>
     <StyledInputWrapper>
@@ -138,7 +159,7 @@ const TokenInput: React.FC<TokenInputProps> = (
     {approvalState === ApprovalState.NOT_APPROVED && <Button onClick={doApprove}>Approve {token?.symbol}</Button>}
     {approvalState === ApprovalState.PENDING && <Button isDisabled={true}>Approval in progress...</Button>}
     {approvalState === ApprovalState.APPROVED &&
-      <Button onClick={handleButtonClick} isDisabled={isInsufficientBalance}>{isInsufficientBalance ? 'Insufficient balance' : 'Stake'}</Button>}
+      <Button onClick={handleButtonClick} isDisabled={isStakeButtonDisabled}>{stakeButtonText}</Button>}
   </StyledTokenInputWrapper>);
 }
 

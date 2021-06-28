@@ -102,12 +102,12 @@ const useRewardPool = () => {
     ).then((value: string) => setBlockReward(value));
   }, [chainId, contract, rewardToken]);
 
-  const handleStake = (amount: string) => {
+  const handleStake = (amount: string): Promise<unknown> => {
     if (!stakeToken) throw new Error('No stake token');
     if (!chainId) throw new Error('No chain id');
 
     const bigIntAmount = BigNumber.from(amount).mul(BigNumber.from(Math.pow(10, stakeToken.decimals)));
-    contract.stake(bigIntAmount)
+    return contract.stake(bigIntAmount)
       .then((response: TransactionResponse) => {
         addTransaction(response, {
           summary: `Stake ${amount} ${stakeToken.symbol}`,
@@ -120,11 +120,11 @@ const useRewardPool = () => {
       });
   };
 
-  const handleCollect = () => {
+  const handleCollect = (): Promise<unknown> => {
     if (!stakeToken) throw new Error('No stake token');
     if (!chainId) throw new Error('No chain id');
 
-    contract.exit()
+    return contract.exit()
       .then((response: TransactionResponse) => {
         addTransaction(response, {
           summary: `Collect all ${stakeToken.symbol}`,
