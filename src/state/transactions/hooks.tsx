@@ -1,5 +1,5 @@
 import { TransactionResponse } from '@ethersproject/providers';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useActiveWeb3React } from '../../hooks';
@@ -75,4 +75,23 @@ export function useHasPendingApproval(
       }),
     [allTransactions, spender, tokenAddress],
   );
+}
+
+export function useCompletedTransactionsCount() {
+  const allTransactions = useAllTransactions();
+  const [count, setCount] = useState<number>(0);
+
+  useMemo(
+    () => {
+      setCount(0);
+      Object.values(allTransactions).forEach(transaction => {
+        if (transaction.receipt) {
+          setCount(currentCount => currentCount + 1);
+        }
+      });
+    },
+    [allTransactions],
+  );
+
+  return count;
 }

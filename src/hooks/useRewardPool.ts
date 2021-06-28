@@ -6,9 +6,16 @@ import defaultCoins from '../constants/defaultCoins';
 import { useEffect, useMemo, useState } from 'react';
 import { JSBI, Token, TokenAmount } from '@uniswap/sdk';
 import { tokenAmountToString } from '../utils/formats';
+import { TransactionResponse } from '@ethersproject/providers';
+import { useCompletedTransactionsCount, useTransactionAdder } from '../state/transactions/hooks';
+import { EMI_ROUTER_ADRESSES } from '../constants/emi/addresses';
 
 const useRewardPool = () => {
   const { chainId, library, account } = useActiveWeb3React();
+  const addTransaction = useTransactionAdder();
+
+  // This counter is used to update data whenever transaction finishes
+  const completedTransactionsCount = useCompletedTransactionsCount();
 
   if (!library) {
     throw new Error('Failed to get a library');
@@ -60,7 +67,7 @@ const useRewardPool = () => {
           }
         }
       ).then((value: string) => setBalance(value));
-  }, [account, chainId, contract, stakeToken]);
+  }, [account, chainId, contract, stakeToken, completedTransactionsCount]);
 
   const [reward, setReward] = useState<string | undefined>(undefined);
   useEffect(() => {
@@ -77,7 +84,7 @@ const useRewardPool = () => {
           }
         },
       ).then((value: string) => setReward(value));
-  }, [account, chainId, contract, rewardToken]);
+  }, [account, chainId, contract, rewardToken, completedTransactionsCount]);
 
   const [blockReward, setBlockReward] = useState<string | undefined>(undefined);
   useEffect(() => {
@@ -96,13 +103,39 @@ const useRewardPool = () => {
   }, [chainId, contract, rewardToken]);
 
   const handleStake = (amount: string) => {
-    if (stakeToken) {
-      const bigIntAmount = BigNumber.from(amount).mul(BigNumber.from(Math.pow(10, stakeToken.decimals)));
-      contract.stake(bigIntAmount);
-    } else {
-      throw new Error('No stake token');
-    }
-  }
+    if (!stakeToken) throw new Error('No stake token');
+    if (!chainId) throw new Error('No chain id');
+
+    const bigIntAmount = BigNumber.from(amount).mul(BigNumber.from(Math.pow(10, stakeToken.decimals)));
+    contract.stake(bigIntAmount)
+      .then((response: TransactionResponse) => {
+        addTransaction(response, {
+          summary: `Stake ${amount} ${stakeToken.symbol}`,
+          approval: { tokenAddress: stakeToken.address, spender: EMI_ROUTER_ADRESSES[chainId] },
+        });
+      })
+      .catch((error: Error) => {
+        console.error('Failed to approve token');
+        throw error;
+      });
+  };
+
+  const handleCollect = () => {
+    if (!stakeToken) throw new Error('No stake token');
+    if (!chainId) throw new Error('No chain id');
+
+    contract.exit()
+      .then((response: TransactionResponse) => {
+        addTransaction(response, {
+          summary: `Collect all ${stakeToken.symbol}`,
+          approval: { tokenAddress: stakeToken.address, spender: EMI_ROUTER_ADRESSES[chainId] },
+        });
+      })
+      .catch((error: Error) => {
+        console.error('Failed to approve token');
+        throw error;
+      });
+  };
 
 
   return {
@@ -111,7 +144,7 @@ const useRewardPool = () => {
     getBalance: () => balance,
     getReward: () => reward,
     getBlockReward: () => blockReward,
-    collect: () => contract.exit(),
+    collect: handleCollect,
     stake: handleStake,
   }
 }
