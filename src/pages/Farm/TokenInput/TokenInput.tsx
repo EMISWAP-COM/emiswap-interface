@@ -1,14 +1,15 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components/macro';
 import NumericalInput from './NumericalInput';
 import { lighten } from 'polished';
 import Button from '../../../base/ui/Button';
 import CurrencyLogo from '../../../components/CurrencyLogo';
-import { Token } from '@uniswap/sdk';
+import { JSBI, Token } from '@uniswap/sdk';
 import { useTokenBalance } from '../../../state/wallet/hooks';
 import { useActiveWeb3React } from '../../../hooks';
 import { tokenAmountToString } from '../../../utils/formats';
 import { maxAmountSpend } from '../../../utils/maxAmountSpend';
+import { tryParseAmount } from '../../../state/swap/hooks';
 
 const StyledTokenInputWrapper = styled.div`
   border: 1px solid ${({theme}) => theme.lightGrey};
@@ -79,14 +80,12 @@ const StyledBalance = styled.div`
 `;
 
 type TokenInputProps = {
-  isButtonDisabled?: boolean;
   token: Token | undefined;
   onStake: (amount: string) => void;
 }
 
 const TokenInput: React.FC<TokenInputProps> = (
   {
-    isButtonDisabled,
     token,
     onStake,
   }
@@ -102,7 +101,16 @@ const TokenInput: React.FC<TokenInputProps> = (
 
   const handleMaxButtonClick = useCallback(() => {
     setInputValue(maxAmountSpend(balance).toExact());
-  }, [balance])
+  }, [balance]);
+
+
+
+  const isInsufficientBalance = useMemo(() => {
+    const parsedAmount = tryParseAmount(inputValue, token);
+    const maxAmount = maxAmountSpend(balance);
+
+    return maxAmount && parsedAmount && JSBI.lessThan(maxAmount.raw, parsedAmount.raw);
+  }, [balance, inputValue, token]);
 
   return (<StyledTokenInputWrapper>
     <StyledInputWrapper>
@@ -124,7 +132,7 @@ const TokenInput: React.FC<TokenInputProps> = (
         </StyledCurrencySelect>
       </StyledInputContentWrapper>
     </StyledInputWrapper>
-    <Button onClick={handleButtonClick} isDisabled={isButtonDisabled}>Stake</Button>
+    <Button onClick={handleButtonClick} isDisabled={isInsufficientBalance}>{isInsufficientBalance ? 'Insufficient balance' : 'Stake'}</Button>
   </StyledTokenInputWrapper>);
 }
 
