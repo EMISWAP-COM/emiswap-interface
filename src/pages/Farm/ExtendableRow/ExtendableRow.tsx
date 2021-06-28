@@ -39,18 +39,21 @@ const StyledBlock = styled.div<{ width?: number }>`
   display: flex;
   flex-direction: column;
   flex-basis: ${({width}) => width ? width + 'px' : 'auto'};
+  padding-right: 15px;
 
   ${({ theme }) => theme.mediaWidth.upToMedium`
     flex-direction: row;
     justify-content: space-between;
     flex-basis: 0;
     margin-bottom: 16px;
+    padding-right: 0;
   `};
 `;
 
 const StyledBlockTitle = styled.div`
   color: ${({theme}) => theme.darkWhite};
   font-weight: 400;
+  margin-bottom: 16px;
 `;
 
 const StyledBlockValue = styled.div`
@@ -241,6 +244,10 @@ const ExtendableRow: React.FC<ExtendableRowProps> = (
           <StyledBlockValue>
             <StyledTruncatedText>{liquidity}</StyledTruncatedText>
           </StyledBlockValue>
+        </StyledBlock>
+        <StyledBlock width={200}>
+          <StyledBlockTitle>End time</StyledBlockTitle>
+          <StyledBlockValue>---</StyledBlockValue>
         </StyledBlock>
         <StyledBlock>
           <StyledBlockTitle>Type</StyledBlockTitle>
