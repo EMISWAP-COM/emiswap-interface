@@ -29,6 +29,8 @@ export const InvestRules = () => {
     (+launchpadState.current_at > +launchpadState.whitelist_finished_at)
     || (+launchpadState.current_at > +launchpadState.started_at);
 
+  console.log("whiteListDisabled: ", whiteListDisabled, +launchpadState.current_at, +launchpadState.whitelist_finished_at, +launchpadState.started_at)
+
   const getMessage = () => {
     switch (investRequestStatus) {
       case InvestRequestStatus.PENDING:
@@ -39,6 +41,8 @@ export const InvestRules = () => {
         return 'Sorry, your candidacy was rejected for our Launchpad on June, 28 14:00 UTC';
     }
   };
+
+  console.log("+launchpadState.limit: ", +launchpadState.limit, +launchpadState.total)
 
   if (!(+launchpadState.limit < +launchpadState.total) && investRequestStatus === InvestRequestStatus.ACCEPTED) {
     return null;
