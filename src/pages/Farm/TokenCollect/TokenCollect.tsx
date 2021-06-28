@@ -57,7 +57,6 @@ const StyledTruncatedText = styled.span`
 `;
 
 type TokenInputProps = {
-  isButtonDisabled?: boolean;
   deposit: string;
   projectedReward: string;
   stakeToken: Token | undefined;
@@ -67,7 +66,6 @@ type TokenInputProps = {
 
 const TokenCollect: React.FC<TokenInputProps> = (
   {
-    isButtonDisabled,
     deposit,
     projectedReward,
     stakeToken,
@@ -93,7 +91,7 @@ const TokenCollect: React.FC<TokenInputProps> = (
         </StyledCollectibleListItem>
       </StyledCollectibleList>
     </StyledInputWrapper>
-    <Button onClick={handleButtonClick} isDisabled={isButtonDisabled}>Collect ot wallet</Button>
+    <Button onClick={handleButtonClick} isDisabled={!Number(deposit)}>Collect ot wallet</Button>
   </StyledTokenInputWrapper>);
 }
 
