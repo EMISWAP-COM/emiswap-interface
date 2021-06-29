@@ -125,7 +125,7 @@ const TokenInput: React.FC<TokenInputProps> = (
 
   const [approvalState, doApprove] = useApproveCallback(maxAmount, EMI_ROUTER_ADRESSES[chainId]);
 
-  const isStakeButtonDisabled = isInsufficientBalance || inputValue === '' || isStakeInProgress;
+  const isStakeButtonDisabled = isInsufficientBalance || !Number(inputValue) || isStakeInProgress;
 
   let stakeButtonText = 'Stake';
   if (isInsufficientBalance) {

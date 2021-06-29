@@ -78,7 +78,7 @@ const TokenCollect: React.FC<TokenInputProps> = (
 
   const isCollectButtonDisabled = !Number(deposit) || isCollectInProgress;
 
-  let collectButtonText = 'Collect ot wallet';
+  let collectButtonText = 'Collect to wallet';
   if (isCollectInProgress) {
     collectButtonText = 'Collecting...';
   }
