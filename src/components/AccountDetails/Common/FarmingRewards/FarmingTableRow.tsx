@@ -52,10 +52,6 @@ const FarmingTableRow: React.FC<FarmingTableRowProps> = (
         <Label>Farm</Label>
         <LevelWrapper>{farming.stakeToken?.symbol}</LevelWrapper>
       </Cell>
-      <Cell>
-        <Label>Timestamp</Label>
-        <LevelWrapper>-</LevelWrapper>
-      </Cell>
       <Cell flex={2}>
         <Label>Reward in ESW</Label>
         <LevelWrapper>

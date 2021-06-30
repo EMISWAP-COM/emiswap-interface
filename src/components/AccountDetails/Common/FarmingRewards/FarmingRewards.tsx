@@ -92,7 +92,6 @@ const FarmingRewards = () => {
       <Table>
         <TableTitles>
           <LevelWrapper>Farm</LevelWrapper>
-          <LevelWrapper>Timestamp</LevelWrapper>
           <LevelWrapper flex={2}>Reward in ESW</LevelWrapper>
           <LevelWrapper flex={2}>Block reward in ESW</LevelWrapper>
           <LevelWrapper flex={2}>Farm TVL in DAI</LevelWrapper>
