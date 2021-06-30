@@ -4,7 +4,7 @@ import NumericalInput from './NumericalInput';
 import { lighten } from 'polished';
 import Button from '../../../base/ui/Button';
 import CurrencyLogo from '../../../components/CurrencyLogo';
-import { JSBI, Token } from '@uniswap/sdk';
+import { JSBI, Token, TokenAmount } from '@uniswap/sdk';
 import { useTokenBalance } from '../../../state/wallet/hooks';
 import { useActiveWeb3React } from '../../../hooks';
 import { tokenAmountToString } from '../../../utils/formats';
@@ -83,17 +83,19 @@ const StyledBalance = styled.div`
 `;
 
 type TokenInputProps = {
-  token: Token | undefined;
+  contractAddress: string;
+  token: Token;
   onStake: (amount: string) => Promise<unknown>;
 }
 
 const TokenInput: React.FC<TokenInputProps> = (
   {
+    contractAddress,
     token,
     onStake,
   }
 ) => {
-  const { account, chainId } = useActiveWeb3React();
+  const { account } = useActiveWeb3React();
   const [inputValue, setInputValue] = useState<string>('');
   const [isStakeInProgress, setIsStakeInProgress] = useState<boolean>(false);
 
@@ -123,7 +125,7 @@ const TokenInput: React.FC<TokenInputProps> = (
     return maxAmount && parsedAmount && JSBI.lessThan(maxAmount.raw, parsedAmount.raw);
   }, [inputValue, token, maxAmount]);
 
-  const [approvalState, doApprove] = useApproveCallback(maxAmount, EMI_ROUTER_ADRESSES[chainId]);
+  const [approvalState, doApprove] = useApproveCallback(maxAmount, contractAddress);
 
   const isStakeButtonDisabled = isInsufficientBalance || !Number(inputValue) || isStakeInProgress;
 

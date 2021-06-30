@@ -17,6 +17,7 @@ const FarmComponent: React.FC<FarmComponentProps> = (
 
   return (
     <ExtendableRow
+      contractAddress={contract.address}
       stakeToken={farming.stakeToken}
       rewardToken={farming.rewardToken}
       projectedReward={farming.reward}

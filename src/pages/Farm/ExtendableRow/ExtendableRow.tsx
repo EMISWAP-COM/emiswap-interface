@@ -175,6 +175,7 @@ const StyledTruncatedText = styled.span`
 `;
 
 type ExtendableRowProps = {
+  contractAddress: string;
   stakeToken: Token | undefined;
   rewardToken: Token | undefined;
   projectedReward: string;
@@ -189,6 +190,7 @@ type ExtendableRowProps = {
 
 const ExtendableRow: React.FC<ExtendableRowProps> = (
   {
+    contractAddress,
     stakeToken,
     rewardToken,
     projectedReward,
@@ -279,7 +281,9 @@ const ExtendableRow: React.FC<ExtendableRowProps> = (
       </StyledBlocksWrapper>
       <StyledHr />
       <StyledInputsWrapper>
-        <StyledTokenInputWrapper><TokenInput token={stakeToken} onStake={onStake} /></StyledTokenInputWrapper>
+        <StyledTokenInputWrapper>
+          {stakeToken && <TokenInput token={stakeToken} contractAddress={contractAddress} onStake={onStake} />}
+        </StyledTokenInputWrapper>
         <StyledTokenInputWrapper>
           <TokenCollect
             deposit={deposit}
