@@ -677,20 +677,20 @@ export default () => {
               <div className="chart-block__text-line">
                 <div className="chart-block__color-block chart-block__color2" />
                 <div className="grey-text chart-block__item-name">Private (completed)</div>
-                <div className="grey-text chart-block__item-value">15M</div>
+                <div className="grey-text chart-block__item-value">12M</div>
                 <div className="grey-text chart-block__item-value chart-block__item-value--mobile">
-                  15,000,000
+                  12,000,000
                 </div>
-                <div className="grey-text grey-text-bold chart-block__item-percent">7.5%</div>
+                <div className="grey-text grey-text-bold chart-block__item-percent">6%</div>
               </div>
               <div className="chart-block__text-line">
                 <div className="chart-block__color-block chart-block__color3" />
                 <div className="grey-text chart-block__item-name">Launchpad Sales</div>
-                <div className="grey-text chart-block__item-value">5M</div>
+                <div className="grey-text chart-block__item-value">3M</div>
                 <div className="grey-text chart-block__item-value chart-block__item-value--mobile">
-                  5,000,000
+                  3,000,000
                 </div>
-                <div className="grey-text grey-text-bold chart-block__item-percent">2.5%</div>
+                <div className="grey-text grey-text-bold chart-block__item-percent">1.5%</div>
               </div>
               <div className="chart-block__text-line">
                 <div className="chart-block__color-block chart-block__color4" />
@@ -719,11 +719,11 @@ export default () => {
                 <div className="grey-text chart-block__item-name">
                   Ecosystem Growth & Community Extension
                 </div>
-                <div className="grey-text chart-block__item-value">44M</div>
+                <div className="grey-text chart-block__item-value">49M</div>
                 <div className="grey-text chart-block__item-value chart-block__item-value--mobile">
-                  44,000,000
+                  49,000,000
                 </div>
-                <div className="grey-text grey-text-bold chart-block__item-percent">22%</div>
+                <div className="grey-text grey-text-bold chart-block__item-percent">24.5%</div>
               </div>
               <div className="chart-block__text-line">
                 <div className="chart-block__color-block chart-block__color7" />
