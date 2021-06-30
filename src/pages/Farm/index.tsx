@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import styled from 'styled-components/macro';
 import { SwapPoolTabs, TabNames } from '../../components/NavigationTabs';
 
 import AppBody from '../AppBody';
-import ExtendableRow from './ExtendableRow';
 import { RadioGroup } from '../../base/ui/RadioGroup';
 import Tabs from '../../base/ui/Tabs';
-import useRewardPool from '../../hooks/useRewardPool';
-import { FarmingTimeType } from './constants';
+import { Contract } from '@ethersproject/contracts';
+import { getFarmingContracts } from '../../utils';
+import { useActiveWeb3React } from '../../hooks';
+import FarmComponent from './FarmComponent';
 
 const StyledFarmingHeader = styled.div`
   display: flex;
@@ -76,8 +77,9 @@ const tabItems = [
 export default function Farm() {
   const [radioValue, setRadioValue] = useState<string>('all');
   const [selectedTab, setSelectedTab] = useState<string>('staking');
+  const { library, account } = useActiveWeb3React();
 
-  const rewardPool = useRewardPool();
+  const farmingContracts: Contract[] = useMemo(() => getFarmingContracts(library, account), [library, account]);
 
   return (
     <>
@@ -95,18 +97,7 @@ export default function Farm() {
             Farming rewards are allocated to your EmiSwap account for every block.
           </StyledInfo>
         </StyledInfoWrapper>
-        <ExtendableRow
-          stakeToken={rewardPool.getStakeToken()}
-          rewardToken={rewardPool.getRewardToken()}
-          projectedReward={rewardPool.getReward()}
-          apr={'---'}
-          blockReward={rewardPool.getBlockReward()}
-          liquidity={'---'}
-          deposit={rewardPool.getBalance()}
-          type={FarmingTimeType.variable}
-          onStake={rewardPool.stake}
-          onCollect={rewardPool.collect}
-        />
+        {farmingContracts.map((contract) => <FarmComponent contract={contract} />)}
       </AppBody>
     </>
   );

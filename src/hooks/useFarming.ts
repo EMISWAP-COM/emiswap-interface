@@ -1,34 +1,20 @@
 import { useActiveWeb3React } from './index';
-import { Contract } from '@ethersproject/contracts';
-import { getRewardPoolContract } from '../utils';
 import { BigNumber } from '@ethersproject/bignumber';
 import defaultCoins from '../constants/defaultCoins';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { JSBI, Token, TokenAmount } from '@uniswap/sdk';
 import { tokenAmountToString } from '../utils/formats';
 import { TransactionResponse } from '@ethersproject/providers';
 import { useCompletedTransactionsCount, useTransactionAdder } from '../state/transactions/hooks';
 import { EMI_ROUTER_ADRESSES } from '../constants/emi/addresses';
+import { Contract } from '@ethersproject/contracts';
 
-const useRewardPool = () => {
-  const { chainId, library, account } = useActiveWeb3React();
+const useFarming = (contract: Contract) => {
+  const { chainId, account } = useActiveWeb3React();
   const addTransaction = useTransactionAdder();
 
   // This counter is used to update data whenever transaction finishes
   const completedTransactionsCount = useCompletedTransactionsCount();
-
-  if (!library) {
-    throw new Error('Failed to get a library');
-  }
-  if (!account) {
-    throw new Error('Failed to get an account');
-  }
-
-  const contract: Contract | null = useMemo(() => getRewardPoolContract(library, account), [library, account]);
-
-  if (!contract) {
-    throw new Error('Failed to get a RewardPool contract');
-  }
 
   const [stakeToken, setStakeToken] = useState<Token | undefined>(undefined);
   useEffect(() => {
@@ -149,4 +135,4 @@ const useRewardPool = () => {
   }
 }
 
-export default useRewardPool;
+export default useFarming;
