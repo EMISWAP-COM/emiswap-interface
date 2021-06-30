@@ -17,13 +17,13 @@ const FarmComponent: React.FC<FarmComponentProps> = (
 
   return (
     <ExtendableRow
-      stakeToken={farming.getStakeToken()}
-      rewardToken={farming.getRewardToken()}
-      projectedReward={farming.getReward()}
+      stakeToken={farming.stakeToken}
+      rewardToken={farming.rewardToken}
+      projectedReward={farming.reward}
       apr={'---'}
-      blockReward={farming.getBlockReward()}
+      blockReward={farming.blockReward}
       liquidity={'---'}
-      deposit={farming.getBalance()}
+      deposit={farming.balance}
       type={FarmingTimeType.variable}
       onStake={farming.stake}
       onCollect={farming.collect}

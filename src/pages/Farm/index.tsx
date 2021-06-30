@@ -97,7 +97,7 @@ export default function Farm() {
             Farming rewards are allocated to your EmiSwap account for every block.
           </StyledInfo>
         </StyledInfoWrapper>
-        {farmingContracts.map((contract) => <FarmComponent contract={contract} />)}
+        {farmingContracts.map((contract) => <FarmComponent key={contract.address} contract={contract} />)}
       </AppBody>
     </>
   );

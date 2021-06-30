@@ -123,15 +123,31 @@ const useFarming = (contract: Contract) => {
       });
   };
 
+  const [totalSupply, setTotalSupply] = useState<string | undefined>(undefined);
+  useEffect(() => {
+    contract.totalSupply().then((value: BigNumber) => {
+        if (chainId && stakeToken) {
+          const tokenAmount = new TokenAmount(
+            stakeToken,
+            JSBI.BigInt(value.toString())
+          );
+          return tokenAmountToString(tokenAmount, stakeToken.decimals);
+        } else {
+          return '0';
+        }
+      },
+    ).then((value: string) => setTotalSupply(value));
+  }, [chainId, contract, stakeToken]);
 
   return {
-    getStakeToken: () => stakeToken,
-    getRewardToken: () => rewardToken,
-    getBalance: () => balance,
-    getReward: () => reward,
-    getBlockReward: () => blockReward,
+    stakeToken: stakeToken,
+    rewardToken: rewardToken,
+    balance: balance,
+    reward: reward,
+    blockReward: blockReward,
     collect: handleCollect,
     stake: handleStake,
+    totalSupply: totalSupply,
   }
 }
 
