@@ -199,3 +199,24 @@ export function getVestingContract(library: Web3Provider, account: string) {
 export function getFarmingContracts(library: Web3Provider, account: string) {
   return FARMING_ADDRESSES.map((address) => getContract(address, FARMING_ABI, library, account));
 }
+
+export function getMyFarmingContracts(library: Web3Provider, account: string) {
+  return new Promise<Contract[]>((resolve) => {
+    const contracts = FARMING_ADDRESSES.map((address) =>
+      getContract(address, FARMING_ABI, library, account));
+    const myFarming: Contract[] = [];
+    let processedContractsCount = 0;
+
+    contracts.forEach((contract) => {
+      contract.balanceOf(account).then((value: BigNumber) => {
+        if (value.toString() !== '0') {
+          myFarming.push(contract);
+        }
+        processedContractsCount++;
+        if (processedContractsCount === contracts.length) {
+          resolve(myFarming);
+        }
+      });
+    });
+  });
+}

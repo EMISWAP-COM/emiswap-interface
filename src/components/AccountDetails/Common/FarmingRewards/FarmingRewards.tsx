@@ -1,8 +1,8 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/macro';
 import { TableHeader } from '../PurchaseHistory';
 import { Contract } from '@ethersproject/contracts';
-import { getFarmingContracts } from '../../../../utils';
+import { getMyFarmingContracts } from '../../../../utils';
 import { useActiveWeb3React } from '../../../../hooks';
 import FarmingTableRow from './FarmingTableRow';
 
@@ -77,7 +77,12 @@ const NoContent = styled.div`
 
 const FarmingRewards = () => {
   const { library, account } = useActiveWeb3React();
-  const farmingContracts: Contract[] = useMemo(() => getFarmingContracts(library, account), [library, account]);
+  const [myFarmingContracts, setMyFarmingContracts] = useState<Contract[]>([]);
+  useEffect(() => {
+    getMyFarmingContracts(library, account).then((contracts) => {
+      setMyFarmingContracts(contracts);
+    });
+  }, [library, account])
 
 
   return (
@@ -93,8 +98,8 @@ const FarmingRewards = () => {
           <LevelWrapper flex={2}>Farm TVL in DAI</LevelWrapper>
           <LevelWrapper>Your share</LevelWrapper>
         </TableTitles>
-        {farmingContracts.map((contract) => <FarmingTableRow key={contract.address} contract={contract} />)}
-        {!farmingContracts.length && (
+        {myFarmingContracts.map((contract) => <FarmingTableRow key={contract.address} contract={contract} />)}
+        {!myFarmingContracts.length && (
           <TableRow>
             <NoContent>No content</NoContent>
           </TableRow>

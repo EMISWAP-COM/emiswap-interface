@@ -45,8 +45,6 @@ const FarmingTableRow: React.FC<FarmingTableRowProps> = (
   }
 ) => {
   const farming = useFarming(contract);
-  const poolShare = Number(farming.balance) / Number(farming.totalSupply);
-  const poolSharePercent = Math.floor((poolShare * 100) * 100) / 100;
 
   return (
     <TableRow>
@@ -76,7 +74,7 @@ const FarmingTableRow: React.FC<FarmingTableRowProps> = (
       </Cell>
       <Cell>
         <Label>Your share</Label>
-        <LevelWrapper>{poolSharePercent}%</LevelWrapper>
+        <LevelWrapper>{Math.floor(((Number(farming.balance) / Number(farming.totalSupply)) * 100) * 100) / 100}%</LevelWrapper>
       </Cell>
     </TableRow>
   );
