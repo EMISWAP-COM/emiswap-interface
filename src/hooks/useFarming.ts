@@ -3,7 +3,7 @@ import { BigNumber } from '@ethersproject/bignumber';
 import defaultCoins from '../constants/defaultCoins';
 import { useEffect, useState } from 'react';
 import { JSBI, Token, TokenAmount } from '@uniswap/sdk';
-import { tokenAmountToString } from '../utils/formats';
+import { expNumberToStr, tokenAmountToString } from '../utils/formats';
 import { TransactionResponse } from '@ethersproject/providers';
 import { useCompletedTransactionsCount, useTransactionAdder } from '../state/transactions/hooks';
 import { EMI_ROUTER_ADRESSES } from '../constants/emi/addresses';
@@ -92,7 +92,7 @@ const useFarming = (contract: Contract) => {
     if (!stakeToken) throw new Error('No stake token');
     if (!chainId) throw new Error('No chain id');
 
-    const bigIntAmount = BigNumber.from(amount).mul(BigNumber.from(Math.pow(10, stakeToken.decimals)));
+    const bigIntAmount = BigNumber.from(expNumberToStr(+amount * 10 ** stakeToken.decimals));
     return contract.stake(bigIntAmount)
       .then((response: TransactionResponse) => {
         addTransaction(response, {
