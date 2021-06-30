@@ -139,6 +139,11 @@ const useFarming = (contract: Contract) => {
     ).then((value: string) => setTotalSupply(value));
   }, [chainId, contract, stakeToken]);
 
+  const [endTime, setEndTime] = useState<string | undefined>(undefined);
+  useEffect(() => {
+    contract.periodFinish().then((value: BigNumber) => setEndTime(value.toString()));
+  }, [chainId, contract, stakeToken]);
+
   return {
     stakeToken: stakeToken,
     rewardToken: rewardToken,
@@ -148,6 +153,7 @@ const useFarming = (contract: Contract) => {
     collect: handleCollect,
     stake: handleStake,
     totalSupply: totalSupply,
+    endTime: endTime,
   }
 }
 
