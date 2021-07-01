@@ -4,6 +4,8 @@ import Button from '../../../base/ui/Button';
 import { Token } from '@uniswap/sdk';
 import CurrencyLogo from '../../../components/CurrencyLogo';
 import { useCompletedTransactionsCount } from '../../../state/transactions/hooks';
+import isLpToken from '../isLpToken';
+import LpTokenSymbol from '../LpTokenSymbol';
 
 const StyledTokenInputWrapper = styled.div`
   border: 1px solid ${({theme}) => theme.lightGrey};
@@ -102,7 +104,9 @@ const TokenCollect: React.FC<TokenInputProps> = (
       <StyledInputHeader>Tokens to collect</StyledInputHeader>
       <StyledCollectibleList>
         <StyledCollectibleListItem>
-          <StyledCurrencyLogo><CurrencyLogo currency={stakeToken} size={'24px'} /></StyledCurrencyLogo>
+          <StyledCurrencyLogo>
+            {isLpToken(stakeToken) ? <LpTokenSymbol /> : <CurrencyLogo currency={stakeToken} size={'24px'} />}
+          </StyledCurrencyLogo>
           <StyledTruncatedText>{deposit}</StyledTruncatedText>
         </StyledCollectibleListItem>
         <StyledCollectibleListItem>

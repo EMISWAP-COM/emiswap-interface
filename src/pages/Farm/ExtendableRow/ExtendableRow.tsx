@@ -6,6 +6,8 @@ import TokenCollect from '../TokenCollect';
 import { Token } from '@uniswap/sdk';
 import CurrencyLogo from '../../../components/CurrencyLogo';
 import Tooltip from '../Tooltip';
+import LpTokenSymbol from '../LpTokenSymbol';
+import isLpToken from '../isLpToken';
 
 const StyledRow = styled.div`
   background-color: ${({theme}) => theme.border1Transparency};
@@ -218,7 +220,9 @@ const ExtendableRow: React.FC<ExtendableRowProps> = (
         <StyledBlock width={150}>
           <StyledBlockTitle>Coin</StyledBlockTitle>
           <StyledBlockValue>
-            <StyledCurrencyLogo><CurrencyLogo currency={stakeToken} size={'24px'} /></StyledCurrencyLogo>
+            <StyledCurrencyLogo>
+              {isLpToken(stakeToken) ? <LpTokenSymbol /> : <CurrencyLogo currency={stakeToken} size={'24px'} />}
+            </StyledCurrencyLogo>
             <StyledTruncatedText>{stakeToken?.symbol}</StyledTruncatedText>
           </StyledBlockValue>
         </StyledBlock>
@@ -272,7 +276,9 @@ const ExtendableRow: React.FC<ExtendableRowProps> = (
         <StyledBlock width={150}>
           <StyledBlockTitle>Deposit</StyledBlockTitle>
           <StyledBlockValue>
-            <StyledCurrencyLogo><CurrencyLogo currency={stakeToken} size={'24px'} /></StyledCurrencyLogo>
+            <StyledCurrencyLogo>
+              {isLpToken(stakeToken) ? <LpTokenSymbol /> : <CurrencyLogo currency={stakeToken} size={'24px'} />}
+            </StyledCurrencyLogo>
             <StyledTruncatedText>{deposit}</StyledTruncatedText>
           </StyledBlockValue>
         </StyledBlock>

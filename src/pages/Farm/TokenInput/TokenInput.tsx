@@ -13,6 +13,8 @@ import { tryParseAmount } from '../../../state/swap/hooks';
 import { ApprovalState, useApproveCallback } from '../../../hooks/useApproveCallback';
 import { useCompletedTransactionsCount } from '../../../state/transactions/hooks';
 import { useWalletModalToggle } from '../../../state/application/hooks';
+import LpTokenSymbol from '../LpTokenSymbol';
+import isLpToken from '../isLpToken';
 
 const StyledTokenInputWrapper = styled.div`
   border: 1px solid ${({theme}) => theme.lightGrey};
@@ -166,7 +168,7 @@ const TokenInput: React.FC<TokenInputProps> = (
         <StyledInputButtons>
           <StyledBalanceMax onClick={handleMaxButtonClick}>MAX</StyledBalanceMax>
           <StyledCurrency>
-            <CurrencyLogo currency={token} size={'24px'} />
+            {isLpToken(token) ? <LpTokenSymbol /> : <CurrencyLogo currency={token} size={'24px'} />}
             <StyledTokenName>{token?.symbol}</StyledTokenName>
           </StyledCurrency>
         </StyledInputButtons>
