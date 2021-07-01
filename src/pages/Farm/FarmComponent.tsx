@@ -3,19 +3,21 @@ import ExtendableRow from './ExtendableRow';
 import React from 'react';
 import useFarming from '../../hooks/useFarming';
 import { Contract } from '@ethersproject/contracts';
+import isLpToken from './isLpToken';
+import { isStakingTab } from '.';
 
 type FarmComponentProps = {
-  contract: Contract
-}
+  contract: Contract;
+  selectedTab: string;
+};
 
-const FarmComponent: React.FC<FarmComponentProps> = (
-  {
-    contract,
-  },
-) => {
+const FarmComponent: React.FC<FarmComponentProps> = ({ contract, selectedTab }) => {
   const farming = useFarming(contract);
 
-  return (
+  const shouldShow =
+    (isStakingTab(selectedTab) && !isLpToken(farming.stakeToken)) ||
+    (!isStakingTab(selectedTab) && isLpToken(farming.stakeToken));
+  return shouldShow ? (
     <ExtendableRow
       contractAddress={contract.address}
       stakeToken={farming.stakeToken}
@@ -30,6 +32,8 @@ const FarmComponent: React.FC<FarmComponentProps> = (
       onStake={farming.stake}
       onCollect={farming.collect}
     />
+  ) : (
+    <div></div>
   );
 };
 

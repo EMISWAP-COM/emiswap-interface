@@ -3,7 +3,8 @@ import styled from 'styled-components/macro';
 import { SwapPoolTabs, TabNames } from '../../components/NavigationTabs';
 
 import AppBody from '../AppBody';
-import { RadioGroup } from '../../base/ui/RadioGroup';
+// FIXME Убрать комментарий для возврата функционала
+// import { RadioGroup } from '../../base/ui/RadioGroup';
 import Tabs from '../../base/ui/Tabs';
 import { Contract } from '@ethersproject/contracts';
 import { getFarmingContracts } from '../../utils';
@@ -11,6 +12,9 @@ import { useActiveWeb3React } from '../../hooks';
 import FarmComponent from './FarmComponent';
 import Button from '../../base/ui/Button';
 import { useWalletModalToggle } from '../../state/application/hooks';
+// FIXME Убрать комментарий для возврата функционала
+// import isLpToken from './isLpToken';
+// import useFarming from '../../hooks/useFarming';
 
 const StyledFarmingHeader = styled.div`
   display: flex;
@@ -45,17 +49,17 @@ const StyledInfo = styled.div`
   font-size: 16px;
   color: ${({theme}) => theme.darkText};
 `
-
-const radioList = [
-  {
-    identifier: 'all',
-    value: 'All farms',
-  },
-  {
-    identifier: 'my',
-    value: 'My farming',
-  },
-];
+// FIXME Убрать комментарий для возврата функционала
+// const radioList = [
+//   {
+//     identifier: 'all',
+//     value: 'All farms',
+//   },
+//   {
+//     identifier: 'my',
+//     value: 'My farming',
+//   },
+// ];
 
 const tabItems = [
   {
@@ -66,24 +70,29 @@ const tabItems = [
     id: 'farming',
     title: 'Farming',
   },
-  {
-    id: 'nftfarming',
-    title: 'NFT Farming',
-  },
-  {
-    id: 'nftstaking',
-    title: 'NFT Staking',
-  },
+  // FIXME Убрать комментарий для возврата функционала
+  // {
+  //   id: 'nftfarming',
+  //   title: 'NFT Farming',
+  // },
+  // {
+  //   id: 'nftstaking',
+  //   title: 'NFT Staking',
+  // },
 ];
 
+export const isStakingTab = tabname => tabname === tabItems[0].id;
+
 export default function Farm() {
-  const [radioValue, setRadioValue] = useState<string>('all');
+  // FIXME Убрать комментарий для возврата функционала
+  // const [radioValue, setRadioValue] = useState<string>('all');
   const [selectedTab, setSelectedTab] = useState<string>('staking');
   const { library, account } = useActiveWeb3React();
 
   const farmingContracts: Contract[] = useMemo(() => getFarmingContracts(library, account), [library, account]);
 
   const toggleWalletModal = useWalletModalToggle();
+
 
   return (
     <>
@@ -93,17 +102,19 @@ export default function Farm() {
           <>
             <StyledFarmingHeader>
               <StyledTabs><Tabs items={tabItems} selectedItemId={selectedTab} onChange={setSelectedTab} /></StyledTabs>
-              <RadioGroup buttonsList={radioList} groupName="farms" value={radioValue} onChange={setRadioValue} />
+              {/* <RadioGroup buttonsList={radioList} groupName="farms" value={radioValue} onChange={setRadioValue} /> */}
             </StyledFarmingHeader>
             <StyledInfoWrapper>
-              <StyledInfoTitle>Variable APR Farms</StyledInfoTitle>
+              <StyledInfoTitle>
+                {isStakingTab(selectedTab) ? 'Variable APR Stakings' : 'Variable APR Farming'}
+              </StyledInfoTitle>
               <StyledInfo>
-                Use these farms to increase your profit from different tokens, including ESW.
-                No time limits let you stake tokens as long as you wish.
-                Farming rewards are allocated to your EmiSwap account for every block.
+                {isStakingTab(selectedTab)
+                  ? 'Increase your profit from different tokens including ESW by staking them in our pools. No time limits let you stake your tokens as long as you wish and withdraw them at any time. Staking rewards are allocated to your EmiSwap account for every block.' :
+              'Increase your profit from different LP tokens including ESW token pairs by farming them in our pools. No time limits let you farm your tokens as long as you wish and withdraw them at any time. Farming rewards are allocated to your EmiSwap account for every block.'}
               </StyledInfo>
             </StyledInfoWrapper>
-            {farmingContracts.map((contract) => <FarmComponent key={contract.address} contract={contract} />)}
+            {farmingContracts.map(contract => <FarmComponent key={contract.address} contract={contract} selectedTab={selectedTab} />)}
           </>
         )}
         {!account && (
