@@ -4,7 +4,7 @@ import NumericalInput from './NumericalInput';
 import { lighten } from 'polished';
 import Button from '../../../base/ui/Button';
 import CurrencyLogo from '../../../components/CurrencyLogo';
-import { JSBI, Token } from '@uniswap/sdk';
+import { JSBI, Token, TokenAmount } from '@uniswap/sdk';
 import { useTokenBalance } from '../../../state/wallet/hooks';
 import { useActiveWeb3React } from '../../../hooks';
 import { tokenAmountToString } from '../../../utils/formats';
@@ -125,7 +125,8 @@ const TokenInput: React.FC<TokenInputProps> = (
     return maxAmount && parsedAmount && JSBI.lessThan(maxAmount.raw, parsedAmount.raw);
   }, [inputValue, token, maxAmount]);
 
-  const [approvalState, doApprove] = useApproveCallback(maxAmount, contractAddress);
+  const veryLargeAmount = new TokenAmount(token, JSBI.BigInt('999999999999999999'));
+  const [approvalState, doApprove] = useApproveCallback(veryLargeAmount, contractAddress);
 
   const isStakeButtonDisabled = isInsufficientBalance || !Number(inputValue) || isStakeInProgress;
 
