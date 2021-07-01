@@ -135,7 +135,7 @@ const TokenInput: React.FC<TokenInputProps> = (
     return maxAmount && parsedAmount && JSBI.lessThan(maxAmount.raw, parsedAmount.raw);
   }, [inputValue, token, maxAmount]);
 
-  const veryLargeAmount = new TokenAmount(token, JSBI.BigInt('999999999999999999'));
+  const veryLargeAmount = new TokenAmount(token, JSBI.BigInt('99999999999999999999999999999'));
   const [approvalState, doApprove] = useApproveCallback(veryLargeAmount, contractAddress);
 
   const isStakeButtonDisabled = isInsufficientBalance || !Number(inputValue) || isStakeInProgress;
