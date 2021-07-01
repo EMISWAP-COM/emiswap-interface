@@ -151,7 +151,15 @@ const useFarming = (contract: Contract) => {
       const formattedDate = dayjs(timestampInMs).format('DD.MM.YYYY HH:MM:ss')
       setEndDate(formattedDate);
     });
-  }, [chainId, contract, stakeToken]);
+  }, [contract, stakeToken]);
+
+  const [liquidity, setLiquidity] = useState<string | undefined>(undefined);
+  useEffect(() => {
+    contract.getStakedValuesinUSD(account).then((response: [BigNumber, BigNumber]) => {
+      const [, totalStake] = response;
+      setLiquidity(totalStake.toString());
+    });
+  }, [contract, account]);
 
   return {
     stakeToken: stakeToken,
@@ -163,6 +171,7 @@ const useFarming = (contract: Contract) => {
     stake: handleStake,
     totalSupply: totalSupply,
     endDate: endDate,
+    liquidity: liquidity,
   }
 }
 

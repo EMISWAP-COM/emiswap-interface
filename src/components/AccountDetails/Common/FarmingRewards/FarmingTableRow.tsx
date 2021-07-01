@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 import { Contract } from '@ethersproject/contracts';
+import CurrencyFormat from 'react-currency-format';
 import useFarming from '../../../../hooks/useFarming';
 import { LevelWrapper, TableRow } from './FarmingRewards';
 
@@ -66,7 +67,9 @@ const FarmingTableRow: React.FC<FarmingTableRowProps> = (
       </Cell>
       <Cell flex={2}>
         <Label>Farm TVL in DAI</Label>
-        <LevelWrapper>-</LevelWrapper>
+        <LevelWrapper>
+          <CurrencyFormat value={farming.liquidity} displayType={'text'} thousandSeparator={' '} />
+        </LevelWrapper>
       </Cell>
       <Cell>
         <Label>Your share</Label>
