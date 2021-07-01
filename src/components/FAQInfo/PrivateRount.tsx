@@ -63,8 +63,8 @@ const CardDescriptionText = styled.div`
 const cardsInfo = [
   { head: `${ESW_PER_USD} DAI`, text: 'Price' },
   { head: '200,000,000 ESW', text: 'Total Supply' },
-  { head: '2.5% or 5M ESW ', text: 'Launchpad allocation' },
-  { head: 'Vesting period', text: '35% instantly; 65% quarter unlock by equal shares' },
+  { head: '1.5% or 3M ESW ', text: 'Launchpad allocation' },
+  { head: 'Vesting period', text: '35% instantly; 65% monthly unlock within 5 months' },
   { head: 'ERC20', text: 'Token Type' },
 ];
 
