@@ -5,6 +5,7 @@ import TokenInput from '../TokenInput';
 import TokenCollect from '../TokenCollect';
 import { Token } from '@uniswap/sdk';
 import CurrencyLogo from '../../../components/CurrencyLogo';
+import Tooltip from '../Tooltip';
 
 const StyledRow = styled.div`
   background-color: ${({theme}) => theme.border1Transparency};
@@ -225,7 +226,9 @@ const ExtendableRow: React.FC<ExtendableRowProps> = (
           <StyledBlockTitle>Projected reward</StyledBlockTitle>
           <StyledBlockValue>
             <StyledCurrencyLogo><CurrencyLogo currency={rewardToken} size={'24px'} /></StyledCurrencyLogo>
-            <StyledTruncatedText>{projectedReward}</StyledTruncatedText>
+            <Tooltip title={projectedReward}>
+              <StyledTruncatedText>{projectedReward}</StyledTruncatedText>
+            </Tooltip>
           </StyledBlockValue>
         </StyledBlock>
         <StyledBlock width={100}>
@@ -238,9 +241,9 @@ const ExtendableRow: React.FC<ExtendableRowProps> = (
           <StyledBlockTitle>Block reward</StyledBlockTitle>
           <StyledBlockValue>
             <StyledCurrencyLogo><CurrencyLogo currency={rewardToken} size={'24px'} /></StyledCurrencyLogo>
-            <StyledTruncatedText>
+            <Tooltip title={blockReward}>
               <StyledTruncatedText>{blockReward}</StyledTruncatedText>
-            </StyledTruncatedText>
+            </Tooltip>
           </StyledBlockValue>
         </StyledBlock>
         <StyledBlock width={200}>
