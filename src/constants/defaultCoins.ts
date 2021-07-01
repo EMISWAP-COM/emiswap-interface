@@ -3881,7 +3881,7 @@ const defaultCoins: DefaultCoins = {
       address: '0x8228BF323C23193f9663aD5BEB651e11E8672c8b',
       chainId: 42,
       name: '',
-      symbol: 'ESW-WETH',
+      symbol: 'ESW-ETH',
       decimals: 18,
       logoURI: '',
     },

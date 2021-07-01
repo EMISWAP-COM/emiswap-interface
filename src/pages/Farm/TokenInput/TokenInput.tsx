@@ -81,6 +81,7 @@ const StyledCurrency = styled.div`
   border-radius: 6px;
   margin-left: 8px;
   padding: 0 6px;
+  white-space: nowrap;
 `;
 
 const StyledTokenName = styled.div`
