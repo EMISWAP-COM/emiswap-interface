@@ -182,7 +182,7 @@ type ExtendableRowProps = {
   apr: string;
   blockReward: string;
   liquidity: string;
-  endTime: string;
+  endDate: string;
   deposit: string;
   type: string;
   onStake: (amount: string) => Promise<unknown>;
@@ -198,7 +198,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = (
     apr,
     blockReward,
     liquidity,
-    endTime,
+    endDate,
     deposit,
     type,
     onStake,
@@ -251,7 +251,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = (
         </StyledBlock>
         <StyledBlock width={200}>
           <StyledBlockTitle>End time</StyledBlockTitle>
-          <StyledBlockValue>{endTime}</StyledBlockValue>
+          <StyledBlockValue>{endDate}</StyledBlockValue>
         </StyledBlock>
         <StyledBlock>
           <StyledBlockTitle>Type</StyledBlockTitle>

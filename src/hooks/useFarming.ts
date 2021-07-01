@@ -2,6 +2,7 @@ import { useActiveWeb3React } from './index';
 import { BigNumber } from '@ethersproject/bignumber';
 import defaultCoins from '../constants/defaultCoins';
 import { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
 import { JSBI, Token, TokenAmount } from '@uniswap/sdk';
 import { expNumberToStr, tokenAmountToString } from '../utils/formats';
 import { TransactionResponse } from '@ethersproject/providers';
@@ -139,9 +140,13 @@ const useFarming = (contract: Contract) => {
     ).then((value: string) => setTotalSupply(value));
   }, [chainId, contract, stakeToken]);
 
-  const [endTime, setEndTime] = useState<string | undefined>(undefined);
+  const [endDate, setEndDate] = useState<string | undefined>(undefined);
   useEffect(() => {
-    contract.periodFinish().then((value: BigNumber) => setEndTime(value.toString()));
+    contract.periodFinish().then((value: BigNumber) => {
+      const timestampInMs = value.toNumber() * 1000;
+      const formattedDate = dayjs(timestampInMs).format('DD.MM.YYYY HH:MM:ss')
+      setEndDate(formattedDate);
+    });
   }, [chainId, contract, stakeToken]);
 
   return {
@@ -153,7 +158,7 @@ const useFarming = (contract: Contract) => {
     collect: handleCollect,
     stake: handleStake,
     totalSupply: totalSupply,
-    endTime: endTime,
+    endDate: endDate,
   }
 }
 
