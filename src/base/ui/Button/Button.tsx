@@ -12,11 +12,11 @@ const StyledButton = styled.button<{ isDisabled: boolean }>`
   width: 100%;
   cursor: ${({isDisabled}) => isDisabled ? 'default' : 'pointer'};
   transition: box-shadow 0.3s;
+  outline: none;
 
   &:hover,
   &:focus {
     ${({theme, isDisabled}) => !isDisabled && `box-shadow: ${theme.purpleBoxShadow};`}
-
   }
 `;
 
