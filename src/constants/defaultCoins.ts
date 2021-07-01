@@ -3874,6 +3874,25 @@ const defaultCoins: DefaultCoins = {
     //   decimals: 18,
     //   logoURI: 'https://tokens.1inch.exchange/0x2260fac5e5542a773aa44fbcfedf7c193bc2c599.png',
     // },
+
+
+    // LP tokens
+    {
+      address: '0x8228BF323C23193f9663aD5BEB651e11E8672c8b',
+      chainId: 42,
+      name: '',
+      symbol: 'ESW-WETH',
+      decimals: 18,
+      logoURI: '',
+    },
+    {
+      address: '0xeb69C3Cb52e0002842d978b401f0e5784F8c0590',
+      chainId: 42,
+      name: '',
+      symbol: 'WBTC-ETH',
+      decimals: 18,
+      logoURI: '',
+    },
   ],
   logoURI: 'https://1inch.exchange/assets/images/logo.png',
 };
