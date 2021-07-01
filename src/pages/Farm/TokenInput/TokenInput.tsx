@@ -39,6 +39,10 @@ const StyledInputHeader = styled.div`
 
 const StyledInputContentWrapper = styled.div`
   display: flex;
+
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    flex-direction: column;
+  `};
 `;
 
 const StyledBalanceMax = styled.button`
@@ -59,8 +63,15 @@ const StyledBalanceMax = styled.button`
   }
 `;
 
-const StyledCurrencySelect = styled.button`
-  outline: none;
+const StyledInputButtons = styled.div`
+  display: flex;
+
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    margin-top: 10px;
+  `};
+`;
+
+const StyledCurrency = styled.div`
   display: flex;
   align-items: center;
   height: 32px;
@@ -68,10 +79,8 @@ const StyledCurrencySelect = styled.button`
   background-color: ${({ theme }) => theme.darkGrey};
   color: ${({ theme }) => theme.white};
   border-radius: 6px;
-  outline: none;
-  user-select: none;
-  border: 0;
   margin-left: 8px;
+  padding: 0 6px;
 `;
 
 const StyledTokenName = styled.div`
@@ -153,11 +162,13 @@ const TokenInput: React.FC<TokenInputProps> = (
             setInputValue(value);
           }}
         />
-        <StyledBalanceMax onClick={handleMaxButtonClick}>MAX</StyledBalanceMax>
-        <StyledCurrencySelect>
-          <CurrencyLogo currency={token} size={'24px'} />
-          <StyledTokenName>{token?.symbol}</StyledTokenName>
-        </StyledCurrencySelect>
+        <StyledInputButtons>
+          <StyledBalanceMax onClick={handleMaxButtonClick}>MAX</StyledBalanceMax>
+          <StyledCurrency>
+            <CurrencyLogo currency={token} size={'24px'} />
+            <StyledTokenName>{token?.symbol}</StyledTokenName>
+          </StyledCurrency>
+        </StyledInputButtons>
       </StyledInputContentWrapper>
     </StyledInputWrapper>
     {!account && <Button onClick={toggleWalletModal}>Connect to a wallet</Button>}
