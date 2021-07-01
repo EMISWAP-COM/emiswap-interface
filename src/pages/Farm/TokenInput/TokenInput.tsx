@@ -12,6 +12,7 @@ import { maxAmountSpend } from '../../../utils/maxAmountSpend';
 import { tryParseAmount } from '../../../state/swap/hooks';
 import { ApprovalState, useApproveCallback } from '../../../hooks/useApproveCallback';
 import { useCompletedTransactionsCount } from '../../../state/transactions/hooks';
+import { useWalletModalToggle } from '../../../state/application/hooks';
 
 const StyledTokenInputWrapper = styled.div`
   border: 1px solid ${({theme}) => theme.lightGrey};
@@ -136,6 +137,8 @@ const TokenInput: React.FC<TokenInputProps> = (
     stakeButtonText = 'Staking...';
   }
 
+  const toggleWalletModal = useWalletModalToggle();
+
   return (<StyledTokenInputWrapper>
     <StyledInputWrapper>
       <StyledInputHeader>
@@ -156,10 +159,11 @@ const TokenInput: React.FC<TokenInputProps> = (
         </StyledCurrencySelect>
       </StyledInputContentWrapper>
     </StyledInputWrapper>
-    {approvalState === ApprovalState.UNKNOWN && <Button isDisabled={true}>Checking approval...</Button>}
-    {approvalState === ApprovalState.NOT_APPROVED && <Button onClick={doApprove}>Approve {token?.symbol}</Button>}
-    {approvalState === ApprovalState.PENDING && <Button isDisabled={true}>Approval in progress...</Button>}
-    {approvalState === ApprovalState.APPROVED &&
+    {!account && <Button onClick={toggleWalletModal}>Connect to a wallet</Button>}
+    {account && approvalState === ApprovalState.UNKNOWN && <Button isDisabled={true}>Checking approval...</Button>}
+    {account && approvalState === ApprovalState.NOT_APPROVED && <Button onClick={doApprove}>Approve {token?.symbol}</Button>}
+    {account && approvalState === ApprovalState.PENDING && <Button isDisabled={true}>Approval in progress...</Button>}
+    {account && approvalState === ApprovalState.APPROVED &&
       <Button onClick={handleButtonClick} isDisabled={isStakeButtonDisabled}>{stakeButtonText}</Button>}
   </StyledTokenInputWrapper>);
 }

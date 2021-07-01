@@ -39,8 +39,10 @@ const useFarming = (contract: Contract) => {
     });
   }, [chainId, contract]);
 
-  const [balance, setBalance] = useState<string | undefined>(undefined);
+  const [balance, setBalance] = useState<string>('0');
   useEffect(() => {
+    if (!account) return;
+
     contract.balanceOf(account)
       .then((value: BigNumber) => {
           if (chainId && stakeToken) {
@@ -56,8 +58,10 @@ const useFarming = (contract: Contract) => {
       ).then((value: string) => setBalance(value));
   }, [account, chainId, contract, stakeToken, completedTransactionsCount]);
 
-  const [reward, setReward] = useState<string | undefined>(undefined);
+  const [reward, setReward] = useState<string>('0');
   useEffect(() => {
+    if (!account) return;
+
     contract.earned(account)
       .then((value: BigNumber) => {
           if (chainId && rewardToken) {
@@ -73,7 +77,7 @@ const useFarming = (contract: Contract) => {
       ).then((value: string) => setReward(value));
   }, [account, chainId, contract, rewardToken, completedTransactionsCount]);
 
-  const [blockReward, setBlockReward] = useState<string | undefined>(undefined);
+  const [blockReward, setBlockReward] = useState<string>('0');
   useEffect(() => {
     contract.rewardRate().then((value: BigNumber) => {
         if (chainId && rewardToken) {
