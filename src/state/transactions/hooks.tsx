@@ -42,7 +42,9 @@ export function useAllTransactions(): { [txHash: string]: TransactionDetails } {
 
   const state = useSelector<AppState, AppState['transactions']>(state => state.transactions);
 
-  return chainId ? state[chainId] ?? {} : {};
+  const memoizedEmptyObject = useMemo(() => ({}), []);
+
+  return chainId ? state[chainId] ?? memoizedEmptyObject : memoizedEmptyObject;
 }
 
 export function useIsTransactionPending(transactionHash?: string): boolean {
