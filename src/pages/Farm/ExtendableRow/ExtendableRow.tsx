@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components/macro';
 import { ChevronDown, ChevronUp } from 'react-feather';
+import CurrencyFormat from 'react-currency-format';
 import TokenInput from '../TokenInput';
 import TokenCollect from '../TokenCollect';
 import { Token } from '@uniswap/sdk';
@@ -253,7 +254,9 @@ const ExtendableRow: React.FC<ExtendableRowProps> = (
         <StyledBlock width={200}>
           <StyledBlockTitle>Liquidity</StyledBlockTitle>
           <StyledBlockValue>
-            <StyledTruncatedText>{liquidity}</StyledTruncatedText>
+            <StyledTruncatedText>
+              <CurrencyFormat value={liquidity} displayType={'text'} thousandSeparator={' '} prefix={'$ '} />
+            </StyledTruncatedText>
           </StyledBlockValue>
         </StyledBlock>
         <StyledBlock width={200}>
