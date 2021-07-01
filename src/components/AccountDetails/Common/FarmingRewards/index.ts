@@ -1,3 +1,1 @@
-import FarmingRewards from './FarmingRewards';
-
-export default FarmingRewards;
+export { default as FarmingRewards } from './FarmingRewards';

@@ -283,7 +283,7 @@ export default function EmiMagicCardModal({ isOpen, walletID, onDismiss }: EmiMa
             setIsRegistered(true);
           } else {
             alert(`Oops, we unable to perform whitelist registration - ${e}`);
-            console.log('e', e.payload);
+            console.error('e', e.payload);
             dispatch(
               addPopup({
                 key: 'magicCardModal',

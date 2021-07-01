@@ -11,7 +11,7 @@ const AccountGroupingRow = styled.div`
   color: ${({ theme }) => theme.text1};
 
   div {
-    ${({ theme }) => theme.flexRowNoWrap}
+    ${({ theme }) => theme.flexRowNoWrap};
     align-items: center;
   }
 `;

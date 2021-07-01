@@ -1,10 +1,10 @@
-import React, { useCallback, useMemo } from 'react';
-import { useDispatch } from 'react-redux';
-import styled, { css } from 'styled-components';
-import { useTranslation } from 'react-i18next';
-import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import { darken } from 'polished';
+import { useDispatch } from 'react-redux';
 import { Activity, X } from 'react-feather';
+import { useTranslation } from 'react-i18next';
+import React, { useCallback, useMemo } from 'react';
+import styled, { css } from 'styled-components/macro';
+import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 
 import { useActiveWeb3React } from '../../hooks';
 import useENSName from '../../hooks/useENSName';
@@ -12,19 +12,21 @@ import { useWalletModalToggle } from '../../state/application/hooks';
 import { TransactionDetails } from '../../state/transactions/reducer';
 import { clearAllTransactions } from '../../state/transactions/actions';
 
+import { shortenAddress } from '../../utils';
+import { NetworkContextName } from '../../constants';
+import { useAllTransactions } from '../../state/transactions/hooks';
+import { fortmatic, injected, portis, walletconnect, walletlink } from '../../connectors';
+
+import { RowBetween } from '../Row';
 import Identicon from '../Identicon';
-import PortisIcon from '../../assets/images/portisIcon.png';
 import WalletModal from '../WalletModal';
 import { ButtonSecondary } from '../Button';
+import SingleLoader from '../Loader/SingleLoader';
+
+import PortisIcon from '../../assets/images/portisIcon.png';
 import FortmaticIcon from '../../assets/images/fortmaticIcon.png';
 import WalletConnectIcon from '../../assets/images/walletConnectIcon.svg';
 import CoinbaseWalletIcon from '../../assets/images/coinbaseWalletIcon.svg';
-import { RowBetween } from '../Row';
-import { shortenAddress } from '../../utils';
-import { useAllTransactions } from '../../state/transactions/hooks';
-import { NetworkContextName } from '../../constants';
-import { fortmatic, injected, portis, walletconnect, walletlink } from '../../connectors';
-import SingleLoader from '../Loader/SingleLoader';
 
 const IconWrapper = styled.div<{ size?: number }>`
   ${({ theme }) => theme.flexColumnNoWrap};
@@ -41,7 +43,7 @@ const CloseIcon = styled(X)<{ onClick: (event: React.MouseEvent) => void }>`
 `;
 
 const Web3StatusGeneric = styled(ButtonSecondary)`
-  ${({ theme }) => theme.flexRowNoWrap}
+  ${({ theme }) => theme.flexRowNoWrap};
   width: 240px;
   align-items: center;
   padding: 0.35rem 0.5rem;
@@ -171,7 +173,6 @@ export default function Web3Status() {
   const confirmed = sortedRecentTransactions.filter(tx => tx.receipt).map(tx => tx.hash);
 
   const hasPendingTransactions = !!pending.length;
-  // const hasSocks = useHasSocks()
   const toggleWalletModal = useWalletModalToggle();
 
   // handle the logo we want to show with the account
@@ -221,7 +222,6 @@ export default function Web3Status() {
             </RowBetween>
           ) : (
             <>
-              {/*SOCK*/}
               <Text>{ENSName || shortenAddress(account)}</Text>
             </>
           )}

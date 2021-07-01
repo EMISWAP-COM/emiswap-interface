@@ -1,21 +1,23 @@
-import { ChainId } from '@uniswap/sdk';
 import React from 'react';
-import { isMobile, isTablet } from 'react-device-detect';
 import { Text } from 'rebass';
+import { ChainId } from '@uniswap/sdk';
 import styled from 'styled-components/macro';
+import { isMobile, isTablet } from 'react-device-detect';
+
+import { useActiveWeb3React } from '../../hooks';
+import { useETHBalances } from '../../state/wallet/hooks';
+import { useDarkModeManager } from '../../state/user/hooks';
+
+import { tokenAmountToString } from '../../utils/formats';
+
+import Menu from '../Menu';
+import Settings from '../Settings';
+import { WhiteCard } from '../Card';
+import Web3Status from '../Web3Status';
+import Row, { RowBetween } from '../Row';
+
 import Logo from '../../assets/svg/logo.svg';
 import LogoDark from '../../assets/svg/logo_dark.svg';
-// import Wordmark from '../../assets/svg/wordmark.svg';
-// import WordmarkDark from '../../assets/svg/wordmark_white.svg';
-import { useActiveWeb3React } from '../../hooks';
-import { useDarkModeManager } from '../../state/user/hooks';
-import { useETHBalances } from '../../state/wallet/hooks';
-import { WhiteCard } from '../Card';
-import Settings from '../Settings';
-import Menu from '../Menu';
-import Row, { RowBetween } from '../Row';
-import Web3Status from '../Web3Status';
-import { tokenAmountToString } from '../../utils/formats';
 import { ReactComponent as MagicIcon } from '../../assets/images/magic_icon.svg';
 
 const HeaderFrame = styled.div`
@@ -300,9 +302,7 @@ export default function Header() {
             <UniIcon>
               <LogoImg src={isDark ? LogoDark : Logo} alt="logo" />
             </UniIcon>
-            <TitleText>
-              {/*<img style={{ marginLeft: '4px', marginTop: '4px' }} src={isDark ? WordmarkDark : Wordmark} alt="logo" width="160px"/>*/}
-            </TitleText>
+            <TitleText />
           </Title>
         </LogoElem>
         <HeaderControls>

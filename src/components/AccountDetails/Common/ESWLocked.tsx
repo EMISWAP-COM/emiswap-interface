@@ -11,6 +11,7 @@ import { convertBigDecimal, convertDate, DateFormat } from '../uitls';
 const DarkText = styled.span`
   color: ${({ theme }) => theme.white};
 `;
+
 const LockedWrapper = styled.div`
   font-size: 13px;
   color: ${({ theme }) => theme.grey6};
@@ -29,8 +30,9 @@ const LockedWrapper = styled.div`
 
 const LockedItem = styled.div`
   display: flex;
-  align-items: center;
   padding: 14px;
+  border-radius: 4px;
+  align-items: center;
   background: ${({ theme }) => theme.darkGrey};
 `;
 
@@ -42,6 +44,7 @@ const LockedItemWrapper = styled.div`
   width: 100%;
   margin-left: 10px;
 `;
+
 const LockedValue = styled(DarkText)`
   font-size: 16px;
   font-weight: 600;

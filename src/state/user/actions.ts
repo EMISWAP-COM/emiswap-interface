@@ -64,7 +64,7 @@ export const loadWalletAddress = createAsyncThunk(
       const user = await fetchWrapper.get(url).then(data => data);
       return user.address;
     } catch (e) {
-      alert(e.message);
+      console.error(e.message);
       dispatch(
         addPopup({
           key: 'loadPerformance',
@@ -106,7 +106,7 @@ export const loginCabinets = createAsyncThunk(
         }
       })
       .catch(e => {
-        console.log(e);
+        console.error(e);
 
         // Do not show fetch error
         if (e.message === 'Failed to fetch') return;

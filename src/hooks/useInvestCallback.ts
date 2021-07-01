@@ -95,7 +95,7 @@ export function useInvestCallback(
       };
 
       const onError = (error: any) => {
-        console.log('--onError--', error);
+        console.error(error);
         // if the user rejected the tx, pass this along
         if (error?.code === 4001) {
           throw error;
@@ -135,7 +135,7 @@ export function useInvestCallback(
                 )
                 .toFixed(0)
             : parsedAmounts[Field.INPUT]?.toFixed(0)) || '';
-        console.log(
+        console.info(
           '.....referralAddress, amount, inputField, valueAmount',
           referralAddress,
           amount,

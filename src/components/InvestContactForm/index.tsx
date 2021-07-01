@@ -58,16 +58,16 @@ const ModalBody = styled.div`
     overflow-y: auto;
     width: 100%;
     background: ${({ theme }) => theme.cardBG};
-    
+
     ::-webkit-scrollbar {
       width: 8px;
     }
-  
+
     ::-webkit-scrollbar-track {
       background: #7d979433;
       border-radius: 3px;
     }
-  
+
     ::-webkit-scrollbar-thumb {
       border-radius: 3px;
       background: ${({ theme }) => theme.border1};
@@ -92,7 +92,6 @@ const ModalBody = styled.div`
         font-size: 18px;
         line-height: 24px;
       }
-
     }
 
     &__description {
@@ -142,7 +141,7 @@ const ModalBody = styled.div`
       outline: none;
 
       ::placeholder {
-        color: #615C69;
+        color: #615c69;
       }
     }
 
@@ -257,7 +256,7 @@ export default function InvestContactForm({ isOpen, walletID, onDismiss }: EmiMa
         })
         .catch(e => {
           const message = `${e.message}: ${JSON.stringify(e.payload)}`;
-          console.log('e', message);
+          console.error('e', message);
           dispatch(
             addPopup({
               key: 'magicCardModal',
@@ -281,18 +280,24 @@ export default function InvestContactForm({ isOpen, walletID, onDismiss }: EmiMa
     <ModalCustom isOpen={isOpen} onDismiss={onDismiss} maxHeight={90} maxWidth={440}>
       <ModalBody>
         <CloseBtn onClick={onDismiss}>
-          <CloseIcon color={'#ffffff'}/>
+          <CloseIcon color={'#ffffff'} />
         </CloseBtn>
         {isRegistered ? (
-          <SuccessRegistration message={''}/>
+          <SuccessRegistration message={''} />
         ) : (
           <>
             <div className="modal-body">
-              <div className="modal-body__header">Register to the Waiting list to participate in the Private Stage</div>
+              <div className="modal-body__header">
+                Register to the Waiting list to participate in the Private Stage
+              </div>
               {/*<div className="modal-body__description">*/}
               {/*  If you are interested in purchasing ESW for less than $25,000, fill out this form.*/}
               {/*</div>*/}
-              <div className={`modal-body__input-block ${!validation.name ? 'modal-body__input--error' : ''}`}>
+              <div
+                className={`modal-body__input-block ${
+                  !validation.name ? 'modal-body__input--error' : ''
+                }`}
+              >
                 <div className="modal-body__input-label">
                   Name <span className="modal-body__input-label-required">*</span>
                 </div>
@@ -304,7 +309,11 @@ export default function InvestContactForm({ isOpen, walletID, onDismiss }: EmiMa
                 />
                 {!validation.name && errorLabel}
               </div>
-              <div className={`modal-body__input-block ${!validation.email ? 'modal-body__input--error' : ''}`}>
+              <div
+                className={`modal-body__input-block ${
+                  !validation.email ? 'modal-body__input--error' : ''
+                }`}
+              >
                 <div className="modal-body__input-label">
                   Email <span className="modal-body__input-label-required">*</span>
                 </div>
@@ -316,7 +325,11 @@ export default function InvestContactForm({ isOpen, walletID, onDismiss }: EmiMa
                 />
                 {!validation.email && errorLabel}
               </div>
-              <div className={`modal-body__input-block ${!validation.phone ? 'modal-body__input--error' : ''}`}>
+              <div
+                className={`modal-body__input-block ${
+                  !validation.phone ? 'modal-body__input--error' : ''
+                }`}
+              >
                 <div className="modal-body__input-label">Phone</div>
                 <input
                   ref={phoneRef}
@@ -326,7 +339,11 @@ export default function InvestContactForm({ isOpen, walletID, onDismiss }: EmiMa
                 />
                 {!validation.phone && errorLabel}
               </div>
-              <div className={`modal-body__input-block ${!validation.telegram ? 'modal-body__input--error' : ''}`}>
+              <div
+                className={`modal-body__input-block ${
+                  !validation.telegram ? 'modal-body__input--error' : ''
+                }`}
+              >
                 <div className="modal-body__input-label">Telegram</div>
                 <input
                   ref={telegramRef}
@@ -338,7 +355,11 @@ export default function InvestContactForm({ isOpen, walletID, onDismiss }: EmiMa
                   <span className="modal-body__error-text">Please enter the correct value</span>
                 )}
               </div>
-              <div className={`modal-body__input-block ${!validation.wallet ? 'modal-body__input--error' : ''}`}>
+              <div
+                className={`modal-body__input-block ${
+                  !validation.wallet ? 'modal-body__input--error' : ''
+                }`}
+              >
                 <div className="modal-body__input-label">
                   Wallet account <span className="modal-body__input-label-required">*</span>
                 </div>
@@ -352,9 +373,7 @@ export default function InvestContactForm({ isOpen, walletID, onDismiss }: EmiMa
                 {!validation.wallet && errorLabel}
               </div>
               <div className="modal-body__btn-container">
-                <ButtonPrimary onClick={sendForm}>
-                  Submit
-                </ButtonPrimary>
+                <ButtonPrimary onClick={sendForm}>Submit</ButtonPrimary>
               </div>
             </div>
           </>

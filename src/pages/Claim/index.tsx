@@ -171,7 +171,7 @@ export default function Claim({
     );
 
     // Для тестирования
-    console.log(`
+    console.info(`
         Account: ${account}\n
         ChainId: ${chainId}\n
         Contract address: ${contract.address}\n
@@ -217,7 +217,7 @@ export default function Claim({
           });
       })
       .catch(error => {
-        onError(error, [{method: 'claimCallback'}]);
+        onError(error, [{ method: 'claimCallback' }]);
       });
   };
 

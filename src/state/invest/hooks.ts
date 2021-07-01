@@ -23,7 +23,7 @@ import {
 import { TokenAddressMap, WrappedTokenInfo } from '../lists/hooks';
 import { ESW } from '../../constants';
 import { investMaxESW } from '../../constants/invest';
-import { maxAmountSpendInvest } from '../../utils/maxAmountSpend'
+import { maxAmountSpendInvest } from '../../utils/maxAmountSpend';
 import { InvestState } from './reducer';
 import { LaunchpadState } from '../launchpad/reducer';
 
@@ -182,15 +182,15 @@ export function useDerivedInvestInfo(): {
   };
 
   // const isSmallInvestment = parsedOutputAmount && parsedOutputAmount.lessThan(JSBI.BigInt(investMinESW));
-  const isMaxInvestment = parsedOutputAmount && parsedOutputAmount.greaterThan(JSBI.BigInt(investMaxESW));
+  const isMaxInvestment =
+    parsedOutputAmount && parsedOutputAmount.greaterThan(JSBI.BigInt(investMaxESW));
 
   const maxAmountInput: TokenAmount | undefined = maxAmountSpendInvest(
     currencyBalances[Field.INPUT],
   );
 
-  const notEnoughBalance = maxAmountInput &&
-    parsedAmount && JSBI.lessThan(maxAmountInput.raw, parsedAmount.raw);
-
+  const notEnoughBalance =
+    maxAmountInput && parsedAmount && JSBI.lessThan(maxAmountInput.raw, parsedAmount.raw);
 
   let error: string | undefined;
   if (!account) {
@@ -218,7 +218,7 @@ export function useDerivedInvestInfo(): {
 
   if (notEnoughBalance) {
     error = 'Insufficient ' + maxAmountInput.token.symbol + ' balance';
-    console.log('insufficient', error)
+    console.error('insufficient', error);
   }
 
   /*if (isSmallInvestment) {
@@ -226,11 +226,11 @@ export function useDerivedInvestInfo(): {
   }*/
 
   if (isMaxInvestment) {
-    error = "Sorry, there’s a limit of $500 purchase with one wallet";
+    error = 'Sorry, there’s a limit of $500 purchase with one wallet';
   }
 
   if (launchpadState.user_deposits_count > 0) {
-    error = "You’ve already made a purchase. Users can not join launchpad sales several times";
+    error = 'You’ve already made a purchase. Users can not join launchpad sales several times';
   }
 
   if (parsedAmount && !parsedOutputAmount) {

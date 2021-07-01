@@ -10,15 +10,15 @@ const handleResponse = (response: Response) => {
     case 201:
       return response.json();
     case 477:
-      console.log('response 477', response);
+      console.info('response 477', response);
       return response.json().then(data => {
-        console.log('data err', data, new CustomError(data?.error_message, data?.payload));
+        console.error('data err', data, new CustomError(data?.error_message, data?.payload));
         throw new CustomError('Your previous transaction is processing', data?.payload);
       });
     case 422:
-      console.log('response 422', response);
+      console.info('response 422', response);
       return response.json().then(data => {
-        console.log('data err', data, new CustomError(data?.error, data?.payload));
+        console.error('data err', data, new CustomError(data?.error, data?.payload));
         throw new CustomError(data?.error, data?.payload);
       });
     default:

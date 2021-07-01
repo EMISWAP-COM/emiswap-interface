@@ -153,8 +153,6 @@ export function useEstimateCallback(
       ...[FLAG_ENABLE_CHI_BURN, FLAG_ENABLE_CHI_BURN_BY_ORIGIN],
     );
 
-    // console.log(`chi=`, chiFlags.toString(16));
-
     return () => {
       return Promise.all([estimateWithFlags(regularFlags), estimateWithFlags(chiFlags)]);
     };

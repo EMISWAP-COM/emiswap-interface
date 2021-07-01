@@ -20,16 +20,24 @@ export const InvestRules = () => {
   const { account } = useActiveWeb3React();
   const [isResidentConfirm, toggleResidentConfirm] = useToggle(false);
 
-  const investRequestStatus = useSelector((state: AppState) => state.user.info?.invest_request_state);
+  const investRequestStatus = useSelector(
+    (state: AppState) => state.user.info?.invest_request_state,
+  );
   const launchpadState = useSelector((state: AppState) => state.launchpad);
 
   const [isRegisterWhiteListModalOpen, setIsRegisterWhiteListModalOpen] = useState<boolean>(false);
 
   const whiteListDisabled =
-    (+launchpadState.current_at > +launchpadState.whitelist_finished_at)
-    || (+launchpadState.current_at > +launchpadState.started_at);
+    +launchpadState.current_at > +launchpadState.whitelist_finished_at ||
+    +launchpadState.current_at > +launchpadState.started_at;
 
-  console.log("whiteListDisabled: ", whiteListDisabled, +launchpadState.current_at, +launchpadState.whitelist_finished_at, +launchpadState.started_at)
+  console.info(
+    'whiteListDisabled: ',
+    whiteListDisabled,
+    +launchpadState.current_at,
+    +launchpadState.whitelist_finished_at,
+    +launchpadState.started_at,
+  );
 
   const getMessage = () => {
     switch (investRequestStatus) {
@@ -42,13 +50,16 @@ export const InvestRules = () => {
     }
   };
 
-  console.log("+launchpadState.limit: ", +launchpadState.limit, +launchpadState.total)
+  console.info('+launchpadState.limit: ', +launchpadState.limit, +launchpadState.total);
 
-  if (!(+launchpadState.limit < +launchpadState.total) && investRequestStatus === InvestRequestStatus.ACCEPTED) {
+  if (
+    !(+launchpadState.limit < +launchpadState.total) &&
+    investRequestStatus === InvestRequestStatus.ACCEPTED
+  ) {
     return null;
   }
 
-  if ((+launchpadState.limit <= +launchpadState.total) && whiteListDisabled ) {
+  if (+launchpadState.limit <= +launchpadState.total && whiteListDisabled) {
     return (
       <>
         <PrivateSaleText style={{ fontWeight: 600, color: 'white' }}>
@@ -80,17 +91,16 @@ export const InvestRules = () => {
           {!statuses.includes(investRequestStatus) ? (
             <>
               <PrivateSaleText>
-                To join launchpad sales on June, 28 14:00 UTC you need to register for the Waiting list.
+                To join launchpad sales on June, 28 14:00 UTC you need to register for the Waiting
+                list.
               </PrivateSaleText>
               <OnlyInvestorsText>
                 Only Waiting list participants will be able to buy ESW.
-                <Question text="Please note that users from the following countries are restricted from joining launchpad sales: Democratic Republic of the Congo, Côte d'Ivoire, Cuba, Iran, Iraq, Democratic People's Republic of Korea, Liberia, Myanmar, Sudan, Syrian Arab Republic, Venezuela, Zimbabwe, and the USA."/>
+                <Question text="Please note that users from the following countries are restricted from joining launchpad sales: Democratic Republic of the Congo, Côte d'Ivoire, Cuba, Iran, Iraq, Democratic People's Republic of Korea, Liberia, Myanmar, Sudan, Syrian Arab Republic, Venezuela, Zimbabwe, and the USA." />
               </OnlyInvestorsText>
             </>
           ) : (
-            <OnlyInvestorsText>
-              {getMessage()}
-            </OnlyInvestorsText>
+            <OnlyInvestorsText>{getMessage()}</OnlyInvestorsText>
           )}
         </>
       )}

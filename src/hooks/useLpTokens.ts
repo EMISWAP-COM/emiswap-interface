@@ -13,7 +13,9 @@ export function useLpTokens(): {
 } {
   const contract = useVampContract();
   const [lpTokensInfo, setLpTokensInfo] = useState<any[]>([]);
-  const [lpTokensDetailedInfo, setLpTokensDetailedInfot] = useState<{ addresses: string[]; base: string }[]>([]);
+  const [lpTokensDetailedInfo, setLpTokensDetailedInfot] = useState<
+    { addresses: string[]; base: string }[]
+  >([]);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const formattedAddresses = lpTokensDetailedInfo
@@ -27,7 +29,6 @@ export function useLpTokens(): {
       try {
         setIsLoading(true);
         const length = await contract?.lpTokensInfoLength();
-        console.log(length);
         let promiseArr = [];
         for (let i = 0; i < length; i++) {
           promiseArr.push(contract?.lpTokensInfo(i));
@@ -40,10 +41,8 @@ export function useLpTokens(): {
           listPair.map((el, idx) => ({ addresses: el, base: lpTokensInfo[idx].lpToken })),
         );
         setIsLoading(false);
-        console.log(lpTokensDetailedInfo);
       } catch (e) {
-        console.log(contract);
-        console.log(e);
+        console.log(e, contract);
         throw new Error('Failed to migrate ');
       }
     };

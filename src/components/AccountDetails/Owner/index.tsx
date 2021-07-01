@@ -1,16 +1,21 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components/macro';
-import { PurchaseHistory } from '../Common/PurchaseHistory';
-import { ReferralPerformance } from '../Common/ReferralPerformance';
-
-import { loadBalance, loadPerformance } from '../../../state/cabinets/actions';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { AppDispatch, AppState } from '../../../state';
-import { Connection } from '../Common/Connection';
-import { ESWRewards } from '../Common/ESWRewards';
-import { ESWLocked } from '../Common/ESWLocked';
+import { loadBalance, loadPerformance } from '../../../state/cabinets/actions';
+
 import { ExternalLink } from '../../../theme';
-import FarmingRewards from '../Common/FarmingRewards';
+
+import {
+  EswHoldingRewards,
+  Connection,
+  FarmingRewards,
+  ESWLocked,
+  ESWRewards,
+  PurchaseHistory,
+  ReferralPerformance,
+} from '../Common';
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -24,8 +29,6 @@ const ProfileStatus = styled.div`
   text-transform: capitalize;
   padding: 0 1rem 1rem 1rem;
   flex-wrap: wrap;
-  align-items:
-  background: lightgreen;
   gap: 12px;
   color: ${({ theme }) => theme.darkText};
 
@@ -44,19 +47,15 @@ const OptionsPromo = styled.div`
   max-width: 340px;
 `;
 
-interface Props {
-  // toggleWalletModal: () => void;
-  // pendingTransad
+interface OwnerProps {
   ENSName?: string;
   openOptions: () => void;
 }
 
-const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
+export const Owner: React.FC<OwnerProps> = ({ openOptions }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { id: userId } = useSelector((state: AppState) => state.user.info);
-  // const balance = useSelector((state: AppState) => state.cabinets.balance);
-  // const { reward } = useSelector((state: AppState) => state.cabinets.performance);
 
   useEffect(() => {
     dispatch(loadPerformance(userId) as any);
@@ -89,14 +88,18 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
           <ExternalLink href={'https://crowdsale.emidao.org/magic-nft'}>Magic Cards!</ExternalLink>
         </OptionsPromo>
       </Connection>
+
       <ESWRewards />
+
+      <EswHoldingRewards />
+
       <ESWLocked />
+
       <FarmingRewards />
+
       <ReferralPerformance />
 
       <PurchaseHistory />
     </Wrapper>
   );
 };
-
-export { Owner };

@@ -1,33 +1,15 @@
 import React from 'react';
-import styled from 'styled-components/macro';
-import { Header } from '../styleds';
 import { useSelector } from 'react-redux';
+import styled from 'styled-components/macro';
+
+import { Header } from '../styleds';
 import { AppState } from '../../../state';
 import { convertBigDecimal } from '../uitls';
-
-// export const Calculating = styled.div`
-//   position: relative;
-//
-//   &:after {
-//     position: absolute;
-//     content: 'Calculating...';
-//     background: ${({ theme }) => theme.red3};
-//
-//     border-radius: 12px;
-//     padding: 0 8px;
-//     top: -12px;
-//     right: -5px;
-//     text-transform: lowercase;
-//     color: white;
-//     font-weight: 500;
-//     font-size: 12px;
-//     z-index: 10;
-//   }
-// `;
 
 const DarkText = styled.span`
   color: ${({ theme }) => theme.white};
 `;
+
 const RewardsWrapper = styled.div`
   font-size: 13px;
   color: ${({ theme }) => theme.darkText};
@@ -46,8 +28,10 @@ const RewardsWrapper = styled.div`
 
 const RewardsItem = styled.div`
   padding: 14px;
+  border-radius: 4px;
   background: ${({ theme }) => theme.darkGrey};
 `;
+
 const RewardsValue = styled(DarkText)`
   font-size: 16px;
   font-weight: 600;

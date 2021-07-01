@@ -3,6 +3,8 @@ import {
   loadBalance,
   loadBonus,
   loadPerformance,
+  loadDepositsEswHistory,
+  loadDepositsEswHistoryRewards,
 } from './actions';
 
 interface Unlock {
@@ -63,8 +65,21 @@ interface Balance {
 }
 
 interface BonusDetails {
-  pool_block_bonuses: PoolBonus[],
-  pool_bonuses: PoolBonus[],
+  pool_block_bonuses: PoolBonus[];
+  pool_bonuses: PoolBonus[];
+}
+
+export interface DepositsEswHistory {
+  date: string;
+  total_system_reward: number;
+  share: number;
+  reward: number;
+}
+
+export interface DepositsEswHistoryReward {
+  total: number;
+  collected: number;
+  available_collect: number;
 }
 
 interface CabinetState {
@@ -73,6 +88,8 @@ interface CabinetState {
   bonusDetails: BonusDetails;
   purchaseHistory: PurchaseHistory[];
   referralHistory: ReferralPurchaseHistory[];
+  depositsEswHistory: DepositsEswHistory[];
+  depositsEswHistoryRewards: DepositsEswHistoryReward[];
 }
 
 interface PerformanceLevel {
@@ -104,7 +121,7 @@ interface Deposit {
 }
 
 interface PoolBonus {
-  date: string,
+  date: string;
   name: string;
   esw_reward: string;
   esw_price: string;
@@ -204,25 +221,25 @@ const initialState: CabinetState = {
   },
   purchaseHistory: [] as PurchaseHistory[],
   referralHistory: [] as ReferralPurchaseHistory[],
+  depositsEswHistory: new Array<DepositsEswHistory>(),
+  depositsEswHistoryRewards: new Array<DepositsEswHistoryReward>(),
 };
 
-export default createReducer(
-  initialState,
-  builder =>
-    builder
-      .addCase(loadPerformance.fulfilled, (state, action) => {
-        state.performance = action.payload;
-      })
-      // .addCase(loadPurchaseHistory.fulfilled, (state, action) => {
-      //   state.purchaseHistory = action.payload;
-      // })
-      .addCase(loadBalance.fulfilled, (state, action) => {
-        state.balance = action.payload;
-      })
-      .addCase(loadBonus.fulfilled, (state, action) => {
-        state.bonusDetails = action.payload;
-      })
-      // .addCase(loadReferralPurchaseHistory.fulfilled, (state, action) => {
-      //   state.referralHistory = action.payload;
-      // }),
+export default createReducer(initialState, builder =>
+  builder
+    .addCase(loadPerformance.fulfilled, (state, action) => {
+      state.performance = action.payload;
+    })
+    .addCase(loadBalance.fulfilled, (state, action) => {
+      state.balance = action.payload;
+    })
+    .addCase(loadBonus.fulfilled, (state, action) => {
+      state.bonusDetails = action.payload;
+    })
+    .addCase(loadDepositsEswHistory.fulfilled, (state, action) => {
+      state.depositsEswHistory = action.payload;
+    })
+    .addCase(loadDepositsEswHistoryRewards.fulfilled, (state, action) => {
+      state.depositsEswHistoryRewards = action.payload;
+    }),
 );

@@ -111,29 +111,6 @@ export const ReferralPerformance = () => {
   return (
     <div>
       <Header>Total Referral Performance</Header>
-      {/*<RewardsWrapper>*/}
-      {/*  <RewardsItem>*/}
-      {/*    <div>*/}
-      {/*      <span>Referral Reward, ESW</span>*/}
-      {/*      <div>*/}
-      {/*        <RewardsValue>{convertBigDecimal(total?.reward.ESW)}</RewardsValue>&nbsp;ESW*/}
-      {/*      </div>*/}
-      {/*    </div>*/}
-      {/*  </RewardsItem>*/}
-      {/*  <RewardsItem>*/}
-      {/*    <div>*/}
-      {/*      <span>Referral Reward, DAI</span>*/}
-      {/*      <div>*/}
-      {/*        <RewardsValue>{convertBigDecimal(total?.reward.DAI)}</RewardsValue>&nbsp;DAI*/}
-      {/*      </div>*/}
-      {/*    </div>*/}
-      {/*    <div>*/}
-      {/*      <CollectBtn onClick={() => console.log('no collect handler')}>*/}
-      {/*        Collect to my wallet*/}
-      {/*      </CollectBtn>*/}
-      {/*    </div>*/}
-      {/*  </RewardsItem>*/}
-      {/*</RewardsWrapper>*/}
 
       <Wrapper>
         <Referrals>

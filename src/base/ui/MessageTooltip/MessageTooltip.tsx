@@ -132,8 +132,6 @@ export const MessageTooltip: React.FC<MessageTooltipProps> = ({
     }
     setActive(false);
 
-    console.log(active);
-
     onClose();
   };
 
