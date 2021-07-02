@@ -51,6 +51,7 @@ const StyledBlock = styled.div<{ width?: number }>`
     flex-basis: 0;
     margin-bottom: 16px;
     padding-right: 0;
+    align-items: center;
   `};
 `;
 
@@ -58,6 +59,10 @@ const StyledBlockTitle = styled.div`
   color: ${({theme}) => theme.darkWhite};
   font-weight: 400;
   margin-bottom: 16px;
+
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    margin-bottom: 0;
+  `};
 `;
 
 const StyledBlockValue = styled.div`
@@ -78,7 +83,7 @@ const StyledExtendButtonDesktop = styled.div<{ isRowExtended: boolean }>`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  margin-left: 80px;
+  margin-left: 20px;
   transition: background-color 0.3s;
 
   :hover {
@@ -218,7 +223,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = (
   return (<StyledRow>
     <StyledHeader>
       <StyledBlocksWrapper>
-        <StyledBlock width={150}>
+        <StyledBlock width={200}>
           <StyledBlockTitle>Coin</StyledBlockTitle>
           <StyledBlockValue>
             <StyledCurrencyLogo>
@@ -261,7 +266,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = (
             </StyledTruncatedText>
           </StyledBlockValue>
         </StyledBlock>
-        <StyledBlock width={200}>
+        <StyledBlock width={300}>
           <StyledBlockTitle>End time</StyledBlockTitle>
           <StyledBlockValue>{endDate}</StyledBlockValue>
         </StyledBlock>
