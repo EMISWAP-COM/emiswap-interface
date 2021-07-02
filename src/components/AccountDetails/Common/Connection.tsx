@@ -97,7 +97,7 @@ const ActionBtn = styled(WalletAction)`
 
 const ChangeActionsBlock = styled.div`
   display: flex;
-    
+
   @media screen and (max-width: 800px) {
     order: 2;
     width: 100%;
@@ -110,12 +110,12 @@ const ChangeWalletBtn = styled(ActionBtn)`
   background-color: ${({ theme }) => theme.purple} !important;
   border: 1px solid ${({ theme }) => theme.purple} !important;
   color: #FFFFFF;
-  
+
   &:hover, &:focus, &:active {
     background: ${({ theme }) => theme.purple} !important;
     box-shadow: none;
   }
-  
+
   @media screen and (max-width: 800px) {
     width: calc(50% - 5px);
     margin-left: auto;
