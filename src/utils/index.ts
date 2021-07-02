@@ -19,6 +19,7 @@ import { MIGRATOR_ABI, MIGRATOR_ADDRESS } from '../constants/abis/migrator';
 import { EMISWAP_CROWDSALE_ABI, EMISWAP_CROWDSALE_ADDRESS } from '../constants/abis/crowdsale';
 import { EMISWAP_VESTING_ABI, EMISWAP_VESTING_ADDRESS } from '../constants/abis/emiswap-vesting';
 import { FARMING_ABI, FARMING_ADDRESSES } from '../constants/abis/farming';
+import { EMI_PRICE_2_ABI, EMI_PRICE_2_ADDRESS } from '../constants/abis/emiPrice2';
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
@@ -219,4 +220,8 @@ export function getMyFarmingContracts(library: Web3Provider, account: string) {
       });
     });
   });
+}
+
+export function getEmiPrice2Contract(library: Web3Provider, account: string) {
+  return getContract(EMI_PRICE_2_ADDRESS, EMI_PRICE_2_ABI, library, account);
 }

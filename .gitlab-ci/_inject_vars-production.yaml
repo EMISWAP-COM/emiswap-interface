@@ -53,4 +53,5 @@ chart_vars:
         REACT_APP_SENTRY_AUTH_TOKEN: '3fd6fa12c53411ebabadb2b6a736423f',
         FARMING_ADDRESSES: [
         ],
+        EMI_PRICE_2_ADDRESS: '0xB051F7DeFD9ed3fbCb8cF911C01b06dBD7281340',
       };

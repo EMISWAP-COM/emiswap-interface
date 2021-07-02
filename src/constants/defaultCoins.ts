@@ -3866,6 +3866,14 @@ const defaultCoins: DefaultCoins = {
       decimals: 18,
       logoURI: '',
     },
+    {
+      address: '0x5a75a093747b72a0e14056352751edf03518031d',
+      chainId: 1,
+      name: 'EmiDAO Token',
+      symbol: 'ESW',
+      decimals: 18,
+      logoURI: '',
+    },
     // {
     //   address: '0x0000000000000000000000000000000000000000',
     //   chainId: 42,

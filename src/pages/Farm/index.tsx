@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components/macro';
 import { SwapPoolTabs, TabNames } from '../../components/NavigationTabs';
 
@@ -12,6 +12,7 @@ import { useActiveWeb3React } from '../../hooks';
 import FarmComponent from './FarmComponent';
 import Button from '../../base/ui/Button';
 import { useWalletModalToggle } from '../../state/application/hooks';
+import getEswPriceInDai from './getEswPriceInDai';
 // FIXME Убрать комментарий для возврата функционала
 // import isLpToken from './isLpToken';
 // import useFarming from '../../hooks/useFarming';
@@ -87,11 +88,19 @@ export default function Farm() {
   // FIXME Убрать комментарий для возврата функционала
   // const [radioValue, setRadioValue] = useState<string>('all');
   const [selectedTab, setSelectedTab] = useState<string>('staking');
-  const { library, account } = useActiveWeb3React();
+  const { library, account, chainId } = useActiveWeb3React();
 
   const farmingContracts: Contract[] = useMemo(() => getFarmingContracts(library, account), [library, account]);
 
   const toggleWalletModal = useWalletModalToggle();
+
+  // Get esw price in top level component to avoid needless contract requests
+  const [eswPriceInDai, setEswPriceInDai] = useState('0');
+  useEffect(() => {
+    getEswPriceInDai(library, account, chainId).then((value) => {
+      setEswPriceInDai(value);
+    });
+  }, [library, account, chainId]);
 
 
   return (
@@ -114,7 +123,12 @@ export default function Farm() {
               'Increase your profit from different LP tokens including ESW token pairs by farming them in our pools. No time limits let you farm your tokens as long as you wish and withdraw them at any time. Farming rewards are allocated to your EmiSwap account for every block.'}
               </StyledInfo>
             </StyledInfoWrapper>
-            {farmingContracts.map(contract => <FarmComponent key={contract.address} contract={contract} selectedTab={selectedTab} />)}
+            {farmingContracts.map(contract => <FarmComponent
+              key={contract.address}
+              contract={contract}
+              selectedTab={selectedTab}
+              eswPriceInDai={eswPriceInDai}
+            />)}
           </>
         )}
         {!account && (
