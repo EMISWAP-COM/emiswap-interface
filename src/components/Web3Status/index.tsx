@@ -1,12 +1,16 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
+import { useDispatch } from 'react-redux';
 import styled, { css } from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import { darken } from 'polished';
-import { Activity } from 'react-feather';
+import { Activity, X } from 'react-feather';
+
+import { useActiveWeb3React } from '../../hooks';
 import useENSName from '../../hooks/useENSName';
 import { useWalletModalToggle } from '../../state/application/hooks';
 import { TransactionDetails } from '../../state/transactions/reducer';
+import { clearAllTransactions } from '../../state/transactions/actions';
 
 import Identicon from '../Identicon';
 import PortisIcon from '../../assets/images/portisIcon.png';
@@ -30,6 +34,10 @@ const IconWrapper = styled.div<{ size?: number }>`
     height: ${({ size }) => (size ? size + 'px' : '32px')};
     width: ${({ size }) => (size ? size + 'px' : '32px')};
   }
+`;
+
+const CloseIcon = styled(X)<{ onClick: (event: React.MouseEvent) => void }>`
+  cursor: pointer;
 `;
 
 const Web3StatusGeneric = styled(ButtonSecondary)`
@@ -105,7 +113,7 @@ const Web3StatusConnected = styled(Web3StatusGeneric)<{ pending?: boolean }>`
   :hover,
   :focus {
     background-color: ${({ pending, theme }) => (pending ? theme.green5 : theme.purple)};
-    box-shadow: ${({ theme }) => theme.purpleBoxShadow}
+    box-shadow: ${({ theme }) => theme.purpleBoxShadow};
   }
 `;
 
@@ -138,7 +146,9 @@ function recentTransactionsOnly(a: TransactionDetails) {
 export default function Web3Status() {
   const { t } = useTranslation();
   const { active, account, connector, error } = useWeb3React();
+  const { chainId } = useActiveWeb3React();
   const contextNetwork = useWeb3React(NetworkContextName);
+  const dispatch = useDispatch();
 
   const { ENSName } = useENSName(account);
 
@@ -148,6 +158,14 @@ export default function Web3Status() {
     const txs = Object.values(allTransactions);
     return txs.filter(recentTransactionsOnly).sort(newTranscationsFirst);
   }, [allTransactions]);
+
+  const clearAllTransactionsCallback = useCallback(
+    (event: React.MouseEvent) => {
+      event.stopPropagation();
+      dispatch(clearAllTransactions({ chainId }));
+    },
+    [dispatch, chainId],
+  );
 
   const pending = sortedRecentTransactions.filter(tx => !tx.receipt).map(tx => tx.hash);
   const confirmed = sortedRecentTransactions.filter(tx => tx.receipt).map(tx => tx.hash);
@@ -197,7 +215,9 @@ export default function Web3Status() {
         >
           {hasPendingTransactions ? (
             <RowBetween>
-              <Text>{pending?.length} Pending</Text> <SingleLoader stroke="white" />
+              <SingleLoader stroke="white" />
+              <Text>{pending?.length} Pending</Text>
+              <CloseIcon onClick={clearAllTransactionsCallback} />
             </RowBetween>
           ) : (
             <>
