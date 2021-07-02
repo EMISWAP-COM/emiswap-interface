@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import { darken } from 'polished';
-import { Activity } from 'react-feather';
+import { Activity, X } from 'react-feather';
 
 import { useActiveWeb3React } from '../../hooks';
 import useENSName from '../../hooks/useENSName';
@@ -25,7 +25,6 @@ import { useAllTransactions } from '../../state/transactions/hooks';
 import { NetworkContextName } from '../../constants';
 import { fortmatic, injected, portis, walletconnect, walletlink } from '../../connectors';
 import SingleLoader from '../Loader/SingleLoader';
-import { CloseIcon } from '../../theme';
 
 const IconWrapper = styled.div<{ size?: number }>`
   ${({ theme }) => theme.flexColumnNoWrap};
@@ -35,6 +34,10 @@ const IconWrapper = styled.div<{ size?: number }>`
     height: ${({ size }) => (size ? size + 'px' : '32px')};
     width: ${({ size }) => (size ? size + 'px' : '32px')};
   }
+`;
+
+const CloseIcon = styled(X)<{ onClick: (event: React.MouseEvent) => void }>`
+  cursor: pointer;
 `;
 
 const Web3StatusGeneric = styled(ButtonSecondary)`
@@ -157,7 +160,10 @@ export default function Web3Status() {
   }, [allTransactions]);
 
   const clearAllTransactionsCallback = useCallback(
-    () => dispatch(clearAllTransactions({ chainId })),
+    (event: React.MouseEvent) => {
+      event.stopPropagation();
+      dispatch(clearAllTransactions({ chainId }));
+    },
     [dispatch, chainId],
   );
 
