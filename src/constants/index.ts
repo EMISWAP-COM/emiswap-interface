@@ -1,6 +1,6 @@
 import { ChainId, ETHER, JSBI, Percent, Token } from '@uniswap/sdk';
 
-import { fortmatic, injected, portis, walletconnect, /*walletlink*/ } from '../connectors';
+import { fortmatic, injected, portis, walletconnect, walletlink } from '../connectors';
 import { keccak256 } from '@ethersproject/solidity';
 import { bytecode } from './abis/Emiswap.json';
 
@@ -12,6 +12,9 @@ type ChainTokenList = {
   readonly [chainId in ChainId]: Token[];
 };
 
+declare namespace window {
+  export const env: Record<string, string>;
+}
 const env = window['env'];
 
 export const WETH = new Token(
@@ -220,23 +223,23 @@ export const SUPPORTED_WALLETS = {
       color: '#4196FC',
       mobile: true,
     },
-    /*WALLET_LINK: {
+    WALLET_LINK: {
       connector: walletlink,
       name: 'Coinbase Wallet',
       iconName: 'coinbaseWalletIcon.svg',
       description: 'Use Coinbase Wallet app on mobile device',
       href: null,
       color: '#315CF5',
-    },*/
-    /*COINBASE_LINK: {
+    },
+    COINBASE_LINK: {
       name: 'Open in Coinbase Wallet',
       iconName: 'coinbaseWalletIcon.svg',
       description: 'Open in Coinbase Wallet app.',
-      href: 'https://go.cb-w.com/dFdHIRRZS8',
+      href: 'https://go.cb-w.com/fWpxXDRLvhb',
       color: '#315CF5',
       mobile: true,
       mobileOnly: true,
-    },*/
+    },
     FORTMATIC: {
       connector: fortmatic,
       name: 'Fortmatic',
