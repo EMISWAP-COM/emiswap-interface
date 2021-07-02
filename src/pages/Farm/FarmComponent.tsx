@@ -23,7 +23,7 @@ const FarmComponent: React.FC<FarmComponentProps> = (
 
   const [apr, setApr] = useState<number>(0);
   useEffect(() => {
-    if (farming.blockReward && farming.liquidity && eswPriceInDai) {
+    if (farming.blockReward && Number(farming.liquidity) && eswPriceInDai) {
       const calculatedApr = (parseFloat(farming.blockReward) * 5 * 60 * 24 * 365 * parseFloat(eswPriceInDai)) / parseFloat(farming.liquidity);
       setApr(calculatedApr);
     }

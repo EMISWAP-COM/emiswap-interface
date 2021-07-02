@@ -3901,6 +3901,22 @@ const defaultCoins: DefaultCoins = {
       decimals: 18,
       logoURI: '',
     },
+    {
+      address: '0xf6a7D96Cc0278D60cDc00D82D87ACd38064d9176',
+      chainId: 1,
+      name: '',
+      symbol: 'ESW-ETH',
+      decimals: 18,
+      logoURI: '',
+    },
+    {
+      address: '0xBFd4065A7004B1c8DE08e965969E306Be6bE78D4',
+      chainId: 1,
+      name: '',
+      symbol: 'ESW-USDT',
+      decimals: 18,
+      logoURI: '',
+    },
   ],
   logoURI: 'https://1inch.exchange/assets/images/logo.png',
 };
