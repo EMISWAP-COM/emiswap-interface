@@ -94,22 +94,24 @@ export default function Farm() {
 
   const toggleWalletModal = useWalletModalToggle();
 
+  // @ts-ignore
+  const desiredChainId = Number(window.env.REACT_APP_CHAIN_ID);
+
   // Get esw price in top level component to avoid needless contract requests
   const [eswPriceInDai, setEswPriceInDai] = useState('0');
   useEffect(() => {
-    if (account) {
+    if (account && chainId === desiredChainId) {
       getEswPriceInDai(library, account, chainId).then((value) => {
         setEswPriceInDai(value);
       });
     }
-  }, [library, account, chainId]);
-
+  }, [library, account, chainId, desiredChainId]);
 
   return (
     <>
       <AppBody>
         <SwapPoolTabs active={TabNames.FARM} />
-        {account && (
+        {account && chainId === desiredChainId && (
           <>
             <StyledFarmingHeader>
               <StyledTabs><Tabs items={tabItems} selectedItemId={selectedTab} onChange={setSelectedTab} /></StyledTabs>
@@ -138,6 +140,11 @@ export default function Farm() {
             Please connect your wallet to see all available farms and staking pools
             <br/><br/>
             <Button onClick={toggleWalletModal}>Connect to a wallet</Button>
+          </>
+        )}
+        {chainId !== desiredChainId && (
+          <>
+            Please change network
           </>
         )}
       </AppBody>
