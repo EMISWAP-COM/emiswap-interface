@@ -5,7 +5,8 @@ import {
   removePopup,
   toggleWalletModal,
   toggleSettingsMenu,
-  updateBlockNumber, showWalletModal,
+  updateBlockNumber,
+  showWalletModal,
 } from './actions';
 
 type PopupList = Array<{ key: string; show: boolean; content: PopupContent }>;
@@ -17,10 +18,16 @@ export interface ApplicationState {
   settingsMenuOpen: boolean;
 }
 
+// for reopen modal after change address see: src/components/AccountDetails/Common/ChangeAddress.tsx changeAddress()
+const walletModalOpen = localStorage.getItem('showWalletModal') === 'true';
+if (walletModalOpen) {
+  localStorage.setItem('showWalletModal', 'false');
+}
+
 const initialState: ApplicationState = {
   blockNumber: {},
   popupList: [],
-  walletModalOpen: false,
+  walletModalOpen,
   settingsMenuOpen: false,
 };
 
