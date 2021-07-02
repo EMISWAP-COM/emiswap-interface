@@ -169,18 +169,20 @@ const useFarming = (contract: Contract) => {
   useEffect(() => {
     if (!chainId) return;
 
-    const usdcCoin = defaultCoins.tokens.find((token) => token.chainId === chainId && token.symbol === 'USDC');
-    if (!usdcCoin) {
-      throw new Error('Couldn\'t get USDC coin');
+    // @ts-ignore
+    const liquidityTokenAddress = window.env.FARMING_LIQUIDITY_TOKENS[contract.address];
+    const defaultCoin = defaultCoins.tokens.find((token) => token.chainId === chainId && token.address === liquidityTokenAddress);
+    if (!defaultCoin) {
+      throw new Error('Couldn\'t get coin');
     }
-    const usdcToken = new Token(chainId, usdcCoin.address, usdcCoin.decimals, usdcCoin.symbol, usdcCoin.name);
+    const liquidityToken = new Token(chainId, defaultCoin.address, defaultCoin.decimals, defaultCoin.symbol, defaultCoin.name);
     contract.getStakedValuesinUSD(account).then((response: [BigNumber, BigNumber]) => {
       const [, totalStake] = response;
       const tokenAmount = new TokenAmount(
-        usdcToken,
+        liquidityToken,
         JSBI.BigInt(totalStake.toString())
       );
-      setLiquidity(tokenAmountToString(tokenAmount, usdcToken.decimals));
+      setLiquidity(tokenAmountToString(tokenAmount, liquidityToken.decimals));
     });
   }, [contract, account, chainId, completedTransactionsCount, intervalUpdateCounter]);
 
