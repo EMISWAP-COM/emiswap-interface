@@ -32,7 +32,7 @@ const useFarming = (contract: Contract) => {
   const [stakeToken, setStakeToken] = useState<Token | undefined>(undefined);
   useEffect(() => {
     contract.stakeToken().then((value: string) => {
-      const defaultCoin = defaultCoins.tokens.find((coin) => coin.address === value);
+      const defaultCoin = defaultCoins.tokens.find((coin) => coin.address.toLowerCase() === value.toLowerCase());
       if (chainId && defaultCoin) {
         const token = new Token(chainId, defaultCoin.address, defaultCoin.decimals, defaultCoin.symbol, defaultCoin.name);
         setStakeToken(token);
@@ -43,7 +43,7 @@ const useFarming = (contract: Contract) => {
   const [rewardToken, setRewardToken] = useState<Token | undefined>(undefined);
   useEffect(() => {
     contract.rewardToken().then((value: string) => {
-      const defaultCoin = defaultCoins.tokens.find((coin) => coin.address === value);
+      const defaultCoin = defaultCoins.tokens.find((coin) => coin.address.toLowerCase() === value.toLowerCase());
       if (chainId && defaultCoin) {
         const token = new Token(chainId, defaultCoin.address, defaultCoin.decimals, defaultCoin.symbol, defaultCoin.name);
         setRewardToken(token);
@@ -171,7 +171,7 @@ const useFarming = (contract: Contract) => {
 
     // @ts-ignore
     const liquidityTokenAddress = window.env.FARMING_LIQUIDITY_TOKENS[contract.address];
-    const defaultCoin = defaultCoins.tokens.find((token) => token.chainId === chainId && token.address === liquidityTokenAddress);
+    const defaultCoin = defaultCoins.tokens.find((token) => token.chainId === chainId && token.address.toLowerCase() === liquidityTokenAddress.toLowerCase());
     if (!defaultCoin) {
       throw new Error('Couldn\'t get coin');
     }
