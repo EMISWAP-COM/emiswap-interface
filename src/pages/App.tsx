@@ -29,7 +29,7 @@ import { ErrorBoundary } from '../components/ErrorBoundary/ErrorBoundary';
 import Claim from './Claim';
 import MigrateV1 from './MigrateV1';
 import MigrateV1Exchange from './MigrateV1/MigrateV1Exchange';
-import Invest from './Invest';
+// import Invest from './Invest';
 import Farm from './Farm';
 
 const LogoWrapper = styled.div`
@@ -99,7 +99,7 @@ export default function App() {
               <Web3ReactManager>
                 <ErrorBoundary title={'Oops, try again later...'} onDismiss={() => {}}>
                   <Switch>
-                    <Route exact strict path="/invest" component={Invest} />
+                    {/*<Route exact strict path="/invest" component={Invest} />*/}
                     <Route exact strict path="/swap" component={Swap} />
                     <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
                     <Route exact strict path="/send" component={RedirectPathToSwapOnly} />

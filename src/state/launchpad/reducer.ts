@@ -24,9 +24,9 @@ const initialState: LaunchpadState = {
   limit: '0',
   total: '0',
   current_at: new Date(),
-  whitelist_finished_at: new Date('2021-06-27 14:00:00 UTC'),
-  started_at: new Date('2021-06-28 14:00:00 UTC'),
-  finished_at: new Date('2021-06-29 12:00:00 UTC'),
+  whitelist_finished_at: new Date(Date.UTC(2021, 5, 27, 14, 0, 0)),
+  started_at:  new Date(Date.UTC(2021, 5, 28, 14, 0, 0)), 
+  finished_at:  new Date(Date.UTC(2021, 5, 29, 12, 0, 0)),
   reached_limit: false,
   user_limit: '0',
   user_deposits_amount: '0',
@@ -34,6 +34,9 @@ const initialState: LaunchpadState = {
   user_deposits_count: 0,
 };
 
+const fixOracleDateString = (value: string) => {
+  return value ? value.replace(' UTC', '').replace(/\s+/g, 'T') + 'Z' : '';
+}
 export default createReducer<LaunchpadState>(initialState, builder =>
   builder
     .addCase(loadLaunchpadStatus.fulfilled, (state, action) => {
@@ -43,9 +46,9 @@ export default createReducer<LaunchpadState>(initialState, builder =>
         ...action.payload,
         loaded: true,
         errors: null,
-        current_at: new Date(current_at),
-        started_at: new Date(started_at),
-        finished_at: new Date(finished_at),
+        current_at: new Date(fixOracleDateString(current_at) ?? initialState.current_at),
+        started_at: new Date(fixOracleDateString(started_at) ?? initialState.started_at),
+        finished_at: new Date(fixOracleDateString(finished_at) ?? initialState.finished_at),
         user_deposits_amount: parseInt((+user_deposits_amount * ESW_PER_USD).toFixed()).toString(),
         total: parseInt((+total * ESW_PER_USD).toFixed()).toString(),
       };

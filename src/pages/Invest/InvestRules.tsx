@@ -26,8 +26,10 @@ export const InvestRules = () => {
   const [isRegisterWhiteListModalOpen, setIsRegisterWhiteListModalOpen] = useState<boolean>(false);
 
   const whiteListDisabled =
-    (launchpadState.current_at > launchpadState.whitelist_finished_at)
-    || (launchpadState.current_at > launchpadState.started_at);
+    (+launchpadState.current_at > +launchpadState.whitelist_finished_at)
+    || (+launchpadState.current_at > +launchpadState.started_at);
+
+  console.log("whiteListDisabled: ", whiteListDisabled, +launchpadState.current_at, +launchpadState.whitelist_finished_at, +launchpadState.started_at)
 
   const getMessage = () => {
     switch (investRequestStatus) {
@@ -40,11 +42,13 @@ export const InvestRules = () => {
     }
   };
 
-  if (!launchpadState.reached_limit && investRequestStatus === InvestRequestStatus.ACCEPTED) {
+  console.log("+launchpadState.limit: ", +launchpadState.limit, +launchpadState.total)
+
+  if (!(+launchpadState.limit < +launchpadState.total) && investRequestStatus === InvestRequestStatus.ACCEPTED) {
     return null;
   }
 
-  if ((launchpadState.reached_limit /*|| launchpadState.errors*/) && whiteListDisabled) {
+  if ((+launchpadState.limit <= +launchpadState.total) && whiteListDisabled ) {
     return (
       <>
         <PrivateSaleText style={{ fontWeight: 600, color: 'white' }}>

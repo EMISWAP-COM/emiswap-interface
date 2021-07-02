@@ -4,7 +4,7 @@ import Modal from '../../Modal';
 import { injected } from '../../../connectors';
 import { useActiveWeb3React } from '../../../hooks';
 import { useWeb3React } from '@web3-react/core';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { MessageTooltip } from '../../../base/ui/MessageTooltip/MessageTooltip';
 import { WalletAction } from '../styleds';
 import { PortisConnector } from '@web3-react/portis-connector';
@@ -24,13 +24,15 @@ const ChangeAddressBtn = styled(ActionBtn)<{ inactive: boolean }>`
   margin-left: 0;
   border: 1px solid rgb(97, 92, 105) !important;
   background-color: transparent;
-  color: ${({ inactive }) => inactive ? '#615C69' : '#FFFFFF'};
-  
-  &:hover, &:focus, &:active {
+  color: ${({ inactive }) => (inactive ? '#615C69' : '#FFFFFF')};
+
+  &:hover,
+  &:focus,
+  &:active {
     background-color: transparent;
     box-shadow: none;
   }
-  
+
   @media screen and (max-width: 800px) {
     width: 100% !important;
     margin-left: 0;
@@ -44,7 +46,7 @@ const ModalContent = styled.div`
   flex-wrap: wrap;
   width: 100%;
   padding: 24px;
-  color: ${({ theme }) => theme.white}
+  color: ${({ theme }) => theme.white};
 `;
 
 const ModalButtons = styled.div`
@@ -58,9 +60,11 @@ const ChangeCancelBtn = styled(ActionBtn)`
   margin: 0 0 0 8px !important;
   border: 1px solid rgb(97, 92, 105) !important;
   background-color: transparent;
-  color: #FFFFFF;
-  
-  &:hover, &:focus, &:active {
+  color: #ffffff;
+
+  &:hover,
+  &:focus,
+  &:active {
     background-color: transparent;
     box-shadow: none;
   }
@@ -125,10 +129,11 @@ export const ChangeAddress: React.FC<Props> = ({ openOptions }) => {
 
           <ModalButtons>
             <ChangeConfirmBtn onClick={changeAddress}>Confirm</ChangeConfirmBtn>
-            <ChangeCancelBtn onClick={() => setConfirmChangeModalOpen(false)}>Cancel</ChangeCancelBtn>
+            <ChangeCancelBtn onClick={() => setConfirmChangeModalOpen(false)}>
+              Cancel
+            </ChangeCancelBtn>
           </ModalButtons>
         </ModalContent>
-
       </Modal>
     );
   };
@@ -141,14 +146,10 @@ export const ChangeAddress: React.FC<Props> = ({ openOptions }) => {
         position={{ top: '20px', right: '40px' }}
         text="You need to change the address inside the Metamask wallet"
       >
-        <ChangeAddressBtn
-          inactive={isMetamask}
-          onClick={handleClick}
-        >
+        <ChangeAddressBtn inactive={isMetamask} onClick={handleClick}>
           Change address
         </ChangeAddressBtn>
       </MessageTooltip>
     </Container>
   );
-
 };
