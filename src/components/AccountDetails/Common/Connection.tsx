@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { convertBigDecimal, formatConnectorName } from '../uitls';
 import { WalletAction } from '../styleds';
 import styled from 'styled-components/macro';
@@ -10,10 +10,11 @@ import { useWalletModalToggle } from '../../../state/application/hooks';
 import { ExternalLink as LinkIcon } from 'react-feather';
 import Copy from '../Copy';
 import { ExternalLink } from '../../../theme';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { darken } from 'polished';
 import { ChangeAddress } from './ChangeAddress';
+import { clearAllTransactions } from '../../../state/transactions/actions';
 
 const Container = styled.div`
   font-size: 13px;
@@ -91,13 +92,39 @@ const Options = styled.div`
   }
 `;
 
+export const LinkStyledButton = styled.button`
+  border: none;
+  text-decoration: none;
+  background: none;
+
+  cursor: pointer;
+  color: ${({ theme }) => theme.white};
+  font-weight: 500;
+
+  :hover {
+    text-decoration: underline;
+  }
+
+  :focus {
+    outline: none;
+    text-decoration: underline;
+  }
+
+  :active {
+    text-decoration: none;
+  }
+  @media (min-width: 800px) {
+    margin-left: auto;
+  }
+`;
+
 const ActionBtn = styled(WalletAction)`
   height: 32px;
 `;
 
 const ChangeActionsBlock = styled.div`
   display: flex;
-    
+
   @media screen and (max-width: 800px) {
     order: 2;
     width: 100%;
@@ -110,12 +137,12 @@ const ChangeWalletBtn = styled(ActionBtn)`
   background-color: ${({ theme }) => theme.purple} !important;
   border: 1px solid ${({ theme }) => theme.purple} !important;
   color: #FFFFFF;
-  
+
   &:hover, &:focus, &:active {
     background: ${({ theme }) => theme.purple} !important;
     box-shadow: none;
   }
-  
+
   @media screen and (max-width: 800px) {
     width: calc(50% - 5px);
     margin-left: auto;
@@ -170,6 +197,7 @@ interface Props {
 
 export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) => {
   const { chainId, account, connector } = useActiveWeb3React();
+  const dispatch = useDispatch();
 
   const history = useHistory();
   const toggle = useWalletModalToggle();
@@ -193,6 +221,14 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
     history.push('/claim/ESW');
   };
 
+  const clearAllTransactionsCallback = useCallback(
+    (event: React.MouseEvent) => {
+      event.preventDefault();
+      dispatch(clearAllTransactions({ chainId }));
+    },
+    [dispatch, chainId],
+  );
+
   return (
     <>
       <Container>
@@ -201,6 +237,7 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
             <span>
               Connected with {formatConnectorName(connector)}
             </span>
+            <LinkStyledButton onClick={clearAllTransactionsCallback}>Clear all transactions</LinkStyledButton>
             <ChangeActionsBlock>
               <ChangeAddress openOptions={openOptions}/>
               <ChangeWalletBtn onClick={() => openOptions()}>
