@@ -244,8 +244,8 @@ const ExtendableRow: React.FC<ExtendableRowProps> = (
         <StyledBlock width={100}>
           <StyledBlockTitle>APR</StyledBlockTitle>
           <StyledBlockValue>
-            <Tooltip title={String(apr) + '%'}>
-              <StyledTruncatedText>{apr.toFixed(6) + '...%'}</StyledTruncatedText>
+            <Tooltip title={String(apr.toFixed(2)) + '%'}>
+              <StyledTruncatedText>{apr.toFixed(2) + '%'}</StyledTruncatedText>
             </Tooltip>
           </StyledBlockValue>
         </StyledBlock>
@@ -262,7 +262,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = (
           <StyledBlockTitle>Liquidity</StyledBlockTitle>
           <StyledBlockValue>
             <StyledTruncatedText>
-              <CurrencyFormat value={liquidity} displayType={'text'} thousandSeparator={' '} prefix={'$ '} />
+              <CurrencyFormat value={liquidity} displayType={'text'} thousandSeparator={' '} prefix={'$ '} decimalScale={2} />
             </StyledTruncatedText>
           </StyledBlockValue>
         </StyledBlock>
