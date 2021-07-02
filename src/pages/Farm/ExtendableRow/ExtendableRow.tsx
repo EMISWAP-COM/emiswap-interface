@@ -233,7 +233,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = (
           </StyledBlockValue>
         </StyledBlock>
         <StyledBlock width={250}>
-          <StyledBlockTitle>Projected reward</StyledBlockTitle>
+          <StyledBlockTitle>Your reward</StyledBlockTitle>
           <StyledBlockValue>
             <StyledCurrencyLogo><CurrencyLogo currency={rewardToken} size={'24px'} /></StyledCurrencyLogo>
             <Tooltip title={projectedReward}>
@@ -293,7 +293,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = (
           </StyledBlockValue>
         </StyledBlock>
         <StyledBlock>
-          <StyledBlockTitle>Projected reward</StyledBlockTitle>
+          <StyledBlockTitle>Your reward</StyledBlockTitle>
           <StyledBlockValue>
             <StyledCurrencyLogo><CurrencyLogo currency={rewardToken} size={'24px'} /></StyledCurrencyLogo>
             <StyledTruncatedText>{projectedReward}</StyledTruncatedText>
