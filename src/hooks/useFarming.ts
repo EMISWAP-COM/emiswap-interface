@@ -17,6 +17,18 @@ const useFarming = (contract: Contract) => {
   // This counter is used to update data whenever transaction finishes
   const completedTransactionsCount = useCompletedTransactionsCount();
 
+  // This counter is used to update data every N seconds
+  const [intervalUpdateCounter, setIntervalUpdateCounter] = useState<number>(0);
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setIntervalUpdateCounter(counter => ++counter);
+    }, 30000);
+
+    return () => {
+      clearInterval(intervalId);
+    }
+  }, [])
+
   const [stakeToken, setStakeToken] = useState<Token | undefined>(undefined);
   useEffect(() => {
     contract.stakeToken().then((value: string) => {
@@ -75,7 +87,7 @@ const useFarming = (contract: Contract) => {
           }
         },
       ).then((value: string) => setReward(value));
-  }, [account, chainId, contract, rewardToken, completedTransactionsCount]);
+  }, [account, chainId, contract, rewardToken, completedTransactionsCount, intervalUpdateCounter]);
 
   const [blockReward, setBlockReward] = useState<string>('0');
   useEffect(() => {
@@ -170,7 +182,8 @@ const useFarming = (contract: Contract) => {
       );
       setLiquidity(tokenAmountToString(tokenAmount, usdcToken.decimals));
     });
-  }, [contract, account, chainId]);
+  }, [contract, account, chainId, completedTransactionsCount, intervalUpdateCounter]);
+
 
   return {
     stakeToken: stakeToken,
