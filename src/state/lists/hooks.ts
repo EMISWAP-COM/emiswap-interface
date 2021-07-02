@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { DEFAULT_TOKEN_LIST_URL } from '../../constants';
 import { AppState } from '../index';
-import { useActiveWeb3React } from '../../hooks';
+// import { useActiveWeb3React } from '../../hooks';
 
 /**
  * Token instances created from token info.
@@ -73,25 +73,25 @@ export function listToTokenMap(list: TokenList): TokenAddressMap {
 
 export function useTokenList(url: string): TokenAddressMap {
   const lists = useSelector<AppState, AppState['lists']['byUrl']>(state => state.lists.byUrl);
-  const { chainId } = useActiveWeb3React();
+  // const { chainId } = useActiveWeb3React();
   return useMemo(() => {
     const current = lists[url]?.current;
     if (!current) return EMPTY_LIST;
     const newCurrent = {
       ...current,
-      tokens: [
-        {
-          address: window['env'].REACT_APP_ESW_ID,
-          chainId: chainId ?? 42,
-          name: 'EmiDAO Token',
-          decimals: 18,
-          symbol: 'ESW',
-        },
-        ...current.tokens,
-      ],
+      // tokens: [
+      //   {
+      //     address: window['env'].REACT_APP_ESW_ID,
+      //     chainId: chainId ?? 42,
+      //     name: 'EmiDAO Token',
+      //     decimals: 18,
+      //     symbol: 'ESW',
+      //   },
+      //   ...current.tokens,
+      // ],
     };
     return listToTokenMap(newCurrent);
-  }, [lists, url, chainId]);
+  }, [lists, url /*, chainId*/]);
 }
 
 export function useDefaultTokenList(): TokenAddressMap {
