@@ -115,7 +115,7 @@ export default function Farm() {
             </StyledFarmingHeader>
             <StyledInfoWrapper>
               <StyledInfoTitle>
-                {isStakingTab(selectedTab) ? 'Variable APR Stakings' : 'Variable APR Farming'}
+                {isStakingTab(selectedTab) ? 'Variable APR Staking' : 'Variable APR Farming'}
               </StyledInfoTitle>
               <StyledInfo>
                 {isStakingTab(selectedTab)
