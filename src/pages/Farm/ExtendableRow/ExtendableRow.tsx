@@ -11,7 +11,7 @@ import LpTokenSymbol from '../LpTokenSymbol';
 import isLpToken from '../isLpToken';
 
 const StyledRow = styled.div`
-  background-color: ${({theme}) => theme.border1Transparency};
+  background-color: ${({ theme }) => theme.border1Transparency};
   border-radius: 8px;
   margin-bottom: 8px;
 `;
@@ -27,7 +27,7 @@ const StyledHeader = styled.div`
 `;
 
 const StyledBlocksWrapper = styled.div`
-  color: ${({theme}) => theme.white};
+  color: ${({ theme }) => theme.white};
   font-weight: 600;
   font-size: 16px;
   text-align: left;
@@ -42,7 +42,7 @@ const StyledBlocksWrapper = styled.div`
 const StyledBlock = styled.div<{ width?: number }>`
   display: flex;
   flex-direction: column;
-  flex-basis: ${({width}) => width ? width + 'px' : 'auto'};
+  flex-basis: ${({ width }) => (width ? width + 'px' : 'auto')};
   padding-right: 15px;
 
   ${({ theme }) => theme.mediaWidth.upToMedium`
@@ -56,7 +56,7 @@ const StyledBlock = styled.div<{ width?: number }>`
 `;
 
 const StyledBlockTitle = styled.div`
-  color: ${({theme}) => theme.darkWhite};
+  color: ${({ theme }) => theme.darkWhite};
   font-weight: 400;
   margin-bottom: 16px;
 
@@ -72,10 +72,10 @@ const StyledBlockValue = styled.div`
 `;
 
 const StyledExtendButtonDesktop = styled.div<{ isRowExtended: boolean }>`
-  color: ${({theme}) => theme.darkWhite};
+  color: ${({ theme }) => theme.darkWhite};
   font-weight: 400;
   border-radius: 100%;
-  background-color: ${({theme, isRowExtended}) => isRowExtended ? theme.dark2 : theme.border1};
+  background-color: ${({ theme, isRowExtended }) => (isRowExtended ? theme.dark2 : theme.border1)};
   width: 48px;
   height: 48px;
   flex-shrink: 0;
@@ -87,7 +87,7 @@ const StyledExtendButtonDesktop = styled.div<{ isRowExtended: boolean }>`
   transition: background-color 0.3s;
 
   :hover {
-    background-color: ${({theme}) => theme.dark2};
+    background-color: ${({ theme }) => theme.dark2};
   }
 
   ${({ theme }) => theme.mediaWidth.upToMedium`
@@ -100,8 +100,8 @@ const StyledExtendButtonDesktop = styled.div<{ isRowExtended: boolean }>`
 
 const StyledExtendButtonMobile = styled.div<{ isRowExtended: boolean }>`
   display: none;
-  color: ${({theme}) => theme.darkWhite};
-  background-color: ${({theme, isRowExtended}) => isRowExtended ? theme.dark2 : theme.border1};
+  color: ${({ theme }) => theme.darkWhite};
+  background-color: ${({ theme, isRowExtended }) => (isRowExtended ? theme.dark2 : theme.border1)};
   border-radius: 0 0 8px 8px;
   width: 100%;
   height: 48px;
@@ -109,7 +109,7 @@ const StyledExtendButtonMobile = styled.div<{ isRowExtended: boolean }>`
   position: relative;
 
   :active {
-    background-color: ${({theme}) => theme.dark2};
+    background-color: ${({ theme }) => theme.dark2};
   }
 
   ${({ theme }) => theme.mediaWidth.upToMedium`
@@ -126,9 +126,9 @@ const StyledMobileChevron = styled.div`
 `;
 
 const StyledExtendableContent = styled.div<{ isVisible: boolean }>`
-  display: ${({isVisible}) => isVisible ? 'block' : 'none'};
-  color: ${({theme}) => theme.darkWhite};
-  background-color: ${({theme}) => theme.darkGrey};
+  display: ${({ isVisible }) => (isVisible ? 'block' : 'none')};
+  color: ${({ theme }) => theme.darkWhite};
+  background-color: ${({ theme }) => theme.darkGrey};
   padding: 16px 26px;
   text-align: left;
   border-radius: 8px;
@@ -158,7 +158,7 @@ const StyledTokenInputWrapper = styled.div`
 
 const StyledHr = styled.div`
   height: 1px;
-  background-color: ${({theme}) => theme.dark1};
+  background-color: ${({ theme }) => theme.dark1};
   width: calc(100% + 48px);
   margin-left: -24px;
   margin-top: 24px;
@@ -166,7 +166,7 @@ const StyledHr = styled.div`
 `;
 
 const StyledBlueText = styled.div`
-  color: ${({theme}) => theme.blue};
+  color: ${({ theme }) => theme.blue};
 `;
 
 const StyledCurrencyLogo = styled.div`
@@ -196,131 +196,161 @@ type ExtendableRowProps = {
   type: string;
   onStake: (amount: string) => Promise<unknown>;
   onCollect: () => Promise<unknown>;
-}
+};
 
-const ExtendableRow: React.FC<ExtendableRowProps> = (
-  {
-    contractAddress,
-    stakeToken,
-    rewardToken,
-    projectedReward,
-    apr,
-    blockReward,
-    liquidity,
-    endDate,
-    deposit,
-    type,
-    onStake,
-    onCollect,
-  }
-) => {
+const ExtendableRow: React.FC<ExtendableRowProps> = ({
+  contractAddress,
+  stakeToken,
+  rewardToken,
+  projectedReward,
+  apr,
+  blockReward,
+  liquidity,
+  endDate,
+  deposit,
+  type,
+  onStake,
+  onCollect,
+}) => {
   const [isRowExtended, setIsRowExtended] = useState(false);
 
   const handleExtendClick = useCallback(() => {
     setIsRowExtended(!isRowExtended);
   }, [isRowExtended]);
 
-  return (<StyledRow>
-    <StyledHeader>
-      <StyledBlocksWrapper>
-        <StyledBlock width={200}>
-          <StyledBlockTitle>Coin</StyledBlockTitle>
-          <StyledBlockValue>
-            <StyledCurrencyLogo>
-              {isLpToken(stakeToken) ? <LpTokenSymbol /> : <CurrencyLogo currency={stakeToken} size={'24px'} />}
-            </StyledCurrencyLogo>
-            <StyledTruncatedText>{stakeToken?.symbol}</StyledTruncatedText>
-          </StyledBlockValue>
-        </StyledBlock>
-        <StyledBlock width={250}>
-          <StyledBlockTitle>Your reward</StyledBlockTitle>
-          <StyledBlockValue>
-            <StyledCurrencyLogo><CurrencyLogo currency={rewardToken} size={'24px'} /></StyledCurrencyLogo>
-            <Tooltip title={projectedReward}>
-              <StyledTruncatedText>{projectedReward === '0' ? '0' : parseFloat(projectedReward).toFixed(6) + '...'}</StyledTruncatedText>
-            </Tooltip>
-          </StyledBlockValue>
-        </StyledBlock>
-        <StyledBlock width={100}>
-          <StyledBlockTitle>APR</StyledBlockTitle>
-          <StyledBlockValue>
-            <Tooltip title={String(apr.toFixed(2)) + '%'}>
-              <StyledTruncatedText>{apr.toFixed(2) + '%'}</StyledTruncatedText>
-            </Tooltip>
-          </StyledBlockValue>
-        </StyledBlock>
-        <StyledBlock width={250}>
-          <StyledBlockTitle>Block reward</StyledBlockTitle>
-          <StyledBlockValue>
-            <StyledCurrencyLogo><CurrencyLogo currency={rewardToken} size={'24px'} /></StyledCurrencyLogo>
-            <Tooltip title={blockReward}>
-              <StyledTruncatedText>{parseFloat(blockReward).toFixed(6) + '...'}</StyledTruncatedText>
-            </Tooltip>
-          </StyledBlockValue>
-        </StyledBlock>
-        <StyledBlock width={200}>
-          <StyledBlockTitle>Liquidity</StyledBlockTitle>
-          <StyledBlockValue>
-            <StyledTruncatedText>
-              <CurrencyFormat value={liquidity} displayType={'text'} thousandSeparator={' '} prefix={'$ '} decimalScale={2} />
-            </StyledTruncatedText>
-          </StyledBlockValue>
-        </StyledBlock>
-        <StyledBlock width={300}>
-          <StyledBlockTitle>End time</StyledBlockTitle>
-          <StyledBlockValue>{endDate}</StyledBlockValue>
-        </StyledBlock>
-        <StyledBlock>
-          <StyledBlockTitle>Type</StyledBlockTitle>
-          <StyledBlockValue>
-            <StyledBlueText>{type}</StyledBlueText>
-          </StyledBlockValue>
-        </StyledBlock>
-      </StyledBlocksWrapper>
-      <StyledExtendButtonDesktop onClick={handleExtendClick} isRowExtended={isRowExtended}>
-        {isRowExtended ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
-      </StyledExtendButtonDesktop>
-    </StyledHeader>
-    <StyledExtendableContent isVisible={isRowExtended}>
-      <StyledBlocksWrapper>
-        <StyledBlock width={150}>
-          <StyledBlockTitle>Deposit</StyledBlockTitle>
-          <StyledBlockValue>
-            <StyledCurrencyLogo>
-              {isLpToken(stakeToken) ? <LpTokenSymbol /> : <CurrencyLogo currency={stakeToken} size={'24px'} />}
-            </StyledCurrencyLogo>
-            <StyledTruncatedText>{deposit}</StyledTruncatedText>
-          </StyledBlockValue>
-        </StyledBlock>
-        <StyledBlock>
-          <StyledBlockTitle>Your reward</StyledBlockTitle>
-          <StyledBlockValue>
-            <StyledCurrencyLogo><CurrencyLogo currency={rewardToken} size={'24px'} /></StyledCurrencyLogo>
-            <StyledTruncatedText>{projectedReward}</StyledTruncatedText>
-          </StyledBlockValue>
-        </StyledBlock>
-      </StyledBlocksWrapper>
-      <StyledHr />
-      <StyledInputsWrapper>
-        <StyledTokenInputWrapper>
-          {stakeToken && <TokenInput token={stakeToken} contractAddress={contractAddress} onStake={onStake} />}
-        </StyledTokenInputWrapper>
-        <StyledTokenInputWrapper>
-          <TokenCollect
-            deposit={deposit}
-            projectedReward={projectedReward}
-            stakeToken={stakeToken}
-            rewardToken={rewardToken}
-            onCollect={onCollect}
-          />
-        </StyledTokenInputWrapper>
-      </StyledInputsWrapper>
-    </StyledExtendableContent>
-    <StyledExtendButtonMobile onClick={handleExtendClick} isRowExtended={isRowExtended}>
-      <StyledMobileChevron>{isRowExtended ? <ChevronUp size={24} /> : <ChevronDown size={24} />}</StyledMobileChevron>
-      Show all
-    </StyledExtendButtonMobile>
-  </StyledRow>);
-}
+  return (
+    <StyledRow>
+      <StyledHeader>
+        <StyledBlocksWrapper>
+          <StyledBlock width={200}>
+            <StyledBlockTitle>Coin</StyledBlockTitle>
+            <StyledBlockValue>
+              <StyledCurrencyLogo>
+                {isLpToken(stakeToken) ? (
+                  <LpTokenSymbol />
+                ) : (
+                  <CurrencyLogo currency={stakeToken} size={'24px'} />
+                )}
+              </StyledCurrencyLogo>
+              <StyledTruncatedText>
+                {isLpToken(stakeToken) ? stakeToken?.name : stakeToken?.symbol}
+              </StyledTruncatedText>
+            </StyledBlockValue>
+          </StyledBlock>
+          <StyledBlock width={250}>
+            <StyledBlockTitle>Your reward</StyledBlockTitle>
+            <StyledBlockValue>
+              <StyledCurrencyLogo>
+                <CurrencyLogo currency={rewardToken} size={'24px'} />
+              </StyledCurrencyLogo>
+              <Tooltip title={projectedReward}>
+                <StyledTruncatedText>
+                  {projectedReward === '0' ? '0' : parseFloat(projectedReward).toFixed(6) + '...'}
+                </StyledTruncatedText>
+              </Tooltip>
+            </StyledBlockValue>
+          </StyledBlock>
+          <StyledBlock width={100}>
+            <StyledBlockTitle>APR</StyledBlockTitle>
+            <StyledBlockValue>
+              <Tooltip title={String(apr.toFixed(2)) + '%'}>
+                <StyledTruncatedText>{apr.toFixed(2) + '%'}</StyledTruncatedText>
+              </Tooltip>
+            </StyledBlockValue>
+          </StyledBlock>
+          <StyledBlock width={250}>
+            <StyledBlockTitle>Block reward</StyledBlockTitle>
+            <StyledBlockValue>
+              <StyledCurrencyLogo>
+                <CurrencyLogo currency={rewardToken} size={'24px'} />
+              </StyledCurrencyLogo>
+              <Tooltip title={blockReward}>
+                <StyledTruncatedText>
+                  {parseFloat(blockReward).toFixed(6) + '...'}
+                </StyledTruncatedText>
+              </Tooltip>
+            </StyledBlockValue>
+          </StyledBlock>
+          <StyledBlock width={200}>
+            <StyledBlockTitle>Liquidity</StyledBlockTitle>
+            <StyledBlockValue>
+              <StyledTruncatedText>
+                <CurrencyFormat
+                  value={liquidity}
+                  displayType={'text'}
+                  thousandSeparator={' '}
+                  prefix={'$ '}
+                  decimalScale={2}
+                />
+              </StyledTruncatedText>
+            </StyledBlockValue>
+          </StyledBlock>
+          <StyledBlock width={300}>
+            <StyledBlockTitle>End time</StyledBlockTitle>
+            <StyledBlockValue>{endDate}</StyledBlockValue>
+          </StyledBlock>
+          <StyledBlock>
+            <StyledBlockTitle>Type</StyledBlockTitle>
+            <StyledBlockValue>
+              <StyledBlueText>{type}</StyledBlueText>
+            </StyledBlockValue>
+          </StyledBlock>
+        </StyledBlocksWrapper>
+        <StyledExtendButtonDesktop onClick={handleExtendClick} isRowExtended={isRowExtended}>
+          {isRowExtended ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
+        </StyledExtendButtonDesktop>
+      </StyledHeader>
+      <StyledExtendableContent isVisible={isRowExtended}>
+        <StyledBlocksWrapper>
+          <StyledBlock width={150}>
+            <StyledBlockTitle>Deposit</StyledBlockTitle>
+            <StyledBlockValue>
+              <StyledCurrencyLogo>
+                {isLpToken(stakeToken) ? (
+                  <LpTokenSymbol />
+                ) : (
+                  <CurrencyLogo currency={stakeToken} size={'24px'} />
+                )}
+              </StyledCurrencyLogo>
+              <StyledTruncatedText>{deposit}</StyledTruncatedText>
+            </StyledBlockValue>
+          </StyledBlock>
+          <StyledBlock>
+            <StyledBlockTitle>Your reward</StyledBlockTitle>
+            <StyledBlockValue>
+              <StyledCurrencyLogo>
+                <CurrencyLogo currency={rewardToken} size={'24px'} />
+              </StyledCurrencyLogo>
+              <StyledTruncatedText>{projectedReward}</StyledTruncatedText>
+            </StyledBlockValue>
+          </StyledBlock>
+        </StyledBlocksWrapper>
+        <StyledHr />
+        <StyledInputsWrapper>
+          <StyledTokenInputWrapper>
+            {stakeToken && (
+              <TokenInput token={stakeToken} contractAddress={contractAddress} onStake={onStake} />
+            )}
+          </StyledTokenInputWrapper>
+          <StyledTokenInputWrapper>
+            <TokenCollect
+              deposit={deposit}
+              projectedReward={projectedReward}
+              stakeToken={stakeToken}
+              rewardToken={rewardToken}
+              onCollect={onCollect}
+            />
+          </StyledTokenInputWrapper>
+        </StyledInputsWrapper>
+      </StyledExtendableContent>
+      <StyledExtendButtonMobile onClick={handleExtendClick} isRowExtended={isRowExtended}>
+        <StyledMobileChevron>
+          {isRowExtended ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
+        </StyledMobileChevron>
+        Show all
+      </StyledExtendButtonMobile>
+    </StyledRow>
+  );
+};
 
 export default ExtendableRow;
