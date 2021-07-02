@@ -233,7 +233,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
                 )}
               </StyledCurrencyLogo>
               <StyledTruncatedText>
-                {isLpToken(stakeToken) ? stakeToken?.name : stakeToken?.symbol}
+                { isLpToken(stakeToken) ? stakeToken?.name : stakeToken?.symbol}
               </StyledTruncatedText>
             </StyledBlockValue>
           </StyledBlock>

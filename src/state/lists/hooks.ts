@@ -79,6 +79,7 @@ export function useTokenList(url: string): TokenAddressMap {
     if (!current) return EMPTY_LIST;
     const newCurrent = {
       ...current,
+      //FIXME Понять причину такого добавления
       // tokens: [
       //   {
       //     address: window['env'].REACT_APP_ESW_ID,

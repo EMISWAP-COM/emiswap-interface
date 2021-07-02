@@ -3917,6 +3917,7 @@ const defaultCoins: DefaultCoins = {
       decimals: 18,
       logoURI: 'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
     },
+    //NEW Tokens
     {
       address: '0x28686f2f64C2Ed0591B2063A49De5b630D32284a',
       chainId: 1,
