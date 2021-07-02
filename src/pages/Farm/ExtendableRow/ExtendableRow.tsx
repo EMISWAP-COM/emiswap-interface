@@ -232,7 +232,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = (
           <StyledBlockValue>
             <StyledCurrencyLogo><CurrencyLogo currency={rewardToken} size={'24px'} /></StyledCurrencyLogo>
             <Tooltip title={projectedReward}>
-              <StyledTruncatedText>{projectedReward}</StyledTruncatedText>
+              <StyledTruncatedText>{parseFloat(projectedReward).toFixed(6)}</StyledTruncatedText>
             </Tooltip>
           </StyledBlockValue>
         </StyledBlock>
