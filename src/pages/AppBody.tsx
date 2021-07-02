@@ -1,21 +1,21 @@
 import React from 'react';
 import Wordmark from '../components/Wordmark';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import BonusProgram from '../components/BonusProgram';
 import { ThemeProvider } from 'emotion-theming';
 import theme from '@rebass/preset';
 import FAQInfo from '../components/FAQInfo';
+import { useRouteMatch } from 'react-router';
 
-export const HeadersPlusBodyWrapper = styled.div<{ disabled?: boolean }>`
+export const HeadersPlusBodyWrapper = styled.div<{ isLarge?: boolean }>`
   position: relative;
-  max-width: 440px;
+  max-width: ${({isLarge}) => isLarge ? '1200px' : '440px'};
   width: 100%;
   text-align: center;
 `;
 
 export const BodyWrapper = styled.div<{ disabled?: boolean; data?: string }>`
   position: relative;
-  max-width: 440px;
   width: 100%;
   background: ${({ theme }) => theme.dark1};
   box-shadow: ${({ theme }) => theme.dark1BoxShadow};
@@ -85,9 +85,11 @@ export default function AppBody({
   disabled?: boolean;
   className?: string;
 }) {
+  const match = useRouteMatch('/farm');
+
   return (
     <ThemeProvider theme={theme}>
-      <HeadersPlusBodyWrapper>
+      <HeadersPlusBodyWrapper isLarge={!!match}>
         <div className="onlyDesktop">
           <Wordmark />
         </div>
