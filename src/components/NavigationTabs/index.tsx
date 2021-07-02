@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { lighten } from 'polished';
 import { useTranslation } from 'react-i18next';
 import { NavLink, Link as HistoryLink } from 'react-router-dom';
@@ -13,6 +13,12 @@ const Tabs = styled.div`
   align-items: center;
   border-radius: 3rem;
   justify-content: space-evenly;
+  width: 380px;
+  margin: 0 auto;
+
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    width: 310px;
+  `};
 `;
 
 const activeClassName = 'ACTIVE';
@@ -29,7 +35,7 @@ const StyledNavLink = styled(NavLink).attrs({
   cursor: pointer;
   text-decoration: none;
   color: ${({ theme }) => theme.lightGrey};
-  font-size: 20px;
+  font-size: 16px;
 
   &.${activeClassName} {
     border-radius: 12px;
@@ -62,6 +68,7 @@ export enum TabNames {
   POOL,
   MIGRATE,
   INVEST,
+  FARM,
 }
 //TODO refactor. Component index.tsx must return single component
 
@@ -89,6 +96,13 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
       {/*>*/}
       {/*  {t('invest')}*/}
       {/*</StyledNavLink>*/}
+      <StyledNavLink
+        id={`farm-nav-link`}
+        to={'/farm'}
+        isActive={() => active === TabNames.FARM}
+      >
+        {t('Stake & Farm')}
+      </StyledNavLink>
     </Tabs>
   );
 }
