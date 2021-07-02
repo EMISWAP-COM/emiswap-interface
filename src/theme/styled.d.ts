@@ -70,7 +70,10 @@ export interface Colors {
   pink: Color;
   blue: Color;
   border1: Color;
+  border1Transparency: Color;
+  border2: Color;
   dark1: Color;
+  dark2: Color;
   dark1BoxShadow: Color;
   modalBoxShadow: Color;
 }

@@ -1,4 +1,26 @@
-export default {
+type DefaultCoinsToken = {
+  address: string,
+  chainId: number,
+  name: string,
+  symbol: string,
+  decimals: number,
+  logoURI: string,
+}
+
+type DefaultCoins = {
+  name: string,
+  timestamp: string,
+  version: {
+    major: number,
+    minor: number,
+    patch: number,
+  },
+  keywords: string[],
+  tokens: DefaultCoinsToken[],
+  logoURI: string,
+}
+
+const defaultCoins: DefaultCoins = {
   name: '1inch',
   timestamp: '2020-11-17T17:06:20+00:00',
   version: {
@@ -3836,6 +3858,22 @@ export default {
       decimals: 6,
       logoURI: 'https://tokens.1inch.exchange/0xdac17f958d2ee523a2206206994597c13d831ec7.png',
     },
+    {
+      address: '0xe37Ae239a84110009426071B7828A6fbd6be5F45',
+      chainId: 42,
+      name: 'EmiDAO Token',
+      symbol: 'ESW',
+      decimals: 18,
+      logoURI: '',
+    },
+    {
+      address: '0x5a75a093747b72a0e14056352751edf03518031d',
+      chainId: 1,
+      name: 'EmiDAO Token',
+      symbol: 'ESW',
+      decimals: 18,
+      logoURI: '',
+    },
     // {
     //   address: '0x0000000000000000000000000000000000000000',
     //   chainId: 42,
@@ -3844,6 +3882,28 @@ export default {
     //   decimals: 18,
     //   logoURI: 'https://tokens.1inch.exchange/0x2260fac5e5542a773aa44fbcfedf7c193bc2c599.png',
     // },
+
+
+    // LP tokens
+    {
+      address: '0x8228BF323C23193f9663aD5BEB651e11E8672c8b',
+      chainId: 42,
+      name: '',
+      symbol: 'ESW-ETH',
+      decimals: 18,
+      logoURI: '',
+    },
+    {
+      address: '0xeb69C3Cb52e0002842d978b401f0e5784F8c0590',
+      chainId: 42,
+      name: '',
+      symbol: 'WBTC-ETH',
+      decimals: 18,
+      logoURI: '',
+    },
   ],
   logoURI: 'https://1inch.exchange/assets/images/logo.png',
 };
+
+
+export default defaultCoins;

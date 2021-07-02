@@ -10,6 +10,7 @@ import { Connection } from '../Common/Connection';
 import { ESWRewards } from '../Common/ESWRewards';
 import { ESWLocked } from '../Common/ESWLocked';
 import { ExternalLink } from '../../../theme';
+import FarmingRewards from '../Common/FarmingRewards';
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -90,6 +91,7 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
       </Connection>
       <ESWRewards />
       <ESWLocked />
+      <FarmingRewards />
       <ReferralPerformance />
 
       <PurchaseHistory />

@@ -18,6 +18,8 @@ import { ONE_SPLIT_ABI, ONE_SPLIT_ADDRESSES } from '../constants/one-split';
 import { MIGRATOR_ABI, MIGRATOR_ADDRESS } from '../constants/abis/migrator';
 import { EMISWAP_CROWDSALE_ABI, EMISWAP_CROWDSALE_ADDRESS } from '../constants/abis/crowdsale';
 import { EMISWAP_VESTING_ABI, EMISWAP_VESTING_ADDRESS } from '../constants/abis/emiswap-vesting';
+import { FARMING_ABI, FARMING_ADDRESSES } from '../constants/abis/farming';
+import { EMI_PRICE_2_ABI, EMI_PRICE_2_ADDRESS } from '../constants/abis/emiPrice2';
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
@@ -193,4 +195,33 @@ export function getCrowdsaleContract(library: Web3Provider, account: string) {
 
 export function getVestingContract(library: Web3Provider, account: string) {
   return getContract(EMISWAP_VESTING_ADDRESS, EMISWAP_VESTING_ABI, library, account);
+}
+
+export function getFarmingContracts(library: Web3Provider, account: string) {
+  return FARMING_ADDRESSES.map((address) => getContract(address, FARMING_ABI, library, account));
+}
+
+export function getMyFarmingContracts(library: Web3Provider, account: string) {
+  return new Promise<Contract[]>((resolve) => {
+    const contracts = FARMING_ADDRESSES.map((address) =>
+      getContract(address, FARMING_ABI, library, account));
+    const myFarming: Contract[] = [];
+    let processedContractsCount = 0;
+
+    contracts.forEach((contract) => {
+      contract.balanceOf(account).then((value: BigNumber) => {
+        if (value.toString() !== '0') {
+          myFarming.push(contract);
+        }
+        processedContractsCount++;
+        if (processedContractsCount === contracts.length) {
+          resolve(myFarming);
+        }
+      });
+    });
+  });
+}
+
+export function getEmiPrice2Contract(library: Web3Provider, account: string) {
+  return getContract(EMI_PRICE_2_ADDRESS, EMI_PRICE_2_ABI, library, account);
 }
