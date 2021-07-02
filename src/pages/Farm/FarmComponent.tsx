@@ -21,11 +21,11 @@ const FarmComponent: React.FC<FarmComponentProps> = (
 ) => {
   const farming = useFarming(contract);
 
-  const [apr, setApr] = useState<string>('0%');
+  const [apr, setApr] = useState<number>(0);
   useEffect(() => {
     if (farming.blockReward && farming.liquidity && eswPriceInDai) {
       const calculatedApr = (parseFloat(farming.blockReward) * 5 * 60 * 24 * 365 * parseFloat(eswPriceInDai)) / parseFloat(farming.liquidity);
-      setApr(String(calculatedApr.toFixed(10)) + '%');
+      setApr(calculatedApr);
     }
   }, [eswPriceInDai, farming.blockReward, farming.liquidity])
 
@@ -47,9 +47,7 @@ const FarmComponent: React.FC<FarmComponentProps> = (
       onStake={farming.stake}
       onCollect={farming.collect}
     />
-  ) : (
-    <div></div>
-  );
+  ) : null;
 };
 
 export default FarmComponent;

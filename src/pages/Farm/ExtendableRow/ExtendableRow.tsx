@@ -183,7 +183,7 @@ type ExtendableRowProps = {
   stakeToken: Token | undefined;
   rewardToken: Token | undefined;
   projectedReward: string;
-  apr: string;
+  apr: number;
   blockReward: string;
   liquidity: string;
   endDate: string;
@@ -232,14 +232,16 @@ const ExtendableRow: React.FC<ExtendableRowProps> = (
           <StyledBlockValue>
             <StyledCurrencyLogo><CurrencyLogo currency={rewardToken} size={'24px'} /></StyledCurrencyLogo>
             <Tooltip title={projectedReward}>
-              <StyledTruncatedText>{parseFloat(projectedReward).toFixed(6)}</StyledTruncatedText>
+              <StyledTruncatedText>{projectedReward === '0' ? '0' : parseFloat(projectedReward).toFixed(6) + '...'}</StyledTruncatedText>
             </Tooltip>
           </StyledBlockValue>
         </StyledBlock>
         <StyledBlock width={100}>
           <StyledBlockTitle>APR</StyledBlockTitle>
           <StyledBlockValue>
-            <StyledTruncatedText>{apr}</StyledTruncatedText>
+            <Tooltip title={String(apr) + '%'}>
+              <StyledTruncatedText>{apr.toFixed(6) + '...%'}</StyledTruncatedText>
+            </Tooltip>
           </StyledBlockValue>
         </StyledBlock>
         <StyledBlock width={250}>
@@ -247,7 +249,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = (
           <StyledBlockValue>
             <StyledCurrencyLogo><CurrencyLogo currency={rewardToken} size={'24px'} /></StyledCurrencyLogo>
             <Tooltip title={blockReward}>
-              <StyledTruncatedText>{parseFloat(blockReward).toFixed(6)}</StyledTruncatedText>
+              <StyledTruncatedText>{parseFloat(blockReward).toFixed(6) + '...'}</StyledTruncatedText>
             </Tooltip>
           </StyledBlockValue>
         </StyledBlock>
