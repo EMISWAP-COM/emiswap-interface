@@ -97,9 +97,11 @@ export default function Farm() {
   // Get esw price in top level component to avoid needless contract requests
   const [eswPriceInDai, setEswPriceInDai] = useState('0');
   useEffect(() => {
-    getEswPriceInDai(library, account, chainId).then((value) => {
-      setEswPriceInDai(value);
-    });
+    if (account) {
+      getEswPriceInDai(library, account, chainId).then((value) => {
+        setEswPriceInDai(value);
+      });
+    }
   }, [library, account, chainId]);
 
 
