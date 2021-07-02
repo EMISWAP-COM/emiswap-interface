@@ -155,11 +155,22 @@ const useFarming = (contract: Contract) => {
 
   const [liquidity, setLiquidity] = useState<string | undefined>(undefined);
   useEffect(() => {
+    if (!chainId) return;
+
+    const usdcCoin = defaultCoins.tokens.find((token) => token.chainId === chainId && token.symbol === 'USDC');
+    if (!usdcCoin) {
+      throw new Error('Couldn\'t get USDC coin');
+    }
+    const usdcToken = new Token(chainId, usdcCoin.address, usdcCoin.decimals, usdcCoin.symbol, usdcCoin.name);
     contract.getStakedValuesinUSD(account).then((response: [BigNumber, BigNumber]) => {
       const [, totalStake] = response;
-      setLiquidity(totalStake.toString());
+      const tokenAmount = new TokenAmount(
+        usdcToken,
+        JSBI.BigInt(totalStake.toString())
+      );
+      setLiquidity(tokenAmountToString(tokenAmount, usdcToken.decimals));
     });
-  }, [contract, account]);
+  }, [contract, account, chainId]);
 
   return {
     stakeToken: stakeToken,
