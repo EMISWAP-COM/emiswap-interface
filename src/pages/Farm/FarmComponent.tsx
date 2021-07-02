@@ -12,22 +12,22 @@ type FarmComponentProps = {
   eswPriceInDai: string;
 };
 
-const FarmComponent: React.FC<FarmComponentProps> = (
-  {
-    contract,
-    selectedTab,
-    eswPriceInDai,
-  }
-) => {
+const FarmComponent: React.FC<FarmComponentProps> = ({ contract, selectedTab, eswPriceInDai }) => {
   const farming = useFarming(contract);
 
   const [apr, setApr] = useState<number>(0);
   useEffect(() => {
     if (farming.blockReward && Number(farming.liquidity) && eswPriceInDai) {
-      const calculatedApr = (parseFloat(farming.blockReward) * 5 * 60 * 24 * 365 * parseFloat(eswPriceInDai)) / parseFloat(farming.liquidity);
+      const calculatedApr =
+        (parseFloat(farming.blockReward) *
+          6400 *
+          365 *
+          100 *
+          (isStakingTab(selectedTab) ? 1 : parseFloat(eswPriceInDai))) /
+        parseFloat(farming.liquidity);
       setApr(calculatedApr);
     }
-  }, [eswPriceInDai, farming.blockReward, farming.liquidity])
+  }, [eswPriceInDai, farming.blockReward, farming.liquidity, selectedTab])
 
   const shouldShow =
     (isStakingTab(selectedTab) && !isLpToken(farming.stakeToken)) ||
