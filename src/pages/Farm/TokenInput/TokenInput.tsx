@@ -4,7 +4,7 @@ import NumericalInput from './NumericalInput';
 import { lighten } from 'polished';
 import Button from '../../../base/ui/Button';
 import CurrencyLogo from '../../../components/CurrencyLogo';
-import { JSBI, Token, TokenAmount } from '@uniswap/sdk';
+import { JSBI, Rounding, Token, TokenAmount } from '@uniswap/sdk';
 import { useTokenBalance } from '../../../state/wallet/hooks';
 import { useActiveWeb3React } from '../../../hooks';
 import { tokenAmountToString } from '../../../utils/formats';
@@ -17,21 +17,21 @@ import LpTokenSymbol from '../LpTokenSymbol';
 import isLpToken from '../isLpToken';
 
 const StyledTokenInputWrapper = styled.div`
-  border: 1px solid ${({theme}) => theme.lightGrey};
+  border: 1px solid ${({ theme }) => theme.lightGrey};
   border-radius: 16px;
   padding: 16px;
 `;
 
 const StyledInputWrapper = styled.div`
-  background-color: ${({theme}) => theme.dark1};
-  border: 1px solid ${({theme}) => theme.border2};
+  background-color: ${({ theme }) => theme.dark1};
+  border: 1px solid ${({ theme }) => theme.border2};
   border-radius: 8px;
   padding: 16px;
   margin-bottom: 16px;
 `;
 
 const StyledInputHeader = styled.div`
-  color: ${({theme}) => theme.darkText};
+  color: ${({ theme }) => theme.darkText};
   font-size: 12px;
   margin-bottom: 8px;
   text-transform: uppercase;
@@ -61,7 +61,7 @@ const StyledBalanceMax = styled.button`
 
   :hover,
   :focus {
-    background-color: ${({ theme }) => lighten(0.1, theme.red)}
+    background-color: ${({ theme }) => lighten(0.1, theme.red)};
   }
 `;
 
@@ -98,15 +98,10 @@ type TokenInputProps = {
   contractAddress: string;
   token: Token;
   onStake: (amount: string) => Promise<unknown>;
-}
+  tokenMode: number;
+};
 
-const TokenInput: React.FC<TokenInputProps> = (
-  {
-    contractAddress,
-    token,
-    onStake,
-  }
-) => {
+const TokenInput: React.FC<TokenInputProps> = ({ contractAddress, token, onStake, tokenMode }) => {
   const { account } = useActiveWeb3React();
   const [inputValue, setInputValue] = useState<string>('');
   const [isStakeInProgress, setIsStakeInProgress] = useState<boolean>(false);
@@ -116,7 +111,10 @@ const TokenInput: React.FC<TokenInputProps> = (
 
   const handleButtonClick = useCallback(() => {
     setIsStakeInProgress(true);
-    onStake(inputValue).catch(() => setIsStakeInProgress(false));
+    onStake(inputValue).catch(() => {
+      setIsStakeInProgress(false);
+      //FIXME Добавить отображение ошибок. Они сейчас тупо нигде не показываются
+    });
   }, [onStake, inputValue]);
 
   useEffect(() => {
@@ -128,8 +126,9 @@ const TokenInput: React.FC<TokenInputProps> = (
   const maxAmount = maxAmountSpend(balance);
 
   const handleMaxButtonClick = useCallback(() => {
-    setInputValue(maxAmount.toExact());
-  }, [maxAmount]);
+    if (!maxAmount) return;
+    setInputValue(maxAmount.toFixed(token.decimals, undefined, Rounding.ROUND_DOWN));
+  }, [maxAmount, token.decimals]);
 
   const isInsufficientBalance = useMemo(() => {
     const parsedAmount = tryParseAmount(inputValue, token);
@@ -152,35 +151,50 @@ const TokenInput: React.FC<TokenInputProps> = (
 
   const toggleWalletModal = useWalletModalToggle();
 
-  return (<StyledTokenInputWrapper>
-    <StyledInputWrapper>
-      <StyledInputHeader>
-        {token?.symbol} to stake
-        <StyledBalance>Balance: {tokenAmountToString(balance)}</StyledBalance>
-      </StyledInputHeader>
-      <StyledInputContentWrapper>
-        <NumericalInput
-          value={inputValue}
-          onChange={value => {
-            setInputValue(value);
-          }}
-        />
-        <StyledInputButtons>
-          <StyledBalanceMax onClick={handleMaxButtonClick}>MAX</StyledBalanceMax>
-          <StyledCurrency>
-            {isLpToken(token) ? <LpTokenSymbol /> : <CurrencyLogo currency={token} size={'24px'} />}
-            <StyledTokenName>{token?.symbol}</StyledTokenName>
-          </StyledCurrency>
-        </StyledInputButtons>
-      </StyledInputContentWrapper>
-    </StyledInputWrapper>
-    {!account && <Button onClick={toggleWalletModal}>Connect to a wallet</Button>}
-    {account && approvalState === ApprovalState.UNKNOWN && <Button isDisabled={true}>Checking approval...</Button>}
-    {account && approvalState === ApprovalState.NOT_APPROVED && <Button onClick={doApprove}>Approve {token?.symbol}</Button>}
-    {account && approvalState === ApprovalState.PENDING && <Button isDisabled={true}>Approval in progress...</Button>}
-    {account && approvalState === ApprovalState.APPROVED &&
-      <Button onClick={handleButtonClick} isDisabled={isStakeButtonDisabled}>{stakeButtonText}</Button>}
-  </StyledTokenInputWrapper>);
-}
+  return (
+    <StyledTokenInputWrapper>
+      <StyledInputWrapper>
+        <StyledInputHeader>
+          {token?.symbol} to stake
+          <StyledBalance>Balance: {tokenAmountToString(balance)}</StyledBalance>
+        </StyledInputHeader>
+        <StyledInputContentWrapper>
+          <NumericalInput
+            value={inputValue}
+            onChange={value => {
+              setInputValue(value);
+            }}
+          />
+          <StyledInputButtons>
+            <StyledBalanceMax onClick={handleMaxButtonClick}>MAX</StyledBalanceMax>
+            <StyledCurrency>
+              {isLpToken(tokenMode) ? (
+                <LpTokenSymbol />
+              ) : (
+                <CurrencyLogo currency={token} size={'24px'} />
+              )}
+              <StyledTokenName>{token?.symbol}</StyledTokenName>
+            </StyledCurrency>
+          </StyledInputButtons>
+        </StyledInputContentWrapper>
+      </StyledInputWrapper>
+      {!account && <Button onClick={toggleWalletModal}>Connect to a wallet</Button>}
+      {account && approvalState === ApprovalState.UNKNOWN && (
+        <Button isDisabled={true}>Checking approval...</Button>
+      )}
+      {account && approvalState === ApprovalState.NOT_APPROVED && (
+        <Button onClick={doApprove}>Approve {token?.symbol}</Button>
+      )}
+      {account && approvalState === ApprovalState.PENDING && (
+        <Button isDisabled={true}>Approval in progress...</Button>
+      )}
+      {account && approvalState === ApprovalState.APPROVED && (
+        <Button onClick={handleButtonClick} isDisabled={isStakeButtonDisabled}>
+          {stakeButtonText}
+        </Button>
+      )}
+    </StyledTokenInputWrapper>
+  );
+};
 
 export default TokenInput;

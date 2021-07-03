@@ -26,26 +26,42 @@ const useFarming = (contract: Contract) => {
 
     return () => {
       clearInterval(intervalId);
-    }
-  }, [])
+    };
+  }, []);
 
   const [stakeToken, setStakeToken] = useState<Token | undefined>(undefined);
   useEffect(() => {
     contract.stakeToken().then((value: string) => {
-      const defaultCoin = defaultCoins.tokens.find((coin) => coin.address.toLowerCase() === value.toLowerCase());
+      const defaultCoin = defaultCoins.tokens.find(
+        coin => coin.address.toLowerCase() === value.toLowerCase(),
+      );
       if (chainId && defaultCoin) {
-        const token = new Token(chainId, defaultCoin.address, defaultCoin.decimals, defaultCoin.symbol, defaultCoin.name);
+        const token = new Token(
+          chainId,
+          defaultCoin.address,
+          defaultCoin.decimals,
+          defaultCoin.symbol,
+          defaultCoin.name,
+        );
         setStakeToken(token);
       }
     });
-  }, [chainId, contract])
+  }, [chainId, contract]);
 
   const [rewardToken, setRewardToken] = useState<Token | undefined>(undefined);
   useEffect(() => {
     contract.rewardToken().then((value: string) => {
-      const defaultCoin = defaultCoins.tokens.find((coin) => coin.address.toLowerCase() === value.toLowerCase());
+      const defaultCoin = defaultCoins.tokens.find(
+        coin => coin.address.toLowerCase() === value.toLowerCase(),
+      );
       if (chainId && defaultCoin) {
-        const token = new Token(chainId, defaultCoin.address, defaultCoin.decimals, defaultCoin.symbol, defaultCoin.name);
+        const token = new Token(
+          chainId,
+          defaultCoin.address,
+          defaultCoin.decimals,
+          defaultCoin.symbol,
+          defaultCoin.name,
+        );
         setRewardToken(token);
       }
     });
@@ -55,43 +71,41 @@ const useFarming = (contract: Contract) => {
   useEffect(() => {
     if (!account) return;
 
-    contract.balanceOf(account)
+    contract
+      .balanceOf(account)
       .then((value: BigNumber) => {
-          if (chainId && stakeToken) {
-            const tokenAmount = new TokenAmount(
-              stakeToken,
-              JSBI.BigInt(value.toString())
-            );
-            return tokenAmountToString(tokenAmount, stakeToken.decimals);
-          } else {
-            return '0';
-          }
+        if (chainId && stakeToken) {
+          const tokenAmount = new TokenAmount(stakeToken, JSBI.BigInt(value.toString()));
+          return tokenAmountToString(tokenAmount, stakeToken.decimals);
+        } else {
+          return '0';
         }
-      ).then((value: string) => setBalance(value));
+      })
+      .then((value: string) => setBalance(value));
   }, [account, chainId, contract, stakeToken, completedTransactionsCount]);
 
   const [reward, setReward] = useState<string>('0');
   useEffect(() => {
     if (!account) return;
 
-    contract.earned(account)
+    contract
+      .earned(account)
       .then((value: BigNumber) => {
-          if (chainId && rewardToken) {
-            const tokenAmount = new TokenAmount(
-              rewardToken,
-              JSBI.BigInt(value.toString())
-            );
-            return tokenAmountToString(tokenAmount, rewardToken.decimals);
-          } else {
-            return '0';
-          }
-        },
-      ).then((value: string) => setReward(value));
+        if (chainId && rewardToken) {
+          const tokenAmount = new TokenAmount(rewardToken, JSBI.BigInt(value.toString()));
+          return tokenAmountToString(tokenAmount, rewardToken.decimals);
+        } else {
+          return '0';
+        }
+      })
+      .then((value: string) => setReward(value));
   }, [account, chainId, contract, rewardToken, completedTransactionsCount, intervalUpdateCounter]);
 
   const [blockReward, setBlockReward] = useState<string>('0');
   useEffect(() => {
-    contract.rewardRate().then((value: BigNumber) => {
+    contract
+      .rewardRate()
+      .then((value: BigNumber) => {
         if (chainId && rewardToken) {
           const tokenAmount = new TokenAmount(
             rewardToken,
@@ -101,8 +115,8 @@ const useFarming = (contract: Contract) => {
         } else {
           return '0';
         }
-      },
-    ).then((value: string) => setBlockReward(value));
+      })
+      .then((value: string) => setBlockReward(value));
   }, [chainId, contract, rewardToken]);
 
   const handleStake = (amount: string): Promise<unknown> => {
@@ -110,7 +124,8 @@ const useFarming = (contract: Contract) => {
     if (!chainId) throw new Error('No chain id');
 
     const bigIntAmount = BigNumber.from(expNumberToStr(+amount * 10 ** stakeToken.decimals));
-    return contract.stake(bigIntAmount)
+    return contract
+      .stake(bigIntAmount)
       .then((response: TransactionResponse) => {
         addTransaction(response, {
           summary: `Stake ${amount} ${stakeToken.symbol}`,
@@ -127,7 +142,8 @@ const useFarming = (contract: Contract) => {
     if (!stakeToken) throw new Error('No stake token');
     if (!chainId) throw new Error('No chain id');
 
-    return contract.exit()
+    return contract
+      .exit()
       .then((response: TransactionResponse) => {
         addTransaction(response, {
           summary: `Collect all ${stakeToken.symbol}`,
@@ -142,25 +158,24 @@ const useFarming = (contract: Contract) => {
 
   const [totalSupply, setTotalSupply] = useState<string | undefined>(undefined);
   useEffect(() => {
-    contract.totalSupply().then((value: BigNumber) => {
+    contract
+      .totalSupply()
+      .then((value: BigNumber) => {
         if (chainId && stakeToken) {
-          const tokenAmount = new TokenAmount(
-            stakeToken,
-            JSBI.BigInt(value.toString())
-          );
+          const tokenAmount = new TokenAmount(stakeToken, JSBI.BigInt(value.toString()));
           return tokenAmountToString(tokenAmount, stakeToken.decimals);
         } else {
           return '0';
         }
-      },
-    ).then((value: string) => setTotalSupply(value));
+      })
+      .then((value: string) => setTotalSupply(value));
   }, [chainId, contract, stakeToken]);
 
   const [endDate, setEndDate] = useState<string | undefined>(undefined);
   useEffect(() => {
     contract.periodFinish().then((value: BigNumber) => {
       const timestampInMs = value.toNumber() * 1000;
-      const formattedDate = dayjs(timestampInMs).format('DD.MM.YYYY HH:MM:ss')
+      const formattedDate = dayjs(timestampInMs).format('DD.MM.YYYY HH:MM:ss');
       setEndDate(formattedDate);
     });
   }, [contract, stakeToken]);
@@ -171,21 +186,32 @@ const useFarming = (contract: Contract) => {
 
     // @ts-ignore
     const liquidityTokenAddress = window.env.FARMING_LIQUIDITY_TOKENS[contract.address];
-    const defaultCoin = defaultCoins.tokens.find((token) => token.chainId === chainId && token.address.toLowerCase() === liquidityTokenAddress.toLowerCase());
+    const defaultCoin = defaultCoins.tokens.find(
+      token =>
+        token.chainId === chainId &&
+        token.address.toLowerCase() === liquidityTokenAddress.toLowerCase(),
+    );
     if (!defaultCoin) {
-      throw new Error('Couldn\'t get coin');
+      throw new Error("Couldn't get coin");
     }
-    const liquidityToken = new Token(chainId, defaultCoin.address, defaultCoin.decimals, defaultCoin.symbol, defaultCoin.name);
+    const liquidityToken = new Token(
+      chainId,
+      defaultCoin.address,
+      defaultCoin.decimals,
+      defaultCoin.symbol,
+      defaultCoin.name,
+    );
     contract.getStakedValuesinUSD(account).then((response: [BigNumber, BigNumber]) => {
       const [, totalStake] = response;
-      const tokenAmount = new TokenAmount(
-        liquidityToken,
-        JSBI.BigInt(totalStake.toString())
-      );
+      const tokenAmount = new TokenAmount(liquidityToken, JSBI.BigInt(totalStake.toString()));
       setLiquidity(tokenAmountToString(tokenAmount, liquidityToken.decimals));
     });
   }, [contract, account, chainId, completedTransactionsCount, intervalUpdateCounter]);
 
+  const [tokenMode, setTokenMode] = useState<number>(0);
+  useEffect(() => {
+    contract.tokenMode().then((value: BigNumber) => setTokenMode(value.toNumber()));
+  }, [contract]);
 
   return {
     stakeToken: stakeToken,
@@ -198,7 +224,8 @@ const useFarming = (contract: Contract) => {
     totalSupply: totalSupply,
     endDate: endDate,
     liquidity: liquidity,
-  }
-}
+    tokenMode: tokenMode,
+  };
+};
 
 export default useFarming;

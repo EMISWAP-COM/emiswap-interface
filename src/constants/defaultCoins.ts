@@ -3861,7 +3861,7 @@ const defaultCoins: DefaultCoins = {
     {
       address: '0xe37Ae239a84110009426071B7828A6fbd6be5F45',
       chainId: 42,
-      name: 'EmiDAO Token',
+      name: 'EmiSwap - EmiDao Token',
       symbol: 'ESW',
       decimals: 18,
       logoURI: 'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
@@ -3869,7 +3869,7 @@ const defaultCoins: DefaultCoins = {
     {
       address: '0x5a75a093747b72a0e14056352751edf03518031d',
       chainId: 1,
-      name: 'EmiDAO Token',
+      name: 'EmiSwap - EmiDao Token',
       symbol: 'ESW',
       decimals: 18,
       logoURI: 'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
