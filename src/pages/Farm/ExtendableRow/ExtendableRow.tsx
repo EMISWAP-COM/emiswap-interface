@@ -196,6 +196,7 @@ type ExtendableRowProps = {
   type: string;
   onStake: (amount: string) => Promise<unknown>;
   onCollect: () => Promise<unknown>;
+  tokenMode: number;
 };
 
 const ExtendableRow: React.FC<ExtendableRowProps> = ({
@@ -211,6 +212,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
   type,
   onStake,
   onCollect,
+  tokenMode,
 }) => {
   const [isRowExtended, setIsRowExtended] = useState(false);
 
@@ -226,14 +228,14 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
             <StyledBlockTitle>Coin</StyledBlockTitle>
             <StyledBlockValue>
               <StyledCurrencyLogo>
-                {isLpToken(stakeToken) ? (
+                {isLpToken(tokenMode) ? (
                   <LpTokenSymbol />
                 ) : (
                   <CurrencyLogo currency={stakeToken} size={'24px'} />
                 )}
               </StyledCurrencyLogo>
               <StyledTruncatedText>
-                { isLpToken(stakeToken) ? stakeToken?.name : stakeToken?.symbol}
+                {isLpToken(tokenMode) ? stakeToken?.name : stakeToken?.symbol}
               </StyledTruncatedText>
             </StyledBlockValue>
           </StyledBlock>
@@ -306,7 +308,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
             <StyledBlockTitle>Deposit</StyledBlockTitle>
             <StyledBlockValue>
               <StyledCurrencyLogo>
-                {isLpToken(stakeToken) ? (
+                {isLpToken(tokenMode) ? (
                   <LpTokenSymbol />
                 ) : (
                   <CurrencyLogo currency={stakeToken} size={'24px'} />
@@ -329,7 +331,12 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
         <StyledInputsWrapper>
           <StyledTokenInputWrapper>
             {stakeToken && (
-              <TokenInput token={stakeToken} contractAddress={contractAddress} onStake={onStake} />
+              <TokenInput
+                token={stakeToken}
+                contractAddress={contractAddress}
+                onStake={onStake}
+                tokenMode={tokenMode}
+              />
             )}
           </StyledTokenInputWrapper>
           <StyledTokenInputWrapper>
@@ -339,6 +346,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
               stakeToken={stakeToken}
               rewardToken={rewardToken}
               onCollect={onCollect}
+              tokenMode={tokenMode}
             />
           </StyledTokenInputWrapper>
         </StyledInputsWrapper>
