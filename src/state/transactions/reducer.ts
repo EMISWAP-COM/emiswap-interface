@@ -4,6 +4,7 @@ import {
   checkedTransaction,
   clearAllTransactions,
   finalizeTransaction,
+  cancelTransaction,
   SerializableTransactionReceipt,
 } from './actions';
 
@@ -63,5 +64,10 @@ export default createReducer(initialState, builder =>
       }
       tx.receipt = receipt;
       tx.confirmedTime = now();
+    })
+    .addCase(cancelTransaction, (transactions, { payload: { chainId, hash } }) => {
+      const txs = transactions[chainId] ?? {};
+      delete txs[hash];
+      transactions[chainId] = txs;
     }),
 );
