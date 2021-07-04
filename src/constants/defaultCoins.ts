@@ -1,24 +1,24 @@
 type DefaultCoinsToken = {
-  address: string,
-  chainId: number,
-  name: string,
-  symbol: string,
-  decimals: number,
-  logoURI: string,
-}
+  address: string;
+  chainId: number;
+  name: string;
+  symbol: string;
+  decimals: number;
+  logoURI: string;
+};
 
 type DefaultCoins = {
-  name: string,
-  timestamp: string,
+  name: string;
+  timestamp: string;
   version: {
-    major: number,
-    minor: number,
-    patch: number,
-  },
-  keywords: string[],
-  tokens: DefaultCoinsToken[],
-  logoURI: string,
-}
+    major: number;
+    minor: number;
+    patch: number;
+  };
+  keywords: string[];
+  tokens: DefaultCoinsToken[];
+  logoURI: string;
+};
 
 const defaultCoins: DefaultCoins = {
   name: '1inch',
@@ -3864,7 +3864,8 @@ const defaultCoins: DefaultCoins = {
       name: 'EmiSwap - EmiDao Token',
       symbol: 'ESW',
       decimals: 18,
-      logoURI: 'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
     },
     {
       address: '0x5a75a093747b72a0e14056352751edf03518031d',
@@ -3872,7 +3873,8 @@ const defaultCoins: DefaultCoins = {
       name: 'EmiSwap - EmiDao Token',
       symbol: 'ESW',
       decimals: 18,
-      logoURI: 'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
     },
     // {
     //   address: '0x0000000000000000000000000000000000000000',
@@ -3883,7 +3885,6 @@ const defaultCoins: DefaultCoins = {
     //   logoURI: 'https://tokens.1inch.exchange/0x2260fac5e5542a773aa44fbcfedf7c193bc2c599.png',
     // },
 
-
     // LP tokens
     {
       address: '0x8228BF323C23193f9663aD5BEB651e11E8672c8b',
@@ -3891,7 +3892,8 @@ const defaultCoins: DefaultCoins = {
       name: 'LP ESW-ETH',
       symbol: 'ESWETH',
       decimals: 18,
-      logoURI: 'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
     },
     {
       address: '0xeb69C3Cb52e0002842d978b401f0e5784F8c0590',
@@ -3899,7 +3901,8 @@ const defaultCoins: DefaultCoins = {
       name: 'LP WBTC-ETH',
       symbol: 'WBTCETH',
       decimals: 18,
-      logoURI: 'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
     },
     {
       address: '0xf6a7D96Cc0278D60cDc00D82D87ACd38064d9176',
@@ -3907,7 +3910,8 @@ const defaultCoins: DefaultCoins = {
       name: 'LP ESW-ETH',
       symbol: 'ESWETH',
       decimals: 18,
-      logoURI: 'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
     },
     {
       address: '0xBFd4065A7004B1c8DE08e965969E306Be6bE78D4',
@@ -3915,7 +3919,8 @@ const defaultCoins: DefaultCoins = {
       name: 'LP ESW-USDT',
       symbol: 'ESWUSDT',
       decimals: 18,
-      logoURI: 'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
     },
     //NEW Tokens
     {
@@ -3924,7 +3929,8 @@ const defaultCoins: DefaultCoins = {
       name: 'LP USDC-USDT',
       symbol: 'USDCUSDT',
       decimals: 18,
-      logoURI: 'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
     },
     {
       address: '0xd9e85DD2f43E92eFB6F9d8e62Db4bbDB47527282',
@@ -3932,7 +3938,8 @@ const defaultCoins: DefaultCoins = {
       name: 'LP USDT-BDQ',
       symbol: 'USDTBDQ',
       decimals: 18,
-      logoURI: 'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
     },
     {
       address: '0x527721ae4e9ac7286f3bbac9ca49c4e659c59b49',
@@ -3940,11 +3947,29 @@ const defaultCoins: DefaultCoins = {
       name: 'LP USDC-FLEX',
       symbol: 'USDCFLEX',
       decimals: 18,
-      logoURI: 'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
+      address: '0x0d7dea5922535087078dd3d7c554ea9f2655d4cb',
+      chainId: 1,
+      name: 'BerezkaFLEX',
+      symbol: 'FLEX',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x0d7dea5922535087078dd3d7c554ea9f2655d4cb.png',
+    },
+    {
+      address: '0xf6ce9bfa82d1088d3257a76ec2e0ce1c8060bf8c',
+      chainId: 1,
+      name: 'BerezkaDepositQToken',
+      symbol: 'BDQ',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0xf6ce9bfa82d1088d3257a76ec2e0ce1c8060bf8c.png',
     },
   ],
   logoURI: 'https://1inch.exchange/assets/images/logo.png',
 };
-
 
 export default defaultCoins;

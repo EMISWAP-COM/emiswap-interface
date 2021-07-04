@@ -3,6 +3,7 @@ import { TokenInfo, TokenList } from '@uniswap/token-lists';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { DEFAULT_TOKEN_LIST_URL } from '../../constants';
+import defaultCoins from '../../constants/defaultCoins';
 import { AppState } from '../index';
 // import { useActiveWeb3React } from '../../hooks';
 
@@ -79,17 +80,7 @@ export function useTokenList(url: string): TokenAddressMap {
     if (!current) return EMPTY_LIST;
     const newCurrent = {
       ...current,
-      //FIXME Понять причину такого добавления
-      // tokens: [
-      //   {
-      //     address: window['env'].REACT_APP_ESW_ID,
-      //     chainId: chainId ?? 42,
-      //     name: 'EmiDAO Token',
-      //     decimals: 18,
-      //     symbol: 'ESW',
-      //   },
-      //   ...current.tokens,
-      // ],
+      ...defaultCoins,
     };
     return listToTokenMap(newCurrent);
   }, [lists, url /*, chainId*/]);
