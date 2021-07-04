@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useActiveWeb3React } from '../../hooks';
 import { useAddPopup, useBlockNumber } from '../application/hooks';
 import { AppDispatch, AppState } from '../index';
-import { checkedTransaction, finalizeTransaction } from './actions';
+import { checkedTransaction, finalizeTransaction, cancelTransaction } from './actions';
 
 export function shouldCheck(
   lastBlockNumber: number,
@@ -77,7 +77,12 @@ export default function Updater() {
                 hash,
               );
             } else {
-              dispatch(checkedTransaction({ chainId, hash, blockNumber: lastBlockNumber }));
+              library.getTransaction(hash).then(response => {
+                if (!response) {
+                  dispatch(cancelTransaction({ chainId, hash }));
+                }
+                dispatch(checkedTransaction({ chainId, hash, blockNumber: lastBlockNumber }));
+              });
             }
           })
           .catch(error => {
