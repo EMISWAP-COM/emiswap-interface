@@ -128,7 +128,7 @@ const TokenInput: React.FC<TokenInputProps> = ({ contractAddress, token, onStake
   const handleMaxButtonClick = useCallback(() => {
     if (!maxAmount) return;
     setInputValue(maxAmount.toFixed(12, undefined, Rounding.ROUND_DOWN));
-  }, [maxAmount, token.decimals]);
+  }, [maxAmount]);
 
   const isInsufficientBalance = useMemo(() => {
     const parsedAmount = tryParseAmount(inputValue, token);
