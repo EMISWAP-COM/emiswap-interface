@@ -9,10 +9,12 @@ import { TransactionResponse } from '@ethersproject/providers';
 import { useCompletedTransactionsCount, useTransactionAdder } from '../state/transactions/hooks';
 import { EMI_ROUTER_ADRESSES } from '../constants/emi/addresses';
 import { Contract } from '@ethersproject/contracts';
+import useEthErrorPopup, { RequestError } from './useEthErrorPopup';
 
 const useFarming = (contract: Contract) => {
   const { chainId, account } = useActiveWeb3React();
   const addTransaction = useTransactionAdder();
+  const addEthErrorPopup = useEthErrorPopup();
 
   // This counter is used to update data whenever transaction finishes
   const completedTransactionsCount = useCompletedTransactionsCount();
@@ -45,7 +47,11 @@ const useFarming = (contract: Contract) => {
         );
         setStakeToken(token);
       }
-    });
+    })
+      .catch((error: RequestError) => {
+        addEthErrorPopup(error);
+        throw error;
+      });
   }, [chainId, contract]);
 
   const [rewardToken, setRewardToken] = useState<Token | undefined>(undefined);
@@ -64,7 +70,11 @@ const useFarming = (contract: Contract) => {
         );
         setRewardToken(token);
       }
-    });
+    })
+      .catch((error: RequestError) => {
+        addEthErrorPopup(error);
+        throw error;
+      });
   }, [chainId, contract]);
 
   const [balance, setBalance] = useState<string>('0');
@@ -81,7 +91,11 @@ const useFarming = (contract: Contract) => {
           return '0';
         }
       })
-      .then((value: string) => setBalance(value));
+      .then((value: string) => setBalance(value))
+      .catch((error: RequestError) => {
+        addEthErrorPopup(error);
+        throw error;
+      });
   }, [account, chainId, contract, stakeToken, completedTransactionsCount]);
 
   const [reward, setReward] = useState<string>('0');
@@ -98,7 +112,11 @@ const useFarming = (contract: Contract) => {
           return '0';
         }
       })
-      .then((value: string) => setReward(value));
+      .then((value: string) => setReward(value))
+      .catch((error: RequestError) => {
+        addEthErrorPopup(error);
+        throw error;
+      });
   }, [account, chainId, contract, rewardToken, completedTransactionsCount, intervalUpdateCounter]);
 
   const [blockReward, setBlockReward] = useState<string>('0');
@@ -116,7 +134,11 @@ const useFarming = (contract: Contract) => {
           return '0';
         }
       })
-      .then((value: string) => setBlockReward(value));
+      .then((value: string) => setBlockReward(value))
+      .catch((error: RequestError) => {
+        addEthErrorPopup(error);
+        throw error;
+      });
   }, [chainId, contract, rewardToken]);
 
   const handleStake = (amount: string): Promise<unknown> => {
@@ -132,8 +154,8 @@ const useFarming = (contract: Contract) => {
           approval: { tokenAddress: stakeToken.address, spender: EMI_ROUTER_ADRESSES[chainId] },
         });
       })
-      .catch((error: Error) => {
-        console.error('Failed to approve token');
+      .catch((error: RequestError) => {
+        addEthErrorPopup(error);
         throw error;
       });
   };
@@ -150,8 +172,8 @@ const useFarming = (contract: Contract) => {
           approval: { tokenAddress: stakeToken.address, spender: EMI_ROUTER_ADRESSES[chainId] },
         });
       })
-      .catch((error: Error) => {
-        console.error('Failed to approve token');
+      .catch((error: RequestError) => {
+        addEthErrorPopup(error);
         throw error;
       });
   };
@@ -168,7 +190,11 @@ const useFarming = (contract: Contract) => {
           return '0';
         }
       })
-      .then((value: string) => setTotalSupply(value));
+      .then((value: string) => setTotalSupply(value))
+      .catch((error: RequestError) => {
+        addEthErrorPopup(error);
+        throw error;
+      });
   }, [chainId, contract, stakeToken]);
 
   const [endDate, setEndDate] = useState<string | undefined>(undefined);
@@ -177,7 +203,11 @@ const useFarming = (contract: Contract) => {
       const timestampInMs = value.toNumber() * 1000;
       const formattedDate = dayjs(timestampInMs).format('DD.MM.YYYY HH:MM:ss');
       setEndDate(formattedDate);
-    });
+    })
+      .catch((error: RequestError) => {
+        addEthErrorPopup(error);
+        throw error;
+      });
   }, [contract, stakeToken]);
 
   const [liquidity, setLiquidity] = useState<string | undefined>(undefined);
@@ -205,12 +235,20 @@ const useFarming = (contract: Contract) => {
       const [, totalStake] = response;
       const tokenAmount = new TokenAmount(liquidityToken, JSBI.BigInt(totalStake.toString()));
       setLiquidity(tokenAmountToString(tokenAmount, liquidityToken.decimals));
-    });
+    })
+      .catch((error: RequestError) => {
+        addEthErrorPopup(error);
+        throw error;
+      });
   }, [contract, account, chainId, completedTransactionsCount, intervalUpdateCounter]);
 
   const [tokenMode, setTokenMode] = useState<number>(0);
   useEffect(() => {
-    contract.tokenMode().then((value: BigNumber) => setTokenMode(value.toNumber()));
+    contract.tokenMode().then((value: BigNumber) => setTokenMode(value.toNumber()))
+      .catch((error: RequestError) => {
+        addEthErrorPopup(error);
+        throw error;
+      });
   }, [contract]);
 
   return {
