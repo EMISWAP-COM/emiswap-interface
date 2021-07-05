@@ -113,7 +113,6 @@ const TokenInput: React.FC<TokenInputProps> = ({ contractAddress, token, onStake
     setIsStakeInProgress(true);
     onStake(inputValue).catch(() => {
       setIsStakeInProgress(false);
-      //FIXME Добавить отображение ошибок. Они сейчас тупо нигде не показываются
     });
   }, [onStake, inputValue]);
 
