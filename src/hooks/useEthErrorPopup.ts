@@ -22,7 +22,7 @@ const useEthErrorPopup = () => {
         isError: true,
       },
     });
-  }, []);
+  }, [addPopup]);
 };
 
 export default useEthErrorPopup;

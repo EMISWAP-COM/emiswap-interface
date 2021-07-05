@@ -52,7 +52,7 @@ const useFarming = (contract: Contract) => {
         addEthErrorPopup(error);
         throw error;
       });
-  }, [chainId, contract]);
+  }, [chainId, contract, addEthErrorPopup]);
 
   const [rewardToken, setRewardToken] = useState<Token | undefined>(undefined);
   useEffect(() => {
@@ -75,7 +75,7 @@ const useFarming = (contract: Contract) => {
         addEthErrorPopup(error);
         throw error;
       });
-  }, [chainId, contract]);
+  }, [chainId, contract, addEthErrorPopup]);
 
   const [balance, setBalance] = useState<string>('0');
   useEffect(() => {
@@ -96,7 +96,7 @@ const useFarming = (contract: Contract) => {
         addEthErrorPopup(error);
         throw error;
       });
-  }, [account, chainId, contract, stakeToken, completedTransactionsCount]);
+  }, [account, chainId, contract, stakeToken, addEthErrorPopup, completedTransactionsCount]);
 
   const [reward, setReward] = useState<string>('0');
   useEffect(() => {
@@ -117,7 +117,7 @@ const useFarming = (contract: Contract) => {
         addEthErrorPopup(error);
         throw error;
       });
-  }, [account, chainId, contract, rewardToken, completedTransactionsCount, intervalUpdateCounter]);
+  }, [account, chainId, contract, rewardToken, addEthErrorPopup, completedTransactionsCount, intervalUpdateCounter]);
 
   const [blockReward, setBlockReward] = useState<string>('0');
   useEffect(() => {
@@ -139,7 +139,7 @@ const useFarming = (contract: Contract) => {
         addEthErrorPopup(error);
         throw error;
       });
-  }, [chainId, contract, rewardToken]);
+  }, [chainId, contract, rewardToken, addEthErrorPopup]);
 
   const handleStake = (amount: string): Promise<unknown> => {
     if (!stakeToken) throw new Error('No stake token');
@@ -195,7 +195,7 @@ const useFarming = (contract: Contract) => {
         addEthErrorPopup(error);
         throw error;
       });
-  }, [chainId, contract, stakeToken]);
+  }, [chainId, contract, stakeToken, addEthErrorPopup]);
 
   const [endDate, setEndDate] = useState<string | undefined>(undefined);
   useEffect(() => {
@@ -208,7 +208,7 @@ const useFarming = (contract: Contract) => {
         addEthErrorPopup(error);
         throw error;
       });
-  }, [contract, stakeToken]);
+  }, [contract, stakeToken, addEthErrorPopup]);
 
   const [liquidity, setLiquidity] = useState<string | undefined>(undefined);
   useEffect(() => {
@@ -240,7 +240,7 @@ const useFarming = (contract: Contract) => {
         addEthErrorPopup(error);
         throw error;
       });
-  }, [contract, account, chainId, completedTransactionsCount, intervalUpdateCounter]);
+  }, [contract, account, chainId, addEthErrorPopup, completedTransactionsCount, intervalUpdateCounter]);
 
   const [tokenMode, setTokenMode] = useState<number>(0);
   useEffect(() => {
@@ -249,7 +249,7 @@ const useFarming = (contract: Contract) => {
         addEthErrorPopup(error);
         throw error;
       });
-  }, [contract]);
+  }, [contract, addEthErrorPopup]);
 
   return {
     stakeToken: stakeToken,
