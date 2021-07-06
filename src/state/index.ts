@@ -16,7 +16,7 @@ import launchpad from './launchpad/reducer';
 
 import { updateVersion } from './user/actions';
 
-const PERSISTED_KEYS: string[] = ['transactions', 'lists', 'invest'];
+const PERSISTED_KEYS: string[] = ['lists', 'invest'];
 
 const store = configureStore({
   reducer: {
