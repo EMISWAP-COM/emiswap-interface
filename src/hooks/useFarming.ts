@@ -9,6 +9,8 @@ import { TransactionResponse } from '@ethersproject/providers';
 import { useCompletedTransactionsCount, useTransactionAdder } from '../state/transactions/hooks';
 import { EMI_ROUTER_ADRESSES } from '../constants/emi/addresses';
 import { Contract } from '@ethersproject/contracts';
+import getFarmingLiquidityTokenAddress from '../pages/Farm/getFarmingLiquidityTokenAddress';
+import getFarmingCoinNameAndSymbol from '../pages/Farm/getFarmingCoinNameAndSymbol';
 
 const useFarming = (contract: Contract) => {
   const { chainId, account } = useActiveWeb3React();
@@ -40,8 +42,8 @@ const useFarming = (contract: Contract) => {
           chainId,
           defaultCoin.address,
           defaultCoin.decimals,
-          defaultCoin.symbol,
-          defaultCoin.name,
+          getFarmingCoinNameAndSymbol(contract.address).symbol || defaultCoin.symbol,
+          getFarmingCoinNameAndSymbol(contract.address).name || defaultCoin.name,
         );
         setStakeToken(token);
       }
@@ -184,8 +186,7 @@ const useFarming = (contract: Contract) => {
   useEffect(() => {
     if (!chainId) return;
 
-    // @ts-ignore
-    const liquidityTokenAddress = window.env.FARMING_LIQUIDITY_TOKENS[contract.address];
+    const liquidityTokenAddress = getFarmingLiquidityTokenAddress(contract.address);
     const defaultCoin = defaultCoins.tokens.find(
       token =>
         token.chainId === chainId &&
