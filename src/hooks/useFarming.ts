@@ -11,6 +11,25 @@ import { EMI_ROUTER_ADRESSES } from '../constants/emi/addresses';
 import { Contract } from '@ethersproject/contracts';
 import useEthErrorPopup, { RequestError } from './useEthErrorPopup';
 
+const logContractError = (
+  methodName: string,
+  account: string | null | undefined,
+  chainId: number | undefined,
+  contractAddress: string,
+  args: string,
+  originalError: Error,
+) => {
+  console.error(`
+  Contract error\n
+  Method name: ${methodName}\n
+  Account: ${account}\n
+  ChainId: ${chainId}\n
+  Contract address: ${contractAddress}\n
+  Args: ${args ? args : '---'}\n
+  Error message: ${originalError.message}\n
+`);
+};
+
 const useFarming = (contract: Contract) => {
   const { chainId, account } = useActiveWeb3React();
   const addTransaction = useTransactionAdder();
@@ -50,9 +69,9 @@ const useFarming = (contract: Contract) => {
     })
       .catch((error: RequestError) => {
         addEthErrorPopup(error);
-        throw error;
+        logContractError('stakeToken', account, chainId, contract.address, '', error);
       });
-  }, [chainId, contract, addEthErrorPopup]);
+  }, [chainId, contract, addEthErrorPopup, account]);
 
   const [rewardToken, setRewardToken] = useState<Token | undefined>(undefined);
   useEffect(() => {
@@ -73,9 +92,9 @@ const useFarming = (contract: Contract) => {
     })
       .catch((error: RequestError) => {
         addEthErrorPopup(error);
-        throw error;
+        logContractError('rewardToken', account, chainId, contract.address, '', error);
       });
-  }, [chainId, contract, addEthErrorPopup]);
+  }, [chainId, contract, addEthErrorPopup, account]);
 
   const [balance, setBalance] = useState<string>('0');
   useEffect(() => {
@@ -94,7 +113,7 @@ const useFarming = (contract: Contract) => {
       .then((value: string) => setBalance(value))
       .catch((error: RequestError) => {
         addEthErrorPopup(error);
-        throw error;
+        logContractError('balanceOf', account, chainId, contract.address, '', error);
       });
   }, [account, chainId, contract, stakeToken, addEthErrorPopup, completedTransactionsCount]);
 
@@ -115,7 +134,7 @@ const useFarming = (contract: Contract) => {
       .then((value: string) => setReward(value))
       .catch((error: RequestError) => {
         addEthErrorPopup(error);
-        throw error;
+        logContractError('earned', account, chainId, contract.address, '', error);
       });
   }, [account, chainId, contract, rewardToken, addEthErrorPopup, completedTransactionsCount, intervalUpdateCounter]);
 
@@ -137,9 +156,9 @@ const useFarming = (contract: Contract) => {
       .then((value: string) => setBlockReward(value))
       .catch((error: RequestError) => {
         addEthErrorPopup(error);
-        throw error;
+        logContractError('rewardRate', account, chainId, contract.address, '', error);
       });
-  }, [chainId, contract, rewardToken, addEthErrorPopup]);
+  }, [chainId, contract, rewardToken, addEthErrorPopup, account]);
 
   const handleStake = (amount: string): Promise<unknown> => {
     if (!stakeToken) throw new Error('No stake token');
@@ -156,7 +175,7 @@ const useFarming = (contract: Contract) => {
       })
       .catch((error: RequestError) => {
         addEthErrorPopup(error);
-        throw error;
+        logContractError('stake', account, chainId, contract.address, bigIntAmount.toString(), error);
       });
   };
 
@@ -174,7 +193,7 @@ const useFarming = (contract: Contract) => {
       })
       .catch((error: RequestError) => {
         addEthErrorPopup(error);
-        throw error;
+        logContractError('exit', account, chainId, contract.address, '', error);
       });
   };
 
@@ -193,9 +212,9 @@ const useFarming = (contract: Contract) => {
       .then((value: string) => setTotalSupply(value))
       .catch((error: RequestError) => {
         addEthErrorPopup(error);
-        throw error;
+        logContractError('totalSupply', account, chainId, contract.address, '', error);
       });
-  }, [chainId, contract, stakeToken, addEthErrorPopup]);
+  }, [chainId, contract, stakeToken, addEthErrorPopup, account]);
 
   const [endDate, setEndDate] = useState<string | undefined>(undefined);
   useEffect(() => {
@@ -206,9 +225,9 @@ const useFarming = (contract: Contract) => {
     })
       .catch((error: RequestError) => {
         addEthErrorPopup(error);
-        throw error;
+        logContractError('periodFinish', account, chainId, contract.address, '', error);
       });
-  }, [contract, stakeToken, addEthErrorPopup]);
+  }, [contract, stakeToken, addEthErrorPopup, account, chainId]);
 
   const [liquidity, setLiquidity] = useState<string | undefined>(undefined);
   useEffect(() => {
@@ -238,7 +257,7 @@ const useFarming = (contract: Contract) => {
     })
       .catch((error: RequestError) => {
         addEthErrorPopup(error);
-        throw error;
+        logContractError('getStakedValuesinUSD', account, chainId, contract.address, '', error);
       });
   }, [contract, account, chainId, addEthErrorPopup, completedTransactionsCount, intervalUpdateCounter]);
 
@@ -247,9 +266,9 @@ const useFarming = (contract: Contract) => {
     contract.tokenMode().then((value: BigNumber) => setTokenMode(value.toNumber()))
       .catch((error: RequestError) => {
         addEthErrorPopup(error);
-        throw error;
+        logContractError('tokenMode', account, chainId, contract.address, '', error);
       });
-  }, [contract, addEthErrorPopup]);
+  }, [contract, addEthErrorPopup, account, chainId]);
 
   return {
     stakeToken: stakeToken,
