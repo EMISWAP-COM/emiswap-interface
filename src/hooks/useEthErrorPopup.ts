@@ -14,6 +14,8 @@ const useEthErrorPopup = () => {
   const addPopup = useAddPopup();
 
   return useCallback((error: RequestError) => {
+    if (error.code === -32000) return;
+
     const message = getMessageFromCode(error.code, `Something went wrong`);
     addPopup({
       status: {
