@@ -113,6 +113,7 @@ const TokenInput: React.FC<TokenInputProps> = ({ contractAddress, token, onStake
     setIsStakeInProgress(true);
     onStake(inputValue).catch(() => {
       setIsStakeInProgress(false);
+      //FIXME Добавить отображение ошибок. Они сейчас тупо нигде не показываются
     });
   }, [onStake, inputValue]);
 
@@ -126,9 +127,7 @@ const TokenInput: React.FC<TokenInputProps> = ({ contractAddress, token, onStake
 
   const handleMaxButtonClick = useCallback(() => {
     if (!maxAmount) return;
-    // Artificially limit max number of decimals, cause values greater than 12 could be problematic
-    const maxDecimalsForAmount = 12;
-    setInputValue(maxAmount.toFixed(token.decimals < maxDecimalsForAmount ? token.decimals : maxDecimalsForAmount, undefined, Rounding.ROUND_DOWN));
+    setInputValue(maxAmount.toFixed(token.decimals, undefined, Rounding.ROUND_DOWN));
   }, [maxAmount, token.decimals]);
 
   const isInsufficientBalance = useMemo(() => {
