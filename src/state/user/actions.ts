@@ -106,7 +106,8 @@ export const loginCabinets = createAsyncThunk(
         }
       })
       .catch(e => {
-        console.log(e);
+        console.log('Here!');
+        console.log({e});
         dispatch(
           addPopup({
             key: 'loginCabinets',
