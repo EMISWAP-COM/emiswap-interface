@@ -11,6 +11,7 @@ const errorMessages: Record<string, string> = {
   '-32003': 'Your transaction was rejected',
   '-32005': 'Limit is exceeded',
   '-32602': 'Invalid parameters',
+  '4001': 'Transaction denied by user',
 }
 
 
