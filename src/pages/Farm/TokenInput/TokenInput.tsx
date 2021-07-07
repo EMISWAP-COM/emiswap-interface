@@ -105,6 +105,10 @@ const TokenInput: React.FC<TokenInputProps> = ({ contractAddress, token, onStake
   const { account } = useActiveWeb3React();
   const [inputValue, setInputValue] = useState<string>('');
   const [isStakeInProgress, setIsStakeInProgress] = useState<boolean>(false);
+  const [, setIsApprovalInProgress] = useState<boolean>(false);
+
+  const veryLargeAmount = new TokenAmount(token, JSBI.BigInt('99999999999999999999999999999'));
+  const [approvalState, doApprove] = useApproveCallback(veryLargeAmount, contractAddress);
 
   // This counter is used to update isStakeInProgress whenever transaction finishes
   const completedTransactionsCount = useCompletedTransactionsCount();
@@ -116,9 +120,21 @@ const TokenInput: React.FC<TokenInputProps> = ({ contractAddress, token, onStake
     });
   }, [onStake, inputValue]);
 
+  const handleApprove = useCallback(() => {
+    setIsApprovalInProgress(true);
+    doApprove();
+  }, [doApprove])
+
   useEffect(() => {
     setIsStakeInProgress(false);
-    setInputValue('');
+
+    setIsApprovalInProgress((prevVal) => {
+      if (!prevVal) {
+        setInputValue('');
+      }
+
+      return false;
+    });
   }, [completedTransactionsCount]);
 
   const balance = useTokenBalance(account, token);
@@ -136,9 +152,6 @@ const TokenInput: React.FC<TokenInputProps> = ({ contractAddress, token, onStake
 
     return maxAmount && parsedAmount && JSBI.lessThan(maxAmount.raw, parsedAmount.raw);
   }, [inputValue, token, maxAmount]);
-
-  const veryLargeAmount = new TokenAmount(token, JSBI.BigInt('99999999999999999999999999999'));
-  const [approvalState, doApprove] = useApproveCallback(veryLargeAmount, contractAddress);
 
   const isStakeButtonDisabled = isInsufficientBalance || !Number(inputValue) || isStakeInProgress;
 
@@ -184,7 +197,7 @@ const TokenInput: React.FC<TokenInputProps> = ({ contractAddress, token, onStake
         <Button isDisabled={true}>Checking approval...</Button>
       )}
       {account && approvalState === ApprovalState.NOT_APPROVED && (
-        <Button onClick={doApprove}>Approve {token?.symbol}</Button>
+        <Button onClick={handleApprove}>Approve {token?.symbol}</Button>
       )}
       {account && approvalState === ApprovalState.PENDING && (
         <Button isDisabled={true}>Approval in progress...</Button>

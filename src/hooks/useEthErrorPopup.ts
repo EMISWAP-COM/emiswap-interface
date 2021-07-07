@@ -1,11 +1,17 @@
 import { useAddPopup } from '../state/application/hooks';
 import { useCallback } from 'react';
-import { getMessageFromCode } from 'eth-rpc-errors';
 
 export interface RequestError extends Error {
   message: string,
   code: number,
   data?: unknown,
+}
+
+const errorMessages: Record<string, string> = {
+  '-32003': 'Your transaction was rejected',
+  '-32005': 'Limit is exceeded',
+  '-32602': 'Invalid parameters',
+  '4001': 'Transaction denied by user',
 }
 
 
@@ -14,12 +20,12 @@ const useEthErrorPopup = () => {
   const addPopup = useAddPopup();
 
   return useCallback((error: RequestError) => {
-    if (error.code === -32000) return;
-    
-    const message = getMessageFromCode(error.code, `Something went wrong`);
+    const errorMessage = errorMessages[String(error.code)];
+    if (!errorMessage) return;
+
     addPopup({
       status: {
-        name: message,
+        name: errorMessage,
         summary: 'Error code: ' + error.code,
         isError: true,
       },
