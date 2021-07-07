@@ -107,6 +107,10 @@ export const loginCabinets = createAsyncThunk(
       })
       .catch(e => {
         console.log(e);
+
+        // Do not show fetch error
+        if (e.message === 'Failed to fetch') return;
+
         dispatch(
           addPopup({
             key: 'loginCabinets',
