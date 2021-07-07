@@ -126,7 +126,6 @@
     "dayjs": "^1.10.5",
     "emotion-theming": "^10.0.27",
     "env-cmd": "^10.1.0",
-    "eth-rpc-errors": "^4.0.3",
     "promise-hook": "^0.1.4",
     "react-async-hook": "^3.6.1",
     "react-currency-format": "^1.0.0",
