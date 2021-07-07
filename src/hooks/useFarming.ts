@@ -166,12 +166,23 @@ const useFarming = (contract: Contract) => {
     if (!stakeToken) throw new Error('No stake token');
     if (!chainId) throw new Error('No chain id');
 
-    const bigIntAmount = BigNumber.from(expNumberToStr(+amount * 10 ** stakeToken.decimals));
+    // Can't use more than 18 decimals
+    const splittedAmount = amount.split('.');
+    const constrainedAmount = splittedAmount[0] + '.' + splittedAmount[1].substring(0, 18);
+
+    let bigIntAmount: BigNumber;
+    try {
+      bigIntAmount = BigNumber.from(expNumberToStr(+constrainedAmount * 10 ** stakeToken.decimals));
+    } catch (e) {
+      throw new Error('Invalid amount to stake');
+    }
+    if (!bigIntAmount) return Promise.reject();
+
     return contract
       .stake(bigIntAmount)
       .then((response: TransactionResponse) => {
         addTransaction(response, {
-          summary: `Stake ${amount} ${stakeToken.symbol}`,
+          summary: `Stake ${constrainedAmount} ${stakeToken.symbol}`,
           approval: { tokenAddress: stakeToken.address, spender: EMI_ROUTER_ADRESSES[chainId] },
         });
       })
