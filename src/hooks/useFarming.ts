@@ -168,7 +168,13 @@ const useFarming = (contract: Contract) => {
 
     // Can't use more than 18 decimals
     const splittedAmount = amount.split('.');
-    const constrainedAmount = splittedAmount[0] + '.' + splittedAmount[1] !== undefined ? splittedAmount[1].substring(0, stakeToken.decimals) : '0';
+    //FIXME Написать красиво
+    let decimals = splittedAmount[1];
+    if (decimals === undefined) {
+      decimals = '0';
+    }
+
+    const constrainedAmount = splittedAmount[0] + '.' + decimals.substring(0, stakeToken.decimals);
 
     let bigIntAmount: BigNumber;
     try {
