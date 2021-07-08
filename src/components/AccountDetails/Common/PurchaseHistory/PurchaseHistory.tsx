@@ -17,6 +17,8 @@ import {
   Cost,
 } from './components';
 
+import { TruncatedTextWithTooltip } from '../../../../base/ui/TruncatedTextWithTooltip';
+
 const MAGIC_CHAIN_ID = 42; // todo: what it is?
 const ETHERSCAN_URL = 'https://etherscan.io';
 const KOVAN_ETHERSCAN_URL = 'https://kovan.etherscan.io';
@@ -162,7 +164,18 @@ export const PurchaseHistory = () => {
     () => [
       { key: 'date', label: 'Date', head: headRenders.date, cell: cellRenders.date },
       { key: 'total_system_reward', label: 'Total System Reward in DAI*', cell: cellRenders.dai },
-      { key: 'share', label: 'Your Share', cell: cellRenders.percent },
+      {
+        key: 'share',
+        label: 'Your Share',
+        cell: cellRenders.percent,
+        wrapper: {
+          component: TruncatedTextWithTooltip,
+          mapToProps: row => ({
+            title: `${!row?.share ? '0' : parseFloat(row?.share)}%`,
+            children: `${!row?.share ? '0' : parseFloat(row?.share).toFixed(6)}...`,
+          }),
+        },
+      },
       { key: 'reward', label: 'Your Reward in DAI*', cell: cellRenders.dai },
     ],
     [],
@@ -232,6 +245,7 @@ export const PurchaseHistory = () => {
         title="ESW Holding Reward History"
         fields={holdingRewardFields}
         data={depositsEswHistory}
+        truncatePercent
       />
 
       <Table

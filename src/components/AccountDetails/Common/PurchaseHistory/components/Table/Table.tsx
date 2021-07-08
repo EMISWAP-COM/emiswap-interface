@@ -6,6 +6,7 @@ import { ExternalLink } from '../../../../../../theme';
 import { Level } from '../../../../styleds';
 
 export interface CellProps extends Record<string, any> {
+  wrapper?: WrapperProp;
   key: string;
   label: React.ReactNode;
   row?: Record<string, any>;
@@ -43,9 +44,24 @@ export const HeadCell: React.FC<CellProps> = props => {
   return <CellComponent {...props} children={props.label} />;
 };
 
+export interface WrapperProp<T extends {} = {}> {
+  mapToProps: (row: Record<string, any>) => Partial<T>;
+  component: React.ComponentType<T>;
+}
+
+export interface WrappedProps {
+  props?: Record<string, any>;
+  wrapper?: React.ComponentType;
+}
+
+export const Wrapped: React.FC<Record<string, any> & WrappedProps> = props => {
+  const { wrapper: Wrapper, ...rest } = props;
+  return Wrapper ? <Wrapper children={props.children} {...rest} /> : <>{props.children}</>;
+};
+
 export const cellRenders: Record<Renders, FC<CellProps>> = {
   text: props => <Styled.LevelWrapper children={props.children} />,
-  percent: props => <Styled.LevelWrapper children={`${props.children}%`} />,
+  percent: props => <Styled.LevelWrapper children={props.truncatePercent ? <>{props.children}%</> : `${props.children}%`} />,
   date: props => (
     <Styled.DateField>{convertDate(`${props.children}`, DateFormat.short_day)}</Styled.DateField>
   ),
@@ -129,7 +145,9 @@ export interface TableProps {
   fields?: CellProps[];
   desktopMaxHeight?: number;
   rightTitle?: React.ReactNode;
+  truncatePercent?: boolean;
 }
+
 export const Table: React.FC<TableProps> = ({
   disable,
   title,
@@ -138,6 +156,7 @@ export const Table: React.FC<TableProps> = ({
   fields,
   data,
   children,
+  truncatePercent,
 }) =>
   disable ? null : (
     <Styled.Wrapper>
@@ -158,8 +177,11 @@ export const Table: React.FC<TableProps> = ({
               data.map((row, rowKey) => (
                 <Styled.TableRow key={`row_${rowKey}`}>
                   {fields?.map(field => (
-                    <Cell key={field.key} {...field} row={row}>
-                      {row[field.key] ?? ''}
+                    <Cell key={field.key} {...field} row={row} truncatePercent={truncatePercent}>
+                      <Wrapped
+                        wrapper={field?.wrapper?.component}
+                        {...field?.wrapper?.mapToProps?.(row)}
+                      />
                     </Cell>
                   ))}
                 </Styled.TableRow>
