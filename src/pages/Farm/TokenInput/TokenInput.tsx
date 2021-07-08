@@ -108,7 +108,7 @@ const TokenInput: React.FC<TokenInputProps> = ({ contractAddress, token, onStake
   const [, setIsApprovalInProgress] = useState<boolean>(false);
 
   const veryLargeAmount = new TokenAmount(token, JSBI.BigInt('99999999999999999999999999999'));
-  const [approvalState, doApprove] = useApproveCallback(veryLargeAmount, contractAddress);
+  const [approvalState, doApprove] = useApproveCallback(veryLargeAmount, contractAddress, true);
 
   // This counter is used to update isStakeInProgress whenever transaction finishes
   const completedTransactionsCount = useCompletedTransactionsCount();
