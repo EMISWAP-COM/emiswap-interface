@@ -37,7 +37,8 @@ export const loadBalance = createAsyncThunk(
   async (userId: string, { dispatch }) => {
     const url = `${baseUrl}/v1/public/users/${userId}/balances`;
     try {
-      return await fetchWrapper.get(url);
+      const response = await fetchWrapper.get(url);
+      return response;
     } catch (e) {
       dispatch(
         addPopup({
@@ -60,7 +61,8 @@ export const loadBonus = createAsyncThunk(
   async (userId: string, { dispatch }) => {
     const url = `${baseUrl}/v1/public/users/${userId}/bonus_details`;
     try {
-      return await fetchWrapper.get(url);
+      const response = await fetchWrapper.get(url);
+      return response;
     } catch (e) {
       dispatch(
         addPopup({
@@ -83,7 +85,8 @@ export const loadPoolBlockBonus = createAsyncThunk(
   async (userId: string, { dispatch }) => {
     const url = `${baseUrl}/v1/public/users/${userId}/bonus_details/pool_block_bonus`;
     try {
-      return await fetchWrapper.get(url);
+      const response = await fetchWrapper.get(url);
+      return response;
     } catch (e) {
       dispatch(
         addPopup({
@@ -106,7 +109,8 @@ export const loadPool = createAsyncThunk(
   async (userId: string, { dispatch }) => {
     const url = `${baseUrl}/v1/public/users/${userId}/bonus_details/pool`;
     try {
-      return await fetchWrapper.get(url);
+      const response = await fetchWrapper.get(url);
+      return response;
     } catch (e) {
       dispatch(
         addPopup({
@@ -130,7 +134,8 @@ export const loadPoolBonus = createAsyncThunk(
   async (userId: string, { dispatch }) => {
     const url = `${baseUrl}/v1/public/users/${userId}/bonus_details/pool_bonus`;
     try {
-      return await fetchWrapper.get(url);
+      const response = await fetchWrapper.get(url);
+      return response;
     } catch (e) {
       dispatch(
         addPopup({
@@ -153,7 +158,8 @@ export const loadPoolBonus10X = createAsyncThunk(
   async (userId: string, { dispatch }) => {
     const url = `${baseUrl}/v1/public/users/${userId}/bonus_details/pool_bonus_10x`;
     try {
-      return await fetchWrapper.get(url);
+      const response = await fetchWrapper.get(url);
+      return response;
     } catch (e) {
       dispatch(
         addPopup({

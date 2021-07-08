@@ -8,9 +8,16 @@ import { ReactComponent as WalletIcon } from '../../../../assets/svg/wallet.svg'
 
 import * as Styled from './styled';
 
+export interface EswHoldingRewardsBlockProps {
+  cost: number;
+  icon?: React.ComponentType;
+  title: string | React.ReactNode;
+  token: string | React.ReactNode;
+}
+
 export interface EswHoldingRewardsProps {
   title?: string;
-  token?: string | React.ReactNode;
+  data?: EswHoldingRewardsBlockProps[];
   comment?: string | React.ReactNode;
   buttonCaption?: string | React.ReactNode;
 }
@@ -18,7 +25,9 @@ export interface EswHoldingRewardsProps {
 export const EswHoldingRewards: React.FC<EswHoldingRewardsProps> = props => {
   const dispatch = useDispatch<AppDispatch>();
   const { id: userId } = useSelector((state: AppState) => state.user.info);
-  const { depositsEswHistoryRewards: data } = useSelector((state: AppState) => state.cabinets);
+  const rewards = useSelector((state: AppState) => state.cabinets.depositsEswHistoryRewards);
+
+  console.log({ rewards });
 
   React.useEffect(() => {
     dispatch(loadDepositsEswHistoryRewards(userId) as any);
@@ -26,35 +35,28 @@ export const EswHoldingRewards: React.FC<EswHoldingRewardsProps> = props => {
 
   const onClick = React.useCallback(() => void 0, []);
 
+  const data = props.data || [];
+
   return (
     <Styled.Wrapper>
       <Styled.Title children={props.title} />
 
       <Styled.Blocks>
-        <Styled.Block>
-          <Styled.BlockTitle children="Total" />
-          <Styled.BlockCost>
-            {data?.total ?? 0}
-            <Styled.BlockToken children="DAI" />
-          </Styled.BlockCost>
-        </Styled.Block>
+        {data.map(block => {
+          const Icon = block.icon ?? (() => null);
 
-        <Styled.Block>
-          <Styled.BlockTitle children="Collected" />
-          <Styled.BlockCost>
-            {data?.collected ?? 0}
-            <Styled.BlockToken children="DAI" />
-          </Styled.BlockCost>
-        </Styled.Block>
+          return (
+            <Styled.Block>
+              <Styled.BlockTitle children={block.title} />
 
-        <Styled.Block>
-          <Styled.BlockTitle children="Available to collect" />
-          <Styled.BlockCost>
-            {data?.available_collect ?? 0}
-            <Styled.BlockToken children="DAI" />
-            <Styled.BlockIcon children={<WalletIcon />} />
-          </Styled.BlockCost>
-        </Styled.Block>
+              <Styled.BlockCost>
+                {block.cost}
+                <Styled.BlockToken children={block.token} />
+                <Styled.BlockIcon children={<Icon />} />
+              </Styled.BlockCost>
+            </Styled.Block>
+          );
+        })}
       </Styled.Blocks>
 
       <Styled.Bottom>
@@ -66,8 +68,12 @@ export const EswHoldingRewards: React.FC<EswHoldingRewardsProps> = props => {
 };
 
 EswHoldingRewards.defaultProps = {
-  token: 'DAI',
   title: 'ESW Holding Rewards',
+  data: [
+    { title: 'Total', cost: 4500, token: 'DAI' },
+    { title: 'Collected', cost: 3200, token: 'DAI' },
+    { title: 'Available to collect', cost: 500, token: 'DAI', icon: WalletIcon },
+  ],
   comment: (
     <>
       <p>
