@@ -5,12 +5,19 @@ import { convertBigDecimal, convertDate, DateFormat, shortenHash } from '../../.
 import { ExternalLink } from '../../../../../../theme';
 import { Level } from '../../../../styleds';
 
+export interface WrapperProp<T extends {} = {}> {
+  mapToProps: (row: Record<string, any>) => Partial<T>;
+  component: React.ComponentType<T>;
+}
+
 export interface CellProps extends Record<string, any> {
   key: string;
   label: React.ReactNode;
   row?: Record<string, any>;
   head?: React.ComponentType<CellProps>;
   cell?: React.ComponentType<CellProps>;
+  wrapper?: WrapperProp;
+  props?: Record<string, any>;
 }
 
 type Renders =
@@ -45,7 +52,7 @@ export const HeadCell: React.FC<CellProps> = props => {
 
 export const cellRenders: Record<Renders, FC<CellProps>> = {
   text: props => <Styled.LevelWrapper children={props.children} />,
-  percent: props => <Styled.LevelWrapper children={`${props.children}%`} />,
+  percent: props => <Styled.LevelWrapper children={<>{props.children}%</>} />,
   date: props => (
     <Styled.DateField>{convertDate(`${props.children}`, DateFormat.short_day)}</Styled.DateField>
   ),
@@ -122,6 +129,16 @@ export const Cell: React.FC<CellProps> = props => {
   );
 };
 
+export interface WrappedProps {
+  props?: Record<string, any>;
+  wrapper?: React.ComponentType;
+}
+
+export const Wrapped: React.FC<Record<string, any> & WrappedProps> = props => {
+  const { wrapper: Wrapper, ...rest } = props;
+  return Wrapper ? <Wrapper children={props.children} {...rest} /> : <>{props.children}</>;
+};
+
 export interface TableProps {
   disable?: boolean;
   title: string;
@@ -130,6 +147,7 @@ export interface TableProps {
   desktopMaxHeight?: number;
   rightTitle?: React.ReactNode;
 }
+
 export const Table: React.FC<TableProps> = ({
   disable,
   title,
@@ -145,6 +163,7 @@ export const Table: React.FC<TableProps> = ({
         <Styled.TableHeader>{title}</Styled.TableHeader>
         {rightTitle}
       </Styled.FlexBetween>
+
       <Styled.TableWrapper desktopMaxHeight={desktopMaxHeight}>
         {fields?.length ? (
           <>
@@ -159,7 +178,10 @@ export const Table: React.FC<TableProps> = ({
                 <Styled.TableRow key={`row_${rowKey}`}>
                   {fields?.map(field => (
                     <Cell key={field.key} {...field} row={row}>
-                      {row[field.key] ?? ''}
+                      <Wrapped
+                        wrapper={field?.wrapper?.component}
+                        {...field?.wrapper?.mapToProps?.(row)}
+                      />
                     </Cell>
                   ))}
                 </Styled.TableRow>

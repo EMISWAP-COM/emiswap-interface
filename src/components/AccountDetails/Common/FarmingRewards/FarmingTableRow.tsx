@@ -36,15 +36,11 @@ const StyledTruncatedText = styled.span`
   overflow: hidden;
 `;
 
-type FarmingTableRowProps = {
-  contract: Contract
-};
+export interface FarmingTableRowProps {
+  contract: Contract;
+}
 
-const FarmingTableRow: React.FC<FarmingTableRowProps> = (
-  {
-    contract,
-  }
-) => {
+const FarmingTableRow: React.FC<FarmingTableRowProps> = ({ contract }) => {
   const farming = useFarming(contract);
 
   return (
@@ -53,30 +49,36 @@ const FarmingTableRow: React.FC<FarmingTableRowProps> = (
         <Label>Farm</Label>
         <LevelWrapper>{farming.stakeToken?.symbol}</LevelWrapper>
       </Cell>
+
       <Cell flex={2}>
         <Label>Reward in ESW</Label>
         <LevelWrapper>
           <StyledTruncatedText>{farming.reward}</StyledTruncatedText>
         </LevelWrapper>
       </Cell>
+
       <Cell flex={2}>
         <Label>Block reward in ESW</Label>
         <LevelWrapper>
           <StyledTruncatedText>{farming.blockReward}</StyledTruncatedText>
         </LevelWrapper>
       </Cell>
+
       <Cell flex={2}>
         <Label>Farm TVL in DAI</Label>
         <LevelWrapper>
           <CurrencyFormat value={farming.liquidity} displayType={'text'} thousandSeparator={' '} />
         </LevelWrapper>
       </Cell>
+
       <Cell>
         <Label>Your share</Label>
-        <LevelWrapper>{Math.floor(((Number(farming.balance) / Number(farming.totalSupply)) * 100) * 100) / 100}%</LevelWrapper>
+        <LevelWrapper>
+          {Math.floor((Number(farming.balance) / Number(farming.totalSupply)) * 100 * 100) / 100}%
+        </LevelWrapper>
       </Cell>
     </TableRow>
   );
-}
+};
 
 export default FarmingTableRow;

@@ -14,26 +14,14 @@ export const loadLaunchpadStatus = createAsyncThunk(
     }
 
     try {
-      const response = await fetchWrapper.get(url);
-      return response;
+      return await fetchWrapper.get(url);
     } catch (e) {
-      /*dispatch(
-        addPopup({
-          key: 'launchpadStatus',
-          content: {
-            status: {
-              name: e.message,
-              isError: true,
-            },
-          },
-        }),
-      );*/
-      console.log(e);
+      console.error(e);
       return Promise.reject(e);
     }
   },
 );
 
 export const successInvest = createAction<{
-  amount: number
+  amount: number;
 }>('loadLaunchpad/successInvest');

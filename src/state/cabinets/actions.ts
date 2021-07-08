@@ -1,7 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+
 import { ReferralPerformance } from './reducer';
-import { fetchWrapper } from '../../api/fetchWrapper';
 import { addPopup } from '../application/actions';
+import { fetchWrapper } from '../../api/fetchWrapper';
+
 // @ts-ignore
 const baseUrl = window.env ? window.env.REACT_APP_PUBLIC_URL : '';
 

@@ -105,10 +105,6 @@ const TokenInput: React.FC<TokenInputProps> = ({ contractAddress, token, onStake
   const { account } = useActiveWeb3React();
   const [inputValue, setInputValue] = useState<string>('');
   const [isStakeInProgress, setIsStakeInProgress] = useState<boolean>(false);
-  const [, setIsApprovalInProgress] = useState<boolean>(false);
-
-  const veryLargeAmount = new TokenAmount(token, JSBI.BigInt('99999999999999999999999999999'));
-  const [approvalState, doApprove] = useApproveCallback(veryLargeAmount, contractAddress);
 
   // This counter is used to update isStakeInProgress whenever transaction finishes
   const completedTransactionsCount = useCompletedTransactionsCount();
@@ -120,21 +116,9 @@ const TokenInput: React.FC<TokenInputProps> = ({ contractAddress, token, onStake
     });
   }, [onStake, inputValue]);
 
-  const handleApprove = useCallback(() => {
-    setIsApprovalInProgress(true);
-    doApprove();
-  }, [doApprove])
-
   useEffect(() => {
     setIsStakeInProgress(false);
-
-    setIsApprovalInProgress((prevVal) => {
-      if (!prevVal) {
-        setInputValue('');
-      }
-
-      return false;
-    });
+    setInputValue('');
   }, [completedTransactionsCount]);
 
   const balance = useTokenBalance(account, token);
@@ -142,9 +126,7 @@ const TokenInput: React.FC<TokenInputProps> = ({ contractAddress, token, onStake
 
   const handleMaxButtonClick = useCallback(() => {
     if (!maxAmount) return;
-    // Artificially limit max number of decimals, cause values greater than 12 could be problematic
-    const maxDecimalsForAmount = 12;
-    setInputValue(maxAmount.toFixed(token.decimals < maxDecimalsForAmount ? token.decimals : maxDecimalsForAmount, undefined, Rounding.ROUND_DOWN));
+    setInputValue(maxAmount.toFixed(token.decimals, undefined, Rounding.ROUND_DOWN));
   }, [maxAmount, token.decimals]);
 
   const isInsufficientBalance = useMemo(() => {
@@ -152,6 +134,9 @@ const TokenInput: React.FC<TokenInputProps> = ({ contractAddress, token, onStake
 
     return maxAmount && parsedAmount && JSBI.lessThan(maxAmount.raw, parsedAmount.raw);
   }, [inputValue, token, maxAmount]);
+
+  const veryLargeAmount = new TokenAmount(token, JSBI.BigInt('99999999999999999999999999999'));
+  const [approvalState, doApprove] = useApproveCallback(veryLargeAmount, contractAddress);
 
   const isStakeButtonDisabled = isInsufficientBalance || !Number(inputValue) || isStakeInProgress;
 
@@ -197,7 +182,7 @@ const TokenInput: React.FC<TokenInputProps> = ({ contractAddress, token, onStake
         <Button isDisabled={true}>Checking approval...</Button>
       )}
       {account && approvalState === ApprovalState.NOT_APPROVED && (
-        <Button onClick={handleApprove}>Approve {token?.symbol}</Button>
+        <Button onClick={doApprove}>Approve {token?.symbol}</Button>
       )}
       {account && approvalState === ApprovalState.PENDING && (
         <Button isDisabled={true}>Approval in progress...</Button>

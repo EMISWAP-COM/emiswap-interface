@@ -9,7 +9,7 @@ export enum DateFormat {
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-export function formatConnectorName(connectorName) {
+export const formatConnectorName = connectorName => {
   const { ethereum } = window;
   const isMetaMask = !!(ethereum && ethereum.isMetaMask);
   const name = Object.keys(SUPPORTED_WALLETS)
@@ -20,8 +20,7 @@ export function formatConnectorName(connectorName) {
     )
     .map(k => SUPPORTED_WALLETS[k].name)[0];
   return name;
-}
-
+};
 export const convertBigDecimal = (bigDecimal: string) => {
   if (!isNaN(Number(bigDecimal))) {
     return Number(bigDecimal).toFixed(2);
@@ -37,21 +36,21 @@ export const normalizeNumber = (number: number) => {
   return '0';
 };
 
-export function shortenHash(hash: string, chars = 4): string {
+export const shortenHash = (hash: string, chars = 4) => {
   return `${hash.substring(0, chars + 2)}...${hash.substring(66 - chars)}`;
-}
+};
 
-const getShortDate = (date: string) => {
+export const getShortDate = (date: string) => {
   const newDate = new Date(date);
   return `${months[newDate.getMonth()]} ${newDate.getDate()}, ${newDate.getFullYear()}`;
 };
 
-const getShortDayDate = (date: string) => {
+export const getShortDayDate = (date: string) => {
   const newDate = new Date(date);
   return `${newDate.getDate()} ${months[newDate.getMonth()]} ${newDate.getFullYear()}`;
 };
 
-const getFullDate = (date: string) => {
+export const getFullDate = (date: string) => {
   const d = new Date(date);
   const hours = `0${d.getHours()}`.slice(-2);
   const minutes = `0${d.getMinutes()}`.slice(-2);
@@ -61,7 +60,7 @@ const getFullDate = (date: string) => {
   return `${day}-${months[d.getMonth()]}-${d.getFullYear()}, ${hours}:${minutes}:${seconds}`;
 };
 
-const convertToISOSafari = (dateString: string) => {
+export const convertToISOSafari = (dateString: string) => {
   try {
     if (Date.parse(dateString)) {
       return dateString;

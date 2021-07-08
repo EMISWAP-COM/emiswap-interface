@@ -16,7 +16,7 @@ const handleResponse = (response: Response) => {
         throw new CustomError('Your previous transaction is processing', data?.payload);
       });
     case 422:
-      console.info('response 422', response);
+      console.error('response 422', response);
       return response.json().then(data => {
         console.error('data err', data, new CustomError(data?.error, data?.payload));
         throw new CustomError(data?.error, data?.payload);

@@ -16,7 +16,7 @@ import { BackArrow, TYPE } from '../../theme';
 import { calculateGasMargin, isAddress } from '../../utils';
 import AppBody from '../AppBody';
 import DoubleCurrencyLogo from '../../components/DoubleLogo';
-import { expNumberToStr, tokenAmountToString } from '../../utils/formats';
+import { tokenAmountToString } from '../../utils/formats';
 import CurrencyInputPanel, { StyledTokenName } from '../../components/CurrencyInputPanel';
 import styled from 'styled-components';
 import Loader from '../../components/Loader';
@@ -28,7 +28,6 @@ import { useWalletModalToggle } from '../../state/application/hooks';
 import { useCurrency } from '../../hooks/Tokens';
 import { useTransactionAdder } from '../../state/transactions/hooks';
 import Modal from '../../components/Modal';
-import { BigNumber } from '@ethersproject/bignumber';
 
 const POOL_CURRENCY_AMOUNT_MIN = new Fraction(JSBI.BigInt(1), JSBI.BigInt(1000000));
 
@@ -206,9 +205,7 @@ export default function MigrateV1Exchange({
   const handleMigrate = () => {
     const idx = lpTokensInfo.findIndex(el => el === address);
     if (idx !== -1) {
-      const bigIntAmount = BigNumber.from(expNumberToStr(+amount * 10 ** 18));
-      const args = [idx.toString(), `${bigIntAmount.toString()}`];
-
+      const args = [idx.toString(), `${10 ** 18 * +parsedAmount.toExact()}`];
       contract.estimateGas
         .deposit(...args)
         .then(data => {

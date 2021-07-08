@@ -21,7 +21,7 @@ const StyledInput = styled.input`
   }
 `;
 
-const inputRegex = RegExp(`^[0-9]*(?:\\\\[.])?[0-9]{0,18}$`);
+const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`);
 
 const NumericalInput: React.FC<NumericalInputProps> = (
   {

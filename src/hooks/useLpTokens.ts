@@ -42,7 +42,7 @@ export function useLpTokens(): {
         );
         setIsLoading(false);
       } catch (e) {
-        console.log(e, contract);
+        console.error(e, contract);
         throw new Error('Failed to migrate ');
       }
     };

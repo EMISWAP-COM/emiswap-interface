@@ -48,7 +48,7 @@ const OptionsPromo = styled.div`
   max-width: 340px;
 `;
 
-interface OwnerProps {
+export interface OwnerProps {
   ENSName?: string;
   openOptions: () => void;
 }

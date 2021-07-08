@@ -221,10 +221,6 @@ export function useDerivedInvestInfo(): {
     console.error('insufficient', error);
   }
 
-  /*if (isSmallInvestment) {
-    error = "We've moved to the private sale stage with a minimum investment of $25,000";
-  }*/
-
   if (isMaxInvestment) {
     error = 'Sorry, there’s a limit of $500 purchase with one wallet';
   }

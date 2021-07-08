@@ -229,7 +229,7 @@ export function useDerivedSwapInfo(): {
   }
 
   DEBUG &&
-    console.log({
+    console.info({
       currencies,
       currencyBalances,
       parsedAmount,

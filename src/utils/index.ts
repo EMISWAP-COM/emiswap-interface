@@ -21,6 +21,8 @@ import { EMISWAP_VESTING_ABI, EMISWAP_VESTING_ADDRESS } from '../constants/abis/
 import { FARMING_ABI, FARMING_ADDRESSES } from '../constants/abis/farming';
 import { EMI_PRICE_2_ABI, EMI_PRICE_2_ADDRESS } from '../constants/abis/emiPrice2';
 
+export * from './noop';
+
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
   try {
@@ -198,17 +200,18 @@ export function getVestingContract(library: Web3Provider, account: string) {
 }
 
 export function getFarmingContracts(library: Web3Provider, account: string) {
-  return FARMING_ADDRESSES.map((address) => getContract(address, FARMING_ABI, library, account));
+  return FARMING_ADDRESSES.map(address => getContract(address, FARMING_ABI, library, account));
 }
 
 export function getMyFarmingContracts(library: Web3Provider, account: string) {
-  return new Promise<Contract[]>((resolve) => {
-    const contracts = FARMING_ADDRESSES.map((address) =>
-      getContract(address, FARMING_ABI, library, account));
+  return new Promise<Contract[]>(resolve => {
+    const contracts = FARMING_ADDRESSES.map(address =>
+      getContract(address, FARMING_ABI, library, account),
+    );
     const myFarming: Contract[] = [];
     let processedContractsCount = 0;
 
-    contracts.forEach((contract) => {
+    contracts.forEach(contract => {
       contract.balanceOf(account).then((value: BigNumber) => {
         if (value.toString() !== '0') {
           myFarming.push(contract);

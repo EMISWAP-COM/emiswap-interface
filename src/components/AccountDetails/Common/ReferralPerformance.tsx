@@ -5,39 +5,6 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { convertBigDecimal, normalizeNumber } from '../uitls';
 
-// const DarkText = styled.span`
-//   color: ${({ theme }) => theme.grey3};
-// `;
-//
-// const RewardsWrapper = styled.div`
-//   font-size: 13px;
-//   color: ${({ theme }) => theme.grey6};
-//
-//   margin-top: 12px;
-//   margin-bottom: 16px;
-//   display: grid;
-//   grid-template-columns: 3fr 4fr;
-//   grid-gap: 12px;
-//
-//   @media screen and (max-width: 1200px) {
-//     margin-top: 16px;
-//     margin-bottom: 12px;
-//     grid-template-columns: repeat(1, 1fr);
-//     grid-gap: 8px;
-//   }
-// `;
-
-// const RewardsItem = styled.div`
-//   display: flex;
-//   justify-content: space-between;
-//   padding: 14px;
-//   background: #f7f8fa;
-// `;
-// const RewardsValue = styled(DarkText)`
-//   font-size: 16px;
-//   font-weight: 600;
-// `;
-
 const Wrapper = styled.div`
   width: 100%;
   margin-bottom: 20px;
@@ -99,10 +66,6 @@ const Referrals = styled(Table)``;
 
 const ReferralPurchases = styled(Table)``;
 
-// const CollectBtn = styled(WalletAction)`
-//   max-width: 160px;
-// `;
-
 export const ReferralPerformance = () => {
   const { total, referrals } = useSelector((state: AppState) => state.cabinets.performance);
 
@@ -146,22 +109,6 @@ export const ReferralPerformance = () => {
             <Level>3lvl</Level>
           </Cell>
         </ReferralPurchases>
-        {/*<ReferralPurchases>*/}
-        {/*  <Title>Total Ref. Purchases, DAI</Title>*/}
-        {/*  <Cell>{convertBigDecimal(total.bought.DAI)}</Cell>*/}
-        {/*  <Cell>*/}
-        {/*    {convertBigDecimal(level1?.bought.DAI)}*/}
-        {/*    <Level>1lvl</Level>*/}
-        {/*  </Cell>*/}
-        {/*  <Cell>*/}
-        {/*    {convertBigDecimal(level2?.bought.DAI)}*/}
-        {/*    <Level>2lvl</Level>*/}
-        {/*  </Cell>*/}
-        {/*  <Cell>*/}
-        {/*    {convertBigDecimal(level3?.bought.DAI)}*/}
-        {/*    <Level>3lvl</Level>*/}
-        {/*  </Cell>*/}
-        {/*</ReferralPurchases>*/}
       </Wrapper>
     </div>
   );
