@@ -23,12 +23,12 @@ const StyledFarmingHeader = styled.div`
   align-items: center;
   margin-bottom: 32px;
 
-  ${({ theme }) => theme.mediaWidth.upToMedium`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
     display: block;
   `};
 `
 const StyledTabs = styled.div`
-  ${({ theme }) => theme.mediaWidth.upToMedium`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
     margin-bottom: 32px;
   `};
 `
@@ -37,7 +37,7 @@ const StyledInfoWrapper = styled.div`
   width: 50%;
   margin-bottom: 24px;
 
-  ${({ theme }) => theme.mediaWidth.upToMedium`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
     width: auto;
   `};
 `

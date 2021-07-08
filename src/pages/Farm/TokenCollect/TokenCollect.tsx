@@ -30,7 +30,7 @@ const StyledCollectibleList = styled.div`
   display: flex;
   height: 33px;
 
-  ${({ theme }) => theme.mediaWidth.upToMedium`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
     display: block;
   `};
 `;
@@ -40,7 +40,7 @@ const StyledCollectibleListItem = styled.div`
   align-items: center;
   margin-right: 40px;
 
-  ${({ theme }) => theme.mediaWidth.upToMedium`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
     margin-bottom: 5px;
   `};
 `;

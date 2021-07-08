@@ -42,7 +42,7 @@ const StyledInputHeader = styled.div`
 const StyledInputContentWrapper = styled.div`
   display: flex;
 
-  ${({ theme }) => theme.mediaWidth.upToMedium`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
     flex-direction: column;
   `};
 `;
@@ -68,7 +68,7 @@ const StyledBalanceMax = styled.button`
 const StyledInputButtons = styled.div`
   display: flex;
 
-  ${({ theme }) => theme.mediaWidth.upToMedium`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
     margin-top: 10px;
   `};
 `;
