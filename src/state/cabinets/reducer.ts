@@ -76,7 +76,7 @@ export interface DepositsEswHistory {
   reward: number;
 }
 
-export interface DepositsEswHistoryReward {
+export interface DepositsEswHistoryRewards {
   total: number;
   collected: number;
   available_collect: number;
@@ -89,7 +89,7 @@ interface CabinetState {
   purchaseHistory: PurchaseHistory[];
   referralHistory: ReferralPurchaseHistory[];
   depositsEswHistory: DepositsEswHistory[];
-  depositsEswHistoryRewards: DepositsEswHistoryReward[];
+  depositsEswHistoryRewards: DepositsEswHistoryRewards;
 }
 
 interface PerformanceLevel {
@@ -222,7 +222,7 @@ const initialState: CabinetState = {
   purchaseHistory: [] as PurchaseHistory[],
   referralHistory: [] as ReferralPurchaseHistory[],
   depositsEswHistory: new Array<DepositsEswHistory>(),
-  depositsEswHistoryRewards: new Array<DepositsEswHistoryReward>(),
+  depositsEswHistoryRewards: {} as DepositsEswHistoryRewards,
 };
 
 export default createReducer(initialState, builder =>
