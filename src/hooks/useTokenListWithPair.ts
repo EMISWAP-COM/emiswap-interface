@@ -20,9 +20,10 @@ export function useTokenListWithPair() {
     if (factoryContract && emiSwapContract) {
       setIsLoading(true);
       factoryContract.getAllPools().then((data: string[]) => {
-        const promiseMap = data.map(el => {
-            const contract = getContract(el, EMI_SWAP_ABI, library!, account ? account : undefined);
-            return contract.getTokens();
+        const nonEmptyData = data.filter(item => !!item);
+        const promiseMap = nonEmptyData.map(el => {
+          const contract = getContract(el, EMI_SWAP_ABI, library!, account ? account : undefined);
+          return contract.getTokens();
         });
         Promise.all(promiseMap).then((data: string[][]) => {
           setIsLoading(false);
