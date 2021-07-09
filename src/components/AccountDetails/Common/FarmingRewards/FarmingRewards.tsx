@@ -79,11 +79,10 @@ const FarmingRewards = () => {
   const { library, account } = useActiveWeb3React();
   const [myFarmingContracts, setMyFarmingContracts] = useState<Contract[]>([]);
   useEffect(() => {
-    getMyFarmingContracts(library, account).then((contracts) => {
+    getMyFarmingContracts(library, account).then(contracts => {
       setMyFarmingContracts(contracts);
     });
-  }, [library, account])
-
+  }, [library, account]);
 
   return (
     <>
@@ -97,7 +96,9 @@ const FarmingRewards = () => {
           <LevelWrapper flex={2}>Farm TVL in DAI</LevelWrapper>
           <LevelWrapper>Your share</LevelWrapper>
         </TableTitles>
-        {myFarmingContracts.map((contract) => <FarmingTableRow key={contract.address} contract={contract} />)}
+        {myFarmingContracts.map(contract => (
+          <FarmingTableRow key={contract.address} contract={contract} />
+        ))}
         {!myFarmingContracts.length && (
           <TableRow>
             <NoContent>No content</NoContent>
