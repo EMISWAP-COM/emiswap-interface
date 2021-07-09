@@ -1,4 +1,4 @@
-import { Token, ETHER } from '@uniswap/sdk';
+import { ETHER, Token } from '@uniswap/sdk';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
@@ -87,5 +87,5 @@ export default function CurrencyLogo({
     }
   }
 
-  return <span />;
+  return <span style={{ width: '20px', height: '20px' }}/>;
 }
