@@ -67,6 +67,7 @@ const Pool = () => {
     fetchingV2PairBalances ||
     pairs?.length < liquidityTokensWithBalances.length ||
     pairs?.some(pair => !pair);
+
   const allV2PairsWithLiquidity = pairs
     .map(([, pair]) => pair)
     .filter((pair): pair is Pair => {
@@ -79,6 +80,18 @@ const Pool = () => {
         }) !== -1
       );
     });
+
+  let visiblePairs = [];
+  allV2PairsWithLiquidity.forEach((pair, index) => {
+    const exists = visiblePairs.some((value: Pair) => {
+      return (pair.token0 === value.token0 && pair.token1 === value.token1)
+        || (pair.token0 === value.token1 && pair.token1 === value.token0);
+    });
+
+    if (!exists) {
+      visiblePairs.push(pair);
+    }
+  });
 
   return (
     <>
@@ -105,9 +118,9 @@ const Pool = () => {
                     <Dots>Loading</Dots>
                   </TYPE.body>
                 </OutlineCard>
-              ) : allV2PairsWithLiquidity?.length > 0 ? (
+              ) : visiblePairs?.length > 0 ? (
                 <>
-                  {allV2PairsWithLiquidity.map(v2Pair => (
+                  {visiblePairs.map(v2Pair => (
                     <FullPositionCard key={v2Pair.liquidityToken.address} pair={v2Pair} />
                   ))}
                 </>
