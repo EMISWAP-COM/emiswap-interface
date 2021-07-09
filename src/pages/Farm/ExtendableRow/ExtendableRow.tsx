@@ -21,7 +21,7 @@ const StyledHeader = styled.div`
   align-items: center;
   padding: 16px 26px;
 
-  ${({ theme }) => theme.mediaWidth.upToMedium`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
     display: block;
   `};
 `;
@@ -34,7 +34,7 @@ const StyledBlocksWrapper = styled.div`
   flex-grow: 1;
   display: flex;
 
-  ${({ theme }) => theme.mediaWidth.upToMedium`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
     flex-direction: column;
   `};
 `;
@@ -44,14 +44,18 @@ const StyledBlock = styled.div<{ width?: number }>`
   flex-direction: column;
   flex-basis: ${({ width }) => (width ? width + 'px' : 'auto')};
   padding-right: 15px;
+  flex-grow: 0;
+  flex-shrink: 1;
+  overflow: hidden;
 
-  ${({ theme }) => theme.mediaWidth.upToMedium`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
     flex-direction: row;
     justify-content: space-between;
     flex-basis: 0;
     margin-bottom: 16px;
     padding-right: 0;
     align-items: center;
+    overflow: visible;
   `};
 `;
 
@@ -60,7 +64,7 @@ const StyledBlockTitle = styled.div`
   font-weight: 400;
   margin-bottom: 16px;
 
-  ${({ theme }) => theme.mediaWidth.upToMedium`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
     margin-bottom: 0;
   `};
 `;
@@ -90,7 +94,7 @@ const StyledExtendButtonDesktop = styled.div<{ isRowExtended: boolean }>`
     background-color: ${({ theme }) => theme.dark2};
   }
 
-  ${({ theme }) => theme.mediaWidth.upToMedium`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
     display: none;
     border-radius: 8px;
     width: 100%;
@@ -112,7 +116,7 @@ const StyledExtendButtonMobile = styled.div<{ isRowExtended: boolean }>`
     background-color: ${({ theme }) => theme.dark2};
   }
 
-  ${({ theme }) => theme.mediaWidth.upToMedium`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -133,7 +137,7 @@ const StyledExtendableContent = styled.div<{ isVisible: boolean }>`
   text-align: left;
   border-radius: 8px;
 
-  ${({ theme }) => theme.mediaWidth.upToMedium`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
     border-radius: 8px 8px 0 0;
   `};
 `;
@@ -142,7 +146,7 @@ const StyledInputsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
 
-  ${({ theme }) => theme.mediaWidth.upToMedium`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
     display: block;
   `};
 `;
@@ -150,7 +154,7 @@ const StyledInputsWrapper = styled.div`
 const StyledTokenInputWrapper = styled.div`
   width: 49%;
 
-  ${({ theme }) => theme.mediaWidth.upToMedium`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
     width: 100%;
     margin-bottom: 16px;
   `};
@@ -239,7 +243,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
               </StyledTruncatedText>
             </StyledBlockValue>
           </StyledBlock>
-          <StyledBlock width={250}>
+          <StyledBlock width={150}>
             <StyledBlockTitle>Your reward</StyledBlockTitle>
             <StyledBlockValue>
               <StyledCurrencyLogo>
@@ -247,7 +251,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
               </StyledCurrencyLogo>
               <Tooltip title={projectedReward}>
                 <StyledTruncatedText>
-                  {projectedReward === '0' ? '0' : parseFloat(projectedReward).toFixed(6) + '...'}
+                  {projectedReward}
                 </StyledTruncatedText>
               </Tooltip>
             </StyledBlockValue>
@@ -260,7 +264,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
               </Tooltip>
             </StyledBlockValue>
           </StyledBlock>
-          <StyledBlock width={250}>
+          <StyledBlock width={150}>
             <StyledBlockTitle>Block reward</StyledBlockTitle>
             <StyledBlockValue>
               <StyledCurrencyLogo>
@@ -268,12 +272,12 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
               </StyledCurrencyLogo>
               <Tooltip title={blockReward}>
                 <StyledTruncatedText>
-                  {parseFloat(blockReward).toFixed(6) + '...'}
+                  {blockReward}
                 </StyledTruncatedText>
               </Tooltip>
             </StyledBlockValue>
           </StyledBlock>
-          <StyledBlock width={200}>
+          <StyledBlock width={150}>
             <StyledBlockTitle>Liquidity</StyledBlockTitle>
             <StyledBlockValue>
               <StyledTruncatedText>
@@ -287,7 +291,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
               </StyledTruncatedText>
             </StyledBlockValue>
           </StyledBlock>
-          <StyledBlock width={300}>
+          <StyledBlock width={200}>
             <StyledBlockTitle>End time</StyledBlockTitle>
             <StyledBlockValue>{endDate}</StyledBlockValue>
           </StyledBlock>
