@@ -21,7 +21,7 @@ const RewardsWrapper = styled.div`
 
   @media screen and (max-width: 1200px) {
     margin-top: 16px;
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     grid-gap: 8px;
   }
 `;
@@ -59,14 +59,24 @@ const SecondaryText = styled.div`
   max-width: 450px;
 `;
 
+const Star = styled.span`
+  margin-left: 3px;
+  color: #e478ff;
+`;
+
+const StarForText = styled.span`
+  margin-right: 6px;
+  color: #e478ff;
+`;
+
 const ActionBtn = styled(WalletAction)`
   height: 30px;
 `;
 
 const CollectBtnRewards = styled(ActionBtn)`
   background: #27272e;
-  border: 1px solid #615c69;
-  color: #615c69;
+  border: 1px solid #ffffff;
+  color: #ffffff;
   line-height: 16px;
   font-size: 12px;
   border-radius: 4px;
@@ -75,7 +85,8 @@ const CollectBtnRewards = styled(ActionBtn)`
   margin-left: auto;
   pointer-events: none;
   @media screen and (max-width: 1200px) {
-    margin-bottom: 16px;
+    margin-bottom: 24px;
+    margin-right: auto;
   }
 `;
 
@@ -94,6 +105,7 @@ export const ESWHoldingRewards = () => {
       <RewardsWrapper>
         <RewardsItem>
           <span>Total</span>
+          <Star>*</Star>
           <div>
             <RewardsValue>{data?.total ?? 0}</RewardsValue>
             &nbsp;DAI
@@ -101,6 +113,7 @@ export const ESWHoldingRewards = () => {
         </RewardsItem>
         <RewardsItem>
           <span>Collected</span>
+          <Star>*</Star>
           <div>
             <RewardsValue>{data?.collected ?? 0}</RewardsValue>
             &nbsp;DAI
@@ -108,6 +121,7 @@ export const ESWHoldingRewards = () => {
         </RewardsItem>
         <RewardsItem>
           <span>Available to collect</span>
+          <Star>*</Star>
           <div>
             <RewardsValue>{data?.available_collect ?? 0}</RewardsValue>
             &nbsp;DAI
@@ -118,10 +132,12 @@ export const ESWHoldingRewards = () => {
         <CollectBtnRewards>Collect rewards to my wallet</CollectBtnRewards>
         <RewardsText>
           <PrimaryText>
+            <StarForText>*</StarForText>
             Conversion to DAI is made at an indicative market rate as for accrual's date and may
             differ from the actual rate
           </PrimaryText>
           <SecondaryText>
+            <StarForText>*</StarForText>
             All ESW holders are entitled to get approximately 0.05% from all trading operations on
             EmiSwap.
           </SecondaryText>
