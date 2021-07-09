@@ -10,14 +10,11 @@ export const TruncatedText = styled.span`
 `;
 
 export interface TruncatedTextWithTooltipProps {
-  title: string;
+  title: any;
 }
 
-export const TruncatedTextWithTooltip: React.FC<TruncatedTextWithTooltipProps> = props => {
-  console.log(props);
-  return (
-    <Tooltip title={props.title}>
-      <TruncatedText>{props.children}</TruncatedText>
-    </Tooltip>
-  );
-}
+export const TruncatedTextWithTooltip: React.FC<TruncatedTextWithTooltipProps> = props => (
+  <Tooltip title={props.title}>
+    <TruncatedText>{props.children}</TruncatedText>
+  </Tooltip>
+);

@@ -6,6 +6,7 @@ import styled from 'styled-components/macro';
 
 import { AppDispatch, AppState } from '../../../state';
 import { loadDepositsEswHistoryRewards } from '../../../state/cabinets/actions';
+import { TruncatedTextWithTooltip } from '../../../base/ui/TruncatedTextWithTooltip';
 
 const DarkText = styled.span`
   color: ${({ theme }) => theme.white};
@@ -107,7 +108,17 @@ export const ESWHoldingRewards = () => {
           <span>Total</span>
           <Star>*</Star>
           <div>
-            <RewardsValue>{data?.total ?? 0}</RewardsValue>
+            <RewardsValue>
+              {data?.total &&
+              `${data?.total}`.includes('.') &&
+              `${data?.total}`.split('.')[1].length > 6 ? (
+                <TruncatedTextWithTooltip title={parseFloat(`${data?.total}`)}>
+                  {parseFloat(`${data?.total}`).toFixed(6)}...
+                </TruncatedTextWithTooltip>
+              ) : (
+                data?.total ?? 0
+              )}
+            </RewardsValue>
             &nbsp;DAI
           </div>
         </RewardsItem>
@@ -115,7 +126,17 @@ export const ESWHoldingRewards = () => {
           <span>Collected</span>
           <Star>*</Star>
           <div>
-            <RewardsValue>{data?.collected ?? 0}</RewardsValue>
+            <RewardsValue>
+              {data?.collected &&
+              `${data?.collected}`.includes('.') &&
+              `${data?.collected}`.split('.')[1].length > 6 ? (
+                <TruncatedTextWithTooltip title={parseFloat(`${data?.collected}`)}>
+                  {parseFloat(`${data?.collected}`).toFixed(6)}...
+                </TruncatedTextWithTooltip>
+              ) : (
+                data?.collected ?? 0
+              )}
+            </RewardsValue>
             &nbsp;DAI
           </div>
         </RewardsItem>
@@ -123,7 +144,17 @@ export const ESWHoldingRewards = () => {
           <span>Available to collect</span>
           <Star>*</Star>
           <div>
-            <RewardsValue>{data?.available_collect ?? 0}</RewardsValue>
+            <RewardsValue>
+              {data?.available_collect &&
+              `${data?.available_collect}`.includes('.') &&
+              `${data?.available_collect}`.split('.')[1].length > 6 ? (
+                <TruncatedTextWithTooltip title={parseFloat(`${data?.available_collect}`)}>
+                  {parseFloat(`${data?.available_collect}`).toFixed(6)}...
+                </TruncatedTextWithTooltip>
+              ) : (
+                data?.available_collect ?? 0
+              )}
+            </RewardsValue>
             &nbsp;DAI
           </div>
         </RewardsItem>
