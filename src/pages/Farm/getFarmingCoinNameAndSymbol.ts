@@ -3,6 +3,10 @@ const coinNamesMap = {
     name: 'LP USDC-FLEX V2',
     symbol: 'USDCFLEXV2'
   },
+  '0x24e7eB9874922726A8d8f277EF1c3Ad4a3Ab4eD1': {
+    name: 'ESW-D',
+    symbol: 'ESW-D'
+  },
 }
 
 // Use to override names from defaultCoins.ts only
