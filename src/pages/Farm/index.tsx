@@ -23,12 +23,12 @@ const StyledFarmingHeader = styled.div`
   align-items: center;
   margin-bottom: 32px;
 
-  ${({ theme }) => theme.mediaWidth.upToMedium`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
     display: block;
   `};
 `
 const StyledTabs = styled.div`
-  ${({ theme }) => theme.mediaWidth.upToMedium`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
     margin-bottom: 32px;
   `};
 `
@@ -37,7 +37,7 @@ const StyledInfoWrapper = styled.div`
   width: 50%;
   margin-bottom: 24px;
 
-  ${({ theme }) => theme.mediaWidth.upToMedium`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
     width: auto;
   `};
 `
@@ -49,6 +49,10 @@ const StyledInfoTitle = styled.div`
 const StyledInfo = styled.div`
   font-size: 16px;
   color: ${({theme}) => theme.darkText};
+`
+
+const Info = styled.div`
+  color: ${({theme}) => theme.darkWhite};
 `
 // FIXME Убрать комментарий для возврата функционала
 // const radioList = [
@@ -136,16 +140,16 @@ export default function Farm() {
           </>
         )}
         {!account && (
-          <>
+          <Info>
             Please connect your wallet to see all available farms and staking pools
             <br/><br/>
             <Button onClick={toggleWalletModal}>Connect to a wallet</Button>
-          </>
+          </Info>
         )}
         {chainId !== desiredChainId && (
-          <>
+          <Info>
             Please change network
-          </>
+          </Info>
         )}
       </AppBody>
     </>

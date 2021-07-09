@@ -21,6 +21,7 @@ const logContractError = (
   args: string,
   originalError: Error,
 ) => {
+  if ((originalError as RequestError)?.code === -32000) return;
   console.error(`
   Contract error\n
   Method name: ${methodName}\n
