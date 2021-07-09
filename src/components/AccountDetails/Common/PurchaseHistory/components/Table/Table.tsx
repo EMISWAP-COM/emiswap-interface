@@ -184,10 +184,10 @@ export const Table: React.FC<TableProps> = ({
                 <Styled.TableRow key={`row_${rowKey}`}>
                   {fields?.map(field => (
                     <Cell key={field.key} {...field} row={row} truncatePercent={truncatePercent}>
-                      <Wrapped
-                        wrapper={field?.wrapper?.component}
-                        {...field?.wrapper?.mapToProps?.(row)}
-                      />
+                      {field?.wrapper ? <Wrapped
+                          wrapper={field?.wrapper?.component}
+                          {...field?.wrapper?.mapToProps?.(row)}
+                        /> : (row[field.key] ?? '')}
                     </Cell>
                   ))}
                 </Styled.TableRow>
