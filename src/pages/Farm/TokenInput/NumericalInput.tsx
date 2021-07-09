@@ -5,6 +5,7 @@ import { escapeRegExp } from '../../../utils';
 type NumericalInputProps = {
   value: string;
   onChange: (value: string) => void;
+  numberOfDecimals: number;
 }
 
 const StyledInput = styled.input`
@@ -21,20 +22,20 @@ const StyledInput = styled.input`
   }
 `;
 
-const inputRegex = RegExp(`^[0-9]*(?:\\\\[.])?[0-9]{0,18}$`);
-
 const NumericalInput: React.FC<NumericalInputProps> = (
   {
     value,
     onChange,
+    numberOfDecimals,
   }
 ) => {
+  const inputRegex = RegExp(`^[0-9]*(?:\\\\[.])?[0-9]{0,${numberOfDecimals}}$`);
   const inputChangeHandler = useCallback((value: string) => {
     const resultValue = value.replace(/,/g, '.');
     if (resultValue === '' || inputRegex.test(escapeRegExp(resultValue))) {
       onChange(resultValue);
     }
-  }, [onChange]);
+  }, [onChange, inputRegex]);
 
   return (
     <StyledInput

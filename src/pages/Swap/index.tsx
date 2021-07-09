@@ -137,7 +137,12 @@ export default function Swap() {
     [onUserInput],
   );
 
-  const handleNothing = () => {};
+  const handleTypeOutput = useCallback(
+    (value: string) => {
+      onUserInput(Field.OUTPUT, value);
+    },
+    [onUserInput],
+  );
 
   // modal and loading
   const [showConfirm, setShowConfirm] = useState<boolean>(false); // show confirmation modal
@@ -322,7 +327,7 @@ export default function Swap() {
     (!dismissedToken1 && !!currencies[Field.OUTPUT]);
 
   const notEnoughBalance =
-    maxAmountInput && parsedAmount && JSBI.lessThan(maxAmountInput.raw, parsedAmount.raw);
+    maxAmountInput?.raw && parsedAmounts[Field.INPUT]?.raw && JSBI.lessThan(maxAmountInput.raw, parsedAmounts[Field.INPUT]!.raw);
 
   return (
     <>
@@ -406,7 +411,7 @@ export default function Swap() {
             </CursorPointer>
             <CurrencyInputPanel
               value={formattedAmounts[Field.OUTPUT]}
-              onUserInput={handleNothing}
+              onUserInput={handleTypeOutput}
               label={independentField === Field.INPUT && !showWrap ? 'To (estimated)' : 'To'}
               showMaxButton={false}
               currency={currencies[Field.OUTPUT]}
