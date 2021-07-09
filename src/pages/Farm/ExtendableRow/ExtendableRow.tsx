@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components/macro';
-import { ChevronDown, ChevronUp } from 'react-feather';
+import { ChevronDown, ChevronUp, ExternalLink as LinkIcon } from 'react-feather';
 import CurrencyFormat from 'react-currency-format';
 import TokenInput from '../TokenInput';
 import TokenCollect from '../TokenCollect';
@@ -9,6 +9,7 @@ import CurrencyLogo from '../../../components/CurrencyLogo';
 import Tooltip from '../Tooltip';
 import LpTokenSymbol from '../LpTokenSymbol';
 import isLpToken from '../isLpToken';
+import { ExternalLink } from '../../../theme';
 
 const StyledRow = styled.div`
   background-color: ${({ theme }) => theme.border1Transparency};
@@ -187,6 +188,13 @@ const StyledTruncatedText = styled.span`
   overflow: hidden;
 `;
 
+const StyledAnalyticsLink = styled.div`
+  margin-left: 7px;
+  svg {
+    display: block;
+  }
+`;
+
 type ExtendableRowProps = {
   contractAddress: string;
   stakeToken: Token | undefined;
@@ -241,6 +249,11 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
               <StyledTruncatedText>
                 {isLpToken(tokenMode) ? stakeToken?.name : stakeToken?.symbol}
               </StyledTruncatedText>
+              <StyledAnalyticsLink>
+                <ExternalLink href={`https://emiswap.com/analytics/${isLpToken(tokenMode) ? 'pair' : 'token'}/${stakeToken?.address}`}>
+                  <LinkIcon size={16}/>
+                </ExternalLink>
+              </StyledAnalyticsLink>
             </StyledBlockValue>
           </StyledBlock>
           <StyledBlock width={150}>
