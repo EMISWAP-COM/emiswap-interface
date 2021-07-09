@@ -11,6 +11,10 @@ import { useDefaultCoin } from './Coins';
 import { ZERO_ADDRESS } from '@uniswap/sdk';
 import { useTokenListWithPair } from './useTokenListWithPair';
 
+export declare interface Window {
+  env: Record<string, unknown>;
+}
+
 export function useAllTokens(): [{ [address: string]: Token }, boolean] {
   const { chainId } = useActiveWeb3React();
   const userAddedTokens = useUserAddedTokens();
@@ -22,6 +26,7 @@ export function useAllTokens(): [{ [address: string]: Token }, boolean] {
       const filteredTokens = Object.values(allTokens[chainId])
         .filter(
           el =>
+            // @ts-ignore // todo: fix it
             enableTokensList.includes(el.address) || el.address === window['env'].REACT_APP_ESW_ID,
         )
         .reduce((acc: { [key: string]: WrappedTokenInfo }, val) => {
@@ -136,6 +141,7 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
 export function useCurrency(currencyId: string | undefined): Token | null | undefined {
   const { chainId } = useActiveWeb3React();
 
+  // @ts-ignore // todo: fix it
   const isESW = currencyId?.toUpperCase() === window['env'].REACT_APP_ESW_ID?.toUpperCase();
   const defaultCoin = useDefaultCoin(currencyId);
   const isETH = currencyId?.toUpperCase() === ETHER.address.toUpperCase();

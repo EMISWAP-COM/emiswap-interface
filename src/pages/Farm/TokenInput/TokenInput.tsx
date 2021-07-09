@@ -42,7 +42,7 @@ const StyledInputHeader = styled.div`
 const StyledInputContentWrapper = styled.div`
   display: flex;
 
-  ${({ theme }) => theme.mediaWidth.upToMedium`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
     flex-direction: column;
   `};
 `;
@@ -68,7 +68,7 @@ const StyledBalanceMax = styled.button`
 const StyledInputButtons = styled.div`
   display: flex;
 
-  ${({ theme }) => theme.mediaWidth.upToMedium`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
     margin-top: 10px;
   `};
 `;
@@ -108,7 +108,7 @@ const TokenInput: React.FC<TokenInputProps> = ({ contractAddress, token, onStake
   const [, setIsApprovalInProgress] = useState<boolean>(false);
 
   const veryLargeAmount = new TokenAmount(token, JSBI.BigInt('99999999999999999999999999999'));
-  const [approvalState, doApprove] = useApproveCallback(veryLargeAmount, contractAddress);
+  const [approvalState, doApprove] = useApproveCallback(veryLargeAmount, contractAddress, true);
 
   // This counter is used to update isStakeInProgress whenever transaction finishes
   const completedTransactionsCount = useCompletedTransactionsCount();
@@ -178,6 +178,7 @@ const TokenInput: React.FC<TokenInputProps> = ({ contractAddress, token, onStake
             onChange={value => {
               setInputValue(value);
             }}
+            numberOfDecimals={token.decimals}
           />
           <StyledInputButtons>
             <StyledBalanceMax onClick={handleMaxButtonClick}>MAX</StyledBalanceMax>

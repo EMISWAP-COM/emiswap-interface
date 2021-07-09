@@ -29,7 +29,7 @@ export enum ApprovalState {
 export function useApproveCallback(
   amountToApprove?: TokenAmount,
   spender?: string,
-  isPool?: boolean,
+  isNotSwap?: boolean,
 ): [ApprovalState, () => Promise<void>] {
   const { account } = useActiveWeb3React();
   const token = amountToApprove instanceof TokenAmount ? amountToApprove.token : undefined;
@@ -49,7 +49,7 @@ export function useApproveCallback(
 
     if (
       (amountToApprove.token.equals(ETHER) || swapState[Field.INPUT].currencyId === ZERO_ADDRESS) &&
-      !isPool
+      !isNotSwap
     ) {
 
       return ApprovalState.APPROVED;
