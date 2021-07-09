@@ -197,3 +197,26 @@ export const loadDepositsEswHistory = createAsyncThunk(
     }
   },
 );
+
+export const loadDepositsEswHistoryRewards = createAsyncThunk(
+  'cabinets/loadDepositsEswHistoryRewards',
+  async (userId: string, { dispatch }) => {
+    const url = `${baseUrl}/v1/public/users/${userId}/dividends/esw_holding_rewards`;
+    try {
+      return await fetchWrapper.get(url);
+    } catch (e) {
+      dispatch(
+        addPopup({
+          key: 'loadDepositsEswHistoryRewards',
+          content: {
+            status: {
+              name: e.message,
+              isError: true,
+            },
+          },
+        }),
+      );
+      return Promise.reject(e);
+    }
+  },
+);

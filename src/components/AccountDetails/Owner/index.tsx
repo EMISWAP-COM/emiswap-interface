@@ -15,6 +15,7 @@ import { ESWRewards } from '../Common/ESWRewards';
 import { ESWLocked } from '../Common/ESWLocked';
 import { ExternalLink } from '../../../theme';
 import FarmingRewards from '../Common/FarmingRewards';
+import { ESWHoldingRewards } from '../Common/ESWHoldingRewards';
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -91,6 +92,7 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
         </OptionsPromo>
       </Connection>
       <ESWRewards />
+      <ESWHoldingRewards />
       <ESWLocked />
       <FarmingRewards />
       <ReferralPerformance />
