@@ -178,6 +178,7 @@ const TokenInput: React.FC<TokenInputProps> = ({ contractAddress, token, onStake
             onChange={value => {
               setInputValue(value);
             }}
+            numberOfDecimals={token.decimals}
           />
           <StyledInputButtons>
             <StyledBalanceMax onClick={handleMaxButtonClick}>MAX</StyledBalanceMax>
