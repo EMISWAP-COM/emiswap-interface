@@ -163,7 +163,20 @@ export const PurchaseHistory = () => {
   const holdingRewardFields: CellProps[] = React.useMemo(
     () => [
       { key: 'date', label: 'Date', head: headRenders.date, cell: cellRenders.date },
-      { key: 'total_system_reward', label: 'Total System Reward in DAI*', cell: cellRenders.dai },
+      {
+        key: 'total_system_reward',
+        label: 'Total System Reward in DAI*',
+        cell: cellRenders.dai,
+        wrapper: {
+          component: TruncatedTextWithTooltip,
+          mapToProps: row => ({
+            title: `${!row?.total_system_reward ? '0' : parseFloat(row?.total_system_reward)}`,
+            children: `${
+              !row?.total_system_reward ? '0' : parseFloat(row?.total_system_reward).toFixed(6)
+            }...`,
+          }),
+        },
+      },
       {
         key: 'share',
         label: 'Your Share',
@@ -176,7 +189,18 @@ export const PurchaseHistory = () => {
           }),
         },
       },
-      { key: 'reward', label: 'Your Reward in DAI*', cell: cellRenders.dai },
+      {
+        key: 'reward',
+        label: 'Your Reward in DAI*',
+        cell: cellRenders.dai,
+        wrapper: {
+          component: TruncatedTextWithTooltip,
+          mapToProps: row => ({
+            title: `${!row?.reward ? '0' : parseFloat(row?.reward)}`,
+            children: `${!row?.reward ? '0' : parseFloat(row?.reward).toFixed(6)}...`,
+          }),
+        },
+      },
     ],
     [],
   );
@@ -248,7 +272,7 @@ export const PurchaseHistory = () => {
         title="ESW Holding Reward History"
         fields={holdingRewardFields}
         data={depositsEswHistory}
-        truncatePercent
+        truncate
       />
 
       <Table

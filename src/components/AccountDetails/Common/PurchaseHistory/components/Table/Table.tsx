@@ -61,7 +61,7 @@ export const Wrapped: React.FC<Record<string, any> & WrappedProps> = props => {
 
 export const cellRenders: Record<Renders, FC<CellProps>> = {
   text: props => <Styled.LevelWrapper children={props.children} />,
-  percent: props => <Styled.LevelWrapper children={props.truncatePercent ? <>{props.children}%</> : `${props.children}%`} />,
+  percent: props => <Styled.LevelWrapper children={props.truncate ? <>{props.children}%</> : `${props.children}%`} />,
   date: props => (
     <Styled.DateField>{convertDate(`${props.children}`, DateFormat.short_day)}</Styled.DateField>
   ),
@@ -96,7 +96,7 @@ export const cellRenders: Record<Renders, FC<CellProps>> = {
       <Styled.Label>{props.label}</Styled.Label>
       <Styled.LevelWrapper>
         <Styled.Cost>
-          <span>{props.children ? convertBigDecimal(`${props.children}`) : '-'}</span>&nbsp; DAI
+          <span>{props.children ? (props.truncate ? <>{props.children}</> : convertBigDecimal(`${props.children}`)) : '-'}</span>&nbsp; DAI
         </Styled.Cost>
       </Styled.LevelWrapper>
     </>
@@ -145,7 +145,7 @@ export interface TableProps {
   fields?: CellProps[];
   desktopMaxHeight?: number;
   rightTitle?: React.ReactNode;
-  truncatePercent?: boolean;
+  truncate?: boolean;
   headerMarginTop?: number;
   headerMarginBottom?: number;
   headerWrapperMarginTop?: number;
@@ -159,7 +159,7 @@ export const Table: React.FC<TableProps> = ({
   fields,
   data,
   children,
-  truncatePercent,
+  truncate,
   headerMarginTop,
   headerMarginBottom,
   headerWrapperMarginTop,
@@ -183,7 +183,7 @@ export const Table: React.FC<TableProps> = ({
               data.map((row, rowKey) => (
                 <Styled.TableRow key={`row_${rowKey}`}>
                   {fields?.map(field => (
-                    <Cell key={field.key} {...field} row={row} truncatePercent={truncatePercent}>
+                    <Cell key={field.key} {...field} row={row} truncate={truncate}>
                       {field?.wrapper ? <Wrapped
                           wrapper={field?.wrapper?.component}
                           {...field?.wrapper?.mapToProps?.(row)}
