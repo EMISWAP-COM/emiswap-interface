@@ -228,7 +228,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
     <StyledRow>
       <StyledHeader>
         <StyledBlocksWrapper>
-          <StyledBlock width={150}>
+          <StyledBlock width={200}>
             <StyledBlockTitle>Coin</StyledBlockTitle>
             <StyledBlockValue>
               <StyledCurrencyLogo>
