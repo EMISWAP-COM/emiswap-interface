@@ -12,6 +12,7 @@ import { packageNames } from '../constant';
 import { Connection } from '../Common/Connection';
 import { ESWLocked } from '../Common/ESWLocked';
 import { ESWRewards } from '../Common/ESWRewards';
+import { ESWHoldingRewards } from '../Common/ESWHoldingRewards';
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -138,6 +139,7 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
       </Connection>
 
       <ESWRewards />
+      <ESWHoldingRewards/>
       <ESWLocked />
       <ReferralPerformance />
       <PurchaseHistory />

@@ -174,3 +174,49 @@ export const loadPoolBonus10X = createAsyncThunk(
     }
   },
 );
+
+export const loadDepositsEswHistory = createAsyncThunk(
+  'cabinets/loadDepositsEswHistory',
+  async (userId: string, { dispatch }) => {
+    const url = `${baseUrl}/v1/public/users/${userId}/dividends/esw_history`;
+    try {
+      return await fetchWrapper.get(url);
+    } catch (e) {
+      dispatch(
+        addPopup({
+          key: 'loadDepositsEswHistory',
+          content: {
+            status: {
+              name: e.message,
+              isError: true,
+            },
+          },
+        }),
+      );
+      return Promise.reject(e);
+    }
+  },
+);
+
+export const loadDepositsEswHistoryRewards = createAsyncThunk(
+  'cabinets/loadDepositsEswHistoryRewards',
+  async (userId: string, { dispatch }) => {
+    const url = `${baseUrl}/v1/public/users/${userId}/dividends/esw_holding_rewards`;
+    try {
+      return await fetchWrapper.get(url);
+    } catch (e) {
+      dispatch(
+        addPopup({
+          key: 'loadDepositsEswHistoryRewards',
+          content: {
+            status: {
+              name: e.message,
+              isError: true,
+            },
+          },
+        }),
+      );
+      return Promise.reject(e);
+    }
+  },
+);
