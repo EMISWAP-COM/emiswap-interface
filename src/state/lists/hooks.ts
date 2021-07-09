@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 import { DEFAULT_TOKEN_LIST_URL } from '../../constants';
 import defaultCoins from '../../constants/defaultCoins';
 import { AppState } from '../index';
-// import { useActiveWeb3React } from '../../hooks';
 
 /**
  * Token instances created from token info.
