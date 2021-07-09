@@ -3,8 +3,8 @@ import { Header } from '../../../../styleds';
 
 export const Wrapper = styled.div``;
 
-export const FlexBetween = styled.div`
-  margin-top: 36px;
+export const FlexBetween = styled.div<{ marginTop?: number }>`
+  margin-top: ${({ marginTop }) => (marginTop ?? 0) + 'px'};
   display: flex;
   position: relative;
   justify-content: space-between;
@@ -28,8 +28,8 @@ export const TableWrapper = styled.div<{ desktopMaxHeight?: number }>`
 `;
 
 export const TableHeader = styled(Header)<{ marginTop?: number; marginBottom?: number }>`
-  margin-top: ${({ marginTop }) => (marginTop ?? 0) + 'px'};
-  margin-bottom: ${({ marginBottom }) => (marginBottom ?? 24) + 'px'};
+  margin-top: ${({ marginTop }) => (marginTop ?? 36) + 'px'};
+  margin-bottom: ${({ marginBottom }) => (marginBottom ?? 12) + 'px'};
 
   @media screen and (max-width: 1200px) {
     margin-bottom: 0;

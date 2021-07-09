@@ -146,6 +146,9 @@ export interface TableProps {
   desktopMaxHeight?: number;
   rightTitle?: React.ReactNode;
   truncatePercent?: boolean;
+  headerMarginTop?: number;
+  headerMarginBottom?: number;
+  headerWrapperMarginTop?: number;
 }
 
 export const Table: React.FC<TableProps> = ({
@@ -157,11 +160,14 @@ export const Table: React.FC<TableProps> = ({
   data,
   children,
   truncatePercent,
+  headerMarginTop,
+  headerMarginBottom,
+  headerWrapperMarginTop,
 }) =>
   disable ? null : (
     <Styled.Wrapper>
-      <Styled.FlexBetween>
-        <Styled.TableHeader>{title}</Styled.TableHeader>
+      <Styled.FlexBetween marginTop={headerWrapperMarginTop}>
+        <Styled.TableHeader marginTop={headerMarginTop} marginBottom={headerMarginBottom} >{title}</Styled.TableHeader>
         {rightTitle}
       </Styled.FlexBetween>
       <Styled.TableWrapper desktopMaxHeight={desktopMaxHeight}>

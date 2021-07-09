@@ -221,6 +221,9 @@ export const PurchaseHistory = () => {
         title="Your Liquidity Reward History"
         fields={liquidityRewardFields}
         data={poolBonusDisplayData}
+        headerWrapperMarginTop={36}
+        headerMarginTop={0}
+        headerMarginBottom={24}
         rightTitle={
           <Tabs tabs={tabsValues} value={liquidityTabActive} onChange={setLiquidityTabActive} />
         }
