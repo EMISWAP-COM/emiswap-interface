@@ -83,12 +83,11 @@ const Pool = () => {
 
   let visiblePairs = [];
   allV2PairsWithLiquidity.forEach((pair, index) => {
-    const exists = visiblePairs.some((value: Pair) => {
-      return (pair.token0 === value.token0 && pair.token1 === value.token1)
-        || (pair.token0 === value.token1 && pair.token1 === value.token0);
+    const isExists = visiblePairs.some((value: Pair) => {
+      return pair.liquidityToken.address === value.liquidityToken.address;
     });
 
-    if (!exists) {
+    if (!isExists) {
       visiblePairs.push(pair);
     }
   });
