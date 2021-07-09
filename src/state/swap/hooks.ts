@@ -134,8 +134,18 @@ export function useDerivedSwapInfo(): {
   const isExactIn: boolean = independentField === Field.INPUT;
 
   //FIXME Сделать нормальное получение WETH в зависимости от сети
-  const inputCurrencyWrapped = inputCurrency?.address === eth?.address ? (chainId === ChainId.MAINNET ? WETH : KOVAN_WETH) : inputCurrency;
-  const outputCurrencyWrapped = outputCurrency?.address === eth?.address ? (chainId === ChainId.MAINNET ? WETH : KOVAN_WETH) : outputCurrency;
+  const inputCurrencyWrapped =
+    inputCurrency?.address === eth?.address
+      ? chainId === ChainId.MAINNET
+        ? WETH
+        : KOVAN_WETH
+      : inputCurrency;
+  const outputCurrencyWrapped =
+    outputCurrency?.address === eth?.address
+      ? chainId === ChainId.MAINNET
+        ? WETH
+        : KOVAN_WETH
+      : outputCurrency;
 
   const parsedAmount = tryParseAmount(
     typedValue,
@@ -194,6 +204,7 @@ export function useDerivedSwapInfo(): {
 
   const slippageAdjustedAmountsV1 =
     v1Trade && allowedSlippage && computeSlippageAdjustedAmounts(v1Trade, allowedSlippage);
+
   const mooniswapTrade = useMooniswapTrade(
     currencies[Field.INPUT],
     currencies[Field.OUTPUT],
@@ -215,13 +226,6 @@ export function useDerivedSwapInfo(): {
   if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
     error = 'Insufficient ' + balanceIn.token.symbol + ' balance';
   }
-
-  console.log({currencies,
-    currencyBalances,
-    parsedAmount,
-    v2Trade: v2Trade ?? undefined,
-    error,
-    v1Trade});
 
   return {
     currencies,
