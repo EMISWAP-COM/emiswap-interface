@@ -74,10 +74,11 @@ const ActionBtn = styled(WalletAction)`
   height: 30px;
 `;
 
-const CollectBtnRewards = styled(ActionBtn)`
+const CollectBtnRewards = styled(ActionBtn)<{ inactive: boolean }>`
   background: #27272e;
-  border: 1px solid #ffffff;
-  color: #ffffff;
+  border: 1px solid rgb(97, 92, 105) !important;
+  color: ${({ inactive }) => (inactive ? '#615C69' : '#FFFFFF')};
+  background-color: transparent;
   line-height: 16px;
   font-size: 12px;
   border-radius: 4px;
@@ -160,7 +161,7 @@ export const ESWHoldingRewards = () => {
         </RewardsItem>
       </RewardsWrapper>
       <RewardsFooter>
-        <CollectBtnRewards>Collect rewards to my wallet</CollectBtnRewards>
+        <CollectBtnRewards inactive={true}>Collect rewards to my wallet</CollectBtnRewards>
         <RewardsText>
           <PrimaryText>
             <StarForText>*</StarForText>
