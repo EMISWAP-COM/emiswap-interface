@@ -10,6 +10,7 @@ import Tooltip from '../Tooltip';
 import LpTokenSymbol from '../LpTokenSymbol';
 import isLpToken from '../isLpToken';
 import { ExternalLink } from '../../../theme';
+import { FarmingTimeType } from '../constants';
 
 const StyledRow = styled.div`
   background-color: ${({ theme }) => theme.border1Transparency};
@@ -201,7 +202,8 @@ type ExtendableRowProps = {
   rewardToken: Token | undefined;
   projectedReward: string;
   apr: number;
-  blockReward: string;
+  blockReward?: string;
+  lockPeriod?: number;
   liquidity: string;
   endDate: string;
   deposit: string;
@@ -218,6 +220,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
   projectedReward,
   apr,
   blockReward,
+  lockPeriod,
   liquidity,
   endDate,
   deposit,
@@ -277,19 +280,31 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
               </Tooltip>
             </StyledBlockValue>
           </StyledBlock>
-          <StyledBlock width={150}>
-            <StyledBlockTitle>Block reward</StyledBlockTitle>
-            <StyledBlockValue>
-              <StyledCurrencyLogo>
-                <CurrencyLogo currency={rewardToken} size={'24px'} />
-              </StyledCurrencyLogo>
-              <Tooltip title={blockReward}>
+          {type === FarmingTimeType.variable && typeof blockReward !== 'undefined' && (
+            <StyledBlock width={150}>
+              <StyledBlockTitle>Block reward</StyledBlockTitle>
+              <StyledBlockValue>
+                <StyledCurrencyLogo>
+                  <CurrencyLogo currency={rewardToken} size={'24px'} />
+                </StyledCurrencyLogo>
+                <Tooltip title={blockReward}>
+                  <StyledTruncatedText>
+                    {blockReward}
+                  </StyledTruncatedText>
+                </Tooltip>
+              </StyledBlockValue>
+            </StyledBlock>
+          )}
+          {type === FarmingTimeType.fixed && typeof lockPeriod !== 'undefined' && (
+            <StyledBlock width={150}>
+              <StyledBlockTitle>Lock period</StyledBlockTitle>
+              <StyledBlockValue>
                 <StyledTruncatedText>
-                  {blockReward}
+                  {lockPeriod} days
                 </StyledTruncatedText>
-              </Tooltip>
-            </StyledBlockValue>
-          </StyledBlock>
+              </StyledBlockValue>
+            </StyledBlock>
+          )}
           <StyledBlock width={150}>
             <StyledBlockTitle>Liquidity</StyledBlockTitle>
             <StyledBlockValue>

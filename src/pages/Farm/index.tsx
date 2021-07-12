@@ -7,12 +7,13 @@ import AppBody from '../AppBody';
 // import { RadioGroup } from '../../base/ui/RadioGroup';
 import Tabs from '../../base/ui/Tabs';
 import { Contract } from '@ethersproject/contracts';
-import { getFarmingContracts } from '../../utils';
+import { getFarming2Contracts, getFarmingContracts } from '../../utils';
 import { useActiveWeb3React } from '../../hooks';
 import FarmComponent from './FarmComponent';
 import Button from '../../base/ui/Button';
 import { useWalletModalToggle } from '../../state/application/hooks';
 import getEswPriceInDai from './getEswPriceInDai';
+import Farm2Component from './Farm2Component';
 // FIXME Убрать комментарий для возврата функционала
 // import isLpToken from './isLpToken';
 // import useFarming from '../../hooks/useFarming';
@@ -95,6 +96,7 @@ export default function Farm() {
   const { library, account, chainId } = useActiveWeb3React();
 
   const farmingContracts: Contract[] = useMemo(() => getFarmingContracts(library, account), [library, account]);
+  const farming2Contracts: Contract[] = useMemo(() => getFarming2Contracts(library, account), [library, account]);
 
   const toggleWalletModal = useWalletModalToggle();
 
@@ -132,6 +134,21 @@ export default function Farm() {
               </StyledInfo>
             </StyledInfoWrapper>
             {farmingContracts.map(contract => <FarmComponent
+              key={contract.address}
+              contract={contract}
+              selectedTab={selectedTab}
+              eswPriceInDai={eswPriceInDai}
+            />)}
+            <br/><br/>
+            <StyledInfoWrapper>
+              <StyledInfoTitle>
+                {isStakingTab(selectedTab) ? 'Fixed APR Staking' : 'Fixed APR Farming'}
+              </StyledInfoTitle>
+              <StyledInfo>
+                Stake coins for a limited period of time to boost your APR. Please not that you will not be able to withdraw staked coins before the end of the farming period. Farming rewards are allocated to your EmiSwap account every 30 seconds.
+              </StyledInfo>
+            </StyledInfoWrapper>
+            {farming2Contracts.map(contract => <Farm2Component
               key={contract.address}
               contract={contract}
               selectedTab={selectedTab}
