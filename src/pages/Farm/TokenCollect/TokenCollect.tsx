@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import ReactGA from 'react-ga';
 import styled from 'styled-components/macro';
 import Button from '../../../base/ui/Button';
 import { Token } from '@uniswap/sdk';
@@ -6,6 +7,7 @@ import CurrencyLogo from '../../../components/CurrencyLogo';
 import { useCompletedTransactionsCount } from '../../../state/transactions/hooks';
 import isLpToken from '../isLpToken';
 import LpTokenSymbol from '../LpTokenSymbol';
+import useEthErrorPopup from '../../../hooks/useEthErrorPopup';
 
 const StyledTokenInputWrapper = styled.div`
   border: 1px solid ${({ theme }) => theme.lightGrey};
@@ -87,13 +89,28 @@ const TokenCollect: React.FC<TokenInputProps> = ({
 
   // This counter is used to update isCollectInProgress whenever transaction finishes
   const completedTransactionsCount = useCompletedTransactionsCount();
+  const addEthErrorPopup = useEthErrorPopup();
 
   const handleButtonClick = useCallback(() => {
     setIsCollectInProgress(true);
-    onCollect().catch(() => {
-      setIsCollectInProgress(false);
-    });
-  }, [onCollect]);
+    onCollect()
+      .then(() => {
+        ReactGA.event({
+          category: 'Transaction',
+          action: `CreateUn${isLpToken(tokenMode) ? 'Farm' : 'Stake'}Transaction`,
+          label: `unstake`,
+        });
+      })
+      .catch(error => {
+        setIsCollectInProgress(false);
+        addEthErrorPopup(error);
+        ReactGA.event({
+          category: 'Transaction',
+          action: `RejectUn${isLpToken(tokenMode) ? 'Farm' : 'Stake'}Transaction`,
+          label: `unstake error: ${error?.message}`,
+        });
+      });
+  }, [onCollect, tokenMode, addEthErrorPopup]);
 
   useEffect(() => {
     setIsCollectInProgress(false);

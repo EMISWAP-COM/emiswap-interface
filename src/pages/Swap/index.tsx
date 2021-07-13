@@ -1,5 +1,6 @@
 import { JSBI, TokenAmount } from '@uniswap/sdk';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
+import ReactGA from 'react-ga';
 import { ArrowDown, ArrowUp } from 'react-feather';
 import { Text } from 'rebass';
 import styled, { ThemeContext } from 'styled-components';
@@ -255,9 +256,25 @@ export default function Swap() {
       .then(hash => {
         setAttemptingTxn(false);
         setTxHash(hash);
+        ReactGA.event({
+          category: 'Transaction',
+          action: 'CreateSwapTransaction',
+          label:
+            `swap ${parsedAmounts[Field.INPUT]} ${currencies[Field.INPUT]?.symbol} ` +
+            `to ${parsedAmounts[Field.OUTPUT]} ${currencies[Field.OUTPUT]?.symbol}` + 
+            `txId ${hash}`,
+        });
       })
       .catch(error => {
         setAttemptingTxn(false);
+        ReactGA.event({
+          category: 'Transaction',
+          action: 'RejectSwapTransaction',
+          label:
+            `swap ${parsedAmounts[Field.INPUT]} ${currencies[Field.INPUT]?.symbol} ` +
+            `to ${parsedAmounts[Field.OUTPUT]} ${currencies[Field.OUTPUT]?.symbol}` +
+            `error: ${error?.message}`,
+        });
         // we only care if the error is something _other_ than the user rejected the tx
         if (error?.code !== 4001) {
           console.error(error);
