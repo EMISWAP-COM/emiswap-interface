@@ -10,6 +10,8 @@ import { useBytes32TokenContract, useTokenContract } from './useContract';
 import { useDefaultCoin } from './Coins';
 import { ZERO_ADDRESS } from '@uniswap/sdk';
 import { useTokenListWithPair } from './useTokenListWithPair';
+import getKcsToken from '../constants/tokens/KCS';
+import chainIds from '../constants/chainIds';
 
 export declare interface Window {
   env: Record<string, unknown>;
@@ -148,6 +150,10 @@ export function useCurrency(currencyId: string | undefined): Token | null | unde
   const token = useToken(isESW || isETH ? undefined : currencyId);
 
   const ether = new Token(chainId || 1, ZERO_ADDRESS, 18, 'ETH', 'Ethereum');
+  const KCS = getKcsToken(chainId);
 
-  return isESW ? defaultCoin : isETH ? ether : token;
+  // @ts-ignore
+  const ethereumOrKcsCoin = chainId === chainIds.KUCOIN ? KCS : ether;
+
+  return isESW ? defaultCoin : isETH ? ethereumOrKcsCoin : token;
 }

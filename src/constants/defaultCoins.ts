@@ -3990,7 +3990,14 @@ const defaultCoins: DefaultCoins = {
       decimals: 18,
       logoURI:
         'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
-    }
+    },
+    {
+      address: '0x0000000000000000000000000000000000000000',
+      chainId: 321,
+      name: 'KCS',
+      decimals: 18,
+      symbol: 'KCS',
+    },
   ],
   logoURI: 'https://1inch.exchange/assets/images/logo.png',
 };

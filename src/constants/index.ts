@@ -27,6 +27,15 @@ export const WETH = new Token(
   'WrappedEther',
 );
 
+export const WKCS = new Token(
+  // @ts-ignore
+  chainIds.KUCOIN,
+  '0x4446fc4eb47f2f6586f9faab68b3498f86c07521',
+  18,
+  'WKCS',
+  'WKCS',
+);
+
 export const DAI = new Token(
   ChainId.MAINNET,
   '0x6B175474E89094C44Da98b954EedeAC495271d0F',

@@ -19,6 +19,8 @@ import { currencyKey } from '../../utils/currencyId';
 import { tokenAmountToString } from '../../utils/formats';
 import defaultCoins from '../../constants/defaultCoins';
 import { KOVAN_WETH } from '../../constants';
+import chainIds from '../../constants/chainIds';
+import getKcsToken from '../../constants/tokens/KCS';
 
 export default function CurrencyList({
   currencies,
@@ -47,13 +49,16 @@ export default function CurrencyList({
 
   const CurrencyRow = useMemo(() => {
     return memo(function CurrencyRow({ index, style }: { index: number; style: CSSProperties }) {
-      const currency = index === 0 ? ETHER : currencies[index - 1];
+      const KCS = getKcsToken(chainId);
+      // @ts-ignore
+      const mainToken = chainId === chainIds.KUCOIN ? KCS : ETHER;
+      const currency = index === 0 ? mainToken : currencies[index - 1];
       const key = currencyKey(currency);
       const isDefault = isDefaultToken(defaultTokens, currency);
       const customAdded = Boolean(
         !isDefault && currency instanceof Token && allTokens[currency.address],
       );
-      const balance = currency === ETHER ? ETHBalance : allBalances[key];
+      const balance = currency === mainToken ? ETHBalance : allBalances[key];
 
       const zeroBalance = balance && JSBI.equal(JSBI.BigInt(0), balance.raw);
       const wethTokenInfo = defaultCoins.tokens.find(

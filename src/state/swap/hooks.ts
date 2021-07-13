@@ -24,7 +24,8 @@ import { SwapState } from './reducer';
 import { useUserSlippageTolerance } from '../user/hooks';
 import { computeSlippageAdjustedAmounts } from '../../utils/prices';
 import { BigNumber } from '@ethersproject/bignumber';
-import { KOVAN_WETH, WETH } from '../../constants';
+import { KOVAN_WETH, WETH, WKCS } from '../../constants';
+import chainIds from '../../constants/chainIds';
 
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>(state => state.swap);
@@ -138,12 +139,18 @@ export function useDerivedSwapInfo(): {
     inputCurrency?.address === eth?.address
       ? chainId === ChainId.MAINNET
         ? WETH
+        : // @ts-ignore
+        chainId === chainIds.KUCOIN
+        ? WKCS
         : KOVAN_WETH
       : inputCurrency;
   const outputCurrencyWrapped =
     outputCurrency?.address === eth?.address
       ? chainId === ChainId.MAINNET
         ? WETH
+        : // @ts-ignore
+        chainId === chainIds.KUCOIN
+        ? WKCS
         : KOVAN_WETH
       : outputCurrency;
 

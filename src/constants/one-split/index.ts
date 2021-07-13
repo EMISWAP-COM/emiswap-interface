@@ -2,6 +2,7 @@ import { Interface } from '@ethersproject/abi';
 import { ChainId, JSBI } from '@uniswap/sdk';
 import ONE_SPLIT_ABI from './one_split.json';
 import EMI_ROUTER_ABI from '../abis/EmiRouter.json';
+import chainIds from '../chainIds';
 
 const FLAG_DISABLE_ALL_SPLIT_SOURCES = JSBI.BigInt(0x20000000);
 const FLAG_DISABLE_ALL_WRAP_SOURCES = JSBI.BigInt(0x40000000);
@@ -21,6 +22,8 @@ const ONE_SPLIT_ADDRESSES: { [chainId in ChainId]: string } = {
   [ChainId.RINKEBY]: '0x40ac138CbD9809DDF7815A83Ed48BF7C14971D73',
   [ChainId.GÖRLI]: '0x40ac138CbD9809DDF7815A83Ed48BF7C14971D73',
   [ChainId.KOVAN]: '0x7EeE1d070924B8255DAd03ddE989ebBffC1000eB',
+  // @ts-ignore
+  [chainIds.KUCOIN]: '0x40ac138CbD9809DDF7815A83Ed48BF7C14971D73',
 };
 
 const ONE_SPLIT_ABI_INTERFACE = new Interface(ONE_SPLIT_ABI);

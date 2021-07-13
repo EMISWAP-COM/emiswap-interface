@@ -4,8 +4,7 @@ import { useEffect, useState } from 'react';
 import { getContract } from '../utils';
 import { useActiveWeb3React } from './index';
 import { addPopup } from '../state/application/actions';
-import { useDispatch } from 'react-redux'
-
+import { useDispatch } from 'react-redux';
 
 export function useTokenListWithPair() {
   const { library, account } = useActiveWeb3React();
@@ -14,26 +13,27 @@ export function useTokenListWithPair() {
 
   const factoryContract = useEmiFactoryContract();
   const emiSwapContract = useEmiSwapContract();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (factoryContract && emiSwapContract) {
       setIsLoading(true);
-      factoryContract.getAllPools().then((data: string[]) => {
-        console.log(data)
-        const nonEmptyData = data.filter(item => !!item);
-        const promiseMap = nonEmptyData.map(el => {
-          const contract = getContract(el, EMI_SWAP_ABI, library!, account ? account : undefined);
-          return contract.getTokens();
-        });
-        Promise.all(promiseMap).then((data: string[][]) => {
-          setIsLoading(false);
-          const formattedData = data
-            .flat()
-            .filter((ads, idx, arr) => arr.findIndex(el => el === ads) === idx);
-          setList(formattedData);
-        });
-      })
+      factoryContract
+        .getAllPools()
+        .then((data: string[]) => {
+          const nonEmptyData = data.filter(item => !!item);
+          const promiseMap = nonEmptyData.map(el => {
+            const contract = getContract(el, EMI_SWAP_ABI, library!, account ? account : undefined);
+            return contract.getTokens();
+          });
+          Promise.all(promiseMap).then((data: string[][]) => {
+            setIsLoading(false);
+            const formattedData = data
+              .flat()
+              .filter((ads, idx, arr) => arr.findIndex(el => el === ads) === idx);
+            setList(formattedData);
+          });
+        })
         .catch(e => {
           dispatch(
             addPopup({
