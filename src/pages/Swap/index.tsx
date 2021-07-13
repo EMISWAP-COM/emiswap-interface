@@ -260,8 +260,8 @@ export default function Swap() {
           category: 'Transaction',
           action: 'CreateSwapTransaction',
           label:
-            `swap ${parsedAmounts[Field.INPUT]} ${currencies[Field.INPUT]?.symbol} ` +
-            `to ${parsedAmounts[Field.OUTPUT]} ${currencies[Field.OUTPUT]?.symbol}` + 
+            `swap ${parsedAmounts[Field.INPUT]?.toFixed()} ${currencies[Field.INPUT]?.symbol} ` +
+            `to ${parsedAmounts[Field.OUTPUT]?.toFixed()} ${currencies[Field.OUTPUT]?.symbol}` +
             `txId ${hash}`,
         });
       })
@@ -271,8 +271,8 @@ export default function Swap() {
           category: 'Transaction',
           action: 'RejectSwapTransaction',
           label:
-            `swap ${parsedAmounts[Field.INPUT]} ${currencies[Field.INPUT]?.symbol} ` +
-            `to ${parsedAmounts[Field.OUTPUT]} ${currencies[Field.OUTPUT]?.symbol}` +
+            `swap ${parsedAmounts[Field.INPUT]?.toFixed()} ${currencies[Field.INPUT]?.symbol} ` +
+            `to ${parsedAmounts[Field.OUTPUT]?.toFixed()} ${currencies[Field.OUTPUT]?.symbol}` +
             `error: ${error?.message}`,
         });
         // we only care if the error is something _other_ than the user rejected the tx
