@@ -10,13 +10,15 @@ import LogoDark from '../../assets/svg/logo_dark.svg';
 import { useActiveWeb3React } from '../../hooks';
 import { useDarkModeManager } from '../../state/user/hooks';
 import { useETHBalances } from '../../state/wallet/hooks';
-import { WhiteCard } from '../Card';
 import Settings from '../Settings';
 import Menu from '../Menu';
 import Row, { RowBetween } from '../Row';
 import Web3Status from '../Web3Status';
 import { tokenAmountToString } from '../../utils/formats';
 import { ReactComponent as MagicIcon } from '../../assets/images/magic_icon.svg';
+import { ButtonGray, ButtonOutlined } from '../Button';
+import NetworkSwitchModal from './NetworkSwitchModal';
+import { useNetworkSwitchModalToggle } from '../../state/application/hooks';
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -78,7 +80,7 @@ const HeaderElement = styled.div`
     text-align: center;
     letter-spacing: 0.02em;
     color: #ffffff;
-    margin-right: 10px;
+    margin-right: 16px;
 
     &:hover,
     &:focus {
@@ -197,18 +199,52 @@ const AccountElement = styled.div<{ active: boolean }>`
   }
 `;
 
-const TestnetWrapper = styled.div`
+const AprButton = styled(ButtonOutlined)`
+    box-sizing: border-box;
+    width: auto;
+    height: 40px;
+    margin-right: 14px;
+    padding: 8.5px 20px;
+    border-color: #615C69;
+    border-radius: 4px;
+    color: white;
+    
+    &:focus, &:hover {
+      border: 1px solid ${({ theme }) => theme.purple};;
+      background: ${({ theme }) => theme.darkGrey};
+      box-shadow: none;
+    }
+`;
+
+const NetworkWrapper = styled.div`
   white-space: nowrap;
   width: fit-content;
   margin-left: 10px;
   pointer-events: auto;
 `;
 
-const NetworkCard = styled(WhiteCard)`
+const NetworkButtonSwitch = styled(ButtonGray)`
+  box-sizing: border-box;
   width: fit-content;
-  margin-right: 10px;
-  border-radius: 12px;
-  padding: 8px 12px;
+  min-width: 120px;
+  height: 40px;
+  margin-right: 24px;
+  padding: 0 16px;
+  border: 1px solid #615C69;
+  border-radius: 4px;
+  background: ${({ theme }) => theme.darkGrey};
+  color: white;
+  
+  &:focus, &:hover {
+    border: 1px solid ${({ theme }) => theme.purple};;
+    background: ${({ theme }) => theme.darkGrey};
+    box-shadow: none;
+  }
+  &:active {
+    border: 1px solid #615C69;
+    background: ${({ theme }) => theme.darkGrey};
+    box-shadow: none;
+  }
 `;
 
 const UniIcon = styled.div`
@@ -289,16 +325,20 @@ const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
 };
 
 export default function Header() {
+
   const { account, chainId } = useActiveWeb3React();
   const userEthBalance = useETHBalances([account])[account];
   const [isDark] = useDarkModeManager();
+
+  const toggleNetworkSwitchModal = useNetworkSwitchModalToggle();
+
   return (
     <HeaderFrame>
       <RowBetweenStyled>
         <LogoElem>
           <Title href=".">
             <UniIcon>
-              <LogoImg src={isDark ? LogoDark : Logo} alt="logo" />
+              <LogoImg src={isDark ? LogoDark : Logo} alt="logo"/>
             </UniIcon>
             <TitleText>
               {/*<img style={{ marginLeft: '4px', marginTop: '4px' }} src={isDark ? WordmarkDark : Wordmark} alt="logo" width="160px"/>*/}
@@ -307,37 +347,48 @@ export default function Header() {
         </LogoElem>
         <HeaderControls>
           <HeaderElement>
+            <AprButton>
+              <Text textAlign="center" fontWeight={500} fontSize={14}>
+                APR settings
+              </Text>
+            </AprButton>
+            {!isMobile && !isTablet && NETWORK_LABELS[chainId] && (
+              <NetworkWrapper>
+                <NetworkButtonSwitch
+                  onClick={toggleNetworkSwitchModal}
+                >
+                  {NETWORK_LABELS[chainId]}
+                </NetworkButtonSwitch>
+                <NetworkSwitchModal/>
+              </NetworkWrapper>
+            )}
             <a className="purple-btn" href={`${window.location.origin}/magic_cards/`}>
               <span>Magic Hall</span>
             </a>
-            {!isMobile && !isTablet && NETWORK_LABELS[chainId] && (
-              <TestnetWrapper>
-                <NetworkCard>{NETWORK_LABELS[chainId]}</NetworkCard>
-              </TestnetWrapper>
-            )}
             <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
               {account && userEthBalance ? (
                 <>
                   <BalanceText
                     style={{ flexShrink: 0 }}
-                    pl="0.75rem"
-                    pr="1.125rem"
+                    pl="8px"
+                    pr="8px"
+                    mr="16px"
                     fontWeight={450}
                   >
                     {tokenAmountToString(userEthBalance, 4)} ETH
                   </BalanceText>
                 </>
               ) : null}
-              <Web3Status />
+              <Web3Status/>
             </AccountElement>
           </HeaderElement>
         </HeaderControls>
         <HeaderElementWrap>
           <StyledMagicButton href={`${window.location.origin}/magic_cards/`}>
-            <MagicIcon />
+            <MagicIcon/>
           </StyledMagicButton>
-          <Settings />
-          <Menu />
+          <Settings/>
+          <Menu/>
         </HeaderElementWrap>
       </RowBetweenStyled>
     </HeaderFrame>

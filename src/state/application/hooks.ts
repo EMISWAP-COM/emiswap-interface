@@ -5,7 +5,7 @@ import {
   PopupContent,
   removePopup,
   toggleWalletModal,
-  toggleSettingsMenu, showWalletModal,
+  toggleSettingsMenu, showWalletModal, toggleNetworkSwitchModal,
 } from './actions';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../index';
@@ -28,6 +28,15 @@ export function useWalletModalShow(): () => void {
 export function useWalletModalToggle(): () => void {
   const dispatch = useDispatch();
   return useCallback(() => dispatch(toggleWalletModal()), [dispatch]);
+}
+
+export function useNetworkSwitchModalOpen(): boolean {
+  return useSelector((state: AppState) => state.application.networkSwitchModalOpen);
+}
+
+export function useNetworkSwitchModalToggle(): () => void {
+  const dispatch = useDispatch();
+  return useCallback(() => dispatch(toggleNetworkSwitchModal()), [dispatch]);
 }
 
 export function useSettingsMenuOpen(): boolean {
