@@ -7,13 +7,17 @@ import AppBody from '../AppBody';
 // import { RadioGroup } from '../../base/ui/RadioGroup';
 import Tabs from '../../base/ui/Tabs';
 import { Contract } from '@ethersproject/contracts';
-import { getFarming2Contracts, getFarmingContracts } from '../../utils';
+import { getContract, getFarmingContracts } from '../../utils';
 import { useActiveWeb3React } from '../../hooks';
 import FarmComponent from './FarmComponent';
 import Button from '../../base/ui/Button';
 import { useWalletModalToggle } from '../../state/application/hooks';
 import getEswPriceInDai from './getEswPriceInDai';
 import Farm2Component from './Farm2Component';
+import { loadFarms } from '../../state/farming/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, AppState } from '../../state';
+import { FARMING_2_ABI } from '../../constants/abis/farming2';
 // FIXME Убрать комментарий для возврата функционала
 // import isLpToken from './isLpToken';
 // import useFarming from '../../hooks/useFarming';
@@ -94,9 +98,16 @@ export default function Farm() {
   // const [radioValue, setRadioValue] = useState<string>('all');
   const [selectedTab, setSelectedTab] = useState<string>('staking');
   const { library, account, chainId } = useActiveWeb3React();
+  const dispatch = useDispatch<AppDispatch>();
+  const farms = useSelector((state: AppState) => state.farming.farms);
 
   const farmingContracts: Contract[] = useMemo(() => getFarmingContracts(library, account), [library, account]);
-  const farming2Contracts: Contract[] = useMemo(() => getFarming2Contracts(library, account), [library, account]);
+  const farming2Contracts: Contract[] = useMemo(() => {
+    return farms.map((farm) => getContract(farm.contractAddress, FARMING_2_ABI, library, account));
+  }, [library, account, farms]);
+  useEffect(() => {
+    dispatch(loadFarms() as any);
+  }, [dispatch]);
 
   const toggleWalletModal = useWalletModalToggle();
 
