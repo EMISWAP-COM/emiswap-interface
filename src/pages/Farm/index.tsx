@@ -14,7 +14,7 @@ import Button from '../../base/ui/Button';
 import { useWalletModalToggle } from '../../state/application/hooks';
 import getEswPriceInDai from './getEswPriceInDai';
 import Farm2Component from './Farm2Component';
-import { loadFarms } from '../../state/farming/actions';
+import { loadFarms, loadUserFarms } from '../../state/farming/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, AppState } from '../../state';
 import { FARMING_2_ABI } from '../../constants/abis/farming2';
@@ -102,12 +102,15 @@ export default function Farm() {
   const farms = useSelector((state: AppState) => state.farming.farms);
 
   const farmingContracts: Contract[] = useMemo(() => getFarmingContracts(library, account), [library, account]);
+
+  const { id: userId } = useSelector((state: AppState) => state.user.info);
   const farming2Contracts: Contract[] = useMemo(() => {
     return farms.map((farm) => getContract(farm.contractAddress, FARMING_2_ABI, library, account));
   }, [library, account, farms]);
   useEffect(() => {
     dispatch(loadFarms() as any);
-  }, [dispatch]);
+    dispatch(loadUserFarms(userId) as any);
+  }, [dispatch, userId]);
 
   const toggleWalletModal = useWalletModalToggle();
 

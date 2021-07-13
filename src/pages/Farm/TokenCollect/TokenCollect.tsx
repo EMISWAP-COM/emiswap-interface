@@ -66,6 +66,7 @@ type TokenInputProps = {
   rewardToken: Token | undefined;
   onCollect: () => Promise<unknown>;
   tokenMode: number;
+  isSingleToken: boolean;
 };
 
 const TokenCollect: React.FC<TokenInputProps> = ({
@@ -75,6 +76,7 @@ const TokenCollect: React.FC<TokenInputProps> = ({
   rewardToken,
   onCollect,
   tokenMode,
+  isSingleToken,
 }) => {
   const [isCollectInProgress, setIsCollectInProgress] = useState<boolean>(false);
 
@@ -114,12 +116,14 @@ const TokenCollect: React.FC<TokenInputProps> = ({
             </StyledCurrencyLogo>
             <StyledTruncatedText>{deposit}</StyledTruncatedText>
           </StyledCollectibleListItem>
-          <StyledCollectibleListItem>
-            <StyledCurrencyLogo>
-              <CurrencyLogo currency={rewardToken} size={'24px'} />
-            </StyledCurrencyLogo>
-            <StyledTruncatedText>{projectedReward}</StyledTruncatedText>
-          </StyledCollectibleListItem>
+          {!isSingleToken && (
+            <StyledCollectibleListItem>
+              <StyledCurrencyLogo>
+                <CurrencyLogo currency={rewardToken} size={'24px'} />
+              </StyledCurrencyLogo>
+              <StyledTruncatedText>{projectedReward}</StyledTruncatedText>
+            </StyledCollectibleListItem>
+          )}
         </StyledCollectibleList>
       </StyledInputWrapper>
       <Button onClick={handleButtonClick} isDisabled={isCollectButtonDisabled}>

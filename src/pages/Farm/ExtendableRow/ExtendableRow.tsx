@@ -211,6 +211,8 @@ type ExtendableRowProps = {
   onStake: (amount: string) => Promise<unknown>;
   onCollect: () => Promise<unknown>;
   tokenMode: number;
+  balance?: string;
+  availableToCollect?: string;
 };
 
 const ExtendableRow: React.FC<ExtendableRowProps> = ({
@@ -228,6 +230,8 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
   onStake,
   onCollect,
   tokenMode,
+  balance,
+  availableToCollect,
 }) => {
   const [isRowExtended, setIsRowExtended] = useState(false);
 
@@ -349,7 +353,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
               <StyledTruncatedText>{deposit}</StyledTruncatedText>
             </StyledBlockValue>
           </StyledBlock>
-          <StyledBlock>
+          <StyledBlock width={150}>
             <StyledBlockTitle>Your reward</StyledBlockTitle>
             <StyledBlockValue>
               <StyledCurrencyLogo>
@@ -358,6 +362,28 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
               <StyledTruncatedText>{projectedReward}</StyledTruncatedText>
             </StyledBlockValue>
           </StyledBlock>
+          {typeof balance !== 'undefined' && (
+            <StyledBlock width={150}>
+              <StyledBlockTitle>Balance</StyledBlockTitle>
+              <StyledBlockValue>
+                <StyledCurrencyLogo>
+                  <CurrencyLogo currency={rewardToken} size={'24px'} />
+                </StyledCurrencyLogo>
+                <StyledTruncatedText>{balance}</StyledTruncatedText>
+              </StyledBlockValue>
+            </StyledBlock>
+          )}
+          {typeof availableToCollect !== 'undefined' && (
+            <StyledBlock>
+              <StyledBlockTitle>Available to collect</StyledBlockTitle>
+              <StyledBlockValue>
+                <StyledCurrencyLogo>
+                  <CurrencyLogo currency={rewardToken} size={'24px'} />
+                </StyledCurrencyLogo>
+                <StyledTruncatedText>{availableToCollect}</StyledTruncatedText>
+              </StyledBlockValue>
+            </StyledBlock>
+          )}
         </StyledBlocksWrapper>
         <StyledHr />
         <StyledInputsWrapper>
@@ -373,7 +399,8 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
           </StyledTokenInputWrapper>
           <StyledTokenInputWrapper>
             <TokenCollect
-              deposit={deposit}
+              isSingleToken={typeof availableToCollect !== 'undefined'}
+              deposit={typeof availableToCollect !== 'undefined' ? availableToCollect : deposit}
               projectedReward={projectedReward}
               stakeToken={stakeToken}
               rewardToken={rewardToken}

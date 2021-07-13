@@ -95,7 +95,7 @@ const useFarming2 = (contract: Contract) => {
       });
   }, [contract, addEthErrorPopup, account, chainId]);
 
-  const [balance, setBalance] = useState<string>('0');
+  const [availableToCollect, setAvailableToCollect] = useState<string>('0');
   useEffect(() => {
     if (!account) return;
 
@@ -109,7 +109,7 @@ const useFarming2 = (contract: Contract) => {
           return '0';
         }
       })
-      .then((value: string) => setBalance(value))
+      .then((value: string) => setAvailableToCollect(value))
       .catch((error: RequestError) => {
         addEthErrorPopup(error);
         logContractError('myUnlockedBalance', account, chainId, contract.address, '', error);
@@ -217,11 +217,14 @@ const useFarming2 = (contract: Contract) => {
     stakeToken: stakeToken,
     rewardToken: rewardToken,
     tokenMode: tokenMode,
-    balance: balance,
+    availableToCollect: availableToCollect,
     lockPeriod: lockPeriod,
     endDate: endDate,
     myStakesLen: myStakesLen,
     apr: farm?.percentageRate || '0',
+    deposit: farm?.deposit || '0',
+    reward: farm?.reward || '0',
+    balance: farm?.balance || '0',
     collect: handleCollect,
     stake: handleStake,
   }

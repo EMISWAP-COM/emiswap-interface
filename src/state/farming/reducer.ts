@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { loadFarms } from './actions';
+import { loadFarms, loadUserFarms } from './actions';
 
 interface IFarm {
   id: string;
@@ -7,6 +7,9 @@ interface IFarm {
   farmingFrequency: number;
   percentageRate: number;
   contractAddress: string;
+  deposit?: string;
+  reward?: string;
+  balance?: string;
 }
 
 export interface LaunchpadState {
@@ -43,11 +46,23 @@ export default createReducer<LaunchpadState>(initialState, builder =>
         farms: farms,
       };
     })
-    .addCase(loadFarms.rejected, (state, action) => {
+    .addCase(loadUserFarms.fulfilled, (state, action) => {
+      const tmpFarms = [...state.farms];
+
+      action.payload.data.forEach((item: any) => {
+        const farmIndex = tmpFarms.findIndex((farm) => farm.id === item.id);
+        tmpFarms[farmIndex] = {
+          ...tmpFarms[farmIndex],
+          deposit: item.meta.amountSum,
+          reward: item.meta.rewardSum,
+          balance: item.meta.balance,
+        }
+      });
+
       return {
         ...state,
         loaded: true,
-        errors: action.payload || { unknown: 'Unknown error' },
+        farms: [...tmpFarms],
       };
     })
 );

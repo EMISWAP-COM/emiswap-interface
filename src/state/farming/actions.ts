@@ -7,7 +7,16 @@ const baseUrl = window['env'] ? window['env'].REACT_APP_PUBLIC_URL : '';
 export const loadFarms = createAsyncThunk(
   'farms/load',
   async () => {
-    const url = `${baseUrl}/v2/staking_farms?include=contract,resource`;
+    const url = `${baseUrl}/v2/staking_farms?include=contract`;
+
+    return await fetchWrapper.get(url);
+  },
+);
+
+export const loadUserFarms = createAsyncThunk(
+  'farms/loadUser',
+  async (userId: string) => {
+    const url = `${baseUrl}/v2/users/${userId}/staking_farms?expand=rewardSum,amountSum,balance`;
 
     return await fetchWrapper.get(url);
   },
