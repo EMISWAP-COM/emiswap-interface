@@ -11,6 +11,8 @@ import { TransactionResponse } from '@ethersproject/providers';
 import { EMI_ROUTER_ADRESSES } from '../constants/emi/addresses';
 import { useCompletedTransactionsCount, useTransactionAdder } from '../state/transactions/hooks';
 import dayjs from 'dayjs';
+import { useSelector } from 'react-redux';
+import { AppState } from '../state';
 
 const logContractError = (
   methodName: string,
@@ -36,6 +38,7 @@ const useFarming2 = (contract: Contract) => {
   const { chainId, account } = useActiveWeb3React();
   const addTransaction = useTransactionAdder();
   const addEthErrorPopup = useEthErrorPopup();
+  const farm = useSelector((state: AppState) => state.farming.farms.find(item => item.contractAddress === contract.address));
 
   // This counter is used to update data whenever transaction finishes
   const completedTransactionsCount = useCompletedTransactionsCount();
@@ -210,8 +213,6 @@ const useFarming2 = (contract: Contract) => {
       });
   };
 
-  // const { id: userId } = useSelector((state: AppState) => state.user.info);
-
   return {
     stakeToken: stakeToken,
     rewardToken: rewardToken,
@@ -220,6 +221,7 @@ const useFarming2 = (contract: Contract) => {
     lockPeriod: lockPeriod,
     endDate: endDate,
     myStakesLen: myStakesLen,
+    apr: farm?.percentageRate || '0',
     collect: handleCollect,
     stake: handleStake,
   }
