@@ -118,7 +118,7 @@ export default function Claim({
   const [isCollectProcessing, setCollectProcessing] = useState(false);
 
   const { account, chainId } = useActiveWeb3React();
-  const contract = useESWContract();
+  const contract = useESWContract(chainId);
   const { claimCallback } = useClaim();
   const addTransaction = useTransactionAdder();
   const { available: unfrozenESWbalance } = useSelector(

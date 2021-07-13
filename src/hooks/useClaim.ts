@@ -12,8 +12,8 @@ const ESW_CLAIM_CHAIN_ID = window['env'].REACT_APP_ESW_CLAIM_CHAIN_ID;
 
 export function useClaim() {
   const { id } = useSelector((state: AppState) => state.user.info);
-  const contractESW = useESWContract();
-  const { account } = useActiveWeb3React();
+  const { account, chainId } = useActiveWeb3React();
+  const contractESW = useESWContract(chainId);
 
   const handleAuth = useAuth();
 

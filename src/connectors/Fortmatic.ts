@@ -1,5 +1,6 @@
 import { ChainId } from '@uniswap/sdk';
 import { FortmaticConnector as FortmaticConnectorCore } from '@web3-react/fortmatic-connector';
+import chainIds from '../constants/chainIds';
 
 export const OVERLAY_READY = 'OVERLAY_READY';
 
@@ -15,6 +16,8 @@ const CHAIN_ID_NETWORK_ARGUMENT: {
   [ChainId.ROPSTEN]: 'ropsten',
   [ChainId.RINKEBY]: 'rinkeby',
   [ChainId.KOVAN]: 'kovan',
+  // @ts-ignore
+  [chainIds.KUCOIN]: 'kucoin',
 };
 
 export class FortmaticConnector extends FortmaticConnectorCore {

@@ -1,7 +1,7 @@
-import { Interface } from '@ethersproject/abi';
 import { ChainId } from '@uniswap/sdk';
 import V1_MOONISWAP_EXCHANGE_ABI from './v1_mooniswap_exchange.json';
 import V1_MOONISWAP_FACTORY_ABI from './v1_mooniswap_factory.json';
+import chainIds from '../chainIds';
 
 const V1_MOONISWAP_FACTORY_ADDRESSES: { [chainId in ChainId]: string } = {
   [ChainId.MAINNET]: '0x1771dff85160768255f0a44d20965665806cbf48',
@@ -9,6 +9,8 @@ const V1_MOONISWAP_FACTORY_ADDRESSES: { [chainId in ChainId]: string } = {
   [ChainId.RINKEBY]: '0x71CD6666064C3A1354a3B4dca5fA1E2D3ee7D303',
   [ChainId.GÖRLI]: '0x71CD6666064C3A1354a3B4dca5fA1E2D3ee7D303',
   [ChainId.KOVAN]: '0xe4917eb85A6C11a56189DbE621433ce5c2a3bfc3',
+  // @ts-ignore
+  [chainIds.KUCOIN]: '0x945316F2964ef5C6C84921b435a528DD1790E93a',
 };
 
 const V1_EMIROUTER_HELPER_ADDRESSES: { [chainId in ChainId]: string } = {
@@ -17,18 +19,13 @@ const V1_EMIROUTER_HELPER_ADDRESSES: { [chainId in ChainId]: string } = {
   [ChainId.RINKEBY]: window['env'].REACT_APP_EMI_ROUTER_RINKEBY,
   [ChainId.GÖRLI]: window['env'].REACT_APP_EMI_ROUTER_GÖRLI,
   [ChainId.KOVAN]: window['env'].REACT_APP_EMI_ROUTER_KOVAN,
+  // @ts-ignore
+  [chainIds.KUCOIN]: window['env'].REACT_APP_EMI_ROUTER_KUCOIN,
 };
 
-const VAMP_ADDRESS = window['env'].REACT_APP_EMI_VAMP;
-const V1_FACTORY_INTERFACE = new Interface(V1_MOONISWAP_FACTORY_ABI);
-const V1_EXCHANGE_INTERFACE = new Interface(V1_MOONISWAP_EXCHANGE_ABI);
-
 export {
-  V1_FACTORY_INTERFACE,
   V1_MOONISWAP_FACTORY_ABI,
-  V1_EXCHANGE_INTERFACE,
   V1_MOONISWAP_EXCHANGE_ABI,
   V1_MOONISWAP_FACTORY_ADDRESSES,
   V1_EMIROUTER_HELPER_ADDRESSES,
-  VAMP_ADDRESS,
 };

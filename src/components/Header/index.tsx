@@ -17,6 +17,7 @@ import Row, { RowBetween } from '../Row';
 import Web3Status from '../Web3Status';
 import { tokenAmountToString } from '../../utils/formats';
 import { ReactComponent as MagicIcon } from '../../assets/images/magic_icon.svg';
+import chainIds from '../../constants/chainIds';
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -286,6 +287,8 @@ const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
   [ChainId.ROPSTEN]: 'Ropsten',
   [ChainId.GÖRLI]: 'Görli',
   [ChainId.KOVAN]: 'Kovan',
+  // @ts-ignore
+  [chainIds.KUCOIN]: 'Kucoin',
 };
 
 export default function Header() {

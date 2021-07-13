@@ -1,5 +1,5 @@
 window['env'] = {
-  REACT_APP_CHAIN_ID: '42',
+  REACT_APP_CHAIN_ID: '321',
   REACT_APP_NETWORK_URL: 'https://kovan.infura.io/v3/2b7c5bba80094418abf5e746ba10dac0',
   REACT_APP_PORTIS_ID: '9db2fb8f-577f-4af1-8a50-20ebb262b115',
   REACT_APP_FORTMATIC_KEY: 'pk_test_503A6AA72877C8DE',
@@ -14,7 +14,7 @@ window['env'] = {
   REACT_APP_ESW_ID: '0xe37Ae239a84110009426071B7828A6fbd6be5F45',
   REACT_APP_ANALYTICS_URL: 'https://moon.firstbridge.online/',
   REACT_APP_CODE_LINK: 'https://github.com/EMISWAP-COM',
-  REACT_APP_PUBLIC_URL: 'https://emiswap-oracle-release-1-9-3.testingtruedao.com',
+  REACT_APP_PUBLIC_URL: 'https://emiswap-oracle-feature-dividends.testingtruedao.com',
   REACT_APP_MIN_GAS_FOR_SWAP: '320000',
   REACT_APP_MIN_GAS_FOR_POOL: '320000',
   REACT_APP_MIN_GAS_FOR_INVEST: '90000',
@@ -23,6 +23,7 @@ window['env'] = {
   REACT_APP_EMI_ROUTER_RINKEBY: '0xe5c8e363de97840d5996e1e8db8b5facda0f1e21',
   REACT_APP_EMI_ROUTER_GÖRLI: '0xe5c8e363de97840d5996e1e8db8b5facda0f1e21',
   REACT_APP_EMI_ROUTER_KOVAN: '0x7EeE1d070924B8255DAd03ddE989ebBffC1000eB',
+  REACT_APP_EMI_ROUTER_KUCOIN: '0xB3184913A87EEfe616788FBA3A02128A01188Ef2',
   REACT_APP_EMI_VAMP: '0x09aff00ed78b18dcd5cbd444a563e9329f459c7a',
   REACT_APP_ESW_CLAIM_API: 'https://sign.testingtruedao.com',
   REACT_APP_ESW_CLAIM_CHAIN_ID: 'ETH_KV',

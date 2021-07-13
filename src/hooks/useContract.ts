@@ -1,8 +1,5 @@
 import { Contract } from '@ethersproject/contracts';
 import { ChainId } from '@uniswap/sdk';
-import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.json';
-import MooniswapABI from '../constants/v1-mooniswap/v1_mooniswap_exchange.json';
-import MooniswapFactoryABI from '../constants/v1-mooniswap/v1_mooniswap_factory.json';
 import MooniswapHelperABI from '../constants/v1-mooniswap/MooniswapHelper.json';
 import { useMemo } from 'react';
 import { ERC20_BYTES32_ABI } from '../constants/abis/erc20';
@@ -10,32 +7,23 @@ import CHI_ABI from '../constants/abis/chi.json';
 import UNISOCKS_ABI from '../constants/abis/unisocks.json';
 import ERC20_ABI from '../constants/abis/erc20.json';
 import VAMP_ABI from '../constants/abis/vamp.json';
-import { MIGRATOR_ABI, MIGRATOR_ADDRESS } from '../constants/abis/migrator';
 import EMI_FACTORY_ABI from '../constants/abis/EmiFactory.json';
 import { abi as EMI_SWAP_ABI } from '../constants/abis/Emiswap.json';
 import { MULTICALL_ABI, MULTICALL_NETWORKS } from '../constants/multicall';
-import { V1_EXCHANGE_ABI, V1_FACTORY_ABI, V1_FACTORY_ADDRESSES } from '../constants/v1';
+import { V1_FACTORY_ABI, V1_FACTORY_ADDRESSES } from '../constants/v1';
 import {
   V1_EMIROUTER_HELPER_ADDRESSES,
   V1_MOONISWAP_FACTORY_ADDRESSES,
-  VAMP_ADDRESS,
 } from '../constants/v1-mooniswap';
 import { getContract, getProviderOrSigner } from '../utils';
 import { useActiveWeb3React } from './index';
-import { ONE_SPLIT_ABI, ONE_SPLIT_ADDRESSES } from '../constants/one-split';
 import EMI_ROUTER_ABI from '../constants/abis/EmiRouter.json';
-import {
-  UNISWAP_V2_HELPER_ABI,
-  UNISWAP_V2_HELPER_ADDRESS,
-} from '../constants/abis/uniswap-v2-helper';
-import { UNISWAP_V2_PAIR } from '../constants/abis/uniswap-v2-pair';
-import {
-  UNISWAP_V2_FACTORY_ABI,
-  UNISWAP_V2_FACTORY_ADDRESS,
-} from '../constants/abis/uniswap-v2-factory';
-import { ESW_ABI, ESW_ADDRESS } from '../constants/abis/esw';
+import { ESW_ABI } from '../constants/abis/esw';
 import { Web3Provider } from '@ethersproject/providers';
 import { EmiSwapAddress } from '../constants/emi/addresses';
+import chainIds from '../constants/chainIds';
+import esw_addresses from '../constants/esw_addresses';
+import vamp_addresses from '../constants/vamp_addresses';
 
 // returns null on errors
 function useContract(address?: string, ABI?: any, withSignerIfPossible = true): Contract | null {
@@ -62,38 +50,12 @@ export function useV1FactoryContract(): Contract | null {
   return useContract(chainId && V1_FACTORY_ADDRESSES[chainId], V1_FACTORY_ABI, false);
 }
 
-export function useUniswapV2HelperContract(): Contract | null {
-  const { chainId } = useActiveWeb3React();
-  return useContract(chainId && UNISWAP_V2_HELPER_ADDRESS, UNISWAP_V2_HELPER_ABI, false);
-}
-
-export function useUniswapV2PairContract(pairAddress: string | undefined): Contract | null {
-  const { chainId } = useActiveWeb3React();
-  return useContract(chainId && pairAddress, UNISWAP_V2_PAIR, false);
-}
-
-export function useUniswapV2FactoryContract(): Contract | null {
-  const { chainId } = useActiveWeb3React();
-  return useContract(chainId && UNISWAP_V2_FACTORY_ADDRESS, UNISWAP_V2_FACTORY_ABI, false);
-}
-
-export function useMooniswapMigratorContract(): Contract | null {
-  return useContract(MIGRATOR_ADDRESS, MIGRATOR_ABI, true);
-}
-
 export function useEmiFactoryContract(): Contract | null {
   const { chainId } = useActiveWeb3React();
   return useContract(V1_MOONISWAP_FACTORY_ADDRESSES[chainId ?? 42], EMI_FACTORY_ABI, true);
 }
 export function useEmiSwapContract(): Contract | null {
   return useContract(EmiSwapAddress, EMI_SWAP_ABI, true);
-}
-
-export function useV1ExchangeContract(
-  address?: string,
-  withSignerIfPossible?: boolean,
-): Contract | null {
-  return useContract(address, V1_EXCHANGE_ABI, withSignerIfPossible);
 }
 
 export function useTokenContract(
@@ -108,13 +70,6 @@ export function useBytes32TokenContract(
   withSignerIfPossible?: boolean,
 ): Contract | null {
   return useContract(tokenAddress, ERC20_BYTES32_ABI, withSignerIfPossible);
-}
-
-export function usePairContract(
-  pairAddress?: string,
-  withSignerIfPossible?: boolean,
-): Contract | null {
-  return useContract(pairAddress, IUniswapV2PairABI, withSignerIfPossible);
 }
 
 export function useMulticallContract(): Contract | null {
@@ -133,35 +88,20 @@ export function useSocksController(): Contract | null {
 
 ////// MOONISWAP ////////
 
-export function useMooniswapV1FactoryContract(): Contract | null {
-  const { chainId } = useActiveWeb3React();
-  return useContract(
-    chainId && V1_MOONISWAP_FACTORY_ADDRESSES[chainId],
-    MooniswapFactoryABI,
-    false,
-  );
-}
-
 export function useMooniswapV1HelperContract(): Contract | null {
   const { chainId } = useActiveWeb3React();
   return useContract(chainId && V1_EMIROUTER_HELPER_ADDRESSES[chainId], MooniswapHelperABI, false);
 }
 
-export function useMooniswapContract(
-  poolAddress?: string,
-  withSignerIfPossible?: boolean,
-): Contract | null {
-  return useContract(poolAddress, MooniswapABI, withSignerIfPossible);
-}
-
-export function useOneSplit(): Contract | null {
-  const { chainId } = useActiveWeb3React();
-  return useContract(chainId && ONE_SPLIT_ADDRESSES[chainId], ONE_SPLIT_ABI, false);
-}
-
 export function useEmiRouter(): Contract | null {
   const { chainId } = useActiveWeb3React();
-  return useContract(chainId && V1_EMIROUTER_HELPER_ADDRESSES[chainId], EMI_ROUTER_ABI, false);
+  return useContract(
+    chainId
+      ? V1_EMIROUTER_HELPER_ADDRESSES[chainId]
+      : V1_EMIROUTER_HELPER_ADDRESSES[chainIds.MAINNET],
+    EMI_ROUTER_ABI,
+    false,
+  );
 }
 
 export function useSwapEmiRouter(library: Web3Provider, account?: string): Contract | null {
@@ -183,9 +123,18 @@ export function useChiController(): Contract | null {
   );
 }
 
-export function useESWContract(): Contract | null {
-  return useContract(ESW_ADDRESS, ESW_ABI, true);
+export function useESWContract(chainId: any): Contract | null {
+  return useContract(
+    esw_addresses[chainId] ? esw_addresses[chainId] : esw_addresses[chainIds.MAINNET],
+    ESW_ABI,
+    true,
+  );
 }
-export function useVampContract(): Contract | null {
-  return useContract(VAMP_ADDRESS, VAMP_ABI, true);
+
+export function useVampContract(chainId: any): Contract | null {
+  return useContract(
+    vamp_addresses[chainId] ? vamp_addresses[chainId] : vamp_addresses[chainIds.MAINNET],
+    VAMP_ABI,
+    true,
+  );
 }

@@ -73,7 +73,8 @@ export function useInvestCallback(
     const inputParseAmount = !inputField ? parsedAmounts[Field.INPUT] : parsedAmounts[Field.OUTPUT];
 
     return async function onInvest() {
-      const contract: Contract | null = getCrowdsaleContract(library, account);
+      // @ts-ignore
+      const contract: Contract | null = getCrowdsaleContract(library, account, chainId);
 
       if (!contract) {
         throw new Error('Failed to get a crowdsale contract');

@@ -233,6 +233,7 @@ const WalletModal: React.FC<WalletModalProps> = ({ ENSName }) => {
         ReactPixel.track('wallet_connect_success');
       })
       .catch(error => {
+        console.log(error)
         if (error instanceof UnsupportedChainIdError) {
           activate(connector); // a little janky...can't use setError because the connector isn't set
         } else {
