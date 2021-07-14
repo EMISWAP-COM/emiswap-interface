@@ -29,7 +29,6 @@ import { useExpertModeManager, useTokenWarningDismissal } from '../../state/user
 import { maxAmountSpendInvest } from '../../utils/maxAmountSpend';
 import AppBody from '../AppBody';
 import { SwapPoolTabs, TabNames } from '../../components/NavigationTabs';
-import { EMISWAP_CROWDSALE_ADDRESS } from '../../constants/abis/crowdsale';
 import { tokenAmountToString } from '../../utils/formats';
 import { AppDispatch, AppState } from '../../state';
 import { UserRoles } from '../../components/WalletModal';
@@ -43,6 +42,8 @@ import ReferralLink from '../../components/RefferalLink';
 import { LaunchpadState } from '../../state/launchpad/reducer';
 import { InvestProgress } from './InvestProgress';
 import { loadLaunchpadStatus, successInvest } from '../../state/launchpad/actions';
+import crowdsale_addresses from '../../constants/crowdsale_addresses';
+import chainIds from '../../constants/chainIds';
 
 const Invest = () => {
   useDefaultsFromURLSearch();
@@ -73,7 +74,9 @@ const Invest = () => {
   } = useDerivedInvestInfo();
 
   const role: UserRoles | null = useSelector((state: AppState) => state.user.info?.role);
-  const investRequestStatus = useSelector((state: AppState) => state.user.info?.invest_request_state);
+  const investRequestStatus = useSelector(
+    (state: AppState) => state.user.info?.invest_request_state,
+  );
   const launchpadState = useSelector((state: AppState) => state.launchpad as LaunchpadState);
   const { id: userId } = useSelector((state: AppState) => state.user.info);
 
@@ -117,7 +120,12 @@ const Invest = () => {
   };
 
   // check whether the user has approved the router on the input token
-  const [approval, approveCallback] = useApproveCallback(parsedAmount, EMISWAP_CROWDSALE_ADDRESS);
+  const [approval, approveCallback] = useApproveCallback(
+    parsedAmount,
+    crowdsale_addresses[chainId]
+      ? crowdsale_addresses[chainId]
+      : crowdsale_addresses[chainIds.MAINNET],
+  );
 
   // check if user has gone through approval process, used to show two step buttons, reset on token change
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false);
@@ -167,16 +175,13 @@ const Invest = () => {
         ReactGA.event({
           category: 'Crowdsale',
           action: 'Invest',
-          label: `buy ${formattedAmounts[field]} ${
-            currencies[field]?.symbol
-          }`,
+          label: `buy ${formattedAmounts[field]} ${currencies[field]?.symbol}`,
         });
         ReactGA.event({
           category: 'purchase',
           action: 'invest',
           value: Number(parsedAmounts[Field.OUTPUT]?.toExact()),
         });
-
       })
       .catch((error: any) => {
         setAttemptingTxn(false);
@@ -247,7 +252,12 @@ const Invest = () => {
               expertMode ? onInvest() : setShowConfirm(true);
             }}
             id="invest-button"
-            disabled={!!error || approval !== ApprovalState.APPROVED || launchpadState.errors || !investGranted}
+            disabled={
+              !!error ||
+              approval !== ApprovalState.APPROVED ||
+              launchpadState.errors ||
+              !investGranted
+            }
             error={investGranted && !!error}
           >
             <Text fontSize={16} fontWeight={450}>
@@ -365,9 +375,9 @@ const Invest = () => {
                 </BottomGrouping>
               </AutoColumn>
 
-              <InvestProgress/>
+              <InvestProgress />
 
-              <InvestRules/>
+              <InvestRules />
 
               <ReferralLink />
             </>

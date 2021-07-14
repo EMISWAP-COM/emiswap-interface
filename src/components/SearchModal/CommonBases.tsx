@@ -10,6 +10,8 @@ import { AutoRow } from '../Row';
 import CurrencyLogo from '../CurrencyLogo';
 import { darken } from 'polished';
 import defaultCoins from '../../constants/defaultCoins';
+import getKcsToken from '../../constants/tokens/KCS';
+import chainIds from '../../constants/chainIds';
 
 const BaseWrapper = styled.div<{ disable?: boolean }>`
   border: 1px solid ${({ theme, disable }) => (disable ? 'transparent' : theme.bg3)};
@@ -71,9 +73,14 @@ export default function CommonBases({
               (otherSelectedCurrency.isEther || otherSelectedCurrency.equals(WETH)))
           }
         >
-          <CurrencyLogo currency={ETHER} style={{ marginRight: 8 }} />
+          <CurrencyLogo
+            // @ts-ignore
+            currency={chainId === chainIds.KUCOIN ? getKcsToken() : ETHER}
+            style={{ marginRight: 8 }}
+          />
           <Text fontWeight={500} fontSize={16}>
-            ETH
+            {/*// @ts-ignore*/}
+            {chainId === chainIds.KUCOIN ? 'KCS' : 'ETH'}
           </Text>
         </BaseWrapper>
         {(chainId ? SUGGESTED_BASES[chainId] : []).map((token: Token) => {

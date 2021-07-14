@@ -3,23 +3,20 @@ import { getAddress } from '@ethersproject/address';
 import { AddressZero, MaxUint256 } from '@ethersproject/constants';
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
 import { BigNumber } from '@ethersproject/bignumber';
-import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUniswapV2Router02.json';
 import MooniswapABI from '../constants/v1-mooniswap/v1_mooniswap_exchange.json';
-import MooniswapFactoryABI from '../constants/v1-mooniswap/v1_mooniswap_factory.json';
 import EmiRouterABI from '../constants/abis/EmiRouter.json';
-import { ROUTER_ADDRESS } from '../constants';
 import { ChainId, JSBI, Percent, Token, TokenAmount, ETHER } from '@uniswap/sdk';
 import { TokenAddressMap } from '../state/lists/hooks';
 import {
   V1_EMIROUTER_HELPER_ADDRESSES,
-  V1_MOONISWAP_FACTORY_ADDRESSES,
 } from '../constants/v1-mooniswap';
-import { ONE_SPLIT_ABI, ONE_SPLIT_ADDRESSES } from '../constants/one-split';
-import { MIGRATOR_ABI, MIGRATOR_ADDRESS } from '../constants/abis/migrator';
-import { EMISWAP_CROWDSALE_ABI, EMISWAP_CROWDSALE_ADDRESS } from '../constants/abis/crowdsale';
-import { EMISWAP_VESTING_ABI, EMISWAP_VESTING_ADDRESS } from '../constants/abis/emiswap-vesting';
+import { EMISWAP_CROWDSALE_ABI } from '../constants/abis/crowdsale';
+import { EMISWAP_VESTING_ABI } from '../constants/abis/emiswap-vesting';
 import { FARMING_ABI, FARMING_ADDRESSES } from '../constants/abis/farming';
 import { EMI_PRICE_2_ABI, EMI_PRICE_2_ADDRESS } from '../constants/abis/emiPrice2';
+import crowdsale_addresses from '../constants/crowdsale_addresses';
+import chainIds from '../constants/chainIds';
+import vesting_addresses from '../constants/vestring_addresses';
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
@@ -129,23 +126,6 @@ export function getContract(
   return new Contract(address, ABI, getProviderOrSigner(library, account) as any);
 }
 
-// account is optional
-export function getRouterContract(_: number, library: Web3Provider, account?: string) {
-  return getContract(ROUTER_ADDRESS, IUniswapV2Router02ABI, library, account);
-}
-
-export function getOneSplit(chainId: ChainId, library: Web3Provider, account?: string) {
-  return getContract(ONE_SPLIT_ADDRESSES[chainId], ONE_SPLIT_ABI, library, account);
-}
-
-export function getMooniswapMigratorContract(
-  chainId: ChainId,
-  library: Web3Provider,
-  account?: string,
-) {
-  return getContract(MIGRATOR_ADDRESS, MIGRATOR_ABI, library, account);
-}
-
 export function getMooniswapContract(
   _: number,
   library: Web3Provider,
@@ -153,19 +133,6 @@ export function getMooniswapContract(
   account?: string,
 ) {
   return getContract(pairAddress, MooniswapABI, library, account);
-}
-
-export function getMooniswapFactoryContract(
-  chainId: ChainId,
-  library: Web3Provider,
-  account?: string,
-) {
-  return getContract(
-    V1_MOONISWAP_FACTORY_ADDRESSES[chainId],
-    MooniswapFactoryABI,
-    library,
-    account,
-  );
 }
 
 export function getEmiRouterContract(chainId: ChainId, library: Web3Provider, account?: string) {
@@ -188,27 +155,39 @@ export function isDefaultToken(defaultTokens: TokenAddressMap, currency?: Token)
   return Boolean(currency instanceof Token && defaultTokens[currency.chainId]?.[currency.address]);
 }
 
-export function getCrowdsaleContract(library: Web3Provider, account: string) {
-  console.debug('EMISWAP_CROWDSALE_ADDRESS = ', EMISWAP_CROWDSALE_ADDRESS);
-  return getContract(EMISWAP_CROWDSALE_ADDRESS, EMISWAP_CROWDSALE_ABI, library, account);
+export function getCrowdsaleContract(library: Web3Provider, account: string, chainId: chainIds) {
+  return getContract(
+    crowdsale_addresses[chainId]
+      ? crowdsale_addresses[chainId]
+      : crowdsale_addresses[chainIds.MAINNET],
+    EMISWAP_CROWDSALE_ABI,
+    library,
+    account,
+  );
 }
 
-export function getVestingContract(library: Web3Provider, account: string) {
-  return getContract(EMISWAP_VESTING_ADDRESS, EMISWAP_VESTING_ABI, library, account);
+export function getVestingContract(library: Web3Provider, account: string, chainId: chainIds) {
+  return getContract(
+    vesting_addresses[chainId] ? vesting_addresses[chainId] : vesting_addresses[chainIds.MAINNET],
+    EMISWAP_VESTING_ABI,
+    library,
+    account,
+  );
 }
 
 export function getFarmingContracts(library: Web3Provider, account: string) {
-  return FARMING_ADDRESSES.map((address) => getContract(address, FARMING_ABI, library, account));
+  return FARMING_ADDRESSES.map(address => getContract(address, FARMING_ABI, library, account));
 }
 
 export function getMyFarmingContracts(library: Web3Provider, account: string) {
-  return new Promise<Contract[]>((resolve) => {
-    const contracts = FARMING_ADDRESSES.map((address) =>
-      getContract(address, FARMING_ABI, library, account));
+  return new Promise<Contract[]>(resolve => {
+    const contracts = FARMING_ADDRESSES.map(address =>
+      getContract(address, FARMING_ABI, library, account),
+    );
     const myFarming: Contract[] = [];
     let processedContractsCount = 0;
 
-    contracts.forEach((contract) => {
+    contracts.forEach(contract => {
       contract.balanceOf(account).then((value: BigNumber) => {
         if (value.toString() !== '0') {
           myFarming.push(contract);

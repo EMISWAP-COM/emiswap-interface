@@ -19,6 +19,7 @@ import { ReactComponent as MagicIcon } from '../../assets/images/magic_icon.svg'
 import { ButtonGray, ButtonOutlined } from '../Button';
 import NetworkSwitchModal from './NetworkSwitchModal';
 import { useNetworkSwitchModalToggle } from '../../state/application/hooks';
+import chainIds from '../../constants/chainIds';
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -322,6 +323,8 @@ const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
   [ChainId.ROPSTEN]: 'Ropsten',
   [ChainId.GÖRLI]: 'Görli',
   [ChainId.KOVAN]: 'Kovan',
+  // @ts-ignore
+  [chainIds.KUCOIN]: 'Kucoin',
 };
 
 export default function Header() {

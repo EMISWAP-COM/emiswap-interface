@@ -156,8 +156,8 @@ export default function MigrateV1Exchange({
 }: RouteComponentProps<{ address: string }>) {
   const validatedAddress = isAddress(address);
   const toggleWalletModal = useWalletModalToggle();
-  const { account } = useActiveWeb3React();
-  const contract = useVampContract();
+  const { account, chainId } = useActiveWeb3React();
+  const contract = useVampContract(chainId);
   const { lpTokensDetailedInfo, lpTokensInfo } = useLpTokens();
   const tokens = lpTokensDetailedInfo.find(el => el.base === address)?.addresses ?? [];
   const inputCurrency = useLpCurrencies(tokens, address);

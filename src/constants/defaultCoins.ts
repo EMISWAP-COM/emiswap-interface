@@ -4,7 +4,7 @@ type DefaultCoinsToken = {
   name: string;
   symbol: string;
   decimals: number;
-  logoURI: string;
+  logoURI?: string;
 };
 
 type DefaultCoins = {
@@ -17,7 +17,7 @@ type DefaultCoins = {
   };
   keywords: string[];
   tokens: DefaultCoinsToken[];
-  logoURI: string;
+  logoURI?: string;
 };
 
 const defaultCoins: DefaultCoins = {
@@ -3967,6 +3967,36 @@ const defaultCoins: DefaultCoins = {
       decimals: 18,
       logoURI:
         'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0xf6ce9bfa82d1088d3257a76ec2e0ce1c8060bf8c.png',
+    },
+    {
+      address: '0x4446fc4eb47f2f6586f9faab68b3498f86c07521',
+      chainId: 321,
+      decimals: 16,
+      name: 'WKCS',
+      symbol: 'WKCS',
+    },
+    {
+      address: '0xc0ffee0000921eb8dd7d506d4de8d5b79b856157',
+      chainId: 321,
+      decimals: 16,
+      name: 'KOFFEE',
+      symbol: 'KOFFEE',
+    },
+    {
+      address: '0x8933a6e58eEeE063B5fd3221F2E1D17821Dc1031',
+      chainId: 321,
+      name: 'EmiSwap - EmiDao Token',
+      symbol: 'ESW',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
+      address: '0x0000000000000000000000000000000000000000',
+      chainId: 321,
+      name: 'KCS',
+      decimals: 18,
+      symbol: 'KCS',
     },
   ],
   logoURI: 'https://1inch.exchange/assets/images/logo.png',

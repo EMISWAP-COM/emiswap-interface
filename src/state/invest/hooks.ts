@@ -23,9 +23,10 @@ import {
 import { TokenAddressMap, WrappedTokenInfo } from '../lists/hooks';
 import { ESW } from '../../constants';
 import { investMaxESW } from '../../constants/invest';
-import { maxAmountSpendInvest } from '../../utils/maxAmountSpend'
+import { maxAmountSpendInvest } from '../../utils/maxAmountSpend';
 import { InvestState } from './reducer';
 import { LaunchpadState } from '../launchpad/reducer';
+import chainIds from '../../constants/chainIds';
 
 const num2str = (value: number, decimals: number): string => {
   return value.toLocaleString('en', {
@@ -43,6 +44,8 @@ const EMPTY_LIST: TokenAddressMap = {
   [ChainId.ROPSTEN]: {},
   [ChainId.GÖRLI]: {},
   [ChainId.MAINNET]: {},
+  // @ts-ignore
+  [chainIds.KUCOIN]: {},
 };
 
 export function useInvestState(): AppState['invest'] {
@@ -182,15 +185,15 @@ export function useDerivedInvestInfo(): {
   };
 
   // const isSmallInvestment = parsedOutputAmount && parsedOutputAmount.lessThan(JSBI.BigInt(investMinESW));
-  const isMaxInvestment = parsedOutputAmount && parsedOutputAmount.greaterThan(JSBI.BigInt(investMaxESW));
+  const isMaxInvestment =
+    parsedOutputAmount && parsedOutputAmount.greaterThan(JSBI.BigInt(investMaxESW));
 
   const maxAmountInput: TokenAmount | undefined = maxAmountSpendInvest(
     currencyBalances[Field.INPUT],
   );
 
-  const notEnoughBalance = maxAmountInput &&
-    parsedAmount && JSBI.lessThan(maxAmountInput.raw, parsedAmount.raw);
-
+  const notEnoughBalance =
+    maxAmountInput && parsedAmount && JSBI.lessThan(maxAmountInput.raw, parsedAmount.raw);
 
   let error: string | undefined;
   if (!account) {
@@ -218,7 +221,7 @@ export function useDerivedInvestInfo(): {
 
   if (notEnoughBalance) {
     error = 'Insufficient ' + maxAmountInput.token.symbol + ' balance';
-    console.log('insufficient', error)
+    console.log('insufficient', error);
   }
 
   /*if (isSmallInvestment) {
@@ -226,11 +229,11 @@ export function useDerivedInvestInfo(): {
   }*/
 
   if (isMaxInvestment) {
-    error = "Sorry, there’s a limit of $500 purchase with one wallet";
+    error = 'Sorry, there’s a limit of $500 purchase with one wallet';
   }
 
   if (launchpadState.user_deposits_count > 0) {
-    error = "You’ve already made a purchase. Users can not join launchpad sales several times";
+    error = 'You’ve already made a purchase. Users can not join launchpad sales several times';
   }
 
   if (parsedAmount && !parsedOutputAmount) {
@@ -368,8 +371,9 @@ export function listToTokenMap(list: Token[]): TokenAddressMap {
 }
 
 export function useCoinCounter(): number {
-  const { account, library } = useActiveWeb3React();
-  const contract: Contract | null = getCrowdsaleContract(library, account);
+  const { account, library, chainId } = useActiveWeb3React();
+  // @ts-ignore
+  const contract: Contract | null = getCrowdsaleContract(library, account, chainId);
   try {
     return contract.coinCounter();
   } catch (error) {
@@ -379,8 +383,9 @@ export function useCoinCounter(): number {
 }
 
 export function useCoin(index: number) {
-  const { account, library } = useActiveWeb3React();
-  const contract: Contract | null = getCrowdsaleContract(library, account);
+  const { account, library, chainId } = useActiveWeb3React();
+  // @ts-ignore
+  const contract: Contract | null = getCrowdsaleContract(library, account, chainId);
   try {
     return contract.coin(index);
   } catch (error) {
@@ -391,7 +396,8 @@ export function useCoin(index: number) {
 export function useBuyCoinAmount() {
   const dispatch = useDispatch<AppDispatch>();
   const { chainId, account, library } = useActiveWeb3React();
-  const contract: Contract | null = getCrowdsaleContract(library, account);
+  // @ts-ignore
+  const contract: Contract | null = getCrowdsaleContract(library, account, chainId);
 
   const executeBuyCoinAmount = useCallback(
     (field: Field, currency?: Token, amount?: number) => {
@@ -437,8 +443,9 @@ export function useBuyCoinAmount() {
 }
 
 export function useCoinGetRate(index: string) {
-  const { account, library } = useActiveWeb3React();
-  const contract: Contract | null = getCrowdsaleContract(library, account);
+  const { account, library, chainId } = useActiveWeb3React();
+  // @ts-ignore
+  const contract: Contract | null = getCrowdsaleContract(library, account, chainId);
   try {
     return contract.coinRate(index);
   } catch (error) {

@@ -54,7 +54,7 @@ export type EarningActionHandlers = {
 };
 
 export function useAccountInfo(): EarningActionHandlers {
-  const { library, account } = useActiveWeb3React();
+  const { library, account, chainId } = useActiveWeb3React();
   const [totalAcquired, setTotalAcquired] = useState(0);
   const [totalAcquiredInDAI, setTotalAcquiredInDAI] = useState(0);
   const [availableToCollect, setAvailableToCollect] = useState(0);
@@ -80,13 +80,15 @@ export function useAccountInfo(): EarningActionHandlers {
     throw new Error('Failed to get an account');
   }
 
-  const contract: Contract | null = getVestingContract(library, account);
+  // @ts-ignore
+  const contract: Contract | null = getVestingContract(library, account, chainId);
 
   if (!contract) {
     throw new Error('Failed to get a crowdsale contract');
   }
 
-  const contractCrowdSale: Contract | null = getCrowdsaleContract(library, account);
+  // @ts-ignore
+  const contractCrowdSale: Contract | null = getCrowdsaleContract(library, account, chainId);
 
   if (!contract) {
     throw new Error('Failed to get a crowdsale contract');

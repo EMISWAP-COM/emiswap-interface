@@ -6,18 +6,9 @@ import { useSelector } from 'react-redux';
 import { INITIAL_ALLOWED_SLIPPAGE } from '../constants';
 import { getTradeVersion } from '../data/V1';
 import { useTransactionAdder } from '../state/transactions/hooks';
-import { calculateGasMargin, getMooniswapContract, getOneSplit } from '../utils';
+import { calculateGasMargin, getMooniswapContract } from '../utils';
 import { useActiveWeb3React } from './index';
 import { Version } from './useToggledVersion';
-import {
-  FLAG_DISABLE_ALL_SPLIT_SOURCES,
-  FLAG_DISABLE_ALL_WRAP_SOURCES,
-  FLAG_DISABLE_MOONISWAP_ALL,
-  FLAG_ENABLE_CHI_BURN,
-  FLAG_ENABLE_CHI_BURN_BY_ORIGIN,
-} from '../constants/one-split';
-import { MIN_CHI_BALANCE, useHasChi, useIsChiApproved } from './useChi';
-import { ApprovalState } from './useApproveCallback';
 import { expNumberToStr, tokenAmountToString } from '../utils/formats';
 import { useSwapEmiRouter } from './useContract';
 import defaultCoins from '../constants/defaultCoins';
@@ -29,16 +20,9 @@ import { useReferralAddress } from './useReferralAddress';
 //   return /^0x0*$/.test(hexNumber)
 // }
 
-const bitwiseOrOnJSBI = (...items: JSBI[]): JSBI => {
-  return items.reduce((acc, val) => {
-    return JSBI.bitwiseOr(acc, val);
-  }, JSBI.BigInt(0x0));
-};
-
 export type SwapCallback = null | (() => Promise<string>);
-export type EstimateCallback = null | (() => Promise<Array<number | undefined> | undefined>);
 
-export type useSwapResult = [boolean, SwapCallback, EstimateCallback];
+export type useSwapResult = [SwapCallback];
 
 export function useSwap(
   chainId: number | undefined,
@@ -49,127 +33,15 @@ export function useSwap(
   formattedAmounts: { [p: string]: string },
   onReject?: () => void,
 ): useSwapResult {
-  const isOneSplit = false;
-  const [isChiApproved] = useIsChiApproved(chainId || 0);
-  const hasEnoughChi = useHasChi(MIN_CHI_BALANCE);
-
-  // TODO: Get from storage as well
-  const applyChi = !!(isOneSplit && isChiApproved === ApprovalState.APPROVED && hasEnoughChi);
-
-  const estimate = useEstimateCallback(
-    fromAmount,
-    trade,
-    distribution,
-    allowedSlippage,
-    isOneSplit,
-  );
   const swapCallback = useSwapCallback(
     fromAmount,
     trade,
     distribution,
     allowedSlippage,
-    isOneSplit,
     formattedAmounts,
     onReject,
-    //applyChi
   );
-  return [applyChi, swapCallback, estimate];
-}
-
-export function useEstimateCallback(
-  fromAmount: TokenAmount | undefined,
-  trade: Trade | undefined, // trade to execute, required
-  distribution: BigNumber[] | undefined,
-  allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips,
-  isOneSplit: boolean,
-): EstimateCallback {
-  const { account, chainId, library } = useActiveWeb3React();
-  const recipient = account;
-
-  const tradeVersion = getTradeVersion(trade);
-
-  return useMemo(() => {
-    if (
-      !trade ||
-      !recipient ||
-      !library ||
-      !account ||
-      !tradeVersion ||
-      !chainId ||
-      !distribution ||
-      !fromAmount
-    )
-      return () => Promise.resolve(undefined);
-
-    const contract: Contract | null = getOneSplit(chainId, library, account);
-    if (!isOneSplit) {
-      return () => Promise.resolve(undefined);
-    }
-
-    let value: BigNumber | undefined;
-    if (trade.inputAmount.token.symbol === 'ETH') {
-      value = BigNumber.from(fromAmount.raw.toString());
-    }
-
-    const estimateWithFlags = (flags: JSBI): Promise<number | undefined> => {
-      const args: any[] = [
-        trade.inputAmount.token.address,
-        trade.outputAmount.token.address,
-        fromAmount?.raw.toString(),
-        fromAmount
-          .multiply(String(10000 - allowedSlippage))
-          .divide(String(10000))
-          .toFixed(0),
-        distribution.map(x => x.toString()),
-        //
-        flags.toString(),
-      ];
-
-      // estimate
-      return contract.estimateGas['swap'](
-        ...args,
-        value && !value.isZero() ? { value, from: account } : { from: account },
-      )
-        .then(gas => {
-          const x = calculateGasMargin(gas);
-          return x.toNumber();
-        })
-        .catch(error => {
-          console.error(`estimateGas failed for swap`, error);
-          return undefined;
-        });
-    };
-
-    const flags = [
-      FLAG_DISABLE_ALL_WRAP_SOURCES,
-      FLAG_DISABLE_ALL_SPLIT_SOURCES,
-      FLAG_DISABLE_MOONISWAP_ALL,
-    ];
-
-    const regularFlags = bitwiseOrOnJSBI(...flags);
-
-    const chiFlags = bitwiseOrOnJSBI(
-      ...flags,
-      ...[FLAG_ENABLE_CHI_BURN, FLAG_ENABLE_CHI_BURN_BY_ORIGIN],
-    );
-
-    // console.log(`chi=`, chiFlags.toString(16));
-
-    return () => {
-      return Promise.all([estimateWithFlags(regularFlags), estimateWithFlags(chiFlags)]);
-    };
-  }, [
-    trade,
-    recipient,
-    library,
-    account,
-    tradeVersion,
-    chainId,
-    allowedSlippage,
-    distribution,
-    fromAmount,
-    isOneSplit,
-  ]);
+  return [swapCallback];
 }
 
 // returns a function that will execute a swap, if the parameters are all valid
@@ -179,7 +51,6 @@ export function useSwapCallback(
   trade: Trade | undefined, // trade to execute, required
   distribution: BigNumber[] | undefined,
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips,
-  isOneSplit: boolean,
   formattedAmounts: { [p: string]: string },
   onReject?: () => void,
   // TODO: should be taked into consideration
@@ -212,37 +83,16 @@ export function useSwapCallback(
       return null;
     }
     return async function onSwap() {
-      const contract: Contract | null = isOneSplit
-        ? getOneSplit(chainId, library, account)
-        : trade.route.path.length <= 2 &&
-          swapState[Field.INPUT].currencyId !== ZERO_ADDRESS &&
-          swapState[Field.OUTPUT].currencyId !== ZERO_ADDRESS
-        ? getMooniswapContract(chainId, library, trade.route.pairs[0].poolAddress, account)
-        : emiRouterContract;
+      const contract: Contract | null =
+        trade.route.path.length <= 2 &&
+        swapState[Field.INPUT].currencyId !== ZERO_ADDRESS &&
+        swapState[Field.OUTPUT].currencyId !== ZERO_ADDRESS
+          ? getMooniswapContract(chainId, library, trade.route.pairs[0].poolAddress, account)
+          : emiRouterContract;
       getMooniswapContract(chainId, library, trade.route.pairs[0].poolAddress, account);
       if (!contract) {
         throw new Error('Failed to get a swap contract');
       }
-
-      let value: BigNumber | undefined;
-
-      if (trade.inputAmount.token.symbol === 'ETH') {
-        value = BigNumber.from(fromAmount.raw.toString());
-      }
-      const estimateSwap = (args: any[]) => {
-        return contract.estimateGas['swapTokensForExactETH'](
-          ...args,
-          value && !value.isZero() ? { value, from: account } : { from: account },
-        )
-          .then(gas => {
-            const x = calculateGasMargin(gas);
-            return x.toNumber();
-          })
-          .catch(error => {
-            console.error(`estimateGas failed for swap`, error);
-            return undefined;
-          });
-      };
 
       const onSuccess = (response: any): string => {
         const inputSymbol = trade.inputAmount.token.symbol;
@@ -279,56 +129,6 @@ export function useSwapCallback(
         }
       };
 
-      if (isOneSplit) {
-        const flags = [
-          FLAG_DISABLE_ALL_WRAP_SOURCES,
-          FLAG_DISABLE_ALL_SPLIT_SOURCES,
-          FLAG_DISABLE_MOONISWAP_ALL,
-        ];
-        // First attempt to estimate when CHI is set
-        const args = [
-          trade.inputAmount.token.address,
-          trade.outputAmount.token.address,
-          fromAmount?.raw.toString(),
-          fromAmount
-            .multiply(String(10000 - allowedSlippage))
-            .divide(String(10000))
-            .toFixed(0),
-          distribution.map(x => x.toString()),
-          bitwiseOrOnJSBI(
-            ...flags,
-            FLAG_ENABLE_CHI_BURN,
-            FLAG_ENABLE_CHI_BURN_BY_ORIGIN,
-          ).toString(),
-        ];
-        return estimateSwap(args).then(result => {
-          if (!result) {
-            // If we aren't then estimate without CHI, change args
-            args[5] = bitwiseOrOnJSBI(...flags).toString();
-            return estimateSwap(args)
-              .then(result => {
-                const gasLimit = calculateGasMargin(BigNumber.from(result));
-                return contract['swapTokensForExactETH'](...args, {
-                  gasLimit,
-                  ...(value && !value.isZero() ? { value } : {}),
-                });
-              })
-              .then(onSuccess)
-              .catch(onError);
-          } else {
-            // Estimate success witch CHI
-            const gasLimit = calculateGasMargin(BigNumber.from(result));
-
-            // If we are good with CHI -> execute
-            return contract['swapTokensForExactETH'](...args, {
-              gasLimit,
-              ...(value && !value.isZero() ? { value } : {}),
-            })
-              .then(onSuccess)
-              .catch(onError);
-          }
-        });
-      } else {
         const minReturn = BigNumber.from(trade.outputAmount.raw.toString())
           .mul(String(10000 - allowedSlippage))
           .div(String(10000));
@@ -419,7 +219,6 @@ export function useSwapCallback(
             console.error(`estimateGas failed for ${'swap'}`, error);
             return undefined;
           });
-      }
     };
   }, [
     trade,
@@ -432,7 +231,6 @@ export function useSwapCallback(
     addTransaction,
     distribution,
     fromAmount,
-    isOneSplit,
     emiRouterContract,
     formattedAmounts.INPUT,
     swapState,
