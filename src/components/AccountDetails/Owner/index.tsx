@@ -1,9 +1,5 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components/macro';
-
-import { loadBalance, loadDepositsEswHistory, loadPerformance } from '../../../state/cabinets/actions';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, AppState } from '../../../state';
 import { Connection } from '../Common/Connection';
 import { ExternalLink } from '../../../theme';
 
@@ -45,9 +41,9 @@ interface Props {
 }
 
 const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
-  const dispatch = useDispatch<AppDispatch>();
+  // const dispatch = useDispatch<AppDispatch>();
 
-  const { id: userId } = useSelector((state: AppState) => state.user.info);
+  // const { id: userId } = useSelector((state: AppState) => state.user.info);
 
   /*useEffect(() => {
     dispatch(loadPerformance(userId) as any);

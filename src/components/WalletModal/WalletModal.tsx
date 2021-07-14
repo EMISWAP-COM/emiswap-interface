@@ -1,7 +1,7 @@
 import ReactGA from 'react-ga';
 import ReactPixel from 'react-facebook-pixel';
 import { isMobile } from 'react-device-detect';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 
 import DocLink from '../../components/DocLink';
@@ -13,7 +13,7 @@ import Option from './Option';
 import { SUPPORTED_WALLETS } from '../../constants';
 import { ExternalLink } from '../../theme';
 import MetamaskIcon from '../../assets/images/metamask.png';
-import { injected, fortmatic, portis } from '../../connectors';
+import { fortmatic, injected, portis } from '../../connectors';
 import { OVERLAY_READY } from '../../connectors/Fortmatic';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
@@ -23,7 +23,6 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../state';
 import { Ambassador } from '../AccountDetails/Ambassador';
 import { Owner } from '../AccountDetails/Owner';
-import WarningBlock from '../Warning/WarningBlock';
 
 import * as Styled from './styled';
 
@@ -136,7 +135,8 @@ const WalletModal: React.FC<WalletModalProps> = ({ ENSName }) => {
           });
         };
       default:
-        return () => {};
+        return () => {
+        };
     }
   };
 
@@ -183,7 +183,8 @@ const WalletModal: React.FC<WalletModalProps> = ({ ENSName }) => {
           });
         };
       default:
-        return () => {};
+        return () => {
+        };
     }
   };
 
@@ -379,15 +380,15 @@ const WalletModal: React.FC<WalletModalProps> = ({ ENSName }) => {
           );
         case UserRoles.ambassador:
           return (
-            <Ambassador ENSName={ENSName} openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)} />
+            <Ambassador ENSName={ENSName} openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}/>
           );
         case UserRoles.client:
           return (
-            <Owner ENSName={ENSName} openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)} />
+            <Owner ENSName={ENSName} openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}/>
           );
         default:
           return (
-            <Owner ENSName={ENSName} openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)} />
+            <Owner ENSName={ENSName} openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}/>
             /*<Styled.NoUser>
               <WarningBlock
                 title={'Login failed'}
@@ -493,7 +494,7 @@ const WalletModal: React.FC<WalletModalProps> = ({ ENSName }) => {
       <Styled.Wrapper tabIndex={0}>
         <Styled.UpperSection>
           <Styled.CloseIcon onClick={toggleWalletModal}>
-            <Styled.CloseColor />
+            <Styled.CloseColor/>
           </Styled.CloseIcon>
           {getModalContent()}
         </Styled.UpperSection>

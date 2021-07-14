@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { convertBigDecimal } from '../uitls';
-import { loadBalance, loadPerformance } from '../../../state/cabinets/actions';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, AppState } from '../../../state';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../../state';
 import { packageNames } from '../constant';
 import { Connection } from '../Common/Connection';
 
@@ -60,9 +59,9 @@ interface Props {
 }
 
 const Ambassador: React.FC<Props> = ({ openOptions, ENSName }) => {
-  const dispatch = useDispatch<AppDispatch>();
+  // const dispatch = useDispatch<AppDispatch>();
 
-  const { id: userId, bonus_role_name = '', next_bonus_role } = useSelector(
+  const { /*id: userId,*/ bonus_role_name = '', next_bonus_role } = useSelector(
     (state: AppState) => state.user.info,
   );
 
