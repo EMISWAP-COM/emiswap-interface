@@ -1,16 +1,11 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { convertBigDecimal } from '../uitls';
-import { PurchaseHistory } from '../Common/PurchaseHistory';
-import { ReferralPerformance } from '../Common/ReferralPerformance';
 import { loadBalance, loadPerformance } from '../../../state/cabinets/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, AppState } from '../../../state';
 import { packageNames } from '../constant';
 import { Connection } from '../Common/Connection';
-import { ESWLocked } from '../Common/ESWLocked';
-import { ESWRewards } from '../Common/ESWRewards';
-import { ESWHoldingRewards } from '../Common/ESWHoldingRewards';
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -71,10 +66,10 @@ const Ambassador: React.FC<Props> = ({ openOptions, ENSName }) => {
     (state: AppState) => state.user.info,
   );
 
-  useEffect(() => {
+  /*useEffect(() => {
     dispatch(loadPerformance(userId) as any);
     dispatch(loadBalance(userId) as any);
-  }, [dispatch, userId]);
+  }, [dispatch, userId]);*/
 
   return (
     <Wrapper>
@@ -100,12 +95,12 @@ const Ambassador: React.FC<Props> = ({ openOptions, ENSName }) => {
           )}
         </OptionsPromo>
       </Connection>
-      <ESWRewards />
+      {/*<ESWRewards />
       <ESWHoldingRewards/>
       <ESWLocked />
 
       <ReferralPerformance />
-      <PurchaseHistory />
+      <PurchaseHistory />*/}
     </Wrapper>
   );
 };
