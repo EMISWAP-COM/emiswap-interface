@@ -13,17 +13,17 @@
       },
       {
         "internalType": "uint256",
-        "name": "_stakingEndDate",
+        "name": "_maxUSDValue",
         "type": "uint256"
       },
       {
         "internalType": "address",
-        "name": "_emiPrice",
+        "name": "_router",
         "type": "address"
       },
       {
         "internalType": "address[]",
-        "name": "_stables",
+        "name": "_path",
         "type": "address[]"
       }
     ],
@@ -81,6 +81,12 @@
       {
         "indexed": false,
         "internalType": "uint256",
+        "name": "stakeId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
       }
@@ -134,7 +140,22 @@
   {
     "constant": true,
     "inputs": [],
-    "name": "emiPrice",
+    "name": "balanceOf",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "emiRouter",
     "outputs": [
       {
         "internalType": "address",
@@ -379,21 +400,6 @@
   {
     "constant": true,
     "inputs": [],
-    "name": "marketId",
-    "outputs": [
-      {
-        "internalType": "uint8",
-        "name": "",
-        "type": "uint8"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
     "name": "maxUSDStakes",
     "outputs": [
       {
@@ -437,15 +443,6 @@
     "type": "function"
   },
   {
-    "constant": false,
-    "inputs": [],
-    "name": "renounceOwnership",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "constant": true,
     "inputs": [
       {
@@ -454,7 +451,7 @@
         "type": "uint256"
       }
     ],
-    "name": "stableCoins",
+    "name": "pathToStables",
     "outputs": [
       {
         "internalType": "address",
@@ -464,6 +461,15 @@
     ],
     "payable": false,
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -485,6 +491,21 @@
     "constant": true,
     "inputs": [],
     "name": "stakingEndDate",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "stakingLastUnlock",
     "outputs": [
       {
         "internalType": "uint256",
@@ -582,12 +603,12 @@
     "constant": false,
     "inputs": [
       {
-        "internalType": "address",
-        "name": "_emiPrice",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "_unlockTime",
+        "type": "uint256"
       }
     ],
-    "name": "updateEmiPrice",
+    "name": "updateLastUnlock",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
@@ -612,12 +633,12 @@
     "constant": false,
     "inputs": [
       {
-        "internalType": "uint8",
-        "name": "_id",
-        "type": "uint8"
+        "internalType": "uint256",
+        "name": "_value",
+        "type": "uint256"
       }
     ],
-    "name": "updateMarket",
+    "name": "updateMaxUSD",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
@@ -627,12 +648,12 @@
     "constant": false,
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "_value",
-        "type": "uint256"
+        "internalType": "address[]",
+        "name": "_path",
+        "type": "address[]"
       }
     ],
-    "name": "updateMaxUSD",
+    "name": "updatePathToStables",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
