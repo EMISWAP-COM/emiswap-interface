@@ -117,7 +117,7 @@ export default function NetworkSwitchModal() {
                 {item.chainId === chainId && (
                   <CircleCheckImg src={CircleCheckIcon}/>
                 )}
-                <img src={item.icon}/>
+                <img src={item.icon} alt={item.name}/>
               </NetworkIcon>
               <NetworkName active={item.chainId === chainId}>{item.name}</NetworkName>
             </NetworkItem>
