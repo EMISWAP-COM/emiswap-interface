@@ -305,3 +305,5 @@ export const REFERRAL_ADDRESS_STORAGE_KEY = 'referral-address';
 export const INIT_CODE_HASH = keccak256(['bytes'], [bytecode]);
 
 export const FACTORY_ADDRESS = '0xe4917eb85A6C11a56189DbE621433ce5c2a3bfc3';
+
+export const KuCoinChainId = 321;

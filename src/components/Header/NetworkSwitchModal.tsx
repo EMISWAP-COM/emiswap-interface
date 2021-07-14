@@ -10,6 +10,7 @@ import CircleCheckIcon from '../../assets/svg/circle-check.svg';
 import { ChainId } from '@uniswap/sdk';
 import { toHex } from 'web3-utils';
 import { useActiveWeb3React } from '../../hooks';
+import { KuCoinChainId } from '../../constants';
 
 const NetworkSwitchWrapped = styled.div`
   width: 100%;
@@ -84,13 +85,13 @@ export default function NetworkSwitchModal() {
     },
     {
       value: 'polygon',
-      chainId: ChainId.GÖRLI,
+      chainId: ChainId.MAINNET,
       icon: PolygonNetworkIcon,
       name: 'Polygon (Matic)',
     },
     {
       value: 'kucoin',
-      chainId: ChainId.KOVAN,
+      chainId: KuCoinChainId,
       icon: KuCoinNetworkIcon,
       name: 'Kucoin',
     },
