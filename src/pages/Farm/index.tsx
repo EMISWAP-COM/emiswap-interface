@@ -109,7 +109,9 @@ export default function Farm() {
   }, [library, account, farms]);
   useEffect(() => {
     dispatch(loadFarms() as any);
-    dispatch(loadUserFarms(userId) as any);
+    if (userId) {
+      dispatch(loadUserFarms(userId) as any);
+    }
   }, [dispatch, userId]);
 
   const toggleWalletModal = useWalletModalToggle();

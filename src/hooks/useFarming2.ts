@@ -101,9 +101,10 @@ const useFarming2 = (contract: Contract) => {
 
     contract
       .myUnlockedBalance()
-      .then((value: BigNumber) => {
+      .then((result: BigNumber[]) => {
+        const valueInTokens = result[0];
         if (chainId && stakeToken) {
-          const tokenAmount = new TokenAmount(stakeToken, JSBI.BigInt(value.toString()));
+          const tokenAmount = new TokenAmount(stakeToken, JSBI.BigInt(valueInTokens.toString()));
           return tokenAmountToString(tokenAmount, stakeToken.decimals);
         } else {
           return '0';
@@ -113,6 +114,28 @@ const useFarming2 = (contract: Contract) => {
       .catch((error: RequestError) => {
         addEthErrorPopup(error);
         logContractError('myUnlockedBalance', account, chainId, contract.address, '', error);
+      });
+  }, [account, chainId, contract, stakeToken, addEthErrorPopup, completedTransactionsCount]);
+
+  const [deposit, setDeposit] = useState<string>('0');
+  useEffect(() => {
+    if (!account) return;
+
+    contract
+      .balanceOf()
+      .then((result: BigNumber[]) => {
+        const valueInTokens = result[0];
+        if (chainId && stakeToken) {
+          const tokenAmount = new TokenAmount(stakeToken, JSBI.BigInt(valueInTokens.toString()));
+          return tokenAmountToString(tokenAmount, stakeToken.decimals);
+        } else {
+          return '0';
+        }
+      })
+      .then((value: string) => setDeposit(value))
+      .catch((error: RequestError) => {
+        addEthErrorPopup(error);
+        logContractError('balanceOf', account, chainId, contract.address, '', error);
       });
   }, [account, chainId, contract, stakeToken, addEthErrorPopup, completedTransactionsCount]);
 
@@ -222,7 +245,7 @@ const useFarming2 = (contract: Contract) => {
     endDate: endDate,
     myStakesLen: myStakesLen,
     apr: farm?.percentageRate || '0',
-    deposit: farm?.deposit || '0',
+    deposit: deposit,
     reward: farm?.reward || '0',
     balance: farm?.balance || '0',
     collect: handleCollect,

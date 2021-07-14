@@ -350,7 +350,9 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
                   <CurrencyLogo currency={stakeToken} size={'24px'} />
                 )}
               </StyledCurrencyLogo>
-              <StyledTruncatedText>{deposit}</StyledTruncatedText>
+              <Tooltip title={deposit}>
+                <StyledTruncatedText>{deposit}</StyledTruncatedText>
+              </Tooltip>
             </StyledBlockValue>
           </StyledBlock>
           <StyledBlock width={150}>
