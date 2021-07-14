@@ -53,7 +53,6 @@ import {
 import AppBody from '../AppBody';
 import { ClickableText } from '../Pool/styleds';
 import { isUseOneSplitContract } from '../../utils';
-import GasConsumption from '../../components/swap/GasConsumption';
 import { BigNumber } from '@ethersproject/bignumber';
 import { AdvancedSwapDetails } from '../../components/swap/AdvancedSwapDetails';
 import { useTransactionPrice } from '../../hooks/useTransactionPrice';
@@ -178,15 +177,12 @@ export default function Swap() {
     }
   }, [approval, approvalSubmitted]);
 
-  const [gas, setGas] = useState(0);
-  const [gasWhenUseChi, setGasWhenUseChi] = useState(0);
-
   const onReject = () => {
     setSwapErrorMessage('Transaction rejected.');
   };
 
   // the callback to execute the swap
-  const [isChiApplied, swapCallback, estimate] = useSwap(
+  const [swapCallback] = useSwap(
     chainId,
     parsedAmount,
     trade,
@@ -195,44 +191,6 @@ export default function Swap() {
     formattedAmounts,
     onReject,
   );
-
-  const srcAmount = trade?.inputAmount?.toExact();
-
-  // TODO: for sure should be more elegant solution for estimation calls
-  useEffect(() => {
-    let unmounted = false;
-
-    function handleStatusChange(result: number[]) {
-      if (unmounted || !result || !result[1]) {
-        return;
-      }
-
-      const gasWithoutChi = result[0];
-      const gasWithChi = result[1];
-
-      // As base gas amount on UI show the same amount of gas that metamask would show (red one)
-      const gas = Math.round(gasWithChi / 1000);
-
-      // Chi allow to safe up to 43% from original transaction (the one without CHI burn) green
-      const gasWhenUseChi = Math.round((gasWithoutChi * 0.57) / 1000);
-
-      setGas(gas);
-      setGasWhenUseChi(gasWhenUseChi);
-    }
-
-    srcAmount &&
-      estimate &&
-      estimate().then(result => {
-        handleStatusChange(result as number[]);
-      });
-
-    // Specify how to clean up after this effect:
-    return function cleanup() {
-      unmounted = true;
-    };
-
-    // eslint-disable-next-line
-  }, [srcAmount]);
 
   const maxAmountInput: TokenAmount | undefined = maxAmountSpend(currencyBalances[Field.INPUT]);
   const atMaxAmountInput = Boolean(
@@ -433,18 +391,6 @@ export default function Swap() {
                       setShowInverted={setShowInverted}
                     />
                   </RowBetween>
-
-                  {isChiApplied && gas ? (
-                    <RowBetween align="center">
-                      <Text fontWeight={500} fontSize={14} color={theme.text2}>
-                        Gas consumption
-                      </Text>
-                      {<GasConsumption gas={gas} gasWhenUseChi={gasWhenUseChi} />}
-                    </RowBetween>
-                  ) : (
-                    ''
-                  )}
-
                   {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
                     <RowBetween align="center">
                       <ClickableText

@@ -34,7 +34,7 @@ export function useTokenListWithPair() {
             setList(formattedData);
           });
         })
-        .catch(e => {
+        .catch((e: string) => {
           dispatch(
             addPopup({
               key: 'useEmiFactoryContract',
