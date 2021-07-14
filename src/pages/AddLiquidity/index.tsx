@@ -198,8 +198,8 @@ export default function AddLiquidity({
               setTxHash(response.hash);
 
               ReactGA.event({
-                category: 'Liquidity',
-                action: 'CreatePool',
+                category: 'Transaction',
+                action: 'CreatePoolLiquidity',
                 label: [
                   currencies[Field.CURRENCY_A]?.symbol,
                   currencies[Field.CURRENCY_B]?.symbol,
@@ -219,6 +219,15 @@ export default function AddLiquidity({
             }
           })
           .catch((error: Error) => {
+            ReactGA.event({
+              category: 'Transaction',
+              action: 'RejectCreatePoolLiquidity',
+              label: [
+                currencies[Field.CURRENCY_A]?.symbol,
+                currencies[Field.CURRENCY_B]?.symbol,
+                `Error message: ${error.message}`,
+              ].join('/'),
+            });
             throw new Error(`
             Account: ${account}\n
             ChainId: ${chainId}\n
@@ -236,6 +245,16 @@ export default function AddLiquidity({
           console.error(error);
         }
 
+        ReactGA.event({
+          category: 'Transaction',
+          action: 'RejectCreatePoolLiquidity',
+          label: [
+            currencies[Field.CURRENCY_A]?.symbol,
+            currencies[Field.CURRENCY_B]?.symbol,
+            `Error message: ${error.message}`,
+          ].join('/'),
+        });
+        
         throw new Error(`
           Account: ${account}\n
           ChainId: ${chainId}\n
@@ -319,14 +338,23 @@ export default function AddLiquidity({
               setTxHash(response.hash);
 
               ReactGA.event({
-                category: 'Liquidity',
-                action: 'Add',
+                category: 'Transaction',
+                action: 'AddLiquidity',
                 label: [
                   currencies[Field.CURRENCY_A]?.symbol,
                   currencies[Field.CURRENCY_B]?.symbol,
                 ].join('/'),
               });
             } catch (error) {
+              ReactGA.event({
+                category: 'Transaction',
+                action: 'RejectAddLiquidity',
+                label: [
+                  currencies[Field.CURRENCY_A]?.symbol,
+                  currencies[Field.CURRENCY_B]?.symbol,
+                  `Error message: ${error.message}`,
+                ].join('/'),
+              });
               throw new Error(`
               Account: ${account}\n
               ChainId: ${chainId}\n
@@ -338,6 +366,15 @@ export default function AddLiquidity({
             }
           })
           .catch((error: Error) => {
+            ReactGA.event({
+              category: 'Transaction',
+              action: 'RejectAddLiquidity',
+              label: [
+                currencies[Field.CURRENCY_A]?.symbol,
+                currencies[Field.CURRENCY_B]?.symbol,
+                `Error message: ${error.message}`,
+              ].join('/'),
+            });
             throw new Error(`
             Account: ${account}\n
             ChainId: ${chainId}\n
