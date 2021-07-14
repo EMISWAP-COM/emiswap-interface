@@ -76,13 +76,13 @@ const NoContent = styled.div`
 `;
 
 const FarmingRewards = () => {
-  const { library, account } = useActiveWeb3React();
+  const { library, account, chainId } = useActiveWeb3React();
   const [myFarmingContracts, setMyFarmingContracts] = useState<Contract[]>([]);
   useEffect(() => {
-    getMyFarmingContracts(library, account).then(contracts => {
+    getMyFarmingContracts(library, account, chainId).then(contracts => {
       setMyFarmingContracts(contracts);
     });
-  }, [library, account]);
+  }, [library, account, chainId]);
 
   return (
     <>

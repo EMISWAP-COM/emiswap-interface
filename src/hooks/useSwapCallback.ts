@@ -16,6 +16,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import { AppState } from '../state';
 import { Field } from '../state/swap/actions';
 import { useReferralAddress } from './useReferralAddress';
+import chainIds from '../constants/chainIds';
 // function isZero(hexNumber: string) {
 //   return /^0x0*$/.test(hexNumber)
 // }
@@ -129,96 +130,103 @@ export function useSwapCallback(
         }
       };
 
-        const minReturn = BigNumber.from(trade.outputAmount.raw.toString())
-          .mul(String(10000 - allowedSlippage))
-          .div(String(10000));
+      const minReturn = BigNumber.from(trade.outputAmount.raw.toString())
+        .mul(String(10000 - allowedSlippage))
+        .div(String(10000));
 
-        const WETH = defaultCoins.tokens.find(
-          token => token.symbol === 'WETH' && token.chainId === chainId,
-        );
+      const WETH = defaultCoins.tokens.find(
+        token =>
+          // @ts-ignore
+          (chainId === chainIds.KUCOIN ? token.symbol === 'WKCS' : token.symbol === 'WETH') &&
+          token.chainId === chainId,
+      );
 
-        let args: any[] = [];
-        let method = 'swap';
-        let obj = {};
+      let args: any[] = [];
+      let method = 'swap';
+      let obj = {};
 
-        const addresses = trade.route.path.map(el => el.address);
+      const addresses = trade.route.path.map(el => el.address);
+      if (
+        trade.route.path.length <= 2 &&
+        swapState[Field.INPUT].currencyId !== ZERO_ADDRESS &&
+        swapState[Field.OUTPUT].currencyId !== ZERO_ADDRESS
+      ) {
+        method = 'swap';
+        args = [
+          ...addresses,
+          expNumberToStr(+formattedAmounts.INPUT * 10 ** trade?.inputAmount?.token?.decimals),
+          minReturn.toString(),
+          account,
+          referralAddress,
+        ];
+        obj = {};
+      } else if (
+        trade?.inputAmount?.token?.isEther ||
+        trade?.outputAmount?.token?.isEther ||
+        swapState[Field.INPUT].currencyId === ZERO_ADDRESS ||
+        swapState[Field.OUTPUT].currencyId === ZERO_ADDRESS
+      ) {
         if (
-          trade.route.path.length <= 2 &&
-          swapState[Field.INPUT].currencyId !== ZERO_ADDRESS &&
-          swapState[Field.OUTPUT].currencyId !== ZERO_ADDRESS
-        ) {
-          method = 'swap';
-          args = [
-            ...addresses,
-            expNumberToStr(+formattedAmounts.INPUT * 10 ** trade?.inputAmount?.token?.decimals),
-            minReturn.toString(),
-            account,
-            referralAddress,
-          ];
-          obj = {};
-        } else if (
           trade?.inputAmount?.token?.isEther ||
-          trade?.outputAmount?.token?.isEther ||
-          swapState[Field.INPUT].currencyId === ZERO_ADDRESS ||
-          swapState[Field.OUTPUT].currencyId === ZERO_ADDRESS
+          swapState[Field.INPUT].currencyId === ZERO_ADDRESS
         ) {
-          if (
-            trade?.inputAmount?.token?.isEther ||
-            swapState[Field.INPUT].currencyId === ZERO_ADDRESS
-          ) {
-            method = 'swapExactETHForTokens';
-            args = [
-              minReturn.toString(), //t3,
-              addresses,
-              account,
-              referralAddress,
-            ];
-            obj = {
-              value: `0x${JSBI.BigInt(
-                Math.floor(+formattedAmounts.INPUT * 10 ** WETH!.decimals),
-              ).toString(16)}`,
-            };
-          } else {
-            method = 'swapExactTokensForETH';
-            args = [
-              expNumberToStr(+formattedAmounts.INPUT * 10 ** trade?.inputAmount?.token?.decimals),
-              // t3,
-              addresses,
-              account,
-              referralAddress,
-            ];
-          }
-        } else {
-          method = 'swapExactTokensForTokens';
+          method = 'swapExactETHForTokens';
           args = [
-            expNumberToStr(+formattedAmounts.INPUT * 10 ** trade?.inputAmount?.token?.decimals),
-            minReturn.toString(),
+            minReturn.toString(), //t3,
             addresses,
             account,
             referralAddress,
           ];
-          obj = {};
+          obj = {
+            value: `0x${JSBI.BigInt(
+              Math.floor(
+                +formattedAmounts.INPUT *
+                  // @ts-ignore
+                  10 ** WETH!.decimals,
+              ),
+            ).toString(16)}`,
+          };
+        } else {
+          method = 'swapExactTokensForETH';
+          args = [
+            expNumberToStr(+formattedAmounts.INPUT * 10 ** trade?.inputAmount?.token?.decimals),
+            // t3,
+            addresses,
+            account,
+            referralAddress,
+          ];
         }
+      } else {
+        method = 'swapExactTokensForTokens';
+        args = [
+          expNumberToStr(+formattedAmounts.INPUT * 10 ** trade?.inputAmount?.token?.decimals),
+          minReturn.toString(),
+          addresses,
+          account,
+          referralAddress,
+        ];
+        obj = {};
+      }
 
-        return contract.estimateGas[method](...args, obj)
-          .then(result => {
-            // if (BigNumber.isBigNumber(safeGasEstimate) && !BigNumber.isBigNumber(safeGasEstimate)) {
-            //   throw new Error(
-            //     'An error occurred. Please try raising your slippage. If that does not work, contact support.'
-            //   )
-            // }
-            const gasLimit = calculateGasMargin(BigNumber.from(result));
-            return contract[method](...args, {
-              gasLimit,
-              ...obj,
-            })
-              .then(onSuccess)
-              .catch(onError);
+      return contract.estimateGas[method](...args, obj)
+        .then(result => {
+          // if (BigNumber.isBigNumber(safeGasEstimate) && !BigNumber.isBigNumber(safeGasEstimate)) {
+          //   throw new Error(
+          //     'An error occurred. Please try raising your slippage. If that does not work, contact support.'
+          //   )
+          // }
+          const gasLimit = calculateGasMargin(BigNumber.from(result));
+          return contract[method](...args, {
+            gasLimit,
+            ...obj,
           })
-          .catch(error => {
-            console.error(`estimateGas failed for ${'swap'}`, error);
-            return undefined;
-          });
+            .then(onSuccess)
+            .catch(onError);
+        })
+        .catch(error => {
+          console.error(`estimateGas failed for ${'swap'}`, error);
+          return undefined;
+        });
     };
   }, [
     trade,

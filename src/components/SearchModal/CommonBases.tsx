@@ -42,7 +42,10 @@ export default function CommonBases({
   otherSelectedCurrency: Token | undefined;
 }) {
   const wethTokenInfo = defaultCoins.tokens.find(
-    token => token.symbol === 'WETH' && token.chainId === chainId,
+    token =>
+      // @ts-ignore
+      (chainId === chainIds.KUCOIN ? token.symbol === 'WKCS' : token.symbol === 'WETH') &&
+      token.chainId === chainId,
   );
 
   const WETH: Token =

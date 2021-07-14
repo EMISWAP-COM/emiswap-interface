@@ -1,5 +1,6 @@
 import { ChainId, Token, TokenAmount, ETHER } from '@uniswap/sdk';
-import { WETH } from '../constants';
+import { WETH, WKCS } from '../constants';
+import chainIds from '../constants/chainIds';
 export function wrappedCurrency(
   currency: Token | undefined,
   chainId: ChainId | undefined,
@@ -16,16 +17,9 @@ export function wrappedCurrencyAmount(
   return token && currencyAmount ? new TokenAmount(token, currencyAmount.raw) : undefined;
 }
 
-export function unwrappedToken(token: Token): Token {
-  if (token.symbol === WETH.symbol) return ETHER;
+export function unwrappedToken(chainId: ChainId, token: Token): Token {
+  // @ts-ignore
+  if (token.symbol === (chainId === chainIds.KUCOIN ? WKCS.symbol : WETH.symbol)) return ETHER;
 
   return token;
-}
-
-////////// MOONISWAP ////////
-export function normalizeToken(currency: Token | undefined): Token | undefined {
-  if (currency?.symbol === 'ETH') {
-    return new Token(1, '0x0000000000000000000000000000000000000000', 18, 'ETH', 'Ethereum');
-  }
-  return currency instanceof Token ? currency : undefined;
 }

@@ -7,16 +7,16 @@ import MooniswapABI from '../constants/v1-mooniswap/v1_mooniswap_exchange.json';
 import EmiRouterABI from '../constants/abis/EmiRouter.json';
 import { ChainId, JSBI, Percent, Token, TokenAmount, ETHER } from '@uniswap/sdk';
 import { TokenAddressMap } from '../state/lists/hooks';
-import {
-  V1_EMIROUTER_HELPER_ADDRESSES,
-} from '../constants/v1-mooniswap';
+import { V1_EMIROUTER_HELPER_ADDRESSES } from '../constants/v1-mooniswap';
 import { EMISWAP_CROWDSALE_ABI } from '../constants/abis/crowdsale';
 import { EMISWAP_VESTING_ABI } from '../constants/abis/emiswap-vesting';
-import { FARMING_ABI, FARMING_ADDRESSES } from '../constants/abis/farming';
-import { EMI_PRICE_2_ABI, EMI_PRICE_2_ADDRESS } from '../constants/abis/emiPrice2';
+import { FARMING_ABI } from '../constants/abis/farming';
+import { EMI_PRICE_2_ABI } from '../constants/abis/emiPrice2';
 import crowdsale_addresses from '../constants/crowdsale_addresses';
 import chainIds from '../constants/chainIds';
 import vesting_addresses from '../constants/vestring_addresses';
+import emiprice2_addresses from '../constants/emiprice2_addresses';
+import getFarmingAddresses from '../pages/Farm/getFarmingAddresses';
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
@@ -175,19 +175,21 @@ export function getVestingContract(library: Web3Provider, account: string, chain
   );
 }
 
-export function getFarmingContracts(library: Web3Provider, account: string) {
-  return FARMING_ADDRESSES.map(address => getContract(address, FARMING_ABI, library, account));
+export function getFarmingContracts(library: Web3Provider, account: string, chainId: ChainId) {
+  return getFarmingAddresses(chainId).map((address: any) =>
+    getContract(address, FARMING_ABI, library, account),
+  );
 }
 
-export function getMyFarmingContracts(library: Web3Provider, account: string) {
+export function getMyFarmingContracts(library: Web3Provider, account: string, chainId: ChainId) {
   return new Promise<Contract[]>(resolve => {
-    const contracts = FARMING_ADDRESSES.map(address =>
+    const contracts = getFarmingAddresses(chainId).map((address: any) =>
       getContract(address, FARMING_ABI, library, account),
     );
     const myFarming: Contract[] = [];
     let processedContractsCount = 0;
 
-    contracts.forEach(contract => {
+    contracts.forEach((contract: any) => {
       contract.balanceOf(account).then((value: BigNumber) => {
         if (value.toString() !== '0') {
           myFarming.push(contract);
@@ -201,6 +203,6 @@ export function getMyFarmingContracts(library: Web3Provider, account: string) {
   });
 }
 
-export function getEmiPrice2Contract(library: Web3Provider, account: string) {
-  return getContract(EMI_PRICE_2_ADDRESS, EMI_PRICE_2_ABI, library, account);
+export function getEmiPrice2Contract(library: Web3Provider, account: string, chainId: ChainId) {
+  return getContract(emiprice2_addresses[chainId], EMI_PRICE_2_ABI, library, account);
 }
