@@ -1,18 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components/macro';
 
 import { convertBigDecimal } from '../uitls';
-import { PurchaseHistory } from '../Common/PurchaseHistory';
-import { ReferralPerformance } from '../Common/ReferralPerformance';
-
-import { loadBalance, loadPerformance } from '../../../state/cabinets/actions';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, AppState } from '../../../state';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../../state';
 import { packageNames } from '../constant';
 import { Connection } from '../Common/Connection';
-import { ESWLocked } from '../Common/ESWLocked';
-import { ESWRewards } from '../Common/ESWRewards';
-import { ESWHoldingRewards } from '../Common/ESWHoldingRewards';
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -83,17 +76,18 @@ interface Props {
 }
 
 const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
-  const dispatch = useDispatch<AppDispatch>();
+  // const dispatch = useDispatch<AppDispatch>();
+
   /* TODO removed Invest tab until further notice.
   const toggleWalletModal = useWalletModalToggle();*/
-  const { id: userId, bonus_role_name = '', next_bonus_role } = useSelector(
+  const { /*id: userId,*/ bonus_role_name = '', next_bonus_role } = useSelector(
     (state: AppState) => state.user.info,
   );
 
-  useEffect(() => {
+  /*useEffect(() => {
     dispatch(loadPerformance(userId) as any);
     dispatch(loadBalance(userId) as any);
-  }, [dispatch, userId]);
+  }, [dispatch, userId]);*/
 
   /* TODO removed Invest tab until further notice.
   function scrollIntoInvest() {
@@ -138,11 +132,11 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
         )}
       </Connection>
 
-      <ESWRewards />
+      {/*<ESWRewards />
       <ESWHoldingRewards/>
       <ESWLocked />
       <ReferralPerformance />
-      <PurchaseHistory />
+      <PurchaseHistory />*/}
     </Wrapper>
   );
 };
