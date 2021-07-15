@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { loadFarms, loadUserFarms } from './actions';
+import { loadFarms, loadUserFarms, loadUserFarmsForLK } from './actions';
 
 interface IFarm {
   id: string;
@@ -12,19 +12,21 @@ interface IFarm {
   balance?: string;
 }
 
-export interface LaunchpadState {
+export interface FarmState {
   loaded: boolean;
   errors: any;
   farms: IFarm[];
+  stakes: any[];
 }
 
-const initialState: LaunchpadState = {
+const initialState: FarmState = {
   loaded: false,
   errors: {},
   farms: [],
+  stakes: [],
 };
 
-export default createReducer<LaunchpadState>(initialState, builder =>
+export default createReducer<FarmState>(initialState, builder =>
   builder
     .addCase(loadFarms.fulfilled, (state, action) => {
       const farms: IFarm[] = action.payload.data.map((farm: any) => {
@@ -61,6 +63,30 @@ export default createReducer<LaunchpadState>(initialState, builder =>
         ...state,
         loaded: true,
         farms: [...tmpFarms],
+      };
+    })
+    .addCase(loadUserFarmsForLK.fulfilled, (state, action) => {
+      const includedStakes = [...action.payload.included];
+
+      return {
+        ...state,
+        loaded: true,
+        stakes: includedStakes.map((stake) => {
+          const farm = action.payload.data.find((item: any) => {
+            return item.relationships.stakingUserFarms.data.some((farm: any) => farm.id === stake.id);
+          });
+
+          const farmFromStore = state.farms.find((searchedFarm) => searchedFarm.id === farm.id);
+
+          return {
+            id: stake.id,
+            stakedAmount: stake.attributes.amount,
+            contractAddress: farmFromStore?.contractAddress,
+            percentageRate: farmFromStore?.percentageRate,
+            reward: stake.attributes.reward,
+            endDate: stake.attributes.finishedAt,
+          }
+        }),
       };
     })
 );

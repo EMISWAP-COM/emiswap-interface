@@ -99,14 +99,14 @@ export default function Farm() {
   const [selectedTab, setSelectedTab] = useState<string>('staking');
   const { library, account, chainId } = useActiveWeb3React();
   const dispatch = useDispatch<AppDispatch>();
-  const farms = useSelector((state: AppState) => state.farming.farms);
+  const farms2 = useSelector((state: AppState) => state.farming.farms);
 
   const farmingContracts: Contract[] = useMemo(() => getFarmingContracts(library, account), [library, account]);
 
   const { id: userId } = useSelector((state: AppState) => state.user.info);
   const farming2Contracts: Contract[] = useMemo(() => {
-    return farms.map((farm) => getContract(farm.contractAddress, FARMING_2_ABI, library, account));
-  }, [library, account, farms]);
+    return farms2.map((farm) => getContract(farm.contractAddress, FARMING_2_ABI, library, account));
+  }, [library, account, farms2]);
 
   // Load farms list
   useEffect(() => {

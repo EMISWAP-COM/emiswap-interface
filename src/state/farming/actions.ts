@@ -21,3 +21,12 @@ export const loadUserFarms = createAsyncThunk(
     return await fetchWrapper.get(url);
   },
 );
+
+export const loadUserFarmsForLK = createAsyncThunk(
+  'farms/loadUserForLK',
+  async (userId: string) => {
+    const url = `${baseUrl}/v2/users/${userId}/staking_farms?include=stakingUserFarms`;
+
+    return await fetchWrapper.get(url);
+  },
+);
