@@ -369,25 +369,23 @@ export default function Header() {
                 </Text>
               </AprButton>
             )}
-            {NETWORK_LABELS[chainId] && (
-              <NetworkWrapper>
-                <NetworkButtonSwitch
-                  onClick={toggleNetworkSwitchModal}
-                >
-                  {networkItem && (
-                    <NetworkIcon>
-                      <img
-                        style={{ maxHeight: '18px', maxWidth: '18px' }}
-                        src={networkItem.icon}
-                        alt={networkItem.name}
-                      />
-                    </NetworkIcon>
-                  )}
-                  {NETWORK_LABELS[chainId]}
-                </NetworkButtonSwitch>
-                <NetworkSwitchModal/>
-              </NetworkWrapper>
-            )}
+            <NetworkWrapper>
+              <NetworkButtonSwitch
+                onClick={toggleNetworkSwitchModal}
+              >
+                {networkItem && (
+                  <NetworkIcon>
+                    <img
+                      style={{ maxHeight: '18px', maxWidth: '18px' }}
+                      src={networkItem.icon}
+                      alt={networkItem.name}
+                    />
+                  </NetworkIcon>
+                )}
+                {NETWORK_LABELS[chainId] || 'Change Network'}
+              </NetworkButtonSwitch>
+              <NetworkSwitchModal/>
+            </NetworkWrapper>
             <a className="purple-btn" href={`${window.location.origin}/magic_cards/`}>
               <span>Magic Hall</span>
             </a>
