@@ -1,6 +1,5 @@
 import { ChainId } from '@uniswap/sdk';
 import React from 'react';
-import { isMobile, isTablet } from 'react-device-detect';
 import { Text } from 'rebass';
 import styled from 'styled-components/macro';
 import Logo from '../../assets/svg/logo.svg';
@@ -20,6 +19,7 @@ import { ButtonGray, ButtonOutlined } from '../Button';
 import NetworkSwitchModal from './NetworkSwitchModal';
 import { useNetworkSwitchModalToggle } from '../../state/application/hooks';
 import chainIds from '../../constants/chainIds';
+import { networksItems } from '../../constants';
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -248,6 +248,17 @@ const NetworkButtonSwitch = styled(ButtonGray)`
   }
 `;
 
+const NetworkIcon = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: white;
+`;
+
 const UniIcon = styled.div`
   width: 175px;
   height: 47px;
@@ -317,13 +328,12 @@ const RowBetweenStyled = styled(RowBetween)`
   `};
 `;
 
-const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
-  [ChainId.MAINNET]: null,
+const NETWORK_LABELS: { [chainId in chainIds]: string | null } = {
+  [ChainId.MAINNET]: 'Ethereum',
   [ChainId.RINKEBY]: 'Rinkeby',
   [ChainId.ROPSTEN]: 'Ropsten',
   [ChainId.GÖRLI]: 'Görli',
   [ChainId.KOVAN]: 'Kovan',
-  // @ts-ignore
   [chainIds.KUCOIN]: 'Kucoin',
 };
 
@@ -334,6 +344,8 @@ export default function Header() {
   const [isDark] = useDarkModeManager();
 
   const toggleNetworkSwitchModal = useNetworkSwitchModalToggle();
+
+  const networkItem = networksItems.find(v => v.chainId === chainId);
 
   return (
     <HeaderFrame>
@@ -350,16 +362,27 @@ export default function Header() {
         </LogoElem>
         <HeaderControls>
           <HeaderElement>
-            <AprButton>
-              <Text textAlign="center" fontWeight={500} fontSize={14}>
-                APR settings
-              </Text>
-            </AprButton>
-            {!isMobile && !isTablet && NETWORK_LABELS[chainId] && (
+            {false && (
+              <AprButton>
+                <Text textAlign="center" fontWeight={500} fontSize={14}>
+                  APR settings
+                </Text>
+              </AprButton>
+            )}
+            {NETWORK_LABELS[chainId] && (
               <NetworkWrapper>
                 <NetworkButtonSwitch
                   onClick={toggleNetworkSwitchModal}
                 >
+                  {networkItem && (
+                    <NetworkIcon>
+                      <img
+                        style={{ maxHeight: '18px', maxWidth: '18px' }}
+                        src={networkItem.icon}
+                        alt={networkItem.name}
+                      />
+                    </NetworkIcon>
+                  )}
                   {NETWORK_LABELS[chainId]}
                 </NetworkButtonSwitch>
                 <NetworkSwitchModal/>

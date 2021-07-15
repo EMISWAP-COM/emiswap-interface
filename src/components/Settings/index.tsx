@@ -1,18 +1,13 @@
-import React, { useRef, useEffect, useContext, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Settings, X } from 'react-feather';
-import styled from 'styled-components';
+import styled, { ThemeContext } from 'styled-components';
 
-import {
-  useUserSlippageTolerance,
-  useExpertModeManager,
-  useUserDeadline,
-} from '../../state/user/hooks';
+import { useExpertModeManager, useUserDeadline, useUserSlippageTolerance } from '../../state/user/hooks';
 import SlippageTabs from '../SlippageTabs';
-import { RowFixed, RowBetween } from '../Row';
+import { RowBetween, RowFixed } from '../Row';
 import { TYPE } from '../../theme';
 import QuestionHelper from '../QuestionHelper';
 import Toggle from '../Toggle';
-import { ThemeContext } from 'styled-components';
 import { AutoColumn } from '../Column';
 import { ButtonError } from '../Button';
 import { useSettingsMenuOpen, useToggleSettingsMenu } from '../../state/application/hooks';

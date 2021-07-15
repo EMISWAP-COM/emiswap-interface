@@ -1,10 +1,10 @@
 import React, { ErrorInfo } from 'react';
-import Modal from '../Modal'
-import styled from 'styled-components/macro'
-import {AppWrapper} from '../../base/ui/AppWrapper/AppWrapper'
-import Logo from '../../assets/svg/logo.svg'
-import WarningBlock from '../Warning/WarningBlock'
-import {ButtonSecondary} from '../Button'
+import Modal from '../Modal';
+import styled from 'styled-components/macro';
+import { AppWrapper } from '../../base/ui/AppWrapper/AppWrapper';
+import Logo from '../../assets/svg/logo.svg';
+import WarningBlock from '../Warning/WarningBlock';
+import { ButtonSecondary } from '../Button';
 
 const ErrorContainer = styled.div`
   padding: 10px;

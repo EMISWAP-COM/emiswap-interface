@@ -11,10 +11,7 @@ import EMI_FACTORY_ABI from '../constants/abis/EmiFactory.json';
 import { abi as EMI_SWAP_ABI } from '../constants/abis/Emiswap.json';
 import { MULTICALL_ABI, MULTICALL_NETWORKS } from '../constants/multicall';
 import { V1_FACTORY_ABI, V1_FACTORY_ADDRESSES } from '../constants/v1';
-import {
-  V1_EMIROUTER_HELPER_ADDRESSES,
-  V1_MOONISWAP_FACTORY_ADDRESSES,
-} from '../constants/v1-mooniswap';
+import { V1_EMIROUTER_HELPER_ADDRESSES, V1_MOONISWAP_FACTORY_ADDRESSES } from '../constants/v1-mooniswap';
 import { getContract, getProviderOrSigner } from '../utils';
 import { useActiveWeb3React } from './index';
 import EMI_ROUTER_ABI from '../constants/abis/EmiRouter.json';

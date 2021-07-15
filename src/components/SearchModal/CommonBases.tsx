@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from 'rebass';
-import { ChainId, Token, currencyEquals, ETHER } from '@uniswap/sdk';
+import { ChainId, currencyEquals, ETHER, Token } from '@uniswap/sdk';
 import styled from 'styled-components';
 
 import { KOVAN_WETH, SUGGESTED_BASES } from '../../constants';
@@ -51,7 +51,8 @@ export default function CommonBases({
   const WETH: Token =
     wethTokenInfo && chainId
       ? new Token(
-          chainId,
+          // @ts-ignore
+          chainId as ChainId,
           wethTokenInfo.address,
           wethTokenInfo.decimals,
           wethTokenInfo.symbol,

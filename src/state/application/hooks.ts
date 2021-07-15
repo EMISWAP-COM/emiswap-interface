@@ -4,10 +4,12 @@ import {
   addPopup,
   PopupContent,
   removePopup,
+  showWalletModal,
+  toggleNetworkSwitchModal,
+  toggleSettingsMenu,
   toggleWalletModal,
-  toggleSettingsMenu, showWalletModal, toggleNetworkSwitchModal,
 } from './actions';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../index';
 
 export function useBlockNumber(): number | undefined {

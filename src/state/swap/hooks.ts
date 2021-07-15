@@ -1,6 +1,6 @@
 import useToggledVersion, { Version } from '../../hooks/useToggledVersion';
 import { parseUnits } from '@ethersproject/units';
-import { JSBI, Token, TokenAmount, Trade, ZERO_ADDRESS, ChainId } from '@uniswap/sdk';
+import { ChainId, JSBI, Token, TokenAmount, Trade, ZERO_ADDRESS } from '@uniswap/sdk';
 import { ParsedQs } from 'qs';
 import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,14 +12,7 @@ import useParsedQueryString from '../../hooks/useParsedQueryString';
 import { isAddress } from '../../utils';
 import { AppDispatch, AppState } from '../index';
 import { useCurrencyBalances } from '../wallet/hooks';
-import {
-  Field,
-  receiveOutput,
-  replaceSwapState,
-  selectCurrency,
-  switchCurrencies,
-  typeInput,
-} from './actions';
+import { Field, receiveOutput, replaceSwapState, selectCurrency, switchCurrencies, typeInput } from './actions';
 import { SwapState } from './reducer';
 import { useUserSlippageTolerance } from '../user/hooks';
 import { computeSlippageAdjustedAmounts } from '../../utils/prices';

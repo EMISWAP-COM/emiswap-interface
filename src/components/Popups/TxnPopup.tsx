@@ -1,13 +1,12 @@
 import React, { useContext } from 'react';
 import { CheckCircle, XCircle } from 'react-feather';
-import { ThemeContext } from 'styled-components';
+import styled, { ThemeContext } from 'styled-components';
 import { useActiveWeb3React } from '../../hooks';
 import { TYPE } from '../../theme';
 import { ExternalLink } from '../../theme/components';
 import { getEtherscanLink } from '../../utils';
 import { AutoColumn } from '../Column';
 import { AutoRow } from '../Row';
-import styled from 'styled-components';
 
 const Wrapper = styled(AutoRow)`
   flex-wrap: nowrap;

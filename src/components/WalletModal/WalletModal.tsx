@@ -25,6 +25,7 @@ import { Ambassador } from '../AccountDetails/Ambassador';
 import { Owner } from '../AccountDetails/Owner';
 
 import * as Styled from './styled';
+import { useActiveWeb3React } from '../../hooks';
 
 export enum UserRoles {
   client = 'client',
@@ -49,6 +50,7 @@ const WALLET_VIEWS = {
 const WalletModal: React.FC<WalletModalProps> = ({ ENSName }) => {
   // important that these are destructed from the account-specific web3-react context
   const { active, account, connector, activate, error } = useWeb3React();
+  const { chainId } = useActiveWeb3React();
 
   const user = useSelector((state: AppState) => state.user.info);
 
@@ -263,6 +265,11 @@ const WalletModal: React.FC<WalletModalProps> = ({ ENSName }) => {
     const isMetamask = window.ethereum && window.ethereum.isMetaMask;
     return Object.keys(SUPPORTED_WALLETS).map(key => {
       const option = SUPPORTED_WALLETS[key];
+
+      if (option.unavailableNetworksIds.includes(chainId)) {
+        return null;
+      }
+
       // check for mobile options
       if (isMobile) {
         //disable portis on mobile for now

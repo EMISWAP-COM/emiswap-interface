@@ -3,14 +3,10 @@ import Modal from '../Modal';
 import { useNetworkSwitchModalOpen, useNetworkSwitchModalToggle } from '../../state/application/hooks';
 import { Text } from 'rebass';
 import styled from 'styled-components/macro';
-import EthereumNetworkIcon from '../../assets/svg/ethereum-network.svg';
-import KuCoinNetworkIcon from '../../assets/svg/kucoin-network.svg';
-import PolygonNetworkIcon from '../../assets/svg/polygon-network.svg';
 import CircleCheckIcon from '../../assets/svg/circle-check.svg';
-import { ChainId } from '@uniswap/sdk';
 import { toHex } from 'web3-utils';
 import { useActiveWeb3React } from '../../hooks';
-import { KuCoinChainId } from '../../constants';
+import { networksItems } from '../../constants';
 
 const NetworkSwitchWrapped = styled.div`
   width: 100%;
@@ -19,7 +15,8 @@ const NetworkSwitchWrapped = styled.div`
 
 const NetworkItemsRow = styled.div`
   display: flex;
-  justify-content: space-between;
+  // justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   width: 70%;
   margin: 24px auto 0 auto;
@@ -76,27 +73,6 @@ export default function NetworkSwitchModal() {
     }
   };
 
-  const items = [
-    {
-      value: 'ethereum',
-      chainId: ChainId.MAINNET,
-      icon: EthereumNetworkIcon,
-      name: 'Ethereum',
-    },
-    {
-      value: 'polygon',
-      chainId: ChainId.MAINNET,
-      icon: PolygonNetworkIcon,
-      name: 'Polygon (Matic)',
-    },
-    {
-      value: 'kucoin',
-      chainId: KuCoinChainId,
-      icon: KuCoinNetworkIcon,
-      name: 'Kucoin',
-    },
-  ];
-
   return (
     <Modal
       isOpen={networkSwitchModalOpen}
@@ -111,7 +87,7 @@ export default function NetworkSwitchModal() {
         </div>
 
         <NetworkItemsRow>
-          {items.map(item => (
+          {networksItems.map(item => (
             <NetworkItem onClick={() => onClickItem(item.value, item.chainId)}>
               <NetworkIcon active={item.chainId === chainId}>
                 {item.chainId === chainId && (

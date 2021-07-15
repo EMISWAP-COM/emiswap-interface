@@ -2,15 +2,11 @@ import { useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { MaxUint256 } from '@ethersproject/constants';
 import { TransactionResponse } from '@ethersproject/providers';
-import { Trade, TokenAmount, ETHER, ZERO_ADDRESS } from '@uniswap/sdk';
+import { ETHER, TokenAmount, Trade, ZERO_ADDRESS } from '@uniswap/sdk';
 import { BigNumber } from '@ethersproject/bignumber';
 import { useTokenAllowance } from '../data/Allowances';
 import { Field } from '../state/swap/actions';
-import {
-  useTransactionAdder,
-  useHasPendingApproval,
-  useAllTransactions,
-} from '../state/transactions/hooks';
+import { useAllTransactions, useHasPendingApproval, useTransactionAdder } from '../state/transactions/hooks';
 import { computeSlippageAdjustedAmounts } from '../utils/prices';
 import { calculateGasMargin } from '../utils';
 import { useTokenContract } from './useContract';

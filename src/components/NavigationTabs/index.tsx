@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components/macro';
 import { lighten } from 'polished';
 import { useTranslation } from 'react-i18next';
-import { NavLink, Link as HistoryLink } from 'react-router-dom';
+import { Link as HistoryLink, NavLink } from 'react-router-dom';
 
 import { ArrowLeft } from 'react-feather';
 import { RowBetween } from '../Row';

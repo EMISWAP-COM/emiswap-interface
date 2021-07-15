@@ -1,4 +1,4 @@
-import { Token, TokenAmount, ETHER, JSBI } from '@uniswap/sdk';
+import { ETHER, JSBI, Token, TokenAmount } from '@uniswap/sdk';
 import { useMemo } from 'react';
 import ERC20_INTERFACE from '../../constants/abis/erc20';
 import { useAllTokens } from '../../hooks/Tokens';
@@ -6,7 +6,7 @@ import { useActiveWeb3React } from '../../hooks';
 import { useMulticallContract } from '../../hooks/useContract';
 import { useAllCoins } from '../../hooks/Coins';
 import { isAddress } from '../../utils';
-import { useSingleContractMultipleData, useMultipleContractSingleData } from '../multicall/hooks';
+import { useMultipleContractSingleData, useSingleContractMultipleData } from '../multicall/hooks';
 
 /**
  * Returns a map of the given addresses to their eventually consistent ETH balances.

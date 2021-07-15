@@ -1,4 +1,4 @@
-import { Token, TokenAmount, ETHER, JSBI, Pair, Percent, Price } from '@uniswap/sdk';
+import { ETHER, JSBI, Pair, Percent, Price, Token, TokenAmount } from '@uniswap/sdk';
 import { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PairState, usePair } from '../../data/Reserves';

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 // import { Info, BookOpen, Code, PieChart, MessageCircle } from 'react-feather'
 import { BookOpen, Code, Info, MessageCircle, PieChart } from 'react-feather';
 import WikiIcon from '../../assets/images/wiki.svg';

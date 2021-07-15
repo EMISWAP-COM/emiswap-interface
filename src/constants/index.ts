@@ -6,6 +6,10 @@ import { bytecode } from './abis/Emiswap.json';
 import chainIds from './chainIds';
 import esw_addresses from './esw_addresses';
 
+import EthereumNetworkIcon from '../assets/svg/ethereum-network.svg';
+import KuCoinNetworkIcon from '../assets/svg/kucoin-network.svg';
+// import PolygonNetworkIcon from '../assets/svg/polygon-network.svg';
+
 export const MAX_NUM_DECIMALS = 18;
 export const ROUTER_ADDRESS = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D';
 
@@ -223,6 +227,7 @@ const TESTNET_CAPABLE_WALLETS = {
     iconName: 'arrow-right.svg',
     description: 'Injected web3 provider.',
     href: null,
+    unavailableNetworksIds: [],
     color: '#010101',
     primary: true,
   },
@@ -232,6 +237,7 @@ const TESTNET_CAPABLE_WALLETS = {
     iconName: 'metamask.png',
     description: 'Easy-to-use browser extension.',
     href: null,
+    unavailableNetworksIds: [],
     color: '#E8831D',
   },
 };
@@ -245,6 +251,7 @@ export const SUPPORTED_WALLETS = {
       iconName: 'walletConnectIcon.svg',
       description: 'Connect to Trust Wallet, Rainbow Wallet and more...',
       href: null,
+      unavailableNetworksIds: [],
       color: '#4196FC',
       mobile: true,
     },
@@ -254,6 +261,7 @@ export const SUPPORTED_WALLETS = {
       iconName: 'coinbaseWalletIcon.svg',
       description: 'Use Coinbase Wallet app on mobile device',
       href: null,
+      unavailableNetworksIds: [chainIds.KUCOIN],
       color: '#315CF5',
     },
     COINBASE_LINK: {
@@ -261,6 +269,7 @@ export const SUPPORTED_WALLETS = {
       iconName: 'coinbaseWalletIcon.svg',
       description: 'Open in Coinbase Wallet app.',
       href: 'https://go.cb-w.com/fWpxXDRLvhb',
+      unavailableNetworksIds: [chainIds.KUCOIN],
       color: '#315CF5',
       mobile: true,
       mobileOnly: true,
@@ -271,6 +280,7 @@ export const SUPPORTED_WALLETS = {
       iconName: 'fortmaticIcon.png',
       description: 'Login using Fortmatic hosted wallet',
       href: null,
+      unavailableNetworksIds: [chainIds.KUCOIN],
       color: '#6748FF',
       mobile: true,
     },
@@ -280,6 +290,7 @@ export const SUPPORTED_WALLETS = {
       iconName: 'portisIcon.png',
       description: 'Login using Portis hosted wallet',
       href: null,
+      unavailableNetworksIds: [chainIds.KUCOIN],
       color: '#4A6C9B',
       mobile: true,
     },
@@ -331,4 +342,23 @@ export const INIT_CODE_HASH = keccak256(['bytes'], [bytecode]);
 
 export const FACTORY_ADDRESS = '0xe4917eb85A6C11a56189DbE621433ce5c2a3bfc3';
 
-export const KuCoinChainId = 321;
+export const networksItems = [
+  {
+    value: 'ethereum',
+    chainId: ChainId.MAINNET,
+    icon: EthereumNetworkIcon,
+    name: 'Ethereum',
+  },
+  /*{
+    value: 'polygon',
+    chainId: ChainId.MAINNET,
+    icon: PolygonNetworkIcon,
+    name: 'Polygon (Matic)',
+  },*/
+  {
+    value: 'kucoin',
+    chainId: chainIds.KUCOIN,
+    icon: KuCoinNetworkIcon,
+    name: 'Kucoin',
+  },
+];

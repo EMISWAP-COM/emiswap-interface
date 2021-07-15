@@ -5,7 +5,7 @@ import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
 import { BigNumber } from '@ethersproject/bignumber';
 import MooniswapABI from '../constants/v1-mooniswap/v1_mooniswap_exchange.json';
 import EmiRouterABI from '../constants/abis/EmiRouter.json';
-import { ChainId, JSBI, Percent, Token, TokenAmount, ETHER } from '@uniswap/sdk';
+import { ChainId, ETHER, JSBI, Percent, Token, TokenAmount } from '@uniswap/sdk';
 import { TokenAddressMap } from '../state/lists/hooks';
 import { V1_EMIROUTER_HELPER_ADDRESSES } from '../constants/v1-mooniswap';
 import { EMISWAP_CROWDSALE_ABI } from '../constants/abis/crowdsale';
@@ -27,12 +27,13 @@ export function isAddress(value: any): string | false {
   }
 }
 
-const ETHERSCAN_PREFIXES: { [chainId in ChainId]: string } = {
+const ETHERSCAN_PREFIXES: { [chainId in chainIds]: string } = {
   1: '',
   3: 'ropsten.',
   4: 'rinkeby.',
   5: 'goerli.',
   42: 'kovan.',
+  321: 'kucoin.'
 };
 
 export function getEtherscanLink(
@@ -155,7 +156,7 @@ export function isDefaultToken(defaultTokens: TokenAddressMap, currency?: Token)
   return Boolean(currency instanceof Token && defaultTokens[currency.chainId]?.[currency.address]);
 }
 
-export function getCrowdsaleContract(library: Web3Provider, account: string, chainId: chainIds) {
+export function getCrowdsaleContract(library: Web3Provider, account: string, chainId: ChainId) {
   return getContract(
     crowdsale_addresses[chainId]
       ? crowdsale_addresses[chainId]
@@ -166,7 +167,7 @@ export function getCrowdsaleContract(library: Web3Provider, account: string, cha
   );
 }
 
-export function getVestingContract(library: Web3Provider, account: string, chainId: chainIds) {
+export function getVestingContract(library: Web3Provider, account: string, chainId: ChainId) {
   return getContract(
     vesting_addresses[chainId] ? vesting_addresses[chainId] : vesting_addresses[chainIds.MAINNET],
     EMISWAP_VESTING_ABI,

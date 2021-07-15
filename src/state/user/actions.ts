@@ -1,10 +1,6 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { UserInfo } from './reducer';
-import {
-  loadBalance,
-  loadBonus,
-  loadPerformance,
-} from '../cabinets/actions';
+import { loadBalance, loadBonus, loadPerformance } from '../cabinets/actions';
 import { loadGasPrice } from '../stats/actions';
 import { fetchWrapper } from '../../api/fetchWrapper';
 import { addPopup } from '../application/actions';

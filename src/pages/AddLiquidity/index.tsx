@@ -6,7 +6,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { Text } from 'rebass';
 import { ThemeContext } from 'styled-components/macro';
 import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button';
-import { BlueCard, OutlineCard, LightCard } from '../../components/Card';
+import { BlueCard, LightCard, OutlineCard } from '../../components/Card';
 import { AutoColumn, ColumnCenter } from '../../components/Column';
 import ConfirmationModal from '../../components/ConfirmationModal';
 import CurrencyInputPanel from '../../components/CurrencyInputPanel';
@@ -20,11 +20,7 @@ import { useCurrency } from '../../hooks/Tokens';
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback';
 import { useWalletModalToggle } from '../../state/application/hooks';
 import { Field } from '../../state/mint/actions';
-import {
-  useDerivedMintInfo,
-  useMintActionHandlers,
-  useMintState,
-} from '../../state/mint-mooniswap/hooks';
+import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint-mooniswap/hooks';
 import { useTransactionAdder } from '../../state/transactions/hooks';
 import { useIsExpertMode, useUserSlippageTolerance } from '../../state/user/hooks';
 import { StyledButtonNavigation, TYPE } from '../../theme';

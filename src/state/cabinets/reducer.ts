@@ -2,9 +2,9 @@ import { createReducer } from '@reduxjs/toolkit';
 import {
   loadBalance,
   loadBonus,
-  loadPerformance,
   loadDepositsEswHistory,
   loadDepositsEswHistoryRewards,
+  loadPerformance,
 } from './actions';
 
 export interface DepositsEswHistoryRewards {

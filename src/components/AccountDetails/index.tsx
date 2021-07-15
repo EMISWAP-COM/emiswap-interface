@@ -18,7 +18,7 @@ import { injected, walletlink } from '../../connectors';
 import { ReactComponent as Close } from '../../assets/images/x.svg';
 import { ExternalLink, LinkStyledButton, TYPE } from '../../theme';
 import { formatConnectorName } from './uitls';
-import { StatusIcon } from './StatusIcon'
+import { StatusIcon } from './StatusIcon';
 
 const HeaderRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};

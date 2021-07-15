@@ -1,5 +1,5 @@
 import { parseBytes32String } from '@ethersproject/strings';
-import { Token, ETHER } from '@uniswap/sdk';
+import { ETHER, Token } from '@uniswap/sdk';
 import { useMemo } from 'react';
 import { NEVER_RELOAD, useSingleCallResult } from '../state/multicall/hooks';
 import { useCoinList } from '../state/invest/hooks';

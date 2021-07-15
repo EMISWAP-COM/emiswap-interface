@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components/macro';
 import Modal from '../Modal';
-import { ExternalLink, CloseIcon, Spinner } from '../../theme';
+import { CloseIcon, ExternalLink, Spinner } from '../../theme';
 import { Text } from 'rebass';
 import { RowBetween } from '../Row';
 import { AlertTriangle, ArrowUpCircle } from 'react-feather';

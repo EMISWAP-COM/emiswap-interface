@@ -1,5 +1,5 @@
 import { parseBytes32String } from '@ethersproject/strings';
-import { Token, ETHER } from '@uniswap/sdk';
+import { ETHER, Token, ZERO_ADDRESS } from '@uniswap/sdk';
 import { useMemo } from 'react';
 import { useDefaultTokenList, WrappedTokenInfo } from '../state/lists/hooks';
 import { NEVER_RELOAD, useSingleCallResult } from '../state/multicall/hooks';
@@ -8,7 +8,6 @@ import { isAddress } from '../utils';
 import { useActiveWeb3React } from './index';
 import { useBytes32TokenContract, useTokenContract } from './useContract';
 import { useDefaultCoin } from './Coins';
-import { ZERO_ADDRESS } from '@uniswap/sdk';
 import { useTokenListWithPair } from './useTokenListWithPair';
 import getKcsToken from '../constants/tokens/KCS';
 import chainIds from '../constants/chainIds';
