@@ -81,7 +81,7 @@ const StyledMenuItemMigrate = styled(StyledMenuItem)<{ selected?: boolean }>`
 
 export default function MigrateV1() {
   const theme = useContext(ThemeContext);
-  const { account, connector } = useActiveWeb3React();
+  const { account, connector, chainId } = useActiveWeb3React();
   const history = useHistory();
   const toggleWalletModal = useWalletModalToggle();
   const [selected, setSelected] = useState(null);
@@ -112,8 +112,14 @@ export default function MigrateV1() {
         base,
         balance,
       } = formatedTokenList[index];
-      const token0 = unwrappedToken(tokens.find(el => el.address === address0));
-      const token1 = unwrappedToken(tokens.find(el => el.address === address1));
+      const token0 = unwrappedToken(
+        chainId,
+        tokens.find(el => el.address === address0),
+      );
+      const token1 = unwrappedToken(
+        chainId,
+        tokens.find(el => el.address === address1),
+      );
       return (
         <StyledMenuItemMigrate
           style={{ ...style, width: '100%' }}
@@ -138,15 +144,15 @@ export default function MigrateV1() {
         </StyledMenuItemMigrate>
       );
     };
-  }, [selected, tokens, formatedTokenList]);
+  }, [selected, tokens, formatedTokenList, chainId]);
 
   const isMetaMask = formatConnectorName(connector) === 'MetaMask';
 
-  const isShowLoader = (
-    !formatedTokenList.length
-    && lpTokensDetailedInfo.length
-    && balances.every(balance => balance === undefined)
-  ) || isLoading;
+  const isShowLoader =
+    (!formatedTokenList.length &&
+      lpTokensDetailedInfo.length &&
+      balances.every(balance => balance === undefined)) ||
+    isLoading;
 
   const isTokensNotFound = balances.every(balance => {
     return +amountToString(balance, 10) === 0;
@@ -155,20 +161,18 @@ export default function MigrateV1() {
   return (
     <>
       <AppBody>
-        <SwapPoolTabs active={TabNames.MIGRATE}/>
+        <SwapPoolTabs active={TabNames.MIGRATE} />
         {account && isMetaMask && <StyledSubTitle>You have</StyledSubTitle>}
         <AutoColumn gap="sm" justify="center">
           {!account ? (
             <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
           ) : !isMetaMask ? (
             <>
-              <StyledSubTitle>Functionality of Liquidity migration is supported only with the MetaMask Wallet.
+              <StyledSubTitle>
+                Functionality of Liquidity migration is supported only with the MetaMask Wallet.
                 Please use this wallet to enjoy this opportunity.
               </StyledSubTitle>
-              <ButtonPrimary
-                style={{ width: '100%', padding: '15px 16px' }}
-                disabled
-              >
+              <ButtonPrimary style={{ width: '100%', padding: '15px 16px' }} disabled>
                 <Text fontWeight={500} fontSize={16}>
                   Migrate
                 </Text>
@@ -177,7 +181,7 @@ export default function MigrateV1() {
           ) : isShowLoader ? (
             <>
               <WrapperLoader>
-                <Loader size="100px"/>
+                <Loader size="100px" />
               </WrapperLoader>
             </>
           ) : isTokensNotFound ? (
@@ -205,7 +209,7 @@ export default function MigrateV1() {
             </>
           )}
 
-          <StyledHr style={{ margin: '24px 0' }}/>
+          <StyledHr style={{ margin: '24px 0' }} />
           <div>
             <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
               <ExternalGreenLink href="https://wiki.emiswap.com/user-guide/how-to-migrate-liquidity">
@@ -213,7 +217,7 @@ export default function MigrateV1() {
               </ExternalGreenLink>
             </TYPE.black>
           </div>
-          <ReferralLink/>
+          <ReferralLink />
         </AutoColumn>
       </AppBody>
     </>

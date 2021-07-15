@@ -26,12 +26,12 @@ const StyledFarmingHeader = styled.div`
   ${({ theme }) => theme.mediaWidth.upToLarge`
     display: block;
   `};
-`
+`;
 const StyledTabs = styled.div`
   ${({ theme }) => theme.mediaWidth.upToLarge`
     margin-bottom: 32px;
   `};
-`
+`;
 const StyledInfoWrapper = styled.div`
   text-align: left;
   width: 50%;
@@ -40,20 +40,20 @@ const StyledInfoWrapper = styled.div`
   ${({ theme }) => theme.mediaWidth.upToLarge`
     width: auto;
   `};
-`
+`;
 const StyledInfoTitle = styled.div`
   font-size: 16px;
-  color: ${({theme}) => theme.white};
+  color: ${({ theme }) => theme.white};
   margin-bottom: 16px;
-`
+`;
 const StyledInfo = styled.div`
   font-size: 16px;
-  color: ${({theme}) => theme.darkText};
-`
+  color: ${({ theme }) => theme.darkText};
+`;
 
 const Info = styled.div`
-  color: ${({theme}) => theme.darkWhite};
-`
+  color: ${({ theme }) => theme.darkWhite};
+`;
 // FIXME Убрать комментарий для возврата функционала
 // const radioList = [
 //   {
@@ -94,18 +94,21 @@ export default function Farm() {
   const [selectedTab, setSelectedTab] = useState<string>('staking');
   const { library, account, chainId } = useActiveWeb3React();
 
-  const farmingContracts: Contract[] = useMemo(() => getFarmingContracts(library, account), [library, account]);
+  const farmingContracts: Contract[] = useMemo(
+    () => getFarmingContracts(library, account, chainId),
+    [library, account, chainId],
+  );
 
   const toggleWalletModal = useWalletModalToggle();
 
   // @ts-ignore
-  const desiredChainId = Number(window.env.REACT_APP_CHAIN_ID);
+  const desiredChainId = chainId
 
   // Get esw price in top level component to avoid needless contract requests
   const [eswPriceInDai, setEswPriceInDai] = useState('0');
   useEffect(() => {
     if (account && chainId === desiredChainId) {
-      getEswPriceInDai(library, account, chainId).then((value) => {
+      getEswPriceInDai(library, account, chainId).then(value => {
         setEswPriceInDai(value);
       });
     }
@@ -118,7 +121,9 @@ export default function Farm() {
         {account && chainId === desiredChainId && (
           <>
             <StyledFarmingHeader>
-              <StyledTabs><Tabs items={tabItems} selectedItemId={selectedTab} onChange={setSelectedTab} /></StyledTabs>
+              <StyledTabs>
+                <Tabs items={tabItems} selectedItemId={selectedTab} onChange={setSelectedTab} />
+              </StyledTabs>
               {/* <RadioGroup buttonsList={radioList} groupName="farms" value={radioValue} onChange={setRadioValue} /> */}
             </StyledFarmingHeader>
             <StyledInfoWrapper>
@@ -127,30 +132,29 @@ export default function Farm() {
               </StyledInfoTitle>
               <StyledInfo>
                 {isStakingTab(selectedTab)
-                  ? 'Increase your profit from different tokens including ESW by staking them in our pools. No time limits let you stake your tokens as long as you wish and withdraw them at any time. Staking rewards are allocated to your EmiSwap account for every block.' :
-              'Increase your profit from different LP tokens including ESW token pairs by farming them in our pools. No time limits let you farm your tokens as long as you wish and withdraw them at any time. Farming rewards are allocated to your EmiSwap account for every block.'}
+                  ? 'Increase your profit from different tokens including ESW by staking them in our pools. No time limits let you stake your tokens as long as you wish and withdraw them at any time. Staking rewards are allocated to your EmiSwap account for every block.'
+                  : 'Increase your profit from different LP tokens including ESW token pairs by farming them in our pools. No time limits let you farm your tokens as long as you wish and withdraw them at any time. Farming rewards are allocated to your EmiSwap account for every block.'}
               </StyledInfo>
             </StyledInfoWrapper>
-            {farmingContracts.map(contract => <FarmComponent
-              key={contract.address}
-              contract={contract}
-              selectedTab={selectedTab}
-              eswPriceInDai={eswPriceInDai}
-            />)}
+            {farmingContracts.map(contract => (
+              <FarmComponent
+                key={contract.address}
+                contract={contract}
+                selectedTab={selectedTab}
+                eswPriceInDai={eswPriceInDai}
+              />
+            ))}
           </>
         )}
         {!account && (
           <Info>
             Please connect your wallet to see all available farms and staking pools
-            <br/><br/>
+            <br />
+            <br />
             <Button onClick={toggleWalletModal}>Connect to a wallet</Button>
           </Info>
         )}
-        {chainId !== desiredChainId && (
-          <Info>
-            Please change network
-          </Info>
-        )}
+        {chainId !== desiredChainId && <Info>Please change network</Info>}
       </AppBody>
     </>
   );

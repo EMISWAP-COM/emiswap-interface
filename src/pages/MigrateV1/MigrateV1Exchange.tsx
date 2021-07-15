@@ -22,13 +22,13 @@ import styled from 'styled-components';
 import Loader from '../../components/Loader';
 import { useLpCurrencies } from '../../hooks/useLpCurrencies';
 import { useLpTokens } from '../../hooks/useLpTokens';
-import { EmiVampAddress } from '../../constants/emi/addresses';
 import { tryParseAmount } from '../../state/swap/hooks';
 import { useWalletModalToggle } from '../../state/application/hooks';
 import { useCurrency } from '../../hooks/Tokens';
 import { useTransactionAdder } from '../../state/transactions/hooks';
 import Modal from '../../components/Modal';
 import { BigNumber } from '@ethersproject/bignumber';
+import vamp_addresses from '../../constants/vamp_addresses';
 
 const POOL_CURRENCY_AMOUNT_MIN = new Fraction(JSBI.BigInt(1), JSBI.BigInt(1000000));
 
@@ -172,7 +172,7 @@ export default function MigrateV1Exchange({
   const addTransaction = useTransactionAdder();
 
   const parsedAmount = tryParseAmount(amount, inputCurrency);
-  const [approval, approveCallback] = useApproveCallback(parsedAmount, EmiVampAddress);
+  const [approval, approveCallback] = useApproveCallback(parsedAmount, vamp_addresses[chainId]);
 
   const notEnoughBalance = !inputCurrencyBalance || +inputCurrencyBalance?.toExact() < +amount;
 

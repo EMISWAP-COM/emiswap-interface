@@ -62,7 +62,10 @@ export default function CurrencyList({
 
       const zeroBalance = balance && JSBI.equal(JSBI.BigInt(0), balance.raw);
       const wethTokenInfo = defaultCoins.tokens.find(
-        token => token.symbol === 'WETH' && token.chainId === chainId,
+        token =>
+          // @ts-ignore
+          (chainId === chainIds.KUCOIN ? token.symbol === 'WKCS' : token.symbol === 'WETH') &&
+          token.chainId === chainId,
       );
       const WETH: Token =
         wethTokenInfo && chainId

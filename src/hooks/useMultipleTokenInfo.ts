@@ -48,7 +48,6 @@ export function useMultipleTokenInfo(addresses: string[], lpTokensAddresses?: st
     undefined,
     true,
   );
-  console.log(balances);
 
   return useMemo(() => {
     const tokens = addresses
