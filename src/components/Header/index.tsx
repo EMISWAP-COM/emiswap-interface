@@ -327,7 +327,9 @@ export default function Header() {
                     pr="1.125rem"
                     fontWeight={450}
                   >
-                    {tokenAmountToString(userEthBalance, 4)} ETH
+                    {tokenAmountToString(userEthBalance, 4)}{' '}
+                    {/*// @ts-ignore*/}
+                    {chainId === chainIds.KUCOIN ? 'KCS' : 'ETH'}
                   </BalanceText>
                 </>
               ) : null}
