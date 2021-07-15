@@ -6,7 +6,7 @@ import styled from 'styled-components/macro';
 import CircleCheckIcon from '../../assets/svg/circle-check.svg';
 import { toHex } from 'web3-utils';
 import { useActiveWeb3React } from '../../hooks';
-import { networksItems } from '../../constants';
+import { INetworkItem, networksItems } from '../../constants';
 
 const NetworkSwitchWrapped = styled.div`
   width: 100%;
@@ -53,7 +53,6 @@ const NetworkName = styled(Text)<{ active: boolean }>`
 
 export default function NetworkSwitchModal() {
 
-  // const [active, setActive] = useState('ethereum');
   const { chainId } = useActiveWeb3React();
 
   const networkSwitchModalOpen = useNetworkSwitchModalOpen();
@@ -61,15 +60,36 @@ export default function NetworkSwitchModal() {
 
   const { ethereum } = window as any;
 
-  const onClickItem = async (value: string, chainId: number) => {
+  const onClickItem = async (item: INetworkItem) => {
     try {
       await ethereum.request({
         method: 'wallet_switchEthereumChain',
-        params: [{ chainId: toHex(chainId) }],
+        params: [{ chainId: toHex(item.chainId) }],
       });
-      // setActive(value);
-    } catch (e) {
-      console.log(e);
+    } catch (switchError) {
+      if (switchError.code === 4902) {
+        try {
+          await ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [
+              {
+                chainId: toHex(item.chainId),
+                chainName: item.name,
+                rpcUrls: item.rpcUrls,
+                nativeCurrency: {
+                  name: item.currencySymbol,
+                  symbol: item.currencySymbol,
+                  decimals: 18
+                },
+              },
+            ],
+          });
+        } catch (addError) {
+          console.log(addError);
+        }
+      } else {
+        console.log(switchError);
+      }
     }
   };
 
@@ -88,7 +108,7 @@ export default function NetworkSwitchModal() {
 
         <NetworkItemsRow>
           {networksItems.map(item => (
-            <NetworkItem onClick={() => onClickItem(item.value, item.chainId)}>
+            <NetworkItem onClick={() => onClickItem(item)}>
               <NetworkIcon active={item.chainId === chainId}>
                 {item.chainId === chainId && (
                   <CircleCheckImg src={CircleCheckIcon}/>

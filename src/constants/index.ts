@@ -342,12 +342,25 @@ export const INIT_CODE_HASH = keccak256(['bytes'], [bytecode]);
 
 export const FACTORY_ADDRESS = '0xe4917eb85A6C11a56189DbE621433ce5c2a3bfc3';
 
-export const networksItems = [
+export interface INetworkItem {
+  value: string;
+  chainId: number;
+  icon: any;
+  name: string;
+  rpcUrls: string[];
+  currencySymbol: string;
+  blockExplorerUrls: string;
+}
+
+export const networksItems: INetworkItem[] = [
   {
     value: 'ethereum',
     chainId: ChainId.MAINNET,
     icon: EthereumNetworkIcon,
     name: 'Ethereum',
+    rpcUrls: [''],
+    currencySymbol: 'ETH',
+    blockExplorerUrls: '',
   },
   /*{
     value: 'polygon',
@@ -360,5 +373,8 @@ export const networksItems = [
     chainId: chainIds.KUCOIN,
     icon: KuCoinNetworkIcon,
     name: 'Kucoin',
+    rpcUrls: ['https://rpc-mainnet.kcc.network'],
+    currencySymbol: 'KCS',
+    blockExplorerUrls: 'https://explorer.kcc.io/en',
   },
 ];
