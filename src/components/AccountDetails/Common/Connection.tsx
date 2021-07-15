@@ -215,42 +215,44 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
           </WalletInfo>
 
           {(chainId as any) !== chainIds.KUCOIN && (
-            <BalanceWrapper>
-              <BalanceItem>
-                <span>Total</span>
-                <div>
-                  <BalanceValue>{sumESW()}</BalanceValue>&nbsp;ESW
-                </div>
-              </BalanceItem>
-              <BalanceItem>
-                <span>Wallet</span>
-                <div>
-                  <BalanceValue>{convertBigDecimal(balance?.wallet.ESW)}</BalanceValue>&nbsp;ESW
-                </div>
-              </BalanceItem>
-              <BalanceItem>
-                <span>Locked at Emiswap </span>
-                <div>
-                  <BalanceValue>{convertBigDecimal(balance?.total.locked.ESW)}</BalanceValue>&nbsp;ESW
-                </div>
-                {' '}
-              </BalanceItem>
-              <BalanceItem>
-                <span>Available to collect</span>
-                <div>
-                  <BalanceValue>{convertBigDecimal(balance?.available.ESW)}</BalanceValue>&nbsp;ESW
-                </div>
-                {' '}
-              </BalanceItem>
-            </BalanceWrapper>
+            <>
+              <BalanceWrapper>
+                <BalanceItem>
+                  <span>Total</span>
+                  <div>
+                    <BalanceValue>{sumESW()}</BalanceValue>&nbsp;ESW
+                  </div>
+                </BalanceItem>
+                <BalanceItem>
+                  <span>Wallet</span>
+                  <div>
+                    <BalanceValue>{convertBigDecimal(balance?.wallet.ESW)}</BalanceValue>&nbsp;ESW
+                  </div>
+                </BalanceItem>
+                <BalanceItem>
+                  <span>Locked at Emiswap </span>
+                  <div>
+                    <BalanceValue>{convertBigDecimal(balance?.total.locked.ESW)}</BalanceValue>&nbsp;ESW
+                  </div>
+                  {' '}
+                </BalanceItem>
+                <BalanceItem>
+                  <span>Available to collect</span>
+                  <div>
+                    <BalanceValue>{convertBigDecimal(balance?.available.ESW)}</BalanceValue>&nbsp;ESW
+                  </div>
+                  {' '}
+                </BalanceItem>
+              </BalanceWrapper>
+              <Options>
+                {children}
+                <CollectBtn disabled={isCollectDisabled} onClick={handleClaim}>
+                  Collect to my wallet
+                </CollectBtn>
+              </Options>
+            </>
           )}
 
-          <Options>
-            {children}
-            <CollectBtn disabled={isCollectDisabled} onClick={handleClaim}>
-              Collect to my wallet
-            </CollectBtn>
-          </Options>
         </Main>
         <AccountControl>
           <Copy toCopy={account}>
