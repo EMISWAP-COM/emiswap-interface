@@ -53,9 +53,7 @@ export default createReducer<LaunchpadState>(initialState, builder =>
         const farmIndex = tmpFarms.findIndex((farm) => farm.id === item.id);
         tmpFarms[farmIndex] = {
           ...tmpFarms[farmIndex],
-          deposit: item.meta.amountSum,
           reward: item.meta.rewardSum,
-          balance: item.meta.balance,
         }
       });
 

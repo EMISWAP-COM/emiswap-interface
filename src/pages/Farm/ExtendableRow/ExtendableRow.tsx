@@ -361,7 +361,9 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
               <StyledCurrencyLogo>
                 <CurrencyLogo currency={rewardToken} size={'24px'} />
               </StyledCurrencyLogo>
-              <StyledTruncatedText>{projectedReward}</StyledTruncatedText>
+              <Tooltip title={projectedReward}>
+                <StyledTruncatedText>{projectedReward}</StyledTruncatedText>
+              </Tooltip>
             </StyledBlockValue>
           </StyledBlock>
           {typeof balance !== 'undefined' && (
@@ -371,7 +373,9 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
                 <StyledCurrencyLogo>
                   <CurrencyLogo currency={rewardToken} size={'24px'} />
                 </StyledCurrencyLogo>
-                <StyledTruncatedText>{balance}</StyledTruncatedText>
+                <Tooltip title={balance}>
+                  <StyledTruncatedText>{balance}</StyledTruncatedText>
+                </Tooltip>
               </StyledBlockValue>
             </StyledBlock>
           )}
@@ -382,7 +386,9 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
                 <StyledCurrencyLogo>
                   <CurrencyLogo currency={rewardToken} size={'24px'} />
                 </StyledCurrencyLogo>
-                <StyledTruncatedText>{availableToCollect}</StyledTruncatedText>
+                <Tooltip title={availableToCollect}>
+                  <StyledTruncatedText>{availableToCollect}</StyledTruncatedText>
+                </Tooltip>
               </StyledBlockValue>
             </StyledBlock>
           )}

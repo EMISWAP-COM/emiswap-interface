@@ -107,12 +107,30 @@ export default function Farm() {
   const farming2Contracts: Contract[] = useMemo(() => {
     return farms.map((farm) => getContract(farm.contractAddress, FARMING_2_ABI, library, account));
   }, [library, account, farms]);
+
+  // Load farms list
   useEffect(() => {
     dispatch(loadFarms() as any);
+  }, [dispatch, userId]);
+
+  // This counter is used to update data every N seconds
+  const [intervalUpdateCounter, setIntervalUpdateCounter] = useState<number>(0);
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setIntervalUpdateCounter(counter => ++counter);
+    }, 30000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+
+  // Load user staking data
+  useEffect(() => {
     if (userId) {
       dispatch(loadUserFarms(userId) as any);
     }
-  }, [dispatch, userId]);
+  }, [dispatch, userId, intervalUpdateCounter]);
 
   const toggleWalletModal = useWalletModalToggle();
 

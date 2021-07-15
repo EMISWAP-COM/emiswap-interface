@@ -236,6 +236,20 @@ const useFarming2 = (contract: Contract) => {
       });
   };
 
+  const [liquidity, setLiquidity] = useState<string | undefined>(undefined);
+  useEffect(() => {
+    if (!chainId) return;
+
+    contract.getTotals().then((response: [BigNumber, BigNumber]) => {
+      const [, totalStakeUSD] = response;
+      setLiquidity(totalStakeUSD.toString());
+    })
+      .catch((error: RequestError) => {
+        addEthErrorPopup(error);
+        logContractError('getTotals', account, chainId, contract.address, '', error);
+      });
+  }, [contract, account, chainId, addEthErrorPopup, completedTransactionsCount]);
+
   return {
     stakeToken: stakeToken,
     rewardToken: rewardToken,
@@ -247,7 +261,7 @@ const useFarming2 = (contract: Contract) => {
     apr: farm?.percentageRate || '0',
     deposit: deposit,
     reward: farm?.reward || '0',
-    balance: farm?.balance || '0',
+    liquidity: liquidity,
     collect: handleCollect,
     stake: handleStake,
   }
