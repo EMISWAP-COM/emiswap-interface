@@ -73,12 +73,12 @@ const Info = styled.div`
 
 const tabItems = [
   {
-    id: 'staking',
-    title: 'Staking',
-  },
-  {
     id: 'farming',
     title: 'Farming',
+  },
+  {
+    id: 'staking',
+    title: 'Staking',
   },
   // FIXME Убрать комментарий для возврата функционала
   // {
@@ -91,12 +91,12 @@ const tabItems = [
   // },
 ];
 
-export const isStakingTab = tabname => tabname === tabItems[0].id;
+export const isStakingTab = tabname => tabname === tabItems[1].id;
 
 export default function Farm() {
   // FIXME Убрать комментарий для возврата функционала
   // const [radioValue, setRadioValue] = useState<string>('all');
-  const [selectedTab, setSelectedTab] = useState<string>('staking');
+  const [selectedTab, setSelectedTab] = useState<string>('farming');
   const { library, account, chainId } = useActiveWeb3React();
   const dispatch = useDispatch<AppDispatch>();
   const farms2 = useSelector((state: AppState) => state.farming.farms);
