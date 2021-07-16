@@ -99,9 +99,20 @@ type TokenInputProps = {
   token: Token;
   onStake: (amount: string) => Promise<unknown>;
   tokenMode: number;
+  totalSupply: string;
+  totalStakeLimit: string;
 };
 
-const TokenInput: React.FC<TokenInputProps> = ({ contractAddress, token, onStake, tokenMode }) => {
+const TokenInput: React.FC<TokenInputProps> = (
+  {
+    contractAddress,
+    token,
+    onStake,
+    tokenMode,
+    totalSupply,
+    totalStakeLimit,
+  }
+) => {
   const { account } = useActiveWeb3React();
   const [inputValue, setInputValue] = useState<string>('');
   const [isStakeInProgress, setIsStakeInProgress] = useState<boolean>(false);
@@ -165,6 +176,43 @@ const TokenInput: React.FC<TokenInputProps> = ({ contractAddress, token, onStake
 
   const toggleWalletModal = useWalletModalToggle();
 
+  const [isLimitReached, setIsLimitReached] = useState<boolean>(false);
+  useEffect(() => {
+    console.debug(totalSupply);
+    console.debug(totalStakeLimit);
+    setIsLimitReached((parseFloat(totalSupply) + parseFloat(inputValue)) > parseFloat(totalStakeLimit));
+  }, [inputValue, totalStakeLimit, totalSupply]);
+
+  const renderStakeButton = () => {
+    if (!account) {
+      return <Button onClick={toggleWalletModal}>Connect to a wallet</Button>;
+    } else {
+      if (isLimitReached) {
+        return <Button isDisabled={true}>Total stake limit reached</Button>
+      } else {
+        if (approvalState === ApprovalState.UNKNOWN) {
+          return <Button isDisabled={true}>Checking approval...</Button>;
+        }
+
+        if (approvalState === ApprovalState.NOT_APPROVED) {
+          return <Button onClick={handleApprove}>Approve {token?.symbol}</Button>;
+        }
+
+        if (approvalState === ApprovalState.PENDING) {
+          return <Button isDisabled={true}>Approval in progress...</Button>;
+        }
+
+        if (approvalState === ApprovalState.APPROVED) {
+          return <Button onClick={handleButtonClick} isDisabled={isStakeButtonDisabled}>
+            {stakeButtonText}
+          </Button>;
+        }
+      }
+    }
+
+    return null;
+  };
+
   return (
     <StyledTokenInputWrapper>
       <StyledInputWrapper>
@@ -193,21 +241,7 @@ const TokenInput: React.FC<TokenInputProps> = ({ contractAddress, token, onStake
           </StyledInputButtons>
         </StyledInputContentWrapper>
       </StyledInputWrapper>
-      {!account && <Button onClick={toggleWalletModal}>Connect to a wallet</Button>}
-      {account && approvalState === ApprovalState.UNKNOWN && (
-        <Button isDisabled={true}>Checking approval...</Button>
-      )}
-      {account && approvalState === ApprovalState.NOT_APPROVED && (
-        <Button onClick={handleApprove}>Approve {token?.symbol}</Button>
-      )}
-      {account && approvalState === ApprovalState.PENDING && (
-        <Button isDisabled={true}>Approval in progress...</Button>
-      )}
-      {account && approvalState === ApprovalState.APPROVED && (
-        <Button onClick={handleButtonClick} isDisabled={isStakeButtonDisabled}>
-          {stakeButtonText}
-        </Button>
-      )}
+      {renderStakeButton()}
     </StyledTokenInputWrapper>
   );
 };

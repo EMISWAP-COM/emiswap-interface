@@ -209,6 +209,8 @@ type ExtendableRowProps = {
   onStake: (amount: string) => Promise<unknown>;
   onCollect: () => Promise<unknown>;
   tokenMode: number;
+  totalSupply: string;
+  totalStakeLimit: string;
 };
 
 const ExtendableRow: React.FC<ExtendableRowProps> = ({
@@ -225,6 +227,8 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
   onStake,
   onCollect,
   tokenMode,
+  totalSupply,
+  totalStakeLimit,
 }) => {
   const [isRowExtended, setIsRowExtended] = useState(false);
 
@@ -353,6 +357,8 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
                 contractAddress={contractAddress}
                 onStake={onStake}
                 tokenMode={tokenMode}
+                totalSupply={totalSupply}
+                totalStakeLimit={totalStakeLimit}
               />
             )}
           </StyledTokenInputWrapper>

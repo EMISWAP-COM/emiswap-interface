@@ -43,6 +43,8 @@ const FarmComponent: React.FC<FarmComponentProps> = ({ contract, selectedTab, es
       onStake={farming.stake}
       onCollect={farming.collect}
       tokenMode={farming.tokenMode}
+      totalSupply={farming.totalSupply}
+      totalStakeLimit={farming.totalStakeLimit}
     />
   ) : null;
 };

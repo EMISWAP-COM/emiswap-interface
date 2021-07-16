@@ -53,6 +53,26 @@ const useFarming = (contract: Contract) => {
     };
   }, []);
 
+  const liquidityTokenAddress = getFarmingLiquidityTokenAddress(contract.address);
+  const defaultCoin = defaultCoins.tokens.find(
+    token =>
+      token.chainId === chainId &&
+      token.address.toLowerCase() === liquidityTokenAddress.toLowerCase(),
+  );
+  if (!defaultCoin) {
+    throw new Error("Couldn't get coin");
+  }
+  let liquidityToken: Token | undefined = undefined;
+  if (chainId) {
+    liquidityToken = new Token(
+      chainId,
+      defaultCoin.address,
+      defaultCoin.decimals,
+      defaultCoin.symbol,
+      defaultCoin.name,
+    );
+  }
+
   const [stakeToken, setStakeToken] = useState<Token | undefined>(undefined);
   useEffect(() => {
     contract.stakeToken().then((value: string) => {
@@ -249,27 +269,13 @@ const useFarming = (contract: Contract) => {
       });
   }, [contract, stakeToken, addEthErrorPopup, account, chainId]);
 
-  const [liquidity, setLiquidity] = useState<string | undefined>(undefined);
+  const [liquidity, setLiquidity] = useState<string | undefined>('0');
   useEffect(() => {
     if (!chainId) return;
 
-    const liquidityTokenAddress = getFarmingLiquidityTokenAddress(contract.address);
-    const defaultCoin = defaultCoins.tokens.find(
-      token =>
-        token.chainId === chainId &&
-        token.address.toLowerCase() === liquidityTokenAddress.toLowerCase(),
-    );
-    if (!defaultCoin) {
-      throw new Error("Couldn't get coin");
-    }
-    const liquidityToken = new Token(
-      chainId,
-      defaultCoin.address,
-      defaultCoin.decimals,
-      defaultCoin.symbol,
-      defaultCoin.name,
-    );
     contract.getStakedValuesinUSD(account).then((response: [BigNumber, BigNumber]) => {
+      if (!liquidityToken) return;
+
       const [, totalStake] = response;
       const tokenAmount = new TokenAmount(liquidityToken, JSBI.BigInt(totalStake.toString()));
       setLiquidity(tokenAmountToString(tokenAmount, liquidityToken.decimals));
@@ -278,7 +284,7 @@ const useFarming = (contract: Contract) => {
         addEthErrorPopup(error);
         logContractError('getStakedValuesinUSD', account, chainId, contract.address, '', error);
       });
-  }, [contract, account, chainId, addEthErrorPopup, completedTransactionsCount, intervalUpdateCounter]);
+  }, [contract, account, chainId, addEthErrorPopup, completedTransactionsCount, intervalUpdateCounter, liquidityToken]);
 
   const [tokenMode, setTokenMode] = useState<number>(0);
   useEffect(() => {
@@ -288,6 +294,24 @@ const useFarming = (contract: Contract) => {
         logContractError('tokenMode', account, chainId, contract.address, '', error);
       });
   }, [contract, addEthErrorPopup, account, chainId]);
+
+  const [totalStakeLimit, setTotalStakeLimit] = useState<string>('0');
+  useEffect(() => {
+    contract.totalStakeLimit()
+      .then((value: BigNumber) => {
+        if (chainId && stakeToken && liquidityToken) {
+          const tokenAmount = new TokenAmount(liquidityToken, JSBI.BigInt(value.toString()));
+          return tokenAmountToString(tokenAmount, stakeToken.decimals);
+        } else {
+          return '0';
+        }
+      })
+      .then((value: string) => setTotalStakeLimit(value))
+      .catch((error: RequestError) => {
+        addEthErrorPopup(error);
+        logContractError('totalStakeLimit', account, chainId, contract.address, '', error);
+      });
+  }, [contract, stakeToken, addEthErrorPopup, account, chainId, liquidityToken]);
 
   return {
     stakeToken: stakeToken,
@@ -301,6 +325,7 @@ const useFarming = (contract: Contract) => {
     endDate: endDate,
     liquidity: liquidity,
     tokenMode: tokenMode,
+    totalStakeLimit: totalStakeLimit,
   };
 };
 
