@@ -35,7 +35,7 @@ const ETHERSCAN_PREFIXES: { [chainId in ChainId]: string } = {
   42: 'kovan.',
 };
 
-const EXPLORER_KCC_PREFIX = 'https://explorer.kcc.io/en/';
+const EXPLORER_KCC_PREFIX = 'https://explorer.kcc.io/en';
 
 export function getEtherscanLink(
   chainId: ChainId,
