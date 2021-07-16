@@ -3989,14 +3989,14 @@ const defaultCoins: DefaultCoins = {
     {
       address: '0x4446fc4eb47f2f6586f9faab68b3498f86c07521',
       chainId: 321,
-      decimals: 16,
+      decimals: 18,
       name: 'WKCS',
       symbol: 'WKCS',
     },
     {
       address: '0xc0ffee0000921eb8dd7d506d4de8d5b79b856157',
       chainId: 321,
-      decimals: 16,
+      decimals: 18,
       name: 'KOFFEE',
       symbol: 'KOFFEE',
     },

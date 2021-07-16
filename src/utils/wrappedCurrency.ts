@@ -1,6 +1,7 @@
 import { ChainId, ETHER, Token, TokenAmount } from '@uniswap/sdk';
 import { WETH, WKCS } from '../constants';
 import chainIds from '../constants/chainIds';
+import getKcsToken from '../constants/tokens/KCS';
 
 export function wrappedCurrency(
   currency: Token | undefined,
@@ -19,7 +20,10 @@ export function wrappedCurrencyAmount(
 }
 
 export function unwrappedToken(chainId: ChainId, token: Token): Token {
-  if (token.symbol === ((chainId as any) === chainIds.KUCOIN ? WKCS.symbol : WETH.symbol)) return ETHER;
+  if (token.symbol === ((chainId as any) === chainIds.KUCOIN ? WKCS.symbol : WETH.symbol)) {
+    // @ts-ignore
+    return chainId === chainIds.KUCOIN ? getKcsToken(chainId) : ETHER;
+  }
 
   return token;
 }
