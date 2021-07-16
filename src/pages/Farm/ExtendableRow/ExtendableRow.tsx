@@ -384,7 +384,11 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
               <StyledBlockTitle>Available to collect</StyledBlockTitle>
               <StyledBlockValue>
                 <StyledCurrencyLogo>
-                  <CurrencyLogo currency={rewardToken} size={'24px'} />
+                  {isLpToken(tokenMode) ? (
+                    <LpTokenSymbol />
+                  ) : (
+                    <CurrencyLogo currency={rewardToken} size={'24px'} />
+                  )}
                 </StyledCurrencyLogo>
                 <Tooltip title={availableToCollect}>
                   <StyledTruncatedText>{availableToCollect}</StyledTruncatedText>

@@ -19,8 +19,6 @@ const Farm2Component: React.FC<FarmComponentProps> = ({ contract, selectedTab, e
     (isStakingTab(selectedTab) && !isLpToken(farming2.tokenMode)) ||
     (!isStakingTab(selectedTab) && isLpToken(farming2.tokenMode));
 
-  const balance = String(parseFloat(farming2.deposit) + parseFloat(farming2.reward));
-
   return shouldShow ? (
     <ExtendableRow
       contractAddress={contract.address}
@@ -32,7 +30,6 @@ const Farm2Component: React.FC<FarmComponentProps> = ({ contract, selectedTab, e
       liquidity={farming2.liquidity}
       endDate={farming2.endDate}
       deposit={farming2.deposit}
-      balance={balance}
       availableToCollect={farming2.availableToCollect}
       type={FarmingTimeType.fixed}
       onStake={farming2.stake}

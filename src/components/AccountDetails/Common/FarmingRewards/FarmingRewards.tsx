@@ -128,7 +128,7 @@ const FarmingRewards = () => {
             <LevelWrapper flex={2}>Staked amount</LevelWrapper>
             <LevelWrapper>Fixed APR</LevelWrapper>
             <LevelWrapper flex={2}>Reward in ESW</LevelWrapper>
-            <LevelWrapper>Days until reward</LevelWrapper>
+            <LevelWrapper>Reward in</LevelWrapper>
           </TableTitles>
           {farm2Stakes.map(stake => {
             const contract = getContract(stake.contractAddress, FARMING_2_ABI, library, account);

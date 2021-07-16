@@ -4,6 +4,7 @@ import { Contract } from '@ethersproject/contracts';
 import { LevelWrapper, TableRow } from './FarmingRewards';
 import useFarming2 from '../../../../hooks/useFarming2';
 import dayjs from 'dayjs';
+import Tooltip from '../../../../pages/Farm/Tooltip';
 
 const Cell = styled.div<{ flex?: number }>`
   flex: ${({ flex }) => flex || 1};
@@ -57,6 +58,7 @@ const FarmingTableRow: React.FC<FarmingTableRowProps> = (
   const farming2 = useFarming2(contract);
   const dateNow = dayjs();
   const endDate = dayjs(stakeData.endDate);
+  const datesDiff = endDate.diff(dateNow, 'day');
 
   return (
     <TableRow>
@@ -73,7 +75,9 @@ const FarmingTableRow: React.FC<FarmingTableRowProps> = (
       <Cell flex={2}>
         <Label>Staked amount</Label>
         <LevelWrapper>
-          <StyledTruncatedText>{stakeData.stakedAmount}</StyledTruncatedText>
+          <Tooltip title={stakeData.stakedAmount}>
+            <StyledTruncatedText>{stakeData.stakedAmount}</StyledTruncatedText>
+          </Tooltip>
         </LevelWrapper>
       </Cell>
       <Cell>
@@ -85,13 +89,15 @@ const FarmingTableRow: React.FC<FarmingTableRowProps> = (
       <Cell flex={2}>
         <Label>Reward in ESW</Label>
         <LevelWrapper>
-          <StyledTruncatedText>{stakeData.reward}</StyledTruncatedText>
+          <Tooltip title={stakeData.reward}>
+            <StyledTruncatedText>{stakeData.reward}</StyledTruncatedText>
+          </Tooltip>
         </LevelWrapper>
       </Cell>
       <Cell>
-        <Label>Days until reward</Label>
+        <Label>Reward in</Label>
         <LevelWrapper>
-          <StyledTruncatedText>{endDate.diff(dateNow, 'day')}</StyledTruncatedText>
+          <StyledTruncatedText>{datesDiff > 0 ? datesDiff : 0} days</StyledTruncatedText>
         </LevelWrapper>
       </Cell>
     </TableRow>
