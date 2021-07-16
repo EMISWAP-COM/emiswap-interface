@@ -56,6 +56,7 @@ const useFarming = (contract: Contract) => {
   const [stakeToken, setStakeToken] = useState<Token | undefined>(undefined);
   useEffect(() => {
     contract.stakeToken().then((value: string) => {
+      console.log(value)
       const defaultCoin = defaultCoins.tokens.find(
         coin => coin.address.toLowerCase() === value.toLowerCase(),
       );

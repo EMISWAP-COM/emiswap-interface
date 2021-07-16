@@ -3922,6 +3922,24 @@ const defaultCoins: DefaultCoins = {
       logoURI:
         'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
     },
+    {
+      address: '0xE04242A9421Cb7a3868D54803835Ce88B494F574',
+      chainId: 321,
+      name: 'LP KOFFEE-WKCS',
+      symbol: 'KOFFEEWKCS',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
+      address: '0xe95C9f40F3Bffa2ADe0fC274EF97b8e1138B2eFf',
+      chainId: 321,
+      name: 'LP KOFFEE-MUG',
+      symbol: 'KOFFEEMUG',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
     //NEW Tokens
     {
       address: '0x28686f2f64C2Ed0591B2063A49De5b630D32284a',

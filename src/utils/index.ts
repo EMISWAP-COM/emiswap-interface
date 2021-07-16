@@ -35,6 +35,8 @@ const ETHERSCAN_PREFIXES: { [chainId in ChainId]: string } = {
   42: 'kovan.',
 };
 
+const EXPLORER_KCC_PREFIX = 'https://explorer.kcc.io/en/';
+
 export function getEtherscanLink(
   chainId: ChainId,
   data: string,
@@ -55,6 +57,28 @@ export function getEtherscanLink(
     case 'address':
     default: {
       return `${prefix}/address/${data}`;
+    }
+  }
+}
+
+export function getKucoinLink(
+  chainId: any,
+  data: string,
+  type: 'transaction' | 'token' | 'address' | 'block',
+): string {
+  switch (type) {
+    case 'transaction': {
+      return `${EXPLORER_KCC_PREFIX}/tx/${data}`;
+    }
+    case 'token': {
+      return `${EXPLORER_KCC_PREFIX}/token/${data}`;
+    }
+    case 'block': {
+      return `${EXPLORER_KCC_PREFIX}/block/${data}`;
+    }
+    case 'address':
+    default: {
+      return `${EXPLORER_KCC_PREFIX}/address/${data}`;
     }
   }
 }
