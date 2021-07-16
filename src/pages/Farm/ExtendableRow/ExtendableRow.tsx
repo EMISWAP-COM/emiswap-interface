@@ -10,6 +10,8 @@ import Tooltip from '../Tooltip';
 import LpTokenSymbol from '../LpTokenSymbol';
 import isLpToken from '../isLpToken';
 import { ExternalLink } from '../../../theme';
+import chainIds from '../../../constants/chainIds';
+import { useActiveWeb3React } from '../../../hooks';
 
 const StyledRow = styled.div`
   background-color: ${({ theme }) => theme.border1Transparency};
@@ -227,6 +229,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
   tokenMode,
 }) => {
   const [isRowExtended, setIsRowExtended] = useState(false);
+  const { chainId } = useActiveWeb3React();
 
   const handleExtendClick = useCallback(() => {
     setIsRowExtended(!isRowExtended);
@@ -249,11 +252,18 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
               <StyledTruncatedText>
                 {isLpToken(tokenMode) ? stakeToken?.name : stakeToken?.symbol}
               </StyledTruncatedText>
-              <StyledAnalyticsLink>
-                <ExternalLink href={`https://emiswap.com/analytics/${isLpToken(tokenMode) ? 'pair' : 'token'}/${stakeToken?.address}`}>
-                  <LinkIcon size={16}/>
-                </ExternalLink>
-              </StyledAnalyticsLink>
+              {/*// @ts-ignore*/}
+              {chainId !== chainIds.KUCOIN && (
+                <StyledAnalyticsLink>
+                  <ExternalLink
+                    href={`https://emiswap.com/analytics/${
+                      isLpToken(tokenMode) ? 'pair' : 'token'
+                    }/${stakeToken?.address}`}
+                  >
+                    <LinkIcon size={16} />
+                  </ExternalLink>
+                </StyledAnalyticsLink>
+              )}
             </StyledBlockValue>
           </StyledBlock>
           <StyledBlock width={150}>
@@ -263,9 +273,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
                 <CurrencyLogo currency={rewardToken} size={'24px'} />
               </StyledCurrencyLogo>
               <Tooltip title={projectedReward}>
-                <StyledTruncatedText>
-                  {projectedReward}
-                </StyledTruncatedText>
+                <StyledTruncatedText>{projectedReward}</StyledTruncatedText>
               </Tooltip>
             </StyledBlockValue>
           </StyledBlock>
@@ -284,9 +292,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
                 <CurrencyLogo currency={rewardToken} size={'24px'} />
               </StyledCurrencyLogo>
               <Tooltip title={blockReward}>
-                <StyledTruncatedText>
-                  {blockReward}
-                </StyledTruncatedText>
+                <StyledTruncatedText>{blockReward}</StyledTruncatedText>
               </Tooltip>
             </StyledBlockValue>
           </StyledBlock>

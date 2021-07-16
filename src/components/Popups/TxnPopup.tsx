@@ -4,9 +4,10 @@ import styled, { ThemeContext } from 'styled-components';
 import { useActiveWeb3React } from '../../hooks';
 import { TYPE } from '../../theme';
 import { ExternalLink } from '../../theme/components';
-import { getEtherscanLink } from '../../utils';
+import { getEtherscanLink, getKucoinLink } from '../../utils';
 import { AutoColumn } from '../Column';
 import { AutoRow } from '../Row';
+import chainIds from '../../constants/chainIds';
 
 const Wrapper = styled(AutoRow)`
   flex-wrap: nowrap;
@@ -40,8 +41,16 @@ export default function TxnPopup({
         <TYPE.body fontWeight={500} color={theme[success ? 'green1' : 'red3']}>
           {summary ?? 'Hash: ' + hash.slice(0, 8) + '...' + hash.slice(58, 65)}
         </TYPE.body>
-        <ExternalLink href={getEtherscanLink(chainId, hash, 'transaction')}>
-          View on Etherscan
+        <ExternalLink
+          href={
+            // @ts-ignore
+            chainId === chainIds.KUCOIN
+              ? getKucoinLink(chainId, hash, 'transaction')
+              : getEtherscanLink(chainId, hash, 'transaction')
+          }
+        >
+          {/*// @ts-ignore*/}
+          View on {chainId === chainIds.KUCOIN ? 'KCC explorer' : 'Etherscan'}
         </ExternalLink>
       </AutoColumn>
     </Wrapper>
