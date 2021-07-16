@@ -36,7 +36,7 @@ const ETHERSCAN_PREFIXES: { [chainId in chainIds]: string } = {
   321: 'kucoin.'
 };
 
-const EXPLORER_KCC_PREFIX = 'https://explorer.kcc.io/en/';
+const EXPLORER_KCC_PREFIX = 'https://explorer.kcc.io/en';
 
 export function getEtherscanLink(
   chainId: ChainId,
