@@ -256,24 +256,34 @@ export default function Swap() {
       .then(hash => {
         setAttemptingTxn(false);
         setTxHash(hash);
+        ReactGA.set({
+          dimension4: hash,
+          dimension1: currencies[Field.INPUT]?.symbol,
+          dimension2: currencies[Field.OUTPUT]?.symbol,
+          metric1: parsedAmounts[Field.INPUT]?.toFixed(),
+          metric2: parsedAmounts[Field.OUTPUT]?.toFixed(),
+          dimension3: account,
+        });
+
         ReactGA.event({
           category: 'Transaction',
-          action: 'CreateSwapTransaction',
-          label:
-            `swap ${parsedAmounts[Field.INPUT]?.toFixed()} ${currencies[Field.INPUT]?.symbol} ` +
-            `to ${parsedAmounts[Field.OUTPUT]?.toFixed()} ${currencies[Field.OUTPUT]?.symbol}` +
-            `txId ${hash}`,
+          action: 'new',
+          label: 'swap',
         });
       })
       .catch(error => {
         setAttemptingTxn(false);
+        ReactGA.set({
+          dimension1: currencies[Field.INPUT]?.symbol,
+          dimension2: currencies[Field.OUTPUT]?.symbol,
+          metric1: parsedAmounts[Field.INPUT]?.toFixed(),
+          metric2: parsedAmounts[Field.OUTPUT]?.toFixed(),
+          dimension3: account,
+        });
         ReactGA.event({
           category: 'Transaction',
-          action: 'RejectSwapTransaction',
-          label:
-            `swap ${parsedAmounts[Field.INPUT]?.toFixed()} ${currencies[Field.INPUT]?.symbol} ` +
-            `to ${parsedAmounts[Field.OUTPUT]?.toFixed()} ${currencies[Field.OUTPUT]?.symbol}` +
-            `error: ${error?.message}`,
+          action: 'cancel',
+          label: 'swap',
         });
         // we only care if the error is something _other_ than the user rejected the tx
         if (error?.code !== 4001) {

@@ -197,13 +197,19 @@ export default function AddLiquidity({
 
               setTxHash(response.hash);
 
+              ReactGA.set({
+                dimension4: response.hash,
+                dimension1: currencies[Field.CURRENCY_A]?.symbol,
+                dimension2: currencies[Field.CURRENCY_B]?.symbol,
+                metric1: parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
+                metric2: parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
+                dimension3: account,
+              });
+
               ReactGA.event({
                 category: 'Transaction',
-                action: 'CreatePoolLiquidity',
-                label: [
-                  currencies[Field.CURRENCY_A]?.symbol,
-                  currencies[Field.CURRENCY_B]?.symbol,
-                ].join('/'),
+                action: 'new',
+                label: 'pool',
               });
 
               setShowConfirm(true);
@@ -219,14 +225,18 @@ export default function AddLiquidity({
             }
           })
           .catch((error: Error) => {
+            ReactGA.set({
+              dimension1: currencies[Field.CURRENCY_A]?.symbol,
+              dimension2: currencies[Field.CURRENCY_B]?.symbol,
+              metric1: parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
+              metric2: parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
+              dimension3: account,
+            });
+
             ReactGA.event({
               category: 'Transaction',
-              action: 'RejectCreatePoolLiquidity',
-              label: [
-                currencies[Field.CURRENCY_A]?.symbol,
-                currencies[Field.CURRENCY_B]?.symbol,
-                `Error message: ${error.message}`,
-              ].join('/'),
+              action: 'cancel',
+              label: 'pool',
             });
             throw new Error(`
             Account: ${account}\n
@@ -245,16 +255,20 @@ export default function AddLiquidity({
           console.error(error);
         }
 
+        ReactGA.set({
+          dimension1: currencies[Field.CURRENCY_A]?.symbol,
+          dimension2: currencies[Field.CURRENCY_B]?.symbol,
+          metric1: parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
+          metric2: parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
+          dimension3: account,
+        });
+
         ReactGA.event({
           category: 'Transaction',
-          action: 'RejectCreatePoolLiquidity',
-          label: [
-            currencies[Field.CURRENCY_A]?.symbol,
-            currencies[Field.CURRENCY_B]?.symbol,
-            `Error message: ${error.message}`,
-          ].join('/'),
+          action: 'cancel',
+          label: 'pool',
         });
-        
+
         throw new Error(`
           Account: ${account}\n
           ChainId: ${chainId}\n
@@ -337,23 +351,33 @@ export default function AddLiquidity({
 
               setTxHash(response.hash);
 
+              ReactGA.set({
+                dimension4: response.hash,
+                dimension1: currencies[Field.CURRENCY_A]?.symbol,
+                dimension2: currencies[Field.CURRENCY_B]?.symbol,
+                metric1: parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
+                metric2: parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
+                dimension3: account,
+              });
+
               ReactGA.event({
                 category: 'Transaction',
-                action: 'AddLiquidity',
-                label: [
-                  currencies[Field.CURRENCY_A]?.symbol,
-                  currencies[Field.CURRENCY_B]?.symbol,
-                ].join('/'),
+                action: 'new',
+                label: 'pool',
               });
             } catch (error) {
+              ReactGA.set({
+                dimension1: currencies[Field.CURRENCY_A]?.symbol,
+                dimension2: currencies[Field.CURRENCY_B]?.symbol,
+                metric1: parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
+                metric2: parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
+                dimension3: account,
+              });
+
               ReactGA.event({
                 category: 'Transaction',
-                action: 'RejectAddLiquidity',
-                label: [
-                  currencies[Field.CURRENCY_A]?.symbol,
-                  currencies[Field.CURRENCY_B]?.symbol,
-                  `Error message: ${error.message}`,
-                ].join('/'),
+                action: 'cancel',
+                label: 'pool',
               });
               throw new Error(`
               Account: ${account}\n
@@ -366,14 +390,18 @@ export default function AddLiquidity({
             }
           })
           .catch((error: Error) => {
+            ReactGA.set({
+              dimension1: currencies[Field.CURRENCY_A]?.symbol,
+              dimension2: currencies[Field.CURRENCY_B]?.symbol,
+              metric1: parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
+              metric2: parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
+              dimension3: account,
+            });
+
             ReactGA.event({
               category: 'Transaction',
-              action: 'RejectAddLiquidity',
-              label: [
-                currencies[Field.CURRENCY_A]?.symbol,
-                currencies[Field.CURRENCY_B]?.symbol,
-                `Error message: ${error.message}`,
-              ].join('/'),
+              action: 'cancel',
+              label: 'pool',
             });
             throw new Error(`
             Account: ${account}\n
@@ -391,7 +419,19 @@ export default function AddLiquidity({
         if (error?.code !== 4001) {
           console.error(error);
         }
+        ReactGA.set({
+          dimension1: currencies[Field.CURRENCY_A]?.symbol,
+          dimension2: currencies[Field.CURRENCY_B]?.symbol,
+          metric1: parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
+          metric2: parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
+          dimension3: account,
+        });
 
+        ReactGA.event({
+          category: 'Transaction',
+          action: 'cancel',
+          label: 'pool',
+        });
         throw new Error(`
             Account: ${account}\n
             ChainId: ${chainId}\n

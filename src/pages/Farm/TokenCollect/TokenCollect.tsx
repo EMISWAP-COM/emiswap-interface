@@ -8,6 +8,7 @@ import { useCompletedTransactionsCount } from '../../../state/transactions/hooks
 import isLpToken from '../isLpToken';
 import LpTokenSymbol from '../LpTokenSymbol';
 import useEthErrorPopup from '../../../hooks/useEthErrorPopup';
+import { useActiveWeb3React } from '../../../hooks';
 
 const StyledTokenInputWrapper = styled.div`
   border: 1px solid ${({ theme }) => theme.lightGrey};
@@ -78,6 +79,7 @@ const TokenCollect: React.FC<TokenInputProps> = ({
   onCollect,
   tokenMode,
 }) => {
+  const { account } = useActiveWeb3React();
   const [isCollectInProgress, setIsCollectInProgress] = useState<boolean>(false);
 
   const isCollectButtonDisabled = !Number(deposit) || isCollectInProgress;
@@ -95,22 +97,47 @@ const TokenCollect: React.FC<TokenInputProps> = ({
     setIsCollectInProgress(true);
     onCollect()
       .then(() => {
+        ReactGA.set({
+          dimension1: stakeToken,
+          dimension2: rewardToken,
+          metric1: deposit,
+          metric2: projectedReward,
+          dimension3: account,
+        });
+
         ReactGA.event({
           category: 'Transaction',
-          action: `CreateUn${isLpToken(tokenMode) ? 'Farm' : 'Stake'}Transaction`,
-          label: `unstake`,
+          action: 'new',
+          label: `un${isLpToken(tokenMode) ? 'farm' : 'stake'}`,
         });
       })
       .catch(error => {
         setIsCollectInProgress(false);
         addEthErrorPopup(error);
+        ReactGA.set({
+          dimension1: stakeToken,
+          dimension2: rewardToken,
+          metric1: deposit,
+          metric2: projectedReward,
+          dimension3: account,
+        });
+
         ReactGA.event({
           category: 'Transaction',
-          action: `RejectUn${isLpToken(tokenMode) ? 'Farm' : 'Stake'}Transaction`,
-          label: `unstake error: ${error?.message}`,
+          action: 'cancel',
+          label: `un${isLpToken(tokenMode) ? 'farm' : 'stake'}`,
         });
       });
-  }, [onCollect, tokenMode, addEthErrorPopup]);
+  }, [
+    onCollect,
+    tokenMode,
+    addEthErrorPopup,
+    account,
+    deposit,
+    projectedReward,
+    rewardToken,
+    stakeToken,
+  ]);
 
   useEffect(() => {
     setIsCollectInProgress(false);

@@ -120,27 +120,34 @@ const TokenInput: React.FC<TokenInputProps> = ({ contractAddress, token, onStake
     setIsStakeInProgress(true);
     onStake(inputValue)
       .then(() => {
+        ReactGA.set({
+          dimension1: token.symbol,
+          metric1: inputValue,
+          dimension3: account,
+        });
+
         ReactGA.event({
           category: 'Transaction',
-          action: `Create${isLpToken(tokenMode) ? 'Farm' : 'Stake'}Transaction`,
-          label:
-            `${isLpToken(tokenMode) ? 'farm' : 'stake'} ` +
-            `${inputValue} ${token.symbol} contract ${contractAddress}`,
+          action: 'new',
+          label: `${isLpToken(tokenMode) ? 'farm' : 'stake'}`,
         });
       })
       .catch(error => {
         setIsStakeInProgress(false);
         addEthErrorPopup(error);
+        ReactGA.set({
+          dimension1: token.symbol,
+          metric1: inputValue,
+          dimension3: account,
+        });
+
         ReactGA.event({
           category: 'Transaction',
-          action: `Reject${isLpToken(tokenMode) ? 'Farm' : 'Stake'}Transaction`,
-          label:
-            `${isLpToken(tokenMode) ? 'farm' : 'stake'} ` +
-            `${inputValue} ${token.symbol} contract ${contractAddress}` +
-            `error: ${error?.message}`,
+          action: 'cancel',
+          label: `${isLpToken(tokenMode) ? 'farm' : 'stake'}`,
         });
       });
-  }, [onStake, inputValue, contractAddress, token.symbol, tokenMode, addEthErrorPopup]);
+  }, [onStake, inputValue, token.symbol, tokenMode, addEthErrorPopup, account]);
 
   const handleApprove = useCallback(() => {
     setIsApprovalInProgress(true);
