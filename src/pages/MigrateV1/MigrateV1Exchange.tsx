@@ -29,6 +29,7 @@ import { useCurrency } from '../../hooks/Tokens';
 import { useTransactionAdder } from '../../state/transactions/hooks';
 import Modal from '../../components/Modal';
 import { BigNumber } from '@ethersproject/bignumber';
+import ReactGA from 'react-ga';
 
 const POOL_CURRENCY_AMOUNT_MIN = new Fraction(JSBI.BigInt(1), JSBI.BigInt(1000000));
 
@@ -215,11 +216,58 @@ export default function MigrateV1Exchange({
           const gasLimit = calculateGasMargin(data);
           return contract
             .deposit(...args, { gasLimit })
-            .then(onSuccess)
-            .catch(onError);
+            .then(response => {
+              const { hash } = response;
+              ReactGA.set({
+                dimension4: hash,
+                dimension1: currency0?.symbol,
+                dimension2: currency1?.symbol,
+                metric1: parsedAmount?.toFixed(),
+                dimension3: account,
+              });
+
+              ReactGA.event({
+                category: 'Transaction',
+                action: 'new',
+                label: 'migrate',
+              });
+              setAmount('0');
+              addTransaction(response);
+            })
+            .catch(error => {
+              ReactGA.set({
+                dimension1: currency0?.symbol,
+                dimension2: currency1?.symbol,
+                metric1: parsedAmount?.toFixed(),
+                dimension3: account,
+              });
+
+              ReactGA.event({
+                category: 'Transaction',
+                action: 'cancel',
+                label: 'migrate',
+              });
+              if (error?.code === 4001) {
+                throw error;
+              } else {
+                throw Error('An error occurred while migration. Please contact support.');
+              }
+            });
         })
         .catch(error => {
           console.error('estimateGas failed for deposit', error);
+          ReactGA.set({
+            dimension1: currency0?.symbol,
+            dimension2: currency1?.symbol,
+            metric1: parsedAmount?.toFixed(),
+            dimension3: account,
+          });
+
+          ReactGA.event({
+            category: 'Transaction',
+            action: 'cancel',
+            label: 'migrate',
+          });
           return undefined;
         });
     }
