@@ -1,7 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ReferralPerformance } from './reducer';
 import { fetchWrapper } from '../../api/fetchWrapper';
-import { addPopup } from '../application/actions';
 // @ts-ignore
 const baseUrl = window.env ? window.env.REACT_APP_PUBLIC_URL : '';
 
@@ -14,17 +13,19 @@ export const loadPerformance = createAsyncThunk(
 
       return referrals as ReferralPerformance;
     } catch (e) {
-      dispatch(
-        addPopup({
-          key: 'loadPerformance',
-          content: {
-            status: {
-              name: e.message,
-              isError: true,
-            },
-          },
-        }),
-      );
+      console.debug('loadBalance: ', { e });
+      //FIXME - встроить централизованную обработку ошибок
+      // dispatch(
+      //   addPopup({
+      //     key: 'loadPerformance',
+      //     content: {
+      //       status: {
+      //         name: e.message,
+      //         isError: true,
+      //       },
+      //     },
+      //   }),
+      // );
       return Promise.reject(e);
     }
   },
@@ -38,17 +39,19 @@ export const loadBalance = createAsyncThunk(
       const response = await fetchWrapper.get(url);
       return response;
     } catch (e) {
-      dispatch(
-        addPopup({
-          key: 'loadBalance',
-          content: {
-            status: {
-              name: e.message,
-              isError: true,
-            },
-          },
-        }),
-      );
+      console.debug('loadBalance: ', { e });
+      //FIXME - встроить централизованную обработку ошибок
+      // dispatch(
+      //   addPopup({
+      //     key: 'loadBalance',
+      //     content: {
+      //       status: {
+      //         name: e.message,
+      //         isError: true,
+      //       },
+      //     },
+      //   }),
+      // );
       return Promise.reject(e);
     }
   },
@@ -62,17 +65,19 @@ export const loadBonus = createAsyncThunk(
       const response = await fetchWrapper.get(url);
       return response;
     } catch (e) {
-      dispatch(
-        addPopup({
-          key: 'loadBonus',
-          content: {
-            status: {
-              name: e.message,
-              isError: true,
-            },
-          },
-        }),
-      );
+      console.debug('loadBonus: ', { e });
+      //FIXME - встроить централизованную обработку ошибок
+      // dispatch(
+      //   addPopup({
+      //     key: 'loadBonus',
+      //     content: {
+      //       status: {
+      //         name: e.message,
+      //         isError: true,
+      //       },
+      //     },
+      //   }),
+      // );
       return Promise.reject(e);
     }
   },
@@ -86,17 +91,19 @@ export const loadPoolBlockBonus = createAsyncThunk(
       const response = await fetchWrapper.get(url);
       return response;
     } catch (e) {
-      dispatch(
-        addPopup({
-          key: 'loadPoolBlockBonus',
-          content: {
-            status: {
-              name: e.message,
-              isError: true,
-            },
-          },
-        }),
-      );
+      console.debug('loadPoolBlockBonus: ', { e });
+      //FIXME - встроить централизованную обработку ошибок
+      // dispatch(
+      //   addPopup({
+      //     key: 'loadPoolBlockBonus',
+      //     content: {
+      //       status: {
+      //         name: e.message,
+      //         isError: true,
+      //       },
+      //     },
+      //   }),
+      // );
       return Promise.reject(e);
     }
   },
@@ -110,17 +117,19 @@ export const loadPool = createAsyncThunk(
       const response = await fetchWrapper.get(url);
       return response;
     } catch (e) {
-      dispatch(
-        addPopup({
-          key: 'loadPool',
-          content: {
-            status: {
-              name: e.message,
-              isError: true,
-            },
-          },
-        }),
-      );
+      console.debug('loadPool: ', { e });
+      //FIXME - встроить централизованную обработку ошибок
+      // dispatch(
+      //   addPopup({
+      //     key: 'loadPool',
+      //     content: {
+      //       status: {
+      //         name: e.message,
+      //         isError: true,
+      //       },
+      //     },
+      //   }),
+      // );
       return Promise.reject(e);
     }
   },
@@ -135,17 +144,19 @@ export const loadPoolBonus = createAsyncThunk(
       const response = await fetchWrapper.get(url);
       return response;
     } catch (e) {
-      dispatch(
-        addPopup({
-          key: 'loadBonusDetails',
-          content: {
-            status: {
-              name: e.message,
-              isError: true,
-            },
-          },
-        }),
-      );
+      console.debug('loadBonusDetails: ', { e });
+      //FIXME - встроить централизованную обработку ошибок
+      // dispatch(
+      //   addPopup({
+      //     key: 'loadBonusDetails',
+      //     content: {
+      //       status: {
+      //         name: e.message,
+      //         isError: true,
+      //       },
+      //     },
+      //   }),
+      // );
       return Promise.reject(e);
     }
   },
@@ -159,17 +170,19 @@ export const loadPoolBonus10X = createAsyncThunk(
       const response = await fetchWrapper.get(url);
       return response;
     } catch (e) {
-      dispatch(
-        addPopup({
-          key: 'loadBonusDetails',
-          content: {
-            status: {
-              name: e.message,
-              isError: true,
-            },
-          },
-        }),
-      );
+      console.debug('loadPoolBonus10X: ', { e });
+      //FIXME - встроить централизованную обработку ошибок
+      // dispatch(
+      //   addPopup({
+      //     key: 'loadBonusDetails',
+      //     content: {
+      //       status: {
+      //         name: e.message,
+      //         isError: true,
+      //       },
+      //     },
+      //   }),
+      // );
       return Promise.reject(e);
     }
   },
@@ -182,17 +195,19 @@ export const loadDepositsEswHistory = createAsyncThunk(
     try {
       return await fetchWrapper.get(url);
     } catch (e) {
-      dispatch(
-        addPopup({
-          key: 'loadDepositsEswHistory',
-          content: {
-            status: {
-              name: e.message,
-              isError: true,
-            },
-          },
-        }),
-      );
+      console.debug('loadDepositsEswHistory: ', { e });
+      //FIXME - встроить централизованную обработку ошибок
+      // dispatch(
+      //   addPopup({
+      //     key: 'loadDepositsEswHistory',
+      //     content: {
+      //       status: {
+      //         name: e.message,
+      //         isError: true,
+      //       },
+      //     },
+      //   }),
+      // );
       return Promise.reject(e);
     }
   },
@@ -205,17 +220,19 @@ export const loadDepositsEswHistoryRewards = createAsyncThunk(
     try {
       return await fetchWrapper.get(url);
     } catch (e) {
-      dispatch(
-        addPopup({
-          key: 'loadDepositsEswHistoryRewards',
-          content: {
-            status: {
-              name: e.message,
-              isError: true,
-            },
-          },
-        }),
-      );
+      console.debug('loadDepositsEswHistoryRewards: ', { e });
+      //FIXME - встроить централизованную обработку ошибок
+      // dispatch(
+      //   addPopup({
+      //     key: 'loadDepositsEswHistoryRewards',
+      //     content: {
+      //       status: {
+      //         name: e.message,
+      //         isError: true,
+      //       },
+      //     },
+      //   }),
+      // );
       return Promise.reject(e);
     }
   },

@@ -304,14 +304,36 @@ export default function RemoveLiquidity({
 
           setTxHash(response.hash);
 
+          ReactGA.set({
+            dimension4: response.hash,
+            dimension1: currencyA?.symbol,
+            dimension2: currencyB?.symbol,
+            metric1: parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
+            metric2: parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
+            dimension3: account,
+          });
+
           ReactGA.event({
-            category: 'Liquidity',
-            action: 'Remove',
-            label: [currencyA?.symbol, currencyB?.symbol].join('/'),
+            category: 'Transaction',
+            action: 'new',
+            label: 'unpool',
           });
         })
         .catch((error: Error) => {
           setAttemptingTxn(false);
+          ReactGA.set({
+            dimension1: currencyA?.symbol,
+            dimension2: currencyB?.symbol,
+            metric1: parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
+            metric2: parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
+            dimension3: account,
+          });
+
+          ReactGA.event({
+            category: 'Transaction',
+            action: 'new',
+            label: 'unpool',
+          });
           // we only care if the error is something _other_ than the user rejected the tx
           console.error(error);
         });
