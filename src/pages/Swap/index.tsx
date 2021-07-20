@@ -273,6 +273,7 @@ export default function Swap() {
       })
       .catch(error => {
         setAttemptingTxn(false);
+        console.log("Cancel")
         ReactGA.set({
           dimension1: currencies[Field.INPUT]?.symbol,
           dimension2: currencies[Field.OUTPUT]?.symbol,
