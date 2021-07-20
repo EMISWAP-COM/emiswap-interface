@@ -191,19 +191,6 @@ export default function MigrateV1Exchange({
     return <Redirect to="/migrate" />;
   }
 
-  const onSuccess = response => {
-    setAmount('0');
-    addTransaction(response);
-  };
-
-  const onError = error => {
-    if (error?.code === 4001) {
-      throw error;
-    } else {
-      throw Error('An error occurred while migration. Please contact support.');
-    }
-  };
-
   const handleMigrate = () => {
     const idx = lpTokensInfo.findIndex(el => el === address);
     if (idx !== -1) {
