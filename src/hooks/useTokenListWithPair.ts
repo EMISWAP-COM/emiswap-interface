@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux'
 
 export function useTokenListWithPair() {
   const { library, account } = useActiveWeb3React();
+
   const [list, setList] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -17,7 +18,7 @@ export function useTokenListWithPair() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (factoryContract && emiSwapContract) {
+    if (factoryContract && emiSwapContract && account) {
       setIsLoading(true);
       factoryContract.getAllPools().then((data: string[]) => {
         const nonEmptyData = data.filter(item => !!item);
@@ -48,5 +49,6 @@ export function useTokenListWithPair() {
         });
     }
   }, [factoryContract, emiSwapContract, account, library, dispatch]);
+
   return [list, isLoading] as [string[], boolean];
 }
