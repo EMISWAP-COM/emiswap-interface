@@ -6,6 +6,7 @@ import { useActiveWeb3React } from './index';
 
 export function useTokenListWithPair() {
   const { library, account } = useActiveWeb3React();
+
   const [list, setList] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -13,7 +14,7 @@ export function useTokenListWithPair() {
   const emiSwapContract = useEmiSwapContract();
 
   useEffect(() => {
-    if (factoryContract && emiSwapContract) {
+    if (factoryContract && emiSwapContract && account) {
       setIsLoading(true);
       factoryContract
         .getAllPools()
@@ -47,5 +48,6 @@ export function useTokenListWithPair() {
         });
     }
   }, [factoryContract, emiSwapContract, account, library]);
+
   return [list, isLoading] as [string[], boolean];
 }
