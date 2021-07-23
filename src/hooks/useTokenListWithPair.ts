@@ -33,7 +33,7 @@ export function useTokenListWithPair() {
           });
         })
         .catch(e => {
-          console.error('Failed to get contract', `Contract methods fails - ${e}`);
+          console.warn('Failed to get contract', `Contract methods fails - ${e}`);
           // dispatch(
           //   addPopup({
           //     key: 'useEmiFactoryContract',
