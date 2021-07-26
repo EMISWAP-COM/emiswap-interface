@@ -5,16 +5,16 @@ import { AppState } from '../../../../state';
 import { useActiveWeb3React } from '../../../../hooks';
 
 import {
-  Table,
   CellProps,
+  cellRenders,
+  Cost,
   headRenders,
+  Label,
+  LevelWrapper,
+  PoolCostWrapper,
+  Table,
   TabProps,
   Tabs,
-  cellRenders,
-  LevelWrapper,
-  Label,
-  PoolCostWrapper,
-  Cost,
 } from './components';
 
 import { TruncatedTextWithTooltip } from '../../../../base/ui/TruncatedTextWithTooltip';
@@ -33,10 +33,8 @@ export const PurchaseHistory = () => {
   const { chainId } = useActiveWeb3React();
   const { referrals } = useSelector((state: AppState) => state.cabinets.performance);
   const { histories, details } = useSelector((state: AppState) => state.cabinets.balance);
-  const { pool_block_bonuses, pool_bonuses } = useSelector(
-    (state: AppState) => state.cabinets.bonusDetails,
-  );
-  const { depositsEswHistory } = useSelector((state: AppState) => state.cabinets);
+  const { pool_block_bonuses, pool_bonuses } = useSelector((state: AppState) => state.cabinets.bonusDetails);
+  const { depositsEswHistory, swapBonus, liquidityBonus } = useSelector((state: AppState) => state.cabinets);
 
   const [liquidityTabActive, setLiquidityTabActive] = useState<string>(tabs.x10.value);
 
@@ -249,11 +247,11 @@ export const PurchaseHistory = () => {
         headerMarginTop={0}
         headerMarginBottom={24}
         rightTitle={
-          <Tabs tabs={tabsValues} value={liquidityTabActive} onChange={setLiquidityTabActive} />
+          <Tabs tabs={tabsValues} value={liquidityTabActive} onChange={setLiquidityTabActive}/>
         }
       />
 
-      <Table title="Your Purchase History" fields={purchaseFields} data={deposit} />
+      <Table title="Your Purchase History" fields={purchaseFields} data={deposit}/>
 
       <Table
         title="Referral Purchase History"

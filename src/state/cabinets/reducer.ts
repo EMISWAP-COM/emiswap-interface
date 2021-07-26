@@ -2,9 +2,9 @@ import { createReducer } from '@reduxjs/toolkit';
 import {
   loadBalance,
   loadBonus,
-  loadPerformance,
   loadDepositsEswHistory,
-  loadDepositsEswHistoryRewards,
+  loadDepositsEswHistoryRewards, loadLiquidityBonus,
+  loadPerformance, loadSwapBonus,
 } from './actions';
 
 export interface DepositsEswHistoryRewards {
@@ -90,6 +90,8 @@ interface CabinetState {
   referralHistory: ReferralPurchaseHistory[];
   depositsEswHistory: DepositsEswHistory[];
   depositsEswHistoryRewards: DepositsEswHistoryRewards;
+  swapBonus: any[],
+  liquidityBonus: any[],
 }
 
 interface PerformanceLevel {
@@ -223,6 +225,8 @@ const initialState: CabinetState = {
   referralHistory: [] as ReferralPurchaseHistory[],
   depositsEswHistory: new Array<DepositsEswHistory>(),
   depositsEswHistoryRewards: {} as DepositsEswHistoryRewards,
+  swapBonus: [],
+  liquidityBonus: [],
 };
 
 export default createReducer(initialState, builder =>
@@ -241,5 +245,11 @@ export default createReducer(initialState, builder =>
     })
     .addCase(loadDepositsEswHistoryRewards.fulfilled, (state, action) => {
       state.depositsEswHistoryRewards = action.payload;
+    })
+    .addCase(loadSwapBonus.fulfilled, (state, action) => {
+      state.swapBonus = action.payload;
+    })
+    .addCase(loadLiquidityBonus.fulfilled, (state, action) => {
+      state.liquidityBonus = action.payload;
     }),
 );

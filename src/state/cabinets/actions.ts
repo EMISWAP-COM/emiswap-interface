@@ -237,3 +237,31 @@ export const loadDepositsEswHistoryRewards = createAsyncThunk(
     }
   },
 );
+
+export const loadSwapBonus = createAsyncThunk(
+  'cabinets/loadSwapBonus',
+  async (userId: string, { dispatch }) => {
+    const url = `${baseUrl}/v1/public/users/${userId}/bonus_details/swap`;
+    try {
+      const response = await fetchWrapper.get(url);
+      return response;
+    } catch (e) {
+      console.debug('loadSwapBonus: ', e);
+      return Promise.reject(e);
+    }
+  },
+);
+
+export const loadLiquidityBonus = createAsyncThunk(
+  'cabinets/loadLiquidityBonus',
+  async (userId: string, { dispatch }) => {
+    const url = `${baseUrl}/v1/public/users/${userId}/bonus_details/liqudity`;
+    try {
+      const response = await fetchWrapper.get(url);
+      return response;
+    } catch (e) {
+      console.debug('loadPoolBonus10X: ', e);
+      return Promise.reject(e);
+    }
+  },
+);

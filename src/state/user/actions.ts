@@ -1,6 +1,6 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { UserInfo } from './reducer';
-import { loadBalance, loadBonus, loadPerformance } from '../cabinets/actions';
+import { loadBalance, loadBonus, loadLiquidityBonus, loadPerformance, loadSwapBonus } from '../cabinets/actions';
 import { loadGasPrice } from '../stats/actions';
 import { fetchWrapper } from '../../api/fetchWrapper';
 
@@ -98,6 +98,8 @@ export const loginCabinets = createAsyncThunk(
         dispatch(loadBalance(data.id) as any);
         dispatch(loadBonus(data.id) as any);
         dispatch(loadGasPrice() as any);
+        dispatch(loadSwapBonus(data.id) as any);
+        dispatch(loadLiquidityBonus(data.id) as any);
         if (data.referral_id) {
           dispatch(loadWalletAddress(data.referral_id) as any);
         }
