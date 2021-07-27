@@ -16,18 +16,22 @@ const FarmComponent: React.FC<FarmComponentProps> = ({ contract, selectedTab, es
   const farming = useFarming(contract);
 
   const [apr, setApr] = useState<number>(0);
+
   useEffect(() => {
     if (farming.blockReward && Number(farming.liquidity) && eswPriceInDai) {
-      const calculatedApr =
-        (parseFloat(farming.blockReward) * 6400 * 365 * 100 * parseFloat(eswPriceInDai)) /
-        parseFloat(farming.liquidity);
-      setApr(calculatedApr);
+      const block = parseFloat(farming.blockReward);
+      const dai = parseFloat(eswPriceInDai);
+      const liq = parseFloat(farming.liquidity);
+
+      const calcApr = ((block * 6400 * 365 * 100 * dai) / liq) * 100;
+      setApr(calcApr);
     }
   }, [eswPriceInDai, farming.blockReward, farming.liquidity, selectedTab]);
 
   const shouldShow =
     (isStakingTab(selectedTab) && !isLpToken(farming.tokenMode)) ||
     (!isStakingTab(selectedTab) && isLpToken(farming.tokenMode));
+
   return shouldShow ? (
     <ExtendableRow
       contractAddress={contract.address}
