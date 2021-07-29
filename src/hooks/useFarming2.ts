@@ -258,13 +258,13 @@ const useFarming2 = (contract: Contract) => {
     lockPeriod: lockPeriod,
     endDate: endDate,
     myStakesLen: myStakesLen,
-    apr: farm?.percentageRate || '0',
+    apr: +(farm?.percentageRate || '0') * 100,
     deposit: deposit,
     reward: farm?.reward || '0',
     liquidity: liquidity,
     collect: handleCollect,
     stake: handleStake,
   }
-}
+};
 
 export default useFarming2;
