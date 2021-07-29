@@ -34,7 +34,7 @@ export const PurchaseHistory = () => {
   const { referrals } = useSelector((state: AppState) => state.cabinets.performance);
   const { histories, details } = useSelector((state: AppState) => state.cabinets.balance);
   const { pool_block_bonuses, pool_bonuses } = useSelector((state: AppState) => state.cabinets.bonusDetails);
-  const { depositsEswHistory, swapBonus, liquidityBonus } = useSelector((state: AppState) => state.cabinets);
+  const { depositsEswHistory, swapBonus, /*liquidityBonus*/ } = useSelector((state: AppState) => state.cabinets);
 
   const [liquidityTabActive, setLiquidityTabActive] = useState<string>(tabs.x10.value);
 
@@ -63,11 +63,11 @@ export const PurchaseHistory = () => {
 
   const poolBonusDisplayData = useMemo(() => {
     if (liquidityTabActive === 'airdrops') {
-      return pool_block_bonuses;
+      return {...swapBonus, ...pool_block_bonuses};
     } else {
-      return pool_bonuses;
+      return {...swapBonus, ...pool_bonuses};
     }
-  }, [liquidityTabActive, pool_block_bonuses, pool_bonuses]);
+  }, [liquidityTabActive, swapBonus, pool_block_bonuses, pool_bonuses]);
 
   const liquidityRewardFields: CellProps[] = React.useMemo(
     () =>
