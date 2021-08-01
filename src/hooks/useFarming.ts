@@ -205,7 +205,7 @@ const useFarming = (contract: Contract) => {
         });
       })
       .catch((error: RequestError) => {
-        addEthErrorPopup(error);
+        // addEthErrorPopup(error);
         logContractError(
           'stake',
           account,
