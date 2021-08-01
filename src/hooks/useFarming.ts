@@ -231,8 +231,9 @@ const useFarming = (contract: Contract) => {
         });
       })
       .catch((error: RequestError) => {
-        addEthErrorPopup(error);
+        // addEthErrorPopup(error);
         logContractError('exit', account, chainId, contract.address, '', error);
+        throw error;
       });
   };
 

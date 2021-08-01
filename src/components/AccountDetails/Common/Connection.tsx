@@ -1,3 +1,4 @@
+шьзщке Куфсе акщь экуфсеэж
 import React from 'react';
 import { convertBigDecimal, formatConnectorName } from '../uitls';
 import { WalletAction } from '../styleds';

@@ -22,7 +22,11 @@ const handleResponse = (response: Response) => {
         throw new CustomError(data?.error, data?.payload);
       });
     default:
-      throw new Error(`something went wrong while requesting ${url}`);
+      throw new CustomError(`something went wrong while requesting ${url}`, {
+        code: status,
+        url: url,
+      });
+    // throw new Error(`something went wrong while requesting ${url}`);
   }
 };
 
@@ -35,9 +39,15 @@ export const fetchWrapper = {
           : baseHeaders),
       },
       ...options,
-    }).then(res => {
-      return handleResponse(res);
-    });
+    })
+      .then(res => {
+        return handleResponse(res);
+      })
+      .catch(error => {
+        throw new CustomError(`get error ${endPoint}`, {
+          code: error.code,
+        });
+      });
   },
   post: (endPoint: string, options: RequestInit = {}) => {
     return fetch(endPoint, {
@@ -48,9 +58,15 @@ export const fetchWrapper = {
       },
       method: 'POST',
       ...options,
-    }).then(res => {
-      return handleResponse(res);
-    });
+    })
+      .then(res => {
+        return handleResponse(res);
+      })
+      .catch(error => {
+        throw new CustomError(`post error ${endPoint}`, {
+          code: error.code,
+        });
+      });
   },
   put: (endPoint: string, options: RequestInit = {}) => {
     return fetch(endPoint, {
@@ -61,9 +77,15 @@ export const fetchWrapper = {
       },
       method: 'PUT',
       ...options,
-    }).then(res => {
-      return handleResponse(res);
-    });
+    })
+      .then(res => {
+        return handleResponse(res);
+      })
+      .catch(error => {
+        throw new CustomError(`put error ${endPoint}`, {
+          code: error.code,
+        });
+      });
   },
 };
 
