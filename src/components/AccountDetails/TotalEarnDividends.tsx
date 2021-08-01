@@ -170,7 +170,7 @@ export default function TotalEarnDividends({
         </AccountSectionBodyPart>
       </AccountSectionBody>
       <AccountSectionHeader>
-        <AccountButtonPrimary disabled={availableToCollect === 0}>
+        <AccountButtonPrimary disabled={/*availableToCollect === 0*/true}>
           Collect to my wallet
         </AccountButtonPrimary>
       </AccountSectionHeader>
