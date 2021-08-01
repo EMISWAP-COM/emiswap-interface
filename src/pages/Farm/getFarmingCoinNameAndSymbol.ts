@@ -7,7 +7,7 @@ const coinNamesMap = {
     name: 'ESW-D',
     symbol: 'ESW-D'
   },
-  '0x9e6b253c45532ca61489100baded4f5bcd226042': {
+  '0xd9ca818d8db735fde245afaf55821ed7fa582d6c': {
     name: 'ESW V2',
     symbol: 'ESW V2'
   },
