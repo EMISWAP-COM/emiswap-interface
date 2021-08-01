@@ -196,7 +196,6 @@ const useFarming = (contract: Contract) => {
       throw new Error('Invalid amount to stake');
     }
     if (!bigIntAmount) return Promise.reject();
-
     return contract
       .stake(bigIntAmount)
       .then((response: TransactionResponse) => {

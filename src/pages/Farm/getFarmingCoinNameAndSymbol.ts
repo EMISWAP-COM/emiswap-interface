@@ -7,6 +7,11 @@ const coinNamesMap = {
     name: 'ESW-D',
     symbol: 'ESW-D'
   },
+  '0xd9ca818d8db735fde245afaf55821ed7fa582d6c': {
+    name: 'ESW V2',
+    symbol: 'ESW V2'
+  },
+
 }
 
 // Use to override names from defaultCoins.ts only
