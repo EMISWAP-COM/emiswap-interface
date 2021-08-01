@@ -1,3 +1,4 @@
+шьзщке Куфсе акщь экуфсеэж
 import React from 'react';
 import { convertBigDecimal, formatConnectorName } from '../uitls';
 import { WalletAction } from '../styleds';
@@ -176,7 +177,8 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
 
   const balance = useSelector((state: AppState) => state.cabinets.balance);
 
-  const isCollectDisabled = !Number(balance?.available.ESW);
+  // FIXME Раскомментировать после того, как вернем кнопку
+  // const isCollectDisabled = !Number(balance?.available.ESW);
 
   const sumESW = () => {
     const walletESW = balance?.wallet.ESW || 0;
@@ -242,7 +244,7 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
           </BalanceWrapper>
           <Options>
             {children}
-            <CollectBtn disabled={isCollectDisabled} onClick={handleClaim}>
+            <CollectBtn disabled={/*isCollectDisabled*/ true} onClick={handleClaim}>
               Collect to my wallet
             </CollectBtn>
           </Options>
