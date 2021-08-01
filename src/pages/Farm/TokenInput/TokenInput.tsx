@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import ReactGA from 'react-ga';
 import styled from 'styled-components/macro';
 import NumericalInput from './NumericalInput';
 import { lighten } from 'polished';
@@ -15,6 +16,7 @@ import { useCompletedTransactionsCount } from '../../../state/transactions/hooks
 import { useWalletModalToggle } from '../../../state/application/hooks';
 import LpTokenSymbol from '../LpTokenSymbol';
 import isLpToken from '../isLpToken';
+import useEthErrorPopup from '../../../hooks/useEthErrorPopup';
 
 const StyledTokenInputWrapper = styled.div`
   border: 1px solid ${({ theme }) => theme.lightGrey};
@@ -109,26 +111,53 @@ const TokenInput: React.FC<TokenInputProps> = ({ contractAddress, token, onStake
 
   const veryLargeAmount = new TokenAmount(token, JSBI.BigInt('99999999999999999999999999999'));
   const [approvalState, doApprove] = useApproveCallback(veryLargeAmount, contractAddress, true);
+  const addEthErrorPopup = useEthErrorPopup();
 
   // This counter is used to update isStakeInProgress whenever transaction finishes
   const completedTransactionsCount = useCompletedTransactionsCount();
 
   const handleButtonClick = useCallback(() => {
     setIsStakeInProgress(true);
-    onStake(inputValue).catch(() => {
-      setIsStakeInProgress(false);
-    });
-  }, [onStake, inputValue]);
+    onStake(inputValue)
+      .then(() => {
+        ReactGA.set({
+          dimension1: token.symbol,
+          metric1: inputValue,
+          dimension3: account,
+        });
+
+        ReactGA.event({
+          category: 'Transaction',
+          action: 'new',
+          label: `${isLpToken(tokenMode) ? 'farm' : 'stake'}`,
+        });
+      })
+      .catch(error => {
+        setIsStakeInProgress(false);
+        addEthErrorPopup(error);
+        ReactGA.set({
+          dimension1: token.symbol,
+          metric1: inputValue,
+          dimension3: account,
+        });
+
+        ReactGA.event({
+          category: 'Transaction',
+          action: 'cancel',
+          label: `${isLpToken(tokenMode) ? 'farm' : 'stake'}`,
+        });
+      });
+  }, [onStake, inputValue, token.symbol, tokenMode, addEthErrorPopup, account]);
 
   const handleApprove = useCallback(() => {
     setIsApprovalInProgress(true);
     doApprove();
-  }, [doApprove])
+  }, [doApprove]);
 
   useEffect(() => {
     setIsStakeInProgress(false);
 
-    setIsApprovalInProgress((prevVal) => {
+    setIsApprovalInProgress(prevVal => {
       if (!prevVal) {
         setInputValue('');
       }
@@ -144,7 +173,13 @@ const TokenInput: React.FC<TokenInputProps> = ({ contractAddress, token, onStake
     if (!maxAmount) return;
     // Artificially limit max number of decimals, cause values greater than 12 could be problematic
     const maxDecimalsForAmount = 12;
-    setInputValue(maxAmount.toFixed(token.decimals < maxDecimalsForAmount ? token.decimals : maxDecimalsForAmount, undefined, Rounding.ROUND_DOWN));
+    setInputValue(
+      maxAmount.toFixed(
+        token.decimals < maxDecimalsForAmount ? token.decimals : maxDecimalsForAmount,
+        undefined,
+        Rounding.ROUND_DOWN,
+      ),
+    );
   }, [maxAmount, token.decimals]);
 
   const isInsufficientBalance = useMemo(() => {

@@ -29,56 +29,54 @@ export function useAuth() {
   // const [authToken, setAuthToken] = useLocalStorage('auth_token', null);
   const dispatch = useDispatch();
 
-  const initSession = useCallback(
-    async (userID: string) => {
-      try {
-        return await fetchWrapper.post(`${baseUrl}/v1/public/sessions`, {
-          body: JSON.stringify({ user_id: userID }),
-        });
-      } catch (e) {
-        dispatch(
-          addPopup({
-            key: 'useAuth_sessions',
-            content: {
-              status: {
-                name: e.message,
-                isError: true,
-              },
-            },
-          }),
-        );
-        return Promise.reject(e);
-      }
-    },
-    [dispatch],
-  );
+  const initSession = useCallback(async (userID: string) => {
+    try {
+      return await fetchWrapper.post(`${baseUrl}/v1/public/sessions`, {
+        body: JSON.stringify({ user_id: userID }),
+      });
+    } catch (e) {
+      console.debug('useAuth_sessions: ', { e });
+      //FIXME - встроить централизованную обработку ошибок
+      // dispatch(
+      //   addPopup({
+      //     key: 'useAuth_sessions',
+      //     content: {
+      //       status: {
+      //         name: e.message,
+      //         isError: true,
+      //       },
+      //     },
+      //   }),
+      // );
+      return Promise.reject(e);
+    }
+  }, []);
 
-  const signSession = useCallback(
-    async (sessionID: string, signature: string) => {
-      try {
-        return await fetchWrapper.post(`${baseUrl}/v1/public/sessions/confirm`, {
-          body: JSON.stringify({
-            id: sessionID,
-            signature,
-          }),
-        });
-      } catch (e) {
-        dispatch(
-          addPopup({
-            key: 'useAuth_sign_session',
-            content: {
-              status: {
-                name: e.message,
-                isError: true,
-              },
-            },
-          }),
-        );
-        return Promise.reject(e);
-      }
-    },
-    [dispatch],
-  );
+  const signSession = useCallback(async (sessionID: string, signature: string) => {
+    try {
+      return await fetchWrapper.post(`${baseUrl}/v1/public/sessions/confirm`, {
+        body: JSON.stringify({
+          id: sessionID,
+          signature,
+        }),
+      });
+    } catch (e) {
+      console.debug('useAuth_sign_session: ', { e });
+      //FIXME - встроить централизованную обработку ошибок
+      // dispatch(
+      //   addPopup({
+      //     key: 'useAuth_sign_session',
+      //     content: {
+      //       status: {
+      //         name: e.message,
+      //         isError: true,
+      //       },
+      //     },
+      //   }),
+      // );
+      return Promise.reject(e);
+    }
+  }, []);
 
   const signToMetamask = useCallback(
     async (signature: string, walletID: string) => {

@@ -173,7 +173,7 @@ const Invest = () => {
         });
         ReactGA.event({
           category: 'purchase',
-          action: 'invest',
+          action: 'Invest',
           value: Number(parsedAmounts[Field.OUTPUT]?.toExact()),
         });
 

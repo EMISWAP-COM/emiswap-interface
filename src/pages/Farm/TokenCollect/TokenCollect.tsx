@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import ReactGA from 'react-ga';
 import styled from 'styled-components/macro';
 import Button from '../../../base/ui/Button';
 import { Token } from '@uniswap/sdk';
@@ -6,6 +7,8 @@ import CurrencyLogo from '../../../components/CurrencyLogo';
 import { useCompletedTransactionsCount } from '../../../state/transactions/hooks';
 import isLpToken from '../isLpToken';
 import LpTokenSymbol from '../LpTokenSymbol';
+import useEthErrorPopup from '../../../hooks/useEthErrorPopup';
+import { useActiveWeb3React } from '../../../hooks';
 
 const StyledTokenInputWrapper = styled.div`
   border: 1px solid ${({ theme }) => theme.lightGrey};
@@ -76,6 +79,7 @@ const TokenCollect: React.FC<TokenInputProps> = ({
   onCollect,
   tokenMode,
 }) => {
+  const { account } = useActiveWeb3React();
   const [isCollectInProgress, setIsCollectInProgress] = useState<boolean>(false);
 
   const isCollectButtonDisabled = !Number(deposit) || isCollectInProgress;
@@ -87,13 +91,53 @@ const TokenCollect: React.FC<TokenInputProps> = ({
 
   // This counter is used to update isCollectInProgress whenever transaction finishes
   const completedTransactionsCount = useCompletedTransactionsCount();
+  const addEthErrorPopup = useEthErrorPopup();
 
   const handleButtonClick = useCallback(() => {
     setIsCollectInProgress(true);
-    onCollect().catch(() => {
-      setIsCollectInProgress(false);
-    });
-  }, [onCollect]);
+    onCollect()
+      .then(() => {
+        ReactGA.set({
+          dimension1: stakeToken,
+          dimension2: rewardToken,
+          metric1: deposit,
+          metric2: projectedReward,
+          dimension3: account,
+        });
+
+        ReactGA.event({
+          category: 'Transaction',
+          action: 'new',
+          label: `un${isLpToken(tokenMode) ? 'farm' : 'stake'}`,
+        });
+      })
+      .catch(error => {
+        setIsCollectInProgress(false);
+        addEthErrorPopup(error);
+        ReactGA.set({
+          dimension1: stakeToken,
+          dimension2: rewardToken,
+          metric1: deposit,
+          metric2: projectedReward,
+          dimension3: account,
+        });
+
+        ReactGA.event({
+          category: 'Transaction',
+          action: 'cancel',
+          label: `un${isLpToken(tokenMode) ? 'farm' : 'stake'}`,
+        });
+      });
+  }, [
+    onCollect,
+    tokenMode,
+    addEthErrorPopup,
+    account,
+    deposit,
+    projectedReward,
+    rewardToken,
+    stakeToken,
+  ]);
 
   useEffect(() => {
     setIsCollectInProgress(false);

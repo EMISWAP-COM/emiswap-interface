@@ -415,10 +415,11 @@ export function useSwapCallback(
               .then(onSuccess)
               .catch(onError);
           })
-          .catch(error => {
-            console.error(`estimateGas failed for ${'swap'}`, error);
-            return undefined;
-          });
+          .catch(onError);
+          // .catch(error => {
+          //   console.error(`estimateGas failed for ${'swap'}`, error);
+          //   return undefined;
+          // });
       }
     };
   }, [
