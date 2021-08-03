@@ -83,7 +83,7 @@ const FarmingTableRow: React.FC<FarmingTableRowProps> = (
       <Cell>
         <Label>Fixed APR</Label>
         <LevelWrapper>
-          <StyledTruncatedText>{stakeData.percentageRate}%</StyledTruncatedText>
+          <StyledTruncatedText>{stakeData.percentageRate * 100}%</StyledTruncatedText>
         </LevelWrapper>
       </Cell>
       <Cell flex={2}>
