@@ -58,7 +58,7 @@ const FarmingTableRow: React.FC<FarmingTableRowProps> = (
   const farming2 = useFarming2(contract);
   const dateNow = dayjs();
   const endDate = dayjs(stakeData.endDate);
-  const datesDiff = endDate.diff(dateNow, 'day');
+  const datesDiff = Math.ceil(endDate.diff(dateNow, 'day', true));
 
   return (
     <TableRow>
