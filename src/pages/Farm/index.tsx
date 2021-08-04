@@ -111,7 +111,7 @@ export default function Farm() {
   // Load farms list
   useEffect(() => {
     dispatch(loadFarms() as any);
-  }, [dispatch, userId]);
+  }, [dispatch, userId, account, chainId]);
 
   // This counter is used to update data every N seconds
   const [intervalUpdateCounter, setIntervalUpdateCounter] = useState<number>(0);
@@ -130,7 +130,7 @@ export default function Farm() {
     if (userId) {
       dispatch(loadUserFarms(userId) as any);
     }
-  }, [dispatch, userId, intervalUpdateCounter]);
+  }, [dispatch, userId, account, chainId, intervalUpdateCounter]);
 
   const toggleWalletModal = useWalletModalToggle();
 

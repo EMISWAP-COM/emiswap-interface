@@ -81,7 +81,7 @@ const NoContent = styled.div`
 `;
 
 const FarmingRewards = () => {
-  const { library, account } = useActiveWeb3React();
+  const { library, account, chainId } = useActiveWeb3React();
   const [myFarmingContracts, setMyFarmingContracts] = useState<Contract[]>([]);
   useEffect(() => {
     getMyFarmingContracts(library, account).then(contracts => {
@@ -106,7 +106,7 @@ const FarmingRewards = () => {
       dispatch(loadUserFarms(userId) as any);
       dispatch(loadUserFarmsForLK(userId) as any);
     }
-  }, [dispatch, userId]);
+  }, [dispatch, userId, chainId, account]);
 
   const farm2Stakes = useSelector((state: AppState) => state.farming.stakes);
 
