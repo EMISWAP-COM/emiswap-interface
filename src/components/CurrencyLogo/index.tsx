@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import EthereumLogo from '../../assets/images/ethereum-logo.png';
+import KucoinLogo from '../../assets/currencies/KCS.png';
 
 const getTokenLogoURL = address =>
   `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`;
@@ -49,10 +50,15 @@ export default function CurrencyLogo({
   size?: string;
   style?: React.CSSProperties;
 }) {
+
   const [, refresh] = useState<number>(0);
 
   if (currency === ETHER) {
     return <StyledEthereumLogo src={EthereumLogo} size={size} {...rest} />;
+  }
+
+  if (currency.symbol === 'KCS') {
+    return <StyledEthereumLogo src={KucoinLogo} size={size} {...rest} />;
   }
 
   if (currency instanceof Token) {

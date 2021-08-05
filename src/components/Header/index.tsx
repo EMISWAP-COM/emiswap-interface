@@ -386,9 +386,11 @@ export default function Header() {
               </NetworkButtonSwitch>
               <NetworkSwitchModal/>
             </NetworkWrapper>
-            <a className="purple-btn" href={`${window.location.origin}/magic_cards/`}>
-              <span>Magic Hall</span>
-            </a>
+            {chainId !== (chainIds.KUCOIN as any) && (
+              <a className="purple-btn" href={`${window.location.origin}/magic_cards/`}>
+                <span>Magic Hall</span>
+              </a>
+            )}
             <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
               {account && userEthBalance ? (
                 <>

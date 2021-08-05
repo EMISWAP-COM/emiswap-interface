@@ -79,7 +79,7 @@ export default function CommonBases({
         >
           <CurrencyLogo
             // @ts-ignore
-            currency={chainId === chainIds.KUCOIN ? getKcsToken() : ETHER}
+            currency={chainId === chainIds.KUCOIN ? getKcsToken(chainId) : ETHER}
             style={{ marginRight: 8 }}
           />
           <Text fontWeight={500} fontSize={16}>
