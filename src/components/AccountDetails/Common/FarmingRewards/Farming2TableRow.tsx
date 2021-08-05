@@ -63,8 +63,8 @@ const FarmingTableRow: React.FC<FarmingTableRowProps> = (
   const startDate = dayjs(stakeData.startDate);
   const endDate = dayjs(stakeData.endDate);
   const reward = endDate > dateNow
-    ? dayjs.unix(endDate.diff(dateNow, 'seconds')).format('DD hh:mm:ss')
-    : 'Rewarded';
+    ? dayjs.unix(endDate.diff(dateNow, 'seconds')).format('D hh:mm:ss')
+    : 'Credited';
 
   return (
     <TableRow>
@@ -82,7 +82,7 @@ const FarmingTableRow: React.FC<FarmingTableRowProps> = (
         <Label>Timestamp</Label>
         <LevelWrapper>
           <StyledTruncatedText>
-            {startDate.format('DD/MM//YYYY hh:mm:ss')}
+            {startDate.format('DD/MM/YYYY hh:mm:ss')}
           </StyledTruncatedText>
         </LevelWrapper>
       </Cell>
@@ -90,7 +90,9 @@ const FarmingTableRow: React.FC<FarmingTableRowProps> = (
         <Label>Staked amount</Label>
         <LevelWrapper>
           <Tooltip title={stakeData.stakedAmount}>
-            <StyledTruncatedText>{stakeData.stakedAmount}</StyledTruncatedText>
+            <StyledTruncatedText>
+              {stakeData.stakedAmount?.substr(0, 8)}
+            </StyledTruncatedText>
           </Tooltip>
         </LevelWrapper>
       </Cell>
@@ -104,7 +106,9 @@ const FarmingTableRow: React.FC<FarmingTableRowProps> = (
         <Label>Reward in ESW</Label>
         <LevelWrapper>
           <Tooltip title={stakeData.reward}>
-            <StyledTruncatedText>{stakeData.reward}</StyledTruncatedText>
+            <StyledTruncatedText>
+              {stakeData.reward?.substr(0, 8)}
+            </StyledTruncatedText>
           </Tooltip>
         </LevelWrapper>
       </Cell>
