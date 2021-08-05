@@ -45,6 +45,7 @@ type FarmingTableRowProps = {
     contractAddress: string,
     percentageRate: number,
     reward: string,
+    startDate: string,
     endDate: string,
   }
 };
@@ -56,9 +57,14 @@ const FarmingTableRow: React.FC<FarmingTableRowProps> = (
   }
 ) => {
   const farming2 = useFarming2(contract);
+
   const dateNow = dayjs();
+
+  const startDate = dayjs(stakeData.startDate);
   const endDate = dayjs(stakeData.endDate);
-  const datesDiff = Math.ceil(endDate.diff(dateNow, 'day', true));
+  const reward = endDate > dateNow
+    ? dayjs.unix(endDate.diff(dateNow, 'seconds')).format('DD hh:mm:ss')
+    : 'Rewarded';
 
   return (
     <TableRow>
@@ -69,7 +75,15 @@ const FarmingTableRow: React.FC<FarmingTableRowProps> = (
       <Cell>
         <Label>Lock period</Label>
         <LevelWrapper>
-          <StyledTruncatedText>{farming2.lockPeriod}</StyledTruncatedText>
+          <StyledTruncatedText>{farming2.lockPeriod} days</StyledTruncatedText>
+        </LevelWrapper>
+      </Cell>
+      <Cell flex={2}>
+        <Label>Timestamp</Label>
+        <LevelWrapper>
+          <StyledTruncatedText>
+            {startDate.format('DD/MM//YYYY hh:mm:ss')}
+          </StyledTruncatedText>
         </LevelWrapper>
       </Cell>
       <Cell flex={2}>
@@ -97,11 +111,11 @@ const FarmingTableRow: React.FC<FarmingTableRowProps> = (
       <Cell>
         <Label>Reward in</Label>
         <LevelWrapper>
-          <StyledTruncatedText>{datesDiff > 0 ? datesDiff : 0} days</StyledTruncatedText>
+          <StyledTruncatedText>{reward}</StyledTruncatedText>
         </LevelWrapper>
       </Cell>
     </TableRow>
   );
-}
+};
 
 export default FarmingTableRow;

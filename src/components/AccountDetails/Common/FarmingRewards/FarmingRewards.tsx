@@ -125,6 +125,7 @@ const FarmingRewards = () => {
           <TableTitles>
             <LevelWrapper>Farm</LevelWrapper>
             <LevelWrapper>Lock period</LevelWrapper>
+            <LevelWrapper flex={2}>Timestamp</LevelWrapper>
             <LevelWrapper flex={2}>Staked amount</LevelWrapper>
             <LevelWrapper>Fixed APR</LevelWrapper>
             <LevelWrapper flex={2}>Reward in ESW</LevelWrapper>
