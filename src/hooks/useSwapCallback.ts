@@ -208,26 +208,27 @@ export function useSwapCallback(
         obj = {};
       }
 
-      return contract.estimateGas[method](...args, obj)
-        .then(result => {
-          // if (BigNumber.isBigNumber(safeGasEstimate) && !BigNumber.isBigNumber(safeGasEstimate)) {
-          //   throw new Error(
-          //     'An error occurred. Please try raising your slippage. If that does not work, contact support.'
-          //   )
-          // }
-          const gasLimit = calculateGasMargin(BigNumber.from(result));
-          return contract[method](...args, {
-            gasLimit,
-            ...obj,
+        return contract.estimateGas[method](...args, obj)
+          .then(result => {
+            // if (BigNumber.isBigNumber(safeGasEstimate) && !BigNumber.isBigNumber(safeGasEstimate)) {
+            //   throw new Error(
+            //     'An error occurred. Please try raising your slippage. If that does not work, contact support.'
+            //   )
+            // }
+            const gasLimit = calculateGasMargin(BigNumber.from(result));
+            return contract[method](...args, {
+              gasLimit,
+              ...obj,
+            })
+              .then(onSuccess)
+              .catch(onError);
           })
-            .then(onSuccess)
-            .catch(onError);
-        })
-        .catch(error => {
-          console.error(`estimateGas failed for ${'swap'}`, error);
-          return undefined;
-        });
-    };
+          .catch(onError);
+          // .catch(error => {
+          //   console.error(`estimateGas failed for ${'swap'}`, error);
+          //   return undefined;
+          // });
+      }
   }, [
     trade,
     recipient,

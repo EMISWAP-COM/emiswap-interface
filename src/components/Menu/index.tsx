@@ -46,7 +46,7 @@ const StyledMenu = styled.div`
 `;
 
 const MenuFlyout = styled.span`
-  min-width: 13.025rem;
+  min-width: 14.025rem;
   background-color: ${({ theme }) => theme.dark1};
   box-shadow: ${({ theme }) => theme.dark1BoxShadow};
   border-radius: 0.5rem;
@@ -149,6 +149,15 @@ export default function Menu() {
           >
             <BookOpen size={14} />
             Smart Contract Audit
+          </MenuItem>
+          <MenuItem
+            id="link"
+            // href="https://hacken.io/wp-content/uploads/2021/02/18022021_Emiswap_SC_Audit_Report.pdf"
+            href="/docs/12072021_Emiswap_SC_Audit_Report_V2.pdf"
+            target="_blank"
+          >
+            <BookOpen size={14} />
+            Smart Contract Audit 2
           </MenuItem>
           <MenuItem id="link" href={window['env'].REACT_APP_CODE_LINK} target="_blank">
             <Code size={14} />

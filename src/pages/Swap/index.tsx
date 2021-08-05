@@ -1,5 +1,6 @@
 import { JSBI, TokenAmount } from '@uniswap/sdk';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
+import ReactGA from 'react-ga';
 import { ArrowDown, ArrowUp } from 'react-feather';
 import { Text } from 'rebass';
 import styled, { ThemeContext } from 'styled-components';
@@ -199,9 +200,36 @@ export default function Swap() {
       .then(hash => {
         setAttemptingTxn(false);
         setTxHash(hash);
+        ReactGA.set({
+          dimension4: hash,
+          dimension1: currencies[Field.INPUT]?.symbol,
+          dimension2: currencies[Field.OUTPUT]?.symbol,
+          metric1: parsedAmounts[Field.INPUT]?.toFixed(),
+          metric2: parsedAmounts[Field.OUTPUT]?.toFixed(),
+          dimension3: account,
+        });
+
+        ReactGA.event({
+          category: 'Transaction',
+          action: 'new',
+          label: 'swap',
+        });
       })
       .catch(error => {
         setAttemptingTxn(false);
+        console.log("Cancel")
+        ReactGA.set({
+          dimension1: currencies[Field.INPUT]?.symbol,
+          dimension2: currencies[Field.OUTPUT]?.symbol,
+          metric1: parsedAmounts[Field.INPUT]?.toFixed(),
+          metric2: parsedAmounts[Field.OUTPUT]?.toFixed(),
+          dimension3: account,
+        });
+        ReactGA.event({
+          category: 'Transaction',
+          action: 'cancel',
+          label: 'swap',
+        });
         // we only care if the error is something _other_ than the user rejected the tx
         if (error?.code !== 4001) {
           console.error(error);

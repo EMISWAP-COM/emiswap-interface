@@ -6,6 +6,7 @@ import { ThemeProvider } from 'emotion-theming';
 import theme from '@rebass/preset';
 import FAQInfo from '../components/FAQInfo';
 import { useRouteMatch } from 'react-router';
+import { YMInitializer } from 'react-yandex-metrika';
 
 export const HeadersPlusBodyWrapper = styled.div<{ isLarge?: boolean }>`
   position: relative;
@@ -93,6 +94,7 @@ export default function AppBody({
         <div className="onlyDesktop">
           <Wordmark />
         </div>
+        <YMInitializer accounts={[78893968]} options={{ webvisor: true }} />
         <BodyWrapper className={className} data="test" disabled={disabled}>
           {children}
         </BodyWrapper>

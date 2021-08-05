@@ -2,6 +2,7 @@ import { ChainId } from '@uniswap/sdk';
 
 const addressesByNetworkId = {
   1: [
+    '0xd9ca818d8db735fde245afaf55821ed7fa582d6c',
     '0x673f7a16B2d696A987383921292e8f46DA715952',
     '0x0607C72267a160Edcf5151cd38d832C524817b6c',
     '0xb7282ff5e0abe11446a327f799180d5c9a444fc7',
