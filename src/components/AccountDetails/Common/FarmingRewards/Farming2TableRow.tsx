@@ -5,6 +5,7 @@ import { LevelWrapper, TableRow } from './FarmingRewards';
 import useFarming2 from '../../../../hooks/useFarming2';
 import dayjs from 'dayjs';
 import Tooltip from '../../../../pages/Farm/Tooltip';
+import { convertToISOSafari } from '../../uitls';
 
 const Cell = styled.div<{ flex?: number }>`
   flex: ${({ flex }) => flex || 1};
@@ -59,11 +60,11 @@ const FarmingTableRow: React.FC<FarmingTableRowProps> = (
   const farming2 = useFarming2(contract);
 
   const dateNow = dayjs();
+  const startDate = dayjs(convertToISOSafari(stakeData.startDate));
+  const endDate = dayjs(convertToISOSafari(stakeData.endDate));
 
-  const startDate = dayjs(stakeData.startDate);
-  const endDate = dayjs(stakeData.endDate);
   const reward = endDate > dateNow
-    ? dayjs.unix(endDate.diff(dateNow, 'seconds')).format('D hh:mm:ss')
+    ? (dayjs as any).duration(endDate.diff(dateNow)).format('D[d] HH:mm:ss')
     : 'Credited';
 
   return (
@@ -82,7 +83,7 @@ const FarmingTableRow: React.FC<FarmingTableRowProps> = (
         <Label>Timestamp</Label>
         <LevelWrapper>
           <StyledTruncatedText>
-            {startDate.format('DD/MM/YYYY hh:mm:ss')}
+            {startDate.format('DD/MM/YYYY HH:mm:ss')}
           </StyledTruncatedText>
         </LevelWrapper>
       </Cell>
