@@ -84,6 +84,7 @@ export default createReducer<FarmState>(initialState, builder =>
             contractAddress: farmFromStore?.contractAddress,
             percentageRate: farmFromStore?.percentageRate,
             reward: stake.attributes.reward,
+            startDate: stake.attributes.startedAt,
             endDate: stake.attributes.finishedAt,
           }
         }),
