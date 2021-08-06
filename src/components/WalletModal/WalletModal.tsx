@@ -387,13 +387,14 @@ const WalletModal: React.FC<WalletModalProps> = ({ ENSName }) => {
           );
         default:
           return (
-            <Styled.NoUser>
+            <Owner ENSName={ENSName} openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)} />
+            /*<Styled.NoUser>
               <WarningBlock
                 title={'Login failed'}
                 content={() => <div>Something went wrong.</div>}
                 bottomContent={() => <div>Please refresh the page and try again.</div>}
               />
-            </Styled.NoUser>
+            </Styled.NoUser>*/
           );
       }
     } else if (account && !user && walletView === WALLET_VIEWS.ACCOUNT) {

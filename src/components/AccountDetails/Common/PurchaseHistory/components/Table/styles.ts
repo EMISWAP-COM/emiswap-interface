@@ -34,6 +34,7 @@ export const TableHeader = styled(Header)<{ marginTop?: number; marginBottom?: n
   position: relative;
 
   @media screen and (max-width: 1200px) {
+    display: block;
     margin-bottom: 0;
   }
 `;

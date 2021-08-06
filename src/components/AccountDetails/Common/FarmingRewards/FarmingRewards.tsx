@@ -14,6 +14,7 @@ import { FARMING_2_ABI } from '../../../../constants/abis/farming2';
 const TableInfo = styled.div`
   font-size: 16px;
   color: ${({ theme }) => theme.darkText};
+  margin-top: 12px;
   margin-bottom: 24px;
 `;
 
@@ -113,7 +114,7 @@ const FarmingRewards = () => {
   return (
     <>
       <TableHeader>
-        Your Farming Rewards
+        <div>Your Farming Rewards</div>
         <Tabs tabs={tabsValues} value={selectedTab} onChange={setSelectedTab} />
       </TableHeader>
       <TableInfo>
