@@ -13,6 +13,7 @@ import invest from './invest/reducer';
 import cabinets from './cabinets/reducer';
 import stats from './stats/reducer';
 import launchpad from './launchpad/reducer';
+import farming from './farming/reducer';
 
 import { updateVersion } from './user/actions';
 
@@ -32,6 +33,7 @@ const store = configureStore({
     cabinets,
     stats,
     launchpad,
+    farming,
   },
   middleware: [
     ...getDefaultMiddleware({ serializableCheck: false }),
