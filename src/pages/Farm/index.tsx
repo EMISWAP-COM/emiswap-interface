@@ -7,12 +7,17 @@ import AppBody from '../AppBody';
 // import { RadioGroup } from '../../base/ui/RadioGroup';
 import Tabs from '../../base/ui/Tabs';
 import { Contract } from '@ethersproject/contracts';
-import { getFarmingContracts } from '../../utils';
+import { getContract, getFarmingContracts } from '../../utils';
 import { useActiveWeb3React } from '../../hooks';
 import FarmComponent from './FarmComponent';
 import Button from '../../base/ui/Button';
 import { useWalletModalToggle } from '../../state/application/hooks';
 import getEswPriceInDai from './getEswPriceInDai';
+import Farm2Component from './Farm2Component';
+import { loadFarms, loadUserFarms } from '../../state/farming/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, AppState } from '../../state';
+import { FARMING_2_ABI } from '../../constants/abis/farming2';
 // FIXME Убрать комментарий для возврата функционала
 // import isLpToken from './isLpToken';
 // import useFarming from '../../hooks/useFarming';
@@ -68,12 +73,12 @@ const Info = styled.div`
 
 const tabItems = [
   {
-    id: 'staking',
-    title: 'Staking',
-  },
-  {
     id: 'farming',
     title: 'Farming',
+  },
+  {
+    id: 'staking',
+    title: 'Staking',
   },
   // FIXME Убрать комментарий для возврата функционала
   // {
@@ -86,15 +91,46 @@ const tabItems = [
   // },
 ];
 
-export const isStakingTab = tabname => tabname === tabItems[0].id;
+export const isStakingTab = tabname => tabname === tabItems[1].id;
 
 export default function Farm() {
   // FIXME Убрать комментарий для возврата функционала
   // const [radioValue, setRadioValue] = useState<string>('all');
-  const [selectedTab, setSelectedTab] = useState<string>('staking');
+  const [selectedTab, setSelectedTab] = useState<string>('farming');
   const { library, account, chainId } = useActiveWeb3React();
+  const dispatch = useDispatch<AppDispatch>();
+  const farms2 = useSelector((state: AppState) => state.farming.farms);
 
   const farmingContracts: Contract[] = useMemo(() => getFarmingContracts(library, account), [library, account]);
+
+  const { id: userId } = useSelector((state: AppState) => state.user.info);
+  const farming2Contracts: Contract[] = useMemo(() => {
+    return farms2.map((farm) => getContract(farm.contractAddress, FARMING_2_ABI, library, account));
+  }, [library, account, farms2]);
+
+  // Load farms list
+  useEffect(() => {
+    dispatch(loadFarms() as any);
+  }, [dispatch, userId, account, chainId]);
+
+  // This counter is used to update data every N seconds
+  const [intervalUpdateCounter, setIntervalUpdateCounter] = useState<number>(0);
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setIntervalUpdateCounter(counter => ++counter);
+    }, 30000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+
+  // Load user staking data
+  useEffect(() => {
+    if (userId) {
+      dispatch(loadUserFarms(userId) as any);
+    }
+  }, [dispatch, userId, account, chainId, intervalUpdateCounter]);
 
   const toggleWalletModal = useWalletModalToggle();
 
@@ -132,6 +168,21 @@ export default function Farm() {
               </StyledInfo>
             </StyledInfoWrapper>
             {farmingContracts.map(contract => <FarmComponent
+              key={contract.address}
+              contract={contract}
+              selectedTab={selectedTab}
+              eswPriceInDai={eswPriceInDai}
+            />)}
+            <br/><br/>
+            <StyledInfoWrapper>
+              <StyledInfoTitle>
+                {isStakingTab(selectedTab) ? 'Fixed APR Staking' : 'Fixed APR Farming'}
+              </StyledInfoTitle>
+              <StyledInfo>
+                Stake coins for a limited period of time to boost your APR. Please not that you will not be able to withdraw staked coins before the end of the farming period. Farming rewards are allocated to your EmiSwap account every 30 seconds.
+              </StyledInfo>
+            </StyledInfoWrapper>
+            {farming2Contracts.map(contract => <Farm2Component
               key={contract.address}
               contract={contract}
               selectedTab={selectedTab}
