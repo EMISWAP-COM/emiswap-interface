@@ -62,7 +62,8 @@ export function useSwapActionHandlers(): SwapActionHandlers {
 
   const onUserInput = useCallback(
     (field: Field, typedValue: string) => {
-      dispatch(typeInput({ field, typedValue }));
+      const value = typedValue.substr(0, 10);
+      dispatch(typeInput({ field, typedValue: value }));
     },
     [dispatch],
   );
@@ -81,7 +82,7 @@ export function tryParseAmount(value?: string, currency?: Token): TokenAmount | 
     return;
   }
   try {
-    const typedValueParsed = parseUnits(value, currency.decimals).toString();
+    const typedValueParsed = parseUnits(value, currency.decimals).toString().substr(0, 10);
     if (typedValueParsed !== '0') {
       return new TokenAmount(currency, JSBI.BigInt(typedValueParsed));
     }

@@ -53,8 +53,6 @@ const Invest = () => {
   const { account, chainId } = useActiveWeb3React();
   const theme = useContext(ThemeContext);
 
-  const [isTransactionFeeCovered] = useTransactionPrice('invest');
-
   // toggle wallet when disconnected
   const toggleWalletModal = useWalletModalToggle();
 
@@ -72,6 +70,8 @@ const Invest = () => {
     currencies,
     error,
   } = useDerivedInvestInfo();
+
+  const [isTransactionFeeCovered] = useTransactionPrice('invest', currencies[Field.INPUT]);
 
   const role: UserRoles | null = useSelector((state: AppState) => state.user.info?.role);
   const investRequestStatus = useSelector(
@@ -267,7 +267,7 @@ const Invest = () => {
         </RowBetween>
         {!error && !isTransactionFeeCovered && (
           <ErrorText style={{ marginTop: 4 }} fontWeight={500} fontSize="11pt" severity={3}>
-            Probably insufficient ETH for transaction fee
+            Probably insufficient for transaction fee
           </ErrorText>
         )}
       </>

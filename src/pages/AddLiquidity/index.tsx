@@ -74,7 +74,7 @@ export default function AddLiquidity({
 
   const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity);
 
-  const [isEnough] = useTransactionPrice('pool');
+  const [isEnough] = useTransactionPrice('pool', currencies[Field.CURRENCY_A]);
 
   const isValid = !error;
   // modal and loading
@@ -726,7 +726,7 @@ export default function AddLiquidity({
                 )}
                 {!isEnough && (
                   <ErrorText fontWeight={500} fontSize="11pt" severity={3}>
-                    Probably insufficient ETH balance
+                    Probably insufficient balance
                   </ErrorText>
                 )}
               </AutoColumn>

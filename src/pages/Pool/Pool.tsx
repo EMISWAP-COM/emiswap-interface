@@ -140,7 +140,7 @@ const Pool = () => {
                   Add Liquidity
                 </Text>
               </ButtonPrimary>
-              <Styled.GasFeeText>100% gas fee refund</Styled.GasFeeText>
+              {/*<Styled.GasFeeText>100% gas fee refund</Styled.GasFeeText>*/}
               <Styled.StyledHr />
               <div>
                 <Text

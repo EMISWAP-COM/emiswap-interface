@@ -3,7 +3,7 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
 import { ArrowDown, ArrowUp } from 'react-feather';
 import { Text } from 'rebass';
-import styled, { ThemeContext } from 'styled-components';
+import { ThemeContext } from 'styled-components';
 import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button';
 import Card, { GreyCard } from '../../components/Card';
 import { AutoColumn } from '../../components/Column';
@@ -45,11 +45,11 @@ import { AdvancedSwapDetails } from '../../components/swap/AdvancedSwapDetails';
 import { useTransactionPrice } from '../../hooks/useTransactionPrice';
 import ReferralLink from '../../components/RefferalLink';
 
-const GasFeeText = styled.div`
+/*const GasFeeText = styled.div`
   margin-top: 8px;
   margin-bottom: 8px;
   color: ${({ theme }) => theme.darkText};
-`;
+`;*/
 
 export default function Swap() {
   useDefaultsFromURLSearch();
@@ -137,7 +137,7 @@ export default function Swap() {
       : parsedAmounts[dependentField]?.toSignificant(6) ?? '',
   };
 
-  const [isEnough] = useTransactionPrice('swap');
+  const [isEnough] = useTransactionPrice('swap', currencies[Field.INPUT]);
 
   const route = trade?.route;
   const userHasSpecifiedInputOutput = Boolean(
@@ -217,7 +217,7 @@ export default function Swap() {
       })
       .catch(error => {
         setAttemptingTxn(false);
-        console.log("Cancel")
+        console.log("Cancel");
         ReactGA.set({
           dimension1: currencies[Field.INPUT]?.symbol,
           dimension2: currencies[Field.OUTPUT]?.symbol,
@@ -509,11 +509,11 @@ export default function Swap() {
             {betterTradeLinkVersion && <BetterTradeLink version={betterTradeLinkVersion} />}
             {!isEnough && (
               <ErrorText fontWeight={500} fontSize="11pt" severity={3}>
-                Probably insufficient ETH balance
+                Probably insufficient balance
               </ErrorText>
             )}
           </BottomGrouping>
-          <GasFeeText>100% gas fee refund</GasFeeText>
+          {/*<GasFeeText>100% gas fee refund</GasFeeText>*/}
           <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
             <ExternalGreenLink href="https://wiki.emiswap.com/user-guide/how-to-make-swaps">
               Wiki How to make swaps?
