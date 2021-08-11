@@ -234,6 +234,9 @@ export default function AddLiquidity({
               action: 'cancel',
               label: 'pool',
             });
+
+            setShowConfirm(false);
+
             throw new Error(`
             Account: ${account}\n
             ChainId: ${chainId}\n
@@ -264,6 +267,8 @@ export default function AddLiquidity({
           action: 'cancel',
           label: 'pool',
         });
+
+        setShowConfirm(false);
 
         throw new Error(`
           Account: ${account}\n

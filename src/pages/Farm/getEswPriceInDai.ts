@@ -26,15 +26,19 @@ const getEswPriceInDai = (library: Web3Provider, account: string, chainId: numbe
   );
 
   return emiPrice2.getCoinPrices([eswCoin.address], stableTokens, 0).then((value: BigInt[]) => {
-    const daiToken = new Token(
+    const coin = daiCoin?.address ? daiCoin : kuCoin;
+
+    const token = new Token(
       chainId,
-      daiCoin.address,
-      daiCoin.decimals,
-      daiCoin.symbol,
-      daiCoin.name,
+      coin.address,
+      coin.decimals,
+      coin.symbol,
+      coin.name,
     );
-    const tokenAmount = new TokenAmount(daiToken, JSBI.BigInt(value.toString()));
-    return tokenAmountToString(tokenAmount, daiToken.decimals);
+
+    const tokenAmount = new TokenAmount(token, JSBI.BigInt(value.toString()));
+
+    return tokenAmountToString(tokenAmount, token.decimals);
   });
 };
 

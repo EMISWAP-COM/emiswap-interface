@@ -3,7 +3,7 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
 import { ArrowDown, ArrowUp } from 'react-feather';
 import { Text } from 'rebass';
-import { ThemeContext } from 'styled-components';
+import styled, { ThemeContext } from 'styled-components';
 import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button';
 import Card, { GreyCard } from '../../components/Card';
 import { AutoColumn } from '../../components/Column';
@@ -44,12 +44,12 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { AdvancedSwapDetails } from '../../components/swap/AdvancedSwapDetails';
 import { useTransactionPrice } from '../../hooks/useTransactionPrice';
 import ReferralLink from '../../components/RefferalLink';
+import chainIds from '../../constants/chainIds';
 
-/*const GasFeeText = styled.div`
+const GasFeeText = styled.div`
   margin-top: 8px;
-  margin-bottom: 8px;
   color: ${({ theme }) => theme.darkText};
-`;*/
+`;
 
 export default function Swap() {
   useDefaultsFromURLSearch();
@@ -513,8 +513,10 @@ export default function Swap() {
               </ErrorText>
             )}
           </BottomGrouping>
-          {/*<GasFeeText>100% gas fee refund</GasFeeText>*/}
-          <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
+          {(chainId as any) !== chainIds.KUCOIN && (
+            <GasFeeText>100% gas fee refund</GasFeeText>
+          )}
+          <TYPE.black fontSize={14} fontWeight={400} color={theme.text2} marginTop={'12px'}>
             <ExternalGreenLink href="https://wiki.emiswap.com/user-guide/how-to-make-swaps">
               Wiki How to make swaps?
             </ExternalGreenLink>

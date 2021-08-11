@@ -16,6 +16,7 @@ const FarmComponent: React.FC<FarmComponentProps> = ({ contract, selectedTab, es
   const farming = useFarming(contract);
 
   const [apr, setApr] = useState<number>(0);
+
   useEffect(() => {
     if (farming.blockReward && Number(farming.liquidity) && eswPriceInDai) {
       const calculatedApr =
@@ -28,6 +29,7 @@ const FarmComponent: React.FC<FarmComponentProps> = ({ contract, selectedTab, es
   const shouldShow =
     (isStakingTab(selectedTab) && !isLpToken(farming.tokenMode)) ||
     (!isStakingTab(selectedTab) && isLpToken(farming.tokenMode));
+
   return shouldShow ? (
     <ExtendableRow
       contractAddress={contract.address}

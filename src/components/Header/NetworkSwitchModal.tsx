@@ -90,6 +90,8 @@ export default function NetworkSwitchModal() {
       } else {
         console.log(switchError);
       }
+    } finally {
+      toggleNetworkSwitchModal();
     }
   };
 
@@ -108,7 +110,7 @@ export default function NetworkSwitchModal() {
 
         <NetworkItemsRow>
           {networksItems.map(item => (
-            <NetworkItem onClick={() => onClickItem(item)}>
+            <NetworkItem key={item.chainId} onClick={() => onClickItem(item)}>
               <NetworkIcon active={item.chainId === chainId}>
                 {item.chainId === chainId && (
                   <CircleCheckImg src={CircleCheckIcon}/>

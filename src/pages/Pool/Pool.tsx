@@ -22,13 +22,14 @@ import { Dots } from '../../components/swap/styleds';
 import ReferralLink from '../../components/RefferalLink';
 
 import * as Styled from './styleds';
+import chainIds from '../../constants/chainIds';
 
 const MEDIUM_LINK =
   'https://emiswap.medium.com/pay-0-for-gas-and-get-x10-reward-the-two-big-reasons-to-join-emiswap-today-8af2e68d0aaa';
 
 const Pool = () => {
   const theme = useContext(ThemeContext);
-  const { account } = useActiveWeb3React();
+  const { account, chainId } = useActiveWeb3React();
 
   const trackedTokenPairs = useTrackedTokenPairs();
   const pairs = usePairs(trackedTokenPairs);
@@ -140,7 +141,9 @@ const Pool = () => {
                   Add Liquidity
                 </Text>
               </ButtonPrimary>
-              {/*<Styled.GasFeeText>100% gas fee refund</Styled.GasFeeText>*/}
+              {(chainId as any) !== chainIds.KUCOIN && (
+                <Styled.GasFeeText>100% gas fee refund</Styled.GasFeeText>
+              )}
               <Styled.StyledHr />
               <div>
                 <Text

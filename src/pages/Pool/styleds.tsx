@@ -61,6 +61,6 @@ export const StyledHr = styled.hr`
   height: 1px;
 `;
 
-/*export const GasFeeText = styled.div`
+export const GasFeeText = styled.div`
   color: ${({ theme }) => theme.darkText};
-`;*/
+`;

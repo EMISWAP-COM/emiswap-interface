@@ -57,7 +57,7 @@ export default function CurrencyLogo({
     return <StyledEthereumLogo src={EthereumLogo} size={size} {...rest} />;
   }
 
-  if (currency.symbol === 'KCS') {
+  if (currency?.symbol === 'KCS') {
     return <StyledEthereumLogo src={KucoinLogo} size={size} {...rest} />;
   }
 

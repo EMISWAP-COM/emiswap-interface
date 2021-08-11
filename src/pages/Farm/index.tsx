@@ -13,6 +13,7 @@ import FarmComponent from './FarmComponent';
 import Button from '../../base/ui/Button';
 import { useWalletModalToggle } from '../../state/application/hooks';
 import getEswPriceInDai from './getEswPriceInDai';
+import LogoIcon from '../../assets/svg/logo-icon.svg';
 // FIXME Убрать комментарий для возврата функционала
 // import isLpToken from './isLpToken';
 // import useFarming from '../../hooks/useFarming';
@@ -66,6 +67,15 @@ const Info = styled.div`
 //   },
 // ];
 
+const LoadingInfo = styled.div`
+    min-height: 45vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    color: ${({ theme }) => theme.darkWhite};
+`;
+
 const tabItems = [
   {
     id: 'staking',
@@ -102,7 +112,7 @@ export default function Farm() {
   const toggleWalletModal = useWalletModalToggle();
 
   // @ts-ignore
-  const desiredChainId = chainId
+  const desiredChainId = chainId;
 
   // Get esw price in top level component to avoid needless contract requests
   const [eswPriceInDai, setEswPriceInDai] = useState('0');
@@ -117,12 +127,12 @@ export default function Farm() {
   return (
     <>
       <AppBody>
-        <SwapPoolTabs active={TabNames.FARM} />
-        {account && chainId === desiredChainId && (
+        <SwapPoolTabs active={TabNames.FARM}/>
+        {account && chainId === desiredChainId && farmingContracts?.length && (
           <>
             <StyledFarmingHeader>
               <StyledTabs>
-                <Tabs items={tabItems} selectedItemId={selectedTab} onChange={setSelectedTab} />
+                <Tabs items={tabItems} selectedItemId={selectedTab} onChange={setSelectedTab}/>
               </StyledTabs>
               {/* <RadioGroup buttonsList={radioList} groupName="farms" value={radioValue} onChange={setRadioValue} /> */}
             </StyledFarmingHeader>
@@ -146,14 +156,28 @@ export default function Farm() {
             ))}
           </>
         )}
+
+        {!farmingContracts?.length && (
+          <LoadingInfo>
+            <div>
+              <img src={LogoIcon} alt="logo"/>
+              <div style={{ width: '100%', marginTop: '30px' }}>
+                We’re uploading the list of our awesome farming pools.<br/>
+                It may take a few seconds 😉
+              </div>
+            </div>
+          </LoadingInfo>
+        )}
+
         {!account && (
           <Info>
             Please connect your wallet to see all available farms and staking pools
-            <br />
-            <br />
+            <br/>
+            <br/>
             <Button onClick={toggleWalletModal}>Connect to a wallet</Button>
           </Info>
         )}
+
         {chainId !== desiredChainId && <Info>Please change network</Info>}
       </AppBody>
     </>
