@@ -90,7 +90,7 @@ inject_vars:
       DEFISTATION_TEST: "false"
       APP_ETHERSCAN_TOKEN: M3NKR78E15KIMJVXK9ETDDVHWGYHN7ZGZ5
       APP_POOL_BALANCES_SKIP_LOAD_HISTORICAL: false
-          ingress:
+    ingress:
       hosts:
       - host: "{{ env_fqdn }}"
         paths:
