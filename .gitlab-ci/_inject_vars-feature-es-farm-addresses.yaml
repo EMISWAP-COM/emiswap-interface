@@ -53,3 +53,148 @@ chart_vars:
         REACT_APP_SENTRY_AUTH_TOKEN: '3fd6fa12c53411ebabadb2b6a736423f',
         EMI_PRICE_2_ADDRESS: '0xB051F7DeFD9ed3fbCb8cF911C01b06dBD7281340',
       };
+  emiswap-oracle:
+    resources:
+      requests: { cpu: 1, memory: '768Mi' }
+      limits: { cpu: 4, memory: '4096Mi' }
+    replicaCountOracle: 4
+    fullnameOverride: emiswap-oracle
+    image:
+      repository: registry.gitlab.com/emidao/emiswap/oracle/emiswap-oracle-production
+      tag: "f5a719c0"
+      pullPolicy: Always
+    imagePullSecrets:
+    - name: gitlab-foreign-project-registry
+    env:
+      app_puma_workers: 1
+      app_puma_min_threads: 600
+      app_puma_max_threads: 600
+      app_env: production
+      app_db_url: "postgresql://postgres:39gDJJ2YT7w3ggpJ@10.165.103.2/emiswap-oracle-db"
+      app_bugsnag_token: "9df906f1f861575615450187642a267e"
+      app_blockchain_block_confirmation: "6"
+      app_blockchain_block_start_number: "11164801"
+      app_blockchain_block_limit_save: "100"
+      app_blockchain_block_num_threads: "15"
+      app_blockchain_block_events_load_limit: "1000"
+      app_blockchain_block_events_load_threads: "15"
+      app_db_timeout: "60"
+      app_db_pool_timeout: "60"
+      app_db_max_connections: "600"
+      app_contracts_emi_price: '0xb051f7defd9ed3fbcb8cf911c01b06dbd7281340'
+      app_contracts_esw: '0x5a75a093747b72a0e14056352751edf03518031d'
+      app_pool_exchange_launch_date: '2021-03-31T00:00:00+00:00'
+      APP_BLOCKCHAIN_ESW_TO_DAI_DATE1: '2021-04-21T00:00:00+00:00'
+      app_blockchain_esw_to_dai_launch_pad_date: '2021-06-28T00:00:00+00:00'
+      APP_POOL_USE_REGISTERED_TOKENS: true
+      APP_BLOCKCHAIN_BLOCK_EVENTS_NUM_THREADS: 25
+      LOG_DB: false
+      HUBSPOT_ENABLED: true
+      HUBSPOT_API_KEY: c306e4fa-001d-43fb-a2f2-c0e76c7e85a4
+      HUBSPOT_INVESTOR_REQUEST_PIPELINE_ID: "12564849"
+      HUBSPOT_INVESTOR_REQUEST_DEALSTAGE_ID: "12564865"
+      APP_CONTRACTS_FARM_TYPE1: '0x673f7a16b2d696a987383921292e8f46da715952'
+      DEFISTATION_BASE_URI: "https://api.defistation.io/dataProvider/tvl"
+      DEFISTATION_USERNAME: "EmiSwap"
+      DEFISTATION_PASSWORD: "f9ae3861-9736-47bc-9233-686f30a358e8"
+      DEFISTATION_TEST: "false"
+      APP_ETHERSCAN_TOKEN: M3NKR78E15KIMJVXK9ETDDVHWGYHN7ZGZ5
+      APP_POOL_BALANCES_SKIP_LOAD_HISTORICAL: false
+          ingress:
+      hosts:
+      - host: "{{ env_fqdn }}"
+        paths:
+        - /v1
+        - /v2
+        - /api/v2
+    backup:
+      enabled: false
+    workers:
+      blockchain_block_events:
+        cmd: ['bundle','exec','rake', 'workers:run[blockchain_block_events]']
+        resources:
+          requests: { cpu: 0.05, memory: '256Mi' }
+          limits: { cpu: 0.5, memory: '768Mi' }
+      blockchain_block:
+        cmd: ['bundle','exec','rake', 'workers:run[blockchain_block]']
+        resources:
+          requests: { cpu: 0.05, memory: '256Mi' }
+          limits: { cpu: 0.5, memory: '768Mi' }
+      blockchain_event:
+        cmd: ['bundle','exec','rake', 'workers:run[blockchain_event]']
+        resources:
+          requests: { cpu: 0.05, memory: '256Mi' }
+          limits: { cpu: 0.5, memory: '768Mi' }
+      rates_creator:
+        cmd: ['bundle','exec','rake', 'workers:run[rates_creator]']
+        resources:
+          requests: { cpu: 0.05, memory: '256Mi' }
+          limits: { cpu: 0.5, memory: '768Mi' }
+      gas_tracker:
+        cmd: ['bundle','exec','rake', 'workers:run[gas_tracker]']
+        resources:
+          requests: { cpu: 0.05, memory: '256Mi' }
+          limits: { cpu: 0.5, memory: '768Mi' }
+      pool_balancer:
+        cmd: [ 'bundle','exec','rake', 'workers:run[pool_balancer]' ]
+        resources:
+          requests: { cpu: 0.05, memory: '256Mi' }
+          limits: { cpu: 0.5, memory: '768Mi' }
+      exchanges_updater:
+        cmd: [ 'bundle','exec','rake', 'workers:run[exchanges_updater]' ]
+        resources:
+          requests: { cpu: 0.05, memory: '256Mi' }
+          limits: { cpu: 0.5, memory: '768Mi' }
+      dividend_balance:
+        cmd: [ 'bundle','exec','rake', 'workers:run[dividend_balance]' ]
+        resources:
+          requests: { cpu: 0.05, memory: '256Mi' }
+          limits: { cpu: 0.5, memory: '768Mi' }
+      defistation_updater:
+        cmd: [ 'bundle','exec','rake', 'workers:run[defistation_updater]' ]
+        resources:
+          requests: { cpu: 0.05, memory: '256Mi' }
+          limits: { cpu: 0.5, memory: '768Mi' }
+      pool_stats_updater:
+        cmd: [ 'bundle','exec','rake', 'workers:run[pool_stats_updater]' ]
+        resources:
+          requests: { cpu: 0.05, memory: '256Mi' }
+          limits: { cpu: 0.5, memory: '768Mi' }
+      farming:
+        cmd: [ 'bundle','exec','rake', 'workers:run[farming]' ]
+        resources:
+          requests: { cpu: 0.05, memory: '256Mi' }
+          limits: { cpu: 0.5, memory: '768Mi' }
+
+  emiswap-nft:
+    fullnameOverride: "emiswap-nft"
+    image:
+      repository: "registry.gitlab.com/emidao/emiswap/eminft/eminft-production"
+      tag: "153b1f05"
+      pullPolicy: Always
+    imagePullSecrets:
+    - name: gitlab-foreign-project-registry
+    basePath: /magic_cards
+    ingress:
+      hosts:
+      - host: "{{ env_fqdn }}"
+        paths:
+        - /magic_cards
+    env_js: |
+      window.env = {
+        NFT_API_BASE_URL: 'https://{{ env_fqdn }}'
+      };
+
+  emiswap-info:
+    fullnameOverride: emiswap-info
+    image:
+      repository: "registry.gitlab.com/emidao/emiswap/info/emiswap-info-production"
+      tag: "sha-fb8e6431"
+      pullPolicy: Always
+
+  emiswap-landing:
+    fullnameOverride: "emiswap-landing"
+    image:
+      repository: "registry.gitlab.com/emidao/emiswap/landing/emiswap-landing-production"
+      tag: "b763301f"
+      pullPolicy: Always
