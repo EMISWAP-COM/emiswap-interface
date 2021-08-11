@@ -1,8 +1,4 @@
-emirex_charts:
-  app:
-    - emiswap-ui
-
-chart_vars:
+inject_vars:
   emiswap-ui:
     fullnameOverride: emiswap-ui
     image:
