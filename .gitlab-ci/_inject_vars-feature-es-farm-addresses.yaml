@@ -55,41 +55,6 @@ inject_vars:
       limits: { cpu: 1, memory: '4096Mi' }
     replicaCountOracle: 4
     fullnameOverride: emiswap-oracle
-    env:
-      app_puma_workers: 1
-      app_puma_min_threads: 600
-      app_puma_max_threads: 600
-      app_env: production
-      app_db_url: "postgresql://postgres:39gDJJ2YT7w3ggpJ@10.165.103.2/emiswap-oracle-db"
-      app_bugsnag_token: "9df906f1f861575615450187642a267e"
-      app_blockchain_block_confirmation: "6"
-      app_blockchain_block_start_number: "11164801"
-      app_blockchain_block_limit_save: "100"
-      app_blockchain_block_num_threads: "15"
-      app_blockchain_block_events_load_limit: "1000"
-      app_blockchain_block_events_load_threads: "15"
-      app_db_timeout: "60"
-      app_db_pool_timeout: "60"
-      app_db_max_connections: "600"
-      app_contracts_emi_price: '0xb051f7defd9ed3fbcb8cf911c01b06dbd7281340'
-      app_contracts_esw: '0x5a75a093747b72a0e14056352751edf03518031d'
-      app_pool_exchange_launch_date: '2021-03-31T00:00:00+00:00'
-      APP_BLOCKCHAIN_ESW_TO_DAI_DATE1: '2021-04-21T00:00:00+00:00'
-      app_blockchain_esw_to_dai_launch_pad_date: '2021-06-28T00:00:00+00:00'
-      APP_POOL_USE_REGISTERED_TOKENS: true
-      APP_BLOCKCHAIN_BLOCK_EVENTS_NUM_THREADS: 25
-      LOG_DB: false
-      HUBSPOT_ENABLED: true
-      HUBSPOT_API_KEY: c306e4fa-001d-43fb-a2f2-c0e76c7e85a4
-      HUBSPOT_INVESTOR_REQUEST_PIPELINE_ID: "12564849"
-      HUBSPOT_INVESTOR_REQUEST_DEALSTAGE_ID: "12564865"
-      APP_CONTRACTS_FARM_TYPE1: '0x673f7a16b2d696a987383921292e8f46da715952'
-      DEFISTATION_BASE_URI: "https://api.defistation.io/dataProvider/tvl"
-      DEFISTATION_USERNAME: "EmiSwap"
-      DEFISTATION_PASSWORD: "f9ae3861-9736-47bc-9233-686f30a358e8"
-      DEFISTATION_TEST: "false"
-      APP_ETHERSCAN_TOKEN: M3NKR78E15KIMJVXK9ETDDVHWGYHN7ZGZ5
-      APP_POOL_BALANCES_SKIP_LOAD_HISTORICAL: false
     ingress:
       hosts:
       - host: "{{ env_fqdn }}"
