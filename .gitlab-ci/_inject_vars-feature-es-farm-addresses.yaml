@@ -56,15 +56,9 @@ chart_vars:
   emiswap-oracle:
     resources:
       requests: { cpu: 1, memory: '768Mi' }
-      limits: { cpu: 4, memory: '4096Mi' }
+      limits: { cpu: 1, memory: '4096Mi' }
     replicaCountOracle: 4
     fullnameOverride: emiswap-oracle
-    image:
-      repository: registry.gitlab.com/emidao/emiswap/oracle/emiswap-oracle-production
-      tag: "f5a719c0"
-      pullPolicy: Always
-    imagePullSecrets:
-    - name: gitlab-foreign-project-registry
     env:
       app_puma_workers: 1
       app_puma_min_threads: 600
@@ -107,8 +101,6 @@ chart_vars:
         - /v1
         - /v2
         - /api/v2
-    backup:
-      enabled: false
     workers:
       blockchain_block_events:
         cmd: ['bundle','exec','rake', 'workers:run[blockchain_block_events]']
@@ -172,8 +164,6 @@ chart_vars:
       repository: "registry.gitlab.com/emidao/emiswap/eminft/eminft-production"
       tag: "153b1f05"
       pullPolicy: Always
-    imagePullSecrets:
-    - name: gitlab-foreign-project-registry
     basePath: /magic_cards
     ingress:
       hosts:
