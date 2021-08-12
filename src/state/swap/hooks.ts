@@ -1,6 +1,6 @@
 import useToggledVersion, { Version } from '../../hooks/useToggledVersion';
 import { parseUnits } from '@ethersproject/units';
-import { ChainId, JSBI, Token, TokenAmount, Trade, ZERO_ADDRESS } from '@uniswap/sdk';
+import { JSBI, Token, TokenAmount, Trade, ZERO_ADDRESS, ChainId } from '@uniswap/sdk';
 import { ParsedQs } from 'qs';
 import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,13 +12,19 @@ import useParsedQueryString from '../../hooks/useParsedQueryString';
 import { isAddress } from '../../utils';
 import { AppDispatch, AppState } from '../index';
 import { useCurrencyBalances } from '../wallet/hooks';
-import { Field, receiveOutput, replaceSwapState, selectCurrency, switchCurrencies, typeInput } from './actions';
+import {
+  Field,
+  receiveOutput,
+  replaceSwapState,
+  selectCurrency,
+  switchCurrencies,
+  typeInput,
+} from './actions';
 import { SwapState } from './reducer';
 import { useUserSlippageTolerance } from '../user/hooks';
 import { computeSlippageAdjustedAmounts } from '../../utils/prices';
 import { BigNumber } from '@ethersproject/bignumber';
-import { KOVAN_WETH, WETH, WKCS } from '../../constants';
-import chainIds from '../../constants/chainIds';
+import { KOVAN_WETH, WETH } from '../../constants';
 
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>(state => state.swap);
@@ -62,8 +68,8 @@ export function useSwapActionHandlers(): SwapActionHandlers {
 
   const onUserInput = useCallback(
     (field: Field, typedValue: string) => {
-      const value = typedValue.substr(0, 10);
-      dispatch(typeInput({ field, typedValue: value }));
+      // const value = typedValue.substr(0, 10);
+      dispatch(typeInput({ field, typedValue }));
     },
     [dispatch],
   );
@@ -82,7 +88,8 @@ export function tryParseAmount(value?: string, currency?: Token): TokenAmount | 
     return;
   }
   try {
-    const typedValueParsed = parseUnits(value, currency.decimals).toString().substr(0, 10);
+    // const typedValueParsed = parseUnits(value, currency.decimals).toString().substr(0, 22);
+    const typedValueParsed = parseUnits(value, currency.decimals).toString();
     if (typedValueParsed !== '0') {
       return new TokenAmount(currency, JSBI.BigInt(typedValueParsed));
     }
@@ -133,18 +140,12 @@ export function useDerivedSwapInfo(): {
     inputCurrency?.address === eth?.address
       ? chainId === ChainId.MAINNET
         ? WETH
-        : // @ts-ignore
-        chainId === chainIds.KUCOIN
-        ? WKCS
         : KOVAN_WETH
       : inputCurrency;
   const outputCurrencyWrapped =
     outputCurrency?.address === eth?.address
       ? chainId === ChainId.MAINNET
         ? WETH
-        : // @ts-ignore
-        chainId === chainIds.KUCOIN
-        ? WKCS
         : KOVAN_WETH
       : outputCurrency;
 
