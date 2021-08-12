@@ -3968,6 +3968,24 @@ const defaultCoins: DefaultCoins = {
       logoURI:
         'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0xf6ce9bfa82d1088d3257a76ec2e0ce1c8060bf8c.png',
     },
+    {
+      address: '0xf1efd79fcee1f1cd2871a3de134eb950d5c19ec4',
+      chainId: 1,
+      name: 'LP ESW-DAI',
+      symbol: 'ESWDAI',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
+      address: '0x2580c9c5a57975b5820e471ef141deffd729d5d3',
+      chainId: 1,
+      name: 'LP ESW-BTC',
+      symbol: 'ESWBTC',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
   ],
   logoURI: 'https://1inch.exchange/assets/images/logo.png',
 };
