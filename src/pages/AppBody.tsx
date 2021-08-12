@@ -7,10 +7,12 @@ import theme from '@rebass/preset';
 import FAQInfo from '../components/FAQInfo';
 import { useRouteMatch } from 'react-router';
 import { YMInitializer } from 'react-yandex-metrika';
+import { useActiveWeb3React } from '../hooks';
+import chainIds from '../constants/chainIds';
 
 export const HeadersPlusBodyWrapper = styled.div<{ isLarge?: boolean }>`
   position: relative;
-  max-width: ${({isLarge}) => isLarge ? '1200px' : '440px'};
+  max-width: ${({ isLarge }) => isLarge ? '1200px' : '440px'};
   width: 100%;
   text-align: center;
 `;
@@ -88,20 +90,24 @@ export default function AppBody({
 }) {
   const match = useRouteMatch('/farm');
 
+  const { chainId } = useActiveWeb3React();
+
   return (
     <ThemeProvider theme={theme}>
       <HeadersPlusBodyWrapper isLarge={!!match}>
         <div className="onlyDesktop">
-          <Wordmark />
+          <Wordmark/>
         </div>
-        <YMInitializer accounts={[78893968]} options={{ webvisor: true }} />
+        <YMInitializer accounts={[78893968]} options={{ webvisor: true }}/>
         <BodyWrapper className={className} data="test" disabled={disabled}>
           {children}
         </BodyWrapper>
-        <BonusProgram />
+        <BonusProgram/>
       </HeadersPlusBodyWrapper>
       <FAQWrapper>
-        <FAQInfo />
+        {(chainId as any) !== chainIds.KUCOIN && (
+          <FAQInfo/>
+        )}
       </FAQWrapper>
     </ThemeProvider>
   );

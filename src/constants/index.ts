@@ -372,7 +372,7 @@ export const networksItems: INetworkItem[] = [
     value: 'kucoin',
     chainId: chainIds.KUCOIN,
     icon: KuCoinNetworkIcon,
-    name: 'Kucoin',
+    name: 'KuCoin',
     rpcUrls: ['https://rpc-mainnet.kcc.network'],
     currencySymbol: 'KCS',
     blockExplorerUrls: 'https://explorer.kcc.io/en',
