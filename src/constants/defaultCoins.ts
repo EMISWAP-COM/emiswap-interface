@@ -3971,8 +3971,8 @@ const defaultCoins: DefaultCoins = {
     {
       address: '0xf1efd79fcee1f1cd2871a3de134eb950d5c19ec4',
       chainId: 1,
-      name: 'LP ESW-USDC',
-      symbol: 'ESWUSDC',
+      name: 'LP ESW-DAI',
+      symbol: 'ESWDAI',
       decimals: 18,
       logoURI:
         'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
