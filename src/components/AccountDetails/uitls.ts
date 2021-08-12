@@ -79,7 +79,7 @@ const getFullDate = (date: string) => {
   return `${day}-${months[d.getMonth()]}-${d.getFullYear()}, ${hours}:${minutes}:${seconds}`;
 };
 
-const convertToISOSafari = (dateString: string) => {
+export const convertToISOSafari = (dateString: string) => {
   try {
     if (Date.parse(dateString)) {
       return dateString;

@@ -24,6 +24,11 @@ import ReactPixel from 'react-facebook-pixel';
 import * as Sentry from '@sentry/react';
 import { Integrations } from '@sentry/tracing';
 
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+
+dayjs.extend(duration);
+
 const { REACT_APP_SENTRY_DSN, REACT_APP_SENTRY_PROJECT, REACT_APP_SENTRY_RELEASE } = window['env'];
 Sentry.init({
   dsn: REACT_APP_SENTRY_DSN,

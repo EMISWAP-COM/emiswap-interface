@@ -19,10 +19,12 @@ const FarmComponent: React.FC<FarmComponentProps> = ({ contract, selectedTab, es
 
   useEffect(() => {
     if (farming.blockReward && Number(farming.liquidity) && eswPriceInDai) {
-      const calculatedApr =
-        (parseFloat(farming.blockReward) * 6400 * 365 * 100 * parseFloat(eswPriceInDai)) /
-        parseFloat(farming.liquidity);
-      setApr(calculatedApr);
+      const block = parseFloat(farming.blockReward);
+      const dai = parseFloat(eswPriceInDai);
+      const liq = parseFloat(farming.liquidity);
+
+      const calcApr = (block * 6400 * 365 * 100 * dai) / liq;
+      setApr(calcApr);
     }
   }, [eswPriceInDai, farming.blockReward, farming.liquidity, selectedTab]);
 

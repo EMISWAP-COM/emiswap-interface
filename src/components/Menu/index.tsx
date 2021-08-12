@@ -125,11 +125,7 @@ export default function Menu() {
             <MessageCircle size={14} />
             NFT Magic Cards
           </MenuItem>
-          <MenuItem
-            id="link"
-            href="https://about.emiswap.com/whitepaper"
-            target="_blank"
-          >
+          <MenuItem id="link" href="https://about.emiswap.com/whitepaper" target="_blank">
             <BookOpen size={14} />
             Whitepaper
           </MenuItem>
@@ -162,6 +158,10 @@ export default function Menu() {
           <MenuItem id="link" href={window['env'].REACT_APP_CODE_LINK} target="_blank">
             <Code size={14} />
             Code
+          </MenuItem>
+          <MenuItem id="link" href="https://about.emiswap.com/farming" target="_blank">
+            <BookOpen size={14} />
+            Earn with EmiSwap
           </MenuItem>
         </MenuFlyout>
       )}

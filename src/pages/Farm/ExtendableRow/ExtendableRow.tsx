@@ -12,6 +12,7 @@ import isLpToken from '../isLpToken';
 import { ExternalLink } from '../../../theme';
 import chainIds from '../../../constants/chainIds';
 import { useActiveWeb3React } from '../../../hooks';
+import { FarmingTimeType } from '../constants';
 
 const StyledRow = styled.div`
   background-color: ${({ theme }) => theme.border1Transparency};
@@ -203,7 +204,8 @@ type ExtendableRowProps = {
   rewardToken: Token | undefined;
   projectedReward: string;
   apr: number;
-  blockReward: string;
+  blockReward?: string;
+  lockPeriod?: number;
   liquidity: string;
   endDate: string;
   deposit: string;
@@ -211,6 +213,8 @@ type ExtendableRowProps = {
   onStake: (amount: string) => Promise<unknown>;
   onCollect: () => Promise<unknown>;
   tokenMode: number;
+  balance?: string;
+  availableToCollect?: string;
 };
 
 const ExtendableRow: React.FC<ExtendableRowProps> = ({
@@ -220,6 +224,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
   projectedReward,
   apr,
   blockReward,
+  lockPeriod,
   liquidity,
   endDate,
   deposit,
@@ -227,6 +232,8 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
   onStake,
   onCollect,
   tokenMode,
+  balance,
+  availableToCollect,
 }) => {
   const [isRowExtended, setIsRowExtended] = useState(false);
   const { chainId } = useActiveWeb3React();
@@ -285,17 +292,31 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
               </Tooltip>
             </StyledBlockValue>
           </StyledBlock>
-          <StyledBlock width={150}>
-            <StyledBlockTitle>Block reward</StyledBlockTitle>
-            <StyledBlockValue>
-              <StyledCurrencyLogo>
-                <CurrencyLogo currency={rewardToken} size={'24px'} />
-              </StyledCurrencyLogo>
-              <Tooltip title={blockReward}>
-                <StyledTruncatedText>{blockReward}</StyledTruncatedText>
-              </Tooltip>
-            </StyledBlockValue>
-          </StyledBlock>
+          {type === FarmingTimeType.variable && typeof blockReward !== 'undefined' && (
+            <StyledBlock width={150}>
+              <StyledBlockTitle>Block reward</StyledBlockTitle>
+              <StyledBlockValue>
+                <StyledCurrencyLogo>
+                  <CurrencyLogo currency={rewardToken} size={'24px'} />
+                </StyledCurrencyLogo>
+                <Tooltip title={blockReward}>
+                  <StyledTruncatedText>
+                    {blockReward}
+                  </StyledTruncatedText>
+                </Tooltip>
+              </StyledBlockValue>
+            </StyledBlock>
+          )}
+          {type === FarmingTimeType.fixed && typeof lockPeriod !== 'undefined' && (
+            <StyledBlock width={150}>
+              <StyledBlockTitle>Lock period</StyledBlockTitle>
+              <StyledBlockValue>
+                <StyledTruncatedText>
+                  {lockPeriod} days
+                </StyledTruncatedText>
+              </StyledBlockValue>
+            </StyledBlock>
+          )}
           <StyledBlock width={150}>
             <StyledBlockTitle>Liquidity</StyledBlockTitle>
             <StyledBlockValue>
@@ -337,18 +358,52 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
                   <CurrencyLogo currency={stakeToken} size={'24px'} />
                 )}
               </StyledCurrencyLogo>
-              <StyledTruncatedText>{deposit}</StyledTruncatedText>
+              <Tooltip title={deposit}>
+                <StyledTruncatedText>{deposit}</StyledTruncatedText>
+              </Tooltip>
             </StyledBlockValue>
           </StyledBlock>
-          <StyledBlock>
+          <StyledBlock width={150}>
             <StyledBlockTitle>Your reward</StyledBlockTitle>
             <StyledBlockValue>
               <StyledCurrencyLogo>
                 <CurrencyLogo currency={rewardToken} size={'24px'} />
               </StyledCurrencyLogo>
-              <StyledTruncatedText>{projectedReward}</StyledTruncatedText>
+              <Tooltip title={projectedReward}>
+                <StyledTruncatedText>{projectedReward}</StyledTruncatedText>
+              </Tooltip>
             </StyledBlockValue>
           </StyledBlock>
+          {typeof balance !== 'undefined' && (
+            <StyledBlock width={150}>
+              <StyledBlockTitle>Balance</StyledBlockTitle>
+              <StyledBlockValue>
+                <StyledCurrencyLogo>
+                  <CurrencyLogo currency={rewardToken} size={'24px'} />
+                </StyledCurrencyLogo>
+                <Tooltip title={balance}>
+                  <StyledTruncatedText>{balance}</StyledTruncatedText>
+                </Tooltip>
+              </StyledBlockValue>
+            </StyledBlock>
+          )}
+          {typeof availableToCollect !== 'undefined' && (
+            <StyledBlock>
+              <StyledBlockTitle>Available to collect</StyledBlockTitle>
+              <StyledBlockValue>
+                <StyledCurrencyLogo>
+                  {isLpToken(tokenMode) ? (
+                    <LpTokenSymbol />
+                  ) : (
+                    <CurrencyLogo currency={rewardToken} size={'24px'} />
+                  )}
+                </StyledCurrencyLogo>
+                <Tooltip title={availableToCollect}>
+                  <StyledTruncatedText>{availableToCollect}</StyledTruncatedText>
+                </Tooltip>
+              </StyledBlockValue>
+            </StyledBlock>
+          )}
         </StyledBlocksWrapper>
         <StyledHr />
         <StyledInputsWrapper>
@@ -364,7 +419,8 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
           </StyledTokenInputWrapper>
           <StyledTokenInputWrapper>
             <TokenCollect
-              deposit={deposit}
+              isSingleToken={typeof availableToCollect !== 'undefined'}
+              deposit={typeof availableToCollect !== 'undefined' ? availableToCollect : deposit}
               projectedReward={projectedReward}
               stakeToken={stakeToken}
               rewardToken={rewardToken}

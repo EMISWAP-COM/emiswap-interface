@@ -30,8 +30,11 @@ export const TableWrapper = styled.div<{ desktopMaxHeight?: number }>`
 export const TableHeader = styled(Header)<{ marginTop?: number; marginBottom?: number }>`
   margin-top: ${({ marginTop }) => (marginTop ?? 36) + 'px'};
   margin-bottom: ${({ marginBottom }) => (marginBottom ?? 12) + 'px'};
+  display: flex;
+  position: relative;
 
   @media screen and (max-width: 1200px) {
+    display: block;
     margin-bottom: 0;
   }
 `;
