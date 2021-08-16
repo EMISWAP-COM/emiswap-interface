@@ -17,16 +17,21 @@ const FarmComponent: React.FC<FarmComponentProps> = ({ contract, selectedTab, es
 
   const [apr, setApr] = useState<number>(0);
 
+  const isKuCoinToken = farming.stakeToken?.symbol?.includes('KCS');
+
   useEffect(() => {
     if (farming.blockReward && Number(farming.liquidity) && eswPriceInDai) {
       const block = parseFloat(farming.blockReward);
       const dai = parseFloat(eswPriceInDai);
       const liq = parseFloat(farming.liquidity);
 
-      const calcApr = (block * 6400 * 365 * 100 * dai) / liq;
-      setApr(calcApr);
+      if (isKuCoinToken) {
+        setApr(block * 28800 * 365 * 100 * dai / liq);
+      } else {
+        setApr((block * 6400 * 365 * 100 * dai) / liq);
+      }
     }
-  }, [eswPriceInDai, farming.blockReward, farming.liquidity, selectedTab]);
+  }, [eswPriceInDai, farming.blockReward, farming.liquidity, selectedTab, isKuCoinToken]);
 
   const shouldShow =
     (isStakingTab(selectedTab) && !isLpToken(farming.tokenMode)) ||
@@ -47,6 +52,7 @@ const FarmComponent: React.FC<FarmComponentProps> = ({ contract, selectedTab, es
       onStake={farming.stake}
       onCollect={farming.collect}
       tokenMode={farming.tokenMode}
+      isKuCoinToken={isKuCoinToken}
     />
   ) : null;
 };

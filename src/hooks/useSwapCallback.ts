@@ -137,7 +137,7 @@ export function useSwapCallback(
       const WETH = defaultCoins.tokens.find(
         token =>
           // @ts-ignore
-          (chainId === chainIds.KUCOIN ? token.symbol === 'WKCS' : token.symbol === 'WETH') &&
+          (chainId === chainIds.KUCOIN ? token.symbol === 'KCS' : token.symbol === 'WETH') &&
           token.chainId === chainId,
       );
 

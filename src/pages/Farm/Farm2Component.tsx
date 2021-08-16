@@ -19,6 +19,8 @@ const Farm2Component: React.FC<FarmComponentProps> = ({ contract, selectedTab, e
     (isStakingTab(selectedTab) && !isLpToken(farming2.tokenMode)) ||
     (!isStakingTab(selectedTab) && isLpToken(farming2.tokenMode));
 
+  const isKuCoinToken = farming2.stakeToken?.symbol?.includes('KCS');
+
   return shouldShow ? (
     <ExtendableRow
       contractAddress={contract.address}
@@ -35,6 +37,7 @@ const Farm2Component: React.FC<FarmComponentProps> = ({ contract, selectedTab, e
       onStake={farming2.stake}
       onCollect={farming2.collect}
       tokenMode={farming2.tokenMode}
+      isKuCoinToken={isKuCoinToken}
     />
   ) : null;
 };

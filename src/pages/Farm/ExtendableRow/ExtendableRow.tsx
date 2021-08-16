@@ -213,6 +213,7 @@ type ExtendableRowProps = {
   onStake: (amount: string) => Promise<unknown>;
   onCollect: () => Promise<unknown>;
   tokenMode: number;
+  isKuCoinToken: boolean;
   balance?: string;
   availableToCollect?: string;
 };
@@ -234,6 +235,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
   tokenMode,
   balance,
   availableToCollect,
+  isKuCoinToken,
 }) => {
   const [isRowExtended, setIsRowExtended] = useState(false);
   const { chainId } = useActiveWeb3React();
@@ -325,7 +327,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
                   value={liquidity}
                   displayType={'text'}
                   thousandSeparator={' '}
-                  prefix={'$ '}
+                  prefix={isKuCoinToken ? 'KCS ' : '$ '}
                   decimalScale={2}
                 />
               </StyledTruncatedText>
