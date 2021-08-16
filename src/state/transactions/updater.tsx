@@ -71,7 +71,7 @@ export default function Updater() {
                   txn: {
                     hash,
                     success: receipt.status === 1,
-                    summary: transactions[hash]?.summary,
+                    summary: transactions[hash]?.summary?.replace('MOON-V1-', 'EMI LP '),
                   },
                 },
                 hash,
