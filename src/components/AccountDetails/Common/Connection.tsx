@@ -15,6 +15,7 @@ import { AppState } from '../../../state';
 import { darken } from 'polished';
 import { ChangeAddress } from './ChangeAddress';
 import chainIds from '../../../constants/chainIds';
+import { useIsKuCoinActive } from '../../../hooks/Coins';
 
 const Container = styled.div`
   font-size: 13px;
@@ -116,6 +117,12 @@ const ChangeWalletBtn = styled(ActionBtn)`
     background: ${({ theme }) => theme.purple} !important;
     box-shadow: none;
   }
+  
+  &:disabled {
+    background-color: transparent;
+    color: #615C69;
+    cursor: auto;
+  }
 
   @media screen and (max-width: 800px) {
     width: calc(50% - 5px);
@@ -175,6 +182,8 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
   const history = useHistory();
   const toggle = useWalletModalToggle();
 
+  const isKuCoinActive = useIsKuCoinActive();
+
   const balance = useSelector((state: AppState) => state.cabinets.balance);
 
   const isCollectDisabled = !Number(balance?.available.ESW);
@@ -187,6 +196,14 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
     const sum = Number(walletESW) + Number(availableESW) + Number(lockedESW);
 
     return convertBigDecimal(sum.toString());
+  };
+
+  const handleChangeWallet = () => {
+    if (!isKuCoinActive) {
+      return;
+    }
+
+    openOptions();
   };
 
   const handleClaim = () => {
@@ -202,7 +219,9 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
             <span>Connected with {formatConnectorName(connector)}</span>
             <ChangeActionsBlock>
               <ChangeAddress openOptions={openOptions} />
-              <ChangeWalletBtn onClick={() => openOptions()}>Change wallet</ChangeWalletBtn>
+              <ChangeWalletBtn disabled={isKuCoinActive} onClick={handleChangeWallet}>
+                Change wallet
+              </ChangeWalletBtn>
             </ChangeActionsBlock>
             <Wallet>
               <StatusIcon connectorName={connector} />
