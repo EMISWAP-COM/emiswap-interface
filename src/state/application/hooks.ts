@@ -4,7 +4,7 @@ import {
   addPopup,
   PopupContent,
   removePopup,
-  showWalletModal,
+  showWalletModal, toggleConfirmSwitchModal,
   toggleNetworkSwitchModal,
   toggleSettingsMenu,
   toggleWalletModal,
@@ -39,6 +39,11 @@ export function useNetworkSwitchModalOpen(): boolean {
 export function useNetworkSwitchModalToggle(): () => void {
   const dispatch = useDispatch();
   return useCallback(() => dispatch(toggleNetworkSwitchModal()), [dispatch]);
+}
+
+export function useConfirmSwitchModalToggle(): () => void {
+  const dispatch = useDispatch();
+  return useCallback(() => dispatch(toggleConfirmSwitchModal()), [dispatch]);
 }
 
 export function useSettingsMenuOpen(): boolean {

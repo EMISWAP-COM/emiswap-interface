@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Modal from '../Modal';
-import { useNetworkSwitchModalOpen, useNetworkSwitchModalToggle } from '../../state/application/hooks';
+import {
+  useConfirmSwitchModalToggle,
+  useNetworkSwitchModalOpen,
+  useNetworkSwitchModalToggle,
+} from '../../state/application/hooks';
 import { Text } from 'rebass';
 import styled from 'styled-components/macro';
 import CircleCheckIcon from '../../assets/svg/circle-check.svg';
 import { toHex } from 'web3-utils';
 import { useActiveWeb3React } from '../../hooks';
 import { INetworkItem, networksItems } from '../../constants';
+import ConfirmSwitchModal from './ConfirmSwitchModal';
+import { FortmaticConnector } from '../../connectors/Fortmatic';
+import { PortisConnector } from '@web3-react/portis-connector';
+import { useWeb3React } from '@web3-react/core';
+import { injected } from '../../connectors';
 
 const NetworkSwitchWrapped = styled.div`
   width: 100%;
@@ -53,19 +62,59 @@ const NetworkName = styled(Text)<{ active: boolean }>`
 
 export default function NetworkSwitchModal() {
 
-  const { chainId } = useActiveWeb3React();
+  const { ethereum } = window as any;
+
+  const { chainId, connector } = useActiveWeb3React();
+  const { deactivate } = useWeb3React();
+
+  const isMetamask = connector === injected;
+
+  const [selectedItem, setSelectedItem] = useState<INetworkItem>(null);
 
   const networkSwitchModalOpen = useNetworkSwitchModalOpen();
   const toggleNetworkSwitchModal = useNetworkSwitchModalToggle();
+  const toggleConfirmSwitchModal = useConfirmSwitchModalToggle();
 
-  const { ethereum } = window as any;
+  const providerLogout = async () => {
+    if (isMetamask) {
+      return;
+    }
 
-  const onClickItem = async (item: INetworkItem) => {
+    const provider = await connector.getProvider();
+
+    if (connector instanceof FortmaticConnector && connector?.fortmatic) {
+      connector.fortmatic?.user.logout();
+      deactivate();
+    } else if (connector instanceof PortisConnector && connector?.portis) {
+      connector.portis.logout();
+      deactivate();
+    } else if (provider?.close) {
+      provider.close();
+    } else {
+      deactivate();
+    }
+  };
+
+  const onClickItem = (item: INetworkItem) => {
+    if (item.chainId === chainId) {
+      return;
+    }
+
+    setSelectedItem(item);
+  };
+
+  const onClickConfirmItem = async () => {
+    const item = selectedItem;
+
+    setSelectedItem(null);
+    toggleConfirmSwitchModal();
+
     try {
       await ethereum.request({
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: toHex(item.chainId) }],
       });
+      await providerLogout();
     } catch (switchError) {
       if (switchError.code === 4902) {
         try {
@@ -79,11 +128,12 @@ export default function NetworkSwitchModal() {
                 nativeCurrency: {
                   name: item.currencySymbol,
                   symbol: item.currencySymbol,
-                  decimals: 18
+                  decimals: 18,
                 },
               },
             ],
           });
+          await providerLogout();
         } catch (addError) {
           console.log(addError);
         }
@@ -95,34 +145,45 @@ export default function NetworkSwitchModal() {
     }
   };
 
+  const onClickCancel = () => {
+    setSelectedItem(null);
+    toggleNetworkSwitchModal();
+    toggleConfirmSwitchModal();
+  };
+
   return (
-    <Modal
-      isOpen={networkSwitchModalOpen}
-      onDismiss={toggleNetworkSwitchModal}
-      minHeight={null}
-      maxHeight={320}
-      maxWidth={480}
-    >
-      <NetworkSwitchWrapped>
-        <div>
-          <Text textAlign="center" fontWeight={500} fontSize={20} color="white">Choose Network</Text>
-        </div>
+    <div>
+      <Modal
+        isOpen={networkSwitchModalOpen}
+        onDismiss={toggleNetworkSwitchModal}
+        minHeight={null}
+        maxHeight={320}
+        maxWidth={480}
+      >
+        <NetworkSwitchWrapped>
+          <div>
+            <Text textAlign="center" fontWeight={500} fontSize={20} color="white">Choose Network</Text>
+          </div>
 
-        <NetworkItemsRow>
-          {networksItems.map(item => (
-            <NetworkItem key={item.chainId} onClick={() => onClickItem(item)}>
-              <NetworkIcon active={item.chainId === chainId}>
-                {item.chainId === chainId && (
-                  <CircleCheckImg src={CircleCheckIcon}/>
-                )}
-                <img src={item.icon} alt={item.name}/>
-              </NetworkIcon>
-              <NetworkName active={item.chainId === chainId}>{item.name}</NetworkName>
-            </NetworkItem>
-          ))}
-        </NetworkItemsRow>
+          <NetworkItemsRow>
+            {networksItems.map(item => (
+              <NetworkItem key={item.chainId} onClick={() => onClickItem(item)}>
+                <NetworkIcon active={item.chainId === chainId}>
+                  {item.chainId === chainId && (
+                    <CircleCheckImg src={CircleCheckIcon}/>
+                  )}
+                  <img src={item.icon} alt={item.name}/>
+                </NetworkIcon>
+                <NetworkName active={item.chainId === chainId}>{item.name}</NetworkName>
+              </NetworkItem>
+            ))}
+          </NetworkItemsRow>
 
-      </NetworkSwitchWrapped>
-    </Modal>
+        </NetworkSwitchWrapped>
+      </Modal>
+      {selectedItem && (
+        <ConfirmSwitchModal onConfirm={onClickConfirmItem} onCancel={onClickCancel}/>
+      )}
+    </div>
   );
 }
