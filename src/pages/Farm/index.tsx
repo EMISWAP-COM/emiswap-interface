@@ -19,6 +19,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, AppState } from '../../state';
 import { FARMING_2_ABI } from '../../constants/abis/farming2';
 import LogoIcon from '../../assets/svg/logo-icon.svg';
+import isLpToken from './isLpToken';
+import useFarming2 from '../../hooks/useFarming2';
+import useFarming from '../../hooks/useFarming';
 // FIXME Убрать комментарий для возврата функционала
 // import isLpToken from './isLpToken';
 // import useFarming from '../../hooks/useFarming';
@@ -104,22 +107,44 @@ const tabItems = [
 export const isStakingTab = tabname => tabname === tabItems[1].id;
 
 export default function Farm() {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const { library, account, chainId } = useActiveWeb3React();
+
+  const { id: userId } = useSelector((state: AppState) => state.user.info);
+  const farms2 = useSelector((state: AppState) => state.farming.farms);
+
   // FIXME Убрать комментарий для возврата функционала
   // const [radioValue, setRadioValue] = useState<string>('all');
   const [selectedTab, setSelectedTab] = useState<string>('farming');
-  const { library, account, chainId } = useActiveWeb3React();
-  const dispatch = useDispatch<AppDispatch>();
-  const farms2 = useSelector((state: AppState) => state.farming.farms);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const farmingContracts: Contract[] = useMemo(
     () => getFarmingContracts(library, account, chainId),
     [library, account, chainId],
   );
 
-  const { id: userId } = useSelector((state: AppState) => state.user.info);
   const farming2Contracts: Contract[] = useMemo(() => {
     return farms2.map((farm) => getContract(farm.contractAddress, FARMING_2_ABI, library, account));
   }, [library, account, farms2]);
+
+  for (let contract;)
+  const farmingArr = farmingContracts.map((contract) => useFarming(contract));
+  const farming2Arr = farming2Contracts.map((contract) => useFarming2(contract));
+
+  useEffect(() => {
+    let farmingLoading = farmingArr.some((farming) => {
+      return !isStakingTab(selectedTab) && !isLpToken(farming.tokenMode)
+    })
+
+    if (!loading) {
+      farmingLoading = farming2Arr.some((farming2) => {
+        return !isStakingTab(selectedTab) && !isLpToken(farming2.tokenMode)
+      })
+    }
+
+    setLoading(farmingLoading);
+  }, [farmingArr, farming2Arr]);
 
   // Load farms list
   useEffect(() => {
@@ -164,7 +189,20 @@ export default function Farm() {
     <>
       <AppBody>
         <SwapPoolTabs active={TabNames.FARM}/>
-        {account && chainId === desiredChainId && farmingContracts?.length && (
+
+        {loading && (
+          <LoadingInfo>
+            <div>
+              <img src={LogoIcon} alt="logo"/>
+              <div style={{ width: '100%', marginTop: '30px' }}>
+                We’re uploading the list of our awesome farming pools.<br/>
+                It may take a few seconds 😉
+              </div>
+            </div>
+          </LoadingInfo>
+        )}
+
+        {account && chainId === desiredChainId && farmingContracts?.length && !loading && (
           <>
             <StyledFarmingHeader>
               <StyledTabs>
@@ -190,34 +228,28 @@ export default function Farm() {
                 eswPriceInDai={eswPriceInDai}
               />
             ))}
+
             <br/><br/>
+
             <StyledInfoWrapper>
               <StyledInfoTitle>
                 {isStakingTab(selectedTab) ? 'Fixed APR Staking' : 'Fixed APR Farming'}
               </StyledInfoTitle>
               <StyledInfo>
-                Stake coins for a limited period of time to boost your APR. Please not that you will not be able to withdraw staked coins before the end of the farming period. Farming rewards are allocated to your EmiSwap account every 30 seconds.
+                Stake coins for a limited period of time to boost your APR. Please not that you will not be able to
+                withdraw staked coins before the end of the farming period. Farming rewards are allocated to your
+                EmiSwap account every 30 seconds.
               </StyledInfo>
             </StyledInfoWrapper>
-            {farming2Contracts.map(contract => <Farm2Component
-              key={contract.address}
-              contract={contract}
-              selectedTab={selectedTab}
-              eswPriceInDai={eswPriceInDai}
-            />)}
+            {farming2Contracts.map(contract =>
+              <Farm2Component
+                key={contract.address}
+                contract={contract}
+                selectedTab={selectedTab}
+                eswPriceInDai={eswPriceInDai}
+              />,
+            )}
           </>
-        )}
-
-        {!farmingContracts?.length && (
-          <LoadingInfo>
-            <div>
-              <img src={LogoIcon} alt="logo"/>
-              <div style={{ width: '100%', marginTop: '30px' }}>
-                We’re uploading the list of our awesome farming pools.<br/>
-                It may take a few seconds 😉
-              </div>
-            </div>
-          </LoadingInfo>
         )}
 
         {!account && (

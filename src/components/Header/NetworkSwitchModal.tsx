@@ -16,6 +16,7 @@ import { FortmaticConnector } from '../../connectors/Fortmatic';
 import { PortisConnector } from '@web3-react/portis-connector';
 import { useWeb3React } from '@web3-react/core';
 import { injected } from '../../connectors';
+import chainIds from '../../constants/chainIds';
 
 const NetworkSwitchWrapped = styled.div`
   width: 100%;
@@ -75,40 +76,7 @@ export default function NetworkSwitchModal() {
   const toggleNetworkSwitchModal = useNetworkSwitchModalToggle();
   const toggleConfirmSwitchModal = useConfirmSwitchModalToggle();
 
-  const providerLogout = async () => {
-    if (isMetamask) {
-      return;
-    }
-
-    const provider = await connector.getProvider();
-
-    if (connector instanceof FortmaticConnector && connector?.fortmatic) {
-      connector.fortmatic?.user.logout();
-      deactivate();
-    } else if (connector instanceof PortisConnector && connector?.portis) {
-      connector.portis.logout();
-      deactivate();
-    } else if (provider?.close) {
-      provider.close();
-    } else {
-      deactivate();
-    }
-  };
-
-  const onClickItem = (item: INetworkItem) => {
-    if (item.chainId === chainId) {
-      return;
-    }
-
-    setSelectedItem(item);
-  };
-
-  const onClickConfirmItem = async () => {
-    const item = selectedItem;
-
-    setSelectedItem(null);
-    toggleConfirmSwitchModal();
-
+  const switchNetwork = async (item: INetworkItem) => {
     try {
       await ethereum.request({
         method: 'wallet_switchEthereumChain',
@@ -141,11 +109,54 @@ export default function NetworkSwitchModal() {
         console.log(switchError);
       }
     } finally {
+    }
+  };
+
+  const providerLogout = async () => {
+    if (isMetamask) {
+      return;
+    }
+
+    const provider = await connector.getProvider();
+
+    if (connector instanceof FortmaticConnector && connector?.fortmatic) {
+      connector.fortmatic?.user.logout();
+      deactivate();
+    } else if (connector instanceof PortisConnector && connector?.portis) {
+      connector.portis.logout();
+      deactivate();
+    } else if (provider?.close) {
+      provider.close();
+    } else {
+      deactivate();
+    }
+  };
+
+  const onClickItem = async (item: INetworkItem) => {
+    if (item.chainId === chainId) {
+      return;
+    }
+
+    if (item.chainId === chainIds.KUCOIN && !isMetamask) {
+      setSelectedItem(item);
+    } else {
+      await switchNetwork(item);
       toggleNetworkSwitchModal();
     }
   };
 
-  const onClickCancel = () => {
+  const onClickConfirmItem = async () => {
+    const item = selectedItem;
+
+    setSelectedItem(null);
+    toggleConfirmSwitchModal();
+
+    await switchNetwork(item);
+
+    toggleNetworkSwitchModal();
+  };
+
+  const onClickCancel = async () => {
     setSelectedItem(null);
     toggleNetworkSwitchModal();
     toggleConfirmSwitchModal();

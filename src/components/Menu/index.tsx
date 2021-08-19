@@ -77,6 +77,16 @@ const MenuItem = styled(ExternalLink)`
   }
 `;
 
+const MenuTextItem = styled.div`
+  flex: 1;
+  padding: 0.5rem 0.5rem;
+  color: ${({ theme }) => theme.white};
+  > svg,
+  > img {
+    margin-right: 8px;
+  }
+`;
+
 export default function Menu() {
   const node = useRef<HTMLDivElement>();
   const [open, toggle] = useToggle(false);
@@ -123,10 +133,10 @@ export default function Menu() {
               Analytics
             </MenuItem>
           ) : (
-            <MenuItem id="link" href="">
+            <MenuTextItem>
               <PieChart size={14}/>
               Analytics coming soon...
-            </MenuItem>
+            </MenuTextItem>
           )}
           <MenuItem
             id="link"
@@ -140,14 +150,25 @@ export default function Menu() {
             <BookOpen size={14}/>
             Whitepaper
           </MenuItem>
-          <MenuItem
-            id="link"
-            href="https://etherscan.io/token/0x5a75A093747b72a0e14056352751eDF03518031d"
-            target="_blank"
-          >
-            <Info size={14}/>
-            ESW etherscan
-          </MenuItem>
+          {(chainId as any) !== chainIds.KUCOIN ? (
+            <MenuItem
+              id="link"
+              href="https://etherscan.io/token/0x5a75A093747b72a0e14056352751eDF03518031d"
+              target="_blank"
+            >
+              <Info size={14}/>
+              ESW etherscan
+            </MenuItem>
+          ) : (
+            <MenuItem
+              id="link"
+              href="https://explorer.kcc.io/en/token/0x8933a6e58eeee063b5fd3221f2e1d17821dc1031"
+              target="_blank"
+            >
+              <Info size={14}/>
+              ESW KCC Explorer
+            </MenuItem>
+          )}
           <MenuItem
             id="link"
             // href="https://hacken.io/wp-content/uploads/2021/02/18022021_Emiswap_SC_Audit_Report.pdf"

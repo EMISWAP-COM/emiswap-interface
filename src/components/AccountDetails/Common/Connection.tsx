@@ -119,9 +119,12 @@ const ChangeWalletBtn = styled(ActionBtn)`
   }
   
   &:disabled {
-    background-color: transparent;
+    background-color: transparent !important;
     color: #615C69;
     cursor: auto;
+    border: 1px solid rgb(97,92,105) !important;
+    opacity: 1 !important;
+    text-decoration: none !important;
   }
 
   @media screen and (max-width: 800px) {
