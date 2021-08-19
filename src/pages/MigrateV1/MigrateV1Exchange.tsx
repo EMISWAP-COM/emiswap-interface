@@ -165,7 +165,7 @@ export default function MigrateV1Exchange({
   const inputCurrency = useLpCurrencies(tokens, address);
   const [isPairExist, setIsPairExist] = useState(false);
   const currency0 = useCurrency(tokens[0]);
-  const currency1 = useCurrency(tokens[1]);
+  const currency1 = useCurrency(tokens[0]);
   const pair = usePair(currency0, currency1)[1];
   const selectedCurrencyBalance = useCurrencyBalance(account, inputCurrency);
   const inputCurrencyBalance = useCurrencyBalance(account, inputCurrency);

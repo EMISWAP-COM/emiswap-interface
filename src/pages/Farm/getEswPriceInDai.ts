@@ -3,6 +3,7 @@ import { getEmiPrice2Contract } from '../../utils';
 import defaultCoins from '../../constants/defaultCoins';
 import { JSBI, Token, TokenAmount } from '@uniswap/sdk';
 import { tokenAmountToString } from '../../utils/formats';
+import chainIds from '../../constants/chainIds';
 
 const getEswPriceInDai = (library: Web3Provider, account: string, chainId: number) => {
   const emiPrice2 = getEmiPrice2Contract(library, account, chainId);
@@ -26,7 +27,10 @@ const getEswPriceInDai = (library: Web3Provider, account: string, chainId: numbe
   );
 
   return emiPrice2.getCoinPrices([eswCoin.address], stableTokens, 0).then((value: BigInt[]) => {
-    const coin = daiCoin?.address ? daiCoin : kuCoin;
+    let coin = daiCoin;
+    if (chainId === chainIds.KUCOIN) {
+      coin = kuCoin;
+    }
 
     const token = new Token(
       chainId,

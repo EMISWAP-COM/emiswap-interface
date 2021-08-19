@@ -260,6 +260,19 @@ const NetworkIcon = styled.div`
   background: white;
 `;
 
+const NetworkLabel = styled.div`
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   height: 18px;
+   margin-left: 16px;
+   padding: 0 8px;
+   border-radius: 50px;
+   font-size: 8px;
+   background: #E478FF;
+   color: ${({ theme }) => theme.dark2};
+`;
+
 const UniIcon = styled.div`
   width: 175px;
   height: 47px;
@@ -385,7 +398,10 @@ export default function Header() {
                       />
                     </NetworkIcon>
                   )}
-                  {NETWORK_LABELS[chainId] || 'Change Network'}
+                  <span>{NETWORK_LABELS[chainId] || 'Change Network'}</span>
+                  {(chainId as any) === chainIds.KUCOIN && (
+                    <NetworkLabel>Beta Version</NetworkLabel>
+                  )}
                 </NetworkButtonSwitch>
                 <NetworkSwitchModal/>
               </NetworkWrapper>
