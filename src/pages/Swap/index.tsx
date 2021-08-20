@@ -251,7 +251,7 @@ export default function Swap() {
       approval === ApprovalState.NOT_APPROVED ||
       approval === ApprovalState.PENDING ||
       (approvalSubmitted && approval === ApprovalState.APPROVED)) &&
-    !(priceImpactSeverity > 3 && !expertMode);
+    !(priceImpactSeverity > 3);
 
   function modalHeader() {
     return (

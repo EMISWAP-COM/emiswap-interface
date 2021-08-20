@@ -39,6 +39,7 @@ import { KOVAN_WETH } from '../../constants';
 import { ZERO_ADDRESS } from '../../constants/one-split';
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback';
 import chainIds from '../../constants/chainIds';
+import { useIsKuCoinActive } from '../../hooks/Coins';
 
 export default function RemoveLiquidity({
   history,
@@ -52,6 +53,8 @@ export default function RemoveLiquidity({
   ];
   const { account, chainId, library } = useActiveWeb3React();
   const [tokenA, tokenB] = useMemo(() => [currencyA, currencyB], [currencyA, currencyB]);
+
+  const isKuCoinActive = useIsKuCoinActive();
 
   const theme = useContext(ThemeContext);
 
@@ -595,7 +598,7 @@ export default function RemoveLiquidity({
                               currencyB?.isEther ? WETH.address : currencyIdB
                             }`}
                           >
-                            Receive WETH
+                            Receive {isKuCoinActive ? 'WKCS' : 'WETH'}
                           </StyledInternalLink>
                         ) : oneCurrencyIsWETH ? (
                           <StyledInternalLink
@@ -609,7 +612,7 @@ export default function RemoveLiquidity({
                                 : currencyIdB
                             }`}
                           >
-                            Receive ETH
+                            Receive {isKuCoinActive ? 'KCS' : 'ETH'}
                           </StyledInternalLink>
                         ) : null}
                       </RowBetween>

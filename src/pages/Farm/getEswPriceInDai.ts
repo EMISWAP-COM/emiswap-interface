@@ -16,6 +16,9 @@ const getEswPriceInDai = (library: Web3Provider, account: string, chainId: numbe
   const kuCoin = defaultCoins.tokens.find(
     token => token.chainId === chainId && token.symbol === 'WKCS',
   );
+  const koffeeCoin = defaultCoins.tokens.find(
+    token => token.chainId === chainId && token.symbol === 'KOFFEE',
+  );
   const usdtCoin = defaultCoins.tokens.find(
     token => token.chainId === chainId && token.symbol === 'USDT',
   );
@@ -26,10 +29,15 @@ const getEswPriceInDai = (library: Web3Provider, account: string, chainId: numbe
     value => value !== undefined,
   );
 
-  return emiPrice2.getCoinPrices([eswCoin.address], stableTokens, 0).then((value: BigInt[]) => {
+  let mainCoinPrice = emiPrice2.getCoinPrices([eswCoin.address], stableTokens, 0);
+  if (chainId === chainIds.KUCOIN) {
+    mainCoinPrice = emiPrice2.getCoinPrices([koffeeCoin.address], stableTokens, 0);
+  }
+
+  return mainCoinPrice.then((value: BigInt[]) => {
     let coin = daiCoin;
     if (chainId === chainIds.KUCOIN) {
-      coin = kuCoin;
+      coin = koffeeCoin;
     }
 
     const token = new Token(

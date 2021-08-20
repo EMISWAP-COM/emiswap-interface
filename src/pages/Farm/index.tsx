@@ -19,12 +19,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, AppState } from '../../state';
 import { FARMING_2_ABI } from '../../constants/abis/farming2';
 import LogoIcon from '../../assets/svg/logo-icon.svg';
-import isLpToken from './isLpToken';
+/*import isLpToken from './isLpToken';
 import useFarming2 from '../../hooks/useFarming2';
-import useFarming from '../../hooks/useFarming';
-// FIXME Убрать комментарий для возврата функционала
-// import isLpToken from './isLpToken';
-// import useFarming from '../../hooks/useFarming';
+import useFarming from '../../hooks/useFarming';*/
 
 const StyledFarmingHeader = styled.div`
   display: flex;
@@ -128,29 +125,22 @@ export default function Farm() {
     return farms2.map((farm) => getContract(farm.contractAddress, FARMING_2_ABI, library, account));
   }, [library, account, farms2]);
 
-  const farmingArr = [];
-  for (let contract of farmingContracts) {
-    // farmingArr.push(useFarming(contract));
-  }
-
-  const farming2Arr = [];
-  for (let contract2 of farming2Contracts) {
-    // farming2Arr.push(useFarming2(contract2));
-  }
+  // let farming = useFarming(farmingContracts[farmingContracts.length - 1]);
+  // let farming2 = useFarming2(farming2Contracts[farming2Contracts.length - 1]);
 
   useEffect(() => {
-    let farmingLoading = farmingArr.some((farming) => {
-      return !isStakingTab(selectedTab) && !isLpToken(farming.tokenMode);
-    });
+    /*let farmingLoading = farming
+      ? !isStakingTab(selectedTab) && !isLpToken(farming.tokenMode)
+      : false;
 
-    if (!loading) {
-      farmingLoading = farming2Arr.some((farming2) => {
-        return !isStakingTab(selectedTab) && !isLpToken(farming2.tokenMode);
-      });
-    }
+    if (!farmingLoading && farming2) {
+      farmingLoading = !isStakingTab(selectedTab) && !isLpToken(farming2.tokenMode);
+    }*/
 
-    setLoading(farmingLoading);
-  }, [farmingArr, farming2Arr]);
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+  }, [/*farming, farming2, */selectedTab]);
 
   // Load farms list
   useEffect(() => {

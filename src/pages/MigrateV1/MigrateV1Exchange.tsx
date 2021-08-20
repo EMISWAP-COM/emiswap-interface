@@ -92,8 +92,8 @@ function FormattedPoolCurrencyAmount({ currencyAmount }: { currencyAmount: Token
       {currencyAmount.equalTo(JSBI.BigInt(0))
         ? '0'
         : currencyAmount.greaterThan(POOL_CURRENCY_AMOUNT_MIN)
-        ? tokenAmountToString(currencyAmount, 4)
-        : `<${tokenAmountToString(POOL_CURRENCY_AMOUNT_MIN, 1)}`}
+          ? tokenAmountToString(currencyAmount, 4)
+          : `<${tokenAmountToString(POOL_CURRENCY_AMOUNT_MIN, 1)}`}
     </>
   );
 }
@@ -116,10 +116,10 @@ export function V1LiquidityInfo({
   return (
     <>
       <AutoRow style={{ justifyContent: 'flex-start', width: 'fit-content' }}>
-        <DoubleCurrencyLogo currency0={token0} currency1={token1} />
+        <DoubleCurrencyLogo currency0={token0} currency1={token1}/>
         <div style={{ marginLeft: '.75rem' }}>
           <TYPE.mediumHeader>
-            {<FormattedPoolCurrencyAmount currencyAmount={liquidityTokenAmount} />} {token0.symbol}/
+            {<FormattedPoolCurrencyAmount currencyAmount={liquidityTokenAmount}/>} {token0.symbol}/
             {token1.symbol}
           </TYPE.mediumHeader>
         </div>
@@ -133,7 +133,7 @@ export function V1LiquidityInfo({
           <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
             {tokenAmountToString(token0Worth, 4)}
           </Text>
-          <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={token0} />
+          <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={token0}/>
         </RowFixed>
       </RowBetween>
       <RowBetween mb="1rem">
@@ -142,9 +142,9 @@ export function V1LiquidityInfo({
         </Text>
         <RowFixed>
           <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
-            <FormattedPoolCurrencyAmount currencyAmount={token1Worth} />
+            <FormattedPoolCurrencyAmount currencyAmount={token1Worth}/>
           </Text>
-          <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={token1} />
+          <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={token1}/>
         </RowFixed>
       </RowBetween>
     </>
@@ -162,7 +162,14 @@ export default function MigrateV1Exchange({
   const contract = useVampContract(chainId);
   const { lpTokensDetailedInfo, lpTokensInfo } = useLpTokens();
   const tokens = lpTokensDetailedInfo.find(el => el.base === address)?.addresses ?? [];
-  const inputCurrency = useLpCurrencies(tokens, address);
+  let inputCurrency = useLpCurrencies(tokens, address);
+  if (inputCurrency?.symbol?.includes('WKCS')) {
+    inputCurrency = Object.assign(
+      {},
+      inputCurrency,
+      { symbol: inputCurrency.symbol.replace('WKCS', 'KCS') },
+    );
+  }
   const [isPairExist, setIsPairExist] = useState(false);
   const currency0 = useCurrency(tokens[0]);
   const currency1 = useCurrency(tokens[0]);
@@ -191,7 +198,7 @@ export default function MigrateV1Exchange({
   // redirect for invalid url params
   if (!validatedAddress) {
     console.error('Invalid address in path', address);
-    return <Redirect to="/migrate" />;
+    return <Redirect to="/migrate"/>;
   }
 
   const handleMigrate = () => {
@@ -275,7 +282,7 @@ export default function MigrateV1Exchange({
   return (
     <AppBody>
       <AutoRow style={{ alignItems: 'center', justifyContent: 'space-between' }}>
-        <BackArrow to="/migrate" />
+        <BackArrow to="/migrate"/>
         <div>
           <QuestionHelper
             text={`Migrate your liquidity tokens from ${isKuCoinActive ? 'KoffeSwap' : 'Uniswap V2'} to Emiswap.`}
@@ -285,7 +292,7 @@ export default function MigrateV1Exchange({
       <StyledContainer>
         {!inputCurrency ? (
           <LoaderBox>
-            <Loader size="100px" />
+            <Loader size="100px"/>
           </LoaderBox>
         ) : (
           <>
@@ -304,13 +311,13 @@ export default function MigrateV1Exchange({
               balanceDecimals={12}
             />
             {(approval === ApprovalState.PENDING || approval === ApprovalState.NOT_APPROVED) &&
-              !notEnoughBalance && (
-                <ButtonPrimary onClick={approveCallback}>
-                  <Text fontWeight={500} fontSize={16}>
-                    {approval === ApprovalState.PENDING ? <Dots>Approving</Dots> : 'Approve'}
-                  </Text>
-                </ButtonPrimary>
-              )}
+            !notEnoughBalance && (
+              <ButtonPrimary onClick={approveCallback}>
+                <Text fontWeight={500} fontSize={16}>
+                  {approval === ApprovalState.PENDING ? <Dots>Approving</Dots> : 'Approve'}
+                </Text>
+              </ButtonPrimary>
+            )}
             {!account ? (
               <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
             ) : (
@@ -348,9 +355,9 @@ export default function MigrateV1Exchange({
                   margin={true}
                 />
               </TokensInfoBlock>
-              <QuestionHelper text="It will cost a lot more to make a new pair" />
+              <QuestionHelper text="It will cost a lot more to make a new pair"/>
             </ModalHeaderWrapper>
-            <Separator />
+            <Separator/>
             <Text textAlign="center" fontWeight={500} fontSize={16}>
               Pair does not exist. Do you want to create?
             </Text>
