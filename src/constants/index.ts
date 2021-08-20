@@ -172,7 +172,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   [ChainId.KOVAN]: [KOVAN_DAI, KOVAN_USDC, KOVAN_WETH],
   [ChainId.MAINNET]: [DAI, USDC, USDT, COMP, MKR, CHI, WETH],
   // @ts-ignore
-  [chainIds.KUCOIN]: [DAI, USDC, USDT, COMP, MKR, CHI, WETH],
+  [chainIds.KUCOIN]: [WKCS],
 };
 
 // used for display in the default list when adding liquidity
