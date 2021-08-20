@@ -128,19 +128,25 @@ export default function Farm() {
     return farms2.map((farm) => getContract(farm.contractAddress, FARMING_2_ABI, library, account));
   }, [library, account, farms2]);
 
-  for (let contract;)
-  const farmingArr = farmingContracts.map((contract) => useFarming(contract));
-  const farming2Arr = farming2Contracts.map((contract) => useFarming2(contract));
+  const farmingArr = [];
+  for (let contract of farmingContracts) {
+    // farmingArr.push(useFarming(contract));
+  }
+
+  const farming2Arr = [];
+  for (let contract2 of farming2Contracts) {
+    // farming2Arr.push(useFarming2(contract2));
+  }
 
   useEffect(() => {
     let farmingLoading = farmingArr.some((farming) => {
-      return !isStakingTab(selectedTab) && !isLpToken(farming.tokenMode)
-    })
+      return !isStakingTab(selectedTab) && !isLpToken(farming.tokenMode);
+    });
 
     if (!loading) {
       farmingLoading = farming2Arr.some((farming2) => {
-        return !isStakingTab(selectedTab) && !isLpToken(farming2.tokenMode)
-      })
+        return !isStakingTab(selectedTab) && !isLpToken(farming2.tokenMode);
+      });
     }
 
     setLoading(farmingLoading);
