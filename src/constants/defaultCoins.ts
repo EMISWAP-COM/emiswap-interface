@@ -4053,7 +4053,9 @@ const defaultCoins: DefaultCoins = {
       chainId: 321,
       name: 'KuDoge',
       decimals: 18,
-      symbol: 'KuDoge',
+      symbol: 'KuDo',
+      logoURI:
+        'https://raw.githubusercontent.com/KoffeeSwap/kcc-assets/main/mainnet/tokens/0x6665D66aFA48F527d86623723342CfA258cB8666/logo.png',
     },
     {
       address: '0x1b465775469c71b898bb51b53b2d4464b7cd3448',
@@ -4061,6 +4063,8 @@ const defaultCoins: DefaultCoins = {
       name: 'KuDOS',
       decimals: 18,
       symbol: 'KuDOS',
+      logoURI:
+        'https://raw.githubusercontent.com/KoffeeSwap/kcc-assets/main/mainnet/tokens/0x1B465775469C71b898Bb51B53b2D4464b7Cd3448/logo.png',
     },
     {
       address: '0xfc56a7e70f6c970538020cc39939929b4d393f1f',
@@ -4068,6 +4072,8 @@ const defaultCoins: DefaultCoins = {
       name: 'KUST',
       decimals: 18,
       symbol: 'KUST',
+      logoURI:
+        'https://raw.githubusercontent.com/KoffeeSwap/kcc-assets/main/mainnet/tokens/0xfC56A7E70F6c970538020cc39939929b4d393F1F/logo.png',
     },
   ],
   logoURI: 'https://1inch.exchange/assets/images/logo.png',

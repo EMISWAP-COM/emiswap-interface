@@ -34,6 +34,22 @@ import { useIsKuCoinActive } from '../../hooks/Coins';
 
 const POOL_CURRENCY_AMOUNT_MIN = new Fraction(JSBI.BigInt(1), JSBI.BigInt(1000000));
 
+function replaceWKCS(token: Token): Token {
+  if (token?.symbol?.includes('WKCS')) {
+    const newToken = new Token(
+      token.chainId,
+      token.address,
+      token.decimals,
+      token.symbol.replace('WKCS', 'KCS'),
+      token.name,
+    );
+
+    return newToken;
+  }
+
+  return token;
+}
+
 const StyledContainer = styled.div`
   min-height: 230px;
   display: flex;
@@ -162,19 +178,10 @@ export default function MigrateV1Exchange({
   const contract = useVampContract(chainId);
   const { lpTokensDetailedInfo, lpTokensInfo } = useLpTokens();
   const tokens = lpTokensDetailedInfo.find(el => el.base === address)?.addresses ?? [];
-  let inputCurrency = useLpCurrencies(tokens, address);
-  if (inputCurrency?.symbol?.includes('WKCS')) {
-    inputCurrency = new Token(
-      inputCurrency.chainId,
-      inputCurrency.address,
-      inputCurrency.decimals,
-      inputCurrency.symbol.replace('WKCS', 'KCS'),
-      inputCurrency.name,
-    );
-  }
+  const inputCurrency = replaceWKCS(useLpCurrencies(tokens, address));
   const [isPairExist, setIsPairExist] = useState(false);
-  const currency0 = useCurrency(tokens[0]);
-  const currency1 = useCurrency(tokens[1]);
+  const currency0 = replaceWKCS(useCurrency(tokens[0]));
+  const currency1 = replaceWKCS(useCurrency(tokens[1]));
   const pair = usePair(currency0, currency1)[1];
   const selectedCurrencyBalance = useCurrencyBalance(account, inputCurrency);
   const inputCurrencyBalance = useCurrencyBalance(account, inputCurrency);
