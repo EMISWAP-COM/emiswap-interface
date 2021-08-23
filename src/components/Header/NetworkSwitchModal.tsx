@@ -82,7 +82,6 @@ export default function NetworkSwitchModal() {
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: toHex(item.chainId) }],
       });
-      await providerLogout();
     } catch (switchError) {
       if (switchError.code === 4902) {
         try {
@@ -101,7 +100,6 @@ export default function NetworkSwitchModal() {
               },
             ],
           });
-          await providerLogout();
         } catch (addError) {
           console.log(addError);
         }
@@ -109,6 +107,7 @@ export default function NetworkSwitchModal() {
         console.log(switchError);
       }
     } finally {
+      await providerLogout();
     }
   };
 

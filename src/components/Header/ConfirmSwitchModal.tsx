@@ -62,7 +62,7 @@ export default function ConfirmSwitchModal({
     >
       <ModalContent>
         <div>
-          You will be logged out. To use EmiSwap on KuCoin network, please login with MetaMask wallet
+          You're changing the network from Ethereum to KuCoin. Please note that you will automatically be logged out from all wallets except MetaMask.
         </div>
 
         <ModalButtons>

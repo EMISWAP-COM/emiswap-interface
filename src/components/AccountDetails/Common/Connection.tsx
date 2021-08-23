@@ -202,7 +202,7 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
   };
 
   const handleChangeWallet = () => {
-    if (!isKuCoinActive) {
+    if (isKuCoinActive) {
       return;
     }
 

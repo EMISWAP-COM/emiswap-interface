@@ -139,7 +139,7 @@ export default function Farm() {
 
     setTimeout(() => {
       setLoading(false);
-    }, 3000);
+    }, 5000);
   }, [/*farming, farming2, */selectedTab]);
 
   // Load farms list
