@@ -96,13 +96,13 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
       {/*>*/}
       {/*  {t('invest')}*/}
       {/*</StyledNavLink>*/}
-      <StyledNavLink
+      {/*<StyledNavLink
         id={`farm-nav-link`}
         to={'/farm'}
         isActive={() => active === TabNames.FARM}
       >
         {t('Stake & Farm')}
-      </StyledNavLink>
+      </StyledNavLink>*/}
     </Tabs>
   );
 }
