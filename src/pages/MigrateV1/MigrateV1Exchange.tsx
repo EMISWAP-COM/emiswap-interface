@@ -164,15 +164,17 @@ export default function MigrateV1Exchange({
   const tokens = lpTokensDetailedInfo.find(el => el.base === address)?.addresses ?? [];
   let inputCurrency = useLpCurrencies(tokens, address);
   if (inputCurrency?.symbol?.includes('WKCS')) {
-    inputCurrency = Object.assign(
-      {},
-      inputCurrency,
-      { symbol: inputCurrency.symbol.replace('WKCS', 'KCS') },
+    inputCurrency = new Token(
+      inputCurrency.chainId,
+      inputCurrency.address,
+      inputCurrency.decimals,
+      inputCurrency.symbol.replace('WKCS', 'KCS'),
+      inputCurrency.name,
     );
   }
   const [isPairExist, setIsPairExist] = useState(false);
   const currency0 = useCurrency(tokens[0]);
-  const currency1 = useCurrency(tokens[0]);
+  const currency1 = useCurrency(tokens[1]);
   const pair = usePair(currency0, currency1)[1];
   const selectedCurrencyBalance = useCurrencyBalance(account, inputCurrency);
   const inputCurrencyBalance = useCurrencyBalance(account, inputCurrency);
