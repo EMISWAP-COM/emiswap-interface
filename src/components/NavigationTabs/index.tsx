@@ -7,6 +7,7 @@ import { Link as HistoryLink, NavLink } from 'react-router-dom';
 import { ArrowLeft } from 'react-feather';
 import { RowBetween } from '../Row';
 import QuestionHelper from '../QuestionHelper';
+import { useIsKuCoinActive } from '../../hooks/Coins';
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -74,6 +75,9 @@ export enum TabNames {
 
 export function SwapPoolTabs({ active }: { active: TabNames }) {
   const { t } = useTranslation();
+
+  const isKuCoinActive = useIsKuCoinActive();
+
   return (
     <Tabs style={{ marginBottom: '24px' }}>
       <StyledNavLink id={`swap-nav-link`} to={'/swap'} isActive={() => active === TabNames.SWAP}>
@@ -96,13 +100,15 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
       {/*>*/}
       {/*  {t('invest')}*/}
       {/*</StyledNavLink>*/}
-      {/*<StyledNavLink
-        id={`farm-nav-link`}
-        to={'/farm'}
-        isActive={() => active === TabNames.FARM}
-      >
-        {t('Stake & Farm')}
-      </StyledNavLink>*/}
+      {!isKuCoinActive && (
+        <StyledNavLink
+          id={`farm-nav-link`}
+          to={'/farm'}
+          isActive={() => active === TabNames.FARM}
+        >
+          {t('Stake & Farm')}
+        </StyledNavLink>
+      )}
     </Tabs>
   );
 }
