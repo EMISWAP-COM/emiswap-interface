@@ -32,7 +32,7 @@ export function useTokenListWithPair() {
             setList(formattedData);
           });
         })
-        .catch(e => {
+        .catch((e: string) => {
           console.warn('Failed to get contract', `Contract methods fails - ${e}`);
           // dispatch(
           //   addPopup({

@@ -13,13 +13,7 @@ import { SwapPoolTabs, TabNames } from '../../components/NavigationTabs';
 import { AutoRow, RowBetween } from '../../components/Row';
 import BetterTradeLink from '../../components/swap/BetterTradeLink';
 import confirmPriceImpactWithoutFee from '../../components/swap/confirmPriceImpactWithoutFee';
-import {
-  ArrowWrapper,
-  BottomGrouping,
-  Dots,
-  ErrorText,
-  Wrapper,
-} from '../../components/swap/styleds';
+import { ArrowWrapper, BottomGrouping, Dots, ErrorText, Wrapper } from '../../components/swap/styleds';
 import SwapModalFooter from '../../components/swap/SwapModalFooter';
 import SwapModalHeader from '../../components/swap/SwapModalHeader';
 import TradePrice from '../../components/swap/TradePrice';
@@ -39,30 +33,21 @@ import {
   useSwapActionHandlers,
   useSwapState,
 } from '../../state/swap/hooks';
-import {
-  useExpertModeManager,
-  useTokenWarningDismissal,
-  useUserSlippageTolerance,
-} from '../../state/user/hooks';
+import { useExpertModeManager, useTokenWarningDismissal, useUserSlippageTolerance } from '../../state/user/hooks';
 import { CursorPointer, ExternalGreenLink, StyledButtonNavigation, TYPE } from '../../theme';
 import { maxAmountSpend } from '../../utils/maxAmountSpend';
-import {
-  computeSlippageAdjustedAmounts,
-  computeTradePriceBreakdown,
-  warningSeverity,
-} from '../../utils/prices';
+import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown, warningSeverity } from '../../utils/prices';
 import AppBody from '../AppBody';
 import { ClickableText } from '../Pool/styleds';
 import { isUseOneSplitContract } from '../../utils';
-import GasConsumption from '../../components/swap/GasConsumption';
 import { BigNumber } from '@ethersproject/bignumber';
 import { AdvancedSwapDetails } from '../../components/swap/AdvancedSwapDetails';
 import { useTransactionPrice } from '../../hooks/useTransactionPrice';
 import ReferralLink from '../../components/RefferalLink';
+import chainIds from '../../constants/chainIds';
 
 const GasFeeText = styled.div`
   margin-top: 8px;
-  margin-bottom: 8px;
   color: ${({ theme }) => theme.darkText};
 `;
 
@@ -120,14 +105,14 @@ export default function Swap() {
 
   const parsedAmounts = showWrap
     ? {
-        [Field.INPUT]: parsedAmount,
-        [Field.OUTPUT]: parsedAmount,
-      }
+      [Field.INPUT]: parsedAmount,
+      [Field.OUTPUT]: parsedAmount,
+    }
     : {
-        [Field.INPUT]: parsedAmount,
-        // [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
-        [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
-      };
+      [Field.INPUT]: parsedAmount,
+      // [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
+      [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
+    };
 
   const isValid = !error;
   const dependentField: Field = independentField === Field.INPUT ? Field.OUTPUT : Field.INPUT;
@@ -152,7 +137,7 @@ export default function Swap() {
       : parsedAmounts[dependentField]?.toSignificant(6) ?? '',
   };
 
-  const [isEnough] = useTransactionPrice('swap');
+  const [isEnough] = useTransactionPrice('swap', currencies[Field.INPUT]);
 
   const route = trade?.route;
   const userHasSpecifiedInputOutput = Boolean(
@@ -179,15 +164,12 @@ export default function Swap() {
     }
   }, [approval, approvalSubmitted]);
 
-  const [gas, setGas] = useState(0);
-  const [gasWhenUseChi, setGasWhenUseChi] = useState(0);
-
   const onReject = () => {
     setSwapErrorMessage('Transaction rejected.');
   };
 
   // the callback to execute the swap
-  const [isChiApplied, swapCallback, estimate] = useSwap(
+  const [swapCallback] = useSwap(
     chainId,
     parsedAmount,
     trade,
@@ -196,44 +178,6 @@ export default function Swap() {
     formattedAmounts,
     onReject,
   );
-
-  const srcAmount = trade?.inputAmount?.toExact();
-
-  // TODO: for sure should be more elegant solution for estimation calls
-  useEffect(() => {
-    let unmounted = false;
-
-    function handleStatusChange(result: number[]) {
-      if (unmounted || !result || !result[1]) {
-        return;
-      }
-
-      const gasWithoutChi = result[0];
-      const gasWithChi = result[1];
-
-      // As base gas amount on UI show the same amount of gas that metamask would show (red one)
-      const gas = Math.round(gasWithChi / 1000);
-
-      // Chi allow to safe up to 43% from original transaction (the one without CHI burn) green
-      const gasWhenUseChi = Math.round((gasWithoutChi * 0.57) / 1000);
-
-      setGas(gas);
-      setGasWhenUseChi(gasWhenUseChi);
-    }
-
-    srcAmount &&
-      estimate &&
-      estimate().then(result => {
-        handleStatusChange(result as number[]);
-      });
-
-    // Specify how to clean up after this effect:
-    return function cleanup() {
-      unmounted = true;
-    };
-
-    // eslint-disable-next-line
-  }, [srcAmount]);
 
   const maxAmountInput: TokenAmount | undefined = maxAmountSpend(currencyBalances[Field.INPUT]);
   const atMaxAmountInput = Boolean(
@@ -273,7 +217,7 @@ export default function Swap() {
       })
       .catch(error => {
         setAttemptingTxn(false);
-        console.log("Cancel")
+        console.log("Cancel");
         ReactGA.set({
           dimension1: currencies[Field.INPUT]?.symbol,
           dimension2: currencies[Field.OUTPUT]?.symbol,
@@ -307,7 +251,7 @@ export default function Swap() {
       approval === ApprovalState.NOT_APPROVED ||
       approval === ApprovalState.PENDING ||
       (approvalSubmitted && approval === ApprovalState.APPROVED)) &&
-    !(priceImpactSeverity > 3 && !expertMode);
+    !(priceImpactSeverity > 3);
 
   function modalHeader() {
     return (
@@ -461,18 +405,6 @@ export default function Swap() {
                       setShowInverted={setShowInverted}
                     />
                   </RowBetween>
-
-                  {isChiApplied && gas ? (
-                    <RowBetween align="center">
-                      <Text fontWeight={500} fontSize={14} color={theme.text2}>
-                        Gas consumption
-                      </Text>
-                      {<GasConsumption gas={gas} gasWhenUseChi={gasWhenUseChi} />}
-                    </RowBetween>
-                  ) : (
-                    ''
-                  )}
-
                   {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
                     <RowBetween align="center">
                       <ClickableText
@@ -577,12 +509,14 @@ export default function Swap() {
             {betterTradeLinkVersion && <BetterTradeLink version={betterTradeLinkVersion} />}
             {!isEnough && (
               <ErrorText fontWeight={500} fontSize="11pt" severity={3}>
-                Probably insufficient ETH balance
+                Probably insufficient balance
               </ErrorText>
             )}
           </BottomGrouping>
-          <GasFeeText>100% gas fee refund</GasFeeText>
-          <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
+          {(chainId as any) !== chainIds.KUCOIN && (
+            <GasFeeText>100% gas fee refund</GasFeeText>
+          )}
+          <TYPE.black fontSize={14} fontWeight={400} color={theme.text2} marginTop={'12px'}>
             <ExternalGreenLink href="https://wiki.emiswap.com/user-guide/how-to-make-swaps">
               Wiki How to make swaps?
             </ExternalGreenLink>

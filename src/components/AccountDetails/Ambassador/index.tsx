@@ -1,16 +1,18 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { convertBigDecimal } from '../uitls';
-import { PurchaseHistory } from '../Common/PurchaseHistory';
-import { ReferralPerformance } from '../Common/ReferralPerformance';
-import { loadBalance, loadPerformance } from '../../../state/cabinets/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, AppState } from '../../../state';
 import { packageNames } from '../constant';
 import { Connection } from '../Common/Connection';
-import { ESWLocked } from '../Common/ESWLocked';
+import { loadBalance, loadPerformance } from '../../../state/cabinets/actions';
+import { useActiveWeb3React } from '../../../hooks';
 import { ESWRewards } from '../Common/ESWRewards';
 import { ESWHoldingRewards } from '../Common/ESWHoldingRewards';
+import { ReferralPerformance } from '../Common/ReferralPerformance';
+import { PurchaseHistory } from '../Common/PurchaseHistory';
+import { ESWLocked } from '../Common/ESWLocked';
+import chainIds from '../../../constants/chainIds';
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -67,14 +69,18 @@ interface Props {
 const Ambassador: React.FC<Props> = ({ openOptions, ENSName }) => {
   const dispatch = useDispatch<AppDispatch>();
 
+  const { chainId } = useActiveWeb3React();
+
   const { id: userId, bonus_role_name = '', next_bonus_role } = useSelector(
     (state: AppState) => state.user.info,
   );
 
   useEffect(() => {
-    dispatch(loadPerformance(userId) as any);
-    dispatch(loadBalance(userId) as any);
-  }, [dispatch, userId]);
+    if ((chainId as any) !== chainIds.KUCOIN) {
+      dispatch(loadPerformance(userId) as any);
+      dispatch(loadBalance(userId) as any);
+    }
+  }, [dispatch, chainId, userId]);
 
   return (
     <Wrapper>
@@ -100,12 +106,16 @@ const Ambassador: React.FC<Props> = ({ openOptions, ENSName }) => {
           )}
         </OptionsPromo>
       </Connection>
-      <ESWRewards />
-      <ESWHoldingRewards/>
-      <ESWLocked />
+      {(chainId as any) !== chainIds.KUCOIN && (
+        <>
+          <ESWRewards />
+          <ESWHoldingRewards/>
+          <ESWLocked />
 
-      <ReferralPerformance />
-      <PurchaseHistory />
+          <ReferralPerformance />
+          <PurchaseHistory />
+        </>
+      )}
     </Wrapper>
   );
 };

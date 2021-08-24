@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components/macro';
 import Modal from '../Modal';
-import { ExternalLink, CloseIcon, Spinner } from '../../theme';
+import { CloseIcon, ExternalLink, Spinner } from '../../theme';
 import { Text } from 'rebass';
 import { RowBetween } from '../Row';
 import { AlertTriangle, ArrowUpCircle } from 'react-feather';
@@ -9,8 +9,9 @@ import { ButtonPrimary } from '../Button';
 import { AutoColumn, ColumnCenter } from '../Column';
 import Circle from '../../assets/images/blue-loader.svg';
 
-import { getEtherscanLink } from '../../utils';
+import { getEtherscanLink, getKucoinLink } from '../../utils';
 import { useActiveWeb3React } from '../../hooks';
+import chainIds from '../../constants/chainIds';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -91,9 +92,17 @@ export default function ConfirmationModal({
 
               {transactionBroadcast ? (
                 <>
-                  <ExternalLink href={getEtherscanLink(chainId, hash, 'transaction')}>
+                  <ExternalLink
+                    href={
+                      // @ts-ignore
+                      chainId === chainIds.KUCOIN
+                        ? getKucoinLink(chainId, hash, 'transaction')
+                        : getEtherscanLink(chainId, hash, 'transaction')
+                    }
+                  >
                     <Text fontWeight={500} fontSize={14} color={theme.blue}>
-                      View on Etherscan
+                      {/*// @ts-ignore*/}
+                      View on {chainId === chainIds.KUCOIN ? 'KCC explorer' : 'Etherscan'}
                     </Text>
                   </ExternalLink>
                   <ButtonPrimary onClick={onDismiss} style={{ margin: '20px 0 0 0' }}>

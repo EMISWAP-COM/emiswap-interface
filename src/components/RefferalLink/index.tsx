@@ -8,6 +8,7 @@ import { Text } from 'rebass';
 import useCopyClipboard from '../../hooks/useCopyClipboard';
 import { LinkStyledButton } from '../../theme';
 import { CheckCircle, Copy } from 'react-feather';
+import chainIds from '../../constants/chainIds';
 
 const ReferralLinkBox = styled.div`
   display: flex;
@@ -46,7 +47,7 @@ const CopyIcon = styled(LinkStyledButton)`
 
 export default function ReferralLink() {
   const theme = useContext(ThemeContext);
-  const { account } = useActiveWeb3React();
+  const { account, chainId } = useActiveWeb3React();
   let location = useLocation();
   const [isCopied, setCopied] = useCopyClipboard();
 
@@ -60,6 +61,10 @@ export default function ReferralLink() {
       action: 'copy_ref',
     });
   };
+
+  if ((chainId as any) === chainIds.KUCOIN) {
+    return null;
+  }
 
   return (
     <div>

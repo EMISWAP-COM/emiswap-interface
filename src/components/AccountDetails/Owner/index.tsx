@@ -1,21 +1,18 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components/macro';
-import { PurchaseHistory } from '../Common/PurchaseHistory';
-import { ReferralPerformance } from '../Common/ReferralPerformance';
-
-import {
-  loadBalance,
-  loadPerformance,
-  loadDepositsEswHistory,
-} from '../../../state/cabinets/actions';
+import { Connection } from '../Common/Connection';
+import { ExternalLink } from '../../../theme';
+import { loadBalance, loadDepositsEswHistory, loadPerformance } from '../../../state/cabinets/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, AppState } from '../../../state';
-import { Connection } from '../Common/Connection';
+import { useActiveWeb3React } from '../../../hooks';
 import { ESWRewards } from '../Common/ESWRewards';
-import { ESWLocked } from '../Common/ESWLocked';
-import { ExternalLink } from '../../../theme';
-import FarmingRewards from '../Common/FarmingRewards';
 import { ESWHoldingRewards } from '../Common/ESWHoldingRewards';
+import { ESWLocked } from '../Common/ESWLocked';
+import { ReferralPerformance } from '../Common/ReferralPerformance';
+import { PurchaseHistory } from '../Common/PurchaseHistory';
+import FarmingRewards from '../Common/FarmingRewards';
+import chainIds from '../../../constants/chainIds';
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -57,13 +54,17 @@ interface Props {
 const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
   const dispatch = useDispatch<AppDispatch>();
 
+  const { chainId } = useActiveWeb3React();
+
   const { id: userId } = useSelector((state: AppState) => state.user.info);
 
   useEffect(() => {
-    dispatch(loadPerformance(userId) as any);
-    dispatch(loadBalance(userId) as any);
-    dispatch(loadDepositsEswHistory(userId) as any);
-  }, [dispatch, userId]);
+    if ((chainId as any) !== chainIds.KUCOIN) {
+      dispatch(loadPerformance(userId) as any);
+      dispatch(loadBalance(userId) as any);
+      dispatch(loadDepositsEswHistory(userId) as any);
+    }
+  }, [dispatch, chainId, userId]);
 
   return (
     <Wrapper>
@@ -91,13 +92,17 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
           <ExternalLink href={'https://crowdsale.emidao.org/magic-nft'}>Magic Cards!</ExternalLink>
         </OptionsPromo>
       </Connection>
-      <ESWRewards />
-      <ESWHoldingRewards />
-      <ESWLocked />
-      <FarmingRewards />
-      <ReferralPerformance />
+      {(chainId as any) !== chainIds.KUCOIN && (
+        <>
+          <ESWRewards />
+          <ESWHoldingRewards/>
+          <ESWLocked />
+          <FarmingRewards />
+          <ReferralPerformance />
 
-      <PurchaseHistory />
+          <PurchaseHistory />
+        </>
+      )}
     </Wrapper>
   );
 };

@@ -1,6 +1,6 @@
 import useToggledVersion, { Version } from '../../hooks/useToggledVersion';
 import { parseUnits } from '@ethersproject/units';
-import { JSBI, Token, TokenAmount, Trade, ZERO_ADDRESS, ChainId } from '@uniswap/sdk';
+import { ChainId, JSBI, Token, TokenAmount, Trade, ZERO_ADDRESS } from '@uniswap/sdk';
 import { ParsedQs } from 'qs';
 import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,19 +12,13 @@ import useParsedQueryString from '../../hooks/useParsedQueryString';
 import { isAddress } from '../../utils';
 import { AppDispatch, AppState } from '../index';
 import { useCurrencyBalances } from '../wallet/hooks';
-import {
-  Field,
-  receiveOutput,
-  replaceSwapState,
-  selectCurrency,
-  switchCurrencies,
-  typeInput,
-} from './actions';
+import { Field, receiveOutput, replaceSwapState, selectCurrency, switchCurrencies, typeInput } from './actions';
 import { SwapState } from './reducer';
 import { useUserSlippageTolerance } from '../user/hooks';
 import { computeSlippageAdjustedAmounts } from '../../utils/prices';
 import { BigNumber } from '@ethersproject/bignumber';
-import { KOVAN_WETH, WETH } from '../../constants';
+import { KOVAN_WETH, WETH, WKCS } from '../../constants';
+import chainIds from '../../constants/chainIds';
 
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>(state => state.swap);
@@ -68,6 +62,7 @@ export function useSwapActionHandlers(): SwapActionHandlers {
 
   const onUserInput = useCallback(
     (field: Field, typedValue: string) => {
+      // const value = typedValue.substr(0, 10);
       dispatch(typeInput({ field, typedValue }));
     },
     [dispatch],
@@ -87,6 +82,7 @@ export function tryParseAmount(value?: string, currency?: Token): TokenAmount | 
     return;
   }
   try {
+    // const typedValueParsed = parseUnits(value, currency.decimals).toString().substr(0, 22);
     const typedValueParsed = parseUnits(value, currency.decimals).toString();
     if (typedValueParsed !== '0') {
       return new TokenAmount(currency, JSBI.BigInt(typedValueParsed));
@@ -99,6 +95,26 @@ export function tryParseAmount(value?: string, currency?: Token): TokenAmount | 
   return;
 }
 
+export function useCurrencyWrapped(currency: Token | null | undefined) {
+  const { chainId } = useActiveWeb3React();
+  const eth = useCurrency(ZERO_ADDRESS);
+
+  // console.log(currency?.address);
+
+  if (currency?.address === eth?.address) {
+    switch (chainId as any) {
+      case ChainId.MAINNET:
+        return WETH;
+      case chainIds.KUCOIN:
+        return WKCS;
+      default:
+        return KOVAN_WETH;
+    }
+  }
+
+  return currency;
+}
+
 // from the current swap inputs, compute the best trade and return it.
 export function useDerivedSwapInfo(): {
   currencies: { [field in Field]?: Token };
@@ -109,7 +125,7 @@ export function useDerivedSwapInfo(): {
   v1Trade: Trade | undefined;
   mooniswapTrade: [Trade, BigNumber[]] | [undefined, undefined] | undefined;
 } {
-  const { account, chainId } = useActiveWeb3React();
+  const { account } = useActiveWeb3React();
 
   const toggledVersion = useToggledVersion();
 
@@ -133,19 +149,8 @@ export function useDerivedSwapInfo(): {
 
   const isExactIn: boolean = independentField === Field.INPUT;
 
-  //FIXME Сделать нормальное получение WETH в зависимости от сети
-  const inputCurrencyWrapped =
-    inputCurrency?.address === eth?.address
-      ? chainId === ChainId.MAINNET
-        ? WETH
-        : KOVAN_WETH
-      : inputCurrency;
-  const outputCurrencyWrapped =
-    outputCurrency?.address === eth?.address
-      ? chainId === ChainId.MAINNET
-        ? WETH
-        : KOVAN_WETH
-      : outputCurrency;
+  let inputCurrencyWrapped = useCurrencyWrapped(inputCurrency);
+  let outputCurrencyWrapped = useCurrencyWrapped(outputCurrency);
 
   const parsedAmount = tryParseAmount(
     typedValue,
@@ -216,8 +221,8 @@ export function useDerivedSwapInfo(): {
     currencyBalances[Field.INPUT],
     toggledVersion === Version.v1
       ? slippageAdjustedAmountsV1
-        ? slippageAdjustedAmountsV1[Field.INPUT]
-        : null
+      ? slippageAdjustedAmountsV1[Field.INPUT]
+      : null
       : slippageAdjustedAmounts
       ? slippageAdjustedAmounts[Field.INPUT]
       : null,
@@ -241,9 +246,15 @@ export function useDerivedSwapInfo(): {
 function parseCurrencyFromURLParameter(urlParam: any): string {
   if (typeof urlParam === 'string') {
     const valid = isAddress(urlParam);
-    if (valid) return valid;
-    if (urlParam.toUpperCase() === 'ETH') return ZERO_ADDRESS;
-    if (valid === false) return ZERO_ADDRESS;
+    if (valid) {
+      return valid;
+    }
+    if (urlParam.toUpperCase() === 'ETH') {
+      return ZERO_ADDRESS;
+    }
+    if (valid === false) {
+      return ZERO_ADDRESS;
+    }
   }
   return ZERO_ADDRESS ?? '';
 }
@@ -301,7 +312,9 @@ export function useDefaultsFromURLSearch() {
   const parsedQs = useParsedQueryString();
 
   useEffect(() => {
-    if (!chainId) return;
+    if (!chainId) {
+      return;
+    }
     const parsed = queryParametersToSwapState(parsedQs);
 
     if (!parsed[Field.INPUT].currencyId || !parsed[Field.OUTPUT].currencyId) {

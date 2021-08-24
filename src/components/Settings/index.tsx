@@ -1,24 +1,18 @@
-import React, { useRef, useEffect, useContext, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Settings, X } from 'react-feather';
-import styled from 'styled-components';
+import styled, { ThemeContext } from 'styled-components';
 
-import {
-  useUserSlippageTolerance,
-  useExpertModeManager,
-  useUserDeadline,
-} from '../../state/user/hooks';
+import { useExpertModeManager, useUserDeadline, useUserSlippageTolerance } from '../../state/user/hooks';
 import SlippageTabs from '../SlippageTabs';
-import { RowFixed, RowBetween } from '../Row';
+import { RowBetween, RowFixed } from '../Row';
 import { TYPE } from '../../theme';
 import QuestionHelper from '../QuestionHelper';
 import Toggle from '../Toggle';
-import { ThemeContext } from 'styled-components';
 import { AutoColumn } from '../Column';
 import { ButtonError } from '../Button';
 import { useSettingsMenuOpen, useToggleSettingsMenu } from '../../state/application/hooks';
 import { Text } from 'rebass';
 import Modal from '../Modal';
-import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg';
 import Option from '../WalletModal/Option';
 
 const StyledMenuIcon = styled(Settings)`
@@ -127,17 +121,6 @@ const ModalContentWrapper = styled.div`
   border-radius: 20px;
 `;
 
-const DropDownIcon = styled(DropDown)<{ selected: boolean }>`
-  margin: 0 0.25rem 0.1rem 0.25rem;
-  width: 10px;
-  height: 17px;
-
-  path {
-    stroke: ${({ selected, theme }) => (selected ? theme.text1 : theme.white)};
-    stroke-width: 1.5px;
-  }
-`;
-
 const langNameMap = {
   de: 'German',
   en: 'English',
@@ -151,29 +134,6 @@ const langNameMap = {
   'zh-CN': 'Chinese (PRC)',
   'zh-TW': 'Chinese (Taiwan)',
 };
-
-export function LanguageSelect({ handleClick }: { handleClick: () => void }) {
-  const langCode = window.localStorage.getItem('i18nextLng');
-  const theme = useContext(ThemeContext);
-
-  return (
-    <span
-      style={{
-        cursor: 'pointer',
-        fontSize: 14,
-        color: theme.text2,
-        display: 'flex',
-        borderRadius: 16,
-        border: `1px solid ${theme.text4}`,
-        padding: '0.25rem 0.5rem',
-      }}
-      onClick={handleClick}
-    >
-      {langNameMap[langCode] || 'English'}
-      <DropDownIcon selected={true}></DropDownIcon>
-    </span>
-  );
-}
 
 function getLangOptions() {
   const langList = [

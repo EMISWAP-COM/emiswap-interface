@@ -6,7 +6,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { Text } from 'rebass';
 import { ThemeContext } from 'styled-components/macro';
 import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button';
-import { BlueCard, OutlineCard, LightCard } from '../../components/Card';
+import { BlueCard, LightCard, OutlineCard } from '../../components/Card';
 import { AutoColumn, ColumnCenter } from '../../components/Column';
 import ConfirmationModal from '../../components/ConfirmationModal';
 import CurrencyInputPanel from '../../components/CurrencyInputPanel';
@@ -20,11 +20,7 @@ import { useCurrency } from '../../hooks/Tokens';
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback';
 import { useWalletModalToggle } from '../../state/application/hooks';
 import { Field } from '../../state/mint/actions';
-import {
-  useDerivedMintInfo,
-  useMintActionHandlers,
-  useMintState,
-} from '../../state/mint-mooniswap/hooks';
+import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint-mooniswap/hooks';
 import { useTransactionAdder } from '../../state/transactions/hooks';
 import { useIsExpertMode, useUserSlippageTolerance } from '../../state/user/hooks';
 import { StyledButtonNavigation, TYPE } from '../../theme';
@@ -78,7 +74,7 @@ export default function AddLiquidity({
 
   const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity);
 
-  const [isEnough] = useTransactionPrice('pool');
+  const [isEnough] = useTransactionPrice('pool', currencies[Field.CURRENCY_A]);
 
   const isValid = !error;
   // modal and loading
@@ -238,6 +234,9 @@ export default function AddLiquidity({
               action: 'cancel',
               label: 'pool',
             });
+
+            setShowConfirm(false);
+
             throw new Error(`
             Account: ${account}\n
             ChainId: ${chainId}\n
@@ -268,6 +267,8 @@ export default function AddLiquidity({
           action: 'cancel',
           label: 'pool',
         });
+
+        setShowConfirm(false);
 
         throw new Error(`
           Account: ${account}\n
@@ -730,7 +731,7 @@ export default function AddLiquidity({
                 )}
                 {!isEnough && (
                   <ErrorText fontWeight={500} fontSize="11pt" severity={3}>
-                    Probably insufficient ETH balance
+                    Probably insufficient balance
                   </ErrorText>
                 )}
               </AutoColumn>

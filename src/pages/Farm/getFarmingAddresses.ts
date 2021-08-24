@@ -1,3 +1,5 @@
+import { ChainId } from '@uniswap/sdk';
+
 const addressesByNetworkId = {
   1: [
     '0xd9ca818d8db735fde245afaf55821ed7fa582d6c',
@@ -15,16 +17,14 @@ const addressesByNetworkId = {
     '0x6474fb64340837E1CCCbB1Bb4E0086081f3FdeB9',
     '0x14C22660fD7CB44843bC3158fce58951AcABb7B1',
     '0x24e7eB9874922726A8d8f277EF1c3Ad4a3Ab4eD1',
-  ]
-}
+  ],
+  321: [
+    '0x8667dcf5498bEFBBFd7faEA7FD70F704f5A75685',
+  ],
+};
 
-
-
-const getFarmingAddresses = () => {
-  // @ts-ignore
-  const chainId = window.env.REACT_APP_CHAIN_ID;
-
+const getFarmingAddresses = (chainId: ChainId) => {
   return addressesByNetworkId[chainId] || [];
-}
+};
 
 export default getFarmingAddresses;

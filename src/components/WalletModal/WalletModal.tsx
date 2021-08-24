@@ -1,7 +1,7 @@
 import ReactGA from 'react-ga';
 import ReactPixel from 'react-facebook-pixel';
 import { isMobile } from 'react-device-detect';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 
 import DocLink from '../../components/DocLink';
@@ -13,7 +13,7 @@ import Option from './Option';
 import { SUPPORTED_WALLETS } from '../../constants';
 import { ExternalLink } from '../../theme';
 import MetamaskIcon from '../../assets/images/metamask.png';
-import { injected, fortmatic, portis } from '../../connectors';
+import { fortmatic, injected, portis } from '../../connectors';
 import { OVERLAY_READY } from '../../connectors/Fortmatic';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
@@ -23,9 +23,9 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../state';
 import { Ambassador } from '../AccountDetails/Ambassador';
 import { Owner } from '../AccountDetails/Owner';
-import WarningBlock from '../Warning/WarningBlock';
 
 import * as Styled from './styled';
+import { useActiveWeb3React } from '../../hooks';
 
 export enum UserRoles {
   client = 'client',
@@ -50,6 +50,7 @@ const WALLET_VIEWS = {
 const WalletModal: React.FC<WalletModalProps> = ({ ENSName }) => {
   // important that these are destructed from the account-specific web3-react context
   const { active, account, connector, activate, error } = useWeb3React();
+  const { chainId } = useActiveWeb3React();
 
   const user = useSelector((state: AppState) => state.user.info);
 
@@ -136,7 +137,8 @@ const WalletModal: React.FC<WalletModalProps> = ({ ENSName }) => {
           });
         };
       default:
-        return () => {};
+        return () => {
+        };
     }
   };
 
@@ -183,7 +185,8 @@ const WalletModal: React.FC<WalletModalProps> = ({ ENSName }) => {
           });
         };
       default:
-        return () => {};
+        return () => {
+        };
     }
   };
 
@@ -233,6 +236,7 @@ const WalletModal: React.FC<WalletModalProps> = ({ ENSName }) => {
         ReactPixel.track('wallet_connect_success');
       })
       .catch(error => {
+        console.log(error)
         if (error instanceof UnsupportedChainIdError) {
           activate(connector); // a little janky...can't use setError because the connector isn't set
         } else {
@@ -261,6 +265,11 @@ const WalletModal: React.FC<WalletModalProps> = ({ ENSName }) => {
     const isMetamask = window.ethereum && window.ethereum.isMetaMask;
     return Object.keys(SUPPORTED_WALLETS).map(key => {
       const option = SUPPORTED_WALLETS[key];
+
+      if (option.unavailableNetworksIds.includes(chainId)) {
+        return null;
+      }
+
       // check for mobile options
       if (isMobile) {
         //disable portis on mobile for now
@@ -379,21 +388,22 @@ const WalletModal: React.FC<WalletModalProps> = ({ ENSName }) => {
           );
         case UserRoles.ambassador:
           return (
-            <Ambassador ENSName={ENSName} openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)} />
+            <Ambassador ENSName={ENSName} openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}/>
           );
         case UserRoles.client:
           return (
-            <Owner ENSName={ENSName} openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)} />
+            <Owner ENSName={ENSName} openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}/>
           );
         default:
           return (
-            <Styled.NoUser>
+            <Owner ENSName={ENSName} openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}/>
+            /*<Styled.NoUser>
               <WarningBlock
                 title={'Login failed'}
                 content={() => <div>Something went wrong.</div>}
                 bottomContent={() => <div>Please refresh the page and try again.</div>}
               />
-            </Styled.NoUser>
+            </Styled.NoUser>*/
           );
       }
     } else if (account && !user && walletView === WALLET_VIEWS.ACCOUNT) {
@@ -492,7 +502,7 @@ const WalletModal: React.FC<WalletModalProps> = ({ ENSName }) => {
       <Styled.Wrapper tabIndex={0}>
         <Styled.UpperSection>
           <Styled.CloseIcon onClick={toggleWalletModal}>
-            <Styled.CloseColor />
+            <Styled.CloseColor/>
           </Styled.CloseIcon>
           {getModalContent()}
         </Styled.UpperSection>

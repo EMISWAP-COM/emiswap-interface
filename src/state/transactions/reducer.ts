@@ -1,10 +1,10 @@
 import { createReducer } from '@reduxjs/toolkit';
 import {
   addTransaction,
+  cancelTransaction,
   checkedTransaction,
   clearAllTransactions,
   finalizeTransaction,
-  cancelTransaction,
   SerializableTransactionReceipt,
 } from './actions';
 

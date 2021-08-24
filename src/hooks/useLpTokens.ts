@@ -3,6 +3,7 @@ import { Token } from '@uniswap/sdk';
 import { useMultipleTokenInfo } from './useMultipleTokenInfo';
 import { useVampContract } from './useContract';
 import { useDispatch } from 'react-redux';
+import { useActiveWeb3React } from './index';
 
 export function useLpTokens(): {
   lpTokensDetailedInfo: { addresses: string[]; base: string }[];
@@ -11,9 +12,12 @@ export function useLpTokens(): {
   balances: number[];
   isLoading: boolean;
 } {
-  const contract = useVampContract();
+  const { chainId } = useActiveWeb3React();
+  const contract = useVampContract(chainId);
   const [lpTokensInfo, setLpTokensInfo] = useState<any[]>([]);
-  const [lpTokensDetailedInfo, setLpTokensDetailedInfot] = useState<{ addresses: string[]; base: string }[]>([]);
+  const [lpTokensDetailedInfo, setLpTokensDetailedInfot] = useState<
+    { addresses: string[]; base: string }[]
+  >([]);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const formattedAddresses = lpTokensDetailedInfo
@@ -27,7 +31,6 @@ export function useLpTokens(): {
       try {
         setIsLoading(true);
         const length = await contract?.lpTokensInfoLength();
-        console.log(length);
         let promiseArr = [];
         for (let i = 0; i < length; i++) {
           promiseArr.push(contract?.lpTokensInfo(i));
@@ -40,7 +43,6 @@ export function useLpTokens(): {
           listPair.map((el, idx) => ({ addresses: el, base: lpTokensInfo[idx].lpToken })),
         );
         setIsLoading(false);
-        console.log(lpTokensDetailedInfo);
       } catch (e) {
         console.log(contract);
         console.log(e);

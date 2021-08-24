@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { DEFAULT_TOKEN_LIST_URL } from '../../constants';
 import defaultCoins from '../../constants/defaultCoins';
 import { AppState } from '../index';
+import chainIds from '../../constants/chainIds';
 
 /**
  * Token instances created from token info.
@@ -41,6 +42,8 @@ const EMPTY_LIST: TokenAddressMap = {
   [ChainId.ROPSTEN]: {},
   [ChainId.GÖRLI]: {},
   [ChainId.MAINNET]: {},
+  // @ts-ignore
+  [chainIds.KUCOIN]: {},
 };
 
 const listCache: WeakMap<TokenList, TokenAddressMap> | null =

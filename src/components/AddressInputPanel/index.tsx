@@ -1,11 +1,12 @@
-import React, { useContext, useCallback } from 'react';
+import React, { useCallback, useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import useENS from '../../hooks/useENS';
 import { useActiveWeb3React } from '../../hooks';
 import { ExternalLink, TYPE } from '../../theme';
 import { AutoColumn } from '../Column';
 import { RowBetween } from '../Row';
-import { getEtherscanLink } from '../../utils';
+import { getEtherscanLink, getKucoinLink } from '../../utils';
+import chainIds from '../../constants/chainIds';
 
 const InputPanel = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap}
@@ -108,10 +109,16 @@ export default function AddressInputPanel({
               </TYPE.black>
               {address && (
                 <ExternalLink
-                  href={getEtherscanLink(chainId, name ?? address, 'address')}
+                  href={
+                    // @ts-ignore
+                    chainId === chainIds.KUCOIN
+                      ? getKucoinLink(chainId, name ?? address, 'address')
+                      : getEtherscanLink(chainId, name ?? address, 'address')
+                  }
                   style={{ fontSize: '14px' }}
                 >
-                  (View on Etherscan)
+                  {/*// @ts-ignore*/}
+                  (View on {chainId === chainIds.KUCOIN ? 'KCC explorer' : 'Etherscan'})
                 </ExternalLink>
               )}
             </RowBetween>

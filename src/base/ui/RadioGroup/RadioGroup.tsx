@@ -1,6 +1,6 @@
-import React, {useState} from "react";
-import styled from "styled-components/macro";
-import RadioButton from "./RadioButton";
+import React, { useState } from 'react';
+import styled from 'styled-components/macro';
+import RadioButton from './RadioButton';
 
 const StyledRadioGroup = styled.div`
   display: flex;

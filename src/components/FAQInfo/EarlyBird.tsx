@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components/macro';
 import Reward10x from '../../assets/svg/FAQIcon/10xReward.svg';
 import ExtraReward from '../../assets/svg/FAQIcon/extraReward.svg';
-import { Wrapper, Block, BlockLong, Title, Text, DarkText } from './styleds';
+import { Block, BlockLong, DarkText, Text, Title, Wrapper } from './styleds';
 
 const BlockWithIcon = styled(Block)`
   display: flex;

@@ -4,7 +4,7 @@ type DefaultCoinsToken = {
   name: string;
   symbol: string;
   decimals: number;
-  logoURI: string;
+  logoURI?: string;
 };
 
 type DefaultCoins = {
@@ -17,7 +17,7 @@ type DefaultCoins = {
   };
   keywords: string[];
   tokens: DefaultCoinsToken[];
-  logoURI: string;
+  logoURI?: string;
 };
 
 const defaultCoins: DefaultCoins = {
@@ -3922,6 +3922,24 @@ const defaultCoins: DefaultCoins = {
       logoURI:
         'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
     },
+    {
+      address: '0xE04242A9421Cb7a3868D54803835Ce88B494F574',
+      chainId: 321,
+      name: 'LP KOFFEE-WKCS',
+      symbol: 'KOFFEEWKCS',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
+      address: '0xe95C9f40F3Bffa2ADe0fC274EF97b8e1138B2eFf',
+      chainId: 321,
+      name: 'LP KOFFEE-MUG',
+      symbol: 'KOFFEEMUG',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
     //NEW Tokens
     {
       address: '0x28686f2f64C2Ed0591B2063A49De5b630D32284a',
@@ -3985,6 +4003,77 @@ const defaultCoins: DefaultCoins = {
       decimals: 18,
       logoURI:
         'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
+      address: '0x4446fc4eb47f2f6586f9faab68b3498f86c07521',
+      chainId: 321,
+      decimals: 18,
+      name: 'WKCS',
+      symbol: 'WKCS',
+    },
+    {
+      address: '0xc0ffee0000921eb8dd7d506d4de8d5b79b856157',
+      chainId: 321,
+      decimals: 18,
+      name: 'KOFFEE',
+      symbol: 'KOFFEE',
+    },
+    {
+      address: '0x8933a6e58eEeE063B5fd3221F2E1D17821Dc1031',
+      chainId: 321,
+      name: 'EmiSwap - EmiDao Token',
+      symbol: 'ESW',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
+      address: '0x0000000000000000000000000000000000000000',
+      chainId: 321,
+      name: 'KCS',
+      decimals: 18,
+      symbol: 'KCS',
+    },
+    {
+      address: '0x980a5afef3d17ad98635f6c5aebcbaeded3c3430',
+      chainId: 321,
+      name: 'USDC',
+      decimals: 18,
+      symbol: 'USDC',
+    },
+    {
+      address: '0x0039f574ee5cc39bdd162e9a88e3eb1f111baf48',
+      chainId: 321,
+      name: 'USDT',
+      decimals: 18,
+      symbol: 'USDT',
+    },
+    {
+      address: '0x6665d66afa48f527d86623723342cfa258cb8666',
+      chainId: 321,
+      name: 'KuDoge',
+      decimals: 18,
+      symbol: 'KuDo',
+      logoURI:
+        'https://raw.githubusercontent.com/KoffeeSwap/kcc-assets/main/mainnet/tokens/0x6665D66aFA48F527d86623723342CfA258cB8666/logo.png',
+    },
+    {
+      address: '0x1b465775469c71b898bb51b53b2d4464b7cd3448',
+      chainId: 321,
+      name: 'KuDOS',
+      decimals: 18,
+      symbol: 'KuDOS',
+      logoURI:
+        'https://raw.githubusercontent.com/KoffeeSwap/kcc-assets/main/mainnet/tokens/0x1B465775469C71b898Bb51B53b2D4464b7Cd3448/logo.png',
+    },
+    {
+      address: '0xfc56a7e70f6c970538020cc39939929b4d393f1f',
+      chainId: 321,
+      name: 'KUST',
+      decimals: 18,
+      symbol: 'KUST',
+      logoURI:
+        'https://raw.githubusercontent.com/KoffeeSwap/kcc-assets/main/mainnet/tokens/0xfC56A7E70F6c970538020cc39939929b4d393F1F/logo.png',
     },
   ],
   logoURI: 'https://1inch.exchange/assets/images/logo.png',

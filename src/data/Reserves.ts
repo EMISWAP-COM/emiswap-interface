@@ -1,4 +1,4 @@
-import { TokenAmount, Pair, Token } from '@uniswap/sdk';
+import { Pair, Token, TokenAmount } from '@uniswap/sdk';
 import { useMemo } from 'react';
 import { useActiveWeb3React } from '../hooks';
 

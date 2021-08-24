@@ -21,6 +21,7 @@ import { AutoRow, RowBetween, RowFixed } from '../Row';
 import { Dots } from '../swap/styleds';
 import { tokenAmountToString } from '../../utils/formats';
 import { ExternalLink } from '../../theme';
+import chainIds from '../../constants/chainIds';
 
 export const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -46,10 +47,10 @@ interface PositionCardProps {
 
 export function MinimalPositionCard({ pair, showUnwrapped = false, border }: PositionCardProps) {
   const theme = useContext(ThemeContext);
-  const { account } = useActiveWeb3React();
+  const { account, chainId } = useActiveWeb3React();
 
-  const currency0 = showUnwrapped ? pair.token0 : unwrappedToken(pair.token0);
-  const currency1 = showUnwrapped ? pair.token1 : unwrappedToken(pair.token1);
+  const currency0 = showUnwrapped ? pair.token0 : unwrappedToken(chainId, pair.token0);
+  const currency1 = showUnwrapped ? pair.token1 : unwrappedToken(chainId, pair.token1);
 
   const [showMore, setShowMore] = useState(false);
 
@@ -137,10 +138,10 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
 
 export default function FullPositionCard({ pair, border }: PositionCardProps) {
   const theme = useContext(ThemeContext);
-  const { account } = useActiveWeb3React();
+  const { account, chainId } = useActiveWeb3React();
 
-  const currency0 = unwrappedToken(pair.token0);
-  const currency1 = unwrappedToken(pair.token1);
+  const currency0 = unwrappedToken(chainId, pair.token0);
+  const currency1 = unwrappedToken(chainId, pair.token1);
 
   const [showMore, setShowMore] = useState(false);
 
@@ -246,12 +247,14 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
                 {poolTokenPercentage ? poolTokenPercentage.toFixed(2) + '%' : '-'}
               </Text>
             </FixedHeightRow>
-
-            <AutoRow justify="center" marginTop={'10px'}>
-              <ExternalLink href={'https://emiswap.com/analytics'}>
-                <YellowText>View pool information ↗</YellowText>
-              </ExternalLink>
-            </AutoRow>
+            {/*// @ts-ignore*/}
+            {chainId !== chainIds.KUCOIN && (
+              <AutoRow justify="center" marginTop={'10px'}>
+                <ExternalLink href={'https://emiswap.com/analytics'}>
+                  <YellowText>View pool information ↗</YellowText>
+                </ExternalLink>
+              </AutoRow>
+            )}
             <RowBetween marginTop="10px">
               <ButtonSecondary
                 as={Link}

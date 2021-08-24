@@ -7,7 +7,7 @@ import { useAllTokens } from '../../hooks/Tokens';
 import { useDefaultTokenList } from '../../state/lists/hooks';
 import { Field } from '../../state/swap/actions';
 import { ExternalLink, TYPE } from '../../theme';
-import { getEtherscanLink, isDefaultToken } from '../../utils';
+import { getEtherscanLink, getKucoinLink, isDefaultToken } from '../../utils';
 import PropsOfExcluding from '../../utils/props-of-excluding';
 import CurrencyLogo from '../CurrencyLogo';
 import { AutoRow, RowBetween } from '../Row';
@@ -15,6 +15,7 @@ import { AutoColumn } from '../Column';
 import { AlertTriangle } from 'react-feather';
 import { ButtonError } from '../Button';
 import { useTokenWarningDismissal } from '../../state/user/hooks';
+import chainIds from '../../constants/chainIds';
 
 const Wrapper = styled.div<{ error: boolean }>`
   background: ${({ theme }) => lighten(0.3, theme.dark1)};
@@ -87,9 +88,15 @@ export default function TokenWarningCard({ token, ...rest }: TokenWarningCardPro
           </TYPE.main>
           <ExternalLink
             style={{ fontWeight: 400, color: theme.blue }}
-            href={getEtherscanLink(chainId, token.address, 'token')}
+            href={
+              // @ts-ignore
+              chainId === chainIds.KUCOIN
+                ? getKucoinLink(chainId, token.address, 'token')
+                : getEtherscanLink(chainId, token.address, 'token')
+            }
           >
-            (View on Etherscan)
+            {/*// @ts-ignore*/}
+            (View on {chainId === chainIds.KUCOIN ? 'KCC explorer' : 'Etherscan'})
           </ExternalLink>
         </AutoColumn>
       </AutoRow>

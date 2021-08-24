@@ -1,4 +1,4 @@
-import { Token, TokenAmount, currencyEquals, ETHER, JSBI } from '@uniswap/sdk';
+import { currencyEquals, ETHER, JSBI, Token, TokenAmount } from '@uniswap/sdk';
 import React, { CSSProperties, memo, useContext, useMemo } from 'react';
 import { Text } from 'rebass';
 import { ThemeContext } from 'styled-components';

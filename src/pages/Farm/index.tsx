@@ -18,9 +18,10 @@ import { loadFarms, loadUserFarms } from '../../state/farming/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, AppState } from '../../state';
 import { FARMING_2_ABI } from '../../constants/abis/farming2';
-// FIXME Убрать комментарий для возврата функционала
-// import isLpToken from './isLpToken';
-// import useFarming from '../../hooks/useFarming';
+import LogoIcon from '../../assets/svg/logo-icon.svg';
+/*import isLpToken from './isLpToken';
+import useFarming2 from '../../hooks/useFarming2';
+import useFarming from '../../hooks/useFarming';*/
 
 const StyledFarmingHeader = styled.div`
   display: flex;
@@ -31,12 +32,12 @@ const StyledFarmingHeader = styled.div`
   ${({ theme }) => theme.mediaWidth.upToLarge`
     display: block;
   `};
-`
+`;
 const StyledTabs = styled.div`
   ${({ theme }) => theme.mediaWidth.upToLarge`
     margin-bottom: 32px;
   `};
-`
+`;
 const StyledInfoWrapper = styled.div`
   text-align: left;
   width: 50%;
@@ -45,20 +46,20 @@ const StyledInfoWrapper = styled.div`
   ${({ theme }) => theme.mediaWidth.upToLarge`
     width: auto;
   `};
-`
+`;
 const StyledInfoTitle = styled.div`
   font-size: 16px;
-  color: ${({theme}) => theme.white};
+  color: ${({ theme }) => theme.white};
   margin-bottom: 16px;
-`
+`;
 const StyledInfo = styled.div`
   font-size: 16px;
-  color: ${({theme}) => theme.darkText};
-`
+  color: ${({ theme }) => theme.darkText};
+`;
 
 const Info = styled.div`
-  color: ${({theme}) => theme.darkWhite};
-`
+  color: ${({ theme }) => theme.darkWhite};
+`;
 // FIXME Убрать комментарий для возврата функционала
 // const radioList = [
 //   {
@@ -70,6 +71,15 @@ const Info = styled.div`
 //     value: 'My farming',
 //   },
 // ];
+
+const LoadingInfo = styled.div`
+    min-height: 45vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    color: ${({ theme }) => theme.darkWhite};
+`;
 
 const tabItems = [
   {
@@ -94,19 +104,43 @@ const tabItems = [
 export const isStakingTab = tabname => tabname === tabItems[1].id;
 
 export default function Farm() {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const { library, account, chainId } = useActiveWeb3React();
+
+  const { id: userId } = useSelector((state: AppState) => state.user.info);
+  const farms2 = useSelector((state: AppState) => state.farming.farms);
+
   // FIXME Убрать комментарий для возврата функционала
   // const [radioValue, setRadioValue] = useState<string>('all');
   const [selectedTab, setSelectedTab] = useState<string>('farming');
-  const { library, account, chainId } = useActiveWeb3React();
-  const dispatch = useDispatch<AppDispatch>();
-  const farms2 = useSelector((state: AppState) => state.farming.farms);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const farmingContracts: Contract[] = useMemo(() => getFarmingContracts(library, account), [library, account]);
+  const farmingContracts: Contract[] = useMemo(
+    () => getFarmingContracts(library, account, chainId),
+    [library, account, chainId],
+  );
 
-  const { id: userId } = useSelector((state: AppState) => state.user.info);
   const farming2Contracts: Contract[] = useMemo(() => {
     return farms2.map((farm) => getContract(farm.contractAddress, FARMING_2_ABI, library, account));
   }, [library, account, farms2]);
+
+  // let farming = useFarming(farmingContracts[farmingContracts.length - 1]);
+  // let farming2 = useFarming2(farming2Contracts[farming2Contracts.length - 1]);
+
+  useEffect(() => {
+    /*let farmingLoading = farming
+      ? !isStakingTab(selectedTab) && !isLpToken(farming.tokenMode)
+      : false;
+
+    if (!farmingLoading && farming2) {
+      farmingLoading = !isStakingTab(selectedTab) && !isLpToken(farming2.tokenMode);
+    }*/
+
+    setTimeout(() => {
+      setLoading(false);
+    }, 5000);
+  }, [/*farming, farming2, */selectedTab]);
 
   // Load farms list
   useEffect(() => {
@@ -135,13 +169,13 @@ export default function Farm() {
   const toggleWalletModal = useWalletModalToggle();
 
   // @ts-ignore
-  const desiredChainId = Number(window.env.REACT_APP_CHAIN_ID);
+  const desiredChainId = chainId;
 
   // Get esw price in top level component to avoid needless contract requests
   const [eswPriceInDai, setEswPriceInDai] = useState('0');
   useEffect(() => {
     if (account && chainId === desiredChainId) {
-      getEswPriceInDai(library, account, chainId).then((value) => {
+      getEswPriceInDai(library, account, chainId).then(value => {
         setEswPriceInDai(value);
       });
     }
@@ -150,11 +184,26 @@ export default function Farm() {
   return (
     <>
       <AppBody>
-        <SwapPoolTabs active={TabNames.FARM} />
-        {account && chainId === desiredChainId && (
+        <SwapPoolTabs active={TabNames.FARM}/>
+
+        {loading && (
+          <LoadingInfo>
+            <div>
+              <img src={LogoIcon} alt="logo"/>
+              <div style={{ width: '100%', marginTop: '30px' }}>
+                We’re uploading the list of our awesome farming pools.<br/>
+                It may take a few seconds 😉
+              </div>
+            </div>
+          </LoadingInfo>
+        )}
+
+        {account && chainId === desiredChainId && farmingContracts?.length && !loading && (
           <>
             <StyledFarmingHeader>
-              <StyledTabs><Tabs items={tabItems} selectedItemId={selectedTab} onChange={setSelectedTab} /></StyledTabs>
+              <StyledTabs>
+                <Tabs items={tabItems} selectedItemId={selectedTab} onChange={setSelectedTab}/>
+              </StyledTabs>
               {/* <RadioGroup buttonsList={radioList} groupName="farms" value={radioValue} onChange={setRadioValue} /> */}
             </StyledFarmingHeader>
             <StyledInfoWrapper>
@@ -163,45 +212,52 @@ export default function Farm() {
               </StyledInfoTitle>
               <StyledInfo>
                 {isStakingTab(selectedTab)
-                  ? 'Increase your profit from different tokens including ESW by staking them in our pools. No time limits let you stake your tokens as long as you wish and withdraw them at any time. Staking rewards are allocated to your EmiSwap account for every block.' :
-              'Increase your profit from different LP tokens including ESW token pairs by farming them in our pools. No time limits let you farm your tokens as long as you wish and withdraw them at any time. Farming rewards are allocated to your EmiSwap account for every block.'}
+                  ? 'Increase your profit from different tokens including ESW by staking them in our pools. No time limits let you stake your tokens as long as you wish and withdraw them at any time. Staking rewards are allocated to your EmiSwap account for every block.'
+                  : 'Increase your profit from different LP tokens including ESW token pairs by farming them in our pools. No time limits let you farm your tokens as long as you wish and withdraw them at any time. Farming rewards are allocated to your EmiSwap account for every block.'}
               </StyledInfo>
             </StyledInfoWrapper>
-            {farmingContracts.map(contract => <FarmComponent
-              key={contract.address}
-              contract={contract}
-              selectedTab={selectedTab}
-              eswPriceInDai={eswPriceInDai}
-            />)}
+            {farmingContracts.map(contract => (
+              <FarmComponent
+                key={contract.address}
+                contract={contract}
+                selectedTab={selectedTab}
+                eswPriceInDai={eswPriceInDai}
+              />
+            ))}
+
             <br/><br/>
+
             <StyledInfoWrapper>
               <StyledInfoTitle>
                 {isStakingTab(selectedTab) ? 'Fixed APR Staking' : 'Fixed APR Farming'}
               </StyledInfoTitle>
               <StyledInfo>
-                Stake coins for a limited period of time to boost your APR. Please not that you will not be able to withdraw staked coins before the end of the farming period. Farming rewards are allocated to your EmiSwap account every 30 seconds.
+                Stake coins for a limited period of time to boost your APR. Please not that you will not be able to
+                withdraw staked coins before the end of the farming period. Farming rewards are allocated to your
+                EmiSwap account every 30 seconds.
               </StyledInfo>
             </StyledInfoWrapper>
-            {farming2Contracts.map(contract => <Farm2Component
-              key={contract.address}
-              contract={contract}
-              selectedTab={selectedTab}
-              eswPriceInDai={eswPriceInDai}
-            />)}
+            {farming2Contracts.map(contract =>
+              <Farm2Component
+                key={contract.address}
+                contract={contract}
+                selectedTab={selectedTab}
+                eswPriceInDai={eswPriceInDai}
+              />,
+            )}
           </>
         )}
+
         {!account && (
           <Info>
             Please connect your wallet to see all available farms and staking pools
-            <br/><br/>
+            <br/>
+            <br/>
             <Button onClick={toggleWalletModal}>Connect to a wallet</Button>
           </Info>
         )}
-        {chainId !== desiredChainId && (
-          <Info>
-            Please change network
-          </Info>
-        )}
+
+        {chainId !== desiredChainId && <Info>Please change network</Info>}
       </AppBody>
     </>
   );

@@ -4,7 +4,7 @@ import { WalletAction } from '../styleds';
 import styled from 'styled-components/macro';
 import { useActiveWeb3React } from '../../../hooks';
 import { StatusIcon } from '../StatusIcon';
-import { getEtherscanLink, shortenAddress } from '../../../utils';
+import { getEtherscanLink, getKucoinLink, shortenAddress } from '../../../utils';
 import { useHistory } from 'react-router';
 import { useWalletModalToggle } from '../../../state/application/hooks';
 import { ExternalLink as LinkIcon } from 'react-feather';
@@ -14,6 +14,8 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { darken } from 'polished';
 import { ChangeAddress } from './ChangeAddress';
+import chainIds from '../../../constants/chainIds';
+import { useIsKuCoinActive } from '../../../hooks/Coins';
 
 const Container = styled.div`
   font-size: 13px;
@@ -47,7 +49,7 @@ const WalletInfo = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  color: ${({ theme }) => theme.white}
+  color: ${({ theme }) => theme.white};
 `;
 
 const Wallet = styled.div`
@@ -71,8 +73,6 @@ const BalanceWrapper = styled.div`
 const BalanceItem = styled.div`
   padding: 14px;
   background: ${({ theme }) => theme.darkGrey};
-
-
 `;
 const BalanceValue = styled(DarkText)`
   font-size: 16px;
@@ -109,11 +109,22 @@ const ChangeWalletBtn = styled(ActionBtn)`
   margin-left: 8px !important;
   background-color: ${({ theme }) => theme.purple} !important;
   border: 1px solid ${({ theme }) => theme.purple} !important;
-  color: #FFFFFF;
+  color: #ffffff;
 
-  &:hover, &:focus, &:active {
+  &:hover,
+  &:focus,
+  &:active {
     background: ${({ theme }) => theme.purple} !important;
     box-shadow: none;
+  }
+  
+  &:disabled {
+    background-color: transparent !important;
+    color: #615C69;
+    cursor: auto;
+    border: 1px solid rgb(97,92,105) !important;
+    opacity: 1 !important;
+    text-decoration: none !important;
   }
 
   @media screen and (max-width: 800px) {
@@ -174,6 +185,8 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
   const history = useHistory();
   const toggle = useWalletModalToggle();
 
+  const isKuCoinActive = useIsKuCoinActive();
+
   const balance = useSelector((state: AppState) => state.cabinets.balance);
 
   const isCollectDisabled = !Number(balance?.available.ESW);
@@ -188,6 +201,14 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
     return convertBigDecimal(sum.toString());
   };
 
+  const handleChangeWallet = () => {
+    if (isKuCoinActive) {
+      return;
+    }
+
+    openOptions();
+  };
+
   const handleClaim = () => {
     toggle();
     history.push('/claim/ESW');
@@ -198,62 +219,75 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
       <Container>
         <Main>
           <WalletInfo>
-            <span>
-              Connected with {formatConnectorName(connector)}
-            </span>
+            <span>Connected with {formatConnectorName(connector)}</span>
             <ChangeActionsBlock>
-              <ChangeAddress openOptions={openOptions}/>
-              <ChangeWalletBtn onClick={() => openOptions()}>
+              <ChangeAddress openOptions={openOptions} />
+              <ChangeWalletBtn disabled={isKuCoinActive} onClick={handleChangeWallet}>
                 Change wallet
               </ChangeWalletBtn>
             </ChangeActionsBlock>
             <Wallet>
-              <StatusIcon connectorName={connector}/>
+              <StatusIcon connectorName={connector} />
               <Account>{ENSName || shortenAddress(account)}</Account>
             </Wallet>
           </WalletInfo>
-          <BalanceWrapper>
-            <BalanceItem>
-              <span>Total</span>
-              <div>
-                <BalanceValue>{sumESW()}</BalanceValue>&nbsp;ESW
-              </div>
-            </BalanceItem>
-            <BalanceItem>
-              <span>Wallet</span>
-              <div>
-                <BalanceValue>{convertBigDecimal(balance?.wallet.ESW)}</BalanceValue>&nbsp;ESW
-              </div>
-            </BalanceItem>
-            <BalanceItem>
-              <span>Locked at Emiswap </span>
-              <div>
-                <BalanceValue>{convertBigDecimal(balance?.total.locked.ESW)}</BalanceValue>&nbsp;ESW
-              </div>
-              {' '}
-            </BalanceItem>
-            <BalanceItem>
-              <span>Available to collect</span>
-              <div>
-                <BalanceValue>{convertBigDecimal(balance?.available.ESW)}</BalanceValue>&nbsp;ESW
-              </div>
-              {' '}
-            </BalanceItem>
-          </BalanceWrapper>
-          <Options>
-            {children}
-            <CollectBtn disabled={isCollectDisabled} onClick={handleClaim}>
-              Collect to my wallet
-            </CollectBtn>
-          </Options>
+
+          {(chainId as any) !== chainIds.KUCOIN && (
+            <>
+              <BalanceWrapper>
+                <BalanceItem>
+                  <span>Total</span>
+                  <div>
+                    <BalanceValue>{sumESW()}</BalanceValue>&nbsp;ESW
+                  </div>
+                </BalanceItem>
+                <BalanceItem>
+                  <span>Wallet</span>
+                  <div>
+                    <BalanceValue>{convertBigDecimal(balance?.wallet.ESW)}</BalanceValue>&nbsp;ESW
+                  </div>
+                </BalanceItem>
+                <BalanceItem>
+                  <span>Locked at Emiswap </span>
+                  <div>
+                    <BalanceValue>{convertBigDecimal(balance?.total.locked.ESW)}</BalanceValue>
+                    &nbsp;ESW
+                  </div>{' '}
+                </BalanceItem>
+                <BalanceItem>
+                  <span>Available to collect</span>
+                  <div>
+                    <BalanceValue>{convertBigDecimal(balance?.available.ESW)}</BalanceValue>
+                    &nbsp;ESW
+                  </div>{' '}
+                </BalanceItem>
+              </BalanceWrapper>
+              <Options>
+                {children}
+                <CollectBtn disabled={isCollectDisabled} onClick={handleClaim}>
+                  Collect to my wallet
+                </CollectBtn>
+              </Options>
+            </>
+          )}
         </Main>
         <AccountControl>
           <Copy toCopy={account}>
             <span style={{ marginLeft: '4px' }}>Copy Address</span>
           </Copy>
-          <AddressLink href={getEtherscanLink(chainId, ENSName || account, 'address')}>
-            <LinkIcon size={16}/>
-            <span style={{ marginLeft: '4px' }}>View on Etherscan</span>
+          <AddressLink
+            href={
+              // @ts-ignore
+              chainId === chainIds.KUCOIN
+                ? getKucoinLink(chainId, ENSName || account, 'address')
+                : getEtherscanLink(chainId, ENSName || account, 'address')
+            }
+          >
+            <LinkIcon size={16} />
+            <span style={{ marginLeft: '4px' }}>
+              {/*// @ts-ignore*/}
+              View on {chainId === chainIds.KUCOIN ? 'KCC explorer' : 'Etherscan'}
+            </span>
           </AddressLink>
         </AccountControl>
       </Container>

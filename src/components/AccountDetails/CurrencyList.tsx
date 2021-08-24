@@ -1,6 +1,6 @@
 import React, { CSSProperties, memo, useContext, useMemo } from 'react';
 import { ThemeContext } from 'styled-components';
-import { Token, TokenAmount, ETHER, JSBI } from '@uniswap/sdk';
+import { ETHER, JSBI, Token, TokenAmount } from '@uniswap/sdk';
 import { Text } from 'rebass';
 
 import { currencyKey } from '../../utils/currencyId';

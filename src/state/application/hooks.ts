@@ -4,10 +4,12 @@ import {
   addPopup,
   PopupContent,
   removePopup,
+  showWalletModal, toggleConfirmSwitchModal,
+  toggleNetworkSwitchModal,
+  toggleSettingsMenu,
   toggleWalletModal,
-  toggleSettingsMenu, showWalletModal,
 } from './actions';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../index';
 
 export function useBlockNumber(): number | undefined {
@@ -28,6 +30,20 @@ export function useWalletModalShow(): () => void {
 export function useWalletModalToggle(): () => void {
   const dispatch = useDispatch();
   return useCallback(() => dispatch(toggleWalletModal()), [dispatch]);
+}
+
+export function useNetworkSwitchModalOpen(): boolean {
+  return useSelector((state: AppState) => state.application.networkSwitchModalOpen);
+}
+
+export function useNetworkSwitchModalToggle(): () => void {
+  const dispatch = useDispatch();
+  return useCallback(() => dispatch(toggleNetworkSwitchModal()), [dispatch]);
+}
+
+export function useConfirmSwitchModalToggle(): () => void {
+  const dispatch = useDispatch();
+  return useCallback(() => dispatch(toggleConfirmSwitchModal()), [dispatch]);
 }
 
 export function useSettingsMenuOpen(): boolean {

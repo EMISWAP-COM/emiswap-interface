@@ -1,11 +1,12 @@
 import { Web3Provider } from '@ethersproject/providers';
-import { ChainId } from '@uniswap/sdk';
 import { useWeb3React as useWeb3ReactCore } from '@web3-react/core';
 import { Web3ReactContextInterface } from '@web3-react/core/dist/types';
 import { useEffect, useState } from 'react';
 import { isMobile } from 'react-device-detect';
 import { injected } from '../connectors';
 import { NetworkContextName } from '../constants';
+import { ChainId } from '@uniswap/sdk';
+
 export { default as useToggle } from './useToggle';
 export { default as useMediaQuery } from './useMediaQuery';
 
@@ -21,7 +22,9 @@ export function useAsync(asyncFn: any, onSuccess: any) {
   useEffect(() => {
     let isMounted = true;
     asyncFn().then((data: any) => {
-      if (isMounted) onSuccess(data);
+      if (isMounted) {
+        onSuccess(data);
+      }
     });
     return () => {
       isMounted = false;

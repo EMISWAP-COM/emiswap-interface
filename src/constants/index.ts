@@ -3,6 +3,12 @@ import { ChainId, ETHER, JSBI, Percent, Token } from '@uniswap/sdk';
 import { fortmatic, injected, portis, walletconnect, walletlink } from '../connectors';
 import { keccak256 } from '@ethersproject/solidity';
 import { bytecode } from './abis/Emiswap.json';
+import chainIds from './chainIds';
+import esw_addresses from './esw_addresses';
+
+import EthereumNetworkIcon from '../assets/svg/ethereum-network.svg';
+import KuCoinNetworkIcon from '../assets/svg/kucoin-network.svg';
+// import PolygonNetworkIcon from '../assets/svg/polygon-network.svg';
 
 export const MAX_NUM_DECIMALS = 18;
 export const ROUTER_ADDRESS = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D';
@@ -23,6 +29,15 @@ export const WETH = new Token(
   18,
   'WETH',
   'WrappedEther',
+);
+
+export const WKCS = new Token(
+  // @ts-ignore
+  chainIds.KUCOIN,
+  '0x4446fc4eb47f2f6586f9faab68b3498f86c07521',
+  18,
+  'WKCS',
+  'WKCS',
 );
 
 export const DAI = new Token(
@@ -120,19 +135,24 @@ export const KOVAN_CHI = new Token(
 
 export const ESW: ChainTokenList = {
   [ChainId.MAINNET]: [
-    new Token(ChainId.MAINNET, window['env'].REACT_APP_ESW_ID, 18, 'ESW', 'EmiDAO Token'),
+    new Token(ChainId.MAINNET, esw_addresses[chainIds.MAINNET], 18, 'ESW', 'EmiDAO Token'),
   ],
   [ChainId.ROPSTEN]: [
-    new Token(ChainId.ROPSTEN, window['env'].REACT_APP_ESW_ID, 18, 'ESW', 'EmiDAO Token'),
+    new Token(ChainId.ROPSTEN, esw_addresses[chainIds.MAINNET], 18, 'ESW', 'EmiDAO Token'),
   ],
   [ChainId.RINKEBY]: [
-    new Token(ChainId.RINKEBY, window['env'].REACT_APP_ESW_ID, 18, 'ESW', 'EmiDAO Token'),
+    new Token(ChainId.RINKEBY, esw_addresses[chainIds.MAINNET], 18, 'ESW', 'EmiDAO Token'),
   ],
   [ChainId.GÖRLI]: [
-    new Token(ChainId.GÖRLI, window['env'].REACT_APP_ESW_ID, 18, 'ESW', 'EmiDAO Token'),
+    new Token(ChainId.GÖRLI, esw_addresses[chainIds.MAINNET], 18, 'ESW', 'EmiDAO Token'),
   ],
   [ChainId.KOVAN]: [
-    new Token(ChainId.KOVAN, window['env'].REACT_APP_ESW_ID, 18, 'ESW', 'EmiDAO Token'),
+    new Token(ChainId.KOVAN, esw_addresses[chainIds.KOVAN], 18, 'ESW', 'EmiDAO Token'),
+  ],
+  // @ts-ignore
+  [chainIds.KUCOIN]: [
+    // @ts-ignore
+    new Token(chainIds.KUCOIN, esw_addresses[chainIds.KUCOIN], 18, 'ESW', 'EmiDAO Token'),
   ],
 };
 
@@ -142,6 +162,8 @@ const ETH_ONLY: ChainTokenList = {
   [ChainId.RINKEBY]: [ETHER],
   [ChainId.GÖRLI]: [ETHER],
   [ChainId.KOVAN]: [ETHER],
+  // @ts-ignore
+  [chainIds.KUCOIN]: [ETHER],
 };
 
 // used to construct intermediary pairs for trading
@@ -149,6 +171,8 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ...ETH_ONLY,
   [ChainId.KOVAN]: [KOVAN_DAI, KOVAN_USDC, KOVAN_WETH],
   [ChainId.MAINNET]: [DAI, USDC, USDT, COMP, MKR, CHI, WETH],
+  // @ts-ignore
+  [chainIds.KUCOIN]: [WKCS],
 };
 
 // used for display in the default list when adding liquidity
@@ -156,6 +180,8 @@ export const SUGGESTED_BASES: ChainTokenList = {
   ...ETH_ONLY,
   [ChainId.KOVAN]: [KOVAN_DAI, KOVAN_USDC, KOVAN_WETH, ESW[ChainId.KOVAN][0]],
   [ChainId.MAINNET]: [DAI, USDC, USDT, CHI, ESW[ChainId.MAINNET][0]],
+  // @ts-ignore
+  [chainIds.KUCOIN]: [ESW[chainIds.KUCOIN][0]],
 };
 
 // used to construct the list of all pairs we consider by default in the frontend
@@ -163,8 +189,11 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   ...ETH_ONLY,
   [ChainId.KOVAN]: [KOVAN_DAI, KOVAN_USDC, KOVAN_WETH, ESW[ChainId.KOVAN][0]],
   [ChainId.MAINNET]: [ETHER, DAI, USDC, USDT, CHI, ESW[ChainId.MAINNET][0], WETH],
+  // @ts-ignore
+  [chainIds.KUCOIN]: [ESW[chainIds.KUCOIN][0]],
 };
 
+// @ts-ignore
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
   [ChainId.MAINNET]: [
     [
@@ -198,6 +227,7 @@ const TESTNET_CAPABLE_WALLETS = {
     iconName: 'arrow-right.svg',
     description: 'Injected web3 provider.',
     href: null,
+    unavailableNetworksIds: [],
     color: '#010101',
     primary: true,
   },
@@ -207,6 +237,7 @@ const TESTNET_CAPABLE_WALLETS = {
     iconName: 'metamask.png',
     description: 'Easy-to-use browser extension.',
     href: null,
+    unavailableNetworksIds: [],
     color: '#E8831D',
   },
 };
@@ -220,6 +251,7 @@ export const SUPPORTED_WALLETS = {
       iconName: 'walletConnectIcon.svg',
       description: 'Connect to Trust Wallet, Rainbow Wallet and more...',
       href: null,
+      unavailableNetworksIds: [],
       color: '#4196FC',
       mobile: true,
     },
@@ -229,6 +261,7 @@ export const SUPPORTED_WALLETS = {
       iconName: 'coinbaseWalletIcon.svg',
       description: 'Use Coinbase Wallet app on mobile device',
       href: null,
+      unavailableNetworksIds: [chainIds.KUCOIN],
       color: '#315CF5',
     },
     COINBASE_LINK: {
@@ -236,6 +269,7 @@ export const SUPPORTED_WALLETS = {
       iconName: 'coinbaseWalletIcon.svg',
       description: 'Open in Coinbase Wallet app.',
       href: 'https://go.cb-w.com/fWpxXDRLvhb',
+      unavailableNetworksIds: [chainIds.KUCOIN],
       color: '#315CF5',
       mobile: true,
       mobileOnly: true,
@@ -246,6 +280,7 @@ export const SUPPORTED_WALLETS = {
       iconName: 'fortmaticIcon.png',
       description: 'Login using Fortmatic hosted wallet',
       href: null,
+      unavailableNetworksIds: [chainIds.KUCOIN],
       color: '#6748FF',
       mobile: true,
     },
@@ -255,6 +290,7 @@ export const SUPPORTED_WALLETS = {
       iconName: 'portisIcon.png',
       description: 'Login using Portis hosted wallet',
       href: null,
+      unavailableNetworksIds: [chainIds.KUCOIN],
       color: '#4A6C9B',
       mobile: true,
     },
@@ -305,3 +341,40 @@ export const REFERRAL_ADDRESS_STORAGE_KEY = 'referral-address';
 export const INIT_CODE_HASH = keccak256(['bytes'], [bytecode]);
 
 export const FACTORY_ADDRESS = '0xe4917eb85A6C11a56189DbE621433ce5c2a3bfc3';
+
+export interface INetworkItem {
+  value: string;
+  chainId: number;
+  icon: any;
+  name: string;
+  rpcUrls: string[];
+  currencySymbol: string;
+  blockExplorerUrls: string;
+}
+
+export const networksItems: INetworkItem[] = [
+  {
+    value: 'ethereum',
+    chainId: ChainId.MAINNET,
+    icon: EthereumNetworkIcon,
+    name: 'Ethereum',
+    rpcUrls: [''],
+    currencySymbol: 'ETH',
+    blockExplorerUrls: '',
+  },
+  /*{
+    value: 'polygon',
+    chainId: ChainId.MAINNET,
+    icon: PolygonNetworkIcon,
+    name: 'Polygon (Matic)',
+  },*/
+  {
+    value: 'kucoin',
+    chainId: chainIds.KUCOIN,
+    icon: KuCoinNetworkIcon,
+    name: 'KuCoin',
+    rpcUrls: ['https://rpc-mainnet.kcc.network'],
+    currencySymbol: 'KCS',
+    blockExplorerUrls: 'https://explorer.kcc.io/en',
+  },
+];

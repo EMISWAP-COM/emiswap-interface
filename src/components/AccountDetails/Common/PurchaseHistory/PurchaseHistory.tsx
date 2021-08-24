@@ -5,16 +5,16 @@ import { AppState } from '../../../../state';
 import { useActiveWeb3React } from '../../../../hooks';
 
 import {
-  Table,
   CellProps,
+  cellRenders,
+  Cost,
   headRenders,
+  Label,
+  LevelWrapper,
+  PoolCostWrapper,
+  Table,
   TabProps,
   Tabs,
-  cellRenders,
-  LevelWrapper,
-  Label,
-  PoolCostWrapper,
-  Cost,
 } from './components';
 
 import { TruncatedTextWithTooltip } from '../../../../base/ui/TruncatedTextWithTooltip';

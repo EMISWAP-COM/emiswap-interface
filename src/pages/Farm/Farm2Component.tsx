@@ -15,6 +15,8 @@ type FarmComponentProps = {
 const Farm2Component: React.FC<FarmComponentProps> = ({ contract, selectedTab, eswPriceInDai }) => {
   const farming2 = useFarming2(contract);
 
+  const isKuCoinToken = farming2.stakeToken?.symbol?.includes('KCS');
+
   const shouldShow =
     (isStakingTab(selectedTab) && !isLpToken(farming2.tokenMode)) ||
     (!isStakingTab(selectedTab) && isLpToken(farming2.tokenMode));
@@ -35,6 +37,7 @@ const Farm2Component: React.FC<FarmComponentProps> = ({ contract, selectedTab, e
       onStake={farming2.stake}
       onCollect={farming2.collect}
       tokenMode={farming2.tokenMode}
+      isKuCoinToken={isKuCoinToken}
     />
   ) : null;
 };

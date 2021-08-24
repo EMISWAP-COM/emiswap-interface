@@ -1,14 +1,14 @@
 import { useTranslation } from 'react-i18next';
 import { ThemeContext } from 'styled-components/macro';
-import { Token, Pair, TokenAmount, JSBI } from '@uniswap/sdk';
-import React, { useState, useContext, useCallback } from 'react';
+import { JSBI, Pair, Token, TokenAmount } from '@uniswap/sdk';
+import React, { useCallback, useContext, useState } from 'react';
 
 import { useCurrencyBalance } from '../../state/wallet/hooks';
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal';
 import CurrencyLogo from '../CurrencyLogo';
 import DoubleCurrencyLogo from '../DoubleLogo';
 import { RowBetween } from '../Row';
-import { TYPE, CursorPointer } from '../../theme';
+import { CursorPointer, TYPE } from '../../theme';
 import { Input as NumericalInput } from '../NumericalInput';
 
 import { useActiveWeb3React } from '../../hooks';

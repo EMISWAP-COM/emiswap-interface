@@ -1,4 +1,4 @@
-import { Token, TokenAmount, currencyEquals, ETHER, JSBI } from '@uniswap/sdk';
+import { ChainId, currencyEquals, ETHER, JSBI, Token, TokenAmount } from '@uniswap/sdk';
 import React, { CSSProperties, memo, useContext, useMemo } from 'react';
 import { Text } from 'rebass';
 import { ThemeContext } from 'styled-components';
@@ -19,6 +19,8 @@ import { currencyKey } from '../../utils/currencyId';
 import { tokenAmountToString } from '../../utils/formats';
 import defaultCoins from '../../constants/defaultCoins';
 import { KOVAN_WETH } from '../../constants';
+import chainIds from '../../constants/chainIds';
+import getKcsToken from '../../constants/tokens/KCS';
 
 export default function CurrencyList({
   currencies,
@@ -47,22 +49,29 @@ export default function CurrencyList({
 
   const CurrencyRow = useMemo(() => {
     return memo(function CurrencyRow({ index, style }: { index: number; style: CSSProperties }) {
-      const currency = index === 0 ? ETHER : currencies[index - 1];
+      const KCS = getKcsToken(chainId);
+      // @ts-ignore
+      const mainToken = chainId === chainIds.KUCOIN ? KCS : ETHER;
+      const currency = index === 0 ? mainToken : currencies[index - 1];
       const key = currencyKey(currency);
       const isDefault = isDefaultToken(defaultTokens, currency);
       const customAdded = Boolean(
         !isDefault && currency instanceof Token && allTokens[currency.address],
       );
-      const balance = currency === ETHER ? ETHBalance : allBalances[key];
+      const balance = currency === mainToken ? ETHBalance : allBalances[key];
 
       const zeroBalance = balance && JSBI.equal(JSBI.BigInt(0), balance.raw);
       const wethTokenInfo = defaultCoins.tokens.find(
-        token => token.symbol === 'WETH' && token.chainId === chainId,
+        token =>
+          // @ts-ignore
+          (chainId === chainIds.KUCOIN ? token.symbol === 'KCS' : token.symbol === 'WETH') &&
+          token.chainId === chainId,
       );
       const WETH: Token =
         wethTokenInfo && chainId
           ? new Token(
-              chainId,
+              // @ts-ignore
+              chainId as ChainId,
               wethTokenInfo.address,
               wethTokenInfo.decimals,
               wethTokenInfo.symbol,

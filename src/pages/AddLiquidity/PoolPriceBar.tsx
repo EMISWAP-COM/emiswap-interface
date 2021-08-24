@@ -1,4 +1,4 @@
-import { Token, Fraction, Percent } from '@uniswap/sdk';
+import { Fraction, Percent, Token } from '@uniswap/sdk';
 import React, { useContext } from 'react';
 import { Text } from 'rebass';
 import { ThemeContext } from 'styled-components';

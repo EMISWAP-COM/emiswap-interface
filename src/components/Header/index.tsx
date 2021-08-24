@@ -1,6 +1,5 @@
 import { ChainId } from '@uniswap/sdk';
 import React from 'react';
-import { isMobile, isTablet } from 'react-device-detect';
 import { Text } from 'rebass';
 import styled from 'styled-components/macro';
 import Logo from '../../assets/svg/logo.svg';
@@ -10,13 +9,18 @@ import LogoDark from '../../assets/svg/logo_dark.svg';
 import { useActiveWeb3React } from '../../hooks';
 import { useDarkModeManager } from '../../state/user/hooks';
 import { useETHBalances } from '../../state/wallet/hooks';
-import { WhiteCard } from '../Card';
 import Settings from '../Settings';
 import Menu from '../Menu';
 import Row, { RowBetween } from '../Row';
 import Web3Status from '../Web3Status';
 import { tokenAmountToString } from '../../utils/formats';
 import { ReactComponent as MagicIcon } from '../../assets/images/magic_icon.svg';
+import { ButtonGray, ButtonOutlined } from '../Button';
+import NetworkSwitchModal from './NetworkSwitchModal';
+import { useNetworkSwitchModalToggle } from '../../state/application/hooks';
+import chainIds from '../../constants/chainIds';
+import { networksItems } from '../../constants';
+import { useWeb3React } from '@web3-react/core';
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -78,7 +82,7 @@ const HeaderElement = styled.div`
     text-align: center;
     letter-spacing: 0.02em;
     color: #ffffff;
-    margin-right: 10px;
+    margin-right: 16px;
 
     &:hover,
     &:focus {
@@ -197,18 +201,76 @@ const AccountElement = styled.div<{ active: boolean }>`
   }
 `;
 
-const TestnetWrapper = styled.div`
+const AprButton = styled(ButtonOutlined)`
+    box-sizing: border-box;
+    width: auto;
+    height: 40px;
+    margin-right: 14px;
+    padding: 8.5px 20px;
+    border-color: #615C69;
+    border-radius: 4px;
+    color: white;
+    
+    &:focus, &:hover {
+      border: 1px solid ${({ theme }) => theme.purple};;
+      background: ${({ theme }) => theme.darkGrey};
+      box-shadow: none;
+    }
+`;
+
+const NetworkWrapper = styled.div`
   white-space: nowrap;
   width: fit-content;
   margin-left: 10px;
   pointer-events: auto;
 `;
 
-const NetworkCard = styled(WhiteCard)`
+const NetworkButtonSwitch = styled(ButtonGray)`
+  box-sizing: border-box;
   width: fit-content;
-  margin-right: 10px;
-  border-radius: 12px;
-  padding: 8px 12px;
+  min-width: 120px;
+  height: 40px;
+  margin-right: 24px;
+  padding: 0 16px;
+  border: 1px solid #615C69;
+  border-radius: 4px;
+  background: ${({ theme }) => theme.darkGrey};
+  color: white;
+  
+  &:focus, &:hover {
+    border: 1px solid ${({ theme }) => theme.purple};;
+    background: ${({ theme }) => theme.darkGrey};
+    box-shadow: none;
+  }
+  &:active {
+    border: 1px solid #615C69;
+    background: ${({ theme }) => theme.darkGrey};
+    box-shadow: none;
+  }
+`;
+
+const NetworkIcon = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: white;
+`;
+
+const NetworkLabel = styled.div`
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   height: 18px;
+   margin-left: 16px;
+   padding: 0 8px;
+   border-radius: 50px;
+   font-size: 8px;
+   background: #E478FF;
+   color: ${({ theme }) => theme.dark2};
 `;
 
 const UniIcon = styled.div`
@@ -280,25 +342,33 @@ const RowBetweenStyled = styled(RowBetween)`
   `};
 `;
 
-const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
-  [ChainId.MAINNET]: null,
+const NETWORK_LABELS: { [chainId in chainIds]: string | null } = {
+  [ChainId.MAINNET]: 'Ethereum',
   [ChainId.RINKEBY]: 'Rinkeby',
   [ChainId.ROPSTEN]: 'Ropsten',
   [ChainId.GÖRLI]: 'Görli',
   [ChainId.KOVAN]: 'Kovan',
+  [chainIds.KUCOIN]: 'KuCoin',
 };
 
 export default function Header() {
+
+  const { error } = useWeb3React();
   const { account, chainId } = useActiveWeb3React();
   const userEthBalance = useETHBalances([account])[account];
   const [isDark] = useDarkModeManager();
+
+  const toggleNetworkSwitchModal = useNetworkSwitchModalToggle();
+
+  const networkItem = networksItems.find(v => v.chainId === chainId);
+
   return (
     <HeaderFrame>
       <RowBetweenStyled>
         <LogoElem>
           <Title href=".">
             <UniIcon>
-              <LogoImg src={isDark ? LogoDark : Logo} alt="logo" />
+              <LogoImg src={isDark ? LogoDark : Logo} alt="logo"/>
             </UniIcon>
             <TitleText>
               {/*<img style={{ marginLeft: '4px', marginTop: '4px' }} src={isDark ? WordmarkDark : Wordmark} alt="logo" width="160px"/>*/}
@@ -307,37 +377,66 @@ export default function Header() {
         </LogoElem>
         <HeaderControls>
           <HeaderElement>
-            <a className="purple-btn" href={`${window.location.origin}/magic_cards/`}>
-              <span>Magic Hall</span>
-            </a>
-            {!isMobile && !isTablet && NETWORK_LABELS[chainId] && (
-              <TestnetWrapper>
-                <NetworkCard>{NETWORK_LABELS[chainId]}</NetworkCard>
-              </TestnetWrapper>
+            {false && (
+              <AprButton>
+                <Text textAlign="center" fontWeight={500} fontSize={14}>
+                  APR settings
+                </Text>
+              </AprButton>
+            )}
+            {!error && (
+              <NetworkWrapper>
+                <NetworkButtonSwitch
+                  onClick={toggleNetworkSwitchModal}
+                >
+                  {networkItem && (
+                    <NetworkIcon>
+                      <img
+                        style={{ maxHeight: '18px', maxWidth: '18px' }}
+                        src={networkItem.icon}
+                        alt={networkItem.name}
+                      />
+                    </NetworkIcon>
+                  )}
+                  <span>{NETWORK_LABELS[chainId] || 'Change Network'}</span>
+                  {(chainId as any) === chainIds.KUCOIN && (
+                    <NetworkLabel>Beta Version</NetworkLabel>
+                  )}
+                </NetworkButtonSwitch>
+                <NetworkSwitchModal/>
+              </NetworkWrapper>
+            )}
+            {chainId !== (chainIds.KUCOIN as any) && (
+              <a className="purple-btn" href={`${window.location.origin}/magic_cards/`}>
+                <span>Magic Hall</span>
+              </a>
             )}
             <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
               {account && userEthBalance ? (
                 <>
                   <BalanceText
                     style={{ flexShrink: 0 }}
-                    pl="0.75rem"
-                    pr="1.125rem"
+                    pl="8px"
+                    pr="8px"
+                    mr="16px"
                     fontWeight={450}
                   >
-                    {tokenAmountToString(userEthBalance, 4)} ETH
+                    {tokenAmountToString(userEthBalance, 4)}{' '}
+                    {/*// @ts-ignore*/}
+                    {chainId === chainIds.KUCOIN ? 'KCS' : 'ETH'}
                   </BalanceText>
                 </>
               ) : null}
-              <Web3Status />
+              <Web3Status/>
             </AccountElement>
           </HeaderElement>
         </HeaderControls>
         <HeaderElementWrap>
           <StyledMagicButton href={`${window.location.origin}/magic_cards/`}>
-            <MagicIcon />
+            <MagicIcon/>
           </StyledMagicButton>
-          <Settings />
-          <Menu />
+          <Settings/>
+          <Menu/>
         </HeaderElementWrap>
       </RowBetweenStyled>
     </HeaderFrame>
