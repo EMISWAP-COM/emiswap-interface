@@ -130,7 +130,7 @@ export default function Farm() {
     if (isKuCoinActive) {
       history.push(`swap`);
     }
-  }, [isKuCoinActive]);
+  }, [isKuCoinActive, history]);
 
   useEffect(() => {
     setTimeout(() => {
