@@ -13,7 +13,7 @@ import WalletRejectIcon from '../assets/svg/wallet-reject.svg';
 import Modal from '../components/Modal';
 import { Text } from 'rebass';
 import { ButtonPrimary } from '../components/Button';
-import { useIsKuCoinActive } from '../hooks/Coins';
+import { useIsKuCoinActive, useIsMetaMask } from '../hooks/Coins';
 
 export const HeadersPlusBodyWrapper = styled.div<{ isLarge?: boolean }>`
   position: relative;
@@ -112,13 +112,14 @@ export default function AppBody({
   const { chainId } = useActiveWeb3React();
 
   const isKuCoinActive = useIsKuCoinActive();
+  const isMetaMask = useIsMetaMask();
 
-  const [showModal, setShowModal] = useState<boolean>(!isKuCoinActive);
+  const [showModal, setShowModal] = useState<boolean>(!isKuCoinActive && !isMetaMask);
 
   const handleCloseModal = () => {
     setShowModal(false);
   };
-
+  
   return (
     <ThemeProvider theme={theme}>
       <HeadersPlusBodyWrapper isLarge={!!match}>
