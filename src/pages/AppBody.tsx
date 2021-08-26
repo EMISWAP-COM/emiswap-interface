@@ -14,6 +14,7 @@ import Modal from '../components/Modal';
 import { Text } from 'rebass';
 import { ButtonPrimary } from '../components/Button';
 import { useIsKuCoinActive, useIsMetaMask } from '../hooks/Coins';
+import { isMobile } from 'react-device-detect';
 
 export const HeadersPlusBodyWrapper = styled.div<{ isLarge?: boolean }>`
   position: relative;
@@ -114,7 +115,7 @@ export default function AppBody({
   const isKuCoinActive = useIsKuCoinActive();
   const isMetaMask = useIsMetaMask();
 
-  const [showModal, setShowModal] = useState<boolean>(!isKuCoinActive && !isMetaMask);
+  const [showModal, setShowModal] = useState<boolean>(isMobile && !isKuCoinActive && !isMetaMask);
 
   const handleCloseModal = () => {
     setShowModal(false);
