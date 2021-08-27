@@ -67,10 +67,6 @@ const StyledAccordionContent = styled.div<{isContentFullWidth?: boolean}>`
   ${({ theme }) => theme.mediaWidth.upToMedium`
     padding: 0;
   `};
-
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    text-align: center;
-  `};
 `
 
 const StyledChildrenWrapper = styled.div`
@@ -79,7 +75,7 @@ const StyledChildrenWrapper = styled.div`
 
 const StyledButtonsWrapper = styled.div`
   display: flex;
-  justify-content: center;
+  // justify-content: center;
   align-items: center;
   width: 100%;
   height: 48px;
@@ -108,7 +104,7 @@ const StyledButton = styled.div`
   text-align: center;
   letter-spacing: 0.02em;
   color: ${({theme}) => theme.white};
-  margin: 0 30px;
+  // margin: 0 30px;
 
   &:hover,
   &:focus {
@@ -120,7 +116,7 @@ const StyledButton = styled.div`
   `};
 `
 
-const StyledLine = styled.div`
+/*const StyledLine = styled.div`
   width: 200px;
   height: 1px;
   background: #dbdede;
@@ -128,7 +124,7 @@ const StyledLine = styled.div`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     display: none;
   `};
-`
+`*/
 
 export default (props: AccordionProps) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -187,7 +183,6 @@ export default (props: AccordionProps) => {
         </StyledChildrenWrapper>
         {(props.btnText || props.btnSecondText) && (
           <StyledButtonsWrapper>
-            <StyledLine />
             {props.btnText && (
               <StyledButton onClick={props.btnClick}>
                 {props.btnText}
@@ -198,7 +193,6 @@ export default (props: AccordionProps) => {
                 {props.btnSecondText}
               </StyledButton>
             )}
-            <StyledLine />
           </StyledButtonsWrapper>
         )}
       </StyledAccordionContent>

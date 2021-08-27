@@ -1,12 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Accordion from '../Accordion';
-import Colon from '../../assets/svg/FAQIcon/colon.svg';
-import PigPink from '../../assets/svg/FAQIcon/pig_pink.svg';
-import Board from '../../assets/svg/FAQIcon/board.svg';
-import Coins from '../../assets/svg/FAQIcon/coins.svg';
 import YellowCircle from '../../assets/svg/FAQIcon/yellowCircle.svg';
-import PieChart from '../../assets/svg/pie_chart.svg';
 
 const Body = styled.div`
   .title {
@@ -516,6 +511,37 @@ const Body = styled.div`
       color: white;
     }
   }
+  
+  .list-wrapper {
+    display: flex;
+    justify-content: space-between;
+    
+    @media screen and (max-width: 500px) {
+      display: block;
+    }
+    
+    ul {
+      list-style: none;
+    }
+    
+    li {
+      margin-bottom: 16px;
+      color: white;
+      font-weight: 300;
+      font-family: Roboto;
+      font-style: normal;
+      
+      &::before {
+        content: "\\2022";
+        color: #E478FF;
+        font-weight: bold;
+        display: inline-block;
+        width: 1em;
+        margin-left: -1em;
+      }
+    }
+    
+  }
 `;
 
 export default () => {
@@ -523,29 +549,10 @@ export default () => {
     const win = window.open('https://about.emiswap.com/whitepaper', '_blank');
     win.focus();
   };
-  const btnClick2 = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-  const btnClick3 = () => {
-    const win = window.open('https://about.emiswap.com/whitepaper', '_blank');
-    win.focus();
+  
+  const btnClickFarming = () => {
   };
 
-  /* TODO removed Invest tab until further notice.
-  const handleLiquidityCLick = () => {
-    history.push('/invest');
-    window.scroll({
-      top: 200,
-      behavior: 'smooth',
-    });
-  };*/
-
-  /*const handleLeanMoreLiquidityClick = () => {
-    window.open(
-      'https://emiswap.medium.com/why-are-liquidity-providers-rushing-to-emiswap-496801dc846f',
-      '_blank',
-    );
-  };*/
 
   //TODO перевести на styleds components блоки как EarlyBird and NFTCards
   return (
@@ -557,34 +564,17 @@ export default () => {
       >
         <Body>
           <div className="title">
-            EmiSwap (EmiDAO) is an open source, decentralized autonomous organization. The main elements of the
-            ecosystem are the EmiSwap decentralized exchange and the ecosystem's internal tokens - ESW, ESD.
+            EmiSwap is an audited, high APR, and cross-chain AMM DEX that offers users a secure environment to extract
+            daily high yields from liquidity mining and farming.
           </div>
-          <div className="InfoBlock">
-            <div className="InfoBlock__block">
-              <img className="InfoBlock__img" src={Colon} alt=""/>
-              <div className="InfoBlockBody">
-                <div className="InfoBlockBody__header h4">ESW</div>
-                <div className="InfoBlockBody__description">
-                  governance token, that gives the holders the right to receive share of project’s profitproportate to
-                  the token ownership and gives the rights to participate in voting on the development of the project.
-                </div>
-              </div>
-            </div>
-            <div className="InfoBlock__block">
-              <img className="InfoBlock__img" src={PigPink} alt=""/>
-              <div className="InfoBlockBody">
-                <div className="InfoBlockBody__header h4">ESD</div>
-                <div className="InfoBlockBody__description">
-                  is an internal token that gives the coin holders the right to receive assets in the basket of the
-                  yield pool denominated in DAI proportionate to the ESW token ownership.
-                </div>
-              </div>
-            </div>
+          <div className="title">
+            EmiSwap is the first project in the EmiDAO ecosystem, the world's first truly autonomous DAO with ESW native
+            token.
           </div>
-          <div className="h4 mb40">
-            EmiSwap is a fork of the decentralized AMM exchange Mooniswap and was created to solve the current problems
-            of the DeFi industry.
+          <div className="title">
+            ESW is a governance token that gives holders a right to receive a share of distributing fees proportionate
+            to the share of token ownership and gives a right to participate in voting on the development of the
+            project.
           </div>
           <div className="card-blocks">
             <div className="card width1_3">
@@ -623,217 +613,118 @@ export default () => {
       </Accordion>
 
       <Accordion
-        header="Crowdsale Information"
-        btnText="Participate in crowdsale"
-        btnClick={btnClick2}
+        header="Farming & Staking"
+        btnText="Guide to Farming"
+        btnClick={btnClickFarming}
       >
         <Body>
-          <div className="card-blocks">
-            <div className="card width1_5">
-              <div className="h4 f16 mb16">
-                <span>
-                  0.11 DAI
-                  <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle"/>
-                </span>
-              </div>
-              <div className="card-description">Price</div>
-            </div>
-            <div className="card width1_5">
-              <div className="h4 f16 mb16">
-                <span>
-                  200,000,000 ESW
-                  <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle"/>
-                </span>
-              </div>
-              <div className="card-description">Total Supply</div>
-            </div>
-            <div className="card width1_5">
-              <div className="h4 f16 mb16">
-                <span>
-                  40,000,000 ESW<br/> or 20%
-                  <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle"/>
-                </span>
-              </div>
-              <div className="card-description">Crowdsale Allocation</div>
-            </div>
-            <div className="card width1_5">
-              <div className="h4 f16 mb16">
-                <span>
-                  Vesting - 1 year
-                  <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle"/>
-                </span>
-              </div>
-              <div className="card-description">with quarterly unlock by equal shares</div>
-            </div>
-            <div className="card width1_5">
-              <div className="h4 f16 mb16">
-                <span>
-                  ERC20
-                  <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle"/>
-                </span>
-              </div>
-              <div className="card-description">Token Type</div>
-            </div>
+          <div className="title">
+            Staking allows users to deposit their tokens for any period of time into a smart contract (liquidity pool)
+            to receive extra rewards. The longer the user keeps their tokens in a staking smart contract, the larger
+            reward they receive.
           </div>
-          <div className="h4 f16 mt46">
-            Users will be able to buy ESW tokens using following cryptocurrencies:
-            DAI, USDT, USDC, USDB, ETH, EMRX, WETH, WBTC, renBTC.
+          <div className="title">
+            In some sense, farming can be paralleled with staking. Users deposit their LP tokens, which they received
+            for providing liquidity on EmiSwap, into a smart contract and receive higher rewards. Thus, users first need
+            to provide liquidity with a token which increases projects liquidity and boosts trading volumes.
           </div>
         </Body>
       </Accordion>
 
       <Accordion
-        header="Token Allocation Schedule"
-        btnText="Read White Paper"
-        btnClick={btnClick3}
+        header="Ethereum gas fee compensations"
       >
         <Body>
-          <div className="chart-block">
-            <div className="chart-block__info">
-              <div className="chart-block__text-line">
-                <div className="chart-block__color-block chart-block__color5"/>
-                <div className="grey-text chart-block__item-name">
-                  Protocol Security & Maintenance
-                </div>
-                <div className="grey-text chart-block__item-value">60M</div>
-                <div className="grey-text chart-block__item-value chart-block__item-value--mobile">
-                  60,000,000
-                </div>
-                <div className="grey-text grey-text-bold chart-block__item-percent">30%</div>
-              </div>
-              <div className="chart-block__text-line">
-                <div className="chart-block__color-block chart-block__color6"/>
-                <div className="grey-text chart-block__item-name">
-                  Ecosystem Growth & Community Extension
-                </div>
-                <div className="grey-text chart-block__item-value">44M</div>
-                <div className="grey-text chart-block__item-value chart-block__item-value--mobile">
-                  44,000,000
-                </div>
-                <div className="grey-text grey-text-bold chart-block__item-percent">22%</div>
-              </div>
-              <div className="chart-block__text-line">
-                <div className="chart-block__color-block chart-block__color7"/>
-                <div className="grey-text chart-block__item-name">
-                  EmiSwap Decentralized Developers Community
-                </div>
-                <div className="grey-text chart-block__item-value">40M</div>
-                <div className="grey-text chart-block__item-value chart-block__item-value--mobile">
-                  40,000,000
-                </div>
-                <div className="grey-text grey-text-bold chart-block__item-percent">20%</div>
-              </div>
-              <div className="chart-block__text-line">
-                <div className="chart-block__color-block chart-block__color3"/>
-                <div className="grey-text chart-block__item-name">
-                  Crowdsale Participants
-                </div>
-                <div className="grey-text chart-block__item-value">40M</div>
-                <div className="grey-text chart-block__item-value chart-block__item-value--mobile">
-                  40,000,000
-                </div>
-                <div className="grey-text grey-text-bold chart-block__item-percent">20%</div>
-              </div>
-              <div className="chart-block__text-line">
-                <div className="chart-block__color-block chart-block__color8"/>
-                <div className="grey-text chart-block__item-name">
-                  Advisors, Ambassadors & Community Building
-                </div>
-                <div className="grey-text chart-block__item-value">10M</div>
-                <div className="grey-text chart-block__item-value chart-block__item-value--mobile">
-                  10,000,000
-                </div>
-                <div className="grey-text grey-text-bold chart-block__item-percent">5%</div>
-              </div>
-              <div className="chart-block__text-line">
-                <div className="chart-block__color-block chart-block__color4"/>
-                <div className="grey-text chart-block__item-name">
-                  Early Liquidity Providers & Swappers
-                </div>
-                <div className="grey-text chart-block__item-value">6M</div>
-                <div className="grey-text chart-block__item-value chart-block__item-value--mobile">
-                  6,000,000
-                </div>
-                <div className="grey-text grey-text-bold chart-block__item-percent">3%</div>
-              </div>
-            </div>
-            <div className="chart-pie">
-              <img className="chart-pie__img" src={PieChart} alt="PieChart"/>
-            </div>
+          <div className="title">
+            EmiSwap understands that operations on the Ethereum blockchain have become a nightmare for swappers and
+            liquidity providers due to high gas prices. Making a single operation on a decentralized exchange can cost
+            dozens of dollars in Ethereum equivalent.
+          </div>
+          <div className="title">
+            Thus, EmiSwap compensates the gas price for all users who make Swaps or Provide Liquidity on EmiSwap DEX. As
+            compensation, users receive an equal amount of ESW tokens that play an increasingly important role in the
+            EmiDAO ecosystem.
           </div>
         </Body>
       </Accordion>
-
-      {/*<Accordion header="Launchpad details" isContentFullWidth={true}>
-        <PrivateRound/>
-      </Accordion>*/}
-
-      {/*<Accordion
-        header="Early bird bonuses for Liquidity Providers"
-        // TODO removed Invest tab until further notice.
-        // btnText="Provide Liquidity"
-        // btnClick={handleLiquidityCLick}
-        btnSecondText="Learn More"
-        btnSecondClick={handleLeanMoreLiquidityClick}
-      >
-        <EarlyBird/>
-      </Accordion>*/}
 
       <Accordion
-        header="Early Swappers and Liquidity Providers Rewards"
-        // TODO removed Invest tab until further notice.
-        // btnText="Provide Liquidity"
-        // btnClick={handleLiquidityCLick}
+        header="NFTs for Liquidity Providers"
+        btnText="Guide to Staking"
       >
         <Body>
-          <div className="last-block">
-            <div className="last-block__block">
-              <img className="last-block__img" src={Board} alt=""/>
-              <div className="text-block">
-                <div className="h4 mb16">Rewards for Liquidity Providers</div>
-                <div className="text-block__text">
-                  From the 11th to the 100th day after the launch <b>30,000 ESW</b> will be
-                  proportionally distributed among LP for <b>1 million DAI</b> trading volume
-                </div>
-                <div className="text-block__text">
-                  From the <b>11th to the 40th day</b> after the launch <b>6,150 ESW</b> will be
-                  issued additionally every 1000 blocks and will be distributed among LP in
-                  proportion to the amount of liquidity
-                </div>
-              </div>
-            </div>
-            <div className="last-block__block">
-              <img className="last-block__img" src={Coins} alt=""/>
-              <div className="text-block">
-                <div className="h4 mb16">Rewards for Swappers</div>
-                <div className="text-block__text">
-                  From the <b>11th to the 100th day</b> after the launch swappers are rewarded with{' '}
-                  <b>16 ESW</b> for personal turnover of <b>1,000 DAI</b>
-                </div>
-              </div>
-            </div>
+          <div className="title">
+            EmiSwap plans to reach a $100 million TVL and gives away 1001 yield boosting and rare NFT Magic Cards to
+            Liquidity Providers.
           </div>
-          {/*<div className="h4 mb16">Gas fees refund</div>
-          <div className="last-string">
-            <b>EmiSwap</b> compensates <b>for 100% of the Ethereum</b> fees paid for any operation
-            on the exchange in its native <b>ESW tokens.</b>
-          </div>*/}
-          <div className="last-string">
-            The EmiSwap early liquidity provider and swap allocation fund is capped at{' '}
-            <b>6,000,000 ESW</b>
+          <div className="title">
+            Each time the Total Value Locked on EmiSwap DEX is increased by $10 million, the EmiSwap team will
+            distribute 100 NFT Magic Cards to users who provided liquidity and crossed the milestones.
+          </div>
+          <div className="title">
+            Every $100,000 of Total Value Locked on EmiSwap marks a milestone. The further the user is from the
+            milestone as he crosses it, the better NFT Magic Card he will receive. In a nutshell, the user which adds
+            the most liquidity will get the highest tier.
+          </div>
+          <div className="title">
+            One powerful user who added the most liquidity will get a legendary card. The top 2 to 6 users get 5 Epic
+            Cards and so on. In total, EmiSwap will issue 1001 limited edition NFTs for this campaign divided into:
+          </div>
+          <div className="list-wrapper" style={{maxWidth: 700}}>
+            <ul>
+              <li>1 Mythic Card</li>
+              <li>10 Legendary Cards</li>
+            </ul>
+            <ul>
+              <li>40 Epic Cards</li>
+              <li>150 Rare Cards</li>
+            </ul>
+            <ul>
+              <li>300 Uncommon Cards</li>
+              <li>500 Ordinary Cards</li>
+            </ul>
           </div>
         </Body>
       </Accordion>
 
-      {/*<Accordion
-
-        header="NFT Magic Cards for Liquidity Providers"
-        // TODO removed Invest tab until further notice.
-        // btnText="Provide Liquidity"
-        // btnClick={handleLiquidityCLick}
+      <Accordion
+        header="NFT Magic Cards"
+        btnText="Guide to Staking"
       >
-        <NFTCards/>
-      </Accordion>*/}
+        <Body>
+          <div className="title">
+            NFT Magic Cards are cutting-edge loyalty items that increase users' benefits on the EmiSwap DEX. Offering
+            much more than usual NFT units, they are playable, tradable, and yield-boosting NFT collectibles that are
+            available for EmiSwap users only.
+          </div>
+          <div className="title">
+            There are 6 tiers of NFT Magic Cards.
+          </div>
+          <div className="title">
+            The higher the tier, the larger the bonus they contain. Though, the higher the tier of NFT Magic Card, the
+            better the bonus users receive. The list includes:
+          </div>
+          <div className="list-wrapper">
+            <ul>
+              <li>Extra ESW tokens</li>
+              <li>Yield-boosting bonuses for providing liquidity</li>
+              <li>Yield-boosting bonuses for swapping</li>
+            </ul>
+            <ul>
+              <li>Yield-boosting bonuses for ESW staking</li>
+              <li>NFT Card farm-speeding powers</li>
+              <li>Multiplying Cards</li>
+            </ul>
+            <ul>
+              <li>Battle Cards for participating in Card Wars</li>
+              <li>Extra rare Collectible Cards</li>
+            </ul>
+          </div>
+          <div className="title">
+            The bonus users get is determined randomly, but all of them increase their yield on the platform.
+          </div>
+        </Body>
+      </Accordion>
 
     </div>
   );
