@@ -549,7 +549,7 @@ export default () => {
     const win = window.open('https://about.emiswap.com/whitepaper', '_blank');
     win.focus();
   };
-  
+
   const btnClickFarming = () => {
   };
 

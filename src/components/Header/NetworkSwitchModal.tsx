@@ -139,7 +139,7 @@ export default function NetworkSwitchModal() {
       return;
     }
 
-    if (item.chainId === chainIds.KUCOIN && !isMetaMask) {
+    if (item.chainId === chainIds.KUCOIN && isMetaMask) {
       setSelectedItem(item);
     } else if (item.chainId === chainIds.KUCOIN) {
       setVisibleNeedSwitchModal(isMobile);
