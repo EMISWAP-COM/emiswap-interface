@@ -15,8 +15,10 @@ import ConfirmSwitchModal from './ConfirmSwitchModal';
 import { FortmaticConnector } from '../../connectors/Fortmatic';
 import { PortisConnector } from '@web3-react/portis-connector';
 import { useWeb3React } from '@web3-react/core';
-import { injected } from '../../connectors';
 import chainIds from '../../constants/chainIds';
+import { isMobile } from 'react-device-detect';
+import NetworkNeedSwitchModal from './NetworkNeedSwitchModal';
+import { useIsKuCoinActive, useIsMetaMask } from '../../hooks/Coins';
 
 const NetworkSwitchWrapped = styled.div`
   width: 100%;
@@ -65,10 +67,11 @@ export default function NetworkSwitchModal() {
 
   const { ethereum } = window as any;
 
-  const { chainId, connector } = useActiveWeb3React();
+  const { account, chainId, connector } = useActiveWeb3React();
   const { deactivate } = useWeb3React();
 
-  const isMetamask = connector === injected;
+  const isKuCoinActive = useIsKuCoinActive();
+  const isMetaMask = useIsMetaMask();
 
   const [selectedItem, setSelectedItem] = useState<INetworkItem>(null);
 
@@ -112,7 +115,7 @@ export default function NetworkSwitchModal() {
   };
 
   const providerLogout = async () => {
-    if (isMetamask) {
+    if (isMetaMask) {
       return;
     }
 
@@ -136,7 +139,7 @@ export default function NetworkSwitchModal() {
       return;
     }
 
-    if (item.chainId === chainIds.KUCOIN && !isMetamask) {
+    if (item.chainId === chainIds.KUCOIN && !isMetaMask) {
       setSelectedItem(item);
     } else {
       await switchNetwork(item);
@@ -193,6 +196,10 @@ export default function NetworkSwitchModal() {
       </Modal>
       {selectedItem && (
         <ConfirmSwitchModal onConfirm={onClickConfirmItem} onCancel={onClickCancel}/>
+      )}
+
+      {isMobile && account && isKuCoinActive && !isMetaMask && (
+        <NetworkNeedSwitchModal/>
       )}
     </div>
   );

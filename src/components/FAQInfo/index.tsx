@@ -2,13 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import Accordion from '../Accordion';
 import Colon from '../../assets/svg/FAQIcon/colon.svg';
+import PigPink from '../../assets/svg/FAQIcon/pig_pink.svg';
 import Board from '../../assets/svg/FAQIcon/board.svg';
 import Coins from '../../assets/svg/FAQIcon/coins.svg';
 import YellowCircle from '../../assets/svg/FAQIcon/yellowCircle.svg';
 import PieChart from '../../assets/svg/pie_chart.svg';
-import { EarlyBird } from './EarlyBird';
-import { NFTCards } from './NFTCards';
-import { PrivateRound } from './PrivateRount';
 
 const Body = styled.div`
   .title {
@@ -18,7 +16,7 @@ const Body = styled.div`
     font-size: 18px;
     line-height: 160%;
     letter-spacing: 0.01em;
-    color: ${({theme}) => theme.white};
+    color: ${({ theme }) => theme.white};
     margin-bottom: 40px;
 
     @media screen and (max-width: 1000px) {
@@ -33,11 +31,16 @@ const Body = styled.div`
     font-size: 20px;
     line-height: 32px;
     letter-spacing: -0.01em;
-    color: ${({theme}) => theme.white};
+    color: ${({ theme }) => theme.white};
 
     @media screen and (max-width: 1000px) {
       font-size: 16px;
     }
+  }
+  
+  .f16 {
+    line-height: 21px;
+    font-size: 16px;
   }
 
   .mb16 {
@@ -58,9 +61,11 @@ const Body = styled.div`
 
   .InfoBlock {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     width: 100%;
     margin-bottom: 40px;
+    
     &__block {
       width: 50%;
       display: flex;
@@ -87,7 +92,7 @@ const Body = styled.div`
         font-size: 18px;
         line-height: 32px;
         letter-spacing: -0.01em;
-        color: ${({theme}) => theme.darkText};
+        color: ${({ theme }) => theme.darkText};
       }
     }
 
@@ -126,6 +131,7 @@ const Body = styled.div`
       &__block {
         flex-direction: column;
         align-items: center;
+        width: 100%;
 
         .InfoBlockBody {
           &__header {
@@ -145,7 +151,7 @@ const Body = styled.div`
     justify-content: space-between;
 
     .card {
-      background: ${({theme}) => theme.darkGrey};
+      background: ${({ theme }) => theme.darkGrey};
       box-sizing: border-box;
       border-radius: 4px;
 
@@ -172,7 +178,7 @@ const Body = styled.div`
         font-weight: normal;
         font-size: 14px;
         line-height: 21px;
-        color: ${({theme}) => theme.darkText};
+        color: ${({ theme }) => theme.darkText};
       }
 
       .card-description {
@@ -196,8 +202,8 @@ const Body = styled.div`
 
       &__YellowCircle {
         position: absolute;
-        right: -13px;
-        top: 7px;
+        left: 0;
+        top: 4px;
         z-index: -1;
       }
     }
@@ -259,7 +265,7 @@ const Body = styled.div`
     font-size: 20px;
     line-height: 32px;
     letter-spacing: -0.01em;
-    color: ${({theme}) => theme.darkWhite};
+    color: ${({ theme }) => theme.darkWhite};
 
     @media screen and (max-width: 1300px) {
       font-size: 14px;
@@ -267,7 +273,7 @@ const Body = styled.div`
   }
 
   .grey-text-bold {
-    color: ${({theme}) => theme.white};
+    color: ${({ theme }) => theme.white};
     font-weight: 500;
   }
 
@@ -289,6 +295,38 @@ const Body = styled.div`
       width: 32px;
       height: 32px;
     }
+    
+          
+      /*color 5
+      color 6
+      color 7
+      color 3
+      color 8
+      color 4*/
+      
+    &__color5 {
+      background: #5D09E1;
+    }
+    
+    &__color6 {
+      background: #8479FF;
+    }
+    
+    &__color7 {
+      background: #E478FF;
+    }
+    
+    &__color3 {
+      background: #57D7FF;
+    }
+    
+    &__color8 {
+      background: #A973FF;
+    }
+    
+    &__color4 {
+      background: #37FFDB;
+    }
 
     &__color0 {
       background: #D4D3FF;
@@ -299,30 +337,6 @@ const Body = styled.div`
     }
     &__color2 {
       background: #37FFDB;
-    }
-
-    &__color3 {
-      background: #A973FF;
-    }
-
-    &__color4 {
-      background: #147AF1;
-    }
-
-    &__color5 {
-      background: #5D09E1;
-    }
-
-    &__color6 {
-      background: #E478FF;
-    }
-
-    &__color7 {
-      background: #57D7FF;
-    }
-
-    &__color8 {
-      background: #8479FF;
     }
 
     &__text-line {
@@ -442,11 +456,15 @@ const Body = styled.div`
           font-size: 18px;
           line-height: 26px;
           letter-spacing: 0.01em;
-          color: ${({theme}) => theme.darkText};
+          color: ${({ theme }) => theme.darkText};
           margin-bottom: 20px;
 
           @media screen and (max-width: 1000px) {
             font-size: 14px;
+          }
+          
+          b {
+            color: white;
           }
         }
       }
@@ -481,8 +499,9 @@ const Body = styled.div`
     font-size: 18px;
     line-height: 160%;
     letter-spacing: 0.01em;
-    color: ${({theme}) => theme.darkWhite};
     margin-bottom: 20px;
+    margin-top: 50px;
+    color: #B7B7CA;
 
     @media screen and (max-width: 1000px) {
       font-size: 16px;
@@ -492,6 +511,10 @@ const Body = styled.div`
       font-size: 14px;
       margin-top: 20px;
     }
+    
+    b {
+      color: white;
+    }
   }
 `;
 
@@ -499,6 +522,9 @@ export default () => {
   const btnClick1 = () => {
     const win = window.open('https://about.emiswap.com/whitepaper', '_blank');
     win.focus();
+  };
+  const btnClick2 = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const btnClick3 = () => {
     const win = window.open('https://about.emiswap.com/whitepaper', '_blank');
@@ -514,78 +540,16 @@ export default () => {
     });
   };*/
 
-  const handleLeanMoreLiquidityClick = () => {
+  /*const handleLeanMoreLiquidityClick = () => {
     window.open(
       'https://emiswap.medium.com/why-are-liquidity-providers-rushing-to-emiswap-496801dc846f',
       '_blank',
     );
-  };
+  };*/
 
   //TODO перевести на styleds components блоки как EarlyBird and NFTCards
   return (
     <div className="for-scroll-faq">
-      <Accordion header="Launchpad details" isContentFullWidth={true}>
-        <PrivateRound />
-      </Accordion>
-      <Accordion
-        header="Early bird bonuses for Liquidity Providers"
-        /* TODO removed Invest tab until further notice.
-        btnText="Provide Liquidity"
-        btnClick={handleLiquidityCLick}*/
-        btnSecondText="Learn More"
-        btnSecondClick={handleLeanMoreLiquidityClick}
-      >
-        <EarlyBird />
-      </Accordion>
-      <Accordion
-        header="Early bird bonuses for Swappers"
-        /* TODO removed Invest tab until further notice.
-        btnText="Provide Liquidity"
-        btnClick={handleLiquidityCLick}*/
-      >
-        <Body>
-          <div className="last-block">
-            <div className="last-block__block">
-              <img className="last-block__img" src={Board} alt="" />
-              <div className="text-block">
-                <div className="h4 mb16">Rewards for Liquidity Providers</div>
-                <div className="text-block__text">
-                  From the <b>11th to the 40th day</b> after the launch <b>6,150 ESW</b> will be
-                  issued additionally every 1000 blocks and will be distributed among LP in
-                  proportion to the amount of liquidity
-                </div>
-              </div>
-            </div>
-            <div className="last-block__block">
-              <img className="last-block__img" src={Coins} alt="" />
-              <div className="text-block">
-                <div className="h4 mb16">Rewards for Swappers</div>
-                <div className="text-block__text">
-                  From the <b>11th to the 100th day</b> after the launch swappers are rewarded with{' '}
-                  <b>16 ESW</b> for personal turnover of <b>1,000 DAI</b>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="h4 mb16">Gas fees refund</div>
-          <div className="last-string">
-            <b>EmiSwap</b> compensates <b>for 100% of the Ethereum</b> fees paid for any operation
-            on the exchange in its native <b>ESW tokens.</b>
-          </div>
-          <div className="last-string">
-            The EmiSwap early liquidity provider and swap allocation fund is capped at{' '}
-            <b>6,000,000 ESW</b>
-          </div>
-        </Body>
-      </Accordion>
-      <Accordion
-        header="NFT Magic Cards for Liquidity Providers"
-        /* TODO removed Invest tab until further notice.
-        btnText="Provide Liquidity"
-        btnClick={handleLiquidityCLick}*/
-      >
-        <NFTCards />
-      </Accordion>
       <Accordion
         header="Introduction to EmiSwap"
         btnText="Read White Paper"
@@ -593,32 +557,41 @@ export default () => {
       >
         <Body>
           <div className="title">
-            EmiSwap is an automated market maker exchange with an ESW voting token as well as
-            yield-increasing NFT Magic Cards mechanics. EmiSwap is the first project in the EmiDAO
-            ecosystem.
+            EmiSwap (EmiDAO) is an open source, decentralized autonomous organization. The main elements of the
+            ecosystem are the EmiSwap decentralized exchange and the ecosystem's internal tokens - ESW, ESD.
           </div>
           <div className="InfoBlock">
             <div className="InfoBlock__block">
-              <img className="InfoBlock__img" src={Colon} alt="" />
+              <img className="InfoBlock__img" src={Colon} alt=""/>
               <div className="InfoBlockBody">
                 <div className="InfoBlockBody__header h4">ESW</div>
                 <div className="InfoBlockBody__description">
-                  is a governance token that gives holders a right to receive a share of distributing fees proportionate to the share of token ownership and gives a right to
-                  participate in voting on the development of the project.
+                  governance token, that gives the holders the right to receive share of project’s profitproportate to
+                  the token ownership and gives the rights to participate in voting on the development of the project.
+                </div>
+              </div>
+            </div>
+            <div className="InfoBlock__block">
+              <img className="InfoBlock__img" src={PigPink} alt=""/>
+              <div className="InfoBlockBody">
+                <div className="InfoBlockBody__header h4">ESD</div>
+                <div className="InfoBlockBody__description">
+                  is an internal token that gives the coin holders the right to receive assets in the basket of the
+                  yield pool denominated in DAI proportionate to the ESW token ownership.
                 </div>
               </div>
             </div>
           </div>
           <div className="h4 mb40">
-            EmiSwap is an open-source, decentralized platform, a fork of Uniswap V2 and Mooniswap
-            with increased performance and supplemented functionality.
+            EmiSwap is a fork of the decentralized AMM exchange Mooniswap and was created to solve the current problems
+            of the DeFi industry.
           </div>
           <div className="card-blocks">
             <div className="card width1_3">
               <div className="h4 mb16">
                 <span>
                   0.3%
-                  <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle" />
+                  <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle"/>
                 </span>
               </div>
               <div className="card__description-text">Trading commission in any pool is 0.3%</div>
@@ -627,7 +600,7 @@ export default () => {
               <div className="h4 mb16">
                 <span>
                   0.25%
-                  <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle" />
+                  <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle"/>
                 </span>
               </div>
               <div className="card__description-text">
@@ -638,7 +611,7 @@ export default () => {
               <div className="h4 mb16">
                 <span>
                   0.05%
-                  <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle" />
+                  <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle"/>
                 </span>
               </div>
               <div className="card__description-text">
@@ -648,6 +621,67 @@ export default () => {
           </div>
         </Body>
       </Accordion>
+
+      <Accordion
+        header="Crowdsale Information"
+        btnText="Participate in crowdsale"
+        btnClick={btnClick2}
+      >
+        <Body>
+          <div className="card-blocks">
+            <div className="card width1_5">
+              <div className="h4 f16 mb16">
+                <span>
+                  0.11 DAI
+                  <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle"/>
+                </span>
+              </div>
+              <div className="card-description">Price</div>
+            </div>
+            <div className="card width1_5">
+              <div className="h4 f16 mb16">
+                <span>
+                  200,000,000 ESW
+                  <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle"/>
+                </span>
+              </div>
+              <div className="card-description">Total Supply</div>
+            </div>
+            <div className="card width1_5">
+              <div className="h4 f16 mb16">
+                <span>
+                  40,000,000 ESW<br/> or 20%
+                  <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle"/>
+                </span>
+              </div>
+              <div className="card-description">Crowdsale Allocation</div>
+            </div>
+            <div className="card width1_5">
+              <div className="h4 f16 mb16">
+                <span>
+                  Vesting - 1 year
+                  <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle"/>
+                </span>
+              </div>
+              <div className="card-description">with quarterly unlock by equal shares</div>
+            </div>
+            <div className="card width1_5">
+              <div className="h4 f16 mb16">
+                <span>
+                  ERC20
+                  <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle"/>
+                </span>
+              </div>
+              <div className="card-description">Token Type</div>
+            </div>
+          </div>
+          <div className="h4 f16 mt46">
+            Users will be able to buy ESW tokens using following cryptocurrencies:
+            DAI, USDT, USDC, USDB, ETH, EMRX, WETH, WBTC, renBTC.
+          </div>
+        </Body>
+      </Accordion>
+
       <Accordion
         header="Token Allocation Schedule"
         btnText="Read White Paper"
@@ -657,54 +691,7 @@ export default () => {
           <div className="chart-block">
             <div className="chart-block__info">
               <div className="chart-block__text-line">
-                <div className="chart-block__color-block chart-block__color0" />
-                <div className="grey-text chart-block__item-name">Pre-Seed (completed)</div>
-                <div className="grey-text chart-block__item-value">6M</div>
-                <div className="grey-text chart-block__item-value chart-block__item-value--mobile">
-                  6,000,000
-                </div>
-                <div className="grey-text grey-text-bold chart-block__item-percent">3%</div>
-              </div>
-              <div className="chart-block__text-line">
-                <div className="chart-block__color-block chart-block__color1" />
-                <div className="grey-text chart-block__item-name">Seed (completed)</div>
-                <div className="grey-text chart-block__item-value">14M</div>
-                <div className="grey-text chart-block__item-value chart-block__item-value--mobile">
-                  14,000,000
-                </div>
-                <div className="grey-text grey-text-bold chart-block__item-percent">7%</div>
-              </div>
-              <div className="chart-block__text-line">
-                <div className="chart-block__color-block chart-block__color2" />
-                <div className="grey-text chart-block__item-name">Private (completed)</div>
-                <div className="grey-text chart-block__item-value">12M</div>
-                <div className="grey-text chart-block__item-value chart-block__item-value--mobile">
-                  12,000,000
-                </div>
-                <div className="grey-text grey-text-bold chart-block__item-percent">6%</div>
-              </div>
-              <div className="chart-block__text-line">
-                <div className="chart-block__color-block chart-block__color3" />
-                <div className="grey-text chart-block__item-name">Launchpad Sales</div>
-                <div className="grey-text chart-block__item-value">3M</div>
-                <div className="grey-text chart-block__item-value chart-block__item-value--mobile">
-                  3,000,000
-                </div>
-                <div className="grey-text grey-text-bold chart-block__item-percent">1.5%</div>
-              </div>
-              <div className="chart-block__text-line">
-                <div className="chart-block__color-block chart-block__color4" />
-                <div className="grey-text chart-block__item-name">
-                  Early Liquidity Providers & Swappers
-                </div>
-                <div className="grey-text chart-block__item-value">6M</div>
-                <div className="grey-text chart-block__item-value chart-block__item-value--mobile">
-                  6,000,000
-                </div>
-                <div className="grey-text grey-text-bold chart-block__item-percent">3%</div>
-              </div>
-              <div className="chart-block__text-line">
-                <div className="chart-block__color-block chart-block__color5" />
+                <div className="chart-block__color-block chart-block__color5"/>
                 <div className="grey-text chart-block__item-name">
                   Protocol Security & Maintenance
                 </div>
@@ -715,18 +702,18 @@ export default () => {
                 <div className="grey-text grey-text-bold chart-block__item-percent">30%</div>
               </div>
               <div className="chart-block__text-line">
-                <div className="chart-block__color-block chart-block__color6" />
+                <div className="chart-block__color-block chart-block__color6"/>
                 <div className="grey-text chart-block__item-name">
                   Ecosystem Growth & Community Extension
                 </div>
-                <div className="grey-text chart-block__item-value">49M</div>
+                <div className="grey-text chart-block__item-value">44M</div>
                 <div className="grey-text chart-block__item-value chart-block__item-value--mobile">
-                  49,000,000
+                  44,000,000
                 </div>
-                <div className="grey-text grey-text-bold chart-block__item-percent">24.5%</div>
+                <div className="grey-text grey-text-bold chart-block__item-percent">22%</div>
               </div>
               <div className="chart-block__text-line">
-                <div className="chart-block__color-block chart-block__color7" />
+                <div className="chart-block__color-block chart-block__color7"/>
                 <div className="grey-text chart-block__item-name">
                   EmiSwap Decentralized Developers Community
                 </div>
@@ -737,7 +724,18 @@ export default () => {
                 <div className="grey-text grey-text-bold chart-block__item-percent">20%</div>
               </div>
               <div className="chart-block__text-line">
-                <div className="chart-block__color-block chart-block__color8" />
+                <div className="chart-block__color-block chart-block__color3"/>
+                <div className="grey-text chart-block__item-name">
+                  Crowdsale Participants
+                </div>
+                <div className="grey-text chart-block__item-value">40M</div>
+                <div className="grey-text chart-block__item-value chart-block__item-value--mobile">
+                  40,000,000
+                </div>
+                <div className="grey-text grey-text-bold chart-block__item-percent">20%</div>
+              </div>
+              <div className="chart-block__text-line">
+                <div className="chart-block__color-block chart-block__color8"/>
                 <div className="grey-text chart-block__item-name">
                   Advisors, Ambassadors & Community Building
                 </div>
@@ -747,13 +745,96 @@ export default () => {
                 </div>
                 <div className="grey-text grey-text-bold chart-block__item-percent">5%</div>
               </div>
+              <div className="chart-block__text-line">
+                <div className="chart-block__color-block chart-block__color4"/>
+                <div className="grey-text chart-block__item-name">
+                  Early Liquidity Providers & Swappers
+                </div>
+                <div className="grey-text chart-block__item-value">6M</div>
+                <div className="grey-text chart-block__item-value chart-block__item-value--mobile">
+                  6,000,000
+                </div>
+                <div className="grey-text grey-text-bold chart-block__item-percent">3%</div>
+              </div>
             </div>
             <div className="chart-pie">
-              <img className="chart-pie__img" src={PieChart} alt="PieChart" />
+              <img className="chart-pie__img" src={PieChart} alt="PieChart"/>
             </div>
           </div>
         </Body>
       </Accordion>
+
+      {/*<Accordion header="Launchpad details" isContentFullWidth={true}>
+        <PrivateRound/>
+      </Accordion>*/}
+
+      {/*<Accordion
+        header="Early bird bonuses for Liquidity Providers"
+        // TODO removed Invest tab until further notice.
+        // btnText="Provide Liquidity"
+        // btnClick={handleLiquidityCLick}
+        btnSecondText="Learn More"
+        btnSecondClick={handleLeanMoreLiquidityClick}
+      >
+        <EarlyBird/>
+      </Accordion>*/}
+
+      <Accordion
+        header="Early Swappers and Liquidity Providers Rewards"
+        // TODO removed Invest tab until further notice.
+        // btnText="Provide Liquidity"
+        // btnClick={handleLiquidityCLick}
+      >
+        <Body>
+          <div className="last-block">
+            <div className="last-block__block">
+              <img className="last-block__img" src={Board} alt=""/>
+              <div className="text-block">
+                <div className="h4 mb16">Rewards for Liquidity Providers</div>
+                <div className="text-block__text">
+                  From the 11th to the 100th day after the launch <b>30,000 ESW</b> will be
+                  proportionally distributed among LP for <b>1 million DAI</b> trading volume
+                </div>
+                <div className="text-block__text">
+                  From the <b>11th to the 40th day</b> after the launch <b>6,150 ESW</b> will be
+                  issued additionally every 1000 blocks and will be distributed among LP in
+                  proportion to the amount of liquidity
+                </div>
+              </div>
+            </div>
+            <div className="last-block__block">
+              <img className="last-block__img" src={Coins} alt=""/>
+              <div className="text-block">
+                <div className="h4 mb16">Rewards for Swappers</div>
+                <div className="text-block__text">
+                  From the <b>11th to the 100th day</b> after the launch swappers are rewarded with{' '}
+                  <b>16 ESW</b> for personal turnover of <b>1,000 DAI</b>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/*<div className="h4 mb16">Gas fees refund</div>
+          <div className="last-string">
+            <b>EmiSwap</b> compensates <b>for 100% of the Ethereum</b> fees paid for any operation
+            on the exchange in its native <b>ESW tokens.</b>
+          </div>*/}
+          <div className="last-string">
+            The EmiSwap early liquidity provider and swap allocation fund is capped at{' '}
+            <b>6,000,000 ESW</b>
+          </div>
+        </Body>
+      </Accordion>
+
+      {/*<Accordion
+
+        header="NFT Magic Cards for Liquidity Providers"
+        // TODO removed Invest tab until further notice.
+        // btnText="Provide Liquidity"
+        // btnClick={handleLiquidityCLick}
+      >
+        <NFTCards/>
+      </Accordion>*/}
+
     </div>
   );
 };
