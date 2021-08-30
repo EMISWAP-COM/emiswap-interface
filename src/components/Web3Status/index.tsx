@@ -8,7 +8,7 @@ import { Activity, X } from 'react-feather';
 
 import { useActiveWeb3React } from '../../hooks';
 import useENSName from '../../hooks/useENSName';
-import { useWalletModalToggle } from '../../state/application/hooks';
+import { useNetworkSwitchModalToggle, useWalletModalToggle } from '../../state/application/hooks';
 import { TransactionDetails } from '../../state/transactions/reducer';
 import { clearAllTransactions } from '../../state/transactions/actions';
 
@@ -145,7 +145,9 @@ function recentTransactionsOnly(a: TransactionDetails) {
 
 export default function Web3Status() {
   const { t } = useTranslation();
+
   const { active, account, connector, error } = useWeb3React();
+
   const { chainId } = useActiveWeb3React();
   const contextNetwork = useWeb3React(NetworkContextName);
   const dispatch = useDispatch();
@@ -172,7 +174,9 @@ export default function Web3Status() {
 
   const hasPendingTransactions = !!pending.length;
   // const hasSocks = useHasSocks()
+
   const toggleWalletModal = useWalletModalToggle();
+  const toggleNetworkSwitchModal = useNetworkSwitchModalToggle();
 
   // handle the logo we want to show with the account
   function getStatusIcon() {
@@ -230,7 +234,7 @@ export default function Web3Status() {
       );
     } else if (error) {
       return (
-        <Web3StatusError onClick={toggleWalletModal}>
+        <Web3StatusError onClick={toggleNetworkSwitchModal}>
           <NetworkIcon />
           <Text>{error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error'}</Text>
         </Web3StatusError>

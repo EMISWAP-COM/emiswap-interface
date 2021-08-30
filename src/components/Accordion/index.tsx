@@ -67,19 +67,15 @@ const StyledAccordionContent = styled.div<{isContentFullWidth?: boolean}>`
   ${({ theme }) => theme.mediaWidth.upToMedium`
     padding: 0;
   `};
-
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    text-align: center;
-  `};
 `
 
 const StyledChildrenWrapper = styled.div`
   margin: 40px 0;
 `
 
-const StyledButtonsWrapper = styled.div`
+export const AccordionButtonsWrapper = styled.div`
   display: flex;
-  justify-content: center;
+  // justify-content: center;
   align-items: center;
   width: 100%;
   height: 48px;
@@ -90,7 +86,7 @@ const StyledButtonsWrapper = styled.div`
   `};
 `
 
-const StyledButton = styled.div`
+export const AccordionButton = styled.div`
   background: ${({theme}) => theme.purple};
   border-radius: 4px;
   width: 245px;
@@ -108,7 +104,7 @@ const StyledButton = styled.div`
   text-align: center;
   letter-spacing: 0.02em;
   color: ${({theme}) => theme.white};
-  margin: 0 30px;
+  // margin: 0 30px;
 
   &:hover,
   &:focus {
@@ -120,7 +116,7 @@ const StyledButton = styled.div`
   `};
 `
 
-const StyledLine = styled.div`
+/*const StyledLine = styled.div`
   width: 200px;
   height: 1px;
   background: #dbdede;
@@ -128,7 +124,7 @@ const StyledLine = styled.div`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     display: none;
   `};
-`
+`*/
 
 export default (props: AccordionProps) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -186,20 +182,18 @@ export default (props: AccordionProps) => {
           {props.children}
         </StyledChildrenWrapper>
         {(props.btnText || props.btnSecondText) && (
-          <StyledButtonsWrapper>
-            <StyledLine />
+          <AccordionButtonsWrapper>
             {props.btnText && (
-              <StyledButton onClick={props.btnClick}>
+              <AccordionButton onClick={props.btnClick}>
                 {props.btnText}
-              </StyledButton>
+              </AccordionButton>
             )}
             {props.btnSecondText && (
-              <StyledButton onClick={props.btnSecondClick}>
+              <AccordionButton onClick={props.btnSecondClick}>
                 {props.btnSecondText}
-              </StyledButton>
+              </AccordionButton>
             )}
-            <StyledLine />
-          </StyledButtonsWrapper>
+          </AccordionButtonsWrapper>
         )}
       </StyledAccordionContent>
     </StyledAccordion>
