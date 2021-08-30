@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Accordion from '../Accordion';
+import Accordion, { AccordionButton, AccordionButtonsWrapper } from '../Accordion';
 import YellowCircle from '../../assets/svg/FAQIcon/yellowCircle.svg';
 
 const Body = styled.div`
@@ -544,23 +544,79 @@ const Body = styled.div`
   }
 `;
 
+const Tabs = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 24px;
+    
+    @media screen and (max-width: 500px) {
+      margin: 0 -10px 24px -10px;
+    }
+`;
+
+const Tab = styled.div<{active?: boolean}>`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 34px;
+    margin: 0 5px;
+    padding: 0 16px;
+    border: 1px solid #4A4757;
+    border-radius: 8px;
+    font-size: 14px;
+    text-transform: uppercase;
+    background: ${({active}) => active ? '#7A2DF4' : '#272530'};
+    color: white;
+    cursor: pointer;
+    
+    @media screen and (max-width: 500px) {
+      margin: 0 3px;
+      padding: 0 7px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 10px;
+    }
+`;
+
 export default () => {
-  const btnClick1 = () => {
+
+  const btnClickIntro = () => {
     const win = window.open('https://about.emiswap.com/whitepaper', '_blank');
     win.focus();
   };
 
   const btnClickFarming = () => {
+    const win = window.open('https://wiki.emiswap.com/user-guide/how-to-farm-usdesw', '_blank');
+    win.focus();
   };
 
+  const btnClickStaking = () => {
+    const win = window.open('https://wiki.emiswap.com/user-guide/how-to-stake-usdesw', '_blank');
+    win.focus();
+  };
 
-  //TODO перевести на styleds components блоки как EarlyBird and NFTCards
+  const btnClickPresentation = () => {
+    const win = window.open('https://about.emiswap.com/presentation', '_blank');
+    win.focus();
+  };
+
+  const btnClickVesting = () => {
+    const win = window.open('https://about.emiswap.com/onepage', '_blank');
+    win.focus();
+  };
+
   return (
     <div className="for-scroll-faq">
+      <Tabs>
+        <Tab active={true}>White Paper</Tab>
+        <Tab onClick={btnClickPresentation}>Presentation</Tab>
+        <Tab onClick={btnClickVesting}>Check Vesting Schedule</Tab>
+      </Tabs>
       <Accordion
         header="Introduction to EmiSwap"
         btnText="Read White Paper"
-        btnClick={btnClick1}
+        btnClick={btnClickIntro}
       >
         <Body>
           <div className="title">
@@ -623,6 +679,11 @@ export default () => {
             to receive extra rewards. The longer the user keeps their tokens in a staking smart contract, the larger
             reward they receive.
           </div>
+          <div style={{ marginBottom: '32px', marginTop: '-16px' }}>
+            <AccordionButtonsWrapper>
+              <AccordionButton onClick={btnClickStaking}>Guide to Staking</AccordionButton>
+            </AccordionButtonsWrapper>
+          </div>
           <div className="title">
             In some sense, farming can be paralleled with staking. Users deposit their LP tokens, which they received
             for providing liquidity on EmiSwap, into a smart contract and receive higher rewards. Thus, users first need
@@ -651,6 +712,7 @@ export default () => {
       <Accordion
         header="NFTs for Liquidity Providers"
         btnText="Guide to Staking"
+        btnClick={btnClickStaking}
       >
         <Body>
           <div className="title">
@@ -670,7 +732,7 @@ export default () => {
             One powerful user who added the most liquidity will get a legendary card. The top 2 to 6 users get 5 Epic
             Cards and so on. In total, EmiSwap will issue 1001 limited edition NFTs for this campaign divided into:
           </div>
-          <div className="list-wrapper" style={{maxWidth: 700}}>
+          <div className="list-wrapper" style={{ maxWidth: 700 }}>
             <ul>
               <li>1 Mythic Card</li>
               <li>10 Legendary Cards</li>
@@ -690,6 +752,7 @@ export default () => {
       <Accordion
         header="NFT Magic Cards"
         btnText="Guide to Staking"
+        btnClick={btnClickStaking}
       >
         <Body>
           <div className="title">

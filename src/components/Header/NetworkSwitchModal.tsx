@@ -139,10 +139,10 @@ export default function NetworkSwitchModal() {
       return;
     }
 
-    if (item.chainId === chainIds.KUCOIN && isMetaMask) {
+    if (item.chainId === chainIds.KUCOIN && (!isMetaMask || !isMobile)) {
       setSelectedItem(item);
     } else if (item.chainId === chainIds.KUCOIN) {
-      setVisibleNeedSwitchModal(isMobile);
+      setVisibleNeedSwitchModal(true);
       toggleNetworkSwitchModal();
     } else {
       await switchNetwork(item);
@@ -165,6 +165,10 @@ export default function NetworkSwitchModal() {
     setSelectedItem(null);
     toggleNetworkSwitchModal();
     toggleConfirmSwitchModal();
+  };
+
+  const onCloseNeedSwitch = async () => {
+    setVisibleNeedSwitchModal(false);
   };
 
   return (
@@ -201,7 +205,7 @@ export default function NetworkSwitchModal() {
         <ConfirmSwitchModal onConfirm={onClickConfirmItem} onCancel={onClickCancel}/>
       )}
       {isVisibleNeedSwitchModal && (
-        <NetworkNeedSwitchModal/>
+        <NetworkNeedSwitchModal onClose={onCloseNeedSwitch}/>
       )}
     </div>
   );

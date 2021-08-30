@@ -73,7 +73,7 @@ const StyledChildrenWrapper = styled.div`
   margin: 40px 0;
 `
 
-const StyledButtonsWrapper = styled.div`
+export const AccordionButtonsWrapper = styled.div`
   display: flex;
   // justify-content: center;
   align-items: center;
@@ -86,7 +86,7 @@ const StyledButtonsWrapper = styled.div`
   `};
 `
 
-const StyledButton = styled.div`
+export const AccordionButton = styled.div`
   background: ${({theme}) => theme.purple};
   border-radius: 4px;
   width: 245px;
@@ -182,18 +182,18 @@ export default (props: AccordionProps) => {
           {props.children}
         </StyledChildrenWrapper>
         {(props.btnText || props.btnSecondText) && (
-          <StyledButtonsWrapper>
+          <AccordionButtonsWrapper>
             {props.btnText && (
-              <StyledButton onClick={props.btnClick}>
+              <AccordionButton onClick={props.btnClick}>
                 {props.btnText}
-              </StyledButton>
+              </AccordionButton>
             )}
             {props.btnSecondText && (
-              <StyledButton onClick={props.btnSecondClick}>
+              <AccordionButton onClick={props.btnSecondClick}>
                 {props.btnSecondText}
-              </StyledButton>
+              </AccordionButton>
             )}
-          </StyledButtonsWrapper>
+          </AccordionButtonsWrapper>
         )}
       </StyledAccordionContent>
     </StyledAccordion>

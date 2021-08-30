@@ -19,17 +19,19 @@ export const KCSAlert = styled.div`
    color: white;
 `;
 
-export default function NetworkNeedSwitchModal() {
+interface Props {
+  onClose: () => void;
+}
 
-  const [showModal, setShowModal] = useState<boolean>(true);
+export default function NetworkNeedSwitchModal<Props>({onClose}) {
 
   const handleCloseModal = () => {
-    setShowModal(false);
+    onClose();
   };
 
   return (
     <ModalMobile
-      isOpen={showModal}
+      isOpen={true}
       onDismiss={handleCloseModal}
     >
       <KCSAlert>
