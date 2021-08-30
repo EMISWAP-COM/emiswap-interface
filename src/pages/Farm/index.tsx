@@ -19,9 +19,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, AppState } from '../../state';
 import { FARMING_2_ABI } from '../../constants/abis/farming2';
 import LogoIcon from '../../assets/svg/logo-icon.svg';
-/*import isLpToken from './isLpToken';
-import useFarming2 from '../../hooks/useFarming2';
-import useFarming from '../../hooks/useFarming';*/
+import { useIsKuCoinActive } from '../../hooks/Coins';
+import { useHistory } from 'react-router-dom';
 
 const StyledFarmingHeader = styled.div`
   display: flex;
@@ -105,8 +104,10 @@ export const isStakingTab = tabname => tabname === tabItems[1].id;
 
 export default function Farm() {
   const dispatch = useDispatch<AppDispatch>();
+  const history = useHistory();
 
   const { library, account, chainId } = useActiveWeb3React();
+  const isKuCoinActive = useIsKuCoinActive();
 
   const { id: userId } = useSelector((state: AppState) => state.user.info);
   const farms2 = useSelector((state: AppState) => state.farming.farms);
@@ -125,22 +126,17 @@ export default function Farm() {
     return farms2.map((farm) => getContract(farm.contractAddress, FARMING_2_ABI, library, account));
   }, [library, account, farms2]);
 
-  // let farming = useFarming(farmingContracts[farmingContracts.length - 1]);
-  // let farming2 = useFarming2(farming2Contracts[farming2Contracts.length - 1]);
+  useEffect(() => {
+    if (isKuCoinActive) {
+      history.push(`swap`);
+    }
+  }, [isKuCoinActive, history]);
 
   useEffect(() => {
-    /*let farmingLoading = farming
-      ? !isStakingTab(selectedTab) && !isLpToken(farming.tokenMode)
-      : false;
-
-    if (!farmingLoading && farming2) {
-      farmingLoading = !isStakingTab(selectedTab) && !isLpToken(farming2.tokenMode);
-    }*/
-
     setTimeout(() => {
       setLoading(false);
     }, 5000);
-  }, [/*farming, farming2, */selectedTab]);
+  }, [selectedTab]);
 
   // Load farms list
   useEffect(() => {

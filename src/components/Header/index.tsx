@@ -20,7 +20,6 @@ import NetworkSwitchModal from './NetworkSwitchModal';
 import { useNetworkSwitchModalToggle } from '../../state/application/hooks';
 import chainIds from '../../constants/chainIds';
 import { networksItems } from '../../constants';
-import { useWeb3React } from '@web3-react/core';
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -353,7 +352,6 @@ const NETWORK_LABELS: { [chainId in chainIds]: string | null } = {
 
 export default function Header() {
 
-  const { error } = useWeb3React();
   const { account, chainId } = useActiveWeb3React();
   const userEthBalance = useETHBalances([account])[account];
   const [isDark] = useDarkModeManager();
@@ -384,28 +382,26 @@ export default function Header() {
                 </Text>
               </AprButton>
             )}
-            {!error && (
-              <NetworkWrapper>
-                <NetworkButtonSwitch
-                  onClick={toggleNetworkSwitchModal}
-                >
-                  {networkItem && (
-                    <NetworkIcon>
-                      <img
-                        style={{ maxHeight: '18px', maxWidth: '18px' }}
-                        src={networkItem.icon}
-                        alt={networkItem.name}
-                      />
-                    </NetworkIcon>
-                  )}
-                  <span>{NETWORK_LABELS[chainId] || 'Change Network'}</span>
-                  {(chainId as any) === chainIds.KUCOIN && (
-                    <NetworkLabel>Beta Version</NetworkLabel>
-                  )}
-                </NetworkButtonSwitch>
-                <NetworkSwitchModal/>
-              </NetworkWrapper>
-            )}
+            <NetworkWrapper>
+              <NetworkButtonSwitch
+                onClick={toggleNetworkSwitchModal}
+              >
+                {networkItem && (
+                  <NetworkIcon>
+                    <img
+                      style={{ maxHeight: '18px', maxWidth: '18px' }}
+                      src={networkItem.icon}
+                      alt={networkItem.name}
+                    />
+                  </NetworkIcon>
+                )}
+                <span>{NETWORK_LABELS[chainId] || 'Change Network'}</span>
+                {(chainId as any) === chainIds.KUCOIN && (
+                  <NetworkLabel>Beta Version</NetworkLabel>
+                )}
+              </NetworkButtonSwitch>
+              <NetworkSwitchModal/>
+            </NetworkWrapper>
             {chainId !== (chainIds.KUCOIN as any) && (
               <a className="purple-btn" href={`${window.location.origin}/magic_cards/`}>
                 <span>Magic Hall</span>

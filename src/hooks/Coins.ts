@@ -8,6 +8,7 @@ import { useActiveWeb3React } from './index';
 import { useBytes32TokenContract, useTokenContract } from './useContract';
 import { ESW } from '../constants';
 import chainIds from '../constants/chainIds';
+import { injected } from '../connectors';
 
 export function useAllCoins(): { [address: string]: Token } {
   const { chainId } = useActiveWeb3React();
@@ -128,4 +129,10 @@ export function useIsKuCoinActive(): boolean {
   const { chainId } = useActiveWeb3React();
 
   return (chainId as any) === chainIds.KUCOIN;
+}
+
+export function useIsMetaMask(): boolean {
+  const { connector } = useActiveWeb3React();
+
+  return connector === injected;
 }

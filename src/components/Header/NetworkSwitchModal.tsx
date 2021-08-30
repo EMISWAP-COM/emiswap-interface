@@ -15,8 +15,10 @@ import ConfirmSwitchModal from './ConfirmSwitchModal';
 import { FortmaticConnector } from '../../connectors/Fortmatic';
 import { PortisConnector } from '@web3-react/portis-connector';
 import { useWeb3React } from '@web3-react/core';
-import { injected } from '../../connectors';
 import chainIds from '../../constants/chainIds';
+import NetworkNeedSwitchModal from './NetworkNeedSwitchModal';
+import { useIsMetaMask } from '../../hooks/Coins';
+import { isMobile } from 'react-device-detect';
 
 const NetworkSwitchWrapped = styled.div`
   width: 100%;
@@ -68,9 +70,10 @@ export default function NetworkSwitchModal() {
   const { chainId, connector } = useActiveWeb3React();
   const { deactivate } = useWeb3React();
 
-  const isMetamask = connector === injected;
+  const isMetaMask = useIsMetaMask();
 
   const [selectedItem, setSelectedItem] = useState<INetworkItem>(null);
+  const [isVisibleNeedSwitchModal, setVisibleNeedSwitchModal] = useState<boolean>(false);
 
   const networkSwitchModalOpen = useNetworkSwitchModalOpen();
   const toggleNetworkSwitchModal = useNetworkSwitchModalToggle();
@@ -112,7 +115,7 @@ export default function NetworkSwitchModal() {
   };
 
   const providerLogout = async () => {
-    if (isMetamask) {
+    if (isMetaMask) {
       return;
     }
 
@@ -136,8 +139,11 @@ export default function NetworkSwitchModal() {
       return;
     }
 
-    if (item.chainId === chainIds.KUCOIN && !isMetamask) {
+    if (item.chainId === chainIds.KUCOIN && (isMetaMask || !isMobile)) {
       setSelectedItem(item);
+    } else if (item.chainId === chainIds.KUCOIN) {
+      setVisibleNeedSwitchModal(true);
+      toggleNetworkSwitchModal();
     } else {
       await switchNetwork(item);
       toggleNetworkSwitchModal();
@@ -159,6 +165,10 @@ export default function NetworkSwitchModal() {
     setSelectedItem(null);
     toggleNetworkSwitchModal();
     toggleConfirmSwitchModal();
+  };
+
+  const onCloseNeedSwitch = async () => {
+    setVisibleNeedSwitchModal(false);
   };
 
   return (
@@ -193,6 +203,9 @@ export default function NetworkSwitchModal() {
       </Modal>
       {selectedItem && (
         <ConfirmSwitchModal onConfirm={onClickConfirmItem} onCancel={onClickCancel}/>
+      )}
+      {isVisibleNeedSwitchModal && (
+        <NetworkNeedSwitchModal onClose={onCloseNeedSwitch}/>
       )}
     </div>
   );
