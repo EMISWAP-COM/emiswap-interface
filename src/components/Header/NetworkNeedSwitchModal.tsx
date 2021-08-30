@@ -1,7 +1,7 @@
 import WalletRejectIcon from '../../assets/svg/wallet-reject.svg';
 import { ButtonPrimary } from '../Button';
 import { Text } from 'rebass';
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components/macro';
 import Modal from '../Modal';
 
