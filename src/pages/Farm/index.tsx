@@ -115,7 +115,7 @@ export default function Farm() {
   // FIXME Убрать комментарий для возврата функционала
   // const [radioValue, setRadioValue] = useState<string>('all');
   const [selectedTab, setSelectedTab] = useState<string>('farming');
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(Boolean(account));
 
   const farmingContracts: Contract[] = useMemo(
     () => getFarmingContracts(library, account, chainId),
@@ -177,12 +177,22 @@ export default function Farm() {
     }
   }, [library, account, chainId, desiredChainId]);
 
+  if (isKuCoinActive) {
+    return (
+      <LoadingInfo>
+        <div>
+          <img src={LogoIcon} alt="logo"/>
+        </div>
+      </LoadingInfo>
+    )
+  }
+
   return (
     <>
       <AppBody>
         <SwapPoolTabs active={TabNames.FARM}/>
 
-        {loading && (
+        {account && loading && (
           <LoadingInfo>
             <div>
               <img src={LogoIcon} alt="logo"/>

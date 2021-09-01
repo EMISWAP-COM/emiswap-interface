@@ -56,7 +56,8 @@ const StyledDialogContent = styled(
     box-shadow: ${({ theme }) => theme.modalBoxShadow};
     padding: 0;
     width: 54vw;
-    overflow: scroll;
+    overflow-x: scroll;
+    overflow-y: visible;
 
     &::-webkit-scrollbar {
       display: none;

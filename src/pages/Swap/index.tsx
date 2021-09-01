@@ -109,8 +109,8 @@ export default function Swap() {
       [Field.OUTPUT]: parsedAmount,
     }
     : {
-      [Field.INPUT]: parsedAmount,
-      // [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
+      // [Field.INPUT]: parsedAmount,
+      [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
       [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
     };
 
@@ -124,7 +124,12 @@ export default function Swap() {
     [onUserInput],
   );
 
-  const handleNothing = () => {};
+  const handleTypeOutput = useCallback(
+    (value: string) => {
+      onUserInput(Field.OUTPUT, value);
+    },
+    [onUserInput],
+  );
 
   // modal and loading
   const [showConfirm, setShowConfirm] = useState<boolean>(false); // show confirmation modal
@@ -379,7 +384,7 @@ export default function Swap() {
             </CursorPointer>
             <CurrencyInputPanel
               value={formattedAmounts[Field.OUTPUT]}
-              onUserInput={handleNothing}
+              onUserInput={handleTypeOutput}
               label={independentField === Field.INPUT && !showWrap ? 'To (estimated)' : 'To'}
               showMaxButton={false}
               currency={currencies[Field.OUTPUT]}
