@@ -176,7 +176,7 @@ export default function Swap() {
   // the callback to execute the swap
   const [swapCallback] = useSwap(
     chainId,
-    parsedAmount,
+    parsedAmounts[Field.INPUT],
     trade,
     distribution,
     allowedSlippage,
@@ -300,7 +300,9 @@ export default function Swap() {
     (!dismissedToken1 && !!currencies[Field.OUTPUT]);
 
   const notEnoughBalance =
-    maxAmountInput && parsedAmount && JSBI.lessThan(maxAmountInput.raw, parsedAmount.raw);
+    maxAmountInput
+    && parsedAmounts[Field.INPUT]?.raw
+    && JSBI.lessThan(maxAmountInput.raw, parsedAmounts[Field.INPUT]!.raw);
 
   return (
     <>
