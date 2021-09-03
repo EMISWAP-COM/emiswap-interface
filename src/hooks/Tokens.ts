@@ -21,6 +21,9 @@ export function useAllTokens(): [{ [address: string]: Token }, boolean] {
   const userAddedTokens = useUserAddedTokens();
   const allTokens = useDefaultTokenList();
   const [enableTokensList, isLoading] = useTokenListWithPair();
+
+  console.log(enableTokensList);
+
   return [
     useMemo(() => {
       if (!chainId) return {};
