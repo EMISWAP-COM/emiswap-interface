@@ -35,11 +35,13 @@ export function useAllTokens(): [{ [address: string]: Token }, boolean] {
           if (isKuCoinActive) {
             const exists = defaultCoins.tokens
               .find(ct =>
-                ct.chainId === chainId
-                && el.address.toLowerCase() === ct.address
-                && mustVisibleAddresses.kucoin.includes(el.address.toLowerCase()));
+                  ct.chainId === chainId
+                  && el.address.toLowerCase() === ct.address
+                  && mustVisibleAddresses.kucoin.includes(el.address.toLowerCase())
+                );
 
-            return Boolean(exists);
+            // @ts-ignore
+            return Boolean(exists) || el.address === window['env'].REACT_APP_ESW_ID || el.symbol === 'ESW';
           }
 
           // @ts-ignore // todo: fix it
