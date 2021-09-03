@@ -87,7 +87,7 @@ export default function CurrencyLogo({
 
   if (currency instanceof Token) {
     const coinToken = defaultCoins.tokens
-      .find(ct => ct.address === currency.address && ct.chainId === chainId);
+      .find(ct => ct.address === currency.address.toLowerCase() && ct.chainId === chainId);
 
     let uri: string | undefined = coinToken?.logoURI;
 
