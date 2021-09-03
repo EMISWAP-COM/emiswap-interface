@@ -11,7 +11,7 @@ import { useDefaultCoin, useIsKuCoinActive } from './Coins';
 import { useTokenListWithPair } from './useTokenListWithPair';
 import getKcsToken from '../constants/tokens/KCS';
 import chainIds from '../constants/chainIds';
-import defaultCoins from '../constants/defaultCoins';
+import defaultCoins, { mustVisibleAddresses } from '../constants/defaultCoins';
 
 export declare interface Window {
   env: Record<string, unknown>;
@@ -33,8 +33,13 @@ export function useAllTokens(): [{ [address: string]: Token }, boolean] {
       const filteredTokens = Object.values(allTokens[chainId])
         .filter(el => {
           if (isKuCoinActive) {
-            return defaultCoins.tokens
-              .find(ct => ct.chainId === chainId && ct.mustVisible);
+            const exists = defaultCoins.tokens
+              .find(ct =>
+                ct.chainId === chainId
+                && el.address.toLowerCase() === ct.address
+                && mustVisibleAddresses.kucoin.includes(el.address.toLowerCase()));
+
+            return Boolean(exists);
           }
 
           // @ts-ignore // todo: fix it

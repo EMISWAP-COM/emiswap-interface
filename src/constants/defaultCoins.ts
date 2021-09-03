@@ -5,7 +5,6 @@ type DefaultCoinsToken = {
   symbol: string;
   decimals: number;
   logoURI?: string;
-  mustVisible?: boolean;
 };
 
 type DefaultCoins = {
@@ -4011,7 +4010,6 @@ const defaultCoins: DefaultCoins = {
       decimals: 18,
       name: 'WKCS',
       symbol: 'WKCS',
-      mustVisible: true,
     },
     {
       address: '0xc0ffee0000921eb8dd7d506d4de8d5b79b856157',
@@ -4019,7 +4017,6 @@ const defaultCoins: DefaultCoins = {
       decimals: 18,
       name: 'KOFFEE',
       symbol: 'KOFFEE',
-      mustVisible: true,
     },
     {
       address: '0x8933a6e58eEeE063B5fd3221F2E1D17821Dc1031',
@@ -4036,7 +4033,6 @@ const defaultCoins: DefaultCoins = {
       name: 'KCS',
       decimals: 18,
       symbol: 'KCS',
-      mustVisible: true,
     },
     {
       address: '0x980a5afef3d17ad98635f6c5aebcbaeded3c3430',
@@ -4044,7 +4040,6 @@ const defaultCoins: DefaultCoins = {
       name: 'USDC',
       decimals: 18,
       symbol: 'USDC',
-      mustVisible: true,
     },
     {
       address: '0x0039f574ee5cc39bdd162e9a88e3eb1f111baf48',
@@ -4052,7 +4047,6 @@ const defaultCoins: DefaultCoins = {
       name: 'USDT',
       decimals: 18,
       symbol: 'USDT',
-      mustVisible: true,
     },
     {
       address: '0x6665d66afa48f527d86623723342cfa258cb8666',
@@ -4060,7 +4054,6 @@ const defaultCoins: DefaultCoins = {
       name: 'KuDoge',
       decimals: 18,
       symbol: 'KuDo',
-      mustVisible: true,
       logoURI:
         'https://raw.githubusercontent.com/KoffeeSwap/kcc-assets/main/mainnet/tokens/0x6665D66aFA48F527d86623723342CfA258cB8666/logo.png',
     },
@@ -4070,7 +4063,6 @@ const defaultCoins: DefaultCoins = {
       name: 'KuDOS',
       decimals: 18,
       symbol: 'KuDOS',
-      mustVisible: true,
       logoURI:
         'https://raw.githubusercontent.com/KoffeeSwap/kcc-assets/main/mainnet/tokens/0x1B465775469C71b898Bb51B53b2D4464b7Cd3448/logo.png',
     },
@@ -4080,7 +4072,6 @@ const defaultCoins: DefaultCoins = {
       name: 'KUST',
       decimals: 18,
       symbol: 'KUST',
-      mustVisible: true,
       logoURI:
         'https://raw.githubusercontent.com/KoffeeSwap/kcc-assets/main/mainnet/tokens/0xfC56A7E70F6c970538020cc39939929b4d393F1F/logo.png',
     },
@@ -4089,3 +4080,15 @@ const defaultCoins: DefaultCoins = {
 };
 
 export default defaultCoins;
+
+export const mustVisibleAddresses = {
+  kucoin: [
+    '0x4446fc4eb47f2f6586f9faab68b3498f86c07521',
+    '0xc0ffee0000921eb8dd7d506d4de8d5b79b856157',
+    '0x980a5afef3d17ad98635f6c5aebcbaeded3c3430',
+    '0x0039f574ee5cc39bdd162e9a88e3eb1f111baf48',
+    '0x6665d66afa48f527d86623723342cfa258cb8666',
+    '0xfc56a7e70f6c970538020cc39939929b4d393f1f',
+    '0x1b465775469c71b898bb51b53b2d4464b7cd3448',
+  ],
+};
