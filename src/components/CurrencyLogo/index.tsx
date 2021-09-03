@@ -4,6 +4,8 @@ import styled from 'styled-components';
 
 import EthereumLogo from '../../assets/images/ethereum-logo.png';
 import KucoinLogo from '../../assets/currencies/KCS.png';
+import defaultCoins from '../../constants/defaultCoins';
+import { useActiveWeb3React } from '../../hooks';
 
 const getTokenLogoInRaw = address =>
   `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`;
@@ -71,8 +73,9 @@ export default function CurrencyLogo({
   size?: string;
   style?: React.CSSProperties;
 }) {
+  const { chainId } = useActiveWeb3React();
 
-  const [, refresh] = useState<number>(0);
+  const [refreshCount, refresh] = useState<number>(0);
 
   if (currency === ETHER) {
     return <StyledEthereumLogo src={EthereumLogo} size={size} {...rest} />;
@@ -83,9 +86,12 @@ export default function CurrencyLogo({
   }
 
   if (currency instanceof Token) {
-    let uri: string | undefined;
+    const coinToken = defaultCoins.tokens
+      .find(ct => ct.address === currency.address.toLowerCase() && ct.chainId === chainId);
 
-    if (!uri) {
+    let uri: string | undefined = coinToken?.logoURI;
+
+    if (!uri || BAD_URIS[uri]) {
       const defaultUri = getTokenLogoInRaw(currency.address);
       if (!BAD_URIS[defaultUri]) {
         uri = defaultUri;
@@ -107,7 +113,9 @@ export default function CurrencyLogo({
               BAD_URIS[uri] = true;
               FALLBACK_URIS[currency.address] = await getTokenLogo(currency);
             }
-            refresh(i => i + 1);
+            if (refreshCount < 20) {
+              refresh(i => i + 1);
+            }
           }}
         />
       );

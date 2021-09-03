@@ -7,6 +7,7 @@ const Container = styled.div`
 `;
 
 const MessageBlock = styled.div`
+  z-index: 10000;
   position: absolute;
   padding: 12px 16px;
   border: 1px solid ${({ theme }) => theme.lightGrey};
@@ -44,8 +45,8 @@ const MessageBlock = styled.div`
   }
 `;
 
-const MessageText = styled.span`
-  white-space: nowrap;
+const MessageText = styled.span<{whiteSpace?: string}>`
+  white-space: ${({ whiteSpace }) => whiteSpace ? whiteSpace : 'nowrap'};
 
   @media screen and (max-width: 600px) {
     white-space: normal;
@@ -72,6 +73,8 @@ export interface MessageTooltipProps {
   onClose?: () => void;
   disableTooltip?: boolean;
   buttonText?: string;
+  whiteSpace?: string;
+  className?: string;
 }
 
 export const MessageTooltip: React.FC<MessageTooltipProps> = ({
@@ -83,6 +86,8 @@ export const MessageTooltip: React.FC<MessageTooltipProps> = ({
   onClose = () => void 0,
   disableTooltip = false,
   buttonText = 'OK',
+  whiteSpace = 'white-space',
+  className,
 }) => {
   const [active, setActive] = useState(false);
 
@@ -140,8 +145,8 @@ export const MessageTooltip: React.FC<MessageTooltipProps> = ({
   return (
     <>
       {active && (
-        <MessageBlock style={position}>
-          <MessageText>{text}</MessageText>
+        <MessageBlock className={className} style={position}>
+          <MessageText whiteSpace={whiteSpace}>{text}</MessageText>
           <ButtonClose onClick={handleCloseClick}>{buttonText}</ButtonClose>
         </MessageBlock>
       )}

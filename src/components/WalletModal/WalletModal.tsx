@@ -26,6 +26,7 @@ import { Owner } from '../AccountDetails/Owner';
 
 import * as Styled from './styled';
 import { useActiveWeb3React } from '../../hooks';
+import styled from 'styled-components/macro';
 
 export enum UserRoles {
   client = 'client',
@@ -46,6 +47,10 @@ const WALLET_VIEWS = {
   ACCOUNT: 'account',
   PENDING: 'pending',
 };
+
+const WalletCustomModal = styled(Modal)`
+  overflow-y: visible !important;
+`;
 
 const WalletModal: React.FC<WalletModalProps> = ({ ENSName }) => {
   // important that these are destructed from the account-specific web3-react context
@@ -236,7 +241,7 @@ const WalletModal: React.FC<WalletModalProps> = ({ ENSName }) => {
         ReactPixel.track('wallet_connect_success');
       })
       .catch(error => {
-        console.log(error)
+        console.log(error);
         if (error instanceof UnsupportedChainIdError) {
           activate(connector); // a little janky...can't use setError because the connector isn't set
         } else {
@@ -492,7 +497,7 @@ const WalletModal: React.FC<WalletModalProps> = ({ ENSName }) => {
   }
 
   return (
-    <Modal
+    <WalletCustomModal
       isOpen={walletModalOpen}
       onDismiss={toggleWalletModal}
       minHeight={null}
@@ -507,7 +512,7 @@ const WalletModal: React.FC<WalletModalProps> = ({ ENSName }) => {
           {getModalContent()}
         </Styled.UpperSection>
       </Styled.Wrapper>
-    </Modal>
+    </WalletCustomModal>
   );
 };
 

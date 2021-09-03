@@ -16,6 +16,8 @@ import { darken } from 'polished';
 import { ChangeAddress } from './ChangeAddress';
 import chainIds from '../../../constants/chainIds';
 import { useIsKuCoinActive } from '../../../hooks/Coins';
+import { MessageTooltip } from '../../../base/ui';
+import { css } from 'styled-components';
 
 const Container = styled.div`
   font-size: 13px;
@@ -105,27 +107,35 @@ const ChangeActionsBlock = styled.div`
   }
 `;
 
-const ChangeWalletBtn = styled(ActionBtn)`
+const ChangeWalletMessageTooltip = styled(MessageTooltip)`
+  max-width: 400px !important;
+
+  &:before {
+    display: none;
+  }
+`;
+
+const ChangeWalletBtn = styled(ActionBtn)<{ inactive: boolean }>`
   margin-left: 8px !important;
   background-color: ${({ theme }) => theme.purple} !important;
   border: 1px solid ${({ theme }) => theme.purple} !important;
-  color: #ffffff;
+  color: ${({ inactive }) => (inactive ? '#615C69' : '#FFFFFF')};
 
   &:hover,
   &:focus,
   &:active {
-    background: ${({ theme }) => theme.purple} !important;
+    background: ${({ theme, inactive }) => (inactive ? 'transparent' : theme.purple)} !important;
     box-shadow: none;
   }
-  
-  &:disabled {
+
+  ${({ inactive }) => inactive && css`
     background-color: transparent !important;
     color: #615C69;
     cursor: auto;
     border: 1px solid rgb(97,92,105) !important;
     opacity: 1 !important;
     text-decoration: none !important;
-  }
+  `}
 
   @media screen and (max-width: 800px) {
     width: calc(50% - 5px);
@@ -222,9 +232,16 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
             <span>Connected with {formatConnectorName(connector)}</span>
             <ChangeActionsBlock>
               <ChangeAddress openOptions={openOptions} />
-              <ChangeWalletBtn disabled={isKuCoinActive} onClick={handleChangeWallet}>
-                Change wallet
-              </ChangeWalletBtn>
+              <ChangeWalletMessageTooltip
+                disableTooltip={!isKuCoinActive}
+                whiteSpace={'normal'}
+                position={{ top: '4px', left: '284px' }}
+                text="Only Metamask wallet is supported. You need to change the address inside the Metamask wallet."
+              >
+                <ChangeWalletBtn inactive={isKuCoinActive} onClick={handleChangeWallet}>
+                  Change wallet
+                </ChangeWalletBtn>
+              </ChangeWalletMessageTooltip>
             </ChangeActionsBlock>
             <Wallet>
               <StatusIcon connectorName={connector} />

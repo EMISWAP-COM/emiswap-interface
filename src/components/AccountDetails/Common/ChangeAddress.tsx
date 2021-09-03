@@ -25,6 +25,7 @@ const ChangeAddressBtn = styled(ActionBtn)<{ inactive: boolean }>`
   border: 1px solid rgb(97, 92, 105) !important;
   background-color: transparent;
   color: ${({ inactive }) => (inactive ? '#615C69' : '#FFFFFF')};
+  text-decoration: none !important;
 
   &:hover,
   &:focus,

@@ -7,10 +7,11 @@ import { useUserAddedTokens } from '../state/user/hooks';
 import { isAddress } from '../utils';
 import { useActiveWeb3React } from './index';
 import { useBytes32TokenContract, useTokenContract } from './useContract';
-import { useDefaultCoin } from './Coins';
+import { useDefaultCoin, useIsKuCoinActive } from './Coins';
 import { useTokenListWithPair } from './useTokenListWithPair';
 import getKcsToken from '../constants/tokens/KCS';
 import chainIds from '../constants/chainIds';
+import defaultCoins, { mustVisibleAddresses } from '../constants/defaultCoins';
 
 export declare interface Window {
   env: Record<string, unknown>;
@@ -21,15 +22,31 @@ export function useAllTokens(): [{ [address: string]: Token }, boolean] {
   const userAddedTokens = useUserAddedTokens();
   const allTokens = useDefaultTokenList();
   const [enableTokensList, isLoading] = useTokenListWithPair();
+
+  const isKuCoinActive = useIsKuCoinActive();
+
   return [
     useMemo(() => {
-      if (!chainId) return {};
+      if (!chainId) {
+        return {};
+      }
       const filteredTokens = Object.values(allTokens[chainId])
-        .filter(
-          el =>
-            // @ts-ignore // todo: fix it
-            enableTokensList.includes(el.address) || el.address === window['env'].REACT_APP_ESW_ID,
-        )
+        .filter(el => {
+          if (isKuCoinActive) {
+            const exists = defaultCoins.tokens
+              .find(ct =>
+                  ct.chainId === chainId
+                  && el.address.toLowerCase() === ct.address
+                  && mustVisibleAddresses.kucoin.includes(el.address.toLowerCase())
+                );
+
+            // @ts-ignore
+            return Boolean(exists) || el.address === window['env'].REACT_APP_ESW_ID || el.symbol === 'ESW';
+          }
+
+          // @ts-ignore // todo: fix it
+          return enableTokensList.includes(el.address) || el.address === window['env'].REACT_APP_ESW_ID;
+        })
         .reduce((acc: { [key: string]: WrappedTokenInfo }, val) => {
           acc[val.address] = val;
           return acc;
@@ -47,13 +64,14 @@ export function useAllTokens(): [{ [address: string]: Token }, boolean] {
             { ...filteredTokens },
           )
       );
-    }, [chainId, userAddedTokens, allTokens, enableTokensList]),
+    }, [chainId, userAddedTokens, allTokens, enableTokensList, isKuCoinActive]),
     isLoading,
   ];
 }
 
 // parse a name or symbol from a token response
 const BYTES32_REGEX = /^0x[a-fA-F0-9]{64}$/;
+
 function parseStringOrBytes32(
   str: string | undefined,
   bytes32: string | undefined,
@@ -62,8 +80,8 @@ function parseStringOrBytes32(
   return str && str.length > 0
     ? str
     : bytes32 && BYTES32_REGEX.test(bytes32)
-    ? parseBytes32String(bytes32)
-    : defaultValue;
+      ? parseBytes32String(bytes32)
+      : defaultValue;
 }
 
 // undefined if invalid or does not exist
@@ -111,9 +129,15 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
   );
 
   return useMemo(() => {
-    if (token) return token;
-    if (!chainId || !address) return undefined;
-    if (decimals.loading || symbol.loading || tokenName.loading) return null;
+    if (token) {
+      return token;
+    }
+    if (!chainId || !address) {
+      return undefined;
+    }
+    if (decimals.loading || symbol.loading || tokenName.loading) {
+      return null;
+    }
     if (decimals.result) {
       return new Token(
         chainId,

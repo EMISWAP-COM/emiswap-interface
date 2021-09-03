@@ -4080,3 +4080,15 @@ const defaultCoins: DefaultCoins = {
 };
 
 export default defaultCoins;
+
+export const mustVisibleAddresses = {
+  kucoin: [
+    '0x4446fc4eb47f2f6586f9faab68b3498f86c07521',
+    '0xc0ffee0000921eb8dd7d506d4de8d5b79b856157',
+    '0x980a5afef3d17ad98635f6c5aebcbaeded3c3430',
+    '0x0039f574ee5cc39bdd162e9a88e3eb1f111baf48',
+    '0x6665d66afa48f527d86623723342cfa258cb8666',
+    '0xfc56a7e70f6c970538020cc39939929b4d393f1f',
+    '0x1b465775469c71b898bb51b53b2d4464b7cd3448',
+  ],
+};
