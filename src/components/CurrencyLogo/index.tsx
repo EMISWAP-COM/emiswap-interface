@@ -75,7 +75,7 @@ export default function CurrencyLogo({
 }) {
   const { chainId } = useActiveWeb3React();
 
-  const [, refresh] = useState<number>(0);
+  const [refreshCount, refresh] = useState<number>(0);
 
   if (currency === ETHER) {
     return <StyledEthereumLogo src={EthereumLogo} size={size} {...rest} />;
@@ -91,7 +91,7 @@ export default function CurrencyLogo({
 
     let uri: string | undefined = coinToken?.logoURI;
 
-    if (!uri) {
+    if (!uri || BAD_URIS[uri]) {
       const defaultUri = getTokenLogoInRaw(currency.address);
       if (!BAD_URIS[defaultUri]) {
         uri = defaultUri;
@@ -113,7 +113,9 @@ export default function CurrencyLogo({
               BAD_URIS[uri] = true;
               FALLBACK_URIS[currency.address] = await getTokenLogo(currency);
             }
-            refresh(i => i + 1);
+            if (refreshCount < 20) {
+              refresh(i => i + 1);
+            }
           }}
         />
       );
