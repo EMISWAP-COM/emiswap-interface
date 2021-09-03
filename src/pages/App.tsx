@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect } from 'react';
-import { HashRouter, Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 import Wordmark from '../components/Wordmark';
 import styled from 'styled-components';
 import GoogleAnalyticsReporter from '../components/analytics/GoogleAnalyticsReporter';
@@ -31,6 +31,7 @@ import MigrateV1 from './MigrateV1';
 import MigrateV1Exchange from './MigrateV1/MigrateV1Exchange';
 // import Invest from './Invest';
 import Farm from './Farm';
+import NotFound from './NotFound';
 
 const LogoWrapper = styled.div`
   display: none;
@@ -80,18 +81,20 @@ export default function App() {
     }
   }, []);
 
+  const is404Page = window.location.pathname === '/404';
+
   return (
     <Suspense fallback={null}>
-      <HashRouter>
+      <BrowserRouter>
         <ReferralUrlParser>
           <Route component={GoogleAnalyticsReporter} />
           <Route component={DarkModeQueryParamReader} />
-          <AppWrapper>
+          <AppWrapper is404Page={is404Page}>
             <LogoWrapper>
               <Wordmark />
             </LogoWrapper>
             <HeaderWrapper>
-              <Header />
+              <Header is404Page={is404Page} />
             </HeaderWrapper>
             <BodyWrapper>
               <Popups />
@@ -100,6 +103,7 @@ export default function App() {
                 <ErrorBoundary title={'Oops, try again later...'} onDismiss={() => {}}>
                   <Switch>
                     {/*<Route exact strict path="/invest" component={Invest} />*/}
+                    <Redirect exact from="/" to="/swap" />
                     <Route exact strict path="/swap" component={Swap} />
                     <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
                     <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
@@ -133,14 +137,16 @@ export default function App() {
                     <Route exact strict path="/migrate/:address" component={MigrateV1Exchange} />
                     <Route exact strict path="/claim/:tokenName" component={Claim} />
                     <Route exact strict path="/farm" component={Farm} />
-                    <Route component={RedirectPathToSwap} />
+                    <Route path="/404" component={NotFound} />
+                    <Redirect to="/404" />
+                    {/* <Route component={RedirectPathToSwap} /> */}
                   </Switch>
                 </ErrorBoundary>
               </Web3ReactManager>
             </BodyWrapper>
           </AppWrapper>
         </ReferralUrlParser>
-      </HashRouter>
+      </BrowserRouter>
     </Suspense>
   );
 }
