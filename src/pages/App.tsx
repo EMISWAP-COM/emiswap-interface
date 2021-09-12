@@ -138,8 +138,7 @@ export default function App() {
                     <Route exact strict path="/claim/:tokenName" component={Claim} />
                     <Route exact strict path="/farm" component={Farm} />
                     <Route path="/404" component={NotFound} />
-                    <Redirect to="/404" />
-                    {/* <Route component={RedirectPathToSwap} /> */}
+                    <Route component={RedirectPathToSwap} />
                   </Switch>
                 </ErrorBoundary>
               </Web3ReactManager>
