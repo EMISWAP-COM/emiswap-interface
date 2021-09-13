@@ -46,36 +46,38 @@ const ImgLink = styled.a`
     border: 1px solid #7a2df4;
 
     svg path {
-      fill: #000;
+      fill: #7a2df4;
     }
   }
 `;
 
+const Link = props => <ImgLink rel="noopener noreferrer" target="_blank" {...props} />;
+
 export default () => (
   <Wrapper>
-    <ImgLink href="https://twitter.com/emiswap">
+    <Link href="https://twitter.com/emiswap">
       <TwitterIcon />
-    </ImgLink>
+    </Link>
     {/* <ImgLink href="">
       <DiscordIcon />
     </ImgLink> */}
-    <ImgLink href="https://github.com/EMISWAP-COM/">
+    <Link href="https://github.com/EMISWAP-COM/">
       <GithubIcon />
-    </ImgLink>
-    <ImgLink href="https://emiswap.medium.com/">
+    </Link>
+    <Link href="https://emiswap.medium.com/">
       <MediumIcon />
-    </ImgLink>
-    <ImgLink href="https://t.me/emiswap_official">
+    </Link>
+    <Link href="https://t.me/emiswap_official">
       <TelegramIcon />
-    </ImgLink>
-    <ImgLink href="https://www.coingecko.com/en/coins/emiswap">
+    </Link>
+    <Link href="https://www.coingecko.com/en/coins/emiswap">
       <CoingeckoIcon />
-    </ImgLink>
-    <ImgLink href="https://coinmarketcap.com/currencies/emiswap/">
+    </Link>
+    <Link href="https://coinmarketcap.com/currencies/emiswap/">
       <CoinmarketIcon />
-    </ImgLink>
-    <ImgLink href="https://wiki.emiswap.com/">
+    </Link>
+    <Link href="https://wiki.emiswap.com/">
       <WikiIcon />
-    </ImgLink>
+    </Link>
   </Wrapper>
 );
