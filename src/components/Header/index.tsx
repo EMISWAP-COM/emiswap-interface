@@ -20,6 +20,7 @@ import NetworkSwitchModal from './NetworkSwitchModal';
 import { useNetworkSwitchModalToggle } from '../../state/application/hooks';
 import chainIds from '../../constants/chainIds';
 import { networksItems } from '../../constants';
+import { useLocation } from 'react-router-dom';
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -377,7 +378,7 @@ const NETWORK_LABELS: { [chainId in chainIds]: string | null } = {
   [chainIds.KUCOIN]: 'KuCoin',
 };
 
-export default function Header({ is404Page }) {
+export default function Header() {
   const { account, chainId } = useActiveWeb3React();
   const userEthBalance = useETHBalances([account])[account];
   const [isDark] = useDarkModeManager();
@@ -385,6 +386,10 @@ export default function Header({ is404Page }) {
   const toggleNetworkSwitchModal = useNetworkSwitchModalToggle();
 
   const networkItem = networksItems.find(v => v.chainId === chainId);
+
+  const { pathname } = useLocation();
+
+  const is404Page = pathname === '/404';
 
   return (
     <HeaderFrame>

@@ -94,7 +94,7 @@ export default function App() {
               <Wordmark />
             </LogoWrapper>
             <HeaderWrapper>
-              <Header is404Page={is404Page} />
+              <Header />
             </HeaderWrapper>
             <BodyWrapper>
               <Popups />
