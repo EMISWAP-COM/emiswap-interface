@@ -77,7 +77,7 @@ const MenuItem = styled(ExternalLink)`
   }
 `;
 
-const MenuTextItem = styled.div`
+/*const MenuTextItem = styled.div`
   flex: 1;
   padding: 0.5rem 0.5rem;
   color: ${({ theme }) => theme.white};
@@ -85,7 +85,7 @@ const MenuTextItem = styled.div`
   > img {
     margin-right: 8px;
   }
-`;
+`;*/
 
 export default function Menu() {
   const node = useRef<HTMLDivElement>();
@@ -128,15 +128,15 @@ export default function Menu() {
             Wiki
           </MenuItem>
           {(chainId as any) !== chainIds.KUCOIN ? (
-            <MenuItem id="link" href="https://emiswap.com/analytics">
+            <MenuItem id="link" href="https://emiswap.com/analytics?network=main">
               <PieChart size={14}/>
               Analytics
             </MenuItem>
           ) : (
-            <MenuTextItem>
+            <MenuItem id="link" href="https://emiswap.com/analytics?network=kcc">
               <PieChart size={14}/>
-              Analytics coming soon...
-            </MenuTextItem>
+              Analytics
+            </MenuItem>
           )}
           <MenuItem
             id="link"
