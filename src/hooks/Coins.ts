@@ -6,7 +6,7 @@ import { useCoinList } from '../state/invest/hooks';
 import { isAddress } from '../utils';
 import { useActiveWeb3React } from './index';
 import { useBytes32TokenContract, useTokenContract } from './useContract';
-import { ESW } from '../constants';
+import { ESW, networksItems } from '../constants';
 import chainIds from '../constants/chainIds';
 import { injected } from '../connectors';
 
@@ -135,4 +135,10 @@ export function useIsMetaMask(): boolean {
   const { connector } = useActiveWeb3React();
 
   return connector === injected;
+}
+
+export function useNetworkData() {
+  const { chainId } = useActiveWeb3React();
+
+  return networksItems.find(item => item.chainId === chainId) || networksItems[0];
 }
