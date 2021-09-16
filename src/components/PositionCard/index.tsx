@@ -21,7 +21,7 @@ import { AutoRow, RowBetween, RowFixed } from '../Row';
 import { Dots } from '../swap/styleds';
 import { tokenAmountToString } from '../../utils/formats';
 import { ExternalLink } from '../../theme';
-import chainIds from '../../constants/chainIds';
+import { useNetworkData } from '../../hooks/Coins';
 
 export const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -140,6 +140,8 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
   const theme = useContext(ThemeContext);
   const { account, chainId } = useActiveWeb3React();
 
+  const {analyticsUrl} = useNetworkData();
+
   const currency0 = unwrappedToken(chainId, pair.token0);
   const currency1 = unwrappedToken(chainId, pair.token1);
 
@@ -247,14 +249,11 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
                 {poolTokenPercentage ? poolTokenPercentage.toFixed(2) + '%' : '-'}
               </Text>
             </FixedHeightRow>
-            {/*// @ts-ignore*/}
-            {chainId !== chainIds.KUCOIN && (
-              <AutoRow justify="center" marginTop={'10px'}>
-                <ExternalLink href={'https://emiswap.com/analytics'}>
-                  <YellowText>View pool information ↗</YellowText>
-                </ExternalLink>
-              </AutoRow>
-            )}
+            <AutoRow justify="center" marginTop={'10px'}>
+              <ExternalLink href={analyticsUrl}>
+                <YellowText>View pool information ↗</YellowText>
+              </ExternalLink>
+            </AutoRow>
             <RowBetween marginTop="10px">
               <ButtonSecondary
                 as={Link}
