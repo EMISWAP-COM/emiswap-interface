@@ -9,9 +9,9 @@ import { ButtonPrimary } from '../Button';
 import { AutoColumn, ColumnCenter } from '../Column';
 import Circle from '../../assets/images/blue-loader.svg';
 
-import { getEtherscanLink, getKucoinLink } from '../../utils';
+import { getExplorerLink } from '../../utils';
 import { useActiveWeb3React } from '../../hooks';
-import chainIds from '../../constants/chainIds';
+import { useNetworkData } from '../../hooks/Coins';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -59,6 +59,7 @@ export default function ConfirmationModal({
   swapErrorMessage = undefined,
 }: ConfirmationModalProps) {
   const { chainId } = useActiveWeb3React();
+  const { blockExplorerName } = useNetworkData();
   const theme = useContext(ThemeContext);
 
   const transactionBroadcast = !!hash;
@@ -93,16 +94,10 @@ export default function ConfirmationModal({
               {transactionBroadcast ? (
                 <>
                   <ExternalLink
-                    href={
-                      // @ts-ignore
-                      chainId === chainIds.KUCOIN
-                        ? getKucoinLink(chainId, hash, 'transaction')
-                        : getEtherscanLink(chainId, hash, 'transaction')
-                    }
+                    href={getExplorerLink(chainId, hash, 'transaction')}
                   >
                     <Text fontWeight={500} fontSize={14} color={theme.blue}>
-                      {/*// @ts-ignore*/}
-                      View on {chainId === chainIds.KUCOIN ? 'KCC explorer' : 'Etherscan'}
+                      View on {blockExplorerName}
                     </Text>
                   </ExternalLink>
                   <ButtonPrimary onClick={onDismiss} style={{ margin: '20px 0 0 0' }}>

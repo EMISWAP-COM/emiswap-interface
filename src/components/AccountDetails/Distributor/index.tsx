@@ -13,7 +13,7 @@ import { ReferralPerformance } from '../Common/ReferralPerformance';
 import { PurchaseHistory } from '../Common/PurchaseHistory';
 import { useActiveWeb3React } from '../../../hooks';
 import { loadBalance, loadPerformance } from '../../../state/cabinets/actions';
-import chainIds from '../../../constants/chainIds';
+import { useIsEthActive } from '../../../hooks/Coins';
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -84,6 +84,7 @@ interface Props {
 }
 
 const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
+  const isEthActive = useIsEthActive();
   const dispatch = useDispatch<AppDispatch>();
 
   const { chainId } = useActiveWeb3React();
@@ -96,7 +97,7 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
   );
 
   useEffect(() => {
-    if ((chainId as any) !== chainIds.KUCOIN) {
+    if (isEthActive) {
       dispatch(loadPerformance(userId) as any);
       dispatch(loadBalance(userId) as any);
     }
@@ -145,7 +146,7 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
         )}
       </Connection>
 
-      {(chainId as any) !== chainIds.KUCOIN && (
+      {isEthActive && (
         <>
           <ESWRewards />
           <ESWHoldingRewards/>

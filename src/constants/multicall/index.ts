@@ -10,6 +10,7 @@ const MULTICALL_NETWORKS: { [chainId in ChainId]: string } = {
   [ChainId.GÖRLI]: '0x77dCa2C955b15e9dE4dbBCf1246B4B85b651e50e',
   // @ts-ignore
   [chainIds.KUCOIN]: '0x74925641Ba023199d517658B6Fd9d6B108b7D72a',
+  [chainIds.KUCOIN]: '',
 };
 
 export { MULTICALL_ABI, MULTICALL_NETWORKS };

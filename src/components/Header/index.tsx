@@ -20,6 +20,7 @@ import NetworkSwitchModal from './NetworkSwitchModal';
 import { useNetworkSwitchModalToggle } from '../../state/application/hooks';
 import chainIds from '../../constants/chainIds';
 import { networksItems } from '../../constants';
+import { useNetworkData } from '../../hooks/Coins';
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -348,11 +349,14 @@ const NETWORK_LABELS: { [chainId in chainIds]: string | null } = {
   [ChainId.GÖRLI]: 'Görli',
   [ChainId.KOVAN]: 'Kovan',
   [chainIds.KUCOIN]: 'KuCoin',
+  [chainIds.POLYGON]: 'Polygon',
 };
 
 export default function Header() {
 
   const { account, chainId } = useActiveWeb3React();
+  const {currencySymbol} = useNetworkData();
+
   const userEthBalance = useETHBalances([account])[account];
   const [isDark] = useDarkModeManager();
 
@@ -396,13 +400,13 @@ export default function Header() {
                   </NetworkIcon>
                 )}
                 <span>{NETWORK_LABELS[chainId] || 'Change Network'}</span>
-                {(chainId as any) === chainIds.KUCOIN && (
+                {(chainId as any) !== chainIds.MAINNET && (
                   <NetworkLabel>Beta Version</NetworkLabel>
                 )}
               </NetworkButtonSwitch>
               <NetworkSwitchModal/>
             </NetworkWrapper>
-            {chainId !== (chainIds.KUCOIN as any) && (
+            {chainId === (chainIds.MAINNET as any) && (
               <a className="purple-btn" href={`${window.location.origin}/magic_cards/`}>
                 <span>Magic Hall</span>
               </a>
@@ -418,8 +422,7 @@ export default function Header() {
                     fontWeight={450}
                   >
                     {tokenAmountToString(userEthBalance, 4)}{' '}
-                    {/*// @ts-ignore*/}
-                    {chainId === chainIds.KUCOIN ? 'KCS' : 'ETH'}
+                    {currencySymbol}
                   </BalanceText>
                 </>
               ) : null}

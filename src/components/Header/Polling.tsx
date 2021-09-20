@@ -3,9 +3,8 @@ import styled, { keyframes } from 'styled-components';
 import { ExternalLink, TYPE } from '../../theme';
 
 import { useBlockNumber } from '../../state/application/hooks';
-import { getEtherscanLink, getKucoinLink } from '../../utils';
+import { getExplorerLink } from '../../utils';
 import { useActiveWeb3React } from '../../hooks';
-import chainIds from '../../constants/chainIds';
 
 const StyledPolling = styled.div`
   position: fixed;
@@ -88,10 +87,7 @@ export default function Polling() {
     <ExternalLink
       href={
         chainId && blockNumber
-          ? // @ts-ignore
-            chainId === chainIds.KUCOIN
-            ? getKucoinLink(chainId, blockNumber.toString(), 'block')
-            : getEtherscanLink(chainId, blockNumber.toString(), 'block')
+          ? getExplorerLink(chainId, blockNumber.toString(), 'block')
           : ''
       }
     >

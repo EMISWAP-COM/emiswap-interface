@@ -7,6 +7,7 @@ const factory_addresses: any = {
   [chainIds.GÖRLI]: '0x71CD6666064C3A1354a3B4dca5fA1E2D3ee7D303',
   [chainIds.KOVAN]: '0xe4917eb85A6C11a56189DbE621433ce5c2a3bfc3',
   [chainIds.KUCOIN]: '0x945316F2964ef5C6C84921b435a528DD1790E93a',
+  [chainIds.POLYGON]: '',
 }
 
 export default factory_addresses

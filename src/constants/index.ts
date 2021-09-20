@@ -8,7 +8,9 @@ import esw_addresses from './esw_addresses';
 
 import EthereumNetworkIcon from '../assets/svg/ethereum-network.svg';
 import KuCoinNetworkIcon from '../assets/svg/kucoin-network.svg';
-// import PolygonNetworkIcon from '../assets/svg/polygon-network.svg';
+import PolygonNetworkIcon from '../assets/svg/polygon-network.svg';
+import { KCS } from './tokens/KCS';
+import { MATIC } from './tokens/MATIC';
 
 export const MAX_NUM_DECIMALS = 18;
 export const ROUTER_ADDRESS = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D';
@@ -34,6 +36,15 @@ export const WETH = new Token(
 export const WKCS = new Token(
   // @ts-ignore
   chainIds.KUCOIN,
+  '0x4446fc4eb47f2f6586f9faab68b3498f86c07521',
+  18,
+  'WKCS',
+  'WKCS',
+);
+
+export const WMATIC = new Token(
+  // @ts-ignore
+  chainIds.POLYGON,
   '0x4446fc4eb47f2f6586f9faab68b3498f86c07521',
   18,
   'WKCS',
@@ -154,6 +165,11 @@ export const ESW: ChainTokenList = {
     // @ts-ignore
     new Token(chainIds.KUCOIN, esw_addresses[chainIds.KUCOIN], 18, 'ESW', 'EmiDAO Token'),
   ],
+  // @ts-ignore
+  [chainIds.POLYGON]: [
+    // @ts-ignore
+    new Token(chainIds.POLYGON, esw_addresses[chainIds.POLYGON], 18, 'ESW', 'EmiDAO Token'),
+  ],
 };
 
 const ETH_ONLY: ChainTokenList = {
@@ -164,6 +180,7 @@ const ETH_ONLY: ChainTokenList = {
   [ChainId.KOVAN]: [ETHER],
   // @ts-ignore
   [chainIds.KUCOIN]: [ETHER],
+  [chainIds.POLYGON]: [ETHER],
 };
 
 // used to construct intermediary pairs for trading
@@ -173,6 +190,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   [ChainId.MAINNET]: [DAI, USDC, USDT, COMP, MKR, CHI, WETH],
   // @ts-ignore
   [chainIds.KUCOIN]: [WKCS],
+  [chainIds.POLYGON]: [WMATIC],
 };
 
 // used for display in the default list when adding liquidity
@@ -182,6 +200,8 @@ export const SUGGESTED_BASES: ChainTokenList = {
   [ChainId.MAINNET]: [DAI, USDC, USDT, CHI, ESW[ChainId.MAINNET][0]],
   // @ts-ignore
   [chainIds.KUCOIN]: [ESW[chainIds.KUCOIN][0]],
+  // @ts-ignore
+  [chainIds.POLYGON]: [ESW[chainIds.POLYGON][0]],
 };
 
 // used to construct the list of all pairs we consider by default in the frontend
@@ -191,6 +211,8 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   [ChainId.MAINNET]: [ETHER, DAI, USDC, USDT, CHI, ESW[ChainId.MAINNET][0], WETH],
   // @ts-ignore
   [chainIds.KUCOIN]: [ESW[chainIds.KUCOIN][0]],
+  // @ts-ignore
+  [chainIds.POLYGON]: [ESW[chainIds.POLYGON][0]],
 };
 
 // @ts-ignore
@@ -261,7 +283,7 @@ export const SUPPORTED_WALLETS = {
       iconName: 'coinbaseWalletIcon.svg',
       description: 'Use Coinbase Wallet app on mobile device',
       href: null,
-      unavailableNetworksIds: [chainIds.KUCOIN],
+      unavailableNetworksIds: [chainIds.KUCOIN, chainIds.POLYGON],
       color: '#315CF5',
     },
     COINBASE_LINK: {
@@ -269,7 +291,7 @@ export const SUPPORTED_WALLETS = {
       iconName: 'coinbaseWalletIcon.svg',
       description: 'Open in Coinbase Wallet app.',
       href: 'https://go.cb-w.com/fWpxXDRLvhb',
-      unavailableNetworksIds: [chainIds.KUCOIN],
+      unavailableNetworksIds: [chainIds.KUCOIN, chainIds.POLYGON],
       color: '#315CF5',
       mobile: true,
       mobileOnly: true,
@@ -280,7 +302,7 @@ export const SUPPORTED_WALLETS = {
       iconName: 'fortmaticIcon.png',
       description: 'Login using Fortmatic hosted wallet',
       href: null,
-      unavailableNetworksIds: [chainIds.KUCOIN],
+      unavailableNetworksIds: [chainIds.KUCOIN, chainIds.POLYGON],
       color: '#6748FF',
       mobile: true,
     },
@@ -290,7 +312,7 @@ export const SUPPORTED_WALLETS = {
       iconName: 'portisIcon.png',
       description: 'Login using Portis hosted wallet',
       href: null,
-      unavailableNetworksIds: [chainIds.KUCOIN],
+      unavailableNetworksIds: [chainIds.KUCOIN, chainIds.POLYGON],
       color: '#4A6C9B',
       mobile: true,
     },
@@ -346,11 +368,15 @@ export interface INetworkItem {
   alias: string;
   value: string;
   chainId: number;
+  token: Token;
   icon: any;
   name: string;
   rpcUrls: string[];
   currencySymbol: string;
-  blockExplorerUrls: string;
+  currencySymbolWrap: string;
+  currencySymbolWeth: string;
+  blockExplorerUrl: string;
+  blockExplorerName: string;
   analyticsUrl: string;
 }
 
@@ -359,28 +385,45 @@ export const networksItems: INetworkItem[] = [
     alias: 'main',
     value: 'ethereum',
     chainId: ChainId.MAINNET,
+    token: ETHER,
     icon: EthereumNetworkIcon,
     name: 'Ethereum',
     rpcUrls: [''],
     currencySymbol: 'ETH',
-    blockExplorerUrls: '',
+    currencySymbolWrap: 'WETH',
+    currencySymbolWeth: 'WETH',
+    blockExplorerUrl: 'https://etherscan.io',
+    blockExplorerName: 'Etherscan',
     analyticsUrl: 'https://emiswap.com/analytics?network=main',
   },
-  /*{
-    value: 'polygon',
-    chainId: ChainId.MAINNET,
-    icon: PolygonNetworkIcon,
-    name: 'Polygon (Matic)',
-  },*/
   {
     alias: 'kcc',
     value: 'kucoin',
     chainId: chainIds.KUCOIN,
+    token: KCS,
     icon: KuCoinNetworkIcon,
     name: 'KuCoin',
     rpcUrls: ['https://rpc-mainnet.kcc.network'],
     currencySymbol: 'KCS',
-    blockExplorerUrls: 'https://explorer.kcc.io/en',
+    currencySymbolWrap: 'WKCS',
+    currencySymbolWeth: 'KCS',
+    blockExplorerUrl: 'https://explorer.kcc.io/en',
+    blockExplorerName: 'KCC explorer',
     analyticsUrl: 'https://emiswap.com/analytics?network=kcc',
+  },
+  {
+    alias: 'polygon',
+    value: 'polygon',
+    chainId: chainIds.POLYGON,
+    token: MATIC,
+    icon: PolygonNetworkIcon,
+    name: 'Polygon (Matic)',
+    rpcUrls: ['https://rpc-mainnet.maticvigil.com'],
+    currencySymbol: 'MATIC',
+    currencySymbolWrap: 'WMATIC',
+    currencySymbolWeth: 'MATIC',
+    blockExplorerUrl: 'https://explorer-mainnet.maticvigil.com',
+    blockExplorerName: 'Matic explorer',
+    analyticsUrl: 'https://emiswap.com/analytics?network=polygon',
   },
 ];

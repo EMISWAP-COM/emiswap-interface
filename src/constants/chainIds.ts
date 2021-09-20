@@ -5,6 +5,7 @@ enum chainIds {
   GÖRLI = 5,
   KOVAN = 42,
   KUCOIN = 321,
+  POLYGON = 137,
 }
 
 export default chainIds;

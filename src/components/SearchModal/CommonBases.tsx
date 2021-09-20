@@ -10,8 +10,7 @@ import { AutoRow } from '../Row';
 import CurrencyLogo from '../CurrencyLogo';
 import { darken } from 'polished';
 import defaultCoins from '../../constants/defaultCoins';
-import getKcsToken from '../../constants/tokens/KCS';
-import chainIds from '../../constants/chainIds';
+import { useNetworkData } from '../../hooks/Coins';
 
 const BaseWrapper = styled.div<{ disable?: boolean }>`
   border: 1px solid ${({ theme, disable }) => (disable ? 'transparent' : theme.bg3)};
@@ -41,10 +40,11 @@ export default function CommonBases({
   onSelect: (currency: Token) => void;
   otherSelectedCurrency: Token | undefined;
 }) {
+  const networkData = useNetworkData();
+
   const wethTokenInfo = defaultCoins.tokens.find(
     token =>
-      // @ts-ignore
-      (chainId === chainIds.KUCOIN ? token.symbol === 'KCS' : token.symbol === 'WETH') &&
+      token.symbol === networkData.currencySymbolWeth &&
       token.chainId === chainId,
   );
 
@@ -78,13 +78,11 @@ export default function CommonBases({
           }
         >
           <CurrencyLogo
-            // @ts-ignore
-            currency={chainId === chainIds.KUCOIN ? getKcsToken(chainId) : ETHER}
+            currency={networkData.token}
             style={{ marginRight: 8 }}
           />
           <Text fontWeight={500} fontSize={16}>
-            {/*// @ts-ignore*/}
-            {chainId === chainIds.KUCOIN ? 'KCS' : 'ETH'}
+            {networkData.currencySymbol}
           </Text>
         </BaseWrapper>
         {(chainId ? SUGGESTED_BASES[chainId] : []).map((token: Token) => {
