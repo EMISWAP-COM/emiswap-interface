@@ -101,7 +101,7 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
       dispatch(loadPerformance(userId) as any);
       dispatch(loadBalance(userId) as any);
     }
-  }, [dispatch, chainId, userId]);
+  }, [dispatch, chainId, userId, isEthActive]);
 
   /* TODO removed Invest tab until further notice.
   function scrollIntoInvest() {

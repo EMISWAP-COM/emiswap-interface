@@ -80,11 +80,14 @@ export default function NetworkSwitchModal() {
   const toggleConfirmSwitchModal = useConfirmSwitchModalToggle();
 
   const switchNetwork = async (item: INetworkItem) => {
+    console.log(item);
+
     try {
-      await ethereum.request({
+      const result = await ethereum.request({
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: toHex(item.chainId) }],
       });
+      console.log(result);
     } catch (switchError) {
       if (switchError.code === 4902) {
         try {
@@ -202,7 +205,11 @@ export default function NetworkSwitchModal() {
         </NetworkSwitchWrapped>
       </Modal>
       {selectedItem && (
-        <ConfirmSwitchModal onConfirm={onClickConfirmItem} onCancel={onClickCancel}/>
+        <ConfirmSwitchModal
+          selectedItem={selectedItem}
+          onConfirm={onClickConfirmItem}
+          onCancel={onClickCancel}
+        />
       )}
       {isVisibleNeedSwitchModal && (
         <NetworkNeedSwitchModal onClose={onCloseNeedSwitch}/>

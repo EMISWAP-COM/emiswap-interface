@@ -2,6 +2,8 @@ import Modal from '../Modal';
 import React from 'react';
 import styled from 'styled-components/macro';
 import { WalletAction } from '../AccountDetails/styleds';
+import { useNetworkData } from '../../hooks/Coins';
+import { INetworkItem } from '../../constants';
 
 const ActionBtn = styled(WalletAction)`
   height: 32px;
@@ -44,14 +46,17 @@ const ChangeConfirmBtn = styled(ActionBtn)`
 `;
 
 interface Props {
+  selectedItem: INetworkItem,
   onConfirm: () => void;
   onCancel: () => void;
 }
 
 export default function ConfirmSwitchModal({
+  selectedItem,
   onConfirm,
   onCancel,
 }: Props) {
+  const {name} = useNetworkData();
 
   return (
     <Modal
@@ -62,7 +67,8 @@ export default function ConfirmSwitchModal({
     >
       <ModalContent>
         <div>
-          You're changing the network from Ethereum to KuCoin. Please note that you will automatically be logged out from all wallets except MetaMask.
+          You're changing the network from {name} to {selectedItem.name}. Please note that you will
+          automatically be logged out from all wallets except MetaMask.
         </div>
 
         <ModalButtons>

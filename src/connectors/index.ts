@@ -20,7 +20,7 @@ export const network = new NetworkConnector({
 });
 
 export const injected = new InjectedConnector({
-  supportedChainIds: [1, 3, 4, 5, 42, 321],
+  supportedChainIds: [1, 3, 4, 5, 42, 321, 137],
 });
 
 // initialized once, based on the envs - kovan or mainnet. Chain id changes during session have no effect.

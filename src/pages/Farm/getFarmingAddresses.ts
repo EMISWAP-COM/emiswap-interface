@@ -21,6 +21,10 @@ const addressesByNetworkId = {
   321: [
     '0x8667dcf5498bEFBBFd7faEA7FD70F704f5A75685',
   ],
+  // TODO: Polygon
+  137: [
+    '',
+  ],
 };
 
 const getFarmingAddresses = (chainId: ChainId) => {

@@ -81,7 +81,7 @@ const Ambassador: React.FC<Props> = ({ openOptions, ENSName }) => {
       dispatch(loadPerformance(userId) as any);
       dispatch(loadBalance(userId) as any);
     }
-  }, [dispatch, chainId, userId]);
+  }, [dispatch, chainId, userId, isEthActive]);
 
   return (
     <Wrapper>

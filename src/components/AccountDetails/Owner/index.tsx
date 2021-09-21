@@ -65,7 +65,7 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
       dispatch(loadBalance(userId) as any);
       dispatch(loadDepositsEswHistory(userId) as any);
     }
-  }, [dispatch, chainId, userId]);
+  }, [dispatch, chainId, userId, isEthActive]);
 
   return (
     <Wrapper>
