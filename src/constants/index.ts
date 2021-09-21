@@ -45,10 +45,10 @@ export const WKCS = new Token(
 export const WMATIC = new Token(
   // @ts-ignore
   chainIds.POLYGON,
-  '0x4446fc4eb47f2f6586f9faab68b3498f86c07521',
+  '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
   18,
-  'WKCS',
-  'WKCS',
+  'WMATIC',
+  'WMATIC',
 );
 
 export const DAI = new Token(

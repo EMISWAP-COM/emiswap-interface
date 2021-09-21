@@ -11,5 +11,5 @@ export const EMI_ROUTER_ADRESSES: { [chainId in ChainId]: string } = {
   [ChainId.RINKEBY]: '0x7EeE1d070924B8255DAd03ddE989ebBffC1000eB',
   // @ts-ignore
   [chainIds.KUCOIN]: '0xB3184913A87EEfe616788FBA3A02128A01188Ef2',
-  [chainIds.POLYGON]: '',
+  [chainIds.POLYGON]: '0x38680777a6A402E98Fa4609725664f6766c2c46a',
 };
