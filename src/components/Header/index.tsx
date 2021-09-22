@@ -350,6 +350,7 @@ const NETWORK_LABELS: { [chainId in chainIds]: string | null } = {
   [ChainId.KOVAN]: 'Kovan',
   [chainIds.KUCOIN]: 'KuCoin',
   [chainIds.POLYGON]: 'Polygon',
+  [chainIds.AVALANCHE]: 'Avalanche',
 };
 
 export default function Header() {

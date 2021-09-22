@@ -27,15 +27,18 @@ const NetworkSwitchWrapped = styled.div`
 
 const NetworkItemsRow = styled.div`
   display: flex;
+  flex-wrap: wrap;
   // justify-content: space-between;
   justify-content: space-around;
   align-items: center;
-  width: 70%;
+  width: 100%;
   margin: 24px auto 0 auto;
 `;
 
 const NetworkItem = styled.div`
   position: relative;
+  min-width: 90px;
+  margin-bottom: 20px;
   cursor: pointer;
 `;
 
@@ -174,6 +177,10 @@ export default function NetworkSwitchModal() {
     setVisibleNeedSwitchModal(false);
   };
 
+  const logosMaxWidths = {
+    [chainIds.AVALANCHE]: '80%',
+  };
+
   return (
     <div>
       <Modal
@@ -195,7 +202,11 @@ export default function NetworkSwitchModal() {
                   {item.chainId === chainId && (
                     <CircleCheckImg src={CircleCheckIcon}/>
                   )}
-                  <img src={item.icon} alt={item.name}/>
+                  <img
+                    style={{ maxWidth: logosMaxWidths[item.chainId] || '100%' }}
+                    src={item.icon}
+                    alt={item.name}
+                  />
                 </NetworkIcon>
                 <NetworkName active={item.chainId === chainId}>{item.name}</NetworkName>
               </NetworkItem>

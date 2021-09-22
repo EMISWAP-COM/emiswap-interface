@@ -5,6 +5,7 @@ import { PortisConnector } from '@web3-react/portis-connector';
 
 import { FortmaticConnector } from './Fortmatic';
 import { NetworkConnector } from './NetworkConnector';
+import chainIds from '../constants/chainIds';
 
 const CHAIN_ID = window['env'].REACT_APP_CHAIN_ID;
 const NETWORK_URL = window['env'].REACT_APP_NETWORK_URL;
@@ -20,7 +21,16 @@ export const network = new NetworkConnector({
 });
 
 export const injected = new InjectedConnector({
-  supportedChainIds: [1, 3, 4, 5, 42, 321, 137],
+  supportedChainIds: [
+    chainIds.MAINNET,
+    3,
+    4,
+    5,
+    chainIds.KOVAN,
+    chainIds.KUCOIN,
+    chainIds.POLYGON,
+    chainIds.AVALANCHE,
+  ],
 });
 
 // initialized once, based on the envs - kovan or mainnet. Chain id changes during session have no effect.

@@ -9,8 +9,11 @@ import esw_addresses from './esw_addresses';
 import EthereumNetworkIcon from '../assets/svg/ethereum-network.svg';
 import KuCoinNetworkIcon from '../assets/svg/kucoin-network.svg';
 import PolygonNetworkIcon from '../assets/svg/polygon-network.svg';
+import AvalancheNetworkIcon from '../assets/svg/avalanche-network.svg';
+
 import { KCS } from './tokens/KCS';
 import { MATIC } from './tokens/MATIC';
+import { AVAX } from './tokens/AVAX';
 
 export const MAX_NUM_DECIMALS = 18;
 export const ROUTER_ADDRESS = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D';
@@ -49,6 +52,15 @@ export const WMATIC = new Token(
   18,
   'WMATIC',
   'WMATIC',
+);
+
+export const WAVAX = new Token(
+  // @ts-ignore
+  chainIds.AVALANCHE,
+  '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7',
+  18,
+  'WAVAX',
+  'WAVAX',
 );
 
 export const DAI = new Token(
@@ -170,6 +182,10 @@ export const ESW: ChainTokenList = {
     // @ts-ignore
     new Token(chainIds.POLYGON, esw_addresses[chainIds.POLYGON], 18, 'ESW', 'EmiDAO Token'),
   ],
+  [chainIds.AVALANCHE]: [
+    // @ts-ignore
+    new Token(chainIds.AVALANCHE, esw_addresses[chainIds.AVALANCHE], 18, 'ESW', 'EmiDAO Token'),
+  ],
 };
 
 const ETH_ONLY: ChainTokenList = {
@@ -181,6 +197,7 @@ const ETH_ONLY: ChainTokenList = {
   // @ts-ignore
   [chainIds.KUCOIN]: [ETHER],
   [chainIds.POLYGON]: [ETHER],
+  [chainIds.AVALANCHE]: [ETHER],
 };
 
 // used to construct intermediary pairs for trading
@@ -191,6 +208,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   // @ts-ignore
   [chainIds.KUCOIN]: [WKCS],
   [chainIds.POLYGON]: [WMATIC],
+  [chainIds.AVALANCHE]: [WAVAX],
 };
 
 // used for display in the default list when adding liquidity
@@ -202,6 +220,8 @@ export const SUGGESTED_BASES: ChainTokenList = {
   [chainIds.KUCOIN]: [ESW[chainIds.KUCOIN][0]],
   // @ts-ignore
   [chainIds.POLYGON]: [ESW[chainIds.POLYGON][0]],
+  // @ts-ignore
+  [chainIds.AVALANCHE]: [ESW[chainIds.AVALANCHE][0]],
 };
 
 // used to construct the list of all pairs we consider by default in the frontend
@@ -213,6 +233,8 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   [chainIds.KUCOIN]: [ESW[chainIds.KUCOIN][0]],
   // @ts-ignore
   [chainIds.POLYGON]: [ESW[chainIds.POLYGON][0]],
+  // @ts-ignore
+  [chainIds.AVALANCHE]: [ESW[chainIds.AVALANCHE][0]],
 };
 
 // @ts-ignore
@@ -408,7 +430,7 @@ export const networksItems: INetworkItem[] = [
     currencySymbolWrap: 'WKCS',
     currencySymbolWeth: 'KCS',
     blockExplorerUrl: 'https://explorer.kcc.io/en',
-    blockExplorerName: 'KCC explorer',
+    blockExplorerName: 'KCC Explorer',
     analyticsUrl: 'https://emiswap.com/analytics?network=kcc',
   },
   {
@@ -427,5 +449,22 @@ export const networksItems: INetworkItem[] = [
     blockExplorerUrl: 'https://polygonscan.com',
     blockExplorerName: 'Polygonscan',
     analyticsUrl: 'https://emiswap.com/analytics?network=polygon',
+  },
+  {
+    alias: 'avalanche',
+    value: 'avalanche',
+    chainId: chainIds.AVALANCHE,
+    token: AVAX,
+    icon: AvalancheNetworkIcon,
+    name: 'Avalanche',
+    rpcUrls: [
+      'https://api.avax.network/ext/bc/C/rpc',
+    ],
+    currencySymbol: 'AVAX',
+    currencySymbolWrap: 'WAVAX',
+    currencySymbolWeth: 'AVAX',
+    blockExplorerUrl: 'https://cchain.explorer.avax.network/',
+    blockExplorerName: 'Avax Explorer',
+    analyticsUrl: 'https://emiswap.com/analytics?network=avalanche',
   },
 ];
