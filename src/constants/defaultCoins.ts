@@ -4075,6 +4075,13 @@ const defaultCoins: DefaultCoins = {
       logoURI:
         'https://raw.githubusercontent.com/KoffeeSwap/kcc-assets/main/mainnet/tokens/0xfC56A7E70F6c970538020cc39939929b4d393F1F/logo.png',
     },
+    {
+      address: '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
+      chainId: 137,
+      decimals: 18,
+      name: 'WMATIC',
+      symbol: 'WMATIC',
+    },
   ],
   logoURI: 'https://1inch.exchange/assets/images/logo.png',
 };
