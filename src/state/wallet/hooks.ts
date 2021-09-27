@@ -90,6 +90,7 @@ export function useTokenBalancesWithLoadingIndicator(
   const validatedTokenAddresses = useMemo(() => validatedTokens.map(vt => vt.address), [
     validatedTokens,
   ]);
+
   const balances = useMultipleContractSingleData(
     validatedTokenAddresses,
     ERC20_INTERFACE,
@@ -107,6 +108,7 @@ export function useTokenBalancesWithLoadingIndicator(
           ? validatedTokens.reduce<{ [tokenAddress: string]: TokenAmount | undefined }>(
               (memo, token, i) => {
                 const value = balances?.[i]?.result?.[0];
+
                 const amount = value ? JSBI.BigInt(value.toString()) : undefined;
                 if (amount) {
                   try {
@@ -124,6 +126,110 @@ export function useTokenBalancesWithLoadingIndicator(
     ),
     anyLoading,
   ];
+}
+
+export function useTokenSymbolsWithLoadingIndicator(
+  address?: string,
+  tokens?: (Token | undefined)[],
+):[{ [tokenAddress: string]: string | undefined }, boolean] {
+  const validatedTokens: Token[] = useMemo(
+    () => tokens?.filter((t?: Token): t is Token => isAddress(t?.address) !== false) ?? [],
+    [tokens],
+  );
+
+  const validatedTokenAddresses = useMemo(() => validatedTokens.map(vt => vt.address), [
+    validatedTokens,
+  ]);
+
+  const names = useMultipleContractSingleData(
+    validatedTokenAddresses,
+    ERC20_INTERFACE,
+    'symbol',
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    true,
+  );
+
+  const anyLoading: boolean = useMemo(() => names.some(callState => callState.loading), [
+    names,
+  ]);
+
+  return [
+    useMemo(
+      () =>
+        address && validatedTokens.length > 0
+          ? validatedTokens.reduce<{ [tokenAddress: string]: string | undefined }>(
+              (memo, token, i) => {
+                const value = names?.[i]?.result?.[0];
+                memo[token.address] = value;
+                return memo;
+              },
+              {},
+            )
+          : {},
+      [address, validatedTokens, names],
+    ),
+    anyLoading,
+  ];
+}
+
+export function useTokenDecimalsWithLoadingIndicator(
+  address: string,
+  tokensAddresses: string[],
+):[{ [tokenAddress: string]: number | undefined }, boolean] {
+  const validatedTokenAddresses: string[] = useMemo(
+    () => tokensAddresses.filter(address => isAddress(address) !== false),
+    [tokensAddresses],
+  );
+
+  const decimals = useMultipleContractSingleData(
+    validatedTokenAddresses,
+    ERC20_INTERFACE,
+    'decimals',
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    true,
+  );
+
+  const anyLoading: boolean = useMemo(() => decimals.some(callState => callState.loading), [
+    decimals,
+  ]);
+
+  return [
+    useMemo(
+      () =>
+        address && validatedTokenAddresses.length > 0
+          ? validatedTokenAddresses.reduce<{ [tokenAddress: string]: number | undefined }>(
+              (memo, address, i) => {
+                const value = decimals?.[i]?.result?.[0];
+                memo[address] = value;
+                return memo;
+              },
+              {},
+            )
+          : {},
+      [address, validatedTokenAddresses, decimals],
+    ),
+    anyLoading,
+  ];
+}
+
+export function useTokenDecimals(
+  address: string,
+  tokensAddresses: string[],
+): { [tokenAddress: string]: number | undefined } {
+  return useTokenDecimalsWithLoadingIndicator(address, tokensAddresses)[0];
+}
+
+export function useTokenSymbols(
+  address?: string,
+  tokens?: (Token | undefined)[],
+): { [tokenAddress: string]: string | undefined } {
+  return useTokenSymbolsWithLoadingIndicator(address, tokens)[0];
 }
 
 // // Used for Pools (Account == Pool)

@@ -86,7 +86,7 @@
     "use-media": "^1.4.0"
   },
   "scripts": {
-    "start": "cross-env PORT=4202 react-scripts start",
+    "start": "cross-env PORT=4205 react-scripts start",
     "build": "react-scripts build && REACTBUILDVERSION=$(date +%Y-%m-%d)-$(date +%T) && sed -i -- 's/%REACTBUILDVERSION%/'$REACTBUILDVERSION'/g' build/docs/version.txt && echo React Build Version = $REACTBUILDVERSION",
     "build:stage": "rm -R -f ./build && env-cmd -f .env.staging react-scripts build && REACTBUILDVERSION=Stage_$(date +%Y-%m-%d)-$(date +%T) && sed -i -- 's/%REACTBUILDVERSION%/'$REACTBUILDVERSION'/g' build/docs/version.txt && echo React Build Version = $REACTBUILDVERSION",
     "test": "react-scripts test --env=jsdom",
@@ -120,6 +120,7 @@
   "license": "GPL-3.0-or-later",
   "dependencies": {
     "@material-ui/core": "^4.11.4",
+    "@movr/fund-movr-sdk": "^0.0.1-beta.7",
     "@rebass/preset": "^4.0.5",
     "@sentry/react": "^6.5.1",
     "@sentry/tracing": "^6.5.1",

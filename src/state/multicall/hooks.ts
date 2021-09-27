@@ -302,6 +302,7 @@ export function useMultipleContractSingleData(
     contractInterface,
     methodName,
   ]);
+
   let calls;
   if (multyCallInputs) {
     const callData = multyCallInputs?.map(callInput => {

@@ -68,6 +68,7 @@ export enum TabNames {
   SWAP,
   POOL,
   MIGRATE,
+  BRIDGE,
   INVEST,
   FARM,
 }
@@ -93,6 +94,13 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
       >
         {t('migrate')}
       </StyledNavLink>
+      <StyledNavLink
+        id={`pool-nav-link`}
+        to={'/bridge'}
+        isActive={() => active === TabNames.BRIDGE}
+      >
+        {t('bridge')}
+      </StyledNavLink>
       {/*<StyledNavLink*/}
       {/*  id={`pool-nav-link`}*/}
       {/*  to={'/invest'}*/}
@@ -101,11 +109,7 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
       {/*  {t('invest')}*/}
       {/*</StyledNavLink>*/}
       {!isKuCoinActive && (
-        <StyledNavLink
-          id={`farm-nav-link`}
-          to={'/farm'}
-          isActive={() => active === TabNames.FARM}
-        >
+        <StyledNavLink id={`farm-nav-link`} to={'/farm'} isActive={() => active === TabNames.FARM}>
           {t('Stake & Farm')}
         </StyledNavLink>
       )}
