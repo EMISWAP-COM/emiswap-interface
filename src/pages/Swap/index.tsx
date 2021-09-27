@@ -13,7 +13,13 @@ import { SwapPoolTabs, TabNames } from '../../components/NavigationTabs';
 import { AutoRow, RowBetween } from '../../components/Row';
 import BetterTradeLink from '../../components/swap/BetterTradeLink';
 import confirmPriceImpactWithoutFee from '../../components/swap/confirmPriceImpactWithoutFee';
-import { ArrowWrapper, BottomGrouping, Dots, ErrorText, Wrapper } from '../../components/swap/styleds';
+import {
+  ArrowWrapper,
+  BottomGrouping,
+  Dots,
+  ErrorText,
+  Wrapper,
+} from '../../components/swap/styleds';
 import SwapModalFooter from '../../components/swap/SwapModalFooter';
 import SwapModalHeader from '../../components/swap/SwapModalHeader';
 import TradePrice from '../../components/swap/TradePrice';
@@ -33,10 +39,18 @@ import {
   useSwapActionHandlers,
   useSwapState,
 } from '../../state/swap/hooks';
-import { useExpertModeManager, useTokenWarningDismissal, useUserSlippageTolerance } from '../../state/user/hooks';
+import {
+  useExpertModeManager,
+  useTokenWarningDismissal,
+  useUserSlippageTolerance,
+} from '../../state/user/hooks';
 import { CursorPointer, ExternalGreenLink, StyledButtonNavigation, TYPE } from '../../theme';
 import { maxAmountSpend } from '../../utils/maxAmountSpend';
-import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown, warningSeverity } from '../../utils/prices';
+import {
+  computeSlippageAdjustedAmounts,
+  computeTradePriceBreakdown,
+  warningSeverity,
+} from '../../utils/prices';
 import AppBody from '../AppBody';
 import { ClickableText } from '../Pool/styleds';
 import { isUseOneSplitContract } from '../../utils';
@@ -105,14 +119,14 @@ export default function Swap() {
 
   const parsedAmounts = showWrap
     ? {
-      [Field.INPUT]: parsedAmount,
-      [Field.OUTPUT]: parsedAmount,
-    }
+        [Field.INPUT]: parsedAmount,
+        [Field.OUTPUT]: parsedAmount,
+      }
     : {
-      // [Field.INPUT]: parsedAmount,
-      [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
-      [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
-    };
+        // [Field.INPUT]: parsedAmount,
+        [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
+        [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
+      };
 
   const isValid = !error;
   const dependentField: Field = independentField === Field.INPUT ? Field.OUTPUT : Field.INPUT;
@@ -222,7 +236,7 @@ export default function Swap() {
       })
       .catch(error => {
         setAttemptingTxn(false);
-        console.log("Cancel");
+        console.log('Cancel');
         ReactGA.set({
           dimension1: currencies[Field.INPUT]?.symbol,
           dimension2: currencies[Field.OUTPUT]?.symbol,
@@ -300,9 +314,9 @@ export default function Swap() {
     (!dismissedToken1 && !!currencies[Field.OUTPUT]);
 
   const notEnoughBalance =
-    maxAmountInput
-    && parsedAmounts[Field.INPUT]?.raw
-    && JSBI.lessThan(maxAmountInput.raw, parsedAmounts[Field.INPUT]!.raw);
+    maxAmountInput &&
+    parsedAmounts[Field.INPUT]?.raw &&
+    JSBI.lessThan(maxAmountInput.raw, parsedAmounts[Field.INPUT]!.raw);
 
   return (
     <>
@@ -520,9 +534,7 @@ export default function Swap() {
               </ErrorText>
             )}
           </BottomGrouping>
-          {(chainId as any) !== chainIds.KUCOIN && (
-            <GasFeeText>100% gas fee refund</GasFeeText>
-          )}
+          {(chainId as any) !== chainIds.KUCOIN && <GasFeeText>100% gas fee refund</GasFeeText>}
           <TYPE.black fontSize={14} fontWeight={400} color={theme.text2} marginTop={'12px'}>
             <ExternalGreenLink href="https://wiki.emiswap.com/user-guide/how-to-make-swaps">
               Wiki How to make swaps?

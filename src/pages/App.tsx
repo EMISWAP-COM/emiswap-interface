@@ -30,6 +30,7 @@ import Claim from './Claim';
 import MigrateV1 from './MigrateV1';
 import MigrateV1Exchange from './MigrateV1/MigrateV1Exchange';
 // import Invest from './Invest';
+import Bridge from './Bridge';
 import Farm from './Farm';
 
 const LogoWrapper = styled.div`
@@ -105,6 +106,7 @@ export default function App() {
                     <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
                     <Route exact strict path="/find" component={PoolFinder} />
                     <Route exact strict path="/pool" component={Pool} />
+                    <Route exact strict path="/bridge" component={Bridge} />
                     <Route exact strict path="/create" component={RedirectToAddLiquidity} />
                     <Route exact path="/add" component={AddLiquidity} />
                     <Route
