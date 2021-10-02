@@ -4004,6 +4004,42 @@ const defaultCoins: DefaultCoins = {
       logoURI:
         'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
     },
+    /*{
+      address: '0x5a75a093747b72a0e14056352751edf03518031d',
+      chainId: 1,
+      name: 'ESW V3',
+      symbol: 'ESWV3',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },*/
+    /*{
+      address: '0xf6a7d96cc0278d60cdc00d82d87acd38064d9176',
+      chainId: 1,
+      name: 'LP ESW - ETH V2',
+      symbol: 'ESWETHV2',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0xf6a7d96cc0278d60cdc00d82d87acd38064d9176.png',
+    },
+    {
+      address: '0x22B8CCdeEEACB1F3879E36e06af413d44FD79F01',
+      chainId: 1,
+      name: 'LP ETH - USDT',
+      symbol: 'ETHUSDT',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x22B8CCdeEEACB1F3879E36e06af413d44FD79F01.png',
+    },*/
+    /*{
+      address: '0x527721ae4e9ac7286f3bbac9ca49c4e659c59b49',
+      chainId: 1,
+      name: 'LP USDC - FLEX V3',
+      symbol: 'USDCFLEXV3',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x527721ae4e9ac7286f3bbac9ca49c4e659c59b49.png',
+    },*/
     {
       address: '0x4446fc4eb47f2f6586f9faab68b3498f86c07521',
       chainId: 321,

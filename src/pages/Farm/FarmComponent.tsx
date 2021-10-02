@@ -3,21 +3,28 @@ import ExtendableRow from './ExtendableRow';
 import React, { useEffect, useState } from 'react';
 import useFarming from '../../hooks/useFarming';
 import { Contract } from '@ethersproject/contracts';
-import { isStakingTab } from './index';
-import isLpToken from './isLpToken';
+import useIsVisibleFarm from '../../hooks/useIsVisibleFarm';
 
 type FarmComponentProps = {
   contract: Contract;
   selectedTab: string;
+  selectedFilterTab: 'active' | 'finished';
   eswPriceInDai: string;
 };
 
-const FarmComponent: React.FC<FarmComponentProps> = ({ contract, selectedTab, eswPriceInDai }) => {
+const FarmComponent: React.FC<FarmComponentProps> = ({
+  contract,
+  selectedTab,
+  selectedFilterTab,
+  eswPriceInDai,
+}) => {
   const farming = useFarming(contract);
 
   const [apr, setApr] = useState<number>(0);
 
   const isKuCoinToken = farming.stakeToken?.symbol?.includes('KCS');
+
+  const isVisibleFarm = useIsVisibleFarm(farming, selectedTab, selectedFilterTab);
 
   useEffect(() => {
     if (farming.blockReward && Number(farming.liquidity) && eswPriceInDai) {
@@ -33,11 +40,9 @@ const FarmComponent: React.FC<FarmComponentProps> = ({ contract, selectedTab, es
     }
   }, [eswPriceInDai, farming.blockReward, farming.liquidity, selectedTab, isKuCoinToken]);
 
-  const shouldShow =
-    (isStakingTab(selectedTab) && !isLpToken(farming.tokenMode)) ||
-    (!isStakingTab(selectedTab) && isLpToken(farming.tokenMode));
+  console.log(farming);
 
-  return shouldShow ? (
+  return isVisibleFarm ? (
     <ExtendableRow
       contractAddress={contract.address}
       stakeToken={farming.stakeToken}
