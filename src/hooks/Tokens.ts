@@ -137,6 +137,9 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
     NEVER_RELOAD,
   );
 
+  console.log(symbol, symbolBytes32);
+  console.log(tokenName, tokenNameBytes32);
+
   return useMemo(() => {
     if (token) {
       return token;

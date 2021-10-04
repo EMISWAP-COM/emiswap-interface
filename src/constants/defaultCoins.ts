@@ -4082,6 +4082,29 @@ const defaultCoins: DefaultCoins = {
       name: 'WMATIC',
       symbol: 'WMATIC',
     },
+    {
+      address: '0xd2A2a353D28e4833FAFfC882f6649c9c884a7D8f',
+      chainId: 137,
+      name: 'EmiSwap - EmiDao Token',
+      symbol: 'ESW',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
+      address: '0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
+      chainId: 137,
+      name: 'USDT',
+      decimals: 18,
+      symbol: 'USDT',
+    },
+    {
+      address: '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063',
+      chainId: 137,
+      name: 'DAI',
+      decimals: 18,
+      symbol: 'DAI',
+    },
   ],
   logoURI: 'https://1inch.exchange/assets/images/logo.png',
 };

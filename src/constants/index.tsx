@@ -400,6 +400,8 @@ export interface INetworkItem {
   blockExplorerUrl: string;
   blockExplorerName: string;
   analyticsUrl: string;
+  eswExplorerUrl: string;
+  eswExplorerName: string;
 }
 
 export const networksItems: INetworkItem[] = [
@@ -417,6 +419,8 @@ export const networksItems: INetworkItem[] = [
     blockExplorerUrl: 'https://etherscan.io',
     blockExplorerName: 'Etherscan',
     analyticsUrl: 'https://emiswap.com/analytics?network=main',
+    eswExplorerUrl: 'https://etherscan.io/token/0x5a75A093747b72a0e14056352751eDF03518031d',
+    eswExplorerName: 'ESW Etherscan',
   },
   {
     alias: 'kcc',
@@ -432,6 +436,8 @@ export const networksItems: INetworkItem[] = [
     blockExplorerUrl: 'https://explorer.kcc.io/en',
     blockExplorerName: 'KCC Explorer',
     analyticsUrl: 'https://emiswap.com/analytics?network=kcc',
+    eswExplorerUrl: 'https://explorer.kcc.io/en/token/0x8933a6e58eeee063b5fd3221f2e1d17821dc1031',
+    eswExplorerName: 'ESW KCC Explorer',
   },
   {
     alias: 'polygon',
@@ -449,6 +455,8 @@ export const networksItems: INetworkItem[] = [
     blockExplorerUrl: 'https://polygonscan.com',
     blockExplorerName: 'Polygonscan',
     analyticsUrl: 'https://emiswap.com/analytics?network=polygon',
+    eswExplorerUrl: 'https://polygonscan.com/token/0xd2A2a353D28e4833FAFfC882f6649c9c884a7D8f',
+    eswExplorerName: 'ESW Polygonscan',
   },
   {
     alias: 'avalanche',
@@ -466,5 +474,7 @@ export const networksItems: INetworkItem[] = [
     blockExplorerUrl: 'https://cchain.explorer.avax.network/',
     blockExplorerName: 'Avax Explorer',
     analyticsUrl: 'https://emiswap.com/analytics?network=avalanche',
+    eswExplorerUrl: 'https://etherscan.io/token/0x5a75A093747b72a0e14056352751eDF03518031d',
+    eswExplorerName: 'ESW KCC Explorer',
   },
 ];
