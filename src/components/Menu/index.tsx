@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import { ReactComponent as MenuIcon } from '../../assets/images/menu.svg';
 import useToggle from '../../hooks/useToggle';
 import { ExternalLink } from '../../theme';
-import { useActiveWeb3React } from '../../hooks';
 import { useNetworkData } from '../../hooks/Coins';
 
 const StyledMenuIcon = styled(MenuIcon)`
@@ -88,12 +87,12 @@ const MenuItem = styled(ExternalLink)`
 `;*/
 
 export default function Menu() {
-  const {analyticsUrl, eswExplorerUrl, eswExplorerName} = useNetworkData();
+  const { analyticsUrl, eswExplorerUrl, eswExplorerName } = useNetworkData();
 
   const node = useRef<HTMLDivElement>();
   const [open, toggle] = useToggle(false);
 
-  const { chainId } = useActiveWeb3React();
+  // const { chainId } = useActiveWeb3React();
 
   useEffect(() => {
     const handleClickOutside = e => {

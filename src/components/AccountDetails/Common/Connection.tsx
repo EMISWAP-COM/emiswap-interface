@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { darken } from 'polished';
 import { ChangeAddress } from './ChangeAddress';
-import { useIsEthActive, useNetworkData } from '../../../hooks/Coins';
+import { useIsEthActive, useIsKuCoinActive, useNetworkData } from '../../../hooks/Coins';
 import { MessageTooltip } from '../../../base/ui';
 import { css } from 'styled-components';
 
@@ -194,8 +194,9 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
   const history = useHistory();
   const toggle = useWalletModalToggle();
 
-  // const isKuCoinActive = useIsKuCoinActive();
   const isEthereumActive = useIsEthActive();
+  const isKuCoinActive = useIsKuCoinActive();
+  const isEnableChangeWallet = !isKuCoinActive;
 
   const balance = useSelector((state: AppState) => state.cabinets.balance);
 
@@ -212,7 +213,7 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
   };
 
   const handleChangeWallet = () => {
-    if (!isEthereumActive) {
+    if (!isEnableChangeWallet) {
       return;
     }
 
@@ -233,12 +234,12 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
             <ChangeActionsBlock>
               <ChangeAddress openOptions={openOptions}/>
               <ChangeWalletMessageTooltip
-                disableTooltip={isEthereumActive}
+                disableTooltip={isEnableChangeWallet}
                 whiteSpace={'normal'}
                 position={{ top: '4px', left: '284px' }}
                 text="Only Metamask wallet is supported. You need to change the address inside the Metamask wallet."
               >
-                <ChangeWalletBtn inactive={!isEthereumActive} onClick={handleChangeWallet}>
+                <ChangeWalletBtn inactive={!isEnableChangeWallet} onClick={handleChangeWallet}>
                   Change wallet
                 </ChangeWalletBtn>
               </ChangeWalletMessageTooltip>
