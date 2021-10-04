@@ -70,6 +70,8 @@ const useFarming = (contract: Contract) => {
             getFarmingCoinNameAndSymbol(contract.address).name || defaultCoin.name,
           );
           setStakeToken(token);
+        } else {
+          console.log('stakeToken', value);
         }
       })
       .catch((error: RequestError) => {
