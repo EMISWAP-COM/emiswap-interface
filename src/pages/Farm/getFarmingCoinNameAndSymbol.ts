@@ -9,7 +9,7 @@ const coinNamesMap = {
   },
   '0xd9ca818d8db735fde245afaf55821ed7fa582d6c': {
     name: 'ESW V2',
-    symbol: 'ESWV2',
+    symbol: 'ESW V2',
   },
   '0x0607C72267a160Edcf5151cd38d832C524817b6c': {
     name: 'ESW - ETH',
@@ -45,7 +45,7 @@ const coinNamesMap = {
   },
   '0x54B49CE39d95D5A4C6515d6000e1712D34410F3B': {
     name: 'ESW V3',
-    symbol: 'ESWV3',
+    symbol: 'ESW V3',
   },
   '0xe094E3E16e813a40E2d6cC4b89bfeAe0142044e1': {
     name: 'LP ESW - ETH V2',

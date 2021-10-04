@@ -4041,6 +4041,13 @@ const defaultCoins: DefaultCoins = {
         'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x527721ae4e9ac7286f3bbac9ca49c4e659c59b49.png',
     },*/
     {
+      address: '0xc02AEE6E383b53b4b04dFBB9C5C76eBc2751522a',
+      chainId: 1,
+      decimals: 18,
+      name: 'LP ESW',
+      symbol: 'ESW',
+    },
+    {
       address: '0x4446fc4eb47f2f6586f9faab68b3498f86c07521',
       chainId: 321,
       decimals: 18,

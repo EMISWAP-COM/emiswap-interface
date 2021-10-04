@@ -40,7 +40,7 @@ const FarmComponent: React.FC<FarmComponentProps> = ({
     }
   }, [eswPriceInDai, farming.blockReward, farming.liquidity, selectedTab, isKuCoinToken]);
 
-  console.log(farming);
+  // console.log(farming);
 
   return isVisibleFarm ? (
     <ExtendableRow
