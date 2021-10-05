@@ -262,6 +262,9 @@ html {
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
+
+--cursorXPos: 50vh;
+--cursorYPos: 50vh;
 `;
 
 export const ThemedGlobalStyle = createGlobalStyle`

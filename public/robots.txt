@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /docs/*.pdf
+Sitemap: https://emiswap.com/sitemap.xml
