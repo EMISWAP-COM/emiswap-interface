@@ -14,6 +14,7 @@ import chainIds from '../../../constants/chainIds';
 import { useActiveWeb3React } from '../../../hooks';
 import { FarmingTimeType } from '../constants';
 import KucoinLogo from '../../../assets/currencies/KCS.png';
+import { useNetworkData } from '../../../hooks/Coins';
 
 const StyledRow = styled.div`
   background-color: ${({ theme }) => theme.border1Transparency};
@@ -238,6 +239,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
   availableToCollect,
   isKuCoinToken,
 }) => {
+  const { alias } = useNetworkData();
   const [isRowExtended, setIsRowExtended] = useState(false);
   const { chainId } = useActiveWeb3React();
 
@@ -268,7 +270,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
                   <ExternalLink
                     href={`https://emiswap.com/analytics/${
                       isLpToken(tokenMode) ? 'pair' : 'token'
-                    }/${stakeToken?.address}`}
+                    }/${stakeToken?.address}?=network=${alias}`}
                   >
                     <LinkIcon size={16}/>
                   </ExternalLink>

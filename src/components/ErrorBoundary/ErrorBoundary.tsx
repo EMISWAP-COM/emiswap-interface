@@ -59,7 +59,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 
     if (this.state.error) {
       return (
-        <AppWrapper>
+        <AppWrapper is404Page={false}>
           <ErrorContainer>
             <img src={Logo} alt="logo" />
             <Modal isOpen={this.state.isOpen} onDismiss={this.handleDismiss}>

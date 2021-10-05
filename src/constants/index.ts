@@ -1,13 +1,13 @@
-import { ChainId, ETHER, JSBI, Percent, Token } from '@uniswap/sdk';
-
-import { fortmatic, injected, portis, walletconnect, walletlink } from '../connectors';
 import { keccak256 } from '@ethersproject/solidity';
+import { ChainId, ETHER, JSBI, Percent, Token } from '@uniswap/sdk';
+import EthereumNetworkIcon from '../assets/svg/ethereum-network.svg';
+import KuCoinNetworkIcon from '../assets/svg/kucoin-network.svg';
+import { fortmatic, injected, portis, walletconnect, walletlink } from '../connectors';
 import { bytecode } from './abis/Emiswap.json';
 import chainIds from './chainIds';
 import esw_addresses from './esw_addresses';
 
-import EthereumNetworkIcon from '../assets/svg/ethereum-network.svg';
-import KuCoinNetworkIcon from '../assets/svg/kucoin-network.svg';
+
 // import PolygonNetworkIcon from '../assets/svg/polygon-network.svg';
 
 export const MAX_NUM_DECIMALS = 18;
@@ -343,6 +343,7 @@ export const INIT_CODE_HASH = keccak256(['bytes'], [bytecode]);
 export const FACTORY_ADDRESS = '0xe4917eb85A6C11a56189DbE621433ce5c2a3bfc3';
 
 export interface INetworkItem {
+  alias: string;
   value: string;
   chainId: number;
   icon: any;
@@ -350,10 +351,12 @@ export interface INetworkItem {
   rpcUrls: string[];
   currencySymbol: string;
   blockExplorerUrls: string;
+  analyticsUrl: string;
 }
 
 export const networksItems: INetworkItem[] = [
   {
+    alias: 'main',
     value: 'ethereum',
     chainId: ChainId.MAINNET,
     icon: EthereumNetworkIcon,
@@ -361,6 +364,7 @@ export const networksItems: INetworkItem[] = [
     rpcUrls: [''],
     currencySymbol: 'ETH',
     blockExplorerUrls: '',
+    analyticsUrl: 'https://emiswap.com/analytics?network=main',
   },
   /*{
     value: 'polygon',
@@ -369,6 +373,7 @@ export const networksItems: INetworkItem[] = [
     name: 'Polygon (Matic)',
   },*/
   {
+    alias: 'kcc',
     value: 'kucoin',
     chainId: chainIds.KUCOIN,
     icon: KuCoinNetworkIcon,
@@ -376,5 +381,6 @@ export const networksItems: INetworkItem[] = [
     rpcUrls: ['https://rpc-mainnet.kcc.network'],
     currencySymbol: 'KCS',
     blockExplorerUrls: 'https://explorer.kcc.io/en',
+    analyticsUrl: 'https://emiswap.com/analytics?network=kcc',
   },
 ];
