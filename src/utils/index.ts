@@ -18,6 +18,8 @@ import vesting_addresses from '../constants/vestring_addresses';
 import emiprice2_addresses from '../constants/emiprice2_addresses';
 import getFarmingAddresses from '../pages/Farm/getFarmingAddresses';
 import { networksItems } from '../constants';
+import { KCS } from '../constants/tokens/KCS';
+import { MATIC } from '../constants/tokens/MATIC';
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
@@ -46,7 +48,7 @@ export function getExplorerLink(
 ): string {
   const {blockExplorerUrl} = getNetworkData(chainId);
   const isEthActive = isEthereumActive(chainId);
-  
+
   let path = blockExplorerUrl;
   if (isEthActive) {
     path = `https://${ETHERSCAN_PREFIXES[chainId] || ETHERSCAN_PREFIXES[1]}${blockExplorerUrl}`;
@@ -161,7 +163,7 @@ export function escapeRegExp(string: string): string {
 }
 
 export function isDefaultToken(defaultTokens: TokenAddressMap, currency?: Token): boolean {
-  if (currency === ETHER) return true;
+  if (currency === ETHER || currency === KCS || currency === MATIC) return true;
   return Boolean(currency instanceof Token && defaultTokens[currency.chainId]?.[currency.address]);
 }
 
