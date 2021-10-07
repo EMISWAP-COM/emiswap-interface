@@ -71,6 +71,7 @@ export enum TabNames {
   INVEST,
   FARM,
 }
+
 //TODO refactor. Component index.tsx must return single component
 
 export function SwapPoolTabs({ active }: { active: TabNames }) {
@@ -93,13 +94,13 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
       >
         {t('migrate')}
       </StyledNavLink>
-      {/*<StyledNavLink*/}
-      {/*  id={`pool-nav-link`}*/}
-      {/*  to={'/invest'}*/}
-      {/*  isActive={() => active === TabNames.INVEST}*/}
-      {/*>*/}
-      {/*  {t('invest')}*/}
-      {/*</StyledNavLink>*/}
+      <StyledNavLink
+        id={`pool-nav-link`}
+        to={'/invest'}
+        isActive={() => active === TabNames.INVEST}
+      >
+        {t('invest')}
+      </StyledNavLink>
       {!isKuCoinActive && (
         <StyledNavLink
           id={`farm-nav-link`}
@@ -118,11 +119,11 @@ export function FindPoolTabs() {
     <Tabs>
       <RowBetween style={{ padding: '1rem' }}>
         <HistoryLink to="/pool">
-          <StyledArrowLeft />
+          <StyledArrowLeft/>
         </HistoryLink>
         <ActiveText>Import Pool</ActiveText>
         <QuestionHelper
-          text={"Use this tool to find pairs that don't automatically appear in the interface."}
+          text={'Use this tool to find pairs that don\'t automatically appear in the interface.'}
         />
       </RowBetween>
     </Tabs>
@@ -134,7 +135,7 @@ export function AddRemoveTabs({ adding }: { adding: boolean }) {
     <Tabs>
       <RowBetween style={{ padding: '1rem' }}>
         <HistoryLink to="/pool">
-          <StyledArrowLeft />
+          <StyledArrowLeft/>
         </HistoryLink>
         <ActiveText>{adding ? 'Add' : 'Remove'} Liquidity</ActiveText>
         <QuestionHelper

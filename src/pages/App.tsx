@@ -33,6 +33,7 @@ import MigrateV1Exchange from './MigrateV1/MigrateV1Exchange';
 import Farm from './Farm';
 import NotFound from './NotFound';
 import SocButtons from '../components/SocButtons';
+import Invest from './Invest';
 
 const LogoWrapper = styled.div`
   display: none;
@@ -103,7 +104,6 @@ export default function App() {
               <Web3ReactManager>
                 <ErrorBoundary title={'Oops, try again later...'} onDismiss={() => {}}>
                   <Switch>
-                    {/*<Route exact strict path="/invest" component={Invest} />*/}
                     <Redirect exact from="/" to="/swap" />
                     <Route exact strict path="/swap" component={Swap} />
                     <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
@@ -138,6 +138,7 @@ export default function App() {
                     <Route exact strict path="/migrate/:address" component={MigrateV1Exchange} />
                     <Route exact strict path="/claim/:tokenName" component={Claim} />
                     <Route exact strict path="/farm" component={Farm} />
+                    <Route exact strict path="/invest" component={Invest} />
                     <Route path="/404" component={NotFound} />
                     <Route component={RedirectPathToSwap} />
                   </Switch>
