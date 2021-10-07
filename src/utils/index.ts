@@ -20,6 +20,7 @@ import getFarmingAddresses from '../pages/Farm/getFarmingAddresses';
 import { networksItems } from '../constants';
 import { KCS } from '../constants/tokens/KCS';
 import { MATIC } from '../constants/tokens/MATIC';
+import { AVAX } from '../constants/tokens/AVAX';
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
@@ -163,7 +164,9 @@ export function escapeRegExp(string: string): string {
 }
 
 export function isDefaultToken(defaultTokens: TokenAddressMap, currency?: Token): boolean {
-  if (currency === ETHER || currency === KCS || currency === MATIC) return true;
+  if ([ETHER, KCS, MATIC, AVAX].includes(currency!)) {
+    return true;
+  }
   return Boolean(currency instanceof Token && defaultTokens[currency.chainId]?.[currency.address]);
 }
 

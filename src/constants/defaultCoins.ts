@@ -4105,6 +4105,20 @@ const defaultCoins: DefaultCoins = {
       decimals: 18,
       symbol: 'DAI',
     },
+    {
+      address: '0xc7198437980c041c805A1EDcbA50c1Ce5db95118',
+      chainId: 43114,
+      name: 'USDT',
+      decimals: 18,
+      symbol: 'USDT',
+    },
+    {
+      address: '0xd586E7F844cEa2F87f50152665BCbc2C279D8d70',
+      chainId: 43114,
+      name: 'DAI',
+      decimals: 18,
+      symbol: 'DAI',
+    },
   ],
   logoURI: 'https://1inch.exchange/assets/images/logo.png',
 };

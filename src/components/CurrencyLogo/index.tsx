@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import EthereumLogo from '../../assets/images/ethereum-logo.png';
 import KucoinLogo from '../../assets/currencies/KCS.png';
 import MaticLogo from '../../assets/currencies/MATIC.png';
+import AvaxLogo from '../../assets/currencies/AVAX.png';
 import defaultCoins from '../../constants/defaultCoins';
 import { useActiveWeb3React } from '../../hooks';
 
@@ -88,6 +89,10 @@ export default function CurrencyLogo({
 
   if (currency?.symbol === 'MATIC' || currency?.symbol === 'WMATIC') {
     return <StyledEthereumLogo src={MaticLogo} size={size} {...rest} />;
+  }
+
+  if (currency?.symbol === 'AVAX' || currency?.symbol === 'WAVAX') {
+    return <StyledEthereumLogo src={AvaxLogo} size={size} {...rest} />;
   }
 
   if (currency instanceof Token) {
