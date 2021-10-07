@@ -32,6 +32,7 @@ import MigrateV1Exchange from './MigrateV1/MigrateV1Exchange';
 // import Invest from './Invest';
 import Farm from './Farm';
 import NotFound from './NotFound';
+import SocButtons from '../components/SocButtons';
 
 const LogoWrapper = styled.div`
   display: none;
@@ -142,6 +143,7 @@ export default function App() {
                   </Switch>
                 </ErrorBoundary>
               </Web3ReactManager>
+              <SocButtons />
             </BodyWrapper>
           </AppWrapper>
         </ReferralUrlParser>
