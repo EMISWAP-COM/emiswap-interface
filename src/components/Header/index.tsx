@@ -401,7 +401,7 @@ export default function Header() {
                   </NetworkIcon>
                 )}
                 <span>{NETWORK_LABELS[chainId] || 'Change Network'}</span>
-                {(chainId as any) !== chainIds.MAINNET && (
+                {![chainIds.MAINNET, chainIds.KUCOIN].includes(chainId as any) && (
                   <NetworkLabel>Beta Version</NetworkLabel>
                 )}
               </NetworkButtonSwitch>

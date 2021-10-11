@@ -36,7 +36,8 @@ export const injected = new InjectedConnector({
 // initialized once, based on the envs - kovan or mainnet. Chain id changes during session have no effect.
 
 export const walletconnect = new WalletConnectConnector({
-  rpc: { [CHAIN_ID]: NETWORK_URL },
+  infuraId: '2b7c5bba80094418abf5e746ba10dac0',
+  supportedChainIds: [chainIds.MAINNET, chainIds.KOVAN, chainIds.POLYGON, chainIds.AVALANCHE],
   bridge: 'https://bridge.walletconnect.org',
   qrcode: true,
   pollingInterval: 15000,
