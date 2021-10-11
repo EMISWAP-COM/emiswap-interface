@@ -7,7 +7,7 @@ import { FortmaticConnector } from './Fortmatic';
 import { NetworkConnector } from './NetworkConnector';
 import chainIds from '../constants/chainIds';
 
-const CHAIN_ID = window['env'].REACT_APP_CHAIN_ID;
+// const CHAIN_ID = window['env'].REACT_APP_CHAIN_ID;
 const NETWORK_URL = window['env'].REACT_APP_NETWORK_URL;
 const FORMATIC_KEY = window['env'].REACT_APP_FORTMATIC_KEY;
 const PORTIS_ID = window['env'].REACT_APP_PORTIS_ID;
