@@ -428,7 +428,7 @@ export default function Header() {
                     </Text>
                   </AprButton>
                 )}
-                {isKuCoinActive && (
+                {false && isKuCoinActive && (
                   <a href="https://www.kcc.io/#/bridge/transfer" target="_blank" rel="noopener noreferrer">
                     <AprButton>
                       <Text textAlign="center" fontWeight={500} fontSize={14}>
