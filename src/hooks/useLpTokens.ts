@@ -43,6 +43,7 @@ export function useLpTokens(): {
           listPair.map((el, idx) => ({ addresses: el, base: lpTokensInfo[idx].lpToken })),
         );
         setIsLoading(false);
+        console.log(tokens, balances);
       } catch (e) {
         console.log(contract);
         console.log(e);
