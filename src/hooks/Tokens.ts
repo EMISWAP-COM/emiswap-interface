@@ -7,10 +7,8 @@ import { useUserAddedTokens } from '../state/user/hooks';
 import { isAddress } from '../utils';
 import { useActiveWeb3React } from './index';
 import { useBytes32TokenContract, useTokenContract } from './useContract';
-import { useDefaultCoin, useIsKuCoinActive } from './Coins';
+import { useDefaultCoin, useIsEthActive, useIsKuCoinActive, useIsPolygonActive, useNetworkData } from './Coins';
 import { useTokenListWithPair } from './useTokenListWithPair';
-import getKcsToken from '../constants/tokens/KCS';
-import chainIds from '../constants/chainIds';
 import defaultCoins, { mustVisibleAddresses } from '../constants/defaultCoins';
 
 export declare interface Window {
@@ -24,6 +22,7 @@ export function useAllTokens(): [{ [address: string]: Token }, boolean] {
   const [enableTokensList, isLoading] = useTokenListWithPair();
 
   const isKuCoinActive = useIsKuCoinActive();
+  const isPolygonActive = useIsPolygonActive();
 
   return [
     useMemo(() => {
@@ -39,6 +38,17 @@ export function useAllTokens(): [{ [address: string]: Token }, boolean] {
                   && el.address.toLowerCase() === ct.address
                   && mustVisibleAddresses.kucoin.includes(el.address.toLowerCase())
                 );
+
+            // @ts-ignore
+            return Boolean(exists) || el.address === window['env'].REACT_APP_ESW_ID || el.symbol === 'ESW';
+          } else if (isPolygonActive) {
+            const exists = defaultCoins.tokens
+              .find(ct =>
+                ct.chainId === chainId
+                && el.address.toLowerCase() === ct.address
+                && ct.symbol !== 'WMATIC'
+                // && mustVisibleAddresses.polygon.includes(el.address.toLowerCase())
+              );
 
             // @ts-ignore
             return Boolean(exists) || el.address === window['env'].REACT_APP_ESW_ID || el.symbol === 'ESW';
@@ -64,7 +74,7 @@ export function useAllTokens(): [{ [address: string]: Token }, boolean] {
             { ...filteredTokens },
           )
       );
-    }, [chainId, userAddedTokens, allTokens, enableTokensList, isKuCoinActive]),
+    }, [chainId, userAddedTokens, allTokens, enableTokensList, isKuCoinActive, isPolygonActive]),
     isLoading,
   ];
 }
@@ -165,6 +175,8 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
 
 export function useCurrency(currencyId: string | undefined): Token | null | undefined {
   const { chainId } = useActiveWeb3React();
+  const networkData = useNetworkData();
+  const isEthActive = useIsEthActive();
 
   // @ts-ignore // todo: fix it
   const isESW = currencyId?.toUpperCase() === window['env'].REACT_APP_ESW_ID?.toUpperCase();
@@ -173,10 +185,9 @@ export function useCurrency(currencyId: string | undefined): Token | null | unde
   const token = useToken(isESW || isETH ? undefined : currencyId);
 
   const ether = new Token(chainId || 1, ZERO_ADDRESS, 18, 'ETH', 'Ethereum');
-  const KCS = getKcsToken(chainId);
 
   // @ts-ignore
-  const ethereumOrKcsCoin = chainId === chainIds.KUCOIN ? KCS : ether;
+  const ethereumOrKcsCoin = isEthActive ? ether : networkData.token;
 
   return isESW ? defaultCoin : isETH ? ethereumOrKcsCoin : token;
 }

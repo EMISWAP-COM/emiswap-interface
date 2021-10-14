@@ -7,8 +7,7 @@ import theme from '@rebass/preset';
 import FAQInfo from '../components/FAQInfo';
 import { useRouteMatch } from 'react-router';
 import { YMInitializer } from 'react-yandex-metrika';
-import { useActiveWeb3React } from '../hooks';
-import chainIds from '../constants/chainIds';
+import { useIsEthActive } from '../hooks/Coins';
 
 export const HeadersPlusBodyWrapper = styled.div<{ isLarge?: boolean }>`
   position: relative;
@@ -90,7 +89,8 @@ export default function AppBody({
 }) {
   const match = useRouteMatch('/farm');
 
-  const { chainId } = useActiveWeb3React();
+  // const { chainId } = useActiveWeb3React();
+  const isEthActive = useIsEthActive();
 
   return (
     <ThemeProvider theme={theme}>
@@ -105,7 +105,7 @@ export default function AppBody({
         <BonusProgram/>
       </HeadersPlusBodyWrapper>
       <FAQWrapper>
-        {(chainId as any) !== chainIds.KUCOIN && (
+        {isEthActive && (
           <FAQInfo/>
         )}
       </FAQWrapper>

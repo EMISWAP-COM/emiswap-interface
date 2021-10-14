@@ -16,7 +16,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import { AppState } from '../state';
 import { Field } from '../state/swap/actions';
 import { useReferralAddress } from './useReferralAddress';
-import chainIds from '../constants/chainIds';
+import { useNetworkData } from './Coins';
 // function isZero(hexNumber: string) {
 //   return /^0x0*$/.test(hexNumber)
 // }
@@ -58,6 +58,8 @@ export function useSwapCallback(
   //useChi: boolean | undefined
 ): SwapCallback {
   const { account, chainId, library } = useActiveWeb3React();
+  const networkData = useNetworkData();
+
   const addTransaction = useTransactionAdder();
   const swapState = useSelector<AppState, AppState['swap']>(state => state.swap);
   const recipient = account;
@@ -136,8 +138,7 @@ export function useSwapCallback(
 
       const WETH = defaultCoins.tokens.find(
         token =>
-          // @ts-ignore
-          (chainId === chainIds.KUCOIN ? token.symbol === 'KCS' : token.symbol === 'WETH') &&
+          token.symbol === networkData.currencySymbolWeth &&
           token.chainId === chainId,
       );
 
@@ -245,6 +246,7 @@ export function useSwapCallback(
     swapState,
     onReject,
     referralAddress,
-    // useChi
+    // useChi,
+    networkData.currencySymbolWeth,
   ]);
 }

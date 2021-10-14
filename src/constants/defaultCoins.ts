@@ -4118,6 +4118,109 @@ const defaultCoins: DefaultCoins = {
       logoURI:
         'https://raw.githubusercontent.com/KoffeeSwap/kcc-assets/main/mainnet/tokens/0xfC56A7E70F6c970538020cc39939929b4d393F1F/logo.png',
     },
+    {
+      address: '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
+      chainId: 137,
+      decimals: 18,
+      name: 'WMATIC',
+      symbol: 'WMATIC',
+    },
+    {
+      address: '0xd2A2a353D28e4833FAFfC882f6649c9c884a7D8f',
+      chainId: 137,
+      name: 'EmiSwap - EmiDao Token',
+      symbol: 'ESW',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
+      address: '0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
+      chainId: 137,
+      name: 'USDT',
+      decimals: 18,
+      symbol: 'USDT',
+    },
+    {
+      address: '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
+      chainId: 137,
+      name: 'USDC',
+      decimals: 18,
+      symbol: 'USDC',
+    },
+    {
+      address: '0x8f3cf7ad23cd3cadbd9735aff958023239c6a063',
+      chainId: 137,
+      name: 'DAI',
+      decimals: 18,
+      symbol: 'DAI',
+    },
+    {
+      address: '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619',
+      chainId: 137,
+      name: 'ETH',
+      decimals: 18,
+      symbol: 'ETH',
+    },
+    /*{
+      address: '0x853ee4b2a13f8a742d64c8f088be7ba2131f670d',
+      chainId: 137,
+      name: 'LP WETH-USDC',
+      symbol: 'WETH-USDC',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
+      address: '0xadbf1854e5883eb8aa7baf50705338739e558e5b',
+      chainId: 137,
+      name: 'LP WETH-WMATIC',
+      symbol: 'WETH-WMATIC',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
+      address: '0xdc9232e2df177d7a12fdff6ecbab114e2231198d',
+      chainId: 137,
+      name: 'LP WETH-WBTC',
+      symbol: 'WETH-WBTC',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
+      address: '0x2cf7252e74036d1da831d11089d326296e64a728',
+      chainId: 137,
+      name: 'LP USDC-USDT',
+      symbol: 'USDC-USDT',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
+      address: '0x604229c960e5cacf2aaeac8be68ac07ba9df81c3',
+      chainId: 137,
+      name: 'LP WMATIC-USDT',
+      symbol: 'WMATIC-USDT',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },*/
+    {
+      address: '0xc7198437980c041c805A1EDcbA50c1Ce5db95118',
+      chainId: 43114,
+      name: 'USDT',
+      decimals: 18,
+      symbol: 'USDT',
+    },
+    {
+      address: '0xd586E7F844cEa2F87f50152665BCbc2C279D8d70',
+      chainId: 43114,
+      name: 'DAI',
+      decimals: 18,
+      symbol: 'DAI',
+    },
   ],
   logoURI: 'https://1inch.exchange/assets/images/logo.png',
 };
@@ -4133,5 +4236,8 @@ export const mustVisibleAddresses = {
     '0x6665d66afa48f527d86623723342cfa258cb8666',
     '0xfc56a7e70f6c970538020cc39939929b4d393f1f',
     '0x1b465775469c71b898bb51b53b2d4464b7cd3448',
+  ],
+  polygon: [
+    '',
   ],
 };

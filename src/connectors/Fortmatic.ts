@@ -18,6 +18,8 @@ const CHAIN_ID_NETWORK_ARGUMENT: {
   [ChainId.KOVAN]: 'kovan',
   // @ts-ignore
   [chainIds.KUCOIN]: 'kucoin',
+  [chainIds.POLYGON]: 'polygon',
+  [chainIds.AVALANCHE]: 'avalanche',
 };
 
 export class FortmaticConnector extends FortmaticConnectorCore {

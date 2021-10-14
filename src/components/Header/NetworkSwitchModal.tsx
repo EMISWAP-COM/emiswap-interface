@@ -27,15 +27,18 @@ const NetworkSwitchWrapped = styled.div`
 
 const NetworkItemsRow = styled.div`
   display: flex;
+  flex-wrap: wrap;
   // justify-content: space-between;
   justify-content: space-around;
   align-items: center;
-  width: 70%;
+  width: 100%;
   margin: 24px auto 0 auto;
 `;
 
 const NetworkItem = styled.div`
   position: relative;
+  min-width: 90px;
+  margin-bottom: 20px;
   cursor: pointer;
 `;
 
@@ -80,11 +83,14 @@ export default function NetworkSwitchModal() {
   const toggleConfirmSwitchModal = useConfirmSwitchModalToggle();
 
   const switchNetwork = async (item: INetworkItem) => {
+    console.log(item);
+
     try {
-      await ethereum.request({
+      const result = await ethereum.request({
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: toHex(item.chainId) }],
       });
+      console.log(result);
     } catch (switchError) {
       if (switchError.code === 4902) {
         try {
@@ -139,9 +145,9 @@ export default function NetworkSwitchModal() {
       return;
     }
 
-    if (item.chainId === chainIds.KUCOIN && (isMetaMask || !isMobile)) {
+    if (item.chainId !== chainIds.MAINNET && (isMetaMask || !isMobile)) {
       setSelectedItem(item);
-    } else if (item.chainId === chainIds.KUCOIN) {
+    } else if (item.chainId !== chainIds.MAINNET) {
       setVisibleNeedSwitchModal(true);
       toggleNetworkSwitchModal();
     } else {
@@ -171,6 +177,10 @@ export default function NetworkSwitchModal() {
     setVisibleNeedSwitchModal(false);
   };
 
+  const logosMaxWidths = {
+    [chainIds.AVALANCHE]: '80%',
+  };
+
   return (
     <div>
       <Modal
@@ -186,13 +196,17 @@ export default function NetworkSwitchModal() {
           </div>
 
           <NetworkItemsRow>
-            {networksItems.map(item => (
+            {networksItems.filter(item => item.active).map(item => (
               <NetworkItem key={item.chainId} onClick={() => onClickItem(item)}>
                 <NetworkIcon active={item.chainId === chainId}>
                   {item.chainId === chainId && (
                     <CircleCheckImg src={CircleCheckIcon}/>
                   )}
-                  <img src={item.icon} alt={item.name}/>
+                  <img
+                    style={{ maxWidth: logosMaxWidths[item.chainId] || '100%' }}
+                    src={item.icon}
+                    alt={item.name}
+                  />
                 </NetworkIcon>
                 <NetworkName active={item.chainId === chainId}>{item.name}</NetworkName>
               </NetworkItem>
@@ -202,7 +216,11 @@ export default function NetworkSwitchModal() {
         </NetworkSwitchWrapped>
       </Modal>
       {selectedItem && (
-        <ConfirmSwitchModal onConfirm={onClickConfirmItem} onCancel={onClickCancel}/>
+        <ConfirmSwitchModal
+          selectedItem={selectedItem}
+          onConfirm={onClickConfirmItem}
+          onCancel={onClickCancel}
+        />
       )}
       {isVisibleNeedSwitchModal && (
         <NetworkNeedSwitchModal onClose={onCloseNeedSwitch}/>

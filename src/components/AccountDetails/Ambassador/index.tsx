@@ -12,7 +12,7 @@ import { ESWHoldingRewards } from '../Common/ESWHoldingRewards';
 import { ReferralPerformance } from '../Common/ReferralPerformance';
 import { PurchaseHistory } from '../Common/PurchaseHistory';
 import { ESWLocked } from '../Common/ESWLocked';
-import chainIds from '../../../constants/chainIds';
+import { useIsEthActive } from '../../../hooks/Coins';
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -67,6 +67,7 @@ interface Props {
 }
 
 const Ambassador: React.FC<Props> = ({ openOptions, ENSName }) => {
+  const isEthActive = useIsEthActive();
   const dispatch = useDispatch<AppDispatch>();
 
   const { chainId } = useActiveWeb3React();
@@ -76,11 +77,11 @@ const Ambassador: React.FC<Props> = ({ openOptions, ENSName }) => {
   );
 
   useEffect(() => {
-    if ((chainId as any) !== chainIds.KUCOIN) {
+    if (isEthActive) {
       dispatch(loadPerformance(userId) as any);
       dispatch(loadBalance(userId) as any);
     }
-  }, [dispatch, chainId, userId]);
+  }, [dispatch, chainId, userId, isEthActive]);
 
   return (
     <Wrapper>
@@ -106,7 +107,7 @@ const Ambassador: React.FC<Props> = ({ openOptions, ENSName }) => {
           )}
         </OptionsPromo>
       </Connection>
-      {(chainId as any) !== chainIds.KUCOIN && (
+      {isEthActive && (
         <>
           <ESWRewards />
           <ESWHoldingRewards/>
