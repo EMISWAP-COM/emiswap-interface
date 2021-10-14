@@ -3,12 +3,11 @@ import styled from 'styled-components';
 import { CheckCircle, Triangle } from 'react-feather';
 
 import { useActiveWeb3React } from '../../hooks';
-import { getEtherscanLink, getKucoinLink } from '../../utils';
+import { getExplorerLink } from '../../utils';
 import { ExternalLink } from '../../theme';
 import { useAllTransactions } from '../../state/transactions/hooks';
 import { RowFixed } from '../Row';
 import Loader from '../Loader';
-import chainIds from '../../constants/chainIds';
 
 const TransactionWrapper = styled.div``;
 
@@ -53,12 +52,7 @@ export default function Transaction({ hash }: { hash: string }) {
   return (
     <TransactionWrapper>
       <TransactionState
-        href={
-          // @ts-ignore
-          chainId === chainIds.KUCOIN
-            ? getKucoinLink(chainId, hash, 'address')
-            : getEtherscanLink(chainId, hash, 'transaction')
-        }
+        href={getExplorerLink(chainId, hash, 'transaction')}
         pending={pending}
         success={success}
       >

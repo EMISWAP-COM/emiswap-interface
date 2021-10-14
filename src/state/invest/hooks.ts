@@ -46,6 +46,8 @@ const EMPTY_LIST: TokenAddressMap = {
   [ChainId.MAINNET]: {},
   // @ts-ignore
   [chainIds.KUCOIN]: {},
+  [chainIds.POLYGON]: {},
+  [chainIds.AVALANCHE]: {},
 };
 
 export function useInvestState(): AppState['invest'] {

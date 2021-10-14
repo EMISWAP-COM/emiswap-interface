@@ -4,7 +4,7 @@ import { WalletAction } from '../styleds';
 import styled from 'styled-components/macro';
 import { useActiveWeb3React } from '../../../hooks';
 import { StatusIcon } from '../StatusIcon';
-import { getEtherscanLink, getKucoinLink, shortenAddress } from '../../../utils';
+import { getExplorerLink, shortenAddress } from '../../../utils';
 import { useHistory } from 'react-router';
 import { useWalletModalToggle } from '../../../state/application/hooks';
 import { ExternalLink as LinkIcon } from 'react-feather';
@@ -14,8 +14,7 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { darken } from 'polished';
 import { ChangeAddress } from './ChangeAddress';
-import chainIds from '../../../constants/chainIds';
-import { useIsKuCoinActive } from '../../../hooks/Coins';
+import { useIsEthActive, useIsKuCoinActive, useNetworkData } from '../../../hooks/Coins';
 import { MessageTooltip } from '../../../base/ui';
 import { css } from 'styled-components';
 
@@ -132,15 +131,13 @@ const ChangeWalletBtn = styled(ActionBtn)<{ inactive: boolean }>`
     background-color: transparent !important;
     color: #615C69;
     cursor: auto;
-    border: 1px solid rgb(97,92,105) !important;
+    border: 1px solid rgb(97, 92, 105) !important;
     opacity: 1 !important;
     text-decoration: none !important;
-  `}
-
-  @media screen and (max-width: 800px) {
-    width: calc(50% - 5px);
-    margin-left: auto;
-  }
+  `} @media screen and(max-width: 800 px) {
+  width: calc(50% - 5px);
+  margin-left: auto;
+}
 `;
 
 const CollectBtn = styled(ActionBtn)`
@@ -179,6 +176,7 @@ const AddressLink = styled(ExternalLink)`
   color: ${({ theme }) => theme.blue};
   margin-left: 1rem;
   display: flex;
+
   :hover {
     color: ${({ theme }) => darken(0.3, theme.blue)};
   }
@@ -191,11 +189,14 @@ interface Props {
 
 export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) => {
   const { chainId, account, connector } = useActiveWeb3React();
+  const { blockExplorerName } = useNetworkData();
 
   const history = useHistory();
   const toggle = useWalletModalToggle();
 
+  const isEthereumActive = useIsEthActive();
   const isKuCoinActive = useIsKuCoinActive();
+  const isEnableChangeWallet = !isKuCoinActive;
 
   const balance = useSelector((state: AppState) => state.cabinets.balance);
 
@@ -212,7 +213,7 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
   };
 
   const handleChangeWallet = () => {
-    if (isKuCoinActive) {
+    if (!isEnableChangeWallet) {
       return;
     }
 
@@ -231,25 +232,25 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
           <WalletInfo>
             <span>Connected with {formatConnectorName(connector)}</span>
             <ChangeActionsBlock>
-              <ChangeAddress openOptions={openOptions} />
+              <ChangeAddress openOptions={openOptions}/>
               <ChangeWalletMessageTooltip
-                disableTooltip={!isKuCoinActive}
+                disableTooltip={isEnableChangeWallet}
                 whiteSpace={'normal'}
                 position={{ top: '4px', left: '284px' }}
                 text="Only Metamask wallet is supported. You need to change the address inside the Metamask wallet."
               >
-                <ChangeWalletBtn inactive={isKuCoinActive} onClick={handleChangeWallet}>
+                <ChangeWalletBtn inactive={!isEnableChangeWallet} onClick={handleChangeWallet}>
                   Change wallet
                 </ChangeWalletBtn>
               </ChangeWalletMessageTooltip>
             </ChangeActionsBlock>
             <Wallet>
-              <StatusIcon connectorName={connector} />
+              <StatusIcon connectorName={connector}/>
               <Account>{ENSName || shortenAddress(account)}</Account>
             </Wallet>
           </WalletInfo>
 
-          {(chainId as any) !== chainIds.KUCOIN && (
+          {isEthereumActive && (
             <>
               <BalanceWrapper>
                 <BalanceItem>
@@ -269,14 +270,16 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
                   <div>
                     <BalanceValue>{convertBigDecimal(balance?.total.locked.ESW)}</BalanceValue>
                     &nbsp;ESW
-                  </div>{' '}
+                  </div>
+                  {' '}
                 </BalanceItem>
                 <BalanceItem>
                   <span>Available to collect</span>
                   <div>
                     <BalanceValue>{convertBigDecimal(balance?.available.ESW)}</BalanceValue>
                     &nbsp;ESW
-                  </div>{' '}
+                  </div>
+                  {' '}
                 </BalanceItem>
               </BalanceWrapper>
               <Options>
@@ -293,17 +296,11 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
             <span style={{ marginLeft: '4px' }}>Copy Address</span>
           </Copy>
           <AddressLink
-            href={
-              // @ts-ignore
-              chainId === chainIds.KUCOIN
-                ? getKucoinLink(chainId, ENSName || account, 'address')
-                : getEtherscanLink(chainId, ENSName || account, 'address')
-            }
+            href={getExplorerLink(chainId, ENSName || account, 'address')}
           >
-            <LinkIcon size={16} />
+            <LinkIcon size={16}/>
             <span style={{ marginLeft: '4px' }}>
-              {/*// @ts-ignore*/}
-              View on {chainId === chainIds.KUCOIN ? 'KCC explorer' : 'Etherscan'}
+              View on {blockExplorerName}
             </span>
           </AddressLink>
         </AccountControl>

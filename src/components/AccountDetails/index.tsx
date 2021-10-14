@@ -6,7 +6,7 @@ import { useActiveWeb3React } from '../../hooks';
 import { useAccountInfo } from '../../hooks/useAccountInfo';
 import { AppDispatch } from '../../state';
 import { clearAllTransactions } from '../../state/transactions/actions';
-import { getEtherscanLink, getKucoinLink, shortenAddress } from '../../utils';
+import { getExplorerLink, shortenAddress } from '../../utils';
 import { ButtonSecondary } from '../Button';
 import { AutoRow } from '../Row';
 import Copy from './Copy';
@@ -19,7 +19,7 @@ import { ReactComponent as Close } from '../../assets/images/x.svg';
 import { ExternalLink, LinkStyledButton, TYPE } from '../../theme';
 import { formatConnectorName } from './uitls';
 import { StatusIcon } from './StatusIcon';
-import chainIds from '../../constants/chainIds';
+import { useNetworkData } from '../../hooks/Coins';
 
 const HeaderRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
@@ -205,6 +205,7 @@ export default function AccountDetails({
   openOptions,
 }: AccountDetailsProps) {
   const { chainId, account, connector } = useActiveWeb3React();
+  const { blockExplorerName } = useNetworkData();
   const theme = useContext(ThemeContext);
   const dispatch = useDispatch<AppDispatch>();
   const {
@@ -293,17 +294,11 @@ export default function AccountDetails({
                         <AddressLink
                           hasENS={!!ENSName}
                           isENS={true}
-                          href={
-                            // @ts-ignore
-                            chainId === chainIds.KUCOIN
-                              ? getKucoinLink(chainId, ENSName, 'address')
-                              : getEtherscanLink(chainId, ENSName, 'address')
-                          }
+                          href={getExplorerLink(chainId, ENSName, 'address')}
                         >
                           <LinkIcon size={16} />
                           <span style={{ marginLeft: '4px' }}>
-                            {/*// @ts-ignore*/}
-                            View on {chainId === chainIds.KUCOIN ? 'KCC explorer' : 'Etherscan'}
+                            View on {blockExplorerName}
                           </span>
                         </AddressLink>
                       </div>
@@ -319,17 +314,12 @@ export default function AccountDetails({
                         <AddressLink
                           hasENS={!!ENSName}
                           isENS={false}
-                          href={
-                            // @ts-ignore
-                            chainId === chainIds.KUCOIN
-                              ? getKucoinLink(chainId, account, 'address')
-                              : getEtherscanLink(chainId, account, 'address')
-                          }
+                          href={getExplorerLink(chainId, account, 'address')}
                         >
                           <LinkIcon size={16} />
                           <span style={{ marginLeft: '4px' }}>
                             {/*// @ts-ignore*/}
-                            View on {chainId === chainIds.KUCOIN ? 'KCC explorer' : 'Etherscan'}
+                            View on {blockExplorerName}
                           </span>
                         </AddressLink>
                       </div>

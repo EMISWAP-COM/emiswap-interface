@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, AppState } from '../../state';
 import { FARMING_2_ABI } from '../../constants/abis/farming2';
 import LogoIcon from '../../assets/svg/logo-icon.svg';
-import { useIsKuCoinActive } from '../../hooks/Coins';
+import { useIsEthActive } from '../../hooks/Coins';
 import { useHistory } from 'react-router-dom';
 
 const StyledFarmingHeader = styled.div`
@@ -121,7 +121,8 @@ export default function Farm() {
   const history = useHistory();
 
   const { library, account, chainId } = useActiveWeb3React();
-  const isKuCoinActive = useIsKuCoinActive();
+  // const isKuCoinActive = useIsKuCoinActive();
+  const isEthereumActive = useIsEthActive();
 
   const { id: userId } = useSelector((state: AppState) => state.user.info);
   const farms2 = useSelector((state: AppState) => state.farming.farms);
@@ -142,10 +143,10 @@ export default function Farm() {
   }, [library, account, farms2]);
 
   useEffect(() => {
-    if (isKuCoinActive) {
+    if (!isEthereumActive) {
       history.push(`swap`);
     }
-  }, [isKuCoinActive, history]);
+  }, [isEthereumActive, history]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -192,7 +193,7 @@ export default function Farm() {
     }
   }, [library, account, chainId, desiredChainId]);
 
-  if (isKuCoinActive) {
+  if (!isEthereumActive) {
     return (
       <LoadingInfo>
         <div>

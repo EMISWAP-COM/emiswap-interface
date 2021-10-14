@@ -38,8 +38,7 @@ import defaultCoins from '../../constants/defaultCoins';
 import { KOVAN_WETH } from '../../constants';
 import { ZERO_ADDRESS } from '../../constants/one-split';
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback';
-import chainIds from '../../constants/chainIds';
-import { useIsKuCoinActive } from '../../hooks/Coins';
+import { useNetworkData } from '../../hooks/Coins';
 
 export default function RemoveLiquidity({
   history,
@@ -54,7 +53,8 @@ export default function RemoveLiquidity({
   const { account, chainId, library } = useActiveWeb3React();
   const [tokenA, tokenB] = useMemo(() => [currencyA, currencyB], [currencyA, currencyB]);
 
-  const isKuCoinActive = useIsKuCoinActive();
+  // const isKuCoinActive = useIsKuCoinActive();
+  const {currencySymbolWrap} = useNetworkData();
 
   const theme = useContext(ThemeContext);
 
@@ -79,8 +79,7 @@ export default function RemoveLiquidity({
   const [allowedSlippage] = useUserSlippageTolerance();
   const wethTokenInfo = defaultCoins.tokens.find(
     token =>
-      // @ts-ignore
-      (chainId === chainIds.KUCOIN ? token.symbol === 'WKCS' : token.symbol === 'WETH') &&
+      token.symbol === currencySymbolWrap &&
       token.chainId === chainId,
   );
   const WETH: Token =
@@ -598,7 +597,7 @@ export default function RemoveLiquidity({
                               currencyB?.isEther ? WETH.address : currencyIdB
                             }`}
                           >
-                            Receive {isKuCoinActive ? 'WKCS' : 'WETH'}
+                            Receive {currencySymbolWrap}
                           </StyledInternalLink>
                         ) : oneCurrencyIsWETH ? (
                           <StyledInternalLink
@@ -612,7 +611,7 @@ export default function RemoveLiquidity({
                                 : currencyIdB
                             }`}
                           >
-                            Receive {isKuCoinActive ? 'KCS' : 'ETH'}
+                            Receive {currencySymbolWrap}
                           </StyledInternalLink>
                         ) : null}
                       </RowBetween>

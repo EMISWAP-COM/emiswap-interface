@@ -6,8 +6,6 @@ import styled from 'styled-components';
 import { ReactComponent as MenuIcon } from '../../assets/images/menu.svg';
 import useToggle from '../../hooks/useToggle';
 import { ExternalLink } from '../../theme';
-import chainIds from '../../constants/chainIds';
-import { useActiveWeb3React } from '../../hooks';
 import { useNetworkData } from '../../hooks/Coins';
 
 const StyledMenuIcon = styled(MenuIcon)`
@@ -89,12 +87,12 @@ const MenuItem = styled(ExternalLink)`
 `;*/
 
 export default function Menu() {
-  const {analyticsUrl} = useNetworkData();
+  const { analyticsUrl, eswExplorerUrl, eswExplorerName } = useNetworkData();
 
   const node = useRef<HTMLDivElement>();
   const [open, toggle] = useToggle(false);
 
-  const { chainId } = useActiveWeb3React();
+  // const { chainId } = useActiveWeb3React();
 
   useEffect(() => {
     const handleClickOutside = e => {
@@ -146,25 +144,14 @@ export default function Menu() {
             <BookOpen size={14}/>
             Whitepaper
           </MenuItem>
-          {(chainId as any) !== chainIds.KUCOIN ? (
-            <MenuItem
-              id="link"
-              href="https://etherscan.io/token/0x5a75A093747b72a0e14056352751eDF03518031d"
-              target="_blank"
-            >
-              <Info size={14}/>
-              ESW etherscan
-            </MenuItem>
-          ) : (
-            <MenuItem
-              id="link"
-              href="https://explorer.kcc.io/en/token/0x8933a6e58eeee063b5fd3221f2e1d17821dc1031"
-              target="_blank"
-            >
-              <Info size={14}/>
-              ESW KCC Explorer
-            </MenuItem>
-          )}
+          <MenuItem
+            id="link"
+            href={eswExplorerUrl}
+            target="_blank"
+          >
+            <Info size={14}/>
+            {eswExplorerName}
+          </MenuItem>
           <MenuItem
             id="link"
             // href="https://hacken.io/wp-content/uploads/2021/02/18022021_Emiswap_SC_Audit_Report.pdf"

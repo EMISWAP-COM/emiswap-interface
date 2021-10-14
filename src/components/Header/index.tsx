@@ -20,6 +20,7 @@ import NetworkSwitchModal from './NetworkSwitchModal';
 import { useNetworkSwitchModalToggle } from '../../state/application/hooks';
 import chainIds from '../../constants/chainIds';
 import { networksItems } from '../../constants';
+import { useIsKuCoinActive, useNetworkData } from '../../hooks/Coins';
 import { useLocation } from 'react-router-dom';
 
 const HeaderFrame = styled.div`
@@ -376,12 +377,18 @@ const NETWORK_LABELS: { [chainId in chainIds]: string | null } = {
   [ChainId.GÖRLI]: 'Görli',
   [ChainId.KOVAN]: 'Kovan',
   [chainIds.KUCOIN]: 'KuCoin',
+  [chainIds.POLYGON]: 'Polygon',
+  [chainIds.AVALANCHE]: 'Avalanche',
 };
 
 export default function Header() {
   const { account, chainId } = useActiveWeb3React();
+  const { currencySymbol } = useNetworkData();
+
   const userEthBalance = useETHBalances([account])[account];
   const [isDark] = useDarkModeManager();
+
+  const isKuCoinActive = useIsKuCoinActive();
 
   const toggleNetworkSwitchModal = useNetworkSwitchModalToggle();
 
@@ -397,7 +404,7 @@ export default function Header() {
         <LogoElem>
           <Title href=".">
             <UniIcon>
-              <LogoImg src={isDark ? LogoDark : Logo} alt="logo" />
+              <LogoImg src={isDark ? LogoDark : Logo} alt="logo"/>
             </UniIcon>
             <TitleText>
               {/*<img style={{ marginLeft: '4px', marginTop: '4px' }} src={isDark ? WordmarkDark : Wordmark} alt="logo" width="160px"/>*/}
@@ -421,8 +428,19 @@ export default function Header() {
                     </Text>
                   </AprButton>
                 )}
+                {isKuCoinActive && (
+                  <a href="https://www.kcc.io/#/bridge/transfer" target="_blank" rel="noopener noreferrer">
+                    <AprButton>
+                      <Text textAlign="center" fontWeight={500} fontSize={14}>
+                        Bridge Assets
+                      </Text>
+                    </AprButton>
+                  </a>
+                )}
                 <NetworkWrapper>
-                  <NetworkButtonSwitch onClick={toggleNetworkSwitchModal}>
+                  <NetworkButtonSwitch
+                    onClick={toggleNetworkSwitchModal}
+                  >
                     {networkItem && (
                       <NetworkIcon>
                         <img
@@ -433,13 +451,13 @@ export default function Header() {
                       </NetworkIcon>
                     )}
                     <span>{NETWORK_LABELS[chainId] || 'Change Network'}</span>
-                    {(chainId as any) === chainIds.KUCOIN && (
+                    {![chainIds.MAINNET, chainIds.KUCOIN].includes(chainId as any) && (
                       <NetworkLabel>Beta Version</NetworkLabel>
                     )}
                   </NetworkButtonSwitch>
-                  <NetworkSwitchModal />
+                  <NetworkSwitchModal/>
                 </NetworkWrapper>
-                {chainId !== (chainIds.KUCOIN as any) && (
+                {chainId === (chainIds.MAINNET as any) && (
                   <a className="purple-btn" href={`${window.location.origin}/magic_cards/`}>
                     <span>Magic Hall</span>
                   </a>
@@ -455,20 +473,20 @@ export default function Header() {
                         fontWeight={450}
                       >
                         {tokenAmountToString(userEthBalance, 4)} {/*// @ts-ignore*/}
-                        {chainId === chainIds.KUCOIN ? 'KCS' : 'ETH'}
+                        {currencySymbol}
                       </BalanceText>
                     </>
                   ) : null}
-                  <Web3Status />
+                  <Web3Status/>
                 </AccountElement>
               </HeaderElement>
             </HeaderControls>
             <HeaderElementWrap>
               <StyledMagicButton href={`${window.location.origin}/magic_cards/`}>
-                <MagicIcon />
+                <MagicIcon/>
               </StyledMagicButton>
-              <Settings />
-              <Menu />
+              <Settings/>
+              <Menu/>
             </HeaderElementWrap>
           </>
         )}

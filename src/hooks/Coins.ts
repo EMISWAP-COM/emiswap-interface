@@ -3,10 +3,10 @@ import { ETHER, Token } from '@uniswap/sdk';
 import { useMemo } from 'react';
 import { NEVER_RELOAD, useSingleCallResult } from '../state/multicall/hooks';
 import { useCoinList } from '../state/invest/hooks';
-import { isAddress } from '../utils';
+import { getNetworkData, isAddress, isEthereumActive } from '../utils';
 import { useActiveWeb3React } from './index';
 import { useBytes32TokenContract, useTokenContract } from './useContract';
-import { ESW, networksItems } from '../constants';
+import { ESW } from '../constants';
 import chainIds from '../constants/chainIds';
 import { injected } from '../connectors';
 
@@ -125,10 +125,22 @@ export function useDefaultCoin(address?: string): Token | undefined {
   }, [defaultCoin]);
 }
 
+export function useIsEthActive(): boolean {
+  const { chainId } = useActiveWeb3React();
+
+  return isEthereumActive(chainId);
+}
+
 export function useIsKuCoinActive(): boolean {
   const { chainId } = useActiveWeb3React();
 
   return (chainId as any) === chainIds.KUCOIN;
+}
+
+export function useIsPolygonActive(): boolean {
+  const { chainId } = useActiveWeb3React();
+
+  return (chainId as any) === chainIds.POLYGON;
 }
 
 export function useIsMetaMask(): boolean {
@@ -140,5 +152,5 @@ export function useIsMetaMask(): boolean {
 export function useNetworkData() {
   const { chainId } = useActiveWeb3React();
 
-  return networksItems.find(item => item.chainId === chainId) || networksItems[0];
+  return getNetworkData(chainId);
 }

@@ -8,7 +8,7 @@ import { Text } from 'rebass';
 import useCopyClipboard from '../../hooks/useCopyClipboard';
 import { LinkStyledButton } from '../../theme';
 import { CheckCircle, Copy } from 'react-feather';
-import chainIds from '../../constants/chainIds';
+import { isEthereumActive } from '../../utils';
 
 const ReferralLinkBox = styled.div`
   display: flex;
@@ -62,7 +62,7 @@ export default function ReferralLink() {
     });
   };
 
-  if ((chainId as any) === chainIds.KUCOIN) {
+  if (!isEthereumActive(chainId)) {
     return null;
   }
 
