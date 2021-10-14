@@ -196,7 +196,7 @@ export default function NetworkSwitchModal() {
           </div>
 
           <NetworkItemsRow>
-            {networksItems.map(item => (
+            {networksItems.filter(item => item.active).map(item => (
               <NetworkItem key={item.chainId} onClick={() => onClickItem(item)}>
                 <NetworkIcon active={item.chainId === chainId}>
                   {item.chainId === chainId && (

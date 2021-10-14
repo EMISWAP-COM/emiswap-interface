@@ -20,7 +20,7 @@ import NetworkSwitchModal from './NetworkSwitchModal';
 import { useNetworkSwitchModalToggle } from '../../state/application/hooks';
 import chainIds from '../../constants/chainIds';
 import { networksItems } from '../../constants';
-import { useNetworkData } from '../../hooks/Coins';
+import { useIsKuCoinActive, useNetworkData } from '../../hooks/Coins';
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -361,6 +361,8 @@ export default function Header() {
   const userEthBalance = useETHBalances([account])[account];
   const [isDark] = useDarkModeManager();
 
+  const isKuCoinActive = useIsKuCoinActive();
+
   const toggleNetworkSwitchModal = useNetworkSwitchModalToggle();
 
   const networkItem = networksItems.find(v => v.chainId === chainId);
@@ -387,13 +389,15 @@ export default function Header() {
                 </Text>
               </AprButton>
             )}
-            <a href="https://www.kcc.io/#/bridge/transfer" target="_blank" rel="noopener noreferrer">
-              <AprButton>
-                <Text textAlign="center" fontWeight={500} fontSize={14}>
-                  Bridge Assets
-                </Text>
-              </AprButton>
-            </a>
+            {isKuCoinActive && (
+              <a href="https://www.kcc.io/#/bridge/transfer" target="_blank" rel="noopener noreferrer">
+                <AprButton>
+                  <Text textAlign="center" fontWeight={500} fontSize={14}>
+                    Bridge Assets
+                  </Text>
+                </AprButton>
+              </a>
+            )}
             <NetworkWrapper>
               <NetworkButtonSwitch
                 onClick={toggleNetworkSwitchModal}

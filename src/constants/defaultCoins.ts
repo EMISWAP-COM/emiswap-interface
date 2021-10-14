@@ -4120,6 +4120,51 @@ const defaultCoins: DefaultCoins = {
       symbol: 'ETH',
     },
     {
+      address: '0x853ee4b2a13f8a742d64c8f088be7ba2131f670d',
+      chainId: 137,
+      name: 'LP WETH-USDC',
+      symbol: 'WETH-USDC',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
+      address: '0xadbf1854e5883eb8aa7baf50705338739e558e5b',
+      chainId: 137,
+      name: 'LP WETH-WMATIC',
+      symbol: 'WETH-WMATIC',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
+      address: '0xdc9232e2df177d7a12fdff6ecbab114e2231198d',
+      chainId: 137,
+      name: 'LP WETH-WBTC',
+      symbol: 'WETH-WBTC',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
+      address: '0x2cf7252e74036d1da831d11089d326296e64a728',
+      chainId: 137,
+      name: 'LP USDC-USDT',
+      symbol: 'USDC-USDT',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
+      address: '0x604229c960e5cacf2aaeac8be68ac07ba9df81c3',
+      chainId: 137,
+      name: 'LP WMATIC-USDT',
+      symbol: 'WMATIC-USDT',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
       address: '0xc7198437980c041c805A1EDcbA50c1Ce5db95118',
       chainId: 43114,
       name: 'USDT',
