@@ -46,7 +46,8 @@ export function useAllTokens(): [{ [address: string]: Token }, boolean] {
               .find(ct =>
                 ct.chainId === chainId
                 && el.address.toLowerCase() === ct.address
-                && mustVisibleAddresses.polygon.includes(el.address.toLowerCase())
+                && ct.symbol !== 'WMATIC'
+                // && mustVisibleAddresses.polygon.includes(el.address.toLowerCase())
               );
 
             // @ts-ignore

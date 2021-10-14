@@ -4099,11 +4099,25 @@ const defaultCoins: DefaultCoins = {
       symbol: 'USDT',
     },
     {
-      address: '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063',
+      address: '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
+      chainId: 137,
+      name: 'USDC',
+      decimals: 18,
+      symbol: 'USDC',
+    },
+    {
+      address: '0x8f3cf7ad23cd3cadbd9735aff958023239c6a063',
       chainId: 137,
       name: 'DAI',
       decimals: 18,
       symbol: 'DAI',
+    },
+    {
+      address: '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619',
+      chainId: 137,
+      name: 'ETH',
+      decimals: 18,
+      symbol: 'ETH',
     },
     {
       address: '0xc7198437980c041c805A1EDcbA50c1Ce5db95118',
