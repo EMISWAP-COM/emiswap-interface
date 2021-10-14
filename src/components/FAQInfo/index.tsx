@@ -609,7 +609,7 @@ export default () => {
   return (
     <div className="for-scroll-faq">
       <Tabs>
-        <Tab active={true}>White Paper</Tab>
+        <Tab onClick={btnClickIntro} active={true}>White Paper</Tab>
         <Tab onClick={btnClickPresentation}>Presentation</Tab>
         <Tab onClick={btnClickVesting}>Check Vesting Schedule</Tab>
       </Tabs>

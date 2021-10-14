@@ -8,6 +8,7 @@ import useToggle from '../../hooks/useToggle';
 import { ExternalLink } from '../../theme';
 import chainIds from '../../constants/chainIds';
 import { useActiveWeb3React } from '../../hooks';
+import { useNetworkData } from '../../hooks/Coins';
 
 const StyledMenuIcon = styled(MenuIcon)`
   path {
@@ -77,7 +78,7 @@ const MenuItem = styled(ExternalLink)`
   }
 `;
 
-const MenuTextItem = styled.div`
+/*const MenuTextItem = styled.div`
   flex: 1;
   padding: 0.5rem 0.5rem;
   color: ${({ theme }) => theme.white};
@@ -85,9 +86,11 @@ const MenuTextItem = styled.div`
   > img {
     margin-right: 8px;
   }
-`;
+`;*/
 
 export default function Menu() {
+  const {analyticsUrl} = useNetworkData();
+
   const node = useRef<HTMLDivElement>();
   const [open, toggle] = useToggle(false);
 
@@ -127,17 +130,10 @@ export default function Menu() {
             <img src={WikiIcon} width={14} height={14} alt=""/>
             Wiki
           </MenuItem>
-          {(chainId as any) !== chainIds.KUCOIN ? (
-            <MenuItem id="link" href="https://emiswap.com/analytics">
-              <PieChart size={14}/>
-              Analytics
-            </MenuItem>
-          ) : (
-            <MenuTextItem>
-              <PieChart size={14}/>
-              Analytics coming soon...
-            </MenuTextItem>
-          )}
+          <MenuItem id="link" href={analyticsUrl}>
+            <PieChart size={14}/>
+            Analytics
+          </MenuItem>
           <MenuItem
             id="link"
             href="https://emiswap.medium.com/all-you-need-to-know-about-nft-magic-cards-7c0ec9875800"
