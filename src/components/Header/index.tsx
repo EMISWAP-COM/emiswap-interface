@@ -356,7 +356,7 @@ const NETWORK_LABELS: { [chainId in chainIds]: string | null } = {
 export default function Header() {
 
   const { account, chainId } = useActiveWeb3React();
-  const {currencySymbol} = useNetworkData();
+  const { currencySymbol } = useNetworkData();
 
   const userEthBalance = useETHBalances([account])[account];
   const [isDark] = useDarkModeManager();
@@ -387,6 +387,13 @@ export default function Header() {
                 </Text>
               </AprButton>
             )}
+            <a href="https://www.kcc.io/#/bridge/transfer" target="_blank" rel="noopener noreferrer">
+              <AprButton>
+                <Text textAlign="center" fontWeight={500} fontSize={14}>
+                  Bridge Assets
+                </Text>
+              </AprButton>
+            </a>
             <NetworkWrapper>
               <NetworkButtonSwitch
                 onClick={toggleNetworkSwitchModal}

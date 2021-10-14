@@ -7,7 +7,7 @@ import { FortmaticConnector } from './Fortmatic';
 import { NetworkConnector } from './NetworkConnector';
 import chainIds from '../constants/chainIds';
 
-// const CHAIN_ID = window['env'].REACT_APP_CHAIN_ID;
+const CHAIN_ID = window['env'].REACT_APP_CHAIN_ID;
 const NETWORK_URL = window['env'].REACT_APP_NETWORK_URL;
 const FORMATIC_KEY = window['env'].REACT_APP_FORTMATIC_KEY;
 const PORTIS_ID = window['env'].REACT_APP_PORTIS_ID;
@@ -38,6 +38,10 @@ export const injected = new InjectedConnector({
 export const walletconnect = new WalletConnectConnector({
   infuraId: '2b7c5bba80094418abf5e746ba10dac0',
   supportedChainIds: [chainIds.MAINNET, chainIds.KOVAN, chainIds.POLYGON, chainIds.AVALANCHE],
+  rpc: {
+    [CHAIN_ID]: NETWORK_URL,
+    137: 'https://matic-mainnet.chainstacklabs.com',
+  },
   bridge: 'https://bridge.walletconnect.org',
   qrcode: true,
   pollingInterval: 15000,

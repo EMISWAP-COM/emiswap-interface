@@ -164,9 +164,12 @@ export function escapeRegExp(string: string): string {
 }
 
 export function isDefaultToken(defaultTokens: TokenAddressMap, currency?: Token): boolean {
-  if ([ETHER, KCS, MATIC, AVAX].includes(currency!)) {
+  const defaultAddresses = [ETHER.address, KCS.address, MATIC.address, AVAX.address];
+
+  if (currency && defaultAddresses.includes(currency.address)) {
     return true;
   }
+
   return Boolean(currency instanceof Token && defaultTokens[currency.chainId]?.[currency.address]);
 }
 
