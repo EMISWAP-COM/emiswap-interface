@@ -6,9 +6,12 @@ import { fortmatic, injected, portis, walletconnect, walletlink } from '../conne
 import { bytecode } from './abis/Emiswap.json';
 import chainIds from './chainIds';
 import esw_addresses from './esw_addresses';
+import PolygonNetworkIcon from '../assets/svg/polygon-network.svg';
+import AvalancheNetworkIcon from '../assets/svg/avalanche-network.svg';
 
-
-// import PolygonNetworkIcon from '../assets/svg/polygon-network.svg';
+import { KCS } from './tokens/KCS';
+import { MATIC } from './tokens/MATIC';
+import { AVAX } from './tokens/AVAX';
 
 export const MAX_NUM_DECIMALS = 18;
 export const ROUTER_ADDRESS = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D';
@@ -38,6 +41,24 @@ export const WKCS = new Token(
   18,
   'WKCS',
   'WKCS',
+);
+
+export const WMATIC = new Token(
+  // @ts-ignore
+  chainIds.POLYGON,
+  '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
+  18,
+  'WMATIC',
+  'WMATIC',
+);
+
+export const WAVAX = new Token(
+  // @ts-ignore
+  chainIds.AVALANCHE,
+  '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7',
+  18,
+  'WAVAX',
+  'WAVAX',
 );
 
 export const DAI = new Token(
@@ -154,6 +175,15 @@ export const ESW: ChainTokenList = {
     // @ts-ignore
     new Token(chainIds.KUCOIN, esw_addresses[chainIds.KUCOIN], 18, 'ESW', 'EmiDAO Token'),
   ],
+  // @ts-ignore
+  [chainIds.POLYGON]: [
+    // @ts-ignore
+    new Token(chainIds.POLYGON, esw_addresses[chainIds.POLYGON], 18, 'ESW', 'EmiDAO Token'),
+  ],
+  [chainIds.AVALANCHE]: [
+    // @ts-ignore
+    new Token(chainIds.AVALANCHE, esw_addresses[chainIds.AVALANCHE], 18, 'ESW', 'EmiDAO Token'),
+  ],
 };
 
 const ETH_ONLY: ChainTokenList = {
@@ -164,6 +194,8 @@ const ETH_ONLY: ChainTokenList = {
   [ChainId.KOVAN]: [ETHER],
   // @ts-ignore
   [chainIds.KUCOIN]: [ETHER],
+  [chainIds.POLYGON]: [ETHER],
+  [chainIds.AVALANCHE]: [ETHER],
 };
 
 // used to construct intermediary pairs for trading
@@ -173,6 +205,8 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   [ChainId.MAINNET]: [DAI, USDC, USDT, COMP, MKR, CHI, WETH],
   // @ts-ignore
   [chainIds.KUCOIN]: [WKCS],
+  [chainIds.POLYGON]: [WMATIC],
+  [chainIds.AVALANCHE]: [WAVAX],
 };
 
 // used for display in the default list when adding liquidity
@@ -182,6 +216,10 @@ export const SUGGESTED_BASES: ChainTokenList = {
   [ChainId.MAINNET]: [DAI, USDC, USDT, CHI, ESW[ChainId.MAINNET][0]],
   // @ts-ignore
   [chainIds.KUCOIN]: [ESW[chainIds.KUCOIN][0]],
+  // @ts-ignore
+  [chainIds.POLYGON]: [ESW[chainIds.POLYGON][0]],
+  // @ts-ignore
+  [chainIds.AVALANCHE]: [ESW[chainIds.AVALANCHE][0]],
 };
 
 // used to construct the list of all pairs we consider by default in the frontend
@@ -191,6 +229,10 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   [ChainId.MAINNET]: [ETHER, DAI, USDC, USDT, CHI, ESW[ChainId.MAINNET][0], WETH],
   // @ts-ignore
   [chainIds.KUCOIN]: [ESW[chainIds.KUCOIN][0]],
+  // @ts-ignore
+  [chainIds.POLYGON]: [ESW[chainIds.POLYGON][0]],
+  // @ts-ignore
+  [chainIds.AVALANCHE]: [ESW[chainIds.AVALANCHE][0]],
 };
 
 // @ts-ignore
@@ -280,7 +322,7 @@ export const SUPPORTED_WALLETS = {
       iconName: 'fortmaticIcon.png',
       description: 'Login using Fortmatic hosted wallet',
       href: null,
-      unavailableNetworksIds: [chainIds.KUCOIN],
+      unavailableNetworksIds: [chainIds.KUCOIN, chainIds.POLYGON],
       color: '#6748FF',
       mobile: true,
     },
@@ -346,12 +388,19 @@ export interface INetworkItem {
   alias: string;
   value: string;
   chainId: number;
+  token: Token;
   icon: any;
   name: string;
   rpcUrls: string[];
   currencySymbol: string;
-  blockExplorerUrls: string;
+  currencySymbolWrap: string;
+  currencySymbolWeth: string;
+  blockExplorerUrl: string;
+  blockExplorerName: string;
   analyticsUrl: string;
+  eswExplorerUrl: string;
+  eswExplorerName: string;
+  active: boolean;
 }
 
 export const networksItems: INetworkItem[] = [
@@ -359,28 +408,76 @@ export const networksItems: INetworkItem[] = [
     alias: 'main',
     value: 'ethereum',
     chainId: ChainId.MAINNET,
+    token: ETHER,
     icon: EthereumNetworkIcon,
     name: 'Ethereum',
     rpcUrls: [''],
     currencySymbol: 'ETH',
-    blockExplorerUrls: '',
+    currencySymbolWrap: 'WETH',
+    currencySymbolWeth: 'WETH',
+    blockExplorerUrl: 'https://etherscan.io',
+    blockExplorerName: 'Etherscan',
     analyticsUrl: 'https://emiswap.com/analytics?network=main',
+    eswExplorerUrl: 'https://etherscan.io/token/0x5a75A093747b72a0e14056352751eDF03518031d',
+    eswExplorerName: 'ESW Etherscan',
+    active: true,
   },
-  /*{
-    value: 'polygon',
-    chainId: ChainId.MAINNET,
-    icon: PolygonNetworkIcon,
-    name: 'Polygon (Matic)',
-  },*/
   {
     alias: 'kcc',
     value: 'kucoin',
     chainId: chainIds.KUCOIN,
+    token: KCS,
     icon: KuCoinNetworkIcon,
     name: 'KuCoin',
     rpcUrls: ['https://rpc-mainnet.kcc.network'],
     currencySymbol: 'KCS',
-    blockExplorerUrls: 'https://explorer.kcc.io/en',
+    currencySymbolWrap: 'WKCS',
+    currencySymbolWeth: 'KCS',
+    blockExplorerUrl: 'https://explorer.kcc.io/en',
+    blockExplorerName: 'KCC Explorer',
     analyticsUrl: 'https://emiswap.com/analytics?network=kcc',
+    eswExplorerUrl: 'https://explorer.kcc.io/en/token/0x8933a6e58eeee063b5fd3221f2e1d17821dc1031',
+    eswExplorerName: 'ESW KCC Explorer',
+    active: true,
+  },
+  {
+    alias: 'polygon',
+    value: 'polygon',
+    chainId: chainIds.POLYGON,
+    token: MATIC,
+    icon: PolygonNetworkIcon,
+    name: 'Polygon', // 'Polygon (Matic)',
+    rpcUrls: [
+      'https://rpc-mumbai.matic.today',
+    ],
+    currencySymbol: 'MATIC',
+    currencySymbolWrap: 'WMATIC',
+    currencySymbolWeth: 'WMATIC',
+    blockExplorerUrl: 'https://polygonscan.com',
+    blockExplorerName: 'Polygonscan',
+    analyticsUrl: 'https://emiswap.com/analytics?network=polygon',
+    eswExplorerUrl: 'https://polygonscan.com/token/0xd2A2a353D28e4833FAFfC882f6649c9c884a7D8f',
+    eswExplorerName: 'ESW Polygonscan',
+    active: true,
+  },
+  {
+    alias: 'avalanche',
+    value: 'avalanche',
+    chainId: chainIds.AVALANCHE,
+    token: AVAX,
+    icon: AvalancheNetworkIcon,
+    name: 'Avalanche',
+    rpcUrls: [
+      'https://api.avax.network/ext/bc/C/rpc',
+    ],
+    currencySymbol: 'AVAX',
+    currencySymbolWrap: 'WAVAX',
+    currencySymbolWeth: 'WAVAX',
+    blockExplorerUrl: 'https://cchain.explorer.avax.network/',
+    blockExplorerName: 'Avax Explorer',
+    analyticsUrl: 'https://emiswap.com/analytics?network=avalanche',
+    eswExplorerUrl: 'https://etherscan.io/token/0x5a75A093747b72a0e14056352751eDF03518031d',
+    eswExplorerName: 'ESW KCC Explorer',
+    active: false,
   },
 ];

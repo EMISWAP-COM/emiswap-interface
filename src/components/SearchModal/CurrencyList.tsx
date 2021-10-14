@@ -1,4 +1,4 @@
-import { ChainId, currencyEquals, ETHER, JSBI, Token, TokenAmount } from '@uniswap/sdk';
+import { ChainId, currencyEquals, JSBI, Token, TokenAmount } from '@uniswap/sdk';
 import React, { CSSProperties, memo, useContext, useMemo } from 'react';
 import { Text } from 'rebass';
 import { ThemeContext } from 'styled-components';
@@ -19,8 +19,7 @@ import { currencyKey } from '../../utils/currencyId';
 import { tokenAmountToString } from '../../utils/formats';
 import defaultCoins from '../../constants/defaultCoins';
 import { KOVAN_WETH } from '../../constants';
-import chainIds from '../../constants/chainIds';
-import getKcsToken from '../../constants/tokens/KCS';
+import { useNetworkData } from '../../hooks/Coins';
 
 export default function CurrencyList({
   currencies,
@@ -40,6 +39,8 @@ export default function CurrencyList({
   isMatchEth?: boolean;
 }) {
   const { account, chainId } = useActiveWeb3React();
+  const networkData = useNetworkData();
+
   const theme = useContext(ThemeContext);
   const [allTokens] = useAllTokens();
   const defaultTokens = useDefaultTokenList();
@@ -49,9 +50,7 @@ export default function CurrencyList({
 
   const CurrencyRow = useMemo(() => {
     return memo(function CurrencyRow({ index, style }: { index: number; style: CSSProperties }) {
-      const KCS = getKcsToken(chainId);
-      // @ts-ignore
-      const mainToken = chainId === chainIds.KUCOIN ? KCS : ETHER;
+      const mainToken = networkData.token;
       const currency = index === 0 ? mainToken : currencies[index - 1];
       const key = currencyKey(currency);
       const isDefault = isDefaultToken(defaultTokens, currency);
@@ -63,8 +62,7 @@ export default function CurrencyList({
       const zeroBalance = balance && JSBI.equal(JSBI.BigInt(0), balance.raw);
       const wethTokenInfo = defaultCoins.tokens.find(
         token =>
-          // @ts-ignore
-          (chainId === chainIds.KUCOIN ? token.symbol === 'KCS' : token.symbol === 'WETH') &&
+          token.symbol === networkData.currencySymbolWeth &&
           token.chainId === chainId,
       );
       const WETH: Token =
@@ -171,6 +169,7 @@ export default function CurrencyList({
     showSendWithSwap,
     theme.primary1,
     isMatchEth,
+    networkData,
   ]);
 
   return (

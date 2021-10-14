@@ -5,8 +5,8 @@ import { useActiveWeb3React } from '../../hooks';
 import { ExternalLink, TYPE } from '../../theme';
 import { AutoColumn } from '../Column';
 import { RowBetween } from '../Row';
-import { getEtherscanLink, getKucoinLink } from '../../utils';
-import chainIds from '../../constants/chainIds';
+import { getExplorerLink } from '../../utils';
+import { useNetworkData } from '../../hooks/Coins';
 
 const InputPanel = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap}
@@ -83,6 +83,8 @@ export default function AddressInputPanel({
   onChange: (value: string) => void;
 }) {
   const { chainId } = useActiveWeb3React();
+  const { blockExplorerName } = useNetworkData();
+
   const theme = useContext(ThemeContext);
 
   const { address, loading, name } = useENS(value);
@@ -109,16 +111,10 @@ export default function AddressInputPanel({
               </TYPE.black>
               {address && (
                 <ExternalLink
-                  href={
-                    // @ts-ignore
-                    chainId === chainIds.KUCOIN
-                      ? getKucoinLink(chainId, name ?? address, 'address')
-                      : getEtherscanLink(chainId, name ?? address, 'address')
-                  }
+                  href={getExplorerLink(chainId, name ?? address, 'address')}
                   style={{ fontSize: '14px' }}
                 >
-                  {/*// @ts-ignore*/}
-                  (View on {chainId === chainIds.KUCOIN ? 'KCC explorer' : 'Etherscan'})
+                  (View on {blockExplorerName})
                 </ExternalLink>
               )}
             </RowBetween>

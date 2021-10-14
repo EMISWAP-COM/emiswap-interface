@@ -17,6 +17,10 @@ import chainIds from '../constants/chainIds';
 import vesting_addresses from '../constants/vestring_addresses';
 import emiprice2_addresses from '../constants/emiprice2_addresses';
 import getFarmingAddresses from '../pages/Farm/getFarmingAddresses';
+import { networksItems } from '../constants';
+import { KCS } from '../constants/tokens/KCS';
+import { MATIC } from '../constants/tokens/MATIC';
+import { AVAX } from '../constants/tokens/AVAX';
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
@@ -33,53 +37,37 @@ const ETHERSCAN_PREFIXES: { [chainId in chainIds]: string } = {
   4: 'rinkeby.',
   5: 'goerli.',
   42: 'kovan.',
-  321: 'kucoin.'
+  321: 'kucoin.',
+  137: 'polygon.',
+  43114: 'avalanche.',
 };
 
-const EXPLORER_KCC_PREFIX = 'https://explorer.kcc.io/en';
-
-export function getEtherscanLink(
+export function getExplorerLink(
   chainId: ChainId,
   data: string,
   type: 'transaction' | 'token' | 'address' | 'block',
 ): string {
-  const prefix = `https://${ETHERSCAN_PREFIXES[chainId] || ETHERSCAN_PREFIXES[1]}etherscan.io`;
+  const {blockExplorerUrl} = getNetworkData(chainId);
+  const isEthActive = isEthereumActive(chainId);
 
-  switch (type) {
-    case 'transaction': {
-      return `${prefix}/tx/${data}`;
-    }
-    case 'token': {
-      return `${prefix}/token/${data}`;
-    }
-    case 'block': {
-      return `${prefix}/block/${data}`;
-    }
-    case 'address':
-    default: {
-      return `${prefix}/address/${data}`;
-    }
+  let path = blockExplorerUrl;
+  if (isEthActive) {
+    path = `https://${ETHERSCAN_PREFIXES[chainId] || ETHERSCAN_PREFIXES[1]}${blockExplorerUrl}`;
   }
-}
 
-export function getKucoinLink(
-  chainId: any,
-  data: string,
-  type: 'transaction' | 'token' | 'address' | 'block',
-): string {
   switch (type) {
     case 'transaction': {
-      return `${EXPLORER_KCC_PREFIX}/tx/${data}`;
+      return `${path}/tx/${data}`;
     }
     case 'token': {
-      return `${EXPLORER_KCC_PREFIX}/token/${data}`;
+      return `${path}/token/${data}`;
     }
     case 'block': {
-      return `${EXPLORER_KCC_PREFIX}/block/${data}`;
+      return `${path}/block/${data}`;
     }
     case 'address':
     default: {
-      return `${EXPLORER_KCC_PREFIX}/address/${data}`;
+      return `${path}/address/${data}`;
     }
   }
 }
@@ -176,7 +164,12 @@ export function escapeRegExp(string: string): string {
 }
 
 export function isDefaultToken(defaultTokens: TokenAddressMap, currency?: Token): boolean {
-  if (currency === ETHER) return true;
+  const defaultAddresses = [ETHER.address, KCS.address, MATIC.address, AVAX.address];
+
+  if (currency && defaultAddresses.includes(currency.address)) {
+    return true;
+  }
+
   return Boolean(currency instanceof Token && defaultTokens[currency.chainId]?.[currency.address]);
 }
 
@@ -230,4 +223,12 @@ export function getMyFarmingContracts(library: Web3Provider, account: string, ch
 
 export function getEmiPrice2Contract(library: Web3Provider, account: string, chainId: ChainId) {
   return getContract(emiprice2_addresses[chainId], EMI_PRICE_2_ABI, library, account);
+}
+
+export function getNetworkData(chainId: ChainId | number | undefined) {
+  return networksItems.find(item => item.chainId === chainId) || networksItems[0];
+}
+
+export function isEthereumActive(chainId: ChainId | number | undefined) {
+  return [chainIds.MAINNET, chainIds.KOVAN].includes(chainId as any);
 }

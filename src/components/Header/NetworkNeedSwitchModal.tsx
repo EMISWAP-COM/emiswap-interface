@@ -4,6 +4,7 @@ import { Text } from 'rebass';
 import React from 'react';
 import styled from 'styled-components/macro';
 import Modal from '../Modal';
+import { useNetworkData } from '../../hooks/Coins';
 
 export const ModalMobile = styled(Modal)`
   width: calc(100vw - 32px) !important;
@@ -24,6 +25,7 @@ interface Props {
 }
 
 export default function NetworkNeedSwitchModal<Props>({onClose}) {
+  const {name} = useNetworkData();
 
   const handleCloseModal = () => {
     onClose();
@@ -37,7 +39,7 @@ export default function NetworkNeedSwitchModal<Props>({onClose}) {
       <KCSAlert>
         <img src={WalletRejectIcon} alt={''}/>
         <div style={{ marginTop: '16px' }}>
-          To continue using the exchange please switch to the KCC network or change the wallet to MetaMask
+          To continue using the exchange please switch to the {name} network or change the wallet to MetaMask
         </div>
         <div style={{ marginTop: '24px' }}>
           <ButtonPrimary onClick={handleCloseModal}>

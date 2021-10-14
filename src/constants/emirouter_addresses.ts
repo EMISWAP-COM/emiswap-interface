@@ -7,6 +7,8 @@ const emirouter_addresses: any = {
   [chainIds.GÖRLI]: '0xe5c8e363de97840d5996e1e8db8b5facda0f1e21',
   [chainIds.KOVAN]: '0x7EeE1d070924B8255DAd03ddE989ebBffC1000eB',
   [chainIds.KUCOIN]: '0xB3184913A87EEfe616788FBA3A02128A01188Ef2',
+  [chainIds.POLYGON]: '0x38680777a6A402E98Fa4609725664f6766c2c46a',
+  [chainIds.AVALANCHE]: '0x7B4b70c61a8fDE4E8c03f99adC567C1762d9d247',
 }
 
 export default emirouter_addresses
