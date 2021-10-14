@@ -4162,7 +4162,7 @@ const defaultCoins: DefaultCoins = {
       decimals: 18,
       symbol: 'ETH',
     },
-    {
+    /*{
       address: '0x853ee4b2a13f8a742d64c8f088be7ba2131f670d',
       chainId: 137,
       name: 'LP WETH-USDC',
@@ -4206,7 +4206,7 @@ const defaultCoins: DefaultCoins = {
       decimals: 18,
       logoURI:
         'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
-    },
+    },*/
     {
       address: '0xc7198437980c041c805A1EDcbA50c1Ce5db95118',
       chainId: 43114,
