@@ -86,11 +86,14 @@ export default function NetworkSwitchModal() {
     console.log(item);
 
     try {
+      ethereum.removeAllListeners(["networkChanged"]);
+      
       const result = await ethereum.request({
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: toHex(item.chainId) }],
       });
       console.log(result);
+      console.log('switch 1');
     } catch (switchError) {
       if (switchError.code === 4902) {
         try {
@@ -109,6 +112,7 @@ export default function NetworkSwitchModal() {
               },
             ],
           });
+          console.log('switch 2');
         } catch (addError) {
           console.log(addError);
         }
