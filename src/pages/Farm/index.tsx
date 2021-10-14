@@ -24,7 +24,7 @@ import { useHistory } from 'react-router-dom';
 
 const StyledFarmingHeader = styled.div`
   display: flex;
-  justify-content: space-between;
+  // justify-content: space-between;
   align-items: center;
   margin-bottom: 32px;
 
@@ -33,7 +33,10 @@ const StyledFarmingHeader = styled.div`
   `};
 `;
 const StyledTabs = styled.div`
+  margin-right: 48px;
+
   ${({ theme }) => theme.mediaWidth.upToLarge`
+    margin-right: 0px;
     margin-bottom: 32px;
   `};
 `;
@@ -100,6 +103,17 @@ const tabItems = [
   // },
 ];
 
+const filterItems: Array<{ id: 'active' | 'finished', title: string }> = [
+  {
+    id: 'active',
+    title: 'Active',
+  },
+  {
+    id: 'finished',
+    title: 'Finished',
+  },
+];
+
 export const isStakingTab = tabname => tabname === tabItems[1].id;
 
 export default function Farm() {
@@ -116,7 +130,8 @@ export default function Farm() {
   // FIXME Убрать комментарий для возврата функционала
   // const [radioValue, setRadioValue] = useState<string>('all');
   const [selectedTab, setSelectedTab] = useState<string>('farming');
-  const [loading, setLoading] = useState<boolean>(Boolean(account));
+  const [selectedFilterTab, setSelectedFilterTab] = useState<'active' | 'finished'>('active');
+  const [loading, setLoading] = useState<boolean>(Boolean(account) && false);
 
   const farmingContracts: Contract[] = useMemo(
     () => getFarmingContracts(library, account, chainId),
@@ -212,6 +227,9 @@ export default function Farm() {
                 <Tabs items={tabItems} selectedItemId={selectedTab} onChange={setSelectedTab}/>
               </StyledTabs>
               {/* <RadioGroup buttonsList={radioList} groupName="farms" value={radioValue} onChange={setRadioValue} /> */}
+              <StyledTabs>
+                <Tabs items={filterItems} selectedItemId={selectedFilterTab} onChange={setSelectedFilterTab as any}/>
+              </StyledTabs>
             </StyledFarmingHeader>
             <StyledInfoWrapper>
               <StyledInfoTitle>
@@ -228,6 +246,7 @@ export default function Farm() {
                 key={contract.address}
                 contract={contract}
                 selectedTab={selectedTab}
+                selectedFilterTab={selectedFilterTab}
                 eswPriceInDai={eswPriceInDai}
               />
             ))}
@@ -249,6 +268,7 @@ export default function Farm() {
                 key={contract.address}
                 contract={contract}
                 selectedTab={selectedTab}
+                selectedFilterTab={selectedFilterTab}
                 eswPriceInDai={eswPriceInDai}
               />,
             )}

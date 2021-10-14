@@ -1,13 +1,11 @@
-import { ChainId, ETHER, JSBI, Percent, Token } from '@uniswap/sdk';
-
-import { fortmatic, injected, portis, walletconnect, walletlink } from '../connectors';
 import { keccak256 } from '@ethersproject/solidity';
+import { ChainId, ETHER, JSBI, Percent, Token } from '@uniswap/sdk';
+import EthereumNetworkIcon from '../assets/svg/ethereum-network.svg';
+import KuCoinNetworkIcon from '../assets/svg/kucoin-network.svg';
+import { fortmatic, injected, portis, walletconnect, walletlink } from '../connectors';
 import { bytecode } from './abis/Emiswap.json';
 import chainIds from './chainIds';
 import esw_addresses from './esw_addresses';
-
-import EthereumNetworkIcon from '../assets/svg/ethereum-network.svg';
-import KuCoinNetworkIcon from '../assets/svg/kucoin-network.svg';
 import PolygonNetworkIcon from '../assets/svg/polygon-network.svg';
 import AvalancheNetworkIcon from '../assets/svg/avalanche-network.svg';
 

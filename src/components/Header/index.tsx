@@ -21,6 +21,7 @@ import { useNetworkSwitchModalToggle } from '../../state/application/hooks';
 import chainIds from '../../constants/chainIds';
 import { networksItems } from '../../constants';
 import { useIsKuCoinActive, useNetworkData } from '../../hooks/Coins';
+import { useLocation } from 'react-router-dom';
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -145,6 +146,31 @@ const StyledMagicButton = styled.a`
   `};
 `;
 
+const StyledGoToButton = styled.a`
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+  padding: 0.15rem 2rem;
+  height: 40px;
+  background-color: ${({ theme }) => theme.blue};
+  border: none;
+  transition: all 0.3s ease-in-out;
+  border-radius: 4px;
+  color:  ${({ theme }) => theme.dark2};
+  text-decoration: none;
+
+  ${({ theme }) => theme.mediaWidth.upToTabletop`
+    position: fixed;
+    bottom: 0;
+    width: calc(100% - 48px);
+    margin: 0 auto 16px;
+    height: 56px;
+    left: 0;
+    right: 0;
+  `};
+`;
+
 const HeaderElementWrap = styled.div`
   display: flex;
   align-items: center;
@@ -202,20 +228,21 @@ const AccountElement = styled.div<{ active: boolean }>`
 `;
 
 const AprButton = styled(ButtonOutlined)`
-    box-sizing: border-box;
-    width: auto;
-    height: 40px;
-    margin-right: 14px;
-    padding: 8.5px 20px;
-    border-color: #615C69;
-    border-radius: 4px;
-    color: white;
-    
-    &:focus, &:hover {
-      border: 1px solid ${({ theme }) => theme.purple};;
-      background: ${({ theme }) => theme.darkGrey};
-      box-shadow: none;
-    }
+  box-sizing: border-box;
+  width: auto;
+  height: 40px;
+  margin-right: 14px;
+  padding: 8.5px 20px;
+  border-color: #615c69;
+  border-radius: 4px;
+  color: white;
+
+  &:focus,
+  &:hover {
+    border: 1px solid ${({ theme }) => theme.purple};
+    background: ${({ theme }) => theme.darkGrey};
+    box-shadow: none;
+  }
 `;
 
 const NetworkWrapper = styled.div`
@@ -232,18 +259,19 @@ const NetworkButtonSwitch = styled(ButtonGray)`
   height: 40px;
   margin-right: 24px;
   padding: 0 16px;
-  border: 1px solid #615C69;
+  border: 1px solid #615c69;
   border-radius: 4px;
   background: ${({ theme }) => theme.darkGrey};
   color: white;
-  
-  &:focus, &:hover {
-    border: 1px solid ${({ theme }) => theme.purple};;
+
+  &:focus,
+  &:hover {
+    border: 1px solid ${({ theme }) => theme.purple};
     background: ${({ theme }) => theme.darkGrey};
     box-shadow: none;
   }
   &:active {
-    border: 1px solid #615C69;
+    border: 1px solid #615c69;
     background: ${({ theme }) => theme.darkGrey};
     box-shadow: none;
   }
@@ -261,16 +289,16 @@ const NetworkIcon = styled.div`
 `;
 
 const NetworkLabel = styled.div`
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   height: 18px;
-   margin-left: 16px;
-   padding: 0 8px;
-   border-radius: 50px;
-   font-size: 8px;
-   background: #E478FF;
-   color: ${({ theme }) => theme.dark2};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 18px;
+  margin-left: 16px;
+  padding: 0 8px;
+  border-radius: 50px;
+  font-size: 8px;
+  background: #e478ff;
+  color: ${({ theme }) => theme.dark2};
 `;
 
 const UniIcon = styled.div`
@@ -354,7 +382,6 @@ const NETWORK_LABELS: { [chainId in chainIds]: string | null } = {
 };
 
 export default function Header() {
-
   const { account, chainId } = useActiveWeb3React();
   const { currencySymbol } = useNetworkData();
 
@@ -366,6 +393,10 @@ export default function Header() {
   const toggleNetworkSwitchModal = useNetworkSwitchModalToggle();
 
   const networkItem = networksItems.find(v => v.chainId === chainId);
+
+  const { pathname } = useLocation();
+
+  const is404Page = pathname === '/404';
 
   return (
     <HeaderFrame>
@@ -380,75 +411,85 @@ export default function Header() {
             </TitleText>
           </Title>
         </LogoElem>
-        <HeaderControls>
-          <HeaderElement>
-            {false && (
-              <AprButton>
-                <Text textAlign="center" fontWeight={500} fontSize={14}>
-                  APR settings
-                </Text>
-              </AprButton>
-            )}
-            {isKuCoinActive && (
-              <a href="https://www.kcc.io/#/bridge/transfer" target="_blank" rel="noopener noreferrer">
-                <AprButton>
-                  <Text textAlign="center" fontWeight={500} fontSize={14}>
-                    Bridge Assets
-                  </Text>
-                </AprButton>
-              </a>
-            )}
-            <NetworkWrapper>
-              <NetworkButtonSwitch
-                onClick={toggleNetworkSwitchModal}
-              >
-                {networkItem && (
-                  <NetworkIcon>
-                    <img
-                      style={{ maxHeight: '18px', maxWidth: '18px' }}
-                      src={networkItem.icon}
-                      alt={networkItem.name}
-                    />
-                  </NetworkIcon>
+        {is404Page ? (
+          <StyledGoToButton href="/">
+            <Text textAlign="center" fontWeight={500} fontSize={16}>
+              Go to the platform
+            </Text>
+          </StyledGoToButton>
+        ) : (
+          <>
+            <HeaderControls>
+              <HeaderElement>
+                {false && (
+                  <AprButton>
+                    <Text textAlign="center" fontWeight={500} fontSize={14}>
+                      APR settings
+                    </Text>
+                  </AprButton>
                 )}
-                <span>{NETWORK_LABELS[chainId] || 'Change Network'}</span>
-                {![chainIds.MAINNET, chainIds.KUCOIN].includes(chainId as any) && (
-                  <NetworkLabel>Beta Version</NetworkLabel>
+                {isKuCoinActive && (
+                  <a href="https://www.kcc.io/#/bridge/transfer" target="_blank" rel="noopener noreferrer">
+                    <AprButton>
+                      <Text textAlign="center" fontWeight={500} fontSize={14}>
+                        Bridge Assets
+                      </Text>
+                    </AprButton>
+                  </a>
                 )}
-              </NetworkButtonSwitch>
-              <NetworkSwitchModal/>
-            </NetworkWrapper>
-            {chainId === (chainIds.MAINNET as any) && (
-              <a className="purple-btn" href={`${window.location.origin}/magic_cards/`}>
-                <span>Magic Hall</span>
-              </a>
-            )}
-            <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
-              {account && userEthBalance ? (
-                <>
-                  <BalanceText
-                    style={{ flexShrink: 0 }}
-                    pl="8px"
-                    pr="8px"
-                    mr="16px"
-                    fontWeight={450}
+                <NetworkWrapper>
+                  <NetworkButtonSwitch
+                    onClick={toggleNetworkSwitchModal}
                   >
-                    {tokenAmountToString(userEthBalance, 4)}{' '}
-                    {currencySymbol}
-                  </BalanceText>
-                </>
-              ) : null}
-              <Web3Status/>
-            </AccountElement>
-          </HeaderElement>
-        </HeaderControls>
-        <HeaderElementWrap>
-          <StyledMagicButton href={`${window.location.origin}/magic_cards/`}>
-            <MagicIcon/>
-          </StyledMagicButton>
-          <Settings/>
-          <Menu/>
-        </HeaderElementWrap>
+                    {networkItem && (
+                      <NetworkIcon>
+                        <img
+                          style={{ maxHeight: '18px', maxWidth: '18px' }}
+                          src={networkItem.icon}
+                          alt={networkItem.name}
+                        />
+                      </NetworkIcon>
+                    )}
+                    <span>{NETWORK_LABELS[chainId] || 'Change Network'}</span>
+                    {![chainIds.MAINNET, chainIds.KUCOIN].includes(chainId as any) && (
+                      <NetworkLabel>Beta Version</NetworkLabel>
+                    )}
+                  </NetworkButtonSwitch>
+                  <NetworkSwitchModal/>
+                </NetworkWrapper>
+                {chainId === (chainIds.MAINNET as any) && (
+                  <a className="purple-btn" href={`${window.location.origin}/magic_cards/`}>
+                    <span>Magic Hall</span>
+                  </a>
+                )}
+                <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
+                  {account && userEthBalance ? (
+                    <>
+                      <BalanceText
+                        style={{ flexShrink: 0 }}
+                        pl="8px"
+                        pr="8px"
+                        mr="16px"
+                        fontWeight={450}
+                      >
+                        {tokenAmountToString(userEthBalance, 4)} {/*// @ts-ignore*/}
+                        {currencySymbol}
+                      </BalanceText>
+                    </>
+                  ) : null}
+                  <Web3Status/>
+                </AccountElement>
+              </HeaderElement>
+            </HeaderControls>
+            <HeaderElementWrap>
+              <StyledMagicButton href={`${window.location.origin}/magic_cards/`}>
+                <MagicIcon/>
+              </StyledMagicButton>
+              <Settings/>
+              <Menu/>
+            </HeaderElementWrap>
+          </>
+        )}
       </RowBetweenStyled>
     </HeaderFrame>
   );
