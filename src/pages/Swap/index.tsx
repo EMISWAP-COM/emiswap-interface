@@ -44,7 +44,7 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { AdvancedSwapDetails } from '../../components/swap/AdvancedSwapDetails';
 import { useTransactionPrice } from '../../hooks/useTransactionPrice';
 import ReferralLink from '../../components/RefferalLink';
-import chainIds from '../../constants/chainIds';
+import { useIsEthActive } from '../../hooks/Coins';
 
 const GasFeeText = styled.div`
   margin-top: 8px;
@@ -90,6 +90,8 @@ export default function Swap() {
       distribution.push(BigNumber.from(i === 11 ? '100000000000000' : '000000000000000'));
     }
   }
+
+  const isEthActive = useIsEthActive();
 
   const { wrapType, execute: onWrap, error: wrapError } = useWrapCallback();
   // typedValue
@@ -520,7 +522,7 @@ export default function Swap() {
               </ErrorText>
             )}
           </BottomGrouping>
-          {(chainId as any) !== chainIds.KUCOIN && (
+          {isEthActive && (
             <GasFeeText>100% gas fee refund</GasFeeText>
           )}
           <TYPE.black fontSize={14} fontWeight={400} color={theme.text2} marginTop={'12px'}>
