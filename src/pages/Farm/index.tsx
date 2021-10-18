@@ -133,12 +133,17 @@ export default function Farm() {
   const [selectedFilterTab, setSelectedFilterTab] = useState<'active' | 'finished'>('active');
   const [loading, setLoading] = useState<boolean>(Boolean(account) && false);
 
-  const farmingContracts: Contract[] = useMemo(
-    () => getFarmingContracts(library, account, chainId),
-    [library, account, chainId],
-  );
+  const farmingContracts: Contract[] = useMemo(() => {
+    if (!isEthereumActive) {
+      return [];
+    }
+    return getFarmingContracts(library, account, chainId);
+  }, [library, account, chainId]);
 
   const farming2Contracts: Contract[] = useMemo(() => {
+    if (!isEthereumActive) {
+      return [];
+    }
     return farms2.map((farm) => getContract(farm.contractAddress, FARMING_2_ABI, library, account));
   }, [library, account, farms2]);
 
@@ -186,12 +191,12 @@ export default function Farm() {
   // Get esw price in top level component to avoid needless contract requests
   const [eswPriceInDai, setEswPriceInDai] = useState('0');
   useEffect(() => {
-    if (account && chainId === desiredChainId) {
+    if (account && chainId === desiredChainId && isEthereumActive) {
       getEswPriceInDai(library, account, chainId).then(value => {
         setEswPriceInDai(value);
       });
     }
-  }, [library, account, chainId, desiredChainId]);
+  }, [library, account, chainId, desiredChainId, isEthereumActive]);
 
   if (!isEthereumActive) {
     return (
