@@ -89,16 +89,18 @@ export default function MigrateV1() {
   const onSelect = (address: string) => {
     setSelected(address);
   };
+
   const formatedTokenList = lpTokensDetailedInfo
     .map((lpTokenDetailedInfo, idx) => ({ ...lpTokenDetailedInfo, balance: balances[idx] }))
     .filter((lpTokenDetailedInfoWithBalance, idx) => {
       const {
         addresses: [address0, address1],
       } = lpTokenDetailedInfoWithBalance;
+
       return (
         tokens.find(token => token.address === address0) &&
         tokens.find(token => token.address === address1) &&
-        +amountToString(balances[idx], 10)
+        +amountToString(balances[idx], 18)
       );
     });
   const handleRedirect = () => {
@@ -155,7 +157,7 @@ export default function MigrateV1() {
     isLoading;
 
   const isTokensNotFound = balances.every(balance => {
-    return +amountToString(balance, 10) === 0;
+    return +amountToString(balance, 18) === 0;
   });
 
   return (

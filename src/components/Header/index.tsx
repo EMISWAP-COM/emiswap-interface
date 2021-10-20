@@ -385,7 +385,7 @@ export default function Header() {
 
   const { account, chainId } = useActiveWeb3React();
   const userEthBalance = useETHBalances([account])[account];
-  
+
   const [isDark] = useDarkModeManager();
 
   const networkItem = useNetworkData();
