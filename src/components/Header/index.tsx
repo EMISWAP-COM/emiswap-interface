@@ -19,8 +19,7 @@ import { ButtonGray, ButtonOutlined } from '../Button';
 import NetworkSwitchModal from './NetworkSwitchModal';
 import { useNetworkSwitchModalToggle } from '../../state/application/hooks';
 import chainIds from '../../constants/chainIds';
-import { networksItems } from '../../constants';
-import { useIsKuCoinActive, useNetworkData } from '../../hooks/Coins';
+import { useNetworkData } from '../../hooks/Coins';
 import { useLocation } from 'react-router-dom';
 
 const HeaderFrame = styled.div`
@@ -382,19 +381,16 @@ const NETWORK_LABELS: { [chainId in chainIds]: string | null } = {
 };
 
 export default function Header() {
-  const { account, chainId } = useActiveWeb3React();
-  const { currencySymbol } = useNetworkData();
+  const { pathname } = useLocation();
 
+  const { account, chainId } = useActiveWeb3React();
   const userEthBalance = useETHBalances([account])[account];
+  
   const [isDark] = useDarkModeManager();
 
-  const isKuCoinActive = useIsKuCoinActive();
+  const networkItem = useNetworkData();
 
   const toggleNetworkSwitchModal = useNetworkSwitchModalToggle();
-
-  const networkItem = networksItems.find(v => v.chainId === chainId);
-
-  const { pathname } = useLocation();
 
   const is404Page = pathname === '/404';
 
@@ -428,8 +424,8 @@ export default function Header() {
                     </Text>
                   </AprButton>
                 )}
-                {false && isKuCoinActive && (
-                  <a href="https://www.kcc.io/#/bridge/transfer" target="_blank" rel="noopener noreferrer">
+                {networkItem.bridgeUrl && (
+                  <a href={networkItem.bridgeUrl} target="_blank" rel="noopener noreferrer">
                     <AprButton>
                       <Text textAlign="center" fontWeight={500} fontSize={14}>
                         Bridge Assets
@@ -473,7 +469,7 @@ export default function Header() {
                         fontWeight={450}
                       >
                         {tokenAmountToString(userEthBalance, 4)} {/*// @ts-ignore*/}
-                        {currencySymbol}
+                        {networkItem.currencySymbol}
                       </BalanceText>
                     </>
                   ) : null}

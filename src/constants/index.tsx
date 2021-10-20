@@ -401,6 +401,7 @@ export interface INetworkItem {
   eswExplorerUrl: string;
   eswExplorerName: string;
   active: boolean;
+  bridgeUrl?: string;
 }
 
 export const networksItems: INetworkItem[] = [
@@ -439,6 +440,7 @@ export const networksItems: INetworkItem[] = [
     eswExplorerUrl: 'https://explorer.kcc.io/en/token/0x8933a6e58eeee063b5fd3221f2e1d17821dc1031',
     eswExplorerName: 'ESW KCC Explorer',
     active: true,
+    bridgeUrl: 'https://www.kcc.io/#/bridge/transfer',
   },
   {
     alias: 'polygon',
@@ -459,6 +461,7 @@ export const networksItems: INetworkItem[] = [
     eswExplorerUrl: 'https://polygonscan.com/token/0xd2A2a353D28e4833FAFfC882f6649c9c884a7D8f',
     eswExplorerName: 'ESW Polygonscan',
     active: true,
+    bridgeUrl: 'https://wallet.matic.network/bridge',
   },
   {
     alias: 'avalanche',
