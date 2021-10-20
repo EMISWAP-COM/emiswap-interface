@@ -138,14 +138,14 @@ export default function Farm() {
       return [];
     }
     return getFarmingContracts(library, account, chainId);
-  }, [library, account, chainId]);
+  }, [library, account, chainId, isEthereumActive]);
 
   const farming2Contracts: Contract[] = useMemo(() => {
     if (!isEthereumActive) {
       return [];
     }
     return farms2.map((farm) => getContract(farm.contractAddress, FARMING_2_ABI, library, account));
-  }, [library, account, farms2]);
+  }, [library, account, farms2, isEthereumActive]);
 
   useEffect(() => {
     if (!isEthereumActive) {
