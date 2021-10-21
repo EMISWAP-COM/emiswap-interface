@@ -21,6 +21,7 @@ import { useNetworkSwitchModalToggle } from '../../state/application/hooks';
 import chainIds from '../../constants/chainIds';
 import { useNetworkData } from '../../hooks/Coins';
 import { useLocation } from 'react-router-dom';
+import { isMobile } from "react-device-detect";
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -424,7 +425,7 @@ export default function Header() {
                     </Text>
                   </AprButton>
                 )}
-                {networkItem.bridgeUrl && (
+                {!isMobile && networkItem.bridgeUrl && (
                   <a href={networkItem.bridgeUrl} target="_blank" rel="noopener noreferrer">
                     <AprButton>
                       <Text textAlign="center" fontWeight={500} fontSize={14}>

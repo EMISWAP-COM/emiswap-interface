@@ -7,7 +7,8 @@ import { Link as HistoryLink, NavLink } from 'react-router-dom';
 import { ArrowLeft } from 'react-feather';
 import { RowBetween } from '../Row';
 import QuestionHelper from '../QuestionHelper';
-import { useIsEthActive } from '../../hooks/Coins';
+import { useIsEthActive, useNetworkData } from '../../hooks/Coins';
+import { isMobile } from "react-device-detect";
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -55,6 +56,24 @@ const StyledNavLink = styled(NavLink).attrs({
   }
 `;
 
+const ExternalNavLink = styled.div`
+  ${({ theme }) => theme.flexRowNoWrap}
+  align-items: center;
+  justify-content: center;
+  height: 3rem;
+  border-radius: 3rem;
+  outline: none;
+  cursor: pointer;
+  text-decoration: none;
+  color: ${({ theme }) => theme.lightGrey};
+  font-size: 16px;
+  
+  :hover,
+  :focus {
+    color: ${({ theme }) => lighten(0.3, theme.lightGrey)};
+  }
+`;
+
 const ActiveText = styled.div`
   font-weight: 500;
   font-size: 20px;
@@ -76,6 +95,8 @@ export enum TabNames {
 export function SwapPoolTabs({ active }: { active: TabNames }) {
   const { t } = useTranslation();
 
+  const networkItem = useNetworkData();
+
   // const isKuCoinActive = useIsKuCoinActive();
   const isEthereumActive = useIsEthActive();
 
@@ -94,13 +115,13 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
       >
         {t('migrate')}
       </StyledNavLink>
-      {/*<StyledNavLink*/}
-      {/*  id={`pool-nav-link`}*/}
-      {/*  to={'/invest'}*/}
-      {/*  isActive={() => active === TabNames.INVEST}*/}
-      {/*>*/}
-      {/*  {t('invest')}*/}
-      {/*</StyledNavLink>*/}
+      {/*<StyledNavLink
+        id={`pool-nav-link`}
+        to={'/invest'}
+        isActive={() => active === TabNames.INVEST}
+      >
+        {t('invest')}
+      </StyledNavLink>*/}
       {isEthereumActive && (
         <StyledNavLink
           id={`farm-nav-link`}
@@ -109,6 +130,13 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
         >
           {t('Stake & Farm')}
         </StyledNavLink>
+      )}
+      {isMobile && networkItem.bridgeUrl && (
+        <ExternalNavLink
+          onClick={() => window.open(networkItem.bridgeUrl)}
+        >
+          {t('Bridge')}
+        </ExternalNavLink>
       )}
     </Tabs>
   );
