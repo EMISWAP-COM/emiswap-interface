@@ -84,7 +84,7 @@ const TokenCollect: React.FC<TokenInputProps> = ({
   const { account } = useActiveWeb3React();
   const [isCollectInProgress, setIsCollectInProgress] = useState<boolean>(false);
 
-  const isCollectButtonDisabled = !Number(deposit) || isCollectInProgress;
+  const isCollectButtonDisabled = true; //!Number(deposit) || isCollectInProgress;
 
   let collectButtonText = 'Collect to wallet';
   if (isCollectInProgress) {
