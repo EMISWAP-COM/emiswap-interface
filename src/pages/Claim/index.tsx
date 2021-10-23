@@ -282,7 +282,7 @@ export default function Claim({
       </Container>
       <ButtonPrimary
         style={{ marginTop: '20px' }}
-        disabled={isTransactionDisabled() || isCollectProcessing}
+        disabled={true || isTransactionDisabled() || isCollectProcessing}
         onClick={handleSubmit}
       >
         Collect
