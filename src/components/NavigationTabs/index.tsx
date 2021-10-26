@@ -10,7 +10,6 @@ import QuestionHelper from '../QuestionHelper';
 import { useIsEthActive, useNetworkData } from '../../hooks/Coins';
 import { isMobile } from 'react-device-detect';
 import { useBridgeModalToggle } from '../../state/application/hooks';
-import BridgeModal from '../Header/BridgeModal';
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -92,6 +91,7 @@ export enum TabNames {
   INVEST,
   FARM,
 }
+
 //TODO refactor. Component index.tsx must return single component
 
 export function SwapPoolTabs({ active }: { active: TabNames }) {
@@ -162,11 +162,11 @@ export function FindPoolTabs() {
     <Tabs>
       <RowBetween style={{ padding: '1rem' }}>
         <HistoryLink to="/pool">
-          <StyledArrowLeft />
+          <StyledArrowLeft/>
         </HistoryLink>
         <ActiveText>Import Pool</ActiveText>
         <QuestionHelper
-          text={"Use this tool to find pairs that don't automatically appear in the interface."}
+          text={'Use this tool to find pairs that don\'t automatically appear in the interface.'}
         />
       </RowBetween>
     </Tabs>
@@ -178,7 +178,7 @@ export function AddRemoveTabs({ adding }: { adding: boolean }) {
     <Tabs>
       <RowBetween style={{ padding: '1rem' }}>
         <HistoryLink to="/pool">
-          <StyledArrowLeft />
+          <StyledArrowLeft/>
         </HistoryLink>
         <ActiveText>{adding ? 'Add' : 'Remove'} Liquidity</ActiveText>
         <QuestionHelper
