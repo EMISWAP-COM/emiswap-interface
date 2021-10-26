@@ -67,7 +67,7 @@ export default function BridgeModal() {
       >
         <NetworkSwitchWrapped>
           <div>
-            <Text textAlign="center" fontWeight={500} fontSize={20} color="white">Bridge Links</Text>
+            <Text textAlign="center" fontWeight={500} fontSize={20} color="white">Links</Text>
           </div>
 
           <NetworkItemsRow>
@@ -80,7 +80,7 @@ export default function BridgeModal() {
                     alt={item.name}
                   />
                 </NetworkIcon>
-                <NetworkName>{item.name}</NetworkName>
+                <NetworkName>{item.name} Bridge</NetworkName>
               </NetworkItem>
             ))}
           </NetworkItemsRow>

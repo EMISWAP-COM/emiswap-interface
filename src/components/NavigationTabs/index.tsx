@@ -143,14 +143,14 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
           {t('Stake & Farm')}
         </StyledNavLink>
       )}
-      {isMobile && (
+      {isMobile && !isEthereumActive && (
         <>
           <ExternalNavLink
             onClick={handleClickBridge}
           >
             {t('Bridge')}
           </ExternalNavLink>
-          <BridgeModal/>
+          {/*<BridgeModal/>*/}
         </>
       )}
     </Tabs>
