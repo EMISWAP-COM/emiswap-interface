@@ -17,11 +17,12 @@ import { tokenAmountToString } from '../../utils/formats';
 import { ReactComponent as MagicIcon } from '../../assets/images/magic_icon.svg';
 import { ButtonGray, ButtonOutlined } from '../Button';
 import NetworkSwitchModal from './NetworkSwitchModal';
-import { useNetworkSwitchModalToggle } from '../../state/application/hooks';
+import { useBridgeModalToggle, useNetworkSwitchModalToggle } from '../../state/application/hooks';
 import chainIds from '../../constants/chainIds';
 import { useNetworkData } from '../../hooks/Coins';
 import { useLocation } from 'react-router-dom';
 import { isMobile } from "react-device-detect";
+import BridgeModal from './BridgeModal';
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -370,6 +371,22 @@ const RowBetweenStyled = styled(RowBetween)`
   `};
 `;
 
+/*const BridgeDropdown = styled.span`
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  position: absolute;
+  top: 48px;
+  left: 10px;
+  min-width: 20.125rem;
+
+  border-radius: 0.5rem;
+  font-size: 1rem;
+
+  background-color: ${({ theme }) => theme.dark1};
+  box-shadow: ${({ theme }) => theme.dark1BoxShadow};
+`;*/
+
 const NETWORK_LABELS: { [chainId in chainIds]: string | null } = {
   [ChainId.MAINNET]: 'Ethereum',
   [ChainId.RINKEBY]: 'Rinkeby',
@@ -392,6 +409,7 @@ export default function Header() {
   const networkItem = useNetworkData();
 
   const toggleNetworkSwitchModal = useNetworkSwitchModalToggle();
+  const toggleBridgeModal = useBridgeModalToggle();
 
   const is404Page = pathname === '/404';
 
@@ -425,20 +443,27 @@ export default function Header() {
                     </Text>
                   </AprButton>
                 )}
-                {!isMobile && networkItem.bridgeUrl ? (
-                  <a href={networkItem.bridgeUrl} target="_blank" rel="noopener noreferrer">
-                    <AprButton>
-                      <Text textAlign="center" fontWeight={500} fontSize={14}>
-                        Bridge Assets
-                      </Text>
-                    </AprButton>
-                  </a>
-                ) : (
-                  <AprButton>
-                    <Text textAlign="center" fontWeight={500} fontSize={14}>
-                      Bridge Assets
-                    </Text>
-                  </AprButton>
+                {!isMobile && (
+                  <>
+                    {networkItem.bridgeUrl ? (
+                      <a href={networkItem.bridgeUrl} target="_blank" rel="noopener noreferrer">
+                        <AprButton>
+                          <Text textAlign="center" fontWeight={500} fontSize={14}>
+                            Bridge Assets
+                          </Text>
+                        </AprButton>
+                      </a>
+                    ) : (
+                      <div>
+                        <AprButton onClick={toggleBridgeModal}>
+                          <Text textAlign="center" fontWeight={500} fontSize={14}>
+                            Bridge Assets
+                          </Text>
+                        </AprButton>
+                        <BridgeModal/>
+                      </div>
+                    )}
+                  </>
                 )}
                 <NetworkWrapper>
                   <NetworkButtonSwitch

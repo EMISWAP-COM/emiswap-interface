@@ -9,6 +9,8 @@ import { RowBetween } from '../Row';
 import QuestionHelper from '../QuestionHelper';
 import { useIsEthActive, useNetworkData } from '../../hooks/Coins';
 import { isMobile } from 'react-device-detect';
+import { useBridgeModalToggle } from '../../state/application/hooks';
+import BridgeModal from '../Header/BridgeModal';
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -100,11 +102,13 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
   // const isKuCoinActive = useIsKuCoinActive();
   const isEthereumActive = useIsEthActive();
 
+  const toggleBridgeModal = useBridgeModalToggle();
+
   const handleClickBridge = () => {
     if (isMobile && networkItem.bridgeUrl) {
       window.open(networkItem.bridgeUrl);
     } else {
-
+      toggleBridgeModal();
     }
   };
 
@@ -139,11 +143,16 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
           {t('Stake & Farm')}
         </StyledNavLink>
       )}
-      <ExternalNavLink
-        onClick={handleClickBridge}
-      >
-        {t('Bridge')}
-      </ExternalNavLink>
+      {isMobile && (
+        <>
+          <ExternalNavLink
+            onClick={handleClickBridge}
+          >
+            {t('Bridge')}
+          </ExternalNavLink>
+          <BridgeModal/>
+        </>
+      )}
     </Tabs>
   );
 }
