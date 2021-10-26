@@ -425,7 +425,7 @@ export default function Header() {
                     </Text>
                   </AprButton>
                 )}
-                {!isMobile && networkItem.bridgeUrl && (
+                {!isMobile && networkItem.bridgeUrl ? (
                   <a href={networkItem.bridgeUrl} target="_blank" rel="noopener noreferrer">
                     <AprButton>
                       <Text textAlign="center" fontWeight={500} fontSize={14}>
@@ -433,6 +433,12 @@ export default function Header() {
                       </Text>
                     </AprButton>
                   </a>
+                ) : (
+                  <AprButton>
+                    <Text textAlign="center" fontWeight={500} fontSize={14}>
+                      Bridge Assets
+                    </Text>
+                  </AprButton>
                 )}
                 <NetworkWrapper>
                   <NetworkButtonSwitch

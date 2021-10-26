@@ -200,7 +200,7 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
 
   const balance = useSelector((state: AppState) => state.cabinets.balance);
 
-  const isCollectDisabled = !Number(balance?.available.ESW);
+  const isCollectDisabled = true || !Number(balance?.available.ESW);
 
   const sumESW = () => {
     const walletESW = balance?.wallet.ESW || 0;
@@ -284,9 +284,16 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
               </BalanceWrapper>
               <Options>
                 {children}
-                <CollectBtn disabled={isCollectDisabled} onClick={handleClaim}>
-                  Collect to my wallet
-                </CollectBtn>
+                <MessageTooltip
+                  disableTooltip={!isCollectDisabled}
+                  whiteSpace={'normal'}
+                  position={{ top: '175px', left: '485px' }}
+                  text="Temporarily unavailable"
+                >
+                  <CollectBtn disabled={isCollectDisabled} onClick={handleClaim}>
+                    Collect to my wallet
+                  </CollectBtn>
+                </MessageTooltip>
               </Options>
             </>
           )}
