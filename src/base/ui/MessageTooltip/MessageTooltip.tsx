@@ -31,10 +31,11 @@ const MessageBlock = styled.div`
 
   @media screen and (max-width: 600px) {
     position: fixed !important;
-    bottom: 0;
-    width: 100%;
     top: inherit !important;
+    bottom: 0 !important;
     right: 0 !important;
+    left: 0 !important;
+    width: 100%;
     padding: 24px 32px;
     font-size: 20px;
     border-radius: 24px 24px 0 0;
