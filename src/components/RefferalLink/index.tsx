@@ -8,7 +8,6 @@ import { Text } from 'rebass';
 import useCopyClipboard from '../../hooks/useCopyClipboard';
 import { LinkStyledButton } from '../../theme';
 import { CheckCircle, Copy } from 'react-feather';
-import { isEthereumActive } from '../../utils';
 
 const ReferralLinkBox = styled.div`
   display: flex;
@@ -47,8 +46,11 @@ const CopyIcon = styled(LinkStyledButton)`
 
 export default function ReferralLink() {
   const theme = useContext(ThemeContext);
-  const { account, chainId } = useActiveWeb3React();
-  let location = useLocation();
+  const { account } = useActiveWeb3React();
+
+  // const isPolygonActive = useIsPolygonActive();
+
+  const location = useLocation();
   const [isCopied, setCopied] = useCopyClipboard();
 
   function getReferralLink(currentUserAddress: string): string {
@@ -62,9 +64,9 @@ export default function ReferralLink() {
     });
   };
 
-  if (!isEthereumActive(chainId)) {
+  /*if (!isEthereumActive(chainId) && !isPolygonActive) {
     return null;
-  }
+  }*/
 
   return (
     <div>
