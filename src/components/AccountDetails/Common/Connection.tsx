@@ -140,9 +140,26 @@ const ChangeWalletBtn = styled(ActionBtn)<{ inactive: boolean }>`
 }
 `;
 
-const CollectBtn = styled(ActionBtn)`
+const CollectBtn = styled(ActionBtn)<{ inactive?: boolean }>`
   min-width: 180px;
   margin-bottom: 10px;
+  
+  &:hover,
+  &:focus,
+  &:active {
+    background: ${({ theme, inactive }) => (inactive ? 'transparent' : theme.purple)} !important;
+    box-shadow: none;
+  }
+  
+  ${({ inactive }) => inactive && css`
+    background-color: transparent !important;
+    color: #615C69;
+    cursor: auto;
+    border: 1px solid rgb(97, 92, 105) !important;
+    opacity: 1 !important;
+    text-decoration: none !important;
+  `}
+  
 `;
 
 const AccountControl = styled.div`
@@ -200,7 +217,7 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
 
   const balance = useSelector((state: AppState) => state.cabinets.balance);
 
-  const isCollectDisabled = !Number(balance?.available.ESW);
+  const isCollectDisabled = true || !Number(balance?.available.ESW);
 
   const sumESW = () => {
     const walletESW = balance?.wallet.ESW || 0;
@@ -221,6 +238,10 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
   };
 
   const handleClaim = () => {
+    if (isCollectDisabled) {
+      return;
+    }
+
     toggle();
     history.push('/claim/ESW');
   };
@@ -284,9 +305,16 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
               </BalanceWrapper>
               <Options>
                 {children}
-                <CollectBtn disabled={isCollectDisabled} onClick={handleClaim}>
-                  Collect to my wallet
-                </CollectBtn>
+                <MessageTooltip
+                  disableTooltip={!isCollectDisabled}
+                  whiteSpace={'normal'}
+                  position={{ top: '175px', left: '490px' }}
+                  text="Temporarily unavailable"
+                >
+                  <CollectBtn inactive={isCollectDisabled} onClick={handleClaim}>
+                    Collect to my wallet
+                  </CollectBtn>
+                </MessageTooltip>
               </Options>
             </>
           )}

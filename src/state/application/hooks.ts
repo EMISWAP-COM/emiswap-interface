@@ -5,6 +5,7 @@ import {
   PopupContent,
   removePopup,
   showWalletModal,
+  toggleBridgeModal,
   toggleConfirmSwitchModal,
   toggleNetworkSwitchModal,
   toggleSettingsMenu,
@@ -37,9 +38,18 @@ export function useNetworkSwitchModalOpen(): boolean {
   return useSelector((state: AppState) => state.application.networkSwitchModalOpen);
 }
 
+export function useBridgeModalOpen(): boolean {
+  return useSelector((state: AppState) => state.application.bridgeModalOpen);
+}
+
 export function useNetworkSwitchModalToggle(): () => void {
   const dispatch = useDispatch();
   return useCallback(() => dispatch(toggleNetworkSwitchModal()), [dispatch]);
+}
+
+export function useBridgeModalToggle(): () => void {
+  const dispatch = useDispatch();
+  return useCallback(() => dispatch(toggleBridgeModal()), [dispatch]);
 }
 
 export function useConfirmSwitchModalToggle(): () => void {

@@ -8,7 +8,8 @@ import { ArrowLeft } from 'react-feather';
 import { RowBetween } from '../Row';
 import QuestionHelper from '../QuestionHelper';
 import { useIsEthActive, useNetworkData } from '../../hooks/Coins';
-import { isMobile } from "react-device-detect";
+import { isMobile } from 'react-device-detect';
+import { useBridgeModalToggle } from '../../state/application/hooks';
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -90,6 +91,7 @@ export enum TabNames {
   INVEST,
   FARM,
 }
+
 //TODO refactor. Component index.tsx must return single component
 
 export function SwapPoolTabs({ active }: { active: TabNames }) {
@@ -99,6 +101,16 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
 
   // const isKuCoinActive = useIsKuCoinActive();
   const isEthereumActive = useIsEthActive();
+
+  const toggleBridgeModal = useBridgeModalToggle();
+
+  const handleClickBridge = () => {
+    if (isMobile && networkItem.bridgeUrl) {
+      window.open(networkItem.bridgeUrl);
+    } else {
+      toggleBridgeModal();
+    }
+  };
 
   return (
     <Tabs style={{ marginBottom: '24px' }}>
@@ -131,12 +143,15 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
           {t('Stake & Farm')}
         </StyledNavLink>
       )}
-      {isMobile && networkItem.bridgeUrl && (
-        <ExternalNavLink
-          onClick={() => window.open(networkItem.bridgeUrl)}
-        >
-          {t('Bridge')}
-        </ExternalNavLink>
+      {isMobile && !isEthereumActive && (
+        <>
+          <ExternalNavLink
+            onClick={handleClickBridge}
+          >
+            {t('Bridge')}
+          </ExternalNavLink>
+          {/*<BridgeModal/>*/}
+        </>
       )}
     </Tabs>
   );
@@ -147,11 +162,11 @@ export function FindPoolTabs() {
     <Tabs>
       <RowBetween style={{ padding: '1rem' }}>
         <HistoryLink to="/pool">
-          <StyledArrowLeft />
+          <StyledArrowLeft/>
         </HistoryLink>
         <ActiveText>Import Pool</ActiveText>
         <QuestionHelper
-          text={"Use this tool to find pairs that don't automatically appear in the interface."}
+          text={'Use this tool to find pairs that don\'t automatically appear in the interface.'}
         />
       </RowBetween>
     </Tabs>
@@ -163,7 +178,7 @@ export function AddRemoveTabs({ adding }: { adding: boolean }) {
     <Tabs>
       <RowBetween style={{ padding: '1rem' }}>
         <HistoryLink to="/pool">
-          <StyledArrowLeft />
+          <StyledArrowLeft/>
         </HistoryLink>
         <ActiveText>{adding ? 'Add' : 'Remove'} Liquidity</ActiveText>
         <QuestionHelper

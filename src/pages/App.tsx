@@ -26,7 +26,7 @@ import ReferralUrlParser from '../referral-url-parser';
 // import MigrateV1Exchange from './MigrateV1/MigrateV1Exchange';
 import { AppWrapper } from '../base/ui/AppWrapper/AppWrapper';
 import { ErrorBoundary } from '../components/ErrorBoundary/ErrorBoundary';
-import Claim from './Claim';
+// import Claim from './Claim';
 import MigrateV1 from './MigrateV1';
 import MigrateV1Exchange from './MigrateV1/MigrateV1Exchange';
 // import Invest from './Invest';
@@ -136,7 +136,8 @@ export default function App() {
                     />
                     <Route exact strict path="/migrate" component={MigrateV1} />
                     <Route exact strict path="/migrate/:address" component={MigrateV1Exchange} />
-                    <Route exact strict path="/claim/:tokenName" component={Claim} />
+                    {/*<Route exact strict path="/claim/:tokenName" component={Claim} />*/}
+                    <Route exact strict path="/claim/:tokenName" component={RedirectPathToSwap}/>
                     <Route exact strict path="/farm" component={Farm} />
                     <Route path="/404" component={NotFound} />
                     <Route component={RedirectPathToSwap} />

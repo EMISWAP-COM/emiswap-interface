@@ -3,7 +3,7 @@ import {
   addPopup,
   PopupContent,
   removePopup,
-  showWalletModal,
+  showWalletModal, toggleBridgeModal,
   toggleConfirmSwitchModal,
   toggleNetworkSwitchModal,
   toggleSettingsMenu,
@@ -19,6 +19,7 @@ export interface ApplicationState {
   walletModalOpen: boolean;
   confirmSwitchModalOpen: boolean;
   networkSwitchModalOpen: boolean;
+  bridgeModalOpen: boolean;
   settingsMenuOpen: boolean;
 }
 
@@ -34,6 +35,7 @@ const initialState: ApplicationState = {
   walletModalOpen,
   confirmSwitchModalOpen: false,
   networkSwitchModalOpen: false,
+  bridgeModalOpen: false,
   settingsMenuOpen: false,
 };
 
@@ -58,6 +60,9 @@ export default createReducer(initialState, builder =>
     })
     .addCase(toggleConfirmSwitchModal, state => {
       state.confirmSwitchModalOpen = !state.confirmSwitchModalOpen;
+    })
+    .addCase(toggleBridgeModal, state => {
+      state.bridgeModalOpen = !state.bridgeModalOpen;
     })
     .addCase(toggleSettingsMenu, state => {
       state.settingsMenuOpen = !state.settingsMenuOpen;
