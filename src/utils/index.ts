@@ -40,6 +40,7 @@ const ETHERSCAN_PREFIXES: { [chainId in chainIds]: string } = {
   321: 'kucoin.',
   137: 'polygon.',
   43114: 'avalanche.',
+  1313161554: 'aurora.',
 };
 
 export function getExplorerLink(

@@ -8,6 +8,7 @@ import chainIds from './chainIds';
 import esw_addresses from './esw_addresses';
 import PolygonNetworkIcon from '../assets/svg/polygon-network.svg';
 import AvalancheNetworkIcon from '../assets/svg/avalanche-network.svg';
+import AuroraNetworkIcon from '../assets/svg/aurora-network.svg';
 
 import { KCS } from './tokens/KCS';
 import { MATIC } from './tokens/MATIC';
@@ -154,6 +155,33 @@ export const KOVAN_CHI = new Token(
   'Chi Gastoken by 1inch',
 );
 
+export const AURORA_WETH = new Token(
+  // @ts-ignore
+  chainIds.AURORA,
+  '0x5B2227A3c3F2E2A3e5d4E62a3F9Ed989c4a4b17A',
+  18,
+  'WETH',
+  'Dai Stablecoin',
+);
+
+export const AURORA_DAI = new Token(
+  // @ts-ignore
+  chainIds.AURORA,
+  '0x79252BF36E3b6b83B5885C28Ed88BCEdFea672bB',
+  18,
+  'DAI',
+  'WrappedEther',
+);
+
+export const AURORA_USDT = new Token(
+  // @ts-ignore
+  chainIds.AURORA,
+  '0x86112534878341cc42695C7171f2eeB94c02B01E',
+  18,
+  'USDT',
+  'Tether USD',
+);
+
 export const ESW: ChainTokenList = {
   [ChainId.MAINNET]: [
     new Token(ChainId.MAINNET, esw_addresses[chainIds.MAINNET], 18, 'ESW', 'EmiDAO Token'),
@@ -184,6 +212,10 @@ export const ESW: ChainTokenList = {
     // @ts-ignore
     new Token(chainIds.AVALANCHE, esw_addresses[chainIds.AVALANCHE], 18, 'ESW', 'EmiDAO Token'),
   ],
+  [chainIds.AURORA]: [
+    // @ts-ignore
+    new Token(chainIds.AURORA, esw_addresses[chainIds.AURORA], 18, 'ESW', 'EmiDAO Token'),
+  ],
 };
 
 const ETH_ONLY: ChainTokenList = {
@@ -196,6 +228,7 @@ const ETH_ONLY: ChainTokenList = {
   [chainIds.KUCOIN]: [ETHER],
   [chainIds.POLYGON]: [ETHER],
   [chainIds.AVALANCHE]: [ETHER],
+  [chainIds.AURORA]: [ETHER],
 };
 
 // used to construct intermediary pairs for trading
@@ -207,6 +240,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   [chainIds.KUCOIN]: [WKCS],
   [chainIds.POLYGON]: [WMATIC],
   [chainIds.AVALANCHE]: [WAVAX],
+  [chainIds.AURORA]: [AURORA_DAI, AURORA_USDT, AURORA_WETH],
 };
 
 // used for display in the default list when adding liquidity
@@ -220,6 +254,8 @@ export const SUGGESTED_BASES: ChainTokenList = {
   [chainIds.POLYGON]: [ESW[chainIds.POLYGON][0]],
   // @ts-ignore
   [chainIds.AVALANCHE]: [ESW[chainIds.AVALANCHE][0]],
+  // @ts-ignore
+  [chainIds.AURORA]: [AURORA_DAI, AURORA_USDT, AURORA_WETH, ESW[chainIds.AURORA][0]],
 };
 
 // used to construct the list of all pairs we consider by default in the frontend
@@ -233,6 +269,8 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   [chainIds.POLYGON]: [ESW[chainIds.POLYGON][0]],
   // @ts-ignore
   [chainIds.AVALANCHE]: [ESW[chainIds.AVALANCHE][0]],
+  // @ts-ignore
+  [chainIds.AURORA]: [AURORA_DAI, AURORA_USDT, AURORA_WETH, ESW[chainIds.AURORA][0]],
 };
 
 // @ts-ignore
@@ -483,4 +521,24 @@ export const networksItems: INetworkItem[] = [
     eswExplorerName: 'ESW KCC Explorer',
     active: false,
   },
+  {
+    alias: 'aurora',
+    value: 'aurora',
+    chainId: chainIds.AURORA,
+    token: ETHER,
+    icon: AuroraNetworkIcon,
+    name: 'Aurora',
+    rpcUrls: [
+      'https://mainnet.aurora.dev',
+    ],
+    currencySymbol: 'ETH',
+    currencySymbolWrap: 'WETH',
+    currencySymbolWeth: 'WETH',
+    blockExplorerUrl: 'https://etherscan.io',
+    blockExplorerName: 'Etherscan',
+    analyticsUrl: 'https://emiswap.com/analytics?network=main',
+    eswExplorerUrl: 'https://etherscan.io/token/0x5a75A093747b72a0e14056352751eDF03518031d',
+    eswExplorerName: 'ESW Etherscan',
+    active: true,
+  }
 ];

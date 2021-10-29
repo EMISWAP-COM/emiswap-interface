@@ -6,6 +6,7 @@ const vamp_addresses: any = {
   [chainIds.KUCOIN]: '0x173835f12566Eedb92E9A8141C8Fc208d92697EF',
   [chainIds.POLYGON]: '0xA1dCC591F2d7C339dF626d4a37Bc418CfA4F9ad4', // TODO
   [chainIds.AVALANCHE]: '0x173835f12566Eedb92E9A8141C8Fc208d92697EF', // TODO
+  [chainIds.AVALANCHE]: '0x173835f12566Eedb92E9A8141C8Fc208d92697EF', // TODO
 };
 
 export default vamp_addresses;

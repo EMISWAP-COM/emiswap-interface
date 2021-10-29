@@ -83,11 +83,9 @@ export default function NetworkSwitchModal() {
   const toggleConfirmSwitchModal = useConfirmSwitchModalToggle();
 
   const switchNetwork = async (item: INetworkItem) => {
-    console.log(item);
-
     try {
       ethereum.removeAllListeners(["networkChanged"]);
-      
+
       const result = await ethereum.request({
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: toHex(item.chainId) }],
@@ -183,6 +181,7 @@ export default function NetworkSwitchModal() {
 
   const logosMaxWidths = {
     [chainIds.AVALANCHE]: '80%',
+    [chainIds.AURORA]: '80%',
   };
 
   return (

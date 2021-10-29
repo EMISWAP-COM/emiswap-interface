@@ -46,6 +46,7 @@ const EMPTY_LIST: TokenAddressMap = {
   [chainIds.KUCOIN]: {},
   [chainIds.POLYGON]: {},
   [chainIds.AVALANCHE]: {},
+  [chainIds.AURORA]: {},
 };
 
 const listCache: WeakMap<TokenList, TokenAddressMap> | null =

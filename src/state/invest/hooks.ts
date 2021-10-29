@@ -48,6 +48,7 @@ const EMPTY_LIST: TokenAddressMap = {
   [chainIds.KUCOIN]: {},
   [chainIds.POLYGON]: {},
   [chainIds.AVALANCHE]: {},
+  [chainIds.AURORA]: {},
 };
 
 export function useInvestState(): AppState['invest'] {

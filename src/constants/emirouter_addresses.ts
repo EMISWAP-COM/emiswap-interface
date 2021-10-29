@@ -9,6 +9,7 @@ const emirouter_addresses: any = {
   [chainIds.KUCOIN]: '0xB3184913A87EEfe616788FBA3A02128A01188Ef2',
   [chainIds.POLYGON]: '0x38680777a6A402E98Fa4609725664f6766c2c46a',
   [chainIds.AVALANCHE]: '0x7B4b70c61a8fDE4E8c03f99adC567C1762d9d247',
+  [chainIds.AURORA]: '0xf99194B05E3b57BeD1583d8e6e31d969C0c54eD2',
 }
 
 export default emirouter_addresses

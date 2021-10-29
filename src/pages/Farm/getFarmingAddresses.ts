@@ -34,6 +34,10 @@ const addressesByNetworkId = {
   [chainIds.AVALANCHE]: [
     '',
   ],
+  // TODO
+  [chainIds.AURORA]: [
+    '',
+  ],
 };
 
 const getFarmingAddresses = (chainId: ChainId) => {

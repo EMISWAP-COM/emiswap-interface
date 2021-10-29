@@ -30,6 +30,7 @@ export const injected = new InjectedConnector({
     chainIds.KUCOIN,
     chainIds.POLYGON,
     chainIds.AVALANCHE,
+    chainIds.AURORA,
   ],
 });
 

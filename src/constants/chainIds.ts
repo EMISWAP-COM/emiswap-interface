@@ -6,7 +6,8 @@ enum chainIds {
   KOVAN = 42,
   KUCOIN = 321,
   POLYGON = 137,
-  AVALANCHE = 43114
+  AVALANCHE = 43114,
+  AURORA = 1313161554,
 }
 
 export default chainIds;
