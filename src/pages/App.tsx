@@ -33,6 +33,7 @@ import MigrateV1Exchange from './MigrateV1/MigrateV1Exchange';
 import Farm from './Farm';
 import NotFound from './NotFound';
 import SocButtons from '../components/SocButtons';
+import Landing from './Landing/Landing';
 
 const LogoWrapper = styled.div`
   display: none;
@@ -91,12 +92,12 @@ export default function App() {
           <Route component={GoogleAnalyticsReporter} />
           <Route component={DarkModeQueryParamReader} />
           <AppWrapper is404Page={is404Page}>
-            <LogoWrapper>
+            {/*<LogoWrapper>
               <Wordmark />
             </LogoWrapper>
             <HeaderWrapper>
               <Header />
-            </HeaderWrapper>
+            </HeaderWrapper>*/}
             <BodyWrapper>
               <Popups />
               <Polling />
@@ -104,7 +105,8 @@ export default function App() {
                 <ErrorBoundary title={'Oops, try again later...'} onDismiss={() => {}}>
                   <Switch>
                     {/*<Route exact strict path="/invest" component={Invest} />*/}
-                    <Redirect exact from="/" to="/swap" />
+                    {/*<Redirect exact from="/" to="/swap" />*/}
+                    <Route exact path="/" component={Landing} />
                     <Route exact strict path="/swap" component={Swap} />
                     <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
                     <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
@@ -144,7 +146,7 @@ export default function App() {
                   </Switch>
                 </ErrorBoundary>
               </Web3ReactManager>
-              <SocButtons />
+              {/*<SocButtons />*/}
             </BodyWrapper>
           </AppWrapper>
         </ReferralUrlParser>
