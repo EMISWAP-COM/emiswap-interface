@@ -75,7 +75,7 @@ export function RedirectPathToSwap({ location }: RouteComponentProps) {
 
 export default function App() {
 
-  const [isIndex, setIsIndex] = useState<boolean>(window.location.pathname === '/')
+  const [isIndex, setIsIndex] = useState<boolean>(window.location.pathname === '/landing')
 
   useEffect(() => {
     const search = window.location.hash.split('?');
@@ -88,7 +88,7 @@ export default function App() {
 
   useEffect(() => {
     const pathInterval = setInterval(() => {
-      const isPathIndex = Boolean(window.location.pathname === '/');
+      const isPathIndex = Boolean(window.location.pathname === '/landing');
       if (isPathIndex !== isIndex) {
         setIsIndex(isPathIndex);
       }
@@ -129,8 +129,8 @@ export default function App() {
                 >
                   <Switch>
                     {/*<Route exact strict path="/invest" component={Invest} />*/}
-                    {/*<Redirect exact from="/" to="/swap" />*/}
-                    <Route exact path="/" component={Landing}/>
+                    <Redirect exact from="/" to="/swap" />
+                    <Route exact strict path="/landing" component={Landing}/>
                     <Route exact strict path="/swap" component={Swap}/>
                     <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap}/>
                     <Route exact strict path="/send" component={RedirectPathToSwapOnly}/>

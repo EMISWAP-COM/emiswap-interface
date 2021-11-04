@@ -85,65 +85,68 @@ const Body = styled.div`
   }
     
   .header {
-     display: flex;
-     align-items: center;
-     margin: 0 80px;
-     padding: 20px 0;
+    z-index: 100;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 20px 80px;
+    background: black;
    
-     @media screen and (max-width: 769px) {
-        display: block;
-        margin: 0 20px;
-     }
-     
-     .logo {
-        margin-right: 100px;
-     }
+    @media screen and (max-width: 769px) {
+      display: block;
+      padding: 20px 20px;
+    }
+    
+    .logo {
+      margin-right: 100px;
+    }
    
-     .nav {
+    .nav {
+      display: flex;
+      margin-bottom: 4px;
+      
+      @media screen and (max-width: 769px) {
+         margin: 24px -12px 4px -12px;
+      }
+      
+      &__link {
         display: flex;
-        margin-bottom: 4px;
+        padding: 0 8px;
+        margin-right: 20px;
+        text-decoration: none !important;
         
         @media screen and (max-width: 769px) {
-           margin: 24px -12px 4px -12px;
+          padding: 0 12px;
+          margin-right: 0;
         }
         
-        &__link {
-          display: flex;
-          padding: 0 8px;
-          margin-right: 20px;
-          text-decoration: none !important;
-          
-          @media screen and (max-width: 769px) {
-            padding: 0 12px;
-            margin-right: 0;
-          }
-          
-          &--active {
-            padding-bottom: 10px;
-            border-bottom: 2px solid #E478FF;
-          }
-          
+        &--active {
+          padding-bottom: 10px;
+          border-bottom: 2px solid #E478FF;
         }
         
-        &__img {
-          max-width: 100%;
-          margin-right: 10px;
-          filter: brightness(100);
-          
-          @media screen and (max-width: 769px) {
-            display: none;
-          }
-          
-        }
-        
-        &__name {
-          font-weight: 500;
-          font-size: 16px;
-          line-height: 24px;
-          color: #FFFFFF !important;
-        }
+      }
       
-     }
+      &__img {
+        max-width: 100%;
+        margin-right: 10px;
+        filter: brightness(100);
+        
+        @media screen and (max-width: 769px) {
+          display: none;
+        }
+        
+      }
+      
+      &__name {
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 24px;
+        color: #FFFFFF !important;
+      }
+    
+    }
    
   }
   
@@ -576,6 +579,10 @@ const Body = styled.div`
       display: block;
       height: 100%;
       max-width: 100%;
+      
+      @media screen and (max-width: 769px) {
+        height: initial;
+      }
     }
     
     &__links {
@@ -764,6 +771,10 @@ const Body = styled.div`
       display: block;
       height: 100%;
       max-width: 100%;
+      
+      @media screen and (max-width: 769px) {
+        height: initial;
+      }
     }
   }
 `;
@@ -861,7 +872,7 @@ export default function Landing({ history }: any) {
                 <div className="chart__stat-name" style={{ color: '#7A2DF4' }}>
                   Farming
                 </div>
-                <div>(coming on 10 Nov)</div>
+                <div>(coming on 17 Nov)</div>
                 <div>up to</div>
                 <div className="chart__percent">1000%</div>
               </div>
@@ -888,12 +899,12 @@ export default function Landing({ history }: any) {
             </div>
             <div className="numbers__list">
               <div className="numbers__card">
-                <div className="numbers__value">$8M</div>
+                <div className="numbers__value">$400K</div>
                 <hr/>
                 <div className="numbers__desc">Total Value Locked</div>
               </div>
               <div className="numbers__card">
-                <div className="numbers__value">$8M</div>
+                <div className="numbers__value">-</div>
                 <hr/>
                 <div className="numbers__desc">Total Trading Volume</div>
               </div>
