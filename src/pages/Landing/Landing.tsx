@@ -1,6 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import LogoSvg from '../../assets/svg/logo.svg';
+import AboutSvg from '../../assets/landing/header/about.svg';
+import CommunitySvg from '../../assets/landing/header/community.svg';
+import FarmsSvg from '../../assets/landing/header/farms.svg';
+import TeamSvg from '../../assets/landing/header/team.svg';
 import PiePng from '../../assets/landing/pie.png';
 import Apr025PiePng from '../../assets/landing/apr/025-pie.png';
 import Apr1000PiePng from '../../assets/landing/apr/1000-pie.png';
@@ -38,6 +43,21 @@ const Body = styled.div`
     color: #393946;
   }
   
+  .btn-primary {
+    min-width: 150px;
+    padding: 8px 24px;
+    border: none;
+    outline: none;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    background: #7A2DF4;
+    color: #FFFFFF;
+    box-shadow: none;
+    cursor: pointer;
+  }
+  
   .landing-wrapper {
     max-width: 1480px;
     margin: auto;
@@ -62,6 +82,45 @@ const Body = styled.div`
   }
     
   .header {
+   display: flex;
+   align-items: center;
+   margin: 0 80px;
+   padding: 20px 0;
+   
+   .logo {
+      margin-right: 100px;
+   }
+   
+   .nav {
+      display: flex;
+      margin-bottom: 4px;
+      
+      &__link {
+        display: flex;
+        padding: 0 8px;
+        margin-right: 20px;
+        text-decoration: none !important;
+        
+        &--active {
+          padding-bottom: 10px;
+          border-bottom: 2px solid #E478FF;
+        }
+        
+      }
+      
+      &__img {
+        margin-right: 10px;
+        filter: brightness(100);
+      }
+      
+      &__name {
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 24px;
+        color: #FFFFFF !important;
+      }
+    
+   }
    
   }
   
@@ -331,18 +390,159 @@ const Body = styled.div`
     }
     
   }
+  
+  .socials {
+    display: flex;
+    margin: 96px 56px;
+    border-radius: 8px;
+    border: 1px solid #393946;
+    border-left: none;
+    background: #19191c;
+    
+    &__image {
+    
+    }
+    
+    &__img {
+      display: block;
+      height: 100%;
+    }
+    
+    &__links {
+        padding: 24px 24px 24px 65px;
+    }
+    
+    &__list {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    
+    .social__card {
+      display: flex;
+      justify-content: space-between;
+      width: calc(50% - 16px);
+      margin: 8px;
+      padding: 12px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      border-radius: 8px;
+      background: #27272E;
+    }
+    
+    .social__name {
+      margin-bottom: 14px;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 24px;
+      color: #FFFFFF;
+    }
+    
+    .social__join-link {
+      display: block;
+      min-width: 105px;
+      border: 1px solid #615C69;
+      border-radius: 29px;
+      font-size: 14px;
+      line-height: 24px;
+      text-align: center;
+      text-decoration: none !important;
+      color: #FFFFFF;
+    }
+    
+  }
+  
+  .team {
+    margin: 96px 80px;
+    overflow: hidden;
+    
+    &__slider {
+      display: flex;
+      margin: 0 -14px;
+    }
+    
+    &__person-card {
+      flex: 1;
+      margin: 14px;
+      // border: 1px solid rgba(255, 255, 255, 0.24);
+      border-radius: 16px;
+      background: #27272E;
+      backdrop-filter: blur(48px);
+    }
+    
+    &__person-info {
+       padding: 24px 20px;
+    }
+    
+    &__person-name {
+      padding-bottom: 12px;
+      font-weight: 500;
+      font-size: 24px;
+      line-height: 30px;
+      color: #FFFFFF;
+    }
+    
+    &__person-desc {
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 28px;
+      color: #E8E7EF;
+    }
+  }
+  
+  .polygon {
+    display: flex;
+    margin: 96px 56px;
+    border-radius: 8px;
+    border: 1px solid #393946;
+    background: #19191c;
+    
+    &__info {
+      padding: 24px;
+    }
+    
+    &__desc {
+      margin-bottom: 24px;
+      font-weight: normal;
+      font-size: 18px;
+      line-height: 32px;   
+      color: #E8E7EF;
+    }
+    
+    &__img {
+      display: block;
+      height: 100%;
+    }
+  }
 `;
 
-export default function Landing({}) {
+export default function Landing({ history }: any) {
   return (
     <Body>
       <div className="landing-wrapper">
         <section className="header">
-          <div className="logo"></div>
-          <div className="nav"></div>
+          <a className="logo" href="/">
+            <img className="logo__img" src={LogoSvg} alt=""/>
+          </a>
+          <div className="nav">
+            <a className="nav__link" href="#about">
+              <img className="nav__img" src={AboutSvg} alt=""/>
+              <div className="nav__name">About</div>
+            </a>
+            <a className="nav__link" href="#farms">
+              <img className="nav__img" src={FarmsSvg} alt=""/>
+              <div className="nav__name">Top Farms</div>
+            </a>
+            <a className="nav__link" href="#community">
+              <img className="nav__img" src={CommunitySvg} alt=""/>
+              <div className="nav__name">Community</div>
+            </a>
+            <a className="nav__link" href="#team">
+              <img className="nav__img" src={TeamSvg} alt=""/>
+              <div className="nav__name">Team</div>
+            </a>
+          </div>
           <div className="lang"></div>
         </section>
-        <section className="banner">
+        <section id="about" className="banner">
           <div className="banner__info">
             <div className="banner__title">
               365% APR and higher<br/> Zero effort<br/> Only on EmiSwap AMM DEX
@@ -351,8 +551,16 @@ export default function Landing({}) {
               EmiSwap is live on Polygon<br/> – this is your chance to earn even more
             </div>
             <div className="banner__buttons">
-              <button>Connect wallet</button>
-              <button>Start earning</button>
+              <button
+                className="btn-primary"
+                style={{ marginRight: 24 }}
+                onClick={() => history.push('/pool')}
+              >
+                Connect wallet
+              </button>
+              <button className="btn-primary" onClick={() => history.push('/pool')}>
+                Start earning
+              </button>
             </div>
           </div>
           <div className="chart">
@@ -386,7 +594,12 @@ export default function Landing({}) {
           <div className="section__card">
             <div className="section__header">
               <div className="section__title">EmiSwap in Numbers</div>
-              <button>Go to Analytics</button>
+              <button
+                className="btn-primary"
+                onClick={() => window.open('https://emiswap.com/analytics/home?network=polygon')}
+              >
+                Go to Analytics
+              </button>
             </div>
             <div className="numbers__list">
               <div className="numbers__card">
@@ -532,7 +745,7 @@ export default function Landing({}) {
             </div>
           </div>
         </section>
-        <section className="join">
+        <section id="community" className="socials">
           <div className="socials__image">
             <img className="socials__img" src={SocialsCardPng} alt=""/>
           </div>
@@ -544,7 +757,13 @@ export default function Landing({}) {
               <div className="social__card">
                 <div>
                   <div className="social__name">Twitter</div>
-                  <a href="" className="socials__join-link">Join now</a>
+                  <a
+                    href="https://twitter.com/emiswap"
+                    target="_blank"
+                    className="social__join-link"
+                  >
+                    Join now
+                  </a>
                 </div>
                 <div>
                   <img className="social__icon-img" src={TwitterPng} alt=""/>
@@ -553,7 +772,13 @@ export default function Landing({}) {
               <div className="social__card">
                 <div>
                   <div className="social__name">Telegram</div>
-                  <a href="" className="socials__join-link">Join now</a>
+                  <a
+                    href="https://t.me/emiswap_official"
+                    target="_blank"
+                    className="social__join-link"
+                  >
+                    Join now
+                  </a>
                 </div>
                 <div>
                   <img className="social__icon-img" src={TelegramPng} alt=""/>
@@ -562,7 +787,13 @@ export default function Landing({}) {
               <div className="social__card">
                 <div>
                   <div className="social__name">Medium</div>
-                  <a href="" className="socials__join-link">Join now</a>
+                  <a
+                    href="https://medium.com/emiswap"
+                    target="_blank"
+                    className="social__join-link"
+                  >
+                    Join now
+                  </a>
                 </div>
                 <div>
                   <img className="social__icon-img" src={MediumPng} alt=""/>
@@ -571,7 +802,13 @@ export default function Landing({}) {
               <div className="social__card">
                 <div>
                   <div className="social__name">GitHub</div>
-                  <a href="" className="socials__join-link">Join now</a>
+                  <a
+                    href="https://github.com/EMISWAP-COM"
+                    target="_blank"
+                    className="social__join-link"
+                  >
+                    Join now
+                  </a>
                 </div>
                 <div>
                   <img className="social__icon-img" src={GitHubPng} alt=""/>
@@ -580,7 +817,7 @@ export default function Landing({}) {
             </div>
           </div>
         </section>
-        <section className="team">
+        <section id="team" className="team">
           <div className="section__header">
             <div className="section__title">The EmiSwap team</div>
             <div className="team__slider-buttons">
@@ -591,33 +828,51 @@ export default function Landing({}) {
           <div className="team__slider">
             <div className="team__person-card">
               <img className="team__person-img" src={GregPng} alt=""/>
-              <div className="team__person-name">Greg Mars</div>
-              <div className="team__person-desc">Founder & CEO</div>
+              <div className="team__person-info">
+                <div className="team__person-name">Greg Mars</div>
+                <hr/>
+                <div className="team__person-desc">Founder & CEO</div>
+              </div>
             </div>
             <div className="team__person-card">
               <img className="team__person-img" src={MarinaPng} alt=""/>
-              <div className="team__person-name">Marina Moon</div>
-              <div className="team__person-desc">Business Development Officer</div>
+              <div className="team__person-info">
+                <div className="team__person-name">Marina Moon</div>
+                <hr/>
+                <div className="team__person-desc">Business Development Officer</div>
+              </div>
             </div>
             <div className="team__person-card">
               <img className="team__person-img" src={AndrePng} alt=""/>
-              <div className="team__person-name">Andre Antares</div>
-              <div className="team__person-desc">Head of Marketing</div>
+              <div className="team__person-info">
+                <div className="team__person-name">Andre Antares</div>
+                <hr/>
+                <div className="team__person-desc">Head of Marketing</div>
+              </div>
             </div>
             <div className="team__person-card">
               <img className="team__person-img" src={JuliaPng} alt=""/>
-              <div className="team__person-name">Julia Yakubova</div>
-              <div className="team__person-desc">Marketing Project Manager</div>
+              <div className="team__person-info">
+                <div className="team__person-name">Julia Yakubova</div>
+                <hr/>
+                <div className="team__person-desc">Marketing Project Manager</div>
+              </div>
             </div>
             <div className="team__person-card">
               <img className="team__person-img" src={RuslanPng} alt=""/>
-              <div className="team__person-name">Ruslan Dimitrov</div>
-              <div className="team__person-desc">IT Product Owner</div>
+              <div className="team__person-info">
+                <div className="team__person-name">Ruslan Dimitrov</div>
+                <hr/>
+                <div className="team__person-desc">IT Product Owner</div>
+              </div>
             </div>
             <div className="team__person-card">
               <img className="team__person-img" src={IsmailPng} alt=""/>
-              <div className="team__person-name">Ismail Bagosher</div>
-              <div className="team__person-desc">Business Development Officer</div>
+              <div className="team__person-info">
+                <div className="team__person-name">Ismail Bagosher</div>
+                <hr/>
+                <div className="team__person-desc">Business Development Officer</div>
+              </div>
             </div>
           </div>
         </section>
@@ -629,10 +884,11 @@ export default function Landing({}) {
             <div className="polygon__desc">
               All LPs on EmiSwap Polygon are eligible for the unique 365% APR airdrop. Connect wallet, add liquidity to
               any pool – and get a daily 1% return until November 3, 2022. The first reward distribution is on February
-              3,
-              2022.
+              3, 2022.
             </div>
-            <button>Go to Analytics</button>
+            <button className="btn-primary" onClick={() => history.push('/pool')}>
+              Start Earning
+            </button>
           </div>
           <img className="polygon__img" src={PolygonCardPng} alt=""/>
         </section>
