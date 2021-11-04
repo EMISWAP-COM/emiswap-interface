@@ -760,6 +760,7 @@ export default function Landing({ history }: any) {
                   <a
                     href="https://twitter.com/emiswap"
                     target="_blank"
+                    rel="noopener noreferrer"
                     className="social__join-link"
                   >
                     Join now
@@ -775,6 +776,7 @@ export default function Landing({ history }: any) {
                   <a
                     href="https://t.me/emiswap_official"
                     target="_blank"
+                    rel="noopener noreferrer"
                     className="social__join-link"
                   >
                     Join now
@@ -790,6 +792,7 @@ export default function Landing({ history }: any) {
                   <a
                     href="https://medium.com/emiswap"
                     target="_blank"
+                    rel="noopener noreferrer"
                     className="social__join-link"
                   >
                     Join now
@@ -805,6 +808,7 @@ export default function Landing({ history }: any) {
                   <a
                     href="https://github.com/EMISWAP-COM"
                     target="_blank"
+                    rel="noopener noreferrer"
                     className="social__join-link"
                   >
                     Join now
