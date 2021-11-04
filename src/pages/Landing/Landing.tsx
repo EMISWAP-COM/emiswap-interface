@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
+
+import Slider from 'react-slick';
 
 import LogoSvg from '../../assets/svg/logo.svg';
 import AboutSvg from '../../assets/landing/header/about.svg';
@@ -27,6 +29,7 @@ import MarinaPng from '../../assets/landing/team/marina.png';
 import RuslanPng from '../../assets/landing/team/ruslan.png';
 import PolygonCardPng from '../../assets/landing/polygon-card.png';
 import SocialsCardPng from '../../assets/landing/socials-card.png';
+import SlideArrowSvg from '../../assets/landing/slide-arrow.svg';
 
 const Body = styled.div`
   width: 100vw;
@@ -82,45 +85,65 @@ const Body = styled.div`
   }
     
   .header {
-   display: flex;
-   align-items: center;
-   margin: 0 80px;
-   padding: 20px 0;
+     display: flex;
+     align-items: center;
+     margin: 0 80px;
+     padding: 20px 0;
    
-   .logo {
-      margin-right: 100px;
-   }
+     @media screen and (max-width: 769px) {
+        display: block;
+        margin: 0 20px;
+     }
+     
+     .logo {
+        margin-right: 100px;
+     }
    
-   .nav {
-      display: flex;
-      margin-bottom: 4px;
-      
-      &__link {
+     .nav {
         display: flex;
-        padding: 0 8px;
-        margin-right: 20px;
-        text-decoration: none !important;
+        margin-bottom: 4px;
         
-        &--active {
-          padding-bottom: 10px;
-          border-bottom: 2px solid #E478FF;
+        @media screen and (max-width: 769px) {
+           margin: 24px -12px 4px -12px;
         }
         
-      }
+        &__link {
+          display: flex;
+          padding: 0 8px;
+          margin-right: 20px;
+          text-decoration: none !important;
+          
+          @media screen and (max-width: 769px) {
+            padding: 0 12px;
+            margin-right: 0;
+          }
+          
+          &--active {
+            padding-bottom: 10px;
+            border-bottom: 2px solid #E478FF;
+          }
+          
+        }
+        
+        &__img {
+          max-width: 100%;
+          margin-right: 10px;
+          filter: brightness(100);
+          
+          @media screen and (max-width: 769px) {
+            display: none;
+          }
+          
+        }
+        
+        &__name {
+          font-weight: 500;
+          font-size: 16px;
+          line-height: 24px;
+          color: #FFFFFF !important;
+        }
       
-      &__img {
-        margin-right: 10px;
-        filter: brightness(100);
-      }
-      
-      &__name {
-        font-weight: 500;
-        font-size: 16px;
-        line-height: 24px;
-        color: #FFFFFF !important;
-      }
-    
-   }
+     }
    
   }
   
@@ -129,9 +152,20 @@ const Body = styled.div`
     justify-content: space-between;
     padding: 100px 80px;
     
+    @media screen and (max-width: 769px) {
+      display: block;
+      padding: 30px 20px 45px 20px;
+   }
+    
     &__info {
       max-width: 80%;
       padding-bottom: 48px;
+      
+       @media screen and (max-width: 769px) {
+          max-width: 100%;
+          padding-bottom: 38px;
+       }
+      
     }
     
     &__title {
@@ -142,6 +176,12 @@ const Body = styled.div`
       font-size: 48px;
       line-height: 56px;
       color: #FFFFFF;
+      
+      @media screen and (max-width: 769px) {
+        font-size: 36px;
+        line-height: 44px;
+      }
+      
     }
     
     &__desc {
@@ -151,6 +191,11 @@ const Body = styled.div`
       font-size: 24px;
       line-height: 32px;
       color: #FFFFFF;
+      
+      @media screen and (max-width: 769px) {
+        font-size: 24px;
+        line-height: 32px;
+      }
     }
     
     .chart {
@@ -159,8 +204,16 @@ const Body = styled.div`
       border-radius: 16px;
       backdrop-filter: blur(48px);
       
+      @media screen and (max-width: 769px) {
+         display: block;
+      }
+      
       &__pie {
         padding: 24px;
+      }
+      
+      &__pie-img {
+        max-width: 100%;
       }
       
       &__stats {
@@ -197,19 +250,51 @@ const Body = styled.div`
      border-radius: 8px;
      background: #19191c;
      
+     @media screen and (max-width: 769px) {
+       margin: 25px 20px;
+     }
+     
+     &__btn-analytics-top {
+       @media screen and (max-width: 769px) {
+          display: none;
+       }
+     }
+     
+     &__btn-analytics-bottom {
+        display: none;
+        
+        @media screen and (max-width: 769px) {
+          display: block;
+          width: 100%;
+          margin-top: 32px;
+          margin-bottom: 12px;
+        }
+     }
+     
      &__list {
        display: flex;
        margin: 0 -14px;
+       
+        @media screen and (max-width: 769px) {
+          display: block;
+          margin: 0;
+        }
+       
      }
      
      &__card {
         flex: 1;
         padding: 24px 20px;
-        margin: 4px 14px;
+        margin: 16px 14px;
         border: 1px solid rgba(255, 255, 255, 0.24);
         border-radius: 16px;
         background: #27272E;
         backdrop-filter: blur(48px);
+        
+        @media screen and (max-width: 769px) {
+          margin: 16px 0;
+        }
+        
      }
      
      &__value {
@@ -232,6 +317,10 @@ const Body = styled.div`
   .apr {
     margin: 96px 64px;
     
+     @media screen and (max-width: 769px) {
+        margin: 60px 20px;
+     }
+    
     &__top {
       display: flex;
       justify-content: center;
@@ -249,14 +338,41 @@ const Body = styled.div`
       font-size: 18px;
       line-height: 24px;
       color: #B7B7CA;
+      
+      @media screen and (max-width: 769px) {
+        display: none;
+      }
+      
     }
     
-    &__line {
+    &__value-img {
+      max-width: 100%;
+      
+      @media screen and (max-width: 769px) {
+        max-width: calc(100% + 32px);
+        margin-left: -16px;
+      }
+      
+    }
+    
+    &__line-img {
+      max-width: 100%;
       margin-bottom: 68px;
+      
+       @media screen and (max-width: 769px) {
+        display: none;
+      }
+      
     }
     
     &__list {
       display: flex;
+      
+      @media screen and (max-width: 769px) {
+        display: block;
+        margin: 0;
+      }
+      
     }
     
     &__card {
@@ -267,6 +383,11 @@ const Body = styled.div`
       border: 1px solid #393946;
       border-radius: 8px;
       background: #27272E;
+      
+      @media screen and (max-width: 769px) {
+        margin: 12px 0;
+      }
+      
     }
     
     &__card-text {
@@ -276,15 +397,35 @@ const Body = styled.div`
       line-height: 24px;
       color: #FFFFFF;
     }
+    
+    &__card-pie-img {
+      @media screen and (max-width: 769px) {
+        width: 96px;
+        height: 96px;
+      }
+    }
+    
   }
   
   .about {
     display: flex;
     margin: 96px 80px;
     
+    @media screen and (max-width: 769px) {
+      flex-wrap: wrap;
+      margin: 0 20px;
+    }
+    
     &__card-list {
       flex: 1;
       margin-right: 70px;
+      
+      @media screen and (max-width: 769px) {
+        order: 2;
+        flex: auto;
+        width: 100%;
+        margin: 0;
+      }
     }
     
     &__card {
@@ -313,6 +454,14 @@ const Body = styled.div`
     &__info {
       flex: 1;
       margin-top: 50px;
+      
+      @media screen and (max-width: 769px) {
+        order: 1;
+        flex: auto;
+        width: 100%;
+        margin: 0 0 30px 0;
+      }
+      
     }
     
     &__desc {
@@ -349,11 +498,20 @@ const Body = styled.div`
   .steps {
     margin: 96px 80px;
     
+    @media screen and (max-width: 769px) {
+      margin: 45px 20px;
+    }
+    
     &__list {
       display: flex;
       margin: 0 -14px;
+      
+      @media screen and (max-width: 769px) {
+        display: block;
+        margin: 0;
+      }
+      
     }
-    
     
     .step__card {
       flex: 1;
@@ -362,10 +520,16 @@ const Body = styled.div`
       border-radius: 16px;
       background: #27272E;
       backdrop-filter: blur(48px);
+      
+      @media screen and (max-width: 769px) {
+        margin: 24px 0;
+      }
+      
     }
     
     .step__img {
       width: 100%;
+      max-width: 100%;
     }
     
     .step__info {
@@ -399,6 +563,11 @@ const Body = styled.div`
     border-left: none;
     background: #19191c;
     
+    @media screen and (max-width: 769px) {
+      display: block;
+      margin: 60px 20px;
+    }
+    
     &__image {
     
     }
@@ -406,15 +575,26 @@ const Body = styled.div`
     &__img {
       display: block;
       height: 100%;
+      max-width: 100%;
     }
     
     &__links {
-        padding: 24px 24px 24px 65px;
+      padding: 24px 24px 24px 65px;
+        
+      @media screen and (max-width: 769px) {
+        padding: 24px;
+      }
     }
     
     &__list {
       display: flex;
       flex-wrap: wrap;
+      
+      @media screen and (max-width: 769px) {
+        display: block;
+        margin: 0;
+      }
+      
     }
     
     .social__card {
@@ -426,6 +606,13 @@ const Body = styled.div`
       border: 1px solid rgba(255, 255, 255, 0.24);
       border-radius: 8px;
       background: #27272E;
+      
+      @media screen and (max-width: 769px) {
+        width: 100%;
+        padding: 16px;
+        margin: 16px 0;
+      }
+     
     }
     
     .social__name {
@@ -452,24 +639,85 @@ const Body = styled.div`
   
   .team {
     margin: 96px 80px;
-    overflow: hidden;
+    // overflow: hidden;
+    
+    @media screen and (max-width: 769px) {
+      margin: 60px 20px;
+    }
     
     &__slider {
-      display: flex;
-      margin: 0 -14px;
+      // display: flex;
+      // margin: 0 -14px;
+      
+      @media screen and (max-width: 769px) {
+        // display: block;
+        // margin: 0;
+      }
+      
+    }
+    
+    &__slider-buttons--top {
+       @media screen and (max-width: 769px) {
+        display: none;
+      }
+    }
+    
+    &__slider-buttons--bottom {
+       display: none;
+       
+       @media screen and (max-width: 769px) {
+        display: flex;
+        justify-content: center;
+        margin-right: 40px;
+        margin-top: 24px;
+      }
+    }
+    
+    
+    &__slider-btn {
+      height: 40px;
+      width: 40px;
+      margin-left: 24px;
+      border: none;
+      outline: none;
+      border-radius: 50px;
+      background: #27272E;
+      box-shadow: none;
+      cursor: pointer;
+      
+      @media screen and (max-width: 769px) {
+      }
+      
+    }
+    
+    &__slider-btn-icon {
+      margin-top: 2px;
+    }
+    
+    &__slider-btn-icon--left {
+      transform: rotate(180deg);
+      margin-right: 4px;
     }
     
     &__person-card {
-      flex: 1;
-      margin: 14px;
-      // border: 1px solid rgba(255, 255, 255, 0.24);
+      position: relative;
+      padding: 14px;
       border-radius: 16px;
-      background: #27272E;
-      backdrop-filter: blur(48px);
     }
     
+     &__person-img {
+        max-width: 100%;
+     }
+    
     &__person-info {
-       padding: 24px 20px;
+      z-index: 10;
+      position: relative;
+      max-width: 310px;
+      margin-top: -24px;
+      padding: 16px 20px 24px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      border-radius: 16px;
+      background: #27272E;
     }
     
     &__person-name {
@@ -495,6 +743,11 @@ const Body = styled.div`
     border: 1px solid #393946;
     background: #19191c;
     
+    @media screen and (max-width: 769px) {
+      display: block;
+      margin: 60px 20px;
+    }
+    
     &__info {
       padding: 24px;
     }
@@ -510,11 +763,43 @@ const Body = styled.div`
     &__img {
       display: block;
       height: 100%;
+      max-width: 100%;
     }
   }
 `;
 
 export default function Landing({ history }: any) {
+
+  const sliderRef = useRef<any>();
+
+  const handleClickTeamNext = () => {
+    sliderRef.current.slickNext();
+  };
+
+  const handleClickTeamPrev = () => {
+    sliderRef.current.slickPrev();
+  };
+
+  const sliderSettings = {
+    arrows: false,
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 4,
+    // initialSlide: 0,
+    responsive: [
+      {
+        breakpoint: 769,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          initialSlide: 2,
+        },
+      },
+    ],
+  };
+
   return (
     <Body>
       <div className="landing-wrapper">
@@ -595,7 +880,7 @@ export default function Landing({ history }: any) {
             <div className="section__header">
               <div className="section__title">EmiSwap in Numbers</div>
               <button
-                className="btn-primary"
+                className="btn-primary numbers__btn-analytics-top"
                 onClick={() => window.open('https://emiswap.com/analytics/home?network=polygon')}
               >
                 Go to Analytics
@@ -623,6 +908,12 @@ export default function Landing({ history }: any) {
                 <div className="numbers__desc">All-Time Trades</div>
               </div>
             </div>
+            <button
+              className="btn-primary numbers__btn-analytics-bottom"
+              onClick={() => window.open('https://emiswap.com/analytics/home?network=polygon')}
+            >
+              Go to Analytics
+            </button>
           </div>
         </section>
         <section className="apr">
@@ -631,29 +922,29 @@ export default function Landing({ history }: any) {
               <div className="apr__state">
                 <div className="apr__state-label">up to</div>
                 <div className="apr__value">
-                  <img src={Apr2000Png} alt="" className="apr__value-img"/>
+                  <img className="apr__value-img" src={Apr2000Png} alt=""/>
                 </div>
                 <div className="apr__state-label">APR</div>
               </div>
-              <img className="apr__line" src={AprLinePng} alt=""/>
+              <img className="apr__line-img" src={AprLinePng} alt=""/>
             </div>
           </div>
           <div className="apr__list">
             <div className="apr__card">
-              <img className="apr__card-pie" src={Apr1000PiePng} alt=""/>
+              <img className="apr__card-pie-img" src={Apr1000PiePng} alt=""/>
               <div className="apr__card-text">
                 365% APR: our special Airdrop for EmiSwap LPs on Polygon. Earn additional 1% per day for providing
                 liquidity.
               </div>
             </div>
             <div className="apr__card">
-              <img className="apr__card-pie" src={Apr1000PiePng} alt=""/>
+              <img className="apr__card-pie-img" src={Apr1000PiePng} alt=""/>
               <div className="apr__card-text">
                 Provide Liquidity and stake LP tokens in Farming pools with up to 1000% APR to multiply your rewards.
               </div>
             </div>
             <div className="apr__card">
-              <img className="apr__card-pie" src={Apr025PiePng} alt=""/>
+              <img className="apr__card-pie-img" src={Apr025PiePng} alt=""/>
               <div className="apr__card-text">
                 0.25% of the trading volume in any pool is distributed between Liquidity Providers.
               </div>
@@ -824,60 +1115,82 @@ export default function Landing({ history }: any) {
         <section id="team" className="team">
           <div className="section__header">
             <div className="section__title">The EmiSwap team</div>
-            <div className="team__slider-buttons">
-              <div></div>
-              <div></div>
+            <div className="team__slider-buttons team__slider-buttons--top">
+              <button className="team__slider-btn" onClick={handleClickTeamPrev}>
+                <img
+                  className="team__slider-btn-icon team__slider-btn-icon--left"
+                  src={SlideArrowSvg}
+                  alt=""
+                />
+              </button>
+              <button className="team__slider-btn" onClick={handleClickTeamNext}>
+                <img className="team__slider-btn-icon" src={SlideArrowSvg} alt=""/>
+              </button>
             </div>
           </div>
           <div className="team__slider">
-            <div className="team__person-card">
-              <img className="team__person-img" src={GregPng} alt=""/>
-              <div className="team__person-info">
-                <div className="team__person-name">Greg Mars</div>
-                <hr/>
-                <div className="team__person-desc">Founder & CEO</div>
+            <Slider ref={sliderRef} {...sliderSettings}>
+              <div className="team__person-card">
+                <img className="team__person-img" src={GregPng} alt=""/>
+                <div className="team__person-info">
+                  <div className="team__person-name">Greg Mars</div>
+                  <hr/>
+                  <div className="team__person-desc">Founder & CEO</div>
+                </div>
               </div>
-            </div>
-            <div className="team__person-card">
-              <img className="team__person-img" src={MarinaPng} alt=""/>
-              <div className="team__person-info">
-                <div className="team__person-name">Marina Moon</div>
-                <hr/>
-                <div className="team__person-desc">Business Development Officer</div>
+              <div className="team__person-card">
+                <img className="team__person-img" src={MarinaPng} alt=""/>
+                <div className="team__person-info">
+                  <div className="team__person-name">Marina Moon</div>
+                  <hr/>
+                  <div className="team__person-desc">Business Development Officer</div>
+                </div>
               </div>
-            </div>
-            <div className="team__person-card">
-              <img className="team__person-img" src={AndrePng} alt=""/>
-              <div className="team__person-info">
-                <div className="team__person-name">Andre Antares</div>
-                <hr/>
-                <div className="team__person-desc">Head of Marketing</div>
+              <div className="team__person-card">
+                <img className="team__person-img" src={AndrePng} alt=""/>
+                <div className="team__person-info">
+                  <div className="team__person-name">Andre Antares</div>
+                  <hr/>
+                  <div className="team__person-desc">Head of Marketing</div>
+                </div>
               </div>
-            </div>
-            <div className="team__person-card">
-              <img className="team__person-img" src={JuliaPng} alt=""/>
-              <div className="team__person-info">
-                <div className="team__person-name">Julia Yakubova</div>
-                <hr/>
-                <div className="team__person-desc">Marketing Project Manager</div>
+              <div className="team__person-card">
+                <img className="team__person-img" src={JuliaPng} alt=""/>
+                <div className="team__person-info">
+                  <div className="team__person-name">Julia Yakubova</div>
+                  <hr/>
+                  <div className="team__person-desc">Marketing Project Manager</div>
+                </div>
               </div>
-            </div>
-            <div className="team__person-card">
-              <img className="team__person-img" src={RuslanPng} alt=""/>
-              <div className="team__person-info">
-                <div className="team__person-name">Ruslan Dimitrov</div>
-                <hr/>
-                <div className="team__person-desc">IT Product Owner</div>
+              <div className="team__person-card">
+                <img className="team__person-img" src={RuslanPng} alt=""/>
+                <div className="team__person-info">
+                  <div className="team__person-name">Ruslan Dimitrov</div>
+                  <hr/>
+                  <div className="team__person-desc">IT Product Owner</div>
+                </div>
               </div>
-            </div>
-            <div className="team__person-card">
-              <img className="team__person-img" src={IsmailPng} alt=""/>
-              <div className="team__person-info">
-                <div className="team__person-name">Ismail Bagosher</div>
-                <hr/>
-                <div className="team__person-desc">Business Development Officer</div>
+              <div className="team__person-card">
+                <img className="team__person-img" src={IsmailPng} alt=""/>
+                <div className="team__person-info">
+                  <div className="team__person-name">Ismail Bagosher</div>
+                  <hr/>
+                  <div className="team__person-desc">Business Development Officer</div>
+                </div>
               </div>
-            </div>
+            </Slider>
+          </div>
+          <div className="team__slider-buttons team__slider-buttons--bottom">
+            <button className="team__slider-btn" onClick={handleClickTeamPrev}>
+              <img
+                className="team__slider-btn-icon team__slider-btn-icon--left"
+                src={SlideArrowSvg}
+                alt=""
+              />
+            </button>
+            <button className="team__slider-btn" onClick={handleClickTeamNext}>
+              <img className="team__slider-btn-icon" src={SlideArrowSvg} alt=""/>
+            </button>
           </div>
         </section>
         <section className="polygon">
