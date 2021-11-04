@@ -909,7 +909,7 @@ export default function Landing({ history }: any) {
                 <div className="numbers__desc">Total Trading Volume</div>
               </div>
               <div className="numbers__card">
-                <div className="numbers__value">8K</div>
+                <div className="numbers__value">83K</div>
                 <hr/>
                 <div className="numbers__desc">Unique Users</div>
               </div>
