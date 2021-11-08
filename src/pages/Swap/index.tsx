@@ -141,7 +141,7 @@ export default function Swap() {
     [independentField]: typedValue,
     [dependentField]: showWrap
       ? parsedAmounts[independentField]?.toExact() ?? ''
-      : parsedAmounts[dependentField]?.toSignificant(6) ?? '',
+      : (+(parsedAmounts[dependentField]?.toSignificant(6) || 0) / 100000).toString() ?? '',
   };
 
   const [isEnough] = useTransactionPrice('swap', currencies[Field.INPUT]);
