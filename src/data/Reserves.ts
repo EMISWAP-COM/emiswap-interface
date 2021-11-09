@@ -1,11 +1,10 @@
 import { Pair, Token, TokenAmount } from '@uniswap/sdk';
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useActiveWeb3React } from '../hooks';
 
 import { useMultipleContractSingleData } from '../state/multicall/hooks';
 import { wrappedCurrency } from '../utils/wrappedCurrency';
 import { useEmiRouter } from '../hooks/useContract';
-import { useIsPolygonActive } from '../hooks/Coins';
 
 export enum PairState {
   LOADING,
@@ -27,7 +26,7 @@ export function usePairs(
     [chainId, currencies],
   );
 
-  const calcReserve = useCalcReserve();
+  // const calcReserve = useCalcReserve();
 
   const newtokens = tokens.map(([a, b]) => [a, b]).map(([a, b]) => [a?.address, b?.address]);
   const results = useMultipleContractSingleData(
@@ -64,20 +63,20 @@ export function usePairs(
       return [
         PairState.EXISTS,
         new Pair(
-          new TokenAmount(token0, calcReserve(token0, _reserve0)),
-          new TokenAmount(token1, calcReserve(token1, _reserve1)),
+          new TokenAmount(token0, _reserve0?.toString()),
+          new TokenAmount(token1, _reserve1?.toString()),
           poolAddresss,
         ),
       ];
     });
-  }, [results, tokens, calcReserve]);
+  }, [results, tokens]);
 }
 
 export function usePair(tokenA?: Token, tokenB?: Token): [PairState, Pair | null] {
   return usePairs([[tokenA, tokenB]])[0];
 }
 
-export function useCalcReserve() {
+/*export function useCalcReserve() {
   const isPolygonActive = useIsPolygonActive();
 
   return useCallback(
@@ -89,4 +88,4 @@ export function useCalcReserve() {
     },
     [isPolygonActive],
   );
-}
+}*/
