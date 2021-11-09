@@ -1,10 +1,11 @@
 import { Pair, Token, TokenAmount } from '@uniswap/sdk';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useActiveWeb3React } from '../hooks';
 
 import { useMultipleContractSingleData } from '../state/multicall/hooks';
 import { wrappedCurrency } from '../utils/wrappedCurrency';
 import { useEmiRouter } from '../hooks/useContract';
+import { useIsPolygonActive } from '../hooks/Coins';
 
 export enum PairState {
   LOADING,
@@ -26,6 +27,8 @@ export function usePairs(
     [chainId, currencies],
   );
 
+  const calcReserve = useCalcReserve();
+
   const newtokens = tokens.map(([a, b]) => [a, b]).map(([a, b]) => [a?.address, b?.address]);
   const results = useMultipleContractSingleData(
     [emirouter?.address],
@@ -38,12 +41,15 @@ export function usePairs(
     true,
     newtokens,
   );
+  // console.log(results);
   return useMemo(() => {
     return results.map((result, i) => {
       const { result: reserves, loading } = result;
       const tokenA = tokens[i][0];
       const tokenB = tokens[i][1];
-      if (loading) return [PairState.LOADING, null];
+      if (loading) {
+        return [PairState.LOADING, null];
+      }
       if (!tokenA || !tokenB || tokenA.equals(tokenB)) {
         return [PairState.INVALID, null];
       }
@@ -58,15 +64,29 @@ export function usePairs(
       return [
         PairState.EXISTS,
         new Pair(
-          new TokenAmount(token0, _reserve0?.toString()),
-          new TokenAmount(token1, _reserve1?.toString()),
+          new TokenAmount(token0, calcReserve(token0, _reserve0)),
+          new TokenAmount(token1, calcReserve(token1, _reserve1)),
           poolAddresss,
         ),
       ];
     });
-  }, [results, tokens]);
+  }, [results, tokens, calcReserve]);
 }
 
 export function usePair(tokenA?: Token, tokenB?: Token): [PairState, Pair | null] {
   return usePairs([[tokenA, tokenB]])[0];
+}
+
+export function useCalcReserve() {
+  const isPolygonActive = useIsPolygonActive();
+
+  return useCallback(
+    (token: Token, reserve: any) => {
+      if (isPolygonActive && token.symbol === 'USDT' && reserve) {
+        return +reserve.toString() * 1000000000000;
+      }
+      return reserve?.toString();
+    },
+    [isPolygonActive],
+  );
 }
