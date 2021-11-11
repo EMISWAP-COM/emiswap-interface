@@ -4081,14 +4081,14 @@ const defaultCoins: DefaultCoins = {
       address: '0x980a5afef3d17ad98635f6c5aebcbaeded3c3430',
       chainId: 321,
       name: 'USDC',
-      decimals: 18,
+      decimals: 6,
       symbol: 'USDC',
     },
     {
       address: '0x0039f574ee5cc39bdd162e9a88e3eb1f111baf48',
       chainId: 321,
       name: 'USDT',
-      decimals: 18,
+      decimals: 6,
       symbol: 'USDT',
     },
     {
@@ -4138,14 +4138,14 @@ const defaultCoins: DefaultCoins = {
       address: '0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
       chainId: 137,
       name: 'USDT',
-      decimals: 18,
+      decimals: 6,
       symbol: 'USDT',
     },
     {
       address: '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
       chainId: 137,
       name: 'USDC',
-      decimals: 18,
+      decimals: 6,
       symbol: 'USDC',
     },
     {
@@ -4211,7 +4211,7 @@ const defaultCoins: DefaultCoins = {
       address: '0xc7198437980c041c805A1EDcbA50c1Ce5db95118',
       chainId: 43114,
       name: 'USDT',
-      decimals: 18,
+      decimals: 6,
       symbol: 'USDT',
     },
     {

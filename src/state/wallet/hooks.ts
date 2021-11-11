@@ -4,7 +4,7 @@ import ERC20_INTERFACE from '../../constants/abis/erc20';
 import { useAllTokens } from '../../hooks/Tokens';
 import { useActiveWeb3React } from '../../hooks';
 import { useMulticallContract } from '../../hooks/useContract';
-import { useAllCoins, useIsPolygonActive } from '../../hooks/Coins';
+import { useAllCoins } from '../../hooks/Coins';
 import { isAddress } from '../../utils';
 import { useMultipleContractSingleData, useSingleContractMultipleData } from '../multicall/hooks';
 
@@ -82,7 +82,7 @@ export function useTokenBalancesWithLoadingIndicator(
   address?: string,
   tokens?: (Token | undefined)[],
 ): [{ [tokenAddress: string]: TokenAmount | undefined }, boolean] {
-  const isPolygonActive = useIsPolygonActive();
+  // const isPolygonActive = useIsPolygonActive();
 
   const validatedTokens: Token[] = useMemo(
     () => tokens?.filter((t?: Token): t is Token => isAddress(t?.address) !== false) ?? [],
@@ -110,9 +110,9 @@ export function useTokenBalancesWithLoadingIndicator(
               (memo, token, i) => {
                 const value = balances?.[i]?.result?.[0];
                 let amount = value ? JSBI.BigInt(value.toString()) : undefined;
-                if (amount && isPolygonActive && token.symbol === 'USDT') {
+                /*if (amount && isPolygonActive && token.symbol === 'USDT') {
                   amount = JSBI.multiply(amount, JSBI.BigInt(1000000000000));
-                }
+                }*/
                 if (amount) {
                   try {
                     memo[token.address] = new TokenAmount(token, amount);
@@ -125,7 +125,7 @@ export function useTokenBalancesWithLoadingIndicator(
               {},
             )
           : {},
-      [address, validatedTokens, balances, isPolygonActive],
+      [address, validatedTokens, balances],
     ),
     anyLoading,
   ];
