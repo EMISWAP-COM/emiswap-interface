@@ -15,6 +15,7 @@ import { useActiveWeb3React } from '../../../hooks';
 import { FarmingTimeType } from '../constants';
 import KucoinLogo from '../../../assets/currencies/KCS.png';
 import { useNetworkData } from '../../../hooks/Coins';
+import Farm365Content from './Farm365Content';
 
 const StyledRow = styled.div`
   background-color: ${({ theme }) => theme.border1Transparency};
@@ -218,6 +219,7 @@ type ExtendableRowProps = {
   isKuCoinToken?: boolean;
   balance?: string;
   availableToCollect?: string;
+  farming365?: boolean;
 };
 
 const ExtendableRow: React.FC<ExtendableRowProps> = ({
@@ -238,6 +240,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
   balance,
   availableToCollect,
   isKuCoinToken = false,
+  farming365 = false,
 }) => {
   const { alias } = useNetworkData();
   const [isRowExtended, setIsRowExtended] = useState(false);
@@ -356,90 +359,100 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
           {isRowExtended ? <ChevronUp size={24}/> : <ChevronDown size={24}/>}
         </StyledExtendButtonDesktop>
       </StyledHeader>
-      <StyledExtendableContent isVisible={isRowExtended}>
-        <StyledBlocksWrapper>
-          <StyledBlock width={150}>
-            <StyledBlockTitle>Deposit</StyledBlockTitle>
-            <StyledBlockValue>
-              <StyledCurrencyLogo>
-                {isLpToken(tokenMode) ? (
-                  <LpTokenSymbol/>
-                ) : (
-                  <CurrencyLogo currency={stakeToken} size={'24px'}/>
-                )}
-              </StyledCurrencyLogo>
-              <Tooltip title={deposit}>
-                <StyledTruncatedText>{deposit}</StyledTruncatedText>
-              </Tooltip>
-            </StyledBlockValue>
-          </StyledBlock>
-          <StyledBlock width={150}>
-            <StyledBlockTitle>Your reward</StyledBlockTitle>
-            <StyledBlockValue>
-              <StyledCurrencyLogo>
-                <CurrencyLogo currency={rewardToken} size={'24px'}/>
-              </StyledCurrencyLogo>
-              <Tooltip title={projectedReward}>
-                <StyledTruncatedText>{projectedReward}</StyledTruncatedText>
-              </Tooltip>
-            </StyledBlockValue>
-          </StyledBlock>
-          {typeof balance !== 'undefined' && (
-            <StyledBlock width={150}>
-              <StyledBlockTitle>Balance</StyledBlockTitle>
-              <StyledBlockValue>
-                <StyledCurrencyLogo>
-                  <CurrencyLogo currency={rewardToken} size={'24px'}/>
-                </StyledCurrencyLogo>
-                <Tooltip title={balance}>
-                  <StyledTruncatedText>{balance}</StyledTruncatedText>
-                </Tooltip>
-              </StyledBlockValue>
-            </StyledBlock>
-          )}
-          {typeof availableToCollect !== 'undefined' && (
-            <StyledBlock>
-              <StyledBlockTitle>Available to collect</StyledBlockTitle>
-              <StyledBlockValue>
-                <StyledCurrencyLogo>
-                  {isLpToken(tokenMode) ? (
-                    <LpTokenSymbol/>
-                  ) : (
+      {farming365 ? (
+        <>
+          <StyledExtendableContent isVisible={isRowExtended}>
+            <Farm365Content/>
+          </StyledExtendableContent>
+        </>
+      ) : (
+        <>
+          <StyledExtendableContent isVisible={isRowExtended}>
+            <StyledBlocksWrapper>
+              <StyledBlock width={150}>
+                <StyledBlockTitle>Deposit</StyledBlockTitle>
+                <StyledBlockValue>
+                  <StyledCurrencyLogo>
+                    {isLpToken(tokenMode) ? (
+                      <LpTokenSymbol/>
+                    ) : (
+                      <CurrencyLogo currency={stakeToken} size={'24px'}/>
+                    )}
+                  </StyledCurrencyLogo>
+                  <Tooltip title={deposit}>
+                    <StyledTruncatedText>{deposit}</StyledTruncatedText>
+                  </Tooltip>
+                </StyledBlockValue>
+              </StyledBlock>
+              <StyledBlock width={150}>
+                <StyledBlockTitle>Your reward</StyledBlockTitle>
+                <StyledBlockValue>
+                  <StyledCurrencyLogo>
                     <CurrencyLogo currency={rewardToken} size={'24px'}/>
-                  )}
-                </StyledCurrencyLogo>
-                <Tooltip title={availableToCollect}>
-                  <StyledTruncatedText>{availableToCollect}</StyledTruncatedText>
-                </Tooltip>
-              </StyledBlockValue>
-            </StyledBlock>
-          )}
-        </StyledBlocksWrapper>
-        <StyledHr/>
-        <StyledInputsWrapper>
-          <StyledTokenInputWrapper>
-            {stakeToken && (
-              <TokenInput
-                token={stakeToken}
-                contractAddress={contractAddress}
-                onStake={onStake}
-                tokenMode={tokenMode}
-              />
-            )}
-          </StyledTokenInputWrapper>
-          <StyledTokenInputWrapper>
-            <TokenCollect
-              isSingleToken={typeof availableToCollect !== 'undefined'}
-              deposit={typeof availableToCollect !== 'undefined' ? availableToCollect : deposit}
-              projectedReward={projectedReward}
-              stakeToken={stakeToken}
-              rewardToken={rewardToken}
-              onCollect={onCollect}
-              tokenMode={tokenMode}
-            />
-          </StyledTokenInputWrapper>
-        </StyledInputsWrapper>
-      </StyledExtendableContent>
+                  </StyledCurrencyLogo>
+                  <Tooltip title={projectedReward}>
+                    <StyledTruncatedText>{projectedReward}</StyledTruncatedText>
+                  </Tooltip>
+                </StyledBlockValue>
+              </StyledBlock>
+              {typeof balance !== 'undefined' && (
+                <StyledBlock width={150}>
+                  <StyledBlockTitle>Balance</StyledBlockTitle>
+                  <StyledBlockValue>
+                    <StyledCurrencyLogo>
+                      <CurrencyLogo currency={rewardToken} size={'24px'}/>
+                    </StyledCurrencyLogo>
+                    <Tooltip title={balance}>
+                      <StyledTruncatedText>{balance}</StyledTruncatedText>
+                    </Tooltip>
+                  </StyledBlockValue>
+                </StyledBlock>
+              )}
+              {typeof availableToCollect !== 'undefined' && (
+                <StyledBlock>
+                  <StyledBlockTitle>Available to collect</StyledBlockTitle>
+                  <StyledBlockValue>
+                    <StyledCurrencyLogo>
+                      {isLpToken(tokenMode) ? (
+                        <LpTokenSymbol/>
+                      ) : (
+                        <CurrencyLogo currency={rewardToken} size={'24px'}/>
+                      )}
+                    </StyledCurrencyLogo>
+                    <Tooltip title={availableToCollect}>
+                      <StyledTruncatedText>{availableToCollect}</StyledTruncatedText>
+                    </Tooltip>
+                  </StyledBlockValue>
+                </StyledBlock>
+              )}
+            </StyledBlocksWrapper>
+            <StyledHr/>
+            <StyledInputsWrapper>
+              <StyledTokenInputWrapper>
+                {stakeToken && (
+                  <TokenInput
+                    token={stakeToken}
+                    contractAddress={contractAddress}
+                    onStake={onStake}
+                    tokenMode={tokenMode}
+                  />
+                )}
+              </StyledTokenInputWrapper>
+              <StyledTokenInputWrapper>
+                <TokenCollect
+                  isSingleToken={typeof availableToCollect !== 'undefined'}
+                  deposit={typeof availableToCollect !== 'undefined' ? availableToCollect : deposit}
+                  projectedReward={projectedReward}
+                  stakeToken={stakeToken}
+                  rewardToken={rewardToken}
+                  onCollect={onCollect}
+                  tokenMode={tokenMode}
+                />
+              </StyledTokenInputWrapper>
+            </StyledInputsWrapper>
+          </StyledExtendableContent>
+        </>
+      )}
       <StyledExtendButtonMobile onClick={handleExtendClick} isRowExtended={isRowExtended}>
         <StyledMobileChevron>
           {isRowExtended ? <ChevronUp size={24}/> : <ChevronDown size={24}/>}

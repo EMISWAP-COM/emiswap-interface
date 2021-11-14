@@ -52,6 +52,15 @@ export const WMATIC = new Token(
   'WMATIC',
 );
 
+export const MUMBAI_WMATIC = new Token(
+  // @ts-ignore
+  chainIds.MUMBAI,
+  '0xbd15365b5883382A3ebFfDB0C8780F9881eff71e',
+  18,
+  'WMATIC',
+  'WMATIC',
+);
+
 export const WAVAX = new Token(
   // @ts-ignore
   chainIds.AVALANCHE,
@@ -180,6 +189,11 @@ export const ESW: ChainTokenList = {
     // @ts-ignore
     new Token(chainIds.POLYGON, esw_addresses[chainIds.POLYGON], 18, 'ESW', 'EmiDAO Token'),
   ],
+  // @ts-ignore
+  [chainIds.MUMBAI]: [
+    // @ts-ignore
+    new Token(chainIds.MUMBAI, esw_addresses[chainIds.MUMBAI], 18, 'ESW', 'EmiDAO Token'),
+  ],
   [chainIds.AVALANCHE]: [
     // @ts-ignore
     new Token(chainIds.AVALANCHE, esw_addresses[chainIds.AVALANCHE], 18, 'ESW', 'EmiDAO Token'),
@@ -195,6 +209,7 @@ const ETH_ONLY: ChainTokenList = {
   // @ts-ignore
   [chainIds.KUCOIN]: [ETHER],
   [chainIds.POLYGON]: [ETHER],
+  [chainIds.MUMBAI]: [ETHER],
   [chainIds.AVALANCHE]: [ETHER],
 };
 
@@ -206,6 +221,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   // @ts-ignore
   [chainIds.KUCOIN]: [WKCS],
   [chainIds.POLYGON]: [WMATIC],
+  [chainIds.MUMBAI]: [MUMBAI_WMATIC],
   [chainIds.AVALANCHE]: [WAVAX],
 };
 
@@ -219,6 +235,8 @@ export const SUGGESTED_BASES: ChainTokenList = {
   // @ts-ignore
   [chainIds.POLYGON]: [ESW[chainIds.POLYGON][0]],
   // @ts-ignore
+  [chainIds.MUMBAI]:  [ESW[chainIds.MUMBAI][0]],
+  // @ts-ignore
   [chainIds.AVALANCHE]: [ESW[chainIds.AVALANCHE][0]],
 };
 
@@ -231,6 +249,8 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   [chainIds.KUCOIN]: [ESW[chainIds.KUCOIN][0]],
   // @ts-ignore
   [chainIds.POLYGON]: [ESW[chainIds.POLYGON][0]],
+  // @ts-ignore
+  [chainIds.MUMBAI]:  [ESW[chainIds.MUMBAI][0]],
   // @ts-ignore
   [chainIds.AVALANCHE]: [ESW[chainIds.AVALANCHE][0]],
 };
@@ -322,7 +342,7 @@ export const SUPPORTED_WALLETS = {
       iconName: 'fortmaticIcon.png',
       description: 'Login using Fortmatic hosted wallet',
       href: null,
-      unavailableNetworksIds: [chainIds.KUCOIN, chainIds.POLYGON],
+      unavailableNetworksIds: [chainIds.KUCOIN, chainIds.POLYGON, chainIds.MUMBAI],
       color: '#6748FF',
       mobile: true,
     },

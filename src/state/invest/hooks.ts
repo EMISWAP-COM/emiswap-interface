@@ -47,6 +47,7 @@ const EMPTY_LIST: TokenAddressMap = {
   // @ts-ignore
   [chainIds.KUCOIN]: {},
   [chainIds.POLYGON]: {},
+  [chainIds.MUMBAI]: {},
   [chainIds.AVALANCHE]: {},
 };
 

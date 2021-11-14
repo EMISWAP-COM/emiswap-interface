@@ -1,33 +1,50 @@
 import { FarmingTimeType } from '../Farm/constants';
 import ExtendableRow from '../Farm/ExtendableRow';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Contract } from '@ethersproject/contracts';
-import useFarming2 from '../../hooks/useFarming2';
+import useFarming from '../../hooks/useFarming';
 
-type FarmComponentProps = {
+type Farm365ItemProps = {
   contract: Contract;
   eswPriceInDai: string;
 };
 
-export default function Farm365Item({ contract }: FarmComponentProps) {
-  const farming2 = useFarming2(contract);
+export default function Farm365Item({
+  contract,
+  eswPriceInDai,
+}: Farm365ItemProps) {
+  const farming = useFarming(contract);
+
+  const [apr, setApr] = useState<number>(0);
+
+  useEffect(() => {
+    if (farming.blockReward && Number(farming.liquidity) && eswPriceInDai) {
+      const block = parseFloat(farming.blockReward);
+      const dai = parseFloat(eswPriceInDai);
+      const liq = parseFloat(farming.liquidity);
+
+      setApr((block * 6400 * 365 * 100 * dai) / liq);
+    }
+  }, [eswPriceInDai, farming.blockReward, farming.liquidity]);
+
+  console.log('farming', farming);
 
   return (
     <ExtendableRow
       contractAddress={contract.address}
-      stakeToken={farming2.stakeToken}
-      rewardToken={farming2.rewardToken}
-      projectedReward={farming2.reward}
-      apr={Number(farming2.apr)}
-      lockPeriod={farming2.lockPeriod}
-      liquidity={farming2.liquidity}
-      endDate={farming2.endDate}
-      deposit={farming2.deposit}
-      availableToCollect={farming2.availableToCollect}
-      type={FarmingTimeType.fixed}
-      onStake={farming2.stake}
-      onCollect={farming2.collect}
-      tokenMode={farming2.tokenMode}
+      stakeToken={farming.stakeToken}
+      rewardToken={farming.rewardToken}
+      projectedReward={farming.reward}
+      apr={apr}
+      blockReward={farming.blockReward}
+      liquidity={farming.liquidity}
+      endDate={farming.endDate}
+      deposit={farming.balance}
+      type={FarmingTimeType.variable}
+      onStake={farming.stake}
+      onCollect={farming.collect}
+      tokenMode={farming.tokenMode}
+      farming365={true}
     />
   );
 };

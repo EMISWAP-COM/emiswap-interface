@@ -395,6 +395,7 @@ const NETWORK_LABELS: { [chainId in chainIds]: string | null } = {
   [ChainId.KOVAN]: 'Kovan',
   [chainIds.KUCOIN]: 'KuCoin',
   [chainIds.POLYGON]: 'Polygon',
+  [chainIds.MUMBAI]: 'Mumbai',
   [chainIds.AVALANCHE]: 'Avalanche',
 };
 

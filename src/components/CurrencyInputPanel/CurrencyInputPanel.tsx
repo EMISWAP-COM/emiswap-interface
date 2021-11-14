@@ -41,6 +41,8 @@ interface CurrencyInputPanelProps {
   showMaxError?: boolean;
   currencyBalance?: TokenAmount | undefined;
   balanceDecimals?: number;
+  className?: string;
+  selectEnable?: boolean;
 }
 
 const CurrencyInputPanel = (props: CurrencyInputPanelProps) => {
@@ -67,6 +69,8 @@ const CurrencyInputPanel = (props: CurrencyInputPanelProps) => {
     showMaxError = false,
     currencyBalance,
     balanceDecimals = 6,
+    className = '',
+    selectEnable = true,
   } = props;
 
   const { t } = useTranslation();
@@ -92,7 +96,7 @@ const CurrencyInputPanel = (props: CurrencyInputPanelProps) => {
 
   return (
     <>
-      <Styled.InputPanel id={id}>
+      <Styled.InputPanel id={id} className={className}>
         <Styled.Container hideInput={hideInput} isError={checkError()}>
           {!hideInput && (
             <Styled.LabelRow>
@@ -138,45 +142,47 @@ const CurrencyInputPanel = (props: CurrencyInputPanelProps) => {
                 )}
               </>
             )}
-            <Styled.CurrencySelect
-              selected={!!currency}
-              className="open-currency-select-button"
-              onClick={() => {
-                if (!disableCurrencySelect) {
-                  setModalOpen(true);
-                }
-              }}
-            >
-              <Styled.Aligner>
-                {pair ? (
-                  <DoubleCurrencyLogo
-                    currency0={pair.token0}
-                    currency1={pair.token1}
-                    size={24}
-                    margin={true}
-                  />
-                ) : currency ? (
-                  <CurrencyLogo currency={currency} size={'24px'} />
-                ) : null}
-                {pair ? (
-                  <Styled.StyledTokenName className="pair-name-container">
-                    {pair?.token0.symbol}-{pair?.token1.symbol}
-                  </Styled.StyledTokenName>
-                ) : (
-                  <Styled.StyledTokenName
-                    className="token-symbol-container"
-                    active={Boolean(currency && currency.symbol)}
-                  >
-                    {(currency && currency.symbol && currency.symbol.length > 20
-                      ? currency.symbol.slice(0, 4) +
+            {selectEnable && (
+              <Styled.CurrencySelect
+                selected={!!currency}
+                className="open-currency-select-button"
+                onClick={() => {
+                  if (!disableCurrencySelect) {
+                    setModalOpen(true);
+                  }
+                }}
+              >
+                <Styled.Aligner>
+                  {pair ? (
+                    <DoubleCurrencyLogo
+                      currency0={pair.token0}
+                      currency1={pair.token1}
+                      size={24}
+                      margin={true}
+                    />
+                  ) : currency ? (
+                    <CurrencyLogo currency={currency} size={'24px'} />
+                  ) : null}
+                  {pair ? (
+                    <Styled.StyledTokenName className="pair-name-container">
+                      {pair?.token0.symbol}-{pair?.token1.symbol}
+                    </Styled.StyledTokenName>
+                  ) : (
+                    <Styled.StyledTokenName
+                      className="token-symbol-container"
+                      active={Boolean(currency && currency.symbol)}
+                    >
+                      {(currency && currency.symbol && currency.symbol.length > 20
+                        ? currency.symbol.slice(0, 4) +
                         '...' +
                         currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
-                      : currency?.symbol) || t('selectToken')}
-                  </Styled.StyledTokenName>
-                )}
-                {!disableCurrencySelect && <Styled.StyledDropDown selected={!!currency} />}
-              </Styled.Aligner>
-            </Styled.CurrencySelect>
+                        : currency?.symbol) || t('selectToken')}
+                    </Styled.StyledTokenName>
+                  )}
+                  {!disableCurrencySelect && <Styled.StyledDropDown selected={!!currency} />}
+                </Styled.Aligner>
+              </Styled.CurrencySelect>
+            )}
           </Styled.InputRow>
         </Styled.Container>
         {!disableCurrencySelect &&
