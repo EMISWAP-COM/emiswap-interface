@@ -155,6 +155,15 @@ export default function Farm365Content({
       <BorderCard>
         <StakeTitle>Staked tokens</StakeTitle>
         <StakeList>
+          <StakeItem>
+            <StakeToken>
+              <StakeTokenName>ESW</StakeTokenName>
+              <StakeTokenLine>
+                <CurrencyLogo currency={WETH} size={'24px'}/>
+                <StakeTokenAmount>1000.00121321354</StakeTokenAmount>
+              </StakeTokenLine>
+            </StakeToken>
+          </StakeItem>
           {[1, 2, 3, 4, 5, 6, 7, 8].map(token => (
             <StakeItem>
               <StakeToken>
@@ -164,13 +173,13 @@ export default function Farm365Content({
                   <StakeTokenAmount>1000.00121321354</StakeTokenAmount>
                 </StakeTokenLine>
               </StakeToken>
-              <StakeToken>
+              {/*<StakeToken>
                 <StakeTokenName>ESW</StakeTokenName>
                 <StakeTokenLine>
                   <CurrencyLogo currency={WETH} size={'24px'}/>
                   <StakeTokenAmount>1000.00121321354</StakeTokenAmount>
                 </StakeTokenLine>
-              </StakeToken>
+              </StakeToken>*/}
             </StakeItem>
           ))}
         </StakeList>
