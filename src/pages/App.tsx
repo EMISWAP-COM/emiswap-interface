@@ -33,6 +33,7 @@ import MigrateV1Exchange from './MigrateV1/MigrateV1Exchange';
 import Farm from './Farm';
 import NotFound from './NotFound';
 import SocButtons from '../components/SocButtons';
+import Farm365 from './Farm365/Farm365';
 
 const LogoWrapper = styled.div`
   display: none;
@@ -138,6 +139,7 @@ export default function App() {
                     <Route exact strict path="/migrate/:address" component={MigrateV1Exchange} />
                     {/*<Route exact strict path="/claim/:tokenName" component={Claim} />*/}
                     <Route exact strict path="/claim/:tokenName" component={RedirectPathToSwap}/>
+                    <Route exact strict path="/farm-365" component={Farm365} />
                     <Route exact strict path="/farm" component={Farm} />
                     <Route path="/404" component={NotFound} />
                     <Route component={RedirectPathToSwap} />

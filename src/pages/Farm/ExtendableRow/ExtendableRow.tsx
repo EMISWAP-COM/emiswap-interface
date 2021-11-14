@@ -215,7 +215,7 @@ type ExtendableRowProps = {
   onStake: (amount: string) => Promise<unknown>;
   onCollect: () => Promise<unknown>;
   tokenMode: number;
-  isKuCoinToken: boolean;
+  isKuCoinToken?: boolean;
   balance?: string;
   availableToCollect?: string;
 };
@@ -237,7 +237,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
   tokenMode,
   balance,
   availableToCollect,
-  isKuCoinToken,
+  isKuCoinToken = false,
 }) => {
   const { alias } = useNetworkData();
   const [isRowExtended, setIsRowExtended] = useState(false);
