@@ -101,8 +101,22 @@ export default function Farm365Content({
   const [isStakeButtonDisabled, setStakeButtonDisabled] = useState<boolean>(false);
   const [isCollectButtonDisabled, setCollectButtonDisabled] = useState<boolean>(false);
 
-  const handleChangeEswInput = () => {
+  const handleChangeEswInput = (value) => {
+    setEswValue(value);
+    if (value) {
+      setLpValue((+value * 2).toString());
+    } else {
+      setLpValue('');
+    }
+  };
 
+  const handleChangeLpInput = (value) => {
+    setLpValue(value);
+    if (value) {
+      setEswValue((+value / 2).toString());
+    } else {
+      setEswValue('');
+    }
   };
 
   const handleClickStakeBtn = () => {
@@ -143,7 +157,7 @@ export default function Farm365Content({
           currency={WETH}
           otherCurrency={ESW[chainIds.MUMBAI]}
           currencyBalance={new TokenAmount(WETH, JSBI.BigInt(2))}
-          onUserInput={handleChangeEswInput}
+          onUserInput={handleChangeLpInput}
           onMax={() => {
             setLpValue('1000');
           }}
@@ -164,8 +178,8 @@ export default function Farm365Content({
               </StakeTokenLine>
             </StakeToken>
           </StakeItem>
-          {[1, 2, 3, 4, 5, 6, 7, 8].map(token => (
-            <StakeItem>
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((token, index) => (
+            <StakeItem key={index}>
               <StakeToken>
                 <StakeTokenName>LP-USDT</StakeTokenName>
                 <StakeTokenLine>

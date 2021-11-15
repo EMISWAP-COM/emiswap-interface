@@ -10,11 +10,10 @@ import Tooltip from '../Tooltip';
 import LpTokenSymbol from '../LpTokenSymbol';
 import isLpToken from '../isLpToken';
 import { ExternalLink } from '../../../theme';
-import chainIds from '../../../constants/chainIds';
 import { useActiveWeb3React } from '../../../hooks';
 import { FarmingTimeType } from '../constants';
 import KucoinLogo from '../../../assets/currencies/KCS.png';
-import { useNetworkData } from '../../../hooks/Coins';
+import { useIsEthActive, useIsPolygonActive, useNetworkData } from '../../../hooks/Coins';
 import Farm365Content from './Farm365Content';
 
 const StyledRow = styled.div`
@@ -242,9 +241,12 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
   isKuCoinToken = false,
   farming365 = false,
 }) => {
-  const { alias } = useNetworkData();
-  const [isRowExtended, setIsRowExtended] = useState(false);
   const { chainId } = useActiveWeb3React();
+  const { alias } = useNetworkData();
+  const isEthereumActive = useIsEthActive();
+  const isPolygonActive = useIsPolygonActive();
+
+  const [isRowExtended, setIsRowExtended] = useState(false);
 
   const handleExtendClick = useCallback(() => {
     setIsRowExtended(!isRowExtended);
@@ -264,11 +266,17 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
                   <CurrencyLogo currency={stakeToken} size={'24px'}/>
                 )}
               </StyledCurrencyLogo>
-              <StyledTruncatedText>
-                {isLpToken(tokenMode) ? stakeToken?.name : stakeToken?.symbol}
-              </StyledTruncatedText>
-              {/*// @ts-ignore*/}
-              {chainId !== chainIds.KUCOIN && (
+              {isPolygonActive ? (
+                  <StyledTruncatedText>
+                    LP - ESW
+                  </StyledTruncatedText>
+                ) :
+                (
+                  <StyledTruncatedText>
+                    {isLpToken(tokenMode) ? stakeToken?.name : stakeToken?.symbol}
+                  </StyledTruncatedText>
+                )}
+              {isEthereumActive && (
                 <StyledAnalyticsLink>
                   <ExternalLink
                     href={`https://emiswap.com/analytics/${
@@ -300,21 +308,25 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
               </Tooltip>
             </StyledBlockValue>
           </StyledBlock>
-          {type === FarmingTimeType.variable && typeof blockReward !== 'undefined' && (
-            <StyledBlock width={150}>
-              <StyledBlockTitle>Block reward</StyledBlockTitle>
-              <StyledBlockValue>
-                <StyledCurrencyLogo>
-                  <CurrencyLogo currency={rewardToken} size={'24px'}/>
-                </StyledCurrencyLogo>
-                <Tooltip title={blockReward}>
-                  <StyledTruncatedText>
-                    {blockReward}
-                  </StyledTruncatedText>
-                </Tooltip>
-              </StyledBlockValue>
-            </StyledBlock>
-          )}
+          {
+            (type === FarmingTimeType.variable || FarmingTimeType.farming365)
+            && typeof blockReward !== 'undefined'
+            && (
+              <StyledBlock width={150}>
+                <StyledBlockTitle>Block reward</StyledBlockTitle>
+                <StyledBlockValue>
+                  <StyledCurrencyLogo>
+                    <CurrencyLogo currency={rewardToken} size={'24px'}/>
+                  </StyledCurrencyLogo>
+                  <Tooltip title={blockReward}>
+                    <StyledTruncatedText>
+                      {blockReward}
+                    </StyledTruncatedText>
+                  </Tooltip>
+                </StyledBlockValue>
+              </StyledBlock>
+            )
+          }
           {type === FarmingTimeType.fixed && typeof lockPeriod !== 'undefined' && (
             <StyledBlock width={150}>
               <StyledBlockTitle>Lock period</StyledBlockTitle>

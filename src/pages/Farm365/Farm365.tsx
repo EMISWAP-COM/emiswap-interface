@@ -10,7 +10,7 @@ import { useIsPolygonActive } from '../../hooks/Coins';
 import { useHistory } from 'react-router-dom';
 import Farm365Item from './Farm365Item';
 import { Contract } from '@ethersproject/contracts';
-import { getFarmingContracts } from '../../utils';
+import { getFarming365Contracts } from '../../utils';
 import getEswPriceInDai from '../Farm/getEswPriceInDai';
 
 export default function Farm365() {
@@ -22,11 +22,11 @@ export default function Farm365() {
 
   const [loading, setLoading] = useState<boolean>(Boolean(account) && false);
 
-  const farmingContracts: Contract[] = useMemo(() => {
+  const farming365Contracts: Contract[] = useMemo(() => {
     if (!isPolygonActive) {
       return [];
     }
-    return getFarmingContracts(library, account, chainId);
+    return getFarming365Contracts(library, account, chainId);
   }, [library, account, chainId, isPolygonActive]);
 
   const [eswPriceInDai, setEswPriceInDai] = useState('0');
@@ -60,7 +60,7 @@ export default function Farm365() {
       <AppBody>
         <SwapPoolTabs active={TabNames.FARM_365}/>
 
-        {farmingContracts.map(contract =>
+        {farming365Contracts.map(contract =>
           <Farm365Item
             key={contract.address}
             contract={contract}

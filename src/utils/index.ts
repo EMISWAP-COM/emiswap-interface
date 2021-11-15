@@ -21,6 +21,7 @@ import { networksItems } from '../constants';
 import { KCS } from '../constants/tokens/KCS';
 import { MATIC } from '../constants/tokens/MATIC';
 import { AVAX } from '../constants/tokens/AVAX';
+import { FARMING_365_ABI } from '../constants/abis/farming365';
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
@@ -197,6 +198,12 @@ export function getVestingContract(library: Web3Provider, account: string, chain
 export function getFarmingContracts(library: Web3Provider, account: string, chainId: ChainId) {
   return getFarmingAddresses(chainId).map((address: any) =>
     getContract(address, FARMING_ABI, library, account),
+  );
+}
+
+export function getFarming365Contracts(library: Web3Provider, account: string, chainId: ChainId) {
+  return getFarmingAddresses(chainId).map((address: any) =>
+    getContract(address, FARMING_365_ABI, library, account),
   );
 }
 
