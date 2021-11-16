@@ -13,6 +13,7 @@ import Settings from '../Settings';
 import Menu from '../Menu';
 import Row, { RowBetween } from '../Row';
 import Web3Status from '../Web3Status';
+import Wordmark from '../Wordmark';
 import { tokenAmountToString } from '../../utils/formats';
 import { ReactComponent as MagicIcon } from '../../assets/images/magic_icon.svg';
 import { ButtonGray, ButtonOutlined } from '../Button';
@@ -23,6 +24,7 @@ import { useNetworkData } from '../../hooks/Coins';
 import { useLocation } from 'react-router-dom';
 import { isMobile } from "react-device-detect";
 import BridgeModal from './BridgeModal';
+import { useRouteMatch } from "react-router-dom";
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -371,6 +373,22 @@ const RowBetweenStyled = styled(RowBetween)`
   `};
 `;
 
+const LogoWrapper = styled.div`
+  display: none;
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    padding-left: 65px;
+    margin: 15px;
+    position: relative;
+  `};
+`;
+
+const HeaderWrapper = styled.div`
+  ${({ theme }) => theme.flexRowNoWrap}
+  width: 100%;
+  justify-content: space-between;
+`;
+
 /*const BridgeDropdown = styled.span`
   display: flex;
   flex-direction: column;
@@ -399,8 +417,6 @@ const NETWORK_LABELS: { [chainId in chainIds]: string | null } = {
 };
 
 export default function Header() {
-  const { pathname } = useLocation();
-
   const { account, chainId } = useActiveWeb3React();
   const userEthBalance = useETHBalances([account])[account];
 
@@ -411,114 +427,124 @@ export default function Header() {
   const toggleNetworkSwitchModal = useNetworkSwitchModalToggle();
   const toggleBridgeModal = useBridgeModalToggle();
 
-  const is404Page = pathname === '/404';
+  const isLandingPage = useRouteMatch("/landing");
+  const is404Page = useRouteMatch("/404");
+
+  if (isLandingPage) return null;
 
   return (
-    <HeaderFrame>
-      <RowBetweenStyled>
-        <LogoElem>
-          <Title href=".">
-            <UniIcon>
-              <LogoImg src={isDark ? LogoDark : Logo} alt="logo"/>
-            </UniIcon>
-            <TitleText>
-              {/*<img style={{ marginLeft: '4px', marginTop: '4px' }} src={isDark ? WordmarkDark : Wordmark} alt="logo" width="160px"/>*/}
-            </TitleText>
-          </Title>
-        </LogoElem>
-        {is404Page ? (
-          <StyledGoToButton href="/">
-            <Text textAlign="center" fontWeight={500} fontSize={16}>
-              Go to the platform
-            </Text>
-          </StyledGoToButton>
-        ) : (
-          <>
-            <HeaderControls>
-              <HeaderElement>
-                {false && (
-                  <AprButton>
-                    <Text textAlign="center" fontWeight={500} fontSize={14}>
-                      APR settings
-                    </Text>
-                  </AprButton>
-                )}
-                {!isMobile && (
-                  <>
-                    {networkItem.bridgeUrl ? (
-                      <a href={networkItem.bridgeUrl} target="_blank" rel="noopener noreferrer">
-                        <AprButton>
-                          <Text textAlign="center" fontWeight={500} fontSize={14}>
-                            Bridge Assets
-                          </Text>
-                        </AprButton>
-                      </a>
-                    ) : (
-                      <div>
-                        <AprButton onClick={toggleBridgeModal}>
-                          <Text textAlign="center" fontWeight={500} fontSize={14}>
-                            Bridge Assets
-                          </Text>
-                        </AprButton>
-                        <BridgeModal/>
-                      </div>
+    <>
+      <LogoWrapper>
+        <Wordmark />
+      </LogoWrapper>
+      <HeaderWrapper>
+        <HeaderFrame>
+          <RowBetweenStyled>
+            <LogoElem>
+              <Title href=".">
+                <UniIcon>
+                  <LogoImg src={isDark ? LogoDark : Logo} alt="logo" />
+                </UniIcon>
+                <TitleText>
+                  {/*<img style={{ marginLeft: '4px', marginTop: '4px' }} src={isDark ? WordmarkDark : Wordmark} alt="logo" width="160px"/>*/}
+                </TitleText>
+              </Title>
+            </LogoElem>
+            {is404Page ? (
+              <StyledGoToButton href="/">
+                <Text textAlign="center" fontWeight={500} fontSize={16}>
+                  Go to the platform
+                </Text>
+              </StyledGoToButton>
+            ) : (
+              <>
+                <HeaderControls>
+                  <HeaderElement>
+                    {false && (
+                      <AprButton>
+                        <Text textAlign="center" fontWeight={500} fontSize={14}>
+                          APR settings
+                        </Text>
+                      </AprButton>
                     )}
-                  </>
-                )}
-                <NetworkWrapper>
-                  <NetworkButtonSwitch
-                    onClick={toggleNetworkSwitchModal}
-                  >
-                    {networkItem && (
-                      <NetworkIcon>
-                        <img
-                          style={{ maxHeight: '18px', maxWidth: '18px' }}
-                          src={networkItem.icon}
-                          alt={networkItem.name}
-                        />
-                      </NetworkIcon>
+                    {!isMobile && (
+                      <>
+                        {networkItem.bridgeUrl ? (
+                          <a href={networkItem.bridgeUrl} target="_blank" rel="noopener noreferrer">
+                            <AprButton>
+                              <Text textAlign="center" fontWeight={500} fontSize={14}>
+                                Bridge Assets
+                              </Text>
+                            </AprButton>
+                          </a>
+                        ) : (
+                          <div>
+                            <AprButton onClick={toggleBridgeModal}>
+                              <Text textAlign="center" fontWeight={500} fontSize={14}>
+                                Bridge Assets
+                              </Text>
+                            </AprButton>
+                            <BridgeModal />
+                          </div>
+                        )}
+                      </>
                     )}
-                    <span>{NETWORK_LABELS[chainId] || 'Change Network'}</span>
-                    {![chainIds.MAINNET, chainIds.KUCOIN].includes(chainId as any) && (
-                      <NetworkLabel>Beta Version</NetworkLabel>
-                    )}
-                  </NetworkButtonSwitch>
-                  <NetworkSwitchModal/>
-                </NetworkWrapper>
-                {chainId === (chainIds.MAINNET as any) && (
-                  <a className="purple-btn" href={`${window.location.origin}/magic_cards/`}>
-                    <span>Magic Hall</span>
-                  </a>
-                )}
-                <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
-                  {account && userEthBalance ? (
-                    <>
-                      <BalanceText
-                        style={{ flexShrink: 0 }}
-                        pl="8px"
-                        pr="8px"
-                        mr="16px"
-                        fontWeight={450}
+                    <NetworkWrapper>
+                      <NetworkButtonSwitch
+                        onClick={toggleNetworkSwitchModal}
                       >
-                        {tokenAmountToString(userEthBalance, 4)} {/*// @ts-ignore*/}
-                        {networkItem.currencySymbol}
-                      </BalanceText>
-                    </>
-                  ) : null}
-                  <Web3Status/>
-                </AccountElement>
-              </HeaderElement>
-            </HeaderControls>
-            <HeaderElementWrap>
-              <StyledMagicButton href={`${window.location.origin}/magic_cards/`}>
-                <MagicIcon/>
-              </StyledMagicButton>
-              <Settings/>
-              <Menu/>
-            </HeaderElementWrap>
-          </>
-        )}
-      </RowBetweenStyled>
-    </HeaderFrame>
+                        {networkItem && (
+                          <NetworkIcon>
+                            <img
+                              style={{ maxHeight: '18px', maxWidth: '18px' }}
+                              src={networkItem.icon}
+                              alt={networkItem.name}
+                            />
+                          </NetworkIcon>
+                        )}
+                        <span>{NETWORK_LABELS[chainId] || 'Change Network'}</span>
+                        {![chainIds.MAINNET, chainIds.KUCOIN].includes(chainId as any) && (
+                          <NetworkLabel>Beta Version</NetworkLabel>
+                        )}
+                      </NetworkButtonSwitch>
+                      <NetworkSwitchModal />
+                    </NetworkWrapper>
+                    {chainId === (chainIds.MAINNET as any) && (
+                      <a className="purple-btn" href={`${window.location.origin}/magic_cards/`}>
+                        <span>Magic Hall</span>
+                      </a>
+                    )}
+                    <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
+                      {account && userEthBalance ? (
+                        <>
+                          <BalanceText
+                            style={{ flexShrink: 0 }}
+                            pl="8px"
+                            pr="8px"
+                            mr="16px"
+                            fontWeight={450}
+                          >
+                            {tokenAmountToString(userEthBalance, 4)} {/*// @ts-ignore*/}
+                            {networkItem.currencySymbol}
+                          </BalanceText>
+                        </>
+                      ) : null}
+                      <Web3Status />
+                    </AccountElement>
+                  </HeaderElement>
+                </HeaderControls>
+                <HeaderElementWrap>
+                  <StyledMagicButton href={`${window.location.origin}/magic_cards/`}>
+                    <MagicIcon />
+                  </StyledMagicButton>
+                  <Settings />
+                  <Menu />
+                </HeaderElementWrap>
+              </>
+            )}
+          </RowBetweenStyled>
+        </HeaderFrame>
+      </HeaderWrapper>
+    </>
   );
 }

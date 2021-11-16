@@ -7,6 +7,7 @@ import { ReactComponent as TelegramIcon } from '../../assets/svg/SocIcons/telegr
 import { ReactComponent as CoingeckoIcon } from '../../assets/svg/SocIcons/coingecko.svg';
 import { ReactComponent as CoinmarketIcon } from '../../assets/svg/SocIcons/coinmarket.svg';
 import { ReactComponent as WikiIcon } from '../../assets/svg/SocIcons/wiki.svg';
+import { useRouteMatch } from "react-router-dom";
 
 // import { ReactComponent as DiscordIcon } from '../../assets/svg/SocIcons/discord.svg';
 
@@ -53,31 +54,38 @@ const ImgLink = styled.a`
 
 const Link = props => <ImgLink rel="noopener noreferrer" target="_blank" {...props} />;
 
-export default () => (
-  <Wrapper>
-    <Link href="https://twitter.com/emiswap">
-      <TwitterIcon />
-    </Link>
-    {/* <ImgLink href="">
-      <DiscordIcon />
-    </ImgLink> */}
-    <Link href="https://github.com/EMISWAP-COM/">
-      <GithubIcon />
-    </Link>
-    <Link href="https://emiswap.medium.com/">
-      <MediumIcon />
-    </Link>
-    <Link href="https://t.me/emiswap_official">
-      <TelegramIcon />
-    </Link>
-    <Link href="https://www.coingecko.com/en/coins/emiswap">
-      <CoingeckoIcon />
-    </Link>
-    <Link href="https://coinmarketcap.com/currencies/emiswap/">
-      <CoinmarketIcon />
-    </Link>
-    <Link href="https://wiki.emiswap.com/">
-      <WikiIcon />
-    </Link>
-  </Wrapper>
-);
+export default () => {
+
+  const isLandingPage = useRouteMatch("/landing");
+
+  if (isLandingPage) return null;
+
+  return (
+    <Wrapper>
+      <Link href="https://twitter.com/emiswap">
+        <TwitterIcon />
+      </Link>
+      {/* <ImgLink href="">
+        <DiscordIcon />
+      </ImgLink> */}
+      <Link href="https://github.com/EMISWAP-COM/">
+        <GithubIcon />
+      </Link>
+      <Link href="https://emiswap.medium.com/">
+        <MediumIcon />
+      </Link>
+      <Link href="https://t.me/emiswap_official">
+        <TelegramIcon />
+      </Link>
+      <Link href="https://www.coingecko.com/en/coins/emiswap">
+        <CoingeckoIcon />
+      </Link>
+      <Link href="https://coinmarketcap.com/currencies/emiswap/">
+        <CoinmarketIcon />
+      </Link>
+      <Link href="https://wiki.emiswap.com/">
+        <WikiIcon />
+      </Link>
+    </Wrapper>
+  );  
+}

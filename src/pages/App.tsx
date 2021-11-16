@@ -1,6 +1,7 @@
 import React, { Suspense, useEffect, useState } from 'react';
 import { BrowserRouter, Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
-import Wordmark from '../components/Wordmark';
+
+import { useHistory } from "react-router-dom";
 import styled from 'styled-components';
 import GoogleAnalyticsReporter from '../components/analytics/GoogleAnalyticsReporter';
 import Header from '../components/Header';
@@ -35,21 +36,7 @@ import NotFound from './NotFound';
 import SocButtons from '../components/SocButtons';
 import Landing from './Landing/Landing';
 
-const LogoWrapper = styled.div`
-  display: none;
 
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    padding-left: 65px;
-    margin: 15px;
-    position: relative;
-  `};
-`;
-
-const HeaderWrapper = styled.div`
-  ${({ theme }) => theme.flexRowNoWrap}
-  width: 100%;
-  justify-content: space-between;
-`;
 
 const BodyWrapper = styled.div`
   display: flex;
@@ -74,9 +61,6 @@ export function RedirectPathToSwap({ location }: RouteComponentProps) {
 }
 
 export default function App() {
-
-  const [isIndex, setIsIndex] = useState<boolean>(window.location.pathname === '/landing')
-
   useEffect(() => {
     const search = window.location.hash.split('?');
     // throw new TypeError('type invalid')
@@ -84,20 +68,6 @@ export default function App() {
     if (search[1] && search[1].length) {
       localStorage.setItem('UTMMarks', `?${search[1]}`);
     }
-  }, []);
-
-  useEffect(() => {
-    const pathInterval = setInterval(() => {
-      const isPathIndex = Boolean(window.location.pathname === '/landing');
-      if (isPathIndex !== isIndex) {
-        setIsIndex(isPathIndex);
-      }
-    }, 500);
-
-    return () => {
-      clearInterval(pathInterval);
-    }
-    // eslint-disable-next-line
   }, []);
 
   const is404Page = window.location.pathname === '/404';
@@ -109,16 +79,7 @@ export default function App() {
           <Route component={GoogleAnalyticsReporter}/>
           <Route component={DarkModeQueryParamReader}/>
           <AppWrapper is404Page={is404Page}>
-            {!isIndex && (
-              <>
-                <LogoWrapper>
-                  <Wordmark/>
-                </LogoWrapper>
-                <HeaderWrapper>
-                  <Header/>
-                </HeaderWrapper>
-              </>
-            )}
+            <Header />
             <BodyWrapper>
               <Popups/>
               <Polling/>
@@ -170,9 +131,7 @@ export default function App() {
                   </Switch>
                 </ErrorBoundary>
               </Web3ReactManager>
-              {!isIndex && (
-                <SocButtons/>
-              )}
+              <SocButtons/>
             </BodyWrapper>
           </AppWrapper>
         </ReferralUrlParser>
