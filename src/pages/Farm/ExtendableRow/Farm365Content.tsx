@@ -1,12 +1,13 @@
 import styled from 'styled-components/macro';
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Button from '../../../base/ui/Button';
 import CurrencyLogo from '../../../components/CurrencyLogo';
 import LpTokenSymbol from '../LpTokenSymbol';
 import { ESW } from '../../../constants';
 import CurrencyInputPanel from '../../../components/CurrencyInputPanel';
-import { JSBI, TokenAmount } from '@uniswap/sdk';
+import { JSBI, Token, TokenAmount } from '@uniswap/sdk';
 import chainIds from '../../../constants/chainIds';
+import useFarming365 from '../../../hooks/useFarming365';
 
 const Content = styled.div`
   display: flex;
@@ -40,10 +41,10 @@ const StakeTitle = styled.div`
 
 const StakeButton = styled(Button)`
   // margin-top: 38px;
-  border: 1px solid #FFFFFF;
-  background: transparent !important;
-  color: white;
-  box-shadow: none !important;
+  // border: 1px solid #FFFFFF;
+  // background: transparent !important;
+  // color: white;
+  // box-shadow: none !important;
 `;
 
 const StakeList = styled.div`
@@ -89,53 +90,77 @@ const StakeTokenAmount = styled.div`
 `;
 
 type Farm365ContentProps = {
-  stakedTokens: any[];
-  onStake: (amount: string) => Promise<unknown>;
-  onCollect: () => Promise<unknown>;
+  farming365: ReturnType<typeof useFarming365>;
 };
 
 export default function Farm365Content({
-  stakedTokens,
-  onStake,
-  onCollect,
+  farming365,
 }: Farm365ContentProps) {
 
   const [eswValue, setEswValue] = useState<string>('');
   const [lpValue, setLpValue] = useState<string>('');
 
-  const [lpCurrency, setLpCurrency] = useState<any>(null);
-  const [lpBalance, setLpBalance] = useState<any>(null);
+  const [lpCurrency, setLpCurrency] = useState<Token>(null);
+  const [lpBalance, setLpBalance] = useState<TokenAmount>(null);
 
-  const [isStakeButtonDisabled, /*setStakeButtonDisabled*/] = useState<boolean>(false);
-  const [isCollectButtonDisabled, /*setCollectButtonDisabled*/] = useState<boolean>(false);
+  const [isStakeButtonDisabled, setStakeButtonDisabled] = useState<boolean>(true);
+  const [isCollectButtonDisabled, setCollectButtonDisabled] = useState<boolean>(true);
 
-  const handleChangeEswInput = (value) => {
-    setEswValue(value);
-    if (value) {
-      setLpValue((+value * 2).toString());
+  const stakedTokens = useMemo(() => {
+    return farming365.stakedTokens;
+  }, [farming365.stakedTokens]);
+
+  useEffect(() => {
+    if (+eswValue > 0 && +lpValue > 0 && lpCurrency) {
+      setStakeButtonDisabled(false);
+    }
+  }, [eswValue, lpValue, lpCurrency]);
+
+  useEffect(() => {
+    if (stakedTokens?.length) {
+      setCollectButtonDisabled(false);
+    }
+  }, [stakedTokens]);
+
+  const calcLpByEsw = async (_eswValue, currency) => {
+    if (currency && _eswValue) {
+      const calcValue = await farming365.calcLpByEsw(currency, _eswValue);
+      setLpValue(Number(calcValue).toFixed(4));
     } else {
       setLpValue('');
     }
   };
 
-  const handleChangeLpInput = (value) => {
-    setLpValue(value);
-    if (value) {
-      setEswValue((+value / 2).toString());
+  const calcEswByLp = async (_lpValue) => {
+    if (lpCurrency && _lpValue) {
+      const calcValue = await farming365.calcEswByLp(lpCurrency, _lpValue);
+      setEswValue(Number(calcValue).toFixed(4));
     } else {
       setEswValue('');
     }
   };
 
-  const handleClickStakeBtn = () => {
+  const handleChangeEswInput = (_eswValue) => {
+    setEswValue(_eswValue);
+    calcLpByEsw(_eswValue, lpCurrency);
+  };
+
+  const handleChangeLpInput = (_lpValue) => {
+    setLpValue(_lpValue);
+    calcEswByLp(_lpValue);
 
   };
 
-  const handleCurrencySelect = (currency: any) => {
+  const handleCurrencySelect = (currency: Token) => {
     setLpCurrency(currency);
     if (currency) {
       setLpBalance(new TokenAmount(currency, JSBI.BigInt(2)));
+      calcLpByEsw(eswValue, currency);
     }
+  };
+
+  const handleClickStakeBtn = async () => {
+    await farming365.stake(lpCurrency, lpValue, eswValue)
   };
 
   const handleClickCollectBtn = () => {
@@ -160,9 +185,7 @@ export default function Farm365Content({
             otherCurrency={lpCurrency}
             currencyBalance={new TokenAmount(ESW[chainIds.MUMBAI][0], JSBI.BigInt(2))}
             onUserInput={handleChangeEswInput}
-            onMax={(value) => {
-              setEswValue(value);
-            }}
+            onMax={handleChangeEswInput}
           />
         </InputWrapper>
         <InputWrapper>
@@ -175,10 +198,9 @@ export default function Farm365Content({
             currency={lpCurrency}
             otherCurrency={ESW[chainIds.MUMBAI][0]}
             currencyBalance={lpBalance}
+            isLpTokens={true}
             onUserInput={handleChangeLpInput}
-            onMax={(value) => {
-              setLpValue(value);
-            }}
+            onMax={handleChangeLpInput}
             onCurrencySelect={handleCurrencySelect}
           />
         </InputWrapper>

@@ -9,6 +9,7 @@ import MaticLogo from '../../assets/currencies/MATIC.png';
 import AvaxLogo from '../../assets/currencies/AVAX.png';
 import defaultCoins from '../../constants/defaultCoins';
 import { useActiveWeb3React } from '../../hooks';
+import LpTokenSymbol from '../../pages/Farm/LpTokenSymbol';
 
 const getTokenLogoInRaw = address =>
   `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`;
@@ -98,6 +99,14 @@ export default function CurrencyLogo({
 
   if (currency?.symbol === 'ESW') {
     return <StyledEthereumLogo src={EswLogo} size={size} {...rest} />;
+  }
+
+  if (currency?.name?.includes('LP ')) {
+    return (
+      <div {...rest}>
+        <LpTokenSymbol size={18} fontSize={10}/>
+      </div>
+    );
   }
 
   if (currency instanceof Token) {

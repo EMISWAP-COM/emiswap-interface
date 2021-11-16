@@ -31,6 +31,7 @@ export default function Farm365Item({
 
   return (
     <ExtendableRow
+      farming365={farming365}
       contractAddress={contract.address}
       stakeToken={farming365.stakeToken}
       rewardToken={farming365.rewardToken}
@@ -42,10 +43,6 @@ export default function Farm365Item({
       deposit={farming365.balanceLp}
       type={FarmingTimeType.farming365}
       tokenMode={farming365.tokenMode}
-      stakedTokens={farming365.stakedTokens}
-      farming365={true}
-      onStake={farming365.stake}
-      onCollect={farming365.collect}
     />
   );
 };

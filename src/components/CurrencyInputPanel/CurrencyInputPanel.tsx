@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { ThemeContext } from 'styled-components/macro';
 import { JSBI, Pair, Token, TokenAmount } from '@uniswap/sdk';
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useContext, useMemo, useState } from 'react';
 
 import { useCurrencyBalance } from '../../state/wallet/hooks';
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal';
@@ -36,6 +36,7 @@ interface CurrencyInputPanelProps {
   showCommonBases?: boolean;
   isCrowdsale?: boolean;
   isMatchEth?: boolean;
+  isLpTokens?: boolean;
   disabled?: boolean;
   isDepended?: boolean;
   showMaxError?: boolean;
@@ -64,6 +65,7 @@ const CurrencyInputPanel = (props: CurrencyInputPanelProps) => {
     showCommonBases,
     isCrowdsale = false,
     isMatchEth = false,
+    isLpTokens = false,
     disabled = false,
     isDepended = false,
     showMaxError = false,
@@ -97,6 +99,18 @@ const CurrencyInputPanel = (props: CurrencyInputPanelProps) => {
   const balance = !!currency && selectedCurrencyBalance
     ? tokenAmountToString(selectedCurrencyBalance, balanceDecimals)
     : '';
+
+  const currencyDisplayName = useMemo(() => {
+    if (!currency) {
+      return t('selectToken');
+    }
+
+    const name = isLpTokens ? currency.name : currency.symbol;
+
+    return name?.length > 20
+      ? name.slice(0, 4) + '...' + name.slice(name.length - 5, name.length)
+      : name
+  }, [currency, isLpTokens, t]);
 
   return (
     <>
@@ -178,11 +192,7 @@ const CurrencyInputPanel = (props: CurrencyInputPanelProps) => {
                       className="token-symbol-container"
                       active={Boolean(currency && currency.symbol)}
                     >
-                      {(currency && currency.symbol && currency.symbol.length > 20
-                        ? currency.symbol.slice(0, 4) +
-                        '...' +
-                        currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
-                        : currency?.symbol) || t('selectToken')}
+                      {currencyDisplayName}
                     </Styled.StyledTokenName>
                   )}
                   {!disableCurrencySelect && <Styled.StyledDropDown selected={!!currency} />}
@@ -212,6 +222,7 @@ const CurrencyInputPanel = (props: CurrencyInputPanelProps) => {
               otherSelectedCurrency={otherCurrency}
               showCommonBases={showCommonBases}
               isMatchEth={isMatchEth}
+              isLpTokens={isLpTokens}
             />
           ))}
       </Styled.InputPanel>

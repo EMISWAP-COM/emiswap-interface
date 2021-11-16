@@ -1,9 +1,9 @@
 import { useActiveWeb3React } from './index';
 import { BigNumber } from '@ethersproject/bignumber';
 import defaultCoins from '../constants/defaultCoins';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { JSBI, Token, TokenAmount } from '@uniswap/sdk';
-import { expNumberToStr, tokenAmountToString } from '../utils/formats';
+import { tokenAmountToString } from '../utils/formats';
 import { TransactionResponse } from '@ethersproject/providers';
 import { useCompletedTransactionsCount, useTransactionAdder } from '../state/transactions/hooks';
 import { EMI_ROUTER_ADRESSES } from '../constants/emi/addresses';
@@ -12,6 +12,7 @@ import useEthErrorPopup, { RequestError } from './useEthErrorPopup';
 import getFarmingCoinNameAndSymbol from '../pages/Farm/getFarmingCoinNameAndSymbol';
 import getFarmingLiquidityTokenAddress from '../pages/Farm/getFarmingLiquidityTokenAddress';
 import dayjs from 'dayjs';
+import { convertTokenAmount } from '../utils';
 
 const logContractError = (
   methodName: string,
@@ -55,6 +56,13 @@ export default function useFarming365(contract: Contract) {
     };
   }, []);
 
+  const showError = useCallback((methodName: string, args: string, error: RequestError, showPopup = true) => {
+    if (showPopup) {
+      addEthErrorPopup(error);
+    }
+    logContractError(methodName, account, chainId, contract.address, args, error);
+  }, [account, chainId, contract.address, addEthErrorPopup]);
+
   const [stakeToken, setStakeToken] = useState<Token | undefined>(undefined);
   useEffect(() => {
     contract
@@ -77,10 +85,9 @@ export default function useFarming365(contract: Contract) {
         }
       })
       .catch((error: RequestError) => {
-        addEthErrorPopup(error);
-        logContractError('stakeToken', account, chainId, contract.address, '', error);
+        showError('stakeToken', '', error);
       });
-  }, [chainId, contract, addEthErrorPopup, account]);
+  }, [chainId, contract, showError, account]);
 
   const [rewardToken, setRewardToken] = useState<Token | undefined>(undefined);
   useEffect(() => {
@@ -102,10 +109,9 @@ export default function useFarming365(contract: Contract) {
         }
       })
       .catch((error: RequestError) => {
-        addEthErrorPopup(error);
-        logContractError('rewardToken', account, chainId, contract.address, '', error);
+        showError('rewardToken', '', error);
       });
-  }, [chainId, contract, addEthErrorPopup, account]);
+  }, [chainId, contract, showError, account]);
 
   const [balanceLp, setBalanceLp] = useState<string>('0');
   useEffect(() => {
@@ -125,10 +131,9 @@ export default function useFarming365(contract: Contract) {
       })
       .then((value: string) => setBalanceLp(value))
       .catch((error: RequestError) => {
-        addEthErrorPopup(error);
-        logContractError('balanceOfLPToken', account, chainId, contract.address, account, error);
+        showError('balanceOfLPToken', account, error);
       });
-  }, [account, chainId, contract, rewardToken, addEthErrorPopup, completedTransactionsCount]);
+  }, [account, chainId, contract, rewardToken, showError, completedTransactionsCount]);
 
   const [balanceStake, setBalanceStake] = useState<string>('0');
   useEffect(() => {
@@ -148,10 +153,9 @@ export default function useFarming365(contract: Contract) {
       })
       .then((value: string) => setBalanceStake(value))
       .catch((error: RequestError) => {
-        addEthErrorPopup(error);
-        logContractError('balanceOfStakeToken', account, chainId, contract.address, account, error);
+        showError('balanceOfStakeToken', account, error);
       });
-  }, [account, chainId, contract, stakeToken, addEthErrorPopup, completedTransactionsCount]);
+  }, [account, chainId, contract, stakeToken, showError, completedTransactionsCount]);
 
   const [reward, setReward] = useState<string>('0');
   useEffect(() => {
@@ -172,15 +176,14 @@ export default function useFarming365(contract: Contract) {
       })
       .then((value: string) => setReward(value))
       .catch((error: RequestError) => {
-        addEthErrorPopup(error);
-        logContractError('earned', account, chainId, contract.address, account, error);
+        showError('earned', account, error);
       });
   }, [
     account,
     chainId,
     contract,
     rewardToken,
-    addEthErrorPopup,
+    showError,
     completedTransactionsCount,
     intervalUpdateCounter,
   ]);
@@ -202,82 +205,9 @@ export default function useFarming365(contract: Contract) {
       })
       .then((value: string) => setBlockReward(value))
       .catch((error: RequestError) => {
-        addEthErrorPopup(error);
-        logContractError('rewardRate', account, chainId, contract.address, '', error);
+        showError('rewardRate', '', error);
       });
-  }, [chainId, contract, rewardToken, addEthErrorPopup, account]);
-
-  const handleStake = (amount: string): Promise<unknown> => {
-    if (!stakeToken) {
-      throw new Error('No stake token');
-    }
-    if (!chainId) {
-      throw new Error('No chain id');
-    }
-
-    // Can't use more than 18 decimals
-    const splittedAmount = amount.split('.');
-    //FIXME Написать красиво
-    let decimals = splittedAmount[1];
-    if (decimals === undefined) {
-      decimals = '0';
-    }
-
-    const constrainedAmount = splittedAmount[0] + '.' + decimals.substring(0, stakeToken.decimals);
-
-    let bigIntAmount: BigNumber;
-    try {
-      bigIntAmount = BigNumber.from(expNumberToStr(+constrainedAmount * 10 ** stakeToken.decimals));
-    } catch (e) {
-      throw new Error('Invalid amount to stake');
-    }
-    if (!bigIntAmount) {
-      return Promise.reject();
-    }
-    return contract
-      .stake(bigIntAmount)
-      .then((response: TransactionResponse) => {
-        addTransaction(response, {
-          summary: `Stake ${constrainedAmount} ${stakeToken.symbol}`,
-          approval: { tokenAddress: stakeToken.address, spender: EMI_ROUTER_ADRESSES[chainId] },
-        });
-      })
-      .catch((error: RequestError) => {
-        // addEthErrorPopup(error);
-        logContractError(
-          'stake',
-          account,
-          chainId,
-          contract.address,
-          bigIntAmount.toString(),
-          error,
-        );
-        throw error;
-      });
-  };
-
-  const handleCollect = (): Promise<unknown> => {
-    if (!stakeToken) {
-      throw new Error('No stake token');
-    }
-    if (!chainId) {
-      throw new Error('No chain id');
-    }
-
-    return contract
-      .exit()
-      .then((response: TransactionResponse) => {
-        addTransaction(response, {
-          summary: `Collect all ${stakeToken.symbol}`,
-          approval: { tokenAddress: stakeToken.address, spender: EMI_ROUTER_ADRESSES[chainId] },
-        });
-      })
-      .catch((error: RequestError) => {
-        // addEthErrorPopup(error);
-        logContractError('exit', account, chainId, contract.address, '', error);
-        throw error;
-      });
-  };
+  }, [chainId, contract, rewardToken, showError, account]);
 
   const [totalSupply, setTotalSupply] = useState<string | undefined>(undefined);
   useEffect(() => {
@@ -293,10 +223,9 @@ export default function useFarming365(contract: Contract) {
       })
       .then((value: string) => setTotalSupply(value))
       .catch((error: RequestError) => {
-        addEthErrorPopup(error);
-        logContractError('totalSupply', account, chainId, contract.address, '', error);
+        showError('totalSupply', '', error);
       });
-  }, [chainId, contract, stakeToken, addEthErrorPopup, account]);
+  }, [chainId, contract, stakeToken, showError, account]);
 
   const [endDate, setEndDate] = useState<string | undefined>(undefined);
   useEffect(() => {
@@ -308,10 +237,9 @@ export default function useFarming365(contract: Contract) {
         setEndDate(formattedDate);
       })
       .catch((error: RequestError) => {
-        addEthErrorPopup(error);
-        logContractError('periodFinish', account, chainId, contract.address, '', error);
+        showError('periodFinish', '', error);
       });
-  }, [contract, stakeToken, addEthErrorPopup, account, chainId]);
+  }, [contract, stakeToken, showError, account, chainId]);
 
   const [liquidity, setLiquidity] = useState<string | undefined>(undefined);
   useEffect(() => {
@@ -343,28 +271,16 @@ export default function useFarming365(contract: Contract) {
         setLiquidity(tokenAmountToString(tokenAmount, liquidityToken.decimals));
       })
       .catch((error: RequestError) => {
-        addEthErrorPopup(error);
-        logContractError('getStakedValuesinUSD', account, chainId, contract.address, '', error);
+        showError('getStakedValuesinUSD', '', error);
       });
   }, [
     contract,
     account,
     chainId,
-    addEthErrorPopup,
+    showError,
     completedTransactionsCount,
     intervalUpdateCounter,
   ]);
-
-  /*const [tokenMode, setTokenMode] = useState<number>(0);
-  useEffect(() => {
-    contract
-      .tokenMode()
-      .then((value: BigNumber) => setTokenMode(value.toNumber()))
-      .catch((error: RequestError) => {
-        addEthErrorPopup(error);
-        logContractError('tokenMode', account, chainId, contract.address, '', error);
-      });
-  }, [contract, addEthErrorPopup, account, chainId]);*/
 
   const [stakedTokens, setStakedTokens] = useState<any[]>([]);
   useEffect(() => {
@@ -374,10 +290,72 @@ export default function useFarming365(contract: Contract) {
         setStakedTokens(value);
       })
       .catch((error: RequestError) => {
-        addEthErrorPopup(error);
-        logContractError('getStakedTokens', account, chainId, contract.address, account || '', error);
+        showError('getStakedTokens', account || '', error);
       });
-  }, [contract, addEthErrorPopup, account, chainId]);
+  }, [contract, showError, account, chainId]);
+
+  const handleCalcEswByLp = (lpToken: Token, lpValue: string): Promise<string> => {
+    const lpAmount = convertTokenAmount(lpToken, lpValue);
+    return contract
+      .getStakeValuebyLP(lpToken.address, lpAmount)
+      .then((value: BigNumber) => {
+        const tokenAmount = new TokenAmount(lpToken, JSBI.BigInt(value.toString()));
+        return tokenAmountToString(tokenAmount, lpToken.decimals);
+      })
+      .catch((error: RequestError) => {
+        const args = lpToken.address + ', ' + lpAmount.toString();
+        showError('getStakeValuebyLP', args, error);
+      });
+  };
+
+  const handleCalcLpByEsw = (lpToken: Token, eswValue: string): Promise<string> => {
+    const eswAmount = convertTokenAmount(lpToken, eswValue);
+    return contract
+      .getLPValuebyStake(lpToken.address, eswAmount)
+      .then((value: BigNumber) => {
+        const tokenAmount = new TokenAmount(lpToken, JSBI.BigInt(value.toString()));
+        return tokenAmountToString(tokenAmount, lpToken.decimals);
+      })
+      .catch((error: RequestError) => {
+        const args = lpToken.address + ', ' + eswAmount.toString();
+        showError('getLPValuebyStake', args, error);
+      });
+  };
+
+  const handleStake = (lpToken: Token, lpValue: string, eswValue: string): Promise<unknown> => {
+    const lpAmount = convertTokenAmount(lpToken, lpValue);
+    const eswAmount = convertTokenAmount(lpToken, eswValue);
+
+    return contract
+      .stake(lpToken.address, lpAmount, eswAmount)
+      .then((response: TransactionResponse) => {
+        addTransaction(response, {
+          summary: `Stake ${lpValue} ${lpToken.symbol}`,
+          approval: { tokenAddress: lpToken.address, spender: EMI_ROUTER_ADRESSES[chainId!] },
+        });
+      })
+      .catch((error: RequestError) => {
+        const args = lpToken.address + ', ' + lpAmount.toString() + ', ' + eswAmount.toString();
+        showError('stake', args, error);
+      });
+  };
+
+  const handleCollect = (): Promise<unknown> => {
+    if (!stakeToken) {
+      throw new Error('No stake token');
+    }
+    return contract
+      .exit()
+      .then((response: TransactionResponse) => {
+        addTransaction(response, {
+          summary: `Collect all ${stakeToken.symbol}`,
+          approval: { tokenAddress: stakeToken.address, spender: EMI_ROUTER_ADRESSES[chainId!] },
+        });
+      })
+      .catch((error: RequestError) => {
+        showError('exit', '', error);
+      });
+  };
 
   return {
     stakeToken,
@@ -389,8 +367,10 @@ export default function useFarming365(contract: Contract) {
     totalSupply,
     endDate,
     liquidity,
-    tokenMode: 1, // tokenMode,
+    tokenMode: 1,
     stakedTokens,
+    calcEswByLp: handleCalcEswByLp,
+    calcLpByEsw: handleCalcLpByEsw,
     collect: handleCollect,
     stake: handleStake,
   };

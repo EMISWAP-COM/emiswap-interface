@@ -14,6 +14,7 @@ import { FarmingTimeType } from '../constants';
 import KucoinLogo from '../../../assets/currencies/KCS.png';
 import { useIsEthActive, useIsPolygonActive, useNetworkData } from '../../../hooks/Coins';
 import Farm365Content from './Farm365Content';
+import useFarming365 from '../../../hooks/useFarming365';
 
 const StyledRow = styled.div`
   background-color: ${({ theme }) => theme.border1Transparency};
@@ -216,9 +217,9 @@ type ExtendableRowProps = {
   isKuCoinToken?: boolean;
   balance?: string;
   availableToCollect?: string;
-  farming365?: boolean;
-  onStake: (amount: string) => Promise<unknown>;
-  onCollect: () => Promise<unknown>;
+  farming365?: ReturnType<typeof useFarming365>;
+  onStake?: (amount: string) => Promise<unknown>;
+  onCollect?: () => Promise<unknown>;
 };
 
 const ExtendableRow: React.FC<ExtendableRowProps> = ({
@@ -234,13 +235,15 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
   deposit,
   type,
   tokenMode,
-  stakedTokens = [],
+  // stakedTokens = [],
   balance,
   availableToCollect,
   isKuCoinToken = false,
-  farming365 = false,
-  onStake,
-  onCollect,
+  farming365 = null,
+  onStake = ((...args) => {
+  }) as any,
+  onCollect = ((...args) => {
+  }) as any,
 }) => {
   // const { chainId } = useActiveWeb3React();
   const { alias } = useNetworkData();
@@ -375,11 +378,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
       {farming365 ? (
         <>
           <StyledExtendableContent isVisible={isRowExtended}>
-            <Farm365Content
-              stakedTokens={stakedTokens}
-              onStake={onCollect}
-              onCollect={onCollect}
-            />
+            <Farm365Content farming365={farming365}/>
           </StyledExtendableContent>
         </>
       ) : (
