@@ -2,6 +2,7 @@ import { ETHER, Token } from '@uniswap/sdk';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
+import EswLogo from '../../assets/currencies/ESW.png';
 import EthereumLogo from '../../assets/images/ethereum-logo.png';
 import KucoinLogo from '../../assets/currencies/KCS.png';
 import MaticLogo from '../../assets/currencies/MATIC.png';
@@ -95,9 +96,14 @@ export default function CurrencyLogo({
     return <StyledEthereumLogo src={AvaxLogo} size={size} {...rest} />;
   }
 
+  if (currency?.symbol === 'ESW') {
+    return <StyledEthereumLogo src={EswLogo} size={size} {...rest} />;
+  }
+
   if (currency instanceof Token) {
-    const coinToken = defaultCoins.tokens
-      .find(ct => ct.address === currency.address.toLowerCase() && ct.chainId === chainId);
+    const coinToken = defaultCoins.tokens.find(ct => {
+      return ct.address.toLowerCase() === currency.address.toLowerCase() && ct.chainId === chainId;
+    });
 
     let uri: string | undefined = coinToken?.logoURI;
 

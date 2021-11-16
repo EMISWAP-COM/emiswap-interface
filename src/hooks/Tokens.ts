@@ -35,7 +35,7 @@ export function useAllTokens(): [{ [address: string]: Token }, boolean] {
             const exists = defaultCoins.tokens
               .find(ct =>
                   ct.chainId === chainId
-                  && el.address.toLowerCase() === ct.address
+                  && el.address.toLowerCase() === ct.address.toLowerCase()
                   && mustVisibleAddresses.kucoin.includes(el.address.toLowerCase())
                 );
 
@@ -45,7 +45,7 @@ export function useAllTokens(): [{ [address: string]: Token }, boolean] {
             const exists = defaultCoins.tokens
               .find(ct =>
                 ct.chainId === chainId
-                && el.address.toLowerCase() === ct.address
+                && el.address.toLowerCase() === ct.address.toLowerCase()
                 && ct.symbol !== 'WMATIC'
                 // && mustVisibleAddresses.polygon.includes(el.address.toLowerCase())
               );

@@ -10,7 +10,6 @@ import Tooltip from '../Tooltip';
 import LpTokenSymbol from '../LpTokenSymbol';
 import isLpToken from '../isLpToken';
 import { ExternalLink } from '../../../theme';
-import { useActiveWeb3React } from '../../../hooks';
 import { FarmingTimeType } from '../constants';
 import KucoinLogo from '../../../assets/currencies/KCS.png';
 import { useIsEthActive, useIsPolygonActive, useNetworkData } from '../../../hooks/Coins';
@@ -212,13 +211,14 @@ type ExtendableRowProps = {
   endDate: string;
   deposit: string;
   type: string;
-  onStake: (amount: string) => Promise<unknown>;
-  onCollect: () => Promise<unknown>;
   tokenMode: number;
+  stakedTokens?: any[];
   isKuCoinToken?: boolean;
   balance?: string;
   availableToCollect?: string;
   farming365?: boolean;
+  onStake: (amount: string) => Promise<unknown>;
+  onCollect: () => Promise<unknown>;
 };
 
 const ExtendableRow: React.FC<ExtendableRowProps> = ({
@@ -233,15 +233,16 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
   endDate,
   deposit,
   type,
-  onStake,
-  onCollect,
   tokenMode,
+  stakedTokens = [],
   balance,
   availableToCollect,
   isKuCoinToken = false,
   farming365 = false,
+  onStake,
+  onCollect,
 }) => {
-  const { chainId } = useActiveWeb3React();
+  // const { chainId } = useActiveWeb3React();
   const { alias } = useNetworkData();
   const isEthereumActive = useIsEthActive();
   const isPolygonActive = useIsPolygonActive();
@@ -374,7 +375,11 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
       {farming365 ? (
         <>
           <StyledExtendableContent isVisible={isRowExtended}>
-            <Farm365Content/>
+            <Farm365Content
+              stakedTokens={stakedTokens}
+              onStake={onCollect}
+              onCollect={onCollect}
+            />
           </StyledExtendableContent>
         </>
       ) : (

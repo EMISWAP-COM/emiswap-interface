@@ -57,16 +57,6 @@ export default function useFarming365(contract: Contract) {
 
   const [stakeToken, setStakeToken] = useState<Token | undefined>(undefined);
   useEffect(() => {
-
-    contract.getStakedTokens('0xC1f77e2D09bbB37135D069e969854582B0EaB975')
-      .then((value: any) => {
-        console.log('getStakedTokens', value);
-      })
-      .catch((error: RequestError) => {
-        addEthErrorPopup(error);
-        logContractError('getStakedTokens', account, chainId, contract.address, '0xC1f77e2D09bbB37135D069e969854582B0EaB975', error);
-      });
-
     contract
       .stakeToken()
       .then((value: string) => {
@@ -172,6 +162,7 @@ export default function useFarming365(contract: Contract) {
     contract
       .earned(account)
       .then((value: BigNumber) => {
+        console.log('earned', value.toString());
         if (chainId && rewardToken) {
           const tokenAmount = new TokenAmount(rewardToken, JSBI.BigInt(value.toString()));
           return tokenAmountToString(tokenAmount, rewardToken.decimals);
@@ -375,18 +366,32 @@ export default function useFarming365(contract: Contract) {
       });
   }, [contract, addEthErrorPopup, account, chainId]);*/
 
+  const [stakedTokens, setStakedTokens] = useState<any[]>([]);
+  useEffect(() => {
+    contract
+      .getStakedTokens(account)
+      .then((value: any[]) => {
+        setStakedTokens(value);
+      })
+      .catch((error: RequestError) => {
+        addEthErrorPopup(error);
+        logContractError('getStakedTokens', account, chainId, contract.address, account || '', error);
+      });
+  }, [contract, addEthErrorPopup, account, chainId]);
+
   return {
-    stakeToken: stakeToken,
-    rewardToken: rewardToken,
-    balanceLp: balanceLp,
-    balanceStake: balanceStake,
-    reward: reward,
-    blockReward: blockReward,
+    stakeToken,
+    rewardToken,
+    balanceLp,
+    balanceStake,
+    reward,
+    blockReward,
+    totalSupply,
+    endDate,
+    liquidity,
+    tokenMode: 1, // tokenMode,
+    stakedTokens,
     collect: handleCollect,
     stake: handleStake,
-    totalSupply: totalSupply,
-    endDate: endDate,
-    liquidity: liquidity,
-    tokenMode: 1, // tokenMode,
   };
 };

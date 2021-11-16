@@ -20,10 +20,10 @@ export default function Farm365Item({
   useEffect(() => {
     if (farming365.blockReward && Number(farming365.liquidity) && eswPriceInDai) {
       const block = parseFloat(farming365.blockReward);
-      const dai = parseFloat(eswPriceInDai);
+      // const dai = parseFloat(eswPriceInDai);
       const liq = parseFloat(farming365.liquidity);
 
-      setApr((block * 6400 * 365 * 100 * dai) / liq);
+      setApr(((block * 6400 * 100/* * dai*/) / liq) + 365);
     }
   }, [eswPriceInDai, farming365.blockReward, farming365.liquidity]);
 
@@ -41,10 +41,11 @@ export default function Farm365Item({
       endDate={farming365.endDate}
       deposit={farming365.balanceLp}
       type={FarmingTimeType.farming365}
+      tokenMode={farming365.tokenMode}
+      stakedTokens={farming365.stakedTokens}
+      farming365={true}
       onStake={farming365.stake}
       onCollect={farming365.collect}
-      tokenMode={farming365.tokenMode}
-      farming365={true}
     />
   );
 };

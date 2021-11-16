@@ -21,7 +21,7 @@ import * as Styled from './styled';
 interface CurrencyInputPanelProps {
   value: string;
   onUserInput: (value: string) => void;
-  onMax?: () => void;
+  onMax?: (balance?: string) => void;
   showMaxButton: boolean;
   label?: string;
   onCurrencySelect?: (currency: Token) => void;
@@ -94,6 +94,10 @@ const CurrencyInputPanel = (props: CurrencyInputPanelProps) => {
     );
   };
 
+  const balance = !!currency && selectedCurrencyBalance
+    ? tokenAmountToString(selectedCurrencyBalance, balanceDecimals)
+    : '';
+
   return (
     <>
       <Styled.InputPanel id={id} className={className}>
@@ -107,16 +111,16 @@ const CurrencyInputPanel = (props: CurrencyInputPanelProps) => {
                 {account && (
                   <CursorPointer>
                     <TYPE.body
-                      onClick={onMax}
+                      onClick={() => onMax(balance)}
                       color={theme.white}
                       fontWeight={500}
                       fontSize={14}
                       style={{ display: 'inline' }}
                     >
-                      {!hideBalance && !!currency && selectedCurrencyBalance
-                        ? 'Balance: ' +
-                          tokenAmountToString(selectedCurrencyBalance, balanceDecimals)
-                        : ' '}
+                      {!hideBalance && balance
+                        ? 'Balance: ' + balance
+                        : ' '
+                      }
                     </TYPE.body>
                   </CursorPointer>
                 )}
@@ -138,7 +142,9 @@ const CurrencyInputPanel = (props: CurrencyInputPanelProps) => {
                   disabled={disabled}
                 />
                 {account && currency && showMaxButton && label !== 'To' && (
-                  <Styled.StyledBalanceMax onClick={onMax}>MAX</Styled.StyledBalanceMax>
+                  <Styled.StyledBalanceMax onClick={() => onMax(balance)}>
+                    MAX
+                  </Styled.StyledBalanceMax>
                 )}
               </>
             )}

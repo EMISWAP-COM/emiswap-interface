@@ -3,15 +3,10 @@ import React, { useState } from 'react';
 import Button from '../../../base/ui/Button';
 import CurrencyLogo from '../../../components/CurrencyLogo';
 import LpTokenSymbol from '../LpTokenSymbol';
-import { ESW, WETH } from '../../../constants';
+import { ESW } from '../../../constants';
 import CurrencyInputPanel from '../../../components/CurrencyInputPanel';
 import { JSBI, TokenAmount } from '@uniswap/sdk';
 import chainIds from '../../../constants/chainIds';
-
-type Farm365ContentProps = {
-  // contract: Contract;
-  // eswPriceInDai: string;
-};
 
 const Content = styled.div`
   display: flex;
@@ -20,15 +15,18 @@ const Content = styled.div`
 const BorderCard = styled.div`
   flex: 1;
   min-height: 300px;
-  height: 300px;
+  height: 318px;
   margin: 8px;
   padding: 16px;
   border: 1px solid #615C69;
   border-radius: 8px;
 `;
 
+const InputWrapper = styled.div`
+  height: 115px;
+`;
+
 const InputPanel = styled(CurrencyInputPanel)`
-  margin-bottom: 16px;
   border-radius: 8px;
   background: #272530;
 `;
@@ -41,7 +39,7 @@ const StakeTitle = styled.div`
 `;
 
 const StakeButton = styled(Button)`
-  margin-top: 38px;
+  // margin-top: 38px;
   border: 1px solid #FFFFFF;
   background: transparent !important;
   color: white;
@@ -49,7 +47,7 @@ const StakeButton = styled(Button)`
 `;
 
 const StakeList = styled.div`
-  height: 162px;
+  height: 180px;
   margin-top: 8px;
   margin-bottom: 12px;
   overflow: auto;
@@ -90,16 +88,26 @@ const StakeTokenAmount = styled.div`
   color: #FFFFFF;
 `;
 
+type Farm365ContentProps = {
+  stakedTokens: any[];
+  onStake: (amount: string) => Promise<unknown>;
+  onCollect: () => Promise<unknown>;
+};
+
 export default function Farm365Content({
-  // contract,
-  // eswPriceInDai,
+  stakedTokens,
+  onStake,
+  onCollect,
 }: Farm365ContentProps) {
 
   const [eswValue, setEswValue] = useState<string>('');
   const [lpValue, setLpValue] = useState<string>('');
 
-  const [isStakeButtonDisabled, setStakeButtonDisabled] = useState<boolean>(false);
-  const [isCollectButtonDisabled, setCollectButtonDisabled] = useState<boolean>(false);
+  const [lpCurrency, setLpCurrency] = useState<any>(null);
+  const [lpBalance, setLpBalance] = useState<any>(null);
+
+  const [isStakeButtonDisabled, /*setStakeButtonDisabled*/] = useState<boolean>(false);
+  const [isCollectButtonDisabled, /*setCollectButtonDisabled*/] = useState<boolean>(false);
 
   const handleChangeEswInput = (value) => {
     setEswValue(value);
@@ -123,6 +131,13 @@ export default function Farm365Content({
 
   };
 
+  const handleCurrencySelect = (currency: any) => {
+    setLpCurrency(currency);
+    if (currency) {
+      setLpBalance(new TokenAmount(currency, JSBI.BigInt(2)));
+    }
+  };
+
   const handleClickCollectBtn = () => {
 
   };
@@ -133,35 +148,40 @@ export default function Farm365Content({
   return (
     <Content>
       <BorderCard>
-        <InputPanel
-          id="farm-365-esw"
-          label={'ESW TO STAKE'}
-          value={eswValue}
-          selectEnable={false}
-          showMaxButton={true}
-          showMaxError={true}
-          currency={ESW[chainIds.MUMBAI]}
-          otherCurrency={WETH}
-          currencyBalance={new TokenAmount(WETH, JSBI.BigInt(2))}
-          onUserInput={handleChangeEswInput}
-          onMax={() => {
-            setEswValue('1000');
-          }}
-        />
-        <InputPanel
-          id="farm-365-lp"
-          label={'LP TOKENS TO STAKE'}
-          value={lpValue}
-          showMaxButton={true}
-          showMaxError={true}
-          currency={WETH}
-          otherCurrency={ESW[chainIds.MUMBAI]}
-          currencyBalance={new TokenAmount(WETH, JSBI.BigInt(2))}
-          onUserInput={handleChangeLpInput}
-          onMax={() => {
-            setLpValue('1000');
-          }}
-        />
+        <InputWrapper>
+          <InputPanel
+            id="farm-365-esw"
+            label={'ESW TO STAKE'}
+            value={eswValue}
+            selectEnable={false}
+            showMaxButton={true}
+            showMaxError={true}
+            currency={ESW[chainIds.MUMBAI][0]}
+            otherCurrency={lpCurrency}
+            currencyBalance={new TokenAmount(ESW[chainIds.MUMBAI][0], JSBI.BigInt(2))}
+            onUserInput={handleChangeEswInput}
+            onMax={(value) => {
+              setEswValue(value);
+            }}
+          />
+        </InputWrapper>
+        <InputWrapper>
+          <InputPanel
+            id="farm-365-lp"
+            label={'LP TOKENS TO STAKE'}
+            value={lpValue}
+            showMaxButton={true}
+            showMaxError={true}
+            currency={lpCurrency}
+            otherCurrency={ESW[chainIds.MUMBAI][0]}
+            currencyBalance={lpBalance}
+            onUserInput={handleChangeLpInput}
+            onMax={(value) => {
+              setLpValue(value);
+            }}
+            onCurrencySelect={handleCurrencySelect}
+          />
+        </InputWrapper>
         <StakeButton isDisabled={isStakeButtonDisabled} onClick={handleClickStakeBtn}>
           {stakeButtonText}
         </StakeButton>
@@ -173,27 +193,20 @@ export default function Farm365Content({
             <StakeToken>
               <StakeTokenName>ESW</StakeTokenName>
               <StakeTokenLine>
-                <CurrencyLogo currency={WETH} size={'24px'}/>
-                <StakeTokenAmount>1000.00121321354</StakeTokenAmount>
+                <CurrencyLogo currency={ESW[chainIds.MUMBAI][0]} size={'24px'}/>
+                <StakeTokenAmount>0</StakeTokenAmount>
               </StakeTokenLine>
             </StakeToken>
           </StakeItem>
-          {[1, 2, 3, 4, 5, 6, 7, 8].map((token, index) => (
+          {stakedTokens.map((token, index) => (
             <StakeItem key={index}>
               <StakeToken>
                 <StakeTokenName>LP-USDT</StakeTokenName>
                 <StakeTokenLine>
                   <LpTokenSymbol/>
-                  <StakeTokenAmount>1000.00121321354</StakeTokenAmount>
+                  <StakeTokenAmount>0</StakeTokenAmount>
                 </StakeTokenLine>
               </StakeToken>
-              {/*<StakeToken>
-                <StakeTokenName>ESW</StakeTokenName>
-                <StakeTokenLine>
-                  <CurrencyLogo currency={WETH} size={'24px'}/>
-                  <StakeTokenAmount>1000.00121321354</StakeTokenAmount>
-                </StakeTokenLine>
-              </StakeToken>*/}
             </StakeItem>
           ))}
         </StakeList>
