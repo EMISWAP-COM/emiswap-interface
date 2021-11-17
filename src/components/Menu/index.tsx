@@ -119,7 +119,7 @@ export default function Menu() {
       </StyledMenuButton>
       {open && (
         <MenuFlyout>
-          <MenuItem id="link" href="https://about.emiswap.com">
+          <MenuItem id="link" href="https://emiswap.com/landing">
             <Info size={14}/>
             About
           </MenuItem>
