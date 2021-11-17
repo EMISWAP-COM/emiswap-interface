@@ -1231,8 +1231,7 @@ export default function Landing({ history }: any) {
                   <img className="apr__card-pie-img" src={Apr365PiePng} alt="" />
                 </div>
                 <div className="apr__card-text">
-                  365% APR: our special Airdrop for EmiSwap LPs on Polygon. Earn additional 1% per day for providing
-                  liquidity.
+                  365% APR: special Airdrop for Liquidity Providers on Polygon. Available only if LP tokens are staked with ESW in Farming pools.
                 </div>
               </div>
               <div className="apr__card">
@@ -1464,7 +1463,7 @@ export default function Landing({ history }: any) {
           </section>
           <section id="team" className="team">
             <div className="section__header">
-              <div className="section__title">The EmiSwap team</div>
+              <div className="section__title">EmiSwap Team</div>
               <div className="team__slider-buttons team__slider-buttons--top">
                 <button className="team__slider-btn" onClick={handleClickTeamPrev}>
                   <img
