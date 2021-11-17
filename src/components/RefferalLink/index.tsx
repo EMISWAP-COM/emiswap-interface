@@ -64,9 +64,9 @@ export default function ReferralLink() {
     });
   };
 
-  /*if (!isEthereumActive(chainId) && !isPolygonActive) {
+  if (true) {
     return null;
-  }*/
+  }
 
   return (
     <div>
