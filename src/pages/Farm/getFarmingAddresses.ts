@@ -28,10 +28,10 @@ const addressesByNetworkId = {
   ],
   // TODO
   [chainIds.POLYGON]: [
-    '0x9CBdd0a2D25fFE626A5e99756648C6164e609Be3',
+    '0xA87c488c7d562e2D18F629275C9A345F3094d560',
 ],
   [chainIds.MUMBAI]: [
-    '0x9CBdd0a2D25fFE626A5e99756648C6164e609Be3',
+    '0xA87c488c7d562e2D18F629275C9A345F3094d560',
   ],
   // TODO
   [chainIds.AVALANCHE]: [
