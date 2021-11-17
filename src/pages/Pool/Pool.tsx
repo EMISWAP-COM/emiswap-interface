@@ -160,11 +160,11 @@ const Pool = () => {
                   </StyledGreenLink>
                 </Text>
                 <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
-                  <div>
+                  {/* <div>
                     <ExternalGreenLink href={MEDIUM_LINK}>
                       High rewards for early adopters
                     </ExternalGreenLink>
-                  </div>
+                  </div> */}
                   <div style={{ marginTop: '8px' }}>
                     <ExternalGreenLink href="https://wiki.emiswap.com/user-guide/how-to-provide-liquidity">
                       Wiki How to provide liquidity?
