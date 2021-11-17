@@ -83,14 +83,14 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
               'https://emiswap.medium.com/your-guide-to-the-emiswap-referral-program-f142a4170d1'
             }
           >
-            Referral Program
+            Referral Program.
           </ExternalLink>
-          , become an&nbsp;
+          {/* become an&nbsp;
           <ExternalLink href={'https://crowdsale.emidao.org/en#rec240950289'}>
             Ambassador
           </ExternalLink>
           &nbsp;or farm your&nbsp;
-          <ExternalLink href={'https://crowdsale.emidao.org/magic-nft'}>Magic Cards!</ExternalLink>
+          <ExternalLink href={'https://crowdsale.emidao.org/magic-nft'}>Magic Cards!</ExternalLink> */}
         </OptionsPromo>
       </Connection>
       {isEthActive && (

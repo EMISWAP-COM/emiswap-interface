@@ -24,8 +24,8 @@ import ReferralLink from '../../components/RefferalLink';
 import * as Styled from './styleds';
 import { useIsEthActive } from '../../hooks/Coins';
 
-const MEDIUM_LINK =
-  'https://emiswap.medium.com/pay-0-for-gas-and-get-x10-reward-the-two-big-reasons-to-join-emiswap-today-8af2e68d0aaa';
+// const MEDIUM_LINK =
+  // 'https://emiswap.medium.com/pay-0-for-gas-and-get-x10-reward-the-two-big-reasons-to-join-emiswap-today-8af2e68d0aaa';
 
 const Pool = () => {
   const theme = useContext(ThemeContext);
@@ -160,11 +160,11 @@ const Pool = () => {
                   </StyledGreenLink>
                 </Text>
                 <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
-                  <div>
+                  {/* <div>
                     <ExternalGreenLink href={MEDIUM_LINK}>
                       High rewards for early adopters
                     </ExternalGreenLink>
-                  </div>
+                  </div> */}
                   <div style={{ marginTop: '8px' }}>
                     <ExternalGreenLink href="https://wiki.emiswap.com/user-guide/how-to-provide-liquidity">
                       Wiki How to provide liquidity?

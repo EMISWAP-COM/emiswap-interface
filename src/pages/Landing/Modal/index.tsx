@@ -7,11 +7,29 @@ const ModalContent = styled.div`
   justify-content: center;
   flex-direction: column;
   width: 100%;
-  padding: 24px;
+  padding: 12px 0 12px 0;
+  background: #0F0F13;
+  border: 1px solid #615C69;
+  box-sizing: border-box;
+  border-radius: 24px;
   color: ${({ theme }) => theme.white};
 
 
   > p {
+    line-height: 24px;
+    margin: 12px 24px;
+
+    &.lp_popup_heading {
+      font-size: 18px;
+    }
+  }
+
+  > hr {
+    width: 100%;
+    border-color: #615C69;
+  }
+
+  > ol li {
     line-height: 24px;
   }
 `;
@@ -20,6 +38,7 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
+  margin-bottom: 36px;
 
   font-style: normal;
   font-weight: normal;
@@ -52,29 +71,42 @@ export default function LandingModal({ isOpen, onDissmiss }) {
     <Modal
       isOpen={isOpen}
       // maxHeight={90}
-      maxWidth={680}
+      maxWidth={606}
       onDismiss={onDissmiss}
       className="landing_modal"
     >
+      <Header>EmiSwap Smart Farming  <CloseWrapper onClick={onDissmiss} >Close  <Close>X</Close></CloseWrapper></Header>
       <ModalContent>
-        <Header>EmiSwap Smart Farming  <CloseWrapper onClick={onDissmiss} >Close  <Close>X</Close></CloseWrapper></Header>
+        <p className="lp_popup_heading">180% APR Airdrop</p>
+        
         <p>
-          Smart Farming allows you to get 365% APR on your LP token plus an additional percentage (XXX%) on staked LP-ESW tokens in Farming pool.
+          Users can provide liquidity in any pool with ESW token (for example ESW/USDT) for at least 1 month and get 180% APR.
         </p>
 
         <p>
-          How to get 365% APR?
+          The 180% APR will be allocated to all Liquidity Providers three months after the campaign has ended or after users remove liquidity.
         </p>
 
-        <ul>
+        <hr />
+
+        <p className="lp_popup_heading">Smart Farming + 365% APR Airdrop</p>
+
+        <p>Smart Farming allows users to get 365% APR on their LP token plus an additional percentage (XXX%) on staked LP-ESW tokens in Farming pool. </p>
+
+        <p>This feature will be released at a random time, and the first 10 users, who will stake their LP and ESW tokens in the Farming pool will get 500 ESW as a bonus. Stay tuned and wait for the release of LP/ESW Farming pool!</p>
+
+        <p className="lp_popup_heading">How to get 365% APR? </p>
+
+        <ol>
           <li>Provide liquidity for any pair and get LP tokens</li>
           <li>Stake your LP tokens in pair with ESW tokens in Farming pool</li>
           <li>Get 365% on your LP tokens</li>
           <li>Get XXX% APR on your LP+ESW tokens in Farming pool</li>
-        </ul>
+        </ol>
 
-        <p>Staking your LP tokens with ESW into the farming pool will make you eligible for getting a 365% APR! It doesn’t end there, as you get an extra 0.25% of the pool’s trading fees as a liquidity provider.</p>
-        <p>The 365% APR will be allocated to all farmers three months after the campaign has ended or after users remove liquidity.</p>
+        <hr />
+
+        <p style={{ color: '#878789' }}>It doesn’t end there, as you get an extra 0.25% of the pool’s trading fees as a liquidity provider.</p>
       </ModalContent>
     </Modal>
   )

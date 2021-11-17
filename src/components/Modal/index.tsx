@@ -206,6 +206,7 @@ export default function Modal({
                   maxHeight={maxHeight}
                   maxWidth={maxWidth}
                   isOpen={isOpen}
+                  className={className}
                 >
                   {children}
                 </StyledDialogContent>
