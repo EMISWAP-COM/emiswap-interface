@@ -142,7 +142,7 @@ export default function Farm365Content({
   const [lpBalance, setLpBalance] = useState<TokenAmount>(null);
 
   const [isStakeButtonDisabled, setStakeButtonDisabled] = useState<boolean>(true);
-  const [isCollectButtonDisabled, setCollectButtonDisabled] = useState<boolean>(true);
+  const [isCollectButtonDisabled, /*setCollectButtonDisabled*/] = useState<boolean>(true);
 
   const [isStakeAllowed, setStakeAllowed] = useState<boolean>(false);
 
