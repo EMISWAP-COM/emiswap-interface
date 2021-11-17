@@ -47,6 +47,10 @@ import shidenLogo from '../../assets/landing/partners/shiden.png';
 import uboostLogo from '../../assets/landing/partners/uboost.png';
 import unilendLogo from '../../assets/landing/partners/unilend.png';
 import yieldLogo from '../../assets/landing/partners/yield.png';
+import listDotSvg from '../../assets/svg/list-dot.svg';
+import listDotVioletSvg from '../../assets/svg/list-dot-violet.svg';
+import hackenSvg from '../../assets/landing/header/hacken.svg';
+import blueswarmSvg from '../../assets/landing/header/blueswarm.svg';
 
 const Body = styled.div`
   width: 100vw;
@@ -234,6 +238,17 @@ const Body = styled.div`
         line-height: 32px;
       }
     }
+
+    &__audited {
+      display: flex;
+      margin-top: 34px;
+      font-size: 12px;
+      color: #FFFFFF;
+
+      > img {
+        margin: 0 8px;
+      }
+    }
     
     .chart {
       display: flex;
@@ -244,6 +259,12 @@ const Body = styled.div`
       @media screen and (max-width: 769px) {
          display: block;
          background-color: #18181c;
+      }
+
+      &__list-dot {
+        margin-left: -16px;
+        margin-bottom: 1px;
+        margin-right: 8px;
       }
       
       &__pie {
@@ -1027,6 +1048,9 @@ export default function Landing({ history }: any) {
                 Start earning
               </button>
             </div>
+            <div className="banner__audited">
+              Audited by: <img src={hackenSvg} /> & <img src={blueswarmSvg} />
+            </div>
           </div>
           <div className="chart">
             <div className="chart__pie">
@@ -1034,11 +1058,15 @@ export default function Landing({ history }: any) {
             </div>
             <div className="chart__stats">
               <div className="chart__stat-item">
-                <div className="chart__stat-name">Liquidity supply</div>
+                <div className="chart__stat-name">
+                  <img className="chart__list-dot" src={listDotSvg} />
+                  Liquidity supply
+                </div>
                 <div className="chart__percent">365%</div>
               </div>
               <div className="chart__stat-item">
                 <div className="chart__stat-name" style={{ color: '#7A2DF4' }}>
+                <img className="chart__list-dot" src={listDotVioletSvg} />
                   Farming
                 </div>
                 <div>(coming on 17 Nov)</div>
@@ -1047,6 +1075,7 @@ export default function Landing({ history }: any) {
               </div>
               <div className="chart__stat-item">
                 <div className="chart__stat-name" style={{ color: '#E478FF' }}>
+                  <img className="chart__list-dot" src={listDotSvg} />
                   Swap commision
                 </div>
                 <div>from volume</div>
