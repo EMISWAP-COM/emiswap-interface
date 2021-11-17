@@ -92,7 +92,7 @@ export default function App() {
     if (search[1] && search[1].length) {
       if (isMobile && connector) changeChainToPolygon()
     }
-  }, [connector]);
+  }, [connector, changeChainToPolygon]);
 
   const is404Page = window.location.pathname === '/404';
 

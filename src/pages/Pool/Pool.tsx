@@ -24,8 +24,8 @@ import ReferralLink from '../../components/RefferalLink';
 import * as Styled from './styleds';
 import { useIsEthActive } from '../../hooks/Coins';
 
-const MEDIUM_LINK =
-  'https://emiswap.medium.com/pay-0-for-gas-and-get-x10-reward-the-two-big-reasons-to-join-emiswap-today-8af2e68d0aaa';
+// const MEDIUM_LINK =
+  // 'https://emiswap.medium.com/pay-0-for-gas-and-get-x10-reward-the-two-big-reasons-to-join-emiswap-today-8af2e68d0aaa';
 
 const Pool = () => {
   const theme = useContext(ThemeContext);
