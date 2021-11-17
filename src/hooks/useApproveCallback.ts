@@ -27,6 +27,9 @@ export function useApproveCallback(
   spender?: string,
   isNotSwap?: boolean,
 ): [ApprovalState, () => Promise<void>] {
+
+  console.log('useApproveCallback', amountToApprove?.raw?.toString(), spender);
+
   const { account } = useActiveWeb3React();
   const token = amountToApprove instanceof TokenAmount ? amountToApprove.token : undefined;
   const allTransactions = useAllTransactions();
@@ -47,16 +50,15 @@ export function useApproveCallback(
       (amountToApprove.token.equals(ETHER) || swapState[Field.INPUT].currencyId === ZERO_ADDRESS) &&
       !isNotSwap
     ) {
-
       return ApprovalState.APPROVED;
     }
+
     // we might not have enough data to know whether or not we need to approve
     if (!currentAllowance) {
       return ApprovalState.UNKNOWN;
     }
 
     // amountToApprove will be defined if currentAllowance is
-
     const status = currentAllowance.lessThan(amountToApprove)
       ? pendingApproval
         ? ApprovalState.PENDING
@@ -73,18 +75,17 @@ export function useApproveCallback(
 
   const approve = useCallback(async (): Promise<void> => {
     if (approvalState !== ApprovalState.NOT_APPROVED) {
+      console.error('approval state not equal NOT_APPROVED');
       return;
     }
+
     if (!token) {
       console.error('no token');
       return;
     }
-    if (!tokenContract) {
-      console.error('no token');
-      return;
-    }
 
-    if (!spender) {
+    if (!tokenContract) {
+      console.error('no token contract');
       return;
     }
 

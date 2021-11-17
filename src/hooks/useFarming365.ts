@@ -20,9 +20,9 @@ const logContractError = (
   chainId: number | undefined,
   contractAddress: string,
   args: string,
-  originalError: Error,
+  error: Error,
 ) => {
-  if ((originalError as RequestError)?.code === -32000) {
+  if ((error as RequestError)?.code === -32000) {
     return;
   }
   console.error(`
@@ -32,8 +32,9 @@ const logContractError = (
   ChainId: ${chainId}\n
   Contract address: ${contractAddress}\n
   Args: ${args ? args : '---'}\n
-  Error message: ${originalError.message}\n
+  Error message: ${error.message}\n
 `);
+  console.error(error);
 };
 
 export default function useFarming365(contract: Contract) {
@@ -337,7 +338,13 @@ export default function useFarming365(contract: Contract) {
       .catch((error: RequestError) => {
         const args = lpToken.address + ', ' + lpAmount.toString() + ', ' + eswWithSlippage.toString();
         showError('stake', args, error);
-      });
+      })
+      .finally(() => {
+        /*addTransaction(response, {
+          summary: `Stake ${lpValue} ${lpToken.symbol}`,
+          approval: { tokenAddress: lpToken.address, spender: EMI_ROUTER_ADRESSES[chainId!] },
+        });*/
+      })
   };
 
   const handleCollect = (): Promise<unknown> => {

@@ -9,11 +9,16 @@ import { JSBI, Token, TokenAmount } from '@uniswap/sdk';
 import chainIds from '../../constants/chainIds';
 import useFarming365 from '../../hooks/useFarming365';
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback';
-import { useEmiRouter } from '../../hooks/useContract';
-import { convertTokenAmount } from '../../utils';
+import getFarmingAddresses from '../Farm/getFarmingAddresses';
+import { useActiveWeb3React } from '../../hooks';
+import { parseUnits } from '@ethersproject/units';
 
 const Content = styled.div`
   display: flex;
+  
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    display: block;
+  `};
 `;
 
 const BorderCard = styled.div`
@@ -24,6 +29,13 @@ const BorderCard = styled.div`
   padding: 16px;
   border: 1px solid #615C69;
   border-radius: 8px;
+  
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    margin: 8px 0;
+    padding: 16px 0;
+    border: none;
+    border-radius: 0;
+  `};
 `;
 
 const InputWrapper = styled.div`
@@ -99,7 +111,9 @@ type Farm365ContentProps = {
 export default function Farm365Content({
   farming365,
 }: Farm365ContentProps) {
-  const emiRouter = useEmiRouter();
+  const { chainId } = useActiveWeb3React();
+
+  const farmingAddresses = getFarmingAddresses(chainId)[0];
 
   const [eswValue, setEswValue] = useState<string>('');
   const [lpValue, setLpValue] = useState<string>('');
@@ -113,23 +127,38 @@ export default function Farm365Content({
 
   const [isStakeAllowed, setStakeAllowed] = useState<boolean>(false);
 
+  const eswValueParsed = useMemo(() => {
+    if (!eswValue || !eswCurrency) {
+      return '0';
+    }
+    return parseUnits(eswValue, eswCurrency.decimals).toString();
+  }, [eswValue, eswCurrency]);
+
+  const lpValueParsed = useMemo(() => {
+    if (!lpValue || !lpCurrency) {
+      return '0';
+    }
+    return parseUnits(lpValue, lpCurrency.decimals).toString();
+  }, [lpValue, lpCurrency]);
+
+  console.log('value', eswValueParsed, lpValueParsed);
+
   const [approvalEsw, approveEswCallback] = useApproveCallback(
-    eswValue
-      ? new TokenAmount(eswCurrency, convertTokenAmount(eswCurrency, eswValue).toString())
+    eswValueParsed
+      ? new TokenAmount(eswCurrency, JSBI.BigInt(eswValueParsed))
       : undefined,
-    emiRouter?.address,
+    farmingAddresses,
   );
 
-  console.log('value', eswValue, lpValue);
-
   const [approvalLp, approveLpCallback] = useApproveCallback(
-    lpCurrency && lpValue
-      ? new TokenAmount(lpCurrency, convertTokenAmount(lpCurrency, lpValue).toString())
+    lpCurrency && lpValueParsed
+      ? new TokenAmount(lpCurrency, JSBI.BigInt(lpValueParsed))
       : undefined,
-    emiRouter?.address,
+    farmingAddresses,
   );
 
   const stakedTokens = useMemo(() => {
+    console.log('stakedTokens', farming365.stakedTokens);
     return farming365.stakedTokens;
   }, [farming365.stakedTokens]);
 
@@ -198,13 +227,10 @@ export default function Farm365Content({
 
     if (isStakeAllowed) {
       await farming365.stake(lpCurrency, lpValue, eswValue);
-    } else {
-      if (![ApprovalState.PENDING, ApprovalState.APPROVED].includes(approvalEsw)) {
-        approveEswCallback();
-      }
-      if (![ApprovalState.PENDING, ApprovalState.APPROVED].includes(approvalLp)) {
-        approveLpCallback();
-      }
+    } else if (![ApprovalState.PENDING, ApprovalState.APPROVED].includes(approvalEsw)) {
+      approveEswCallback();
+    } else if (![ApprovalState.PENDING, ApprovalState.APPROVED].includes(approvalLp)) {
+      approveLpCallback();
     }
   };
 
@@ -218,6 +244,12 @@ export default function Farm365Content({
     }
     if (approvalEsw === ApprovalState.PENDING || approvalLp === ApprovalState.PENDING) {
       return 'Pending...';
+    }
+    if (approvalEsw !== ApprovalState.APPROVED) {
+      return 'Approve ESW';
+    }
+    if (approvalLp !== ApprovalState.APPROVED) {
+      return 'Approve LP';
     }
     return 'Approve';
   }, [isStakeAllowed, approvalEsw, approvalLp]);
@@ -277,7 +309,8 @@ export default function Farm365Content({
           {stakedTokens.map((token, index) => (
             <StakeItem key={index}>
               <StakeToken>
-                <StakeTokenName>LP-USDT</StakeTokenName>
+                {token}
+                <StakeTokenName>{token.symbol}</StakeTokenName>
                 <StakeTokenLine>
                   <LpTokenSymbol/>
                   <StakeTokenAmount>0</StakeTokenAmount>

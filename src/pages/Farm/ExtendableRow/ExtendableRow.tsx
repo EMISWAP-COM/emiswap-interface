@@ -20,6 +20,10 @@ const StyledRow = styled.div`
   background-color: ${({ theme }) => theme.border1Transparency};
   border-radius: 8px;
   margin-bottom: 8px;
+  
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    margin: 0 -16px 8px -16px;
+  `};
 `;
 
 const StyledHeader = styled.div`
@@ -145,6 +149,7 @@ const StyledExtendableContent = styled.div<{ isVisible: boolean }>`
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
     border-radius: 8px 8px 0 0;
+    padding: 16px;
   `};
 `;
 

@@ -29,7 +29,7 @@ const addressesByNetworkId = {
   // TODO
   [chainIds.POLYGON]: [
     '0xA87c488c7d562e2D18F629275C9A345F3094d560',
-],
+  ],
   [chainIds.MUMBAI]: [
     '0xA87c488c7d562e2D18F629275C9A345F3094d560',
   ],
@@ -39,7 +39,7 @@ const addressesByNetworkId = {
   ],
 };
 
-const getFarmingAddresses = (chainId: ChainId) => {
+const getFarmingAddresses = (chainId: ChainId): string[] => {
   return addressesByNetworkId[chainId] || [];
 };
 
