@@ -30,6 +30,23 @@ import RuslanPng from '../../assets/landing/team/ruslan.png';
 import PolygonCardPng from '../../assets/landing/polygon-card.png';
 import SocialsCardPng from '../../assets/landing/socials-card.png';
 import SlideArrowSvg from '../../assets/landing/slide-arrow.svg';
+import rangesSvg from '../../assets/landing/ranges.svg';
+import linesSvg from '../../assets/landing/lines.svg';
+import gruelBg from '../../assets/landing/gruel-bg.png';
+
+import alphaLogo from '../../assets/landing/partners/alpha.png';
+import bitmartLogo from '../../assets/landing/partners/bitmart.png';
+import digifinexLogo from '../../assets/landing/partners/digifinex.png';
+import emirexLogo from '../../assets/landing/partners/emirex.png';
+import kukoinLogo from '../../assets/landing/partners/kukoin.png';
+import everestLogo from '../../assets/landing/partners/logo.png';
+import movrLogo from '../../assets/landing/partners/movr.png';
+import nearLogo from '../../assets/landing/partners/near.png';
+import polygonLogo from '../../assets/landing/partners/polygon.png';
+import shidenLogo from '../../assets/landing/partners/shiden.png';
+import uboostLogo from '../../assets/landing/partners/uboost.png';
+import unilendLogo from '../../assets/landing/partners/unilend.png';
+import yieldLogo from '../../assets/landing/partners/yield.png';
 
 const Body = styled.div`
   width: 100vw;
@@ -37,7 +54,7 @@ const Body = styled.div`
   position: absolute;
   top: 0;
   right: 0;
-  background: black;
+  background: #0f0f13;
   
   hr {
     height: 1px; 
@@ -91,23 +108,38 @@ const Body = styled.div`
     align-items: center;
     width: 100%;
     padding: 20px 80px;
-    background: black;
-   
-    @media screen and (max-width: 769px) {
+    background: #0f0f13;
+ 
+    @media screen and (max-width: 950px) {
       display: block;
-      padding: 20px 20px;
+      padding: 20px 0 0 0;
+      background-color: #0f0f13;
+
+      :after {
+        content: '';
+        height: 1px;
+        width: 100%;
+        display: block;
+        background: #606068;
+      }
     }
     
     .logo {
       margin-right: 100px;
+
+      @media screen and (max-width: 950px) {
+        margin-left: 20px;
+      }
     }
    
     .nav {
       display: flex;
       margin-bottom: 4px;
       
-      @media screen and (max-width: 769px) {
-         margin: 24px -12px 4px -12px;
+      @media screen and (max-width: 950px) {
+        justify-content: space-between;
+        margin: 24px -12px 4px -12px;
+        padding: 0 20px 12px 20px;
       }
       
       &__link {
@@ -117,7 +149,7 @@ const Body = styled.div`
         text-decoration: none !important;
         
         @media screen and (max-width: 769px) {
-          padding: 0 12px;
+          padding: 0 12px 12px 12px;
           margin-right: 0;
         }
         
@@ -133,7 +165,7 @@ const Body = styled.div`
         margin-right: 10px;
         filter: brightness(100);
         
-        @media screen and (max-width: 769px) {
+        @media screen and (max-width: 950px) {
           display: none;
         }
         
@@ -153,12 +185,14 @@ const Body = styled.div`
   .banner {
     display: flex;
     justify-content: space-between;
-    padding: 100px 80px;
+    padding: 225px 80px;
+    background-image: url('${gruelBg}');
+    background-position-y: 45px;
     
     @media screen and (max-width: 769px) {
       display: block;
-      padding: 30px 20px 45px 20px;
-   }
+      padding: 210px 20px 45px 20px;
+    }
     
     &__info {
       max-width: 80%;
@@ -209,10 +243,14 @@ const Body = styled.div`
       
       @media screen and (max-width: 769px) {
          display: block;
+         background-color: #18181c;
       }
       
       &__pie {
         padding: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
       
       &__pie-img {
@@ -221,6 +259,13 @@ const Body = styled.div`
       
       &__stats {
         padding: 24px;
+
+         
+        @media screen and (max-width: 769px) {
+          display: grid;
+          grid-template-columns: 1fr 1fr; 
+          grid-template-rows: 1fr 1fr; 
+        }
       }
       
       &__stat-item {
@@ -330,6 +375,7 @@ const Body = styled.div`
     }
     
     &__state {
+      position: relative;
       display: flex;
       justify-content: center;
       align-items: flex-end;
@@ -342,8 +388,17 @@ const Body = styled.div`
       line-height: 24px;
       color: #B7B7CA;
       
-      @media screen and (max-width: 769px) {
-        display: none;
+      @media screen and (max-width: 1064px) {
+        /* display: none; */
+        position: absolute;
+        top: -20px;
+
+        &:first-of-type {
+          left: 0;
+        }
+        &:last-of-type {
+          right: 0;
+        }
       }
       
     }
@@ -359,19 +414,18 @@ const Body = styled.div`
     }
     
     &__line-img {
+      display: block; 
       max-width: 100%;
-      margin-bottom: 68px;
       
-       @media screen and (max-width: 769px) {
+      @media screen and (max-width: 1064px) {
         display: none;
       }
-      
     }
     
     &__list {
       display: flex;
       
-      @media screen and (max-width: 769px) {
+      @media screen and (max-width: 1064px) {
         display: block;
         margin: 0;
       }
@@ -381,7 +435,7 @@ const Body = styled.div`
     &__card {
       display: flex;
       flex: 1;
-      margin: 12px;
+      margin: 0 12px 12px 12px;
       padding: 16px;
       border: 1px solid #393946;
       border-radius: 8px;
@@ -402,6 +456,11 @@ const Body = styled.div`
     }
     
     &__card-pie-img {
+      &__wrapper {
+        display: flex;
+        align-items: center;
+      }
+
       @media screen and (max-width: 769px) {
         width: 96px;
         height: 96px;
@@ -429,6 +488,25 @@ const Body = styled.div`
         width: 100%;
         margin: 0;
       }
+
+      &__offset {
+        display: grid;
+        grid-template-columns: 0fr 1fr; 
+        grid-template-rows: 1fr 1fr; 
+        gap: 0px 0px; 
+        grid-template-areas: 
+          "left top"
+          "left bottom";
+
+        &__img {
+          grid-area: left;
+          margin-top: -26px;
+          padding-left: 28px;
+        }
+      }
+
+      .top { grid-area: top; }
+      .bottom { grid-area: bottom; }
     }
     
     &__card {
@@ -437,6 +515,44 @@ const Body = styled.div`
       border: 1px solid #393946;
       border-radius: 8px;
       background: #27272E;
+
+      position: relative;
+
+      &__pennon {
+        height: 8px;
+        position: absolute;
+        border-top-left-radius: 8px;
+        width: 56px;
+        top: -2px;
+        left: 0;
+
+        &.turquoise{
+          border-top: 2px solid #37FFDB;
+        }
+        &.heliotrope {
+          border-top: 2px solid #E478FF;
+        }
+        &.multi {
+          border-top: 2px solid #7B78FF;
+
+          :before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 56px;
+            width: 56px;
+            border-top: 2px solid #37FFDB;
+          }
+          :after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 112px;
+            width: 56px;
+            border-top: 2px solid #E478FF;
+          }
+        }
+      }
     }
     
     &__card-name {
@@ -533,10 +649,28 @@ const Body = styled.div`
     .step__img {
       width: 100%;
       max-width: 100%;
+
+      &__wrapper {
+        position: relative;
+
+        :after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+          height: 40px;
+          border-top: 1px solid rgba(255,255,255,0.24);
+          border-top-left-radius: 16px;
+          background-color: red;
+          left: 0;
+          border-top-right-radius: 16px;
+          background-color: #27272e;
+        }
+      }
     }
     
     .step__info {
-      padding: 24px;
+      padding: 0 24px 24px 24px;
     }
     
     .step__name {
@@ -710,6 +844,8 @@ const Body = styled.div`
       position: relative;
       padding: 14px;
       border-radius: 16px;
+      width: 200px;
+      overflow-y: hidden;
     }
     
      &__person-img {
@@ -742,13 +878,42 @@ const Body = styled.div`
       color: #E8E7EF;
     }
   }
-  
+
+  .partners {
+    margin: 96px 80px;
+
+    @media screen and (max-width: 769px) {
+      margin: 45px 20px;
+    }
+
+    .partners__list > div {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 45px 0;
+
+      @media screen and (max-width: 1064px) {
+        display: grid;
+        grid-template-columns: 1fr 1fr; 
+        grid-template-rows: 1fr 1fr; 
+        justify-items: center;
+        padding: 0;
+
+        > img {
+          width: 80%;
+          padding: 24px 0;
+        }
+      }
+    }
+  }
+
   .polygon {
     display: flex;
     margin: 96px 56px;
     border-radius: 8px;
     border: 1px solid #393946;
     background: #19191c;
+    align-items: center;
     
     @media screen and (max-width: 769px) {
       display: block;
@@ -780,7 +945,6 @@ const Body = styled.div`
 `;
 
 export default function Landing({ history }: any) {
-
   const sliderRef = useRef<any>();
 
   const handleClickTeamNext = () => {
@@ -797,7 +961,7 @@ export default function Landing({ history }: any) {
     infinite: false,
     speed: 500,
     slidesToShow: 4,
-    slidesToScroll: 4,
+    slidesToScroll: 1,
     // initialSlide: 0,
     responsive: [
       {
@@ -823,10 +987,10 @@ export default function Landing({ history }: any) {
               <img className="nav__img" src={AboutSvg} alt=""/>
               <div className="nav__name">About</div>
             </a>
-            <a className="nav__link" href="#farms">
+            {/* <a className="nav__link" href="#farms">
               <img className="nav__img" src={FarmsSvg} alt=""/>
               <div className="nav__name">Top Farms</div>
-            </a>
+            </a> */}
             <a className="nav__link" href="#community">
               <img className="nav__img" src={CommunitySvg} alt=""/>
               <div className="nav__name">Community</div>
@@ -850,11 +1014,16 @@ export default function Landing({ history }: any) {
               <button
                 className="btn-primary"
                 style={{ marginRight: 24 }}
-                onClick={() => history.push('/pool')}
+                // onClick={() =>  history.push('/pool')}
+                onClick={() => window.open('https://emiswap.com/pool')}
               >
                 Connect wallet
               </button>
-              <button className="btn-primary" onClick={() => history.push('/pool')}>
+              <button
+                className="btn-primary"
+                // onClick={() => history.push('/pool')}
+                onClick={() => window.open('https://emiswap.com/pool')}
+              >
                 Start earning
               </button>
             </div>
@@ -899,12 +1068,12 @@ export default function Landing({ history }: any) {
             </div>
             <div className="numbers__list">
               <div className="numbers__card">
-                <div className="numbers__value">$400K</div>
+                <div className="numbers__value">$393K</div>
                 <hr/>
                 <div className="numbers__desc">Total Value Locked</div>
               </div>
               <div className="numbers__card">
-                <div className="numbers__value">-</div>
+                <div className="numbers__value">$3M</div>
                 <hr/>
                 <div className="numbers__desc">Total Trading Volume</div>
               </div>
@@ -914,7 +1083,7 @@ export default function Landing({ history }: any) {
                 <div className="numbers__desc">Unique Users</div>
               </div>
               <div className="numbers__card">
-                <div className="numbers__value">8M</div>
+                <div className="numbers__value">3K</div>
                 <hr/>
                 <div className="numbers__desc">All-Time Trades</div>
               </div>
@@ -937,25 +1106,31 @@ export default function Landing({ history }: any) {
                 </div>
                 <div className="apr__state-label">APR</div>
               </div>
-              <img className="apr__line-img" src={AprLinePng} alt=""/>
+              <img className="apr__line-img" src={rangesSvg} alt=""/>
             </div>
           </div>
           <div className="apr__list">
             <div className="apr__card">
-              <img className="apr__card-pie-img" src={Apr1000PiePng} alt=""/>
+              <div className="apr__card-pie-img__wrapper">
+                <img className="apr__card-pie-img" src={Apr1000PiePng} alt=""/>
+              </div>
               <div className="apr__card-text">
                 365% APR: our special Airdrop for EmiSwap LPs on Polygon. Earn additional 1% per day for providing
                 liquidity.
               </div>
             </div>
             <div className="apr__card">
-              <img className="apr__card-pie-img" src={Apr1000PiePng} alt=""/>
+              <div className="apr__card-pie-img__wrapper">
+                <img className="apr__card-pie-img" src={Apr1000PiePng} alt=""/>
+              </div>
               <div className="apr__card-text">
                 Provide Liquidity and stake LP tokens in Farming pools with up to 1000% APR to multiply your rewards.
               </div>
             </div>
             <div className="apr__card">
-              <img className="apr__card-pie-img" src={Apr025PiePng} alt=""/>
+              <div className="apr__card-pie-img__wrapper">
+                <img className="apr__card-pie-img" src={Apr025PiePng} alt=""/>
+              </div>
               <div className="apr__card-text">
                 0.25% of the trading volume in any pool is distributed between Liquidity Providers.
               </div>
@@ -965,16 +1140,24 @@ export default function Landing({ history }: any) {
         <section className="about">
           <div className="about__card-list">
             <div className="about__card">
+              <div className="about__card__pennon multi" />
               <div className="about__card-name">Swapping fee for all pools</div>
               <div className="about__card-value">0,30%</div>
             </div>
-            <div className="about__card">
-              <div className="about__card-name">LP reward rate</div>
-              <div className="about__card-value">0,25%</div>
-            </div>
-            <div className="about__card">
-              <div className="about__card-name">Distributed among ESW holders</div>
-              <div className="about__card-value">0,05%</div>
+            <div className="about__card-list__offset">
+              <div className="about__card-list__offset__img">
+                <img src={linesSvg} />
+              </div>
+              <div className="about__card top">
+                <div className="about__card__pennon turquoise" />
+                <div className="about__card-name">LP reward rate</div>
+                <div className="about__card-value">0,25%</div>
+              </div>
+              <div className="about__card bottom">
+                <div className="about__card__pennon heliotrope" />
+                <div className="about__card-name">Distributed among ESW holders</div>
+                <div className="about__card-value">0,05%</div>
+              </div>
             </div>
           </div>
           <div className="about__info">
@@ -1006,7 +1189,9 @@ export default function Landing({ history }: any) {
           </div>
           <div className="steps__list">
             <div className="step__card">
-              <img className="step__img" src={Step1Png} alt=""/>
+              <div className="step__img__wrapper">
+                <img className="step__img" src={Step1Png} alt=""/>
+              </div>
               <div className="step__info">
                 <div className="step__name">01. Connect your wallet</div>
                 <hr/>
@@ -1016,7 +1201,9 @@ export default function Landing({ history }: any) {
               </div>
             </div>
             <div className="step__card">
-              <img className="step__img" src={Step2Png} alt=""/>
+              <div className="step__img__wrapper">
+                <img className="step__img" src={Step2Png} alt=""/>
+              </div>
               <div className="step__info">
                 <div className="step__name">02. Pick a pool</div>
                 <hr/>
@@ -1026,7 +1213,9 @@ export default function Landing({ history }: any) {
               </div>
             </div>
             <div className="step__card">
-              <img className="step__img" src={Step3Png} alt=""/>
+              <div className="step__img__wrapper">
+                <img className="step__img" src={Step3Png} alt=""/>
+              </div>
               <div className="step__info">
                 <div className="step__name">03. Get LP tokens</div>
                 <hr/>
@@ -1036,7 +1225,9 @@ export default function Landing({ history }: any) {
               </div>
             </div>
             <div className="step__card">
-              <img className="step__img" src={Step4Png} alt=""/>
+              <div className="step__img__wrapper">
+                <img className="step__img" src={Step4Png} alt=""/>
+              </div>
               <div className="step__info">
                 <div className="step__name">04. Start earning</div>
                 <hr/>
@@ -1123,6 +1314,32 @@ export default function Landing({ history }: any) {
             </div>
           </div>
         </section>
+        <section id="partners" className="partners">
+          <div className="section__header">
+            <div className="section__title">Partners & Investors</div>
+          </div>
+          <div className="partners__list">
+            <div>
+              <img src={emirexLogo} />
+              <img src={bitmartLogo} />
+              <img src={everestLogo} />
+              <img src={digifinexLogo} />
+            </div>
+            <div>
+              <img src={nearLogo} />
+              <img src={movrLogo} />
+              <img src={kukoinLogo} />
+              <img src={shidenLogo} />
+              <img src={uboostLogo} />
+            </div>
+            <div>
+              <img src={alphaLogo} />
+              <img src={unilendLogo} />
+              <img src={yieldLogo} />
+              <img src={polygonLogo} />
+            </div>
+          </div>
+        </section>
         <section id="team" className="team">
           <div className="section__header">
             <div className="section__title">The EmiSwap team</div>
@@ -1173,14 +1390,14 @@ export default function Landing({ history }: any) {
                   <div className="team__person-desc">Marketing Project Manager</div>
                 </div>
               </div>
-              <div className="team__person-card">
+              {/* <div className="team__person-card">
                 <img className="team__person-img" src={RuslanPng} alt=""/>
                 <div className="team__person-info">
                   <div className="team__person-name">Ruslan Dimitrov</div>
                   <hr/>
                   <div className="team__person-desc">IT Product Owner</div>
                 </div>
-              </div>
+              </div> */}
               <div className="team__person-card">
                 <img className="team__person-img" src={IsmailPng} alt=""/>
                 <div className="team__person-info">
@@ -1189,6 +1406,7 @@ export default function Landing({ history }: any) {
                   <div className="team__person-desc">Business Development Officer</div>
                 </div>
               </div>
+              <div className="team__person-card"></div>
             </Slider>
           </div>
           <div className="team__slider-buttons team__slider-buttons--bottom">
@@ -1214,7 +1432,7 @@ export default function Landing({ history }: any) {
               any pool – and get a daily 1% return until November 3, 2022. The first reward distribution is on February
               3, 2022.
             </div>
-            <button className="btn-primary" onClick={() => history.push('/pool')}>
+            <button className="btn-primary" onClick={() => window.open('https://emiswap.com/pool')}>
               Start Earning
             </button>
           </div>
