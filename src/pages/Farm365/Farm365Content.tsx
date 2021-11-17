@@ -12,6 +12,8 @@ import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallbac
 import getFarmingAddresses from '../Farm/getFarmingAddresses';
 import { useActiveWeb3React } from '../../hooks';
 import { parseUnits } from '@ethersproject/units';
+import { tokenAmountToString } from '../../utils/formats';
+import { useAllTransactions } from '../../state/transactions/hooks';
 
 const Content = styled.div`
   display: flex;
@@ -115,6 +117,17 @@ export default function Farm365Content({
 
   const farmingAddresses = getFarmingAddresses(chainId)[0];
 
+  const allTransactions = useAllTransactions();
+
+  const recentTransactions = useMemo(() => {
+    const txs = Object.values(allTransactions);
+    return txs.filter((t) => new Date().getTime() - t.addedTime < 86_400_000);
+  }, [allTransactions]);
+
+  const pending = recentTransactions.filter(tx => !tx.receipt).map(tx => tx.hash);
+  // const confirmed = recentTransactions.filter(tx => tx.receipt).map(tx => tx.hash);
+  const hasPendingTransactions = !!pending.length;
+
   const [eswValue, setEswValue] = useState<string>('');
   const [lpValue, setLpValue] = useState<string>('');
 
@@ -141,8 +154,6 @@ export default function Farm365Content({
     return parseUnits(lpValue, lpCurrency.decimals).toString();
   }, [lpValue, lpCurrency]);
 
-  console.log('value', eswValueParsed, lpValueParsed);
-
   const [approvalEsw, approveEswCallback] = useApproveCallback(
     eswValueParsed
       ? new TokenAmount(eswCurrency, JSBI.BigInt(eswValueParsed))
@@ -158,15 +169,33 @@ export default function Farm365Content({
   );
 
   const stakedTokens = useMemo(() => {
-    console.log('stakedTokens', farming365.stakedTokens);
     return farming365.stakedTokens;
   }, [farming365.stakedTokens]);
 
+  const lpStakedTokens = stakedTokens
+    .filter(tokenAmount => tokenAmount.token.symbol !== 'ESW');
+
+  const eswStakedBalance: string = useMemo(() => {
+    const balance = stakedTokens
+      .filter(tokenAmount => tokenAmount.token.symbol === 'ESW')
+      .reduce((acc, tokenAmount) => {
+        return JSBI.add(acc, tokenAmount.raw);
+      }, JSBI.BigInt(0));
+
+    return tokenAmountToString(new TokenAmount(eswCurrency, balance));
+  }, [stakedTokens, eswCurrency]);
+
   useEffect(() => {
-    if (approvalEsw === ApprovalState.PENDING || approvalLp === ApprovalState.PENDING) {
-      setStakeButtonDisabled(true);
-    } else if (+eswValue > 0 && +lpValue > 0 && lpCurrency) {
+    if (
+      +eswValue > 0
+      && +lpValue > 0
+      && lpCurrency
+      && approvalEsw === ApprovalState.APPROVED
+      && approvalLp === ApprovalState.APPROVED
+    ) {
       setStakeButtonDisabled(false);
+    } else {
+      setStakeButtonDisabled(true);
     }
   }, [eswValue, lpValue, lpCurrency, approvalEsw, approvalLp]);
 
@@ -182,7 +211,40 @@ export default function Farm365Content({
     } else {
       setStakeAllowed(false);
     }
-  }, [approvalEsw, approvalLp, lpCurrency]);
+  }, [approvalEsw, approvalLp, lpCurrency, eswValue, lpValue]);
+
+  useEffect(() => {
+    if (!hasPendingTransactions) {
+      farming365.updateStakedTokens();
+    }
+  }, [farming365, hasPendingTransactions]);
+
+  const stakeButtonText = useMemo(() => {
+    if (hasPendingTransactions) {
+      return 'Pending transaction...';
+    }
+    if (!lpCurrency) {
+      return 'Stake';
+    }
+    if (isStakeAllowed) {
+      return 'Stake';
+    }
+    if (approvalEsw === ApprovalState.PENDING || approvalLp === ApprovalState.PENDING) {
+      return 'Pending approve...';
+    }
+    if (approvalEsw === ApprovalState.UNKNOWN || approvalLp === ApprovalState.UNKNOWN) {
+      return 'Loading...';
+    }
+    if (approvalEsw !== ApprovalState.APPROVED) {
+      return 'Approve ESW';
+    }
+    if (approvalLp !== ApprovalState.APPROVED) {
+      return 'Approve LP';
+    }
+    return 'Approve';
+  }, [hasPendingTransactions, lpCurrency, isStakeAllowed, approvalEsw, approvalLp]);
+
+  const collectButtonText = 'Collect to wallet';
 
   const calcLpByEsw = async (_eswValue, currency) => {
     if (currency && _eswValue) {
@@ -227,6 +289,7 @@ export default function Farm365Content({
 
     if (isStakeAllowed) {
       await farming365.stake(lpCurrency, lpValue, eswValue);
+      farming365.updateStakedTokens();
     } else if (![ApprovalState.PENDING, ApprovalState.APPROVED].includes(approvalEsw)) {
       approveEswCallback();
     } else if (![ApprovalState.PENDING, ApprovalState.APPROVED].includes(approvalLp)) {
@@ -237,24 +300,6 @@ export default function Farm365Content({
   const handleClickCollectBtn = () => {
 
   };
-
-  const stakeButtonText = useMemo(() => {
-    if (isStakeAllowed) {
-      return 'Stake';
-    }
-    if (approvalEsw === ApprovalState.PENDING || approvalLp === ApprovalState.PENDING) {
-      return 'Pending...';
-    }
-    if (approvalEsw !== ApprovalState.APPROVED) {
-      return 'Approve ESW';
-    }
-    if (approvalLp !== ApprovalState.APPROVED) {
-      return 'Approve LP';
-    }
-    return 'Approve';
-  }, [isStakeAllowed, approvalEsw, approvalLp]);
-
-  const collectButtonText = 'Collect to wallet';
 
   return (
     <Content>
@@ -302,18 +347,17 @@ export default function Farm365Content({
               <StakeTokenName>ESW</StakeTokenName>
               <StakeTokenLine>
                 <CurrencyLogo currency={eswCurrency} size={'24px'}/>
-                <StakeTokenAmount>0</StakeTokenAmount>
+                <StakeTokenAmount>{eswStakedBalance}</StakeTokenAmount>
               </StakeTokenLine>
             </StakeToken>
           </StakeItem>
-          {stakedTokens.map((token, index) => (
+          {lpStakedTokens.map((tokenAmount, index) => (
             <StakeItem key={index}>
               <StakeToken>
-                {token}
-                <StakeTokenName>{token.symbol}</StakeTokenName>
+                <StakeTokenName>{tokenAmount.token.name}</StakeTokenName>
                 <StakeTokenLine>
                   <LpTokenSymbol/>
-                  <StakeTokenAmount>0</StakeTokenAmount>
+                  <StakeTokenAmount>{tokenAmountToString(tokenAmount)}</StakeTokenAmount>
                 </StakeTokenLine>
               </StakeToken>
             </StakeItem>

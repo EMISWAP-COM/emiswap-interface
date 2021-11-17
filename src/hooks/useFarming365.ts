@@ -282,17 +282,38 @@ export default function useFarming365(contract: Contract) {
     intervalUpdateCounter,
   ]);
 
-  const [stakedTokens, setStakedTokens] = useState<any[]>([]);
-  useEffect(() => {
+  const updateStakedTokens = useCallback(() => {
     contract
       .getStakedTokens(account)
-      .then((value: any[]) => {
-        setStakedTokens(value);
+      .then(async (value: any[]) => {
+        const tokensAmounts = [];
+
+        for (const tokenAddress of value) {
+          const balance: BigNumber = await contract.balanceOfLPToken(account, tokenAddress);
+          const defaultCoin = defaultCoins.tokens.find(t => t.address === tokenAddress);
+          if (defaultCoin && chainId) {
+            const token = new Token(
+              chainId,
+              defaultCoin.address,
+              defaultCoin.decimals,
+              getFarmingCoinNameAndSymbol(contract.address).symbol || defaultCoin.symbol,
+              getFarmingCoinNameAndSymbol(contract.address).name || defaultCoin.name,
+            );
+            tokensAmounts.push(new TokenAmount(token, JSBI.BigInt(balance)));
+          }
+        }
+
+        setStakedTokens(tokensAmounts);
       })
       .catch((error: RequestError) => {
         showError('getStakedTokens', account || '', error);
       });
   }, [contract, showError, account, chainId]);
+
+  const [stakedTokens, setStakedTokens] = useState<TokenAmount[]>([]);
+  useEffect(() => {
+    updateStakedTokens();
+  }, [updateStakedTokens]);
 
   const handleCalcEswByLp = (lpToken: Token, lpValue: string): Promise<string> => {
     const lpAmount = convertTokenAmount(lpToken, lpValue);
@@ -339,12 +360,6 @@ export default function useFarming365(contract: Contract) {
         const args = lpToken.address + ', ' + lpAmount.toString() + ', ' + eswWithSlippage.toString();
         showError('stake', args, error);
       })
-      .finally(() => {
-        /*addTransaction(response, {
-          summary: `Stake ${lpValue} ${lpToken.symbol}`,
-          approval: { tokenAddress: lpToken.address, spender: EMI_ROUTER_ADRESSES[chainId!] },
-        });*/
-      })
   };
 
   const handleCollect = (): Promise<unknown> => {
@@ -380,5 +395,6 @@ export default function useFarming365(contract: Contract) {
     calcLpByEsw: handleCalcLpByEsw,
     collect: handleCollect,
     stake: handleStake,
+    updateStakedTokens,
   };
 };
