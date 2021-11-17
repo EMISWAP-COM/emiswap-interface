@@ -54,7 +54,7 @@ export default function ReferralLink() {
   const [isCopied, setCopied] = useCopyClipboard();
 
   function getReferralLink(currentUserAddress: string): string {
-    return `${window.location.origin}/#${location.pathname}?r=${currentUserAddress}`;
+    return `${window.location.origin}${location.pathname}?r=${currentUserAddress}`;
   }
 
   const handleGA = () => {
