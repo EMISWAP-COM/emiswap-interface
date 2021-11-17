@@ -1,6 +1,5 @@
 import React, { Suspense, useEffect } from 'react';
 import { BrowserRouter, Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
-import Wordmark from '../components/Wordmark';
 import styled from 'styled-components';
 import GoogleAnalyticsReporter from '../components/analytics/GoogleAnalyticsReporter';
 import Header from '../components/Header';
@@ -33,22 +32,9 @@ import MigrateV1Exchange from './MigrateV1/MigrateV1Exchange';
 import Farm from './Farm';
 import NotFound from './NotFound';
 import SocButtons from '../components/SocButtons';
+import Landing from './Landing/Landing';
 
-const LogoWrapper = styled.div`
-  display: none;
 
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    padding-left: 65px;
-    margin: 15px;
-    position: relative;
-  `};
-`;
-
-const HeaderWrapper = styled.div`
-  ${({ theme }) => theme.flexRowNoWrap}
-  width: 100%;
-  justify-content: space-between;
-`;
 
 const BodyWrapper = styled.div`
   display: flex;
@@ -69,7 +55,7 @@ const BodyWrapper = styled.div`
 `;
 
 export function RedirectPathToSwap({ location }: RouteComponentProps) {
-  return <Redirect to={{ ...location, pathname: '/swap' }} />;
+  return <Redirect to={{ ...location, pathname: '/swap' }}/>;
 }
 
 export default function App() {
@@ -88,30 +74,29 @@ export default function App() {
     <Suspense fallback={null}>
       <BrowserRouter>
         <ReferralUrlParser>
-          <Route component={GoogleAnalyticsReporter} />
-          <Route component={DarkModeQueryParamReader} />
+          <Route component={GoogleAnalyticsReporter}/>
+          <Route component={DarkModeQueryParamReader}/>
           <AppWrapper is404Page={is404Page}>
-            <LogoWrapper>
-              <Wordmark />
-            </LogoWrapper>
-            <HeaderWrapper>
-              <Header />
-            </HeaderWrapper>
+            <Header />
             <BodyWrapper>
-              <Popups />
-              <Polling />
+              <Popups/>
+              <Polling/>
               <Web3ReactManager>
-                <ErrorBoundary title={'Oops, try again later...'} onDismiss={() => {}}>
+                <ErrorBoundary
+                  title={'Oops, try again later...'} onDismiss={() => {
+                }}
+                >
                   <Switch>
                     {/*<Route exact strict path="/invest" component={Invest} />*/}
-                    <Redirect exact from="/" to="/swap" />
-                    <Route exact strict path="/swap" component={Swap} />
-                    <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
-                    <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
-                    <Route exact strict path="/find" component={PoolFinder} />
-                    <Route exact strict path="/pool" component={Pool} />
-                    <Route exact strict path="/create" component={RedirectToAddLiquidity} />
-                    <Route exact path="/add" component={AddLiquidity} />
+                    <Route exact strict path="/landing" component={Landing}/>
+                    <Redirect exact from="/" to="/landing" />
+                    <Route exact strict path="/swap" component={Swap}/>
+                    <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap}/>
+                    <Route exact strict path="/send" component={RedirectPathToSwapOnly}/>
+                    <Route exact strict path="/find" component={PoolFinder}/>
+                    <Route exact strict path="/pool" component={Pool}/>
+                    <Route exact strict path="/create" component={RedirectToAddLiquidity}/>
+                    <Route exact path="/add" component={AddLiquidity}/>
                     <Route
                       exact
                       path="/add/:currencyIdA"
@@ -134,17 +119,17 @@ export default function App() {
                       path="/remove/:currencyIdA/:currencyIdB"
                       component={RemoveLiquidity}
                     />
-                    <Route exact strict path="/migrate" component={MigrateV1} />
-                    <Route exact strict path="/migrate/:address" component={MigrateV1Exchange} />
+                    <Route exact strict path="/migrate" component={MigrateV1}/>
+                    <Route exact strict path="/migrate/:address" component={MigrateV1Exchange}/>
                     {/*<Route exact strict path="/claim/:tokenName" component={Claim} />*/}
                     <Route exact strict path="/claim/:tokenName" component={RedirectPathToSwap}/>
-                    <Route exact strict path="/farm" component={Farm} />
-                    <Route path="/404" component={NotFound} />
-                    <Route component={RedirectPathToSwap} />
+                    <Route exact strict path="/farm" component={Farm}/>
+                    <Route path="/404" component={NotFound}/>
+                    <Route component={RedirectPathToSwap}/>
                   </Switch>
                 </ErrorBoundary>
               </Web3ReactManager>
-              <SocButtons />
+              <SocButtons/>
             </BodyWrapper>
           </AppWrapper>
         </ReferralUrlParser>

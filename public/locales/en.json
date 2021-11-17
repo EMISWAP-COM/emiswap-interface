@@ -108,5 +108,9 @@
   "lastCall": "The last call",
   "dividendPool": "Dividend pool",
   "migrate": "Migrate",
-  "collectHelper": "Press “Collect” to transfer your ESW tokens from the EmiSwap platform to your wallet. You'll continue getting a share from EmiSwap's trading volume in this case as well."
+  "collectHelper": "Press “Collect” to transfer your ESW tokens from the EmiSwap platform to your wallet. You'll continue getting a share from EmiSwap's trading volume in this case as well.",
+  "brtest": "test <br /> nexttext",
+
+  "about": "About",
+  "bannerTitle": "365% APR and higher\n Zero effort\n Only on EmiSwap AMM DEX"
 }
