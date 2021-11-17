@@ -1,4 +1,5 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 
 import Slider from 'react-slick';
@@ -9,6 +10,7 @@ import CommunitySvg from '../../assets/landing/header/community.svg';
 // import FarmsSvg from '../../assets/landing/header/farms.svg';
 import TeamSvg from '../../assets/landing/header/team.svg';
 import PiePng from '../../assets/landing/pie.png';
+import Apr365PiePng from '../../assets/landing/apr/360-pie.png';
 import Apr025PiePng from '../../assets/landing/apr/025-pie.png';
 import Apr1000PiePng from '../../assets/landing/apr/1000-pie.png';
 import Apr2000Png from '../../assets/landing/apr/2000.png';
@@ -51,6 +53,8 @@ import listDotSvg from '../../assets/svg/list-dot.svg';
 import listDotVioletSvg from '../../assets/svg/list-dot-violet.svg';
 import hackenSvg from '../../assets/landing/header/hacken.svg';
 import blueswarmSvg from '../../assets/landing/header/blueswarm.svg';
+import { useActiveWeb3React } from '../../hooks';
+import Modal from './Modal';
 
 const Body = styled.div`
   width: 100vw;
@@ -111,6 +115,7 @@ const Body = styled.div`
     display: flex;
     align-items: center;
     width: 100%;
+    max-width: 1480px;
     padding: 20px 80px;
     background: #0f0f13;
  
@@ -201,6 +206,7 @@ const Body = styled.div`
     &__info {
       max-width: 80%;
       padding-bottom: 48px;
+      white-space: pre-line;
       
        @media screen and (max-width: 769px) {
           max-width: 100%;
@@ -389,6 +395,24 @@ const Body = styled.div`
      @media screen and (max-width: 769px) {
         margin: 60px 20px;
      }
+
+    &__button-more {
+      float: right;
+
+      @media screen and (max-width: 1040px) {
+        display: none;
+      }
+
+      &--bottom {
+        display: none;
+
+        @media screen and (max-width: 1040px) {
+          display: block;
+          margin: 60px auto 20px;
+          float: none;
+        }
+      }
+    }
     
     &__top {
       display: flex;
@@ -967,6 +991,16 @@ const Body = styled.div`
 
 export default function Landing({ history }: any) {
   const sliderRef = useRef<any>();
+  const [t] = useTranslation();
+
+  const [modalOpened, toggleModal] = useState(false);
+
+
+  const onDissmiss = () => {
+    toggleModal(!modalOpened);
+  }
+
+  const { connector } = useActiveWeb3React();
 
   const handleClickTeamNext = () => {
     sliderRef.current.slickNext();
@@ -975,6 +1009,27 @@ export default function Landing({ history }: any) {
   const handleClickTeamPrev = () => {
     sliderRef.current.slickPrev();
   };
+
+  const changeChainToPolygon = async () => {
+    const provider = await connector.getProvider();
+
+    provider.request({
+      "jsonrpc": "2.0",
+      "method": "wallet_switchEthereumChain",
+      "params": [
+        {
+          "chainId": "0x89"
+        }
+      ],
+      "id": 0
+    })
+  };
+
+  // const changeLanguage = (lng) => () => {
+  //   console.log('CHANGE LANG to', lng)
+  //   // @ts-ignore
+  //   i18n.changeLanguage(lng);
+  // };
 
   const sliderSettings = {
     arrows: false,
@@ -997,382 +1052,478 @@ export default function Landing({ history }: any) {
   };
 
   return (
-    <Body>
-      <div className="landing-wrapper">
-        <section className="header">
-          <a className="logo" href="/">
-            <img className="logo__img" src={LogoSvg} alt=""/>
-          </a>
-          <div className="nav">
-            <a className="nav__link" href="#about">
-              <img className="nav__img" src={AboutSvg} alt=""/>
-              <div className="nav__name">About</div>
+    <>
+      <Modal isOpen={modalOpened} onDissmiss={onDissmiss} />
+      <Body>
+
+        <div className="landing-wrapper">
+          <section className="header">
+            <a className="logo" href="/">
+              <img className="logo__img" src={LogoSvg} alt="" />
             </a>
-            {/* <a className="nav__link" href="#farms">
+            <div className="nav">
+              <a className="nav__link" href="#about">
+                <img className="nav__img" src={AboutSvg} alt="" />
+                <div className="nav__name">{t('about')}</div>
+              </a>
+              {/* <a className="nav__link" href="#farms">
               <img className="nav__img" src={FarmsSvg} alt=""/>
               <div className="nav__name">Top Farms</div>
             </a> */}
-            <a className="nav__link" href="#community">
-              <img className="nav__img" src={CommunitySvg} alt=""/>
-              <div className="nav__name">Community</div>
-            </a>
-            <a className="nav__link" href="#team">
-              <img className="nav__img" src={TeamSvg} alt=""/>
-              <div className="nav__name">Team</div>
-            </a>
-          </div>
-          <div className="lang"></div>
-        </section>
-        <section id="about" className="banner">
-          <div className="banner__info">
-            <div className="banner__title">
-              365% APR and higher<br/> Zero effort<br/> Only on EmiSwap AMM DEX
+              <a className="nav__link" href="#community">
+                <img className="nav__img" src={CommunitySvg} alt="" />
+                <div className="nav__name">Community</div>
+              </a>
+              <a className="nav__link" href="#team">
+                <img className="nav__img" src={TeamSvg} alt="" />
+                <div className="nav__name">Team</div>
+              </a>
+              {/* <div onClick={changeLanguage('es-US')}>ES</div>
+            <div onClick={changeLanguage('en')}>EN</div> */}
             </div>
-            <div className="banner__desc">
-              EmiSwap is live on Polygon<br/> – this is your chance to earn even more
-            </div>
-            <div className="banner__buttons">
-              <button
-                className="btn-primary"
-                style={{ marginRight: 24 }}
-                // onClick={() =>  history.push('/pool')}
-                onClick={() => window.open('https://emiswap.com/pool')}
-              >
-                Connect wallet
-              </button>
-              <button
-                className="btn-primary"
-                // onClick={() => history.push('/pool')}
-                onClick={() => window.open('https://emiswap.com/pool')}
-              >
-                Start earning
-              </button>
-            </div>
-            <div className="banner__audited">
-              Audited by: <img src={hackenSvg} alt=""/> & <img src={blueswarmSvg} alt=""/>
-            </div>
-          </div>
-          <div className="chart">
-            <div className="chart__pie">
-              <img className="chart__pie-img" src={PiePng} alt=""/>
-            </div>
-            <div className="chart__stats">
-              <div className="chart__stat-item">
-                <div className="chart__stat-name">
-                  <img className="chart__list-dot" src={listDotSvg} alt=""/>
-                  Liquidity supply
-                </div>
-                <div className="chart__percent">365%</div>
+            <button
+              className="btn-primary"
+              onClick={() => {
+                changeChainToPolygon();
+                window.open('https://emiswap.com/pool');
+              }}
+              style={{ marginLeft: 'auto' }}
+            >
+              Start Earning
+            </button>
+            <div className="lang"></div>
+          </section>
+          <section id="about" className="banner">
+            <div className="banner__info">
+              <div className="banner__title">
+                {t('bannerTitle')}
               </div>
-              <div className="chart__stat-item">
-                <div className="chart__stat-name" style={{ color: '#7A2DF4' }}>
-                <img className="chart__list-dot" src={listDotVioletSvg} alt=""/>
-                  Farming
-                </div>
-                <div>(coming on 17 Nov)</div>
-                <div>up to</div>
-                <div className="chart__percent">1000%</div>
+              <div className="banner__desc">
+                EmiSwap is live on Polygon<br /> – this is your chance to earn even more
               </div>
-              <div className="chart__stat-item">
-                <div className="chart__stat-name" style={{ color: '#E478FF' }}>
-                  <img className="chart__list-dot" src={listDotSvg} alt=""/>
-                  Swap commision
-                </div>
-                <div>from volume</div>
-                <div className="chart__percent">0,25%</div>
+              <div className="banner__buttons">
+                <button
+                  className="btn-primary"
+                  style={{ marginRight: 24 }}
+                  // onClick={() =>  history.push('/pool')}
+                  onClick={() => window.open('https://emiswap.com/pool')}
+                >
+                  Connect wallet
+                </button>
+                <button
+                  className="btn-primary"
+                  onClick={() => {
+                    changeChainToPolygon();
+                    window.open('https://emiswap.com/pool');
+                  }}
+                >
+                  Start earning
+                </button>
+              </div>
+              <div className="banner__audited">
+                Audited by: <img src={hackenSvg} alt="" /> & <img src={blueswarmSvg} alt="" />
               </div>
             </div>
-          </div>
-        </section>
-        <section className="numbers">
-          <div className="section__card">
-            <div className="section__header">
-              <div className="section__title">EmiSwap in Numbers</div>
+            <div className="chart">
+              <div className="chart__pie">
+                <img className="chart__pie-img" src={PiePng} alt="" />
+              </div>
+              <div className="chart__stats">
+                <div className="chart__stat-item">
+                  <div className="chart__stat-name">
+                    <img className="chart__list-dot" src={listDotSvg} alt="" />
+                    Liquidity supply
+                  </div>
+                  <div className="chart__percent">365%</div>
+                </div>
+                <div className="chart__stat-item">
+                  <div className="chart__stat-name" style={{ color: '#7A2DF4' }}>
+                    <img className="chart__list-dot" src={listDotVioletSvg} alt="" />
+                    Farming
+                  </div>
+                  <div>(coming on 17 Nov)</div>
+                  <div>up to</div>
+                  <div className="chart__percent">1000%</div>
+                </div>
+                <div className="chart__stat-item">
+                  <div className="chart__stat-name" style={{ color: '#E478FF' }}>
+                    <img className="chart__list-dot" src={listDotSvg} alt="" />
+                    Swap commision
+                  </div>
+                  <div>from volume</div>
+                  <div className="chart__percent">0,25%</div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section className="numbers">
+            <div className="section__card">
+              <div className="section__header">
+                <div className="section__title">EmiSwap in Numbers</div>
+                <button
+                  className="btn-primary numbers__btn-analytics-top"
+                  onClick={() => window.open('https://emiswap.com/analytics/home?network=polygon')}
+                >
+                  Go to Analytics
+                </button>
+              </div>
+              <div className="numbers__list">
+                <div className="numbers__card">
+                  <div className="numbers__value">$393K</div>
+                  <hr />
+                  <div className="numbers__desc">Total Value Locked</div>
+                </div>
+                <div className="numbers__card">
+                  <div className="numbers__value">$3M</div>
+                  <hr />
+                  <div className="numbers__desc">Total Trading Volume</div>
+                </div>
+                <div className="numbers__card">
+                  <div className="numbers__value">83K</div>
+                  <hr />
+                  <div className="numbers__desc">Unique Users</div>
+                </div>
+                <div className="numbers__card">
+                  <div className="numbers__value">3K</div>
+                  <hr />
+                  <div className="numbers__desc">All-Time Trades</div>
+                </div>
+              </div>
               <button
-                className="btn-primary numbers__btn-analytics-top"
+                className="btn-primary numbers__btn-analytics-bottom"
                 onClick={() => window.open('https://emiswap.com/analytics/home?network=polygon')}
               >
                 Go to Analytics
               </button>
             </div>
-            <div className="numbers__list">
-              <div className="numbers__card">
-                <div className="numbers__value">$393K</div>
-                <hr/>
-                <div className="numbers__desc">Total Value Locked</div>
+          </section>
+
+          <section className="apr">
+            <button
+              className="btn-primary apr__button-more"
+              onClick={() => toggleModal(true)}
+            >
+              Learn More
+            </button>
+            <div className="apr__top">
+              <div>
+                <div className="apr__state">
+                  <div className="apr__state-label">up to</div>
+                  <div className="apr__value">
+                    <img className="apr__value-img" src={Apr2000Png} alt="" />
+                  </div>
+                  <div className="apr__state-label">APR</div>
+                </div>
+                <img className="apr__line-img" src={rangesSvg} alt="" />
               </div>
-              <div className="numbers__card">
-                <div className="numbers__value">$3M</div>
-                <hr/>
-                <div className="numbers__desc">Total Trading Volume</div>
+            </div>
+            <div className="apr__list">
+              <div className="apr__card">
+                <div className="apr__card-pie-img__wrapper">
+                  <img className="apr__card-pie-img" src={Apr365PiePng} alt="" />
+                </div>
+                <div className="apr__card-text">
+                  365% APR: our special Airdrop for EmiSwap LPs on Polygon. Earn additional 1% per day for providing
+                  liquidity.
+                </div>
               </div>
-              <div className="numbers__card">
-                <div className="numbers__value">83K</div>
-                <hr/>
-                <div className="numbers__desc">Unique Users</div>
+              <div className="apr__card">
+                <div className="apr__card-pie-img__wrapper">
+                  <img className="apr__card-pie-img" src={Apr1000PiePng} alt="" />
+                </div>
+                <div className="apr__card-text">
+                  Provide Liquidity and stake LP tokens in Farming pools with up to 1000% APR to multiply your rewards.
+                </div>
               </div>
-              <div className="numbers__card">
-                <div className="numbers__value">3K</div>
-                <hr/>
-                <div className="numbers__desc">All-Time Trades</div>
+              <div className="apr__card">
+                <div className="apr__card-pie-img__wrapper">
+                  <img className="apr__card-pie-img" src={Apr025PiePng} alt="" />
+                </div>
+                <div className="apr__card-text">
+                  0.25% of the trading volume in any pool is distributed between Liquidity Providers.
+                </div>
               </div>
             </div>
             <button
-              className="btn-primary numbers__btn-analytics-bottom"
-              onClick={() => window.open('https://emiswap.com/analytics/home?network=polygon')}
+              className="btn-primary apr__button-more apr__button-more--bottom"
+              onClick={() => toggleModal(true)}
             >
-              Go to Analytics
+              Learn More
             </button>
-          </div>
-        </section>
-        <section className="apr">
-          <div className="apr__top">
-            <div>
-              <div className="apr__state">
-                <div className="apr__state-label">up to</div>
-                <div className="apr__value">
-                  <img className="apr__value-img" src={Apr2000Png} alt=""/>
+          </section>
+          <section className="about">
+            <div className="about__card-list">
+              <div className="about__card">
+                <div className="about__card__pennon multi" />
+                <div className="about__card-name">Swapping fee for all pools</div>
+                <div className="about__card-value">0,30%</div>
+              </div>
+              <div className="about__card-list__offset">
+                <div className="about__card-list__offset__img">
+                  <img src={linesSvg} alt="" />
                 </div>
-                <div className="apr__state-label">APR</div>
-              </div>
-              <img className="apr__line-img" src={rangesSvg} alt=""/>
-            </div>
-          </div>
-          <div className="apr__list">
-            <div className="apr__card">
-              <div className="apr__card-pie-img__wrapper">
-                <img className="apr__card-pie-img" src={Apr1000PiePng} alt=""/>
-              </div>
-              <div className="apr__card-text">
-                365% APR: our special Airdrop for EmiSwap LPs on Polygon. Earn additional 1% per day for providing
-                liquidity.
+                <div className="about__card top">
+                  <div className="about__card__pennon turquoise" />
+                  <div className="about__card-name">LP reward rate</div>
+                  <div className="about__card-value">0,25%</div>
+                </div>
+                <div className="about__card bottom">
+                  <div className="about__card__pennon heliotrope" />
+                  <div className="about__card-name">Distributed among ESW holders</div>
+                  <div className="about__card-value">0,05%</div>
+                </div>
               </div>
             </div>
-            <div className="apr__card">
-              <div className="apr__card-pie-img__wrapper">
-                <img className="apr__card-pie-img" src={Apr1000PiePng} alt=""/>
+            <div className="about__info">
+              <div className="section__header">
+                <div className="section__title about__title">About EmiSwap</div>
               </div>
-              <div className="apr__card-text">
-                Provide Liquidity and stake LP tokens in Farming pools with up to 1000% APR to multiply your rewards.
+              <div className="about__desc">
+                EmiSwap is an audited cross-chain AMM with higher rewards for LPs than on any other DEX.
               </div>
-            </div>
-            <div className="apr__card">
-              <div className="apr__card-pie-img__wrapper">
-                <img className="apr__card-pie-img" src={Apr025PiePng} alt=""/>
-              </div>
-              <div className="apr__card-text">
-                0.25% of the trading volume in any pool is distributed between Liquidity Providers.
-              </div>
-            </div>
-          </div>
-        </section>
-        <section className="about">
-          <div className="about__card-list">
-            <div className="about__card">
-              <div className="about__card__pennon multi" />
-              <div className="about__card-name">Swapping fee for all pools</div>
-              <div className="about__card-value">0,30%</div>
-            </div>
-            <div className="about__card-list__offset">
-              <div className="about__card-list__offset__img">
-                <img src={linesSvg} alt=""/>
-              </div>
-              <div className="about__card top">
-                <div className="about__card__pennon turquoise" />
-                <div className="about__card-name">LP reward rate</div>
-                <div className="about__card-value">0,25%</div>
-              </div>
-              <div className="about__card bottom">
-                <div className="about__card__pennon heliotrope" />
-                <div className="about__card-name">Distributed among ESW holders</div>
-                <div className="about__card-value">0,05%</div>
+              <div className="about__info-list">
+                <div className="about__info-list-item">
+                  <div className="about__info-list-item-circle" />
+                  <span>100% of gas fees reimbursed (Ethereum)</span>
+                </div>
+                <div className="about__info-list-item">
+                  <div className="about__info-list-item-circle" />
+                  <span>Available on Polygon, Ethereum, and KuCoin Blockchain</span>
+                </div>
+                <div className="about__info-list-item">
+                  <div className="about__info-list-item-circle" />
+                  <span>Audited by Hacken and BluSwarm</span>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="about__info">
+          </section>
+          <section className="steps">
             <div className="section__header">
-              <div className="section__title about__title">About EmiSwap</div>
+              <div className="section__title">4 Easy Steps to Big Rewards</div>
             </div>
-            <div className="about__desc">
-              EmiSwap is an audited cross-chain AMM with higher rewards for LPs than on any other DEX.
-            </div>
-            <div className="about__info-list">
-              <div className="about__info-list-item">
-                <div className="about__info-list-item-circle"/>
-                <span>100% of gas fees reimbursed (Ethereum)</span>
+            <div className="steps__list">
+              <div className="step__card">
+                <div className="step__img__wrapper">
+                  <img className="step__img" src={Step1Png} alt="" />
+                </div>
+                <div className="step__info">
+                  <div className="step__name">01. Connect your wallet</div>
+                  <hr />
+                  <div className="step__desc">
+                    EmiSwap supports MetaMask, Coinbase, Fortmatic, Portis & more
+                  </div>
+                </div>
               </div>
-              <div className="about__info-list-item">
-                <div className="about__info-list-item-circle"/>
-                <span>Available on Polygon, Ethereum, and KuCoin Blockchain</span>
+              <div className="step__card">
+                <div className="step__img__wrapper">
+                  <img className="step__img" src={Step2Png} alt="" />
+                </div>
+                <div className="step__info">
+                  <div className="step__name">02. Pick a pool</div>
+                  <hr />
+                  <div className="step__desc">
+                    Use ‘Add Liquidity’ tab to supply crypto to the pool
+                  </div>
+                </div>
               </div>
-              <div className="about__info-list-item">
-                <div className="about__info-list-item-circle"/>
-                <span>Audited by Hacken and BluSwarm</span>
+              <div className="step__card">
+                <div className="step__img__wrapper">
+                  <img className="step__img" src={Step3Png} alt="" />
+                </div>
+                <div className="step__info">
+                  <div className="step__name">03. Get LP tokens</div>
+                  <hr />
+                  <div className="step__desc">
+                    LP tokens are issued automatically. Use them to farm & earn even more
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        </section>
-        <section className="steps">
-          <div className="section__header">
-            <div className="section__title">4 Easy Steps to Big Rewards</div>
-          </div>
-          <div className="steps__list">
-            <div className="step__card">
-              <div className="step__img__wrapper">
-                <img className="step__img" src={Step1Png} alt=""/>
-              </div>
-              <div className="step__info">
-                <div className="step__name">01. Connect your wallet</div>
-                <hr/>
-                <div className="step__desc">
-                  EmiSwap supports MetaMask, Coinbase, Fortmatic, Portis & more
+              <div className="step__card">
+                <div className="step__img__wrapper">
+                  <img className="step__img" src={Step4Png} alt="" />
+                </div>
+                <div className="step__info">
+                  <div className="step__name">04. Start earning</div>
+                  <hr />
+                  <div className="step__desc">
+                    Use the ‘Farming’ tab to stake LP tokens & earn $ESW rewards
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="step__card">
-              <div className="step__img__wrapper">
-                <img className="step__img" src={Step2Png} alt=""/>
+          </section>
+          <section id="community" className="socials">
+            <div className="socials__image">
+              <img className="socials__img" src={SocialsCardPng} alt="" />
+            </div>
+            <div className="socials__links">
+              <div className="section__header">
+                <div className="section__title">Join EmiSwap Community</div>
               </div>
-              <div className="step__info">
-                <div className="step__name">02. Pick a pool</div>
-                <hr/>
-                <div className="step__desc">
-                  Use ‘Add Liquidity’ tab to supply crypto to the pool
+              <div className="socials__list">
+                <div className="social__card">
+                  <div>
+                    <div className="social__name">Twitter</div>
+                    <a
+                      href="https://twitter.com/emiswap"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="social__join-link"
+                    >
+                      Join now
+                    </a>
+                  </div>
+                  <div>
+                    <img className="social__icon-img" src={TwitterPng} alt="" />
+                  </div>
+                </div>
+                <div className="social__card">
+                  <div>
+                    <div className="social__name">Telegram</div>
+                    <a
+                      href="https://t.me/emiswap_official"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="social__join-link"
+                    >
+                      Join now
+                    </a>
+                  </div>
+                  <div>
+                    <img className="social__icon-img" src={TelegramPng} alt="" />
+                  </div>
+                </div>
+                <div className="social__card">
+                  <div>
+                    <div className="social__name">Medium</div>
+                    <a
+                      href="https://medium.com/emiswap"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="social__join-link"
+                    >
+                      Join now
+                    </a>
+                  </div>
+                  <div>
+                    <img className="social__icon-img" src={MediumPng} alt="" />
+                  </div>
+                </div>
+                <div className="social__card">
+                  <div>
+                    <div className="social__name">GitHub</div>
+                    <a
+                      href="https://github.com/EMISWAP-COM"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="social__join-link"
+                    >
+                      Join now
+                    </a>
+                  </div>
+                  <div>
+                    <img className="social__icon-img" src={GitHubPng} alt="" />
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="step__card">
-              <div className="step__img__wrapper">
-                <img className="step__img" src={Step3Png} alt=""/>
-              </div>
-              <div className="step__info">
-                <div className="step__name">03. Get LP tokens</div>
-                <hr/>
-                <div className="step__desc">
-                  LP tokens are issued automatically. Use them to farm & earn even more
-                </div>
-              </div>
-            </div>
-            <div className="step__card">
-              <div className="step__img__wrapper">
-                <img className="step__img" src={Step4Png} alt=""/>
-              </div>
-              <div className="step__info">
-                <div className="step__name">04. Start earning</div>
-                <hr/>
-                <div className="step__desc">
-                  Use the ‘Farming’ tab to stake LP tokens & earn $ESW rewards
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section id="community" className="socials">
-          <div className="socials__image">
-            <img className="socials__img" src={SocialsCardPng} alt=""/>
-          </div>
-          <div className="socials__links">
+          </section>
+          <section id="partners" className="partners">
             <div className="section__header">
-              <div className="section__title">Join EmiSwap Community</div>
+              <div className="section__title">Partners & Investors</div>
             </div>
-            <div className="socials__list">
-              <div className="social__card">
-                <div>
-                  <div className="social__name">Twitter</div>
-                  <a
-                    href="https://twitter.com/emiswap"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="social__join-link"
-                  >
-                    Join now
-                  </a>
-                </div>
-                <div>
-                  <img className="social__icon-img" src={TwitterPng} alt=""/>
-                </div>
+            <div className="partners__list">
+              <div>
+                <img src={emirexLogo} alt="Emirex" />
+                <img src={bitmartLogo} alt="BitMart" />
+                <img src={everestLogo} alt="Everest" />
+                <img src={digifinexLogo} alt="Digifinex" />
               </div>
-              <div className="social__card">
-                <div>
-                  <div className="social__name">Telegram</div>
-                  <a
-                    href="https://t.me/emiswap_official"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="social__join-link"
-                  >
-                    Join now
-                  </a>
-                </div>
-                <div>
-                  <img className="social__icon-img" src={TelegramPng} alt=""/>
-                </div>
+              <div>
+                <img src={nearLogo} alt="Near" />
+                <img src={movrLogo} alt="Movr" />
+                <img src={kukoinLogo} alt="Kukoin" />
+                <img src={shidenLogo} alt="Shiden" />
+                <img src={uboostLogo} alt="Uboost" />
               </div>
-              <div className="social__card">
-                <div>
-                  <div className="social__name">Medium</div>
-                  <a
-                    href="https://medium.com/emiswap"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="social__join-link"
-                  >
-                    Join now
-                  </a>
-                </div>
-                <div>
-                  <img className="social__icon-img" src={MediumPng} alt=""/>
-                </div>
-              </div>
-              <div className="social__card">
-                <div>
-                  <div className="social__name">GitHub</div>
-                  <a
-                    href="https://github.com/EMISWAP-COM"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="social__join-link"
-                  >
-                    Join now
-                  </a>
-                </div>
-                <div>
-                  <img className="social__icon-img" src={GitHubPng} alt=""/>
-                </div>
+              <div>
+                <img src={alphaLogo} alt="Alpha" />
+                <img src={unilendLogo} alt="Unilend" />
+                <img src={yieldLogo} alt="Yield" />
+                <img src={polygonLogo} alt="Polygon" />
               </div>
             </div>
-          </div>
-        </section>
-        <section id="partners" className="partners">
-          <div className="section__header">
-            <div className="section__title">Partners & Investors</div>
-          </div>
-          <div className="partners__list">
-            <div>
-              <img src={emirexLogo} alt="Emirex"/>
-              <img src={bitmartLogo} alt="BitMart"/>
-              <img src={everestLogo} alt="Everest"/>
-              <img src={digifinexLogo} alt="Digifinex"/>
+          </section>
+          <section id="team" className="team">
+            <div className="section__header">
+              <div className="section__title">The EmiSwap team</div>
+              <div className="team__slider-buttons team__slider-buttons--top">
+                <button className="team__slider-btn" onClick={handleClickTeamPrev}>
+                  <img
+                    className="team__slider-btn-icon team__slider-btn-icon--left"
+                    src={SlideArrowSvg}
+                    alt=""
+                  />
+                </button>
+                <button className="team__slider-btn" onClick={handleClickTeamNext}>
+                  <img className="team__slider-btn-icon" src={SlideArrowSvg} alt="" />
+                </button>
+              </div>
             </div>
-            <div>
-              <img src={nearLogo} alt="Near"/>
-              <img src={movrLogo} alt="Movr"/>
-              <img src={kukoinLogo} alt="Kukoin"/>
-              <img src={shidenLogo} alt="Shiden"/>
-              <img src={uboostLogo} alt="Uboost"/>
+            <div className="team__slider">
+              <Slider ref={sliderRef} {...sliderSettings}>
+                <div className="team__person-card">
+                  <img className="team__person-img" src={GregPng} alt="" />
+                  <div className="team__person-info">
+                    <div className="team__person-name">Greg Mars</div>
+                    <hr />
+                    <div className="team__person-desc">Founder & CEO</div>
+                  </div>
+                </div>
+                <div className="team__person-card">
+                  <img className="team__person-img" src={MarinaPng} alt="" />
+                  <div className="team__person-info">
+                    <div className="team__person-name">Marina Moon</div>
+                    <hr />
+                    <div className="team__person-desc">Business Development Officer</div>
+                  </div>
+                </div>
+                <div className="team__person-card">
+                  <img className="team__person-img" src={AndrePng} alt="" />
+                  <div className="team__person-info">
+                    <div className="team__person-name">Andre Antares</div>
+                    <hr />
+                    <div className="team__person-desc">Head of Marketing</div>
+                  </div>
+                </div>
+                <div className="team__person-card">
+                  <img className="team__person-img" src={JuliaPng} alt="" />
+                  <div className="team__person-info">
+                    <div className="team__person-name">Julia Yakubova</div>
+                    <hr />
+                    <div className="team__person-desc">Marketing Project Manager</div>
+                  </div>
+                </div>
+                {/* <div className="team__person-card">
+                <img className="team__person-img" src={RuslanPng} alt=""/>
+                <div className="team__person-info">
+                  <div className="team__person-name">Ruslan Dimitrov</div>
+                  <hr/>
+                  <div className="team__person-desc">IT Product Owner</div>
+                </div>
+              </div> */}
+                <div className="team__person-card">
+                  <img className="team__person-img" src={IsmailPng} alt="" />
+                  <div className="team__person-info">
+                    <div className="team__person-name">Ismail Bagosher</div>
+                    <hr />
+                    <div className="team__person-desc">Business Development Officer</div>
+                  </div>
+                </div>
+                <div className="team__person-card"></div>
+              </Slider>
             </div>
-            <div>
-              <img src={alphaLogo} alt="Alpha"/>
-              <img src={unilendLogo} alt="Unilend"/>
-              <img src={yieldLogo} alt="Yield"/>
-              <img src={polygonLogo} alt="Polygon"/>
-            </div>
-          </div>
-        </section>
-        <section id="team" className="team">
-          <div className="section__header">
-            <div className="section__title">The EmiSwap team</div>
-            <div className="team__slider-buttons team__slider-buttons--top">
+            <div className="team__slider-buttons team__slider-buttons--bottom">
               <button className="team__slider-btn" onClick={handleClickTeamPrev}>
                 <img
                   className="team__slider-btn-icon team__slider-btn-icon--left"
@@ -1381,93 +1532,31 @@ export default function Landing({ history }: any) {
                 />
               </button>
               <button className="team__slider-btn" onClick={handleClickTeamNext}>
-                <img className="team__slider-btn-icon" src={SlideArrowSvg} alt=""/>
+                <img className="team__slider-btn-icon" src={SlideArrowSvg} alt="" />
               </button>
             </div>
-          </div>
-          <div className="team__slider">
-            <Slider ref={sliderRef} {...sliderSettings}>
-              <div className="team__person-card">
-                <img className="team__person-img" src={GregPng} alt=""/>
-                <div className="team__person-info">
-                  <div className="team__person-name">Greg Mars</div>
-                  <hr/>
-                  <div className="team__person-desc">Founder & CEO</div>
-                </div>
+          </section>
+          <section className="polygon">
+            <div className="polygon__info">
+              <div className="section__header">
+                <div className="section__title">Earn 1% a day on EmiSwap Polygon with 0 effort</div>
               </div>
-              <div className="team__person-card">
-                <img className="team__person-img" src={MarinaPng} alt=""/>
-                <div className="team__person-info">
-                  <div className="team__person-name">Marina Moon</div>
-                  <hr/>
-                  <div className="team__person-desc">Business Development Officer</div>
-                </div>
+              <div className="polygon__desc">
+                All LPs on EmiSwap Polygon are eligible for the unique 365% APR airdrop. Connect wallet, add liquidity to
+                any pool – and get a daily 1% return until November 3, 2022. The first reward distribution is on February
+                3, 2022.
               </div>
-              <div className="team__person-card">
-                <img className="team__person-img" src={AndrePng} alt=""/>
-                <div className="team__person-info">
-                  <div className="team__person-name">Andre Antares</div>
-                  <hr/>
-                  <div className="team__person-desc">Head of Marketing</div>
-                </div>
-              </div>
-              <div className="team__person-card">
-                <img className="team__person-img" src={JuliaPng} alt=""/>
-                <div className="team__person-info">
-                  <div className="team__person-name">Julia Yakubova</div>
-                  <hr/>
-                  <div className="team__person-desc">Marketing Project Manager</div>
-                </div>
-              </div>
-              {/* <div className="team__person-card">
-                <img className="team__person-img" src={RuslanPng} alt=""/>
-                <div className="team__person-info">
-                  <div className="team__person-name">Ruslan Dimitrov</div>
-                  <hr/>
-                  <div className="team__person-desc">IT Product Owner</div>
-                </div>
-              </div> */}
-              <div className="team__person-card">
-                <img className="team__person-img" src={IsmailPng} alt=""/>
-                <div className="team__person-info">
-                  <div className="team__person-name">Ismail Bagosher</div>
-                  <hr/>
-                  <div className="team__person-desc">Business Development Officer</div>
-                </div>
-              </div>
-              <div className="team__person-card"></div>
-            </Slider>
-          </div>
-          <div className="team__slider-buttons team__slider-buttons--bottom">
-            <button className="team__slider-btn" onClick={handleClickTeamPrev}>
-              <img
-                className="team__slider-btn-icon team__slider-btn-icon--left"
-                src={SlideArrowSvg}
-                alt=""
-              />
-            </button>
-            <button className="team__slider-btn" onClick={handleClickTeamNext}>
-              <img className="team__slider-btn-icon" src={SlideArrowSvg} alt=""/>
-            </button>
-          </div>
-        </section>
-        <section className="polygon">
-          <div className="polygon__info">
-            <div className="section__header">
-              <div className="section__title">Earn 1% a day on EmiSwap Polygon with 0 effort</div>
+              <button className="btn-primary" onClick={() => {
+                changeChainToPolygon();
+                window.open('https://emiswap.com/pool');
+              }}>
+                Start Earning
+              </button>
             </div>
-            <div className="polygon__desc">
-              All LPs on EmiSwap Polygon are eligible for the unique 365% APR airdrop. Connect wallet, add liquidity to
-              any pool – and get a daily 1% return until November 3, 2022. The first reward distribution is on February
-              3, 2022.
-            </div>
-            <button className="btn-primary" onClick={() => window.open('https://emiswap.com/pool')}>
-              Start Earning
-            </button>
-          </div>
-          <img className="polygon__img" src={PolygonCardPng} alt=""/>
-        </section>
-      </div>
-    </Body>
+            <img className="polygon__img" src={PolygonCardPng} alt="" />
+          </section>
+        </div>
+      </Body>
+    </>
   );
 }
