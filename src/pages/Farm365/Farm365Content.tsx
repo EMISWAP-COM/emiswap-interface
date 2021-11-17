@@ -124,9 +124,15 @@ export default function Farm365Content({
     return txs.filter((t) => new Date().getTime() - t.addedTime < 86_400_000);
   }, [allTransactions]);
 
-  const pending = recentTransactions.filter(tx => !tx.receipt).map(tx => tx.hash);
-  // const confirmed = recentTransactions.filter(tx => tx.receipt).map(tx => tx.hash);
-  const hasPendingTransactions = !!pending.length;
+  const pending = useMemo(() => {
+    return recentTransactions.filter(tx => !tx.receipt).map(tx => tx.hash);
+  }, [recentTransactions]);
+
+  /*const confirmed = useMemo(() => {
+    return recentTransactions.filter(tx => tx.receipt).map(tx => tx.hash);
+  }, [recentTransactions]);*/
+
+  const hasPendingTransactions = useMemo(() => !!pending.length, [pending]);
 
   const [eswValue, setEswValue] = useState<string>('');
   const [lpValue, setLpValue] = useState<string>('');
@@ -199,11 +205,11 @@ export default function Farm365Content({
     }
   }, [eswValue, lpValue, lpCurrency, approvalEsw, approvalLp]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (stakedTokens?.length) {
       setCollectButtonDisabled(false);
     }
-  }, [stakedTokens]);
+  }, [stakedTokens]);*/
 
   useEffect(() => {
     if (approvalEsw === ApprovalState.APPROVED && approvalLp === ApprovalState.APPROVED) {
@@ -217,7 +223,9 @@ export default function Farm365Content({
     if (!hasPendingTransactions) {
       farming365.updateStakedTokens();
     }
-  }, [farming365, hasPendingTransactions]);
+    // farming365 Не должно быть в deps, т.к. он обновится и будет рекурсия
+    // eslint-disable-next-line
+  }, [hasPendingTransactions]);
 
   const stakeButtonText = useMemo(() => {
     if (hasPendingTransactions) {

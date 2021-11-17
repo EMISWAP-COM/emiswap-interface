@@ -116,13 +116,13 @@ export default function useFarming365(contract: Contract) {
 
   const [balanceLp, setBalanceLp] = useState<string>('0');
   useEffect(() => {
-    if (!account) {
+    if (!account || !stakeToken?.address) {
       return;
     }
     contract
       .balanceOfLPToken(account, stakeToken?.address)
       .then((value: BigNumber) => {
-        console.log(rewardToken, stakeToken);
+        // console.log(rewardToken, stakeToken);
         if (chainId && rewardToken) {
           const tokenAmount = new TokenAmount(rewardToken, JSBI.BigInt(value.toString()));
           return tokenAmountToString(tokenAmount, rewardToken.decimals);
@@ -166,7 +166,7 @@ export default function useFarming365(contract: Contract) {
     contract
       .earned(account)
       .then((value: BigNumber) => {
-        console.log('earned', value.toString());
+        // console.log('earned', value.toString());
         if (chainId && rewardToken) {
           const tokenAmount = new TokenAmount(rewardToken, JSBI.BigInt(value.toString()));
           return tokenAmountToString(tokenAmount, rewardToken.decimals);

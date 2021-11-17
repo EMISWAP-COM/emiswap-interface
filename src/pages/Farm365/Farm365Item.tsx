@@ -27,7 +27,7 @@ export default function Farm365Item({
     }
   }, [eswPriceInDai, farming365.blockReward, farming365.liquidity]);
 
-  console.log('farming', farming365);
+  // console.log('farming', farming365);
 
   return (
     <ExtendableRow

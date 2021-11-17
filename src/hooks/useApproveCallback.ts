@@ -27,9 +27,6 @@ export function useApproveCallback(
   spender?: string,
   isNotSwap?: boolean,
 ): [ApprovalState, () => Promise<void>] {
-
-  console.log('useApproveCallback', amountToApprove?.raw?.toString(), spender);
-
   const { account } = useActiveWeb3React();
   const token = amountToApprove instanceof TokenAmount ? amountToApprove.token : undefined;
   const allTransactions = useAllTransactions();
