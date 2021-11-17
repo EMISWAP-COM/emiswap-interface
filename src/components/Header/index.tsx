@@ -21,7 +21,6 @@ import NetworkSwitchModal from './NetworkSwitchModal';
 import { useBridgeModalToggle, useNetworkSwitchModalToggle } from '../../state/application/hooks';
 import chainIds from '../../constants/chainIds';
 import { useNetworkData } from '../../hooks/Coins';
-import { useLocation } from 'react-router-dom';
 import { isMobile } from "react-device-detect";
 import BridgeModal from './BridgeModal';
 import { useRouteMatch } from "react-router-dom";

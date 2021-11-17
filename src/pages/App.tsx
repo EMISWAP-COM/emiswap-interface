@@ -1,7 +1,5 @@
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { BrowserRouter, Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
-
-import { useHistory } from "react-router-dom";
 import styled from 'styled-components';
 import GoogleAnalyticsReporter from '../components/analytics/GoogleAnalyticsReporter';
 import Header from '../components/Header';

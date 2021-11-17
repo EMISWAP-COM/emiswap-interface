@@ -6,13 +6,13 @@ import Slider from 'react-slick';
 import LogoSvg from '../../assets/svg/logo.svg';
 import AboutSvg from '../../assets/landing/header/about.svg';
 import CommunitySvg from '../../assets/landing/header/community.svg';
-import FarmsSvg from '../../assets/landing/header/farms.svg';
+// import FarmsSvg from '../../assets/landing/header/farms.svg';
 import TeamSvg from '../../assets/landing/header/team.svg';
 import PiePng from '../../assets/landing/pie.png';
 import Apr025PiePng from '../../assets/landing/apr/025-pie.png';
 import Apr1000PiePng from '../../assets/landing/apr/1000-pie.png';
 import Apr2000Png from '../../assets/landing/apr/2000.png';
-import AprLinePng from '../../assets/landing/apr/line.png';
+// import AprLinePng from '../../assets/landing/apr/line.png';
 import GitHubPng from '../../assets/landing/socials/github.png';
 import MediumPng from '../../assets/landing/socials/medium.png';
 import TelegramPng from '../../assets/landing/socials/telegram.png';
@@ -26,7 +26,7 @@ import GregPng from '../../assets/landing/team/greg.png';
 import IsmailPng from '../../assets/landing/team/ismail.png';
 import JuliaPng from '../../assets/landing/team/julia.png';
 import MarinaPng from '../../assets/landing/team/marina.png';
-import RuslanPng from '../../assets/landing/team/ruslan.png';
+// import RuslanPng from '../../assets/landing/team/ruslan.png';
 import PolygonCardPng from '../../assets/landing/polygon-card.png';
 import SocialsCardPng from '../../assets/landing/socials-card.png';
 import SlideArrowSvg from '../../assets/landing/slide-arrow.svg';
@@ -1049,7 +1049,7 @@ export default function Landing({ history }: any) {
               </button>
             </div>
             <div className="banner__audited">
-              Audited by: <img src={hackenSvg} /> & <img src={blueswarmSvg} />
+              Audited by: <img src={hackenSvg} alt=""/> & <img src={blueswarmSvg} alt=""/>
             </div>
           </div>
           <div className="chart">
@@ -1059,14 +1059,14 @@ export default function Landing({ history }: any) {
             <div className="chart__stats">
               <div className="chart__stat-item">
                 <div className="chart__stat-name">
-                  <img className="chart__list-dot" src={listDotSvg} />
+                  <img className="chart__list-dot" src={listDotSvg} alt=""/>
                   Liquidity supply
                 </div>
                 <div className="chart__percent">365%</div>
               </div>
               <div className="chart__stat-item">
                 <div className="chart__stat-name" style={{ color: '#7A2DF4' }}>
-                <img className="chart__list-dot" src={listDotVioletSvg} />
+                <img className="chart__list-dot" src={listDotVioletSvg} alt=""/>
                   Farming
                 </div>
                 <div>(coming on 17 Nov)</div>
@@ -1075,7 +1075,7 @@ export default function Landing({ history }: any) {
               </div>
               <div className="chart__stat-item">
                 <div className="chart__stat-name" style={{ color: '#E478FF' }}>
-                  <img className="chart__list-dot" src={listDotSvg} />
+                  <img className="chart__list-dot" src={listDotSvg} alt=""/>
                   Swap commision
                 </div>
                 <div>from volume</div>
@@ -1175,7 +1175,7 @@ export default function Landing({ history }: any) {
             </div>
             <div className="about__card-list__offset">
               <div className="about__card-list__offset__img">
-                <img src={linesSvg} />
+                <img src={linesSvg} alt=""/>
               </div>
               <div className="about__card top">
                 <div className="about__card__pennon turquoise" />
@@ -1349,23 +1349,23 @@ export default function Landing({ history }: any) {
           </div>
           <div className="partners__list">
             <div>
-              <img src={emirexLogo} />
-              <img src={bitmartLogo} />
-              <img src={everestLogo} />
-              <img src={digifinexLogo} />
+              <img src={emirexLogo} alt="Emirex"/>
+              <img src={bitmartLogo} alt="BitMart"/>
+              <img src={everestLogo} alt="Everest"/>
+              <img src={digifinexLogo} alt="Digifinex"/>
             </div>
             <div>
-              <img src={nearLogo} />
-              <img src={movrLogo} />
-              <img src={kukoinLogo} />
-              <img src={shidenLogo} />
-              <img src={uboostLogo} />
+              <img src={nearLogo} alt="Near"/>
+              <img src={movrLogo} alt="Movr"/>
+              <img src={kukoinLogo} alt="Kukoin"/>
+              <img src={shidenLogo} alt="Shiden"/>
+              <img src={uboostLogo} alt="Uboost"/>
             </div>
             <div>
-              <img src={alphaLogo} />
-              <img src={unilendLogo} />
-              <img src={yieldLogo} />
-              <img src={polygonLogo} />
+              <img src={alphaLogo} alt="Alpha"/>
+              <img src={unilendLogo} alt="Unilend"/>
+              <img src={yieldLogo} alt="Yield"/>
+              <img src={polygonLogo} alt="Polygon"/>
             </div>
           </div>
         </section>
