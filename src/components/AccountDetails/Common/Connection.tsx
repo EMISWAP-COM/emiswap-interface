@@ -217,7 +217,7 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
 
   const balance = useSelector((state: AppState) => state.cabinets.balance);
 
-  const isCollectDisabled = true || !Number(balance?.available.ESW);
+  const isCollectDisabled = !Number(balance?.available.ESW);
 
   const sumESW = () => {
     const walletESW = balance?.wallet.ESW || 0;
