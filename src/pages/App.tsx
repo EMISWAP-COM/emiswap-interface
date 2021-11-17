@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense, useEffect, useCallback } from 'react';
 import { BrowserRouter, Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 import styled from 'styled-components';
@@ -63,7 +63,7 @@ export function RedirectPathToSwap({ location }: RouteComponentProps) {
 export default function App() {
   const { connector } = useActiveWeb3React();
 
-  const changeChainToPolygon = async () => {
+  const changeChainToPolygon = useCallback(async () => {
     const provider = await connector.getProvider();
 
     provider.request({
@@ -76,7 +76,7 @@ export default function App() {
       ],
       "id": 0
     })
-  };
+  }, [connector]);
 
   useEffect(() => {
     const search = window.location.href.split('?');
