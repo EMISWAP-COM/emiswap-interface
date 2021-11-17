@@ -60,7 +60,7 @@ export function RedirectPathToSwap({ location }: RouteComponentProps) {
 
 export default function App() {
   useEffect(() => {
-    const search = window.location.hash.split('?');
+    const search = window.location.href.split('?');
     // throw new TypeError('type invalid')
 
     if (search[1] && search[1].length) {
