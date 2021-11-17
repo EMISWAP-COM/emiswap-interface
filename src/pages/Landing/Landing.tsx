@@ -140,6 +140,12 @@ const Body = styled.div`
         margin-left: 20px;
       }
     }
+
+    .start-earing-btn {
+      @media screen and (max-width: 950px) {
+        display: none;
+      }
+    }
    
     .nav {
       display: flex;
@@ -1082,7 +1088,7 @@ export default function Landing({ history }: any) {
             <div onClick={changeLanguage('en')}>EN</div> */}
             </div>
             <button
-              className="btn-primary"
+              className="btn-primary start-earing-btn"
               onClick={() => {
                 changeChainToPolygon();
                 window.open('https://emiswap.com/pool');
