@@ -58,7 +58,8 @@ export function useAllTokens(isLpTokens?: boolean): [{ [address: string]: Token 
           return enableTokensList.includes(el.address) || el.address === window['env'].REACT_APP_ESW_ID;
         })
         .filter(el => {
-          return !isLpTokens || el.name?.includes('LP ');
+          return (isLpTokens && el.name?.includes('LP '))
+            || (!isLpTokens && !el.name?.includes('LP '));
         })
         .reduce((acc: { [key: string]: WrappedTokenInfo }, val) => {
           acc[val.address] = val;

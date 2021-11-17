@@ -6,6 +6,8 @@ export function filterTokens(tokens: Token[], search: string, isLpTokens: boolea
 
   if (isLpTokens) {
     visibleTokens = visibleTokens.filter(token => token.name.includes('LP '))
+  } else {
+    visibleTokens = visibleTokens.filter(token => !token.name.includes('LP '))
   }
 
   if (search.length === 0) return visibleTokens;
