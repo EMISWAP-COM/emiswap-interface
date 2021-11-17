@@ -325,9 +325,10 @@ export default function useFarming365(contract: Contract) {
   const handleStake = (lpToken: Token, lpValue: string, eswValue: string): Promise<unknown> => {
     const lpAmount = convertTokenAmount(lpToken, lpValue);
     const eswAmount = convertTokenAmount(lpToken, eswValue);
+    const eswWithSlippage = eswAmount.add(eswAmount.div(100));
 
     return contract
-      .stake(lpToken.address, lpAmount, eswAmount)
+      .stake(lpToken.address, lpAmount, eswWithSlippage)
       .then((response: TransactionResponse) => {
         addTransaction(response, {
           summary: `Stake ${lpValue} ${lpToken.symbol}`,
@@ -335,7 +336,7 @@ export default function useFarming365(contract: Contract) {
         });
       })
       .catch((error: RequestError) => {
-        const args = lpToken.address + ', ' + lpAmount.toString() + ', ' + eswAmount.toString();
+        const args = lpToken.address + ', ' + lpAmount.toString() + ', ' + eswWithSlippage.toString();
         showError('stake', args, error);
       });
   };

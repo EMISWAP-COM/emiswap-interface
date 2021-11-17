@@ -13,7 +13,7 @@ import { ExternalLink } from '../../../theme';
 import { FarmingTimeType } from '../constants';
 import KucoinLogo from '../../../assets/currencies/KCS.png';
 import { useIsEthActive, useIsPolygonActive, useNetworkData } from '../../../hooks/Coins';
-import Farm365Content from './Farm365Content';
+import Farm365Content from '../../Farm365/Farm365Content';
 import useFarming365 from '../../../hooks/useFarming365';
 
 const StyledRow = styled.div`

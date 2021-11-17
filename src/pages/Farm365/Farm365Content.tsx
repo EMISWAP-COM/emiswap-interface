@@ -1,13 +1,15 @@
 import styled from 'styled-components/macro';
 import React, { useEffect, useMemo, useState } from 'react';
-import Button from '../../../base/ui/Button';
-import CurrencyLogo from '../../../components/CurrencyLogo';
-import LpTokenSymbol from '../LpTokenSymbol';
-import { ESW } from '../../../constants';
-import CurrencyInputPanel from '../../../components/CurrencyInputPanel';
+import Button from '../../base/ui/Button';
+import CurrencyLogo from '../../components/CurrencyLogo';
+import LpTokenSymbol from '../Farm/LpTokenSymbol';
+import { ESW } from '../../constants';
+import CurrencyInputPanel from '../../components/CurrencyInputPanel';
 import { JSBI, Token, TokenAmount } from '@uniswap/sdk';
-import chainIds from '../../../constants/chainIds';
-import useFarming365 from '../../../hooks/useFarming365';
+import chainIds from '../../constants/chainIds';
+import useFarming365 from '../../hooks/useFarming365';
+import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback';
+import { useEmiRouter } from '../../hooks/useContract';
 
 const Content = styled.div`
   display: flex;
@@ -96,15 +98,35 @@ type Farm365ContentProps = {
 export default function Farm365Content({
   farming365,
 }: Farm365ContentProps) {
+  const emiRouter = useEmiRouter();
 
   const [eswValue, setEswValue] = useState<string>('');
   const [lpValue, setLpValue] = useState<string>('');
 
+  const eswCurrency = ESW[chainIds.MUMBAI][0];
   const [lpCurrency, setLpCurrency] = useState<Token>(null);
   const [lpBalance, setLpBalance] = useState<TokenAmount>(null);
 
   const [isStakeButtonDisabled, setStakeButtonDisabled] = useState<boolean>(true);
   const [isCollectButtonDisabled, setCollectButtonDisabled] = useState<boolean>(true);
+
+  const [isStakeAllowed, setStakeAllowed] = useState<boolean>(false);
+
+  const [approvalEsw, approveEswCallback] = useApproveCallback(
+    eswValue
+      ? new TokenAmount(eswCurrency, JSBI.BigInt(eswValue.toString()))
+      : undefined,
+    emiRouter?.address,
+  );
+
+  console.log(eswValue, lpValue);
+
+  const [approvalLp, approveLpCallback] = useApproveCallback(
+    lpCurrency && lpValue
+      ? new TokenAmount(lpCurrency, JSBI.BigInt(eswValue.toString()))
+      : undefined,
+    emiRouter?.address,
+  );
 
   const stakedTokens = useMemo(() => {
     return farming365.stakedTokens;
@@ -121,6 +143,17 @@ export default function Farm365Content({
       setCollectButtonDisabled(false);
     }
   }, [stakedTokens]);
+
+  useEffect(() => {
+    if (
+      !isStakeAllowed
+      && approvalEsw === ApprovalState.APPROVED
+      && approvalLp === ApprovalState.APPROVED
+    ) {
+      setStakeAllowed(true);
+    }
+    // eslint-disable-next-line
+  }, [approvalEsw, approvalLp]);
 
   const calcLpByEsw = async (_eswValue, currency) => {
     if (currency && _eswValue) {
@@ -160,14 +193,26 @@ export default function Farm365Content({
   };
 
   const handleClickStakeBtn = async () => {
-    await farming365.stake(lpCurrency, lpValue, eswValue)
+    console.log(approvalEsw);
+    console.log(approvalLp);
+
+    if (isStakeAllowed) {
+      await farming365.stake(lpCurrency, lpValue, eswValue);
+    } else {
+      if (![ApprovalState.PENDING, ApprovalState.APPROVED].includes(approvalEsw)) {
+        approveEswCallback();
+      }
+      if (![ApprovalState.PENDING, ApprovalState.APPROVED].includes(approvalLp)) {
+        approveLpCallback();
+      }
+    }
   };
 
   const handleClickCollectBtn = () => {
 
   };
 
-  let stakeButtonText = 'Stake';
+  let stakeButtonText = isStakeAllowed ? 'Stake' : 'Approve';
   let collectButtonText = 'Collect to wallet';
 
   return (
@@ -181,9 +226,9 @@ export default function Farm365Content({
             selectEnable={false}
             showMaxButton={true}
             showMaxError={true}
-            currency={ESW[chainIds.MUMBAI][0]}
+            currency={eswCurrency}
             otherCurrency={lpCurrency}
-            currencyBalance={new TokenAmount(ESW[chainIds.MUMBAI][0], JSBI.BigInt(2))}
+            currencyBalance={new TokenAmount(eswCurrency, JSBI.BigInt(2))}
             onUserInput={handleChangeEswInput}
             onMax={handleChangeEswInput}
           />
@@ -196,7 +241,7 @@ export default function Farm365Content({
             showMaxButton={true}
             showMaxError={true}
             currency={lpCurrency}
-            otherCurrency={ESW[chainIds.MUMBAI][0]}
+            otherCurrency={eswCurrency}
             currencyBalance={lpBalance}
             isLpTokens={true}
             onUserInput={handleChangeLpInput}
@@ -215,7 +260,7 @@ export default function Farm365Content({
             <StakeToken>
               <StakeTokenName>ESW</StakeTokenName>
               <StakeTokenLine>
-                <CurrencyLogo currency={ESW[chainIds.MUMBAI][0]} size={'24px'}/>
+                <CurrencyLogo currency={eswCurrency} size={'24px'}/>
                 <StakeTokenAmount>0</StakeTokenAmount>
               </StakeTokenLine>
             </StakeToken>
