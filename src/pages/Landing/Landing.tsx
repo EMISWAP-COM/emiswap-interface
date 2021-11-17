@@ -292,7 +292,9 @@ const Body = styled.div`
       
       &__stats {
         padding: 24px;
-
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
          
         @media screen and (max-width: 769px) {
           display: grid;
@@ -1229,8 +1231,7 @@ export default function Landing({ history }: any) {
                   <img className="apr__card-pie-img" src={Apr365PiePng} alt="" />
                 </div>
                 <div className="apr__card-text">
-                  365% APR: our special Airdrop for EmiSwap LPs on Polygon. Earn additional 1% per day for providing
-                  liquidity.
+                  365% APR: special Airdrop for Liquidity Providers on Polygon. Available only if LP tokens are staked with ESW in Farming pools.
                 </div>
               </div>
               <div className="apr__card">
@@ -1462,7 +1463,7 @@ export default function Landing({ history }: any) {
           </section>
           <section id="team" className="team">
             <div className="section__header">
-              <div className="section__title">The EmiSwap team</div>
+              <div className="section__title">EmiSwap Team</div>
               <div className="team__slider-buttons team__slider-buttons--top">
                 <button className="team__slider-btn" onClick={handleClickTeamPrev}>
                   <img
@@ -1548,9 +1549,7 @@ export default function Landing({ history }: any) {
                 <div className="section__title">Earn 1% a day on EmiSwap Polygon with 0 effort</div>
               </div>
               <div className="polygon__desc">
-                All LPs on EmiSwap Polygon are eligible for the unique 365% APR airdrop. Connect wallet, add liquidity to
-                any pool – and get a daily 1% return until November 3, 2022. The first reward distribution is on February
-                3, 2022.
+                All LPs on EmiSwap Polygon are eligible for the unique 365% APR airdrop. Connect wallet, add liquidity to any pool, stake LP tokens in pair with $ESW – and get a daily 1% return + staking rewards. The first airdrop distribution will be three months after the user removes liquidity or the campaign ends. The rewards for staking are distributed on a daily basis.
               </div>
               <button className="btn-primary" onClick={() => {
                 changeChainToPolygon();

@@ -8,6 +8,9 @@ i18next
   .init({
     backend: {
       loadPath: `./locales/en.json`,
+      requestOptions: {
+        cache: 'no-store',
+      },
     },
     react: {
       useSuspense: true,
