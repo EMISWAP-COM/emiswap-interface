@@ -283,4 +283,8 @@ body {
       theme.primary1,
     )} 0%, ${transparentize(1, theme.bg1)} 100%)`};
 }
+
+  .landing_modal {
+    background-color: red;
+  }
 `;
