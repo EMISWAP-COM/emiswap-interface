@@ -292,7 +292,9 @@ const Body = styled.div`
       
       &__stats {
         padding: 24px;
-
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
          
         @media screen and (max-width: 769px) {
           display: grid;
