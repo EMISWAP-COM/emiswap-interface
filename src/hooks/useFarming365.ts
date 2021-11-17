@@ -118,10 +118,10 @@ export default function useFarming365(contract: Contract) {
     if (!account) {
       return;
     }
-
     contract
-      .balanceOfLPToken(account, '0x104F372E54A1cA4a15a7CD9Be7B3CaA02E81428D')
+      .balanceOfLPToken(account, stakeToken?.address)
       .then((value: BigNumber) => {
+        console.log(rewardToken, stakeToken);
         if (chainId && rewardToken) {
           const tokenAmount = new TokenAmount(rewardToken, JSBI.BigInt(value.toString()));
           return tokenAmountToString(tokenAmount, rewardToken.decimals);
@@ -133,14 +133,13 @@ export default function useFarming365(contract: Contract) {
       .catch((error: RequestError) => {
         showError('balanceOfLPToken', account, error);
       });
-  }, [account, chainId, contract, rewardToken, showError, completedTransactionsCount]);
+  }, [account, chainId, contract, rewardToken, stakeToken, showError, completedTransactionsCount]);
 
   const [balanceStake, setBalanceStake] = useState<string>('0');
   useEffect(() => {
     if (!account) {
       return;
     }
-
     contract
       .balanceOfStakeToken(account)
       .then((value: BigNumber) => {

@@ -10,6 +10,7 @@ import chainIds from '../../constants/chainIds';
 import useFarming365 from '../../hooks/useFarming365';
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback';
 import { useEmiRouter } from '../../hooks/useContract';
+import { convertTokenAmount } from '../../utils';
 
 const Content = styled.div`
   display: flex;
@@ -114,16 +115,16 @@ export default function Farm365Content({
 
   const [approvalEsw, approveEswCallback] = useApproveCallback(
     eswValue
-      ? new TokenAmount(eswCurrency, JSBI.BigInt(eswValue.toString()))
+      ? new TokenAmount(eswCurrency, convertTokenAmount(eswCurrency, eswValue).toString())
       : undefined,
     emiRouter?.address,
   );
 
-  console.log(eswValue, lpValue);
+  console.log('value', eswValue, lpValue);
 
   const [approvalLp, approveLpCallback] = useApproveCallback(
     lpCurrency && lpValue
-      ? new TokenAmount(lpCurrency, JSBI.BigInt(eswValue.toString()))
+      ? new TokenAmount(lpCurrency, convertTokenAmount(lpCurrency, lpValue).toString())
       : undefined,
     emiRouter?.address,
   );
@@ -133,10 +134,12 @@ export default function Farm365Content({
   }, [farming365.stakedTokens]);
 
   useEffect(() => {
-    if (+eswValue > 0 && +lpValue > 0 && lpCurrency) {
+    if (approvalEsw === ApprovalState.PENDING || approvalLp === ApprovalState.PENDING) {
+      setStakeButtonDisabled(true);
+    } else if (+eswValue > 0 && +lpValue > 0 && lpCurrency) {
       setStakeButtonDisabled(false);
     }
-  }, [eswValue, lpValue, lpCurrency]);
+  }, [eswValue, lpValue, lpCurrency, approvalEsw, approvalLp]);
 
   useEffect(() => {
     if (stakedTokens?.length) {
@@ -145,15 +148,12 @@ export default function Farm365Content({
   }, [stakedTokens]);
 
   useEffect(() => {
-    if (
-      !isStakeAllowed
-      && approvalEsw === ApprovalState.APPROVED
-      && approvalLp === ApprovalState.APPROVED
-    ) {
+    if (approvalEsw === ApprovalState.APPROVED && approvalLp === ApprovalState.APPROVED) {
       setStakeAllowed(true);
+    } else {
+      setStakeAllowed(false);
     }
-    // eslint-disable-next-line
-  }, [approvalEsw, approvalLp]);
+  }, [approvalEsw, approvalLp, lpCurrency]);
 
   const calcLpByEsw = async (_eswValue, currency) => {
     if (currency && _eswValue) {
@@ -212,8 +212,17 @@ export default function Farm365Content({
 
   };
 
-  let stakeButtonText = isStakeAllowed ? 'Stake' : 'Approve';
-  let collectButtonText = 'Collect to wallet';
+  const stakeButtonText = useMemo(() => {
+    if (isStakeAllowed) {
+      return 'Stake';
+    }
+    if (approvalEsw === ApprovalState.PENDING || approvalLp === ApprovalState.PENDING) {
+      return 'Pending...';
+    }
+    return 'Approve';
+  }, [isStakeAllowed, approvalEsw, approvalLp]);
+
+  const collectButtonText = 'Collect to wallet';
 
   return (
     <Content>

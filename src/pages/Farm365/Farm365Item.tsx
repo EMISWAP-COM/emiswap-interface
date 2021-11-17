@@ -18,7 +18,7 @@ export default function Farm365Item({
   const [apr, setApr] = useState<number>(0);
 
   useEffect(() => {
-    if (farming365.blockReward && Number(farming365.liquidity) && eswPriceInDai) {
+    if (farming365.blockReward && Number(farming365.liquidity)/* && eswPriceInDai*/) {
       const block = parseFloat(farming365.blockReward);
       // const dai = parseFloat(eswPriceInDai);
       const liq = parseFloat(farming365.liquidity);
