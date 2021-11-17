@@ -1,5 +1,6 @@
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense, useEffect, useCallback } from 'react';
 import { BrowserRouter, Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
+import { isMobile } from 'react-device-detect';
 import styled from 'styled-components';
 import GoogleAnalyticsReporter from '../components/analytics/GoogleAnalyticsReporter';
 import Header from '../components/Header';
@@ -33,6 +34,7 @@ import Farm from './Farm';
 import NotFound from './NotFound';
 import SocButtons from '../components/SocButtons';
 import Landing from './Landing/Landing';
+import { useActiveWeb3React } from '../hooks';
 
 
 
@@ -59,6 +61,23 @@ export function RedirectPathToSwap({ location }: RouteComponentProps) {
 }
 
 export default function App() {
+  const { connector } = useActiveWeb3React();
+
+  const changeChainToPolygon = useCallback(async () => {
+    const provider = await connector.getProvider();
+
+    provider.request({
+      "jsonrpc": "2.0",
+      "method": "wallet_switchEthereumChain",
+      "params": [
+        {
+          "chainId": "0x89"
+        }
+      ],
+      "id": 0
+    })
+  }, [connector]);
+
   useEffect(() => {
     const search = window.location.href.split('?');
     // throw new TypeError('type invalid')
@@ -67,6 +86,13 @@ export default function App() {
       localStorage.setItem('UTMMarks', `?${search[1]}`);
     }
   }, []);
+
+  useEffect(() => {
+    const search = window.location.href.split('?');
+    if (search[1] && search[1].length) {
+      if (isMobile && connector) changeChainToPolygon()
+    }
+  }, [connector, changeChainToPolygon]);
 
   const is404Page = window.location.pathname === '/404';
 
