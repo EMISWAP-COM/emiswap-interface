@@ -5,7 +5,7 @@ import { Contract } from '@ethersproject/contracts';
 import useFarming365 from '../../hooks/useFarming365';
 import { ESW } from '../../constants';
 import chainIds from '../../constants/chainIds';
-import { JSBI, Token } from '@uniswap/sdk';
+import { Token } from '@uniswap/sdk';
 import { BigNumber } from '@ethersproject/bignumber';
 
 type Farm365ItemProps = {
