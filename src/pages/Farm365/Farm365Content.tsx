@@ -137,7 +137,7 @@ export default function Farm365Content({
   const [eswValue, setEswValue] = useState<string>('');
   const [lpValue, setLpValue] = useState<string>('');
 
-  const eswCurrency = ESW[chainIds.MUMBAI][0];
+  const eswCurrency: Token = ESW[chainIds.MUMBAI][0];
   const [lpCurrency, setLpCurrency] = useState<Token>(null);
   const [lpBalance, setLpBalance] = useState<TokenAmount>(null);
 

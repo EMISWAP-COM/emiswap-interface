@@ -12,10 +12,10 @@ import { getFarming365Contracts } from '../../utils';
 import styled from 'styled-components/macro';
 
 const FarmingInfo = styled.div`
-  margin: 16px auto 32px auto;
-  color: white;
-  max-width: 500px;
-  text-align: center;
+    margin: 16px 0 32px 0;
+    color: white;
+    max-width: 500px;
+    text-align: left;
 `;
 
 export default function Farm365() {
@@ -25,7 +25,7 @@ export default function Farm365() {
   const { library, account, chainId } = useActiveWeb3React();
   const isPolygonActive = useIsPolygonActive();
 
-  const [loading /*setLoading*/] = useState<boolean>(Boolean(account) && false);
+  const [loading, /*setLoading*/] = useState<boolean>(Boolean(account) && false);
 
   const farming365Contracts: Contract[] = useMemo(() => {
     if (!isPolygonActive) {
@@ -33,16 +33,6 @@ export default function Farm365() {
     }
     return getFarming365Contracts(library, account, chainId);
   }, [library, account, chainId, isPolygonActive]);
-
-  const [eswPriceInDai /*setEswPriceInDai*/] = useState('0');
-
-  /*useEffect(() => {
-    if (account && isPolygonActive) {
-      getEswPriceInDai(library, account, chainId).then(value => {
-        setEswPriceInDai(value);
-      });
-    }
-  }, [library, account, chainId, isPolygonActive]);*/
 
   useEffect(() => {
     if (!isPolygonActive) {
@@ -74,7 +64,6 @@ export default function Farm365() {
           <Farm365Item
             key={contract.address}
             contract={contract}
-            eswPriceInDai={eswPriceInDai}
           />,
         )}
 

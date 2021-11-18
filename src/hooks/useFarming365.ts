@@ -166,7 +166,7 @@ export default function useFarming365(contract: Contract) {
     contract
       .earned(account)
       .then((value: BigNumber) => {
-        // console.log('earned', value.toString());
+        console.log('earned', value.toString());
         if (chainId && rewardToken) {
           const tokenAmount = new TokenAmount(rewardToken, JSBI.BigInt(value.toString()));
           return tokenAmountToString(tokenAmount, rewardToken.decimals);
@@ -196,7 +196,7 @@ export default function useFarming365(contract: Contract) {
         if (chainId && rewardToken) {
           const tokenAmount = new TokenAmount(
             rewardToken,
-            JSBI.BigInt(value.mul(BigNumber.from(13)).toString()),
+            JSBI.BigInt(value.toString()),
           );
           return tokenAmountToString(tokenAmount, rewardToken.decimals);
         } else {
