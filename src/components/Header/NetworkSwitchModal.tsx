@@ -67,6 +67,7 @@ const NetworkName = styled(Text)<{ active: boolean }>`
 `;
 
 export default function NetworkSwitchModal() {
+
   const { ethereum } = window as any;
 
   const { chainId, connector } = useActiveWeb3React();
@@ -83,26 +84,17 @@ export default function NetworkSwitchModal() {
 
   const switchNetwork = async (item: INetworkItem) => {
     console.log(item);
-    console.log('SWITCH NETWORK', item);
-    console.log(' toHex(item.chainId)',  toHex(item.chainId));
 
-    // TODO: log connector and provider!
     try {
-      // ethereum.removeAllListeners(["networkChanged"]);
-      const provider = await connector.getProvider();
-
-      console.log('C and P', connector, provider);
+      ethereum.removeAllListeners(["networkChanged"]);
       
-      const result = await provider.request({
-        jsonrpc: "2.0",
+      const result = await ethereum.request({
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: toHex(item.chainId) }],
       });
-      
-      console.log('# RES', result);
+      console.log(result);
+      console.log('switch 1');
     } catch (switchError) {
-      console.log('# switchError', switchError);
-
       if (switchError.code === 4902) {
         try {
           await ethereum.request({
@@ -157,18 +149,15 @@ export default function NetworkSwitchModal() {
       return;
     }
 
-    await switchNetwork(item);
-    toggleNetworkSwitchModal();
-
-    // if (item.chainId !== chainIds.MAINNET && (isMetaMask || !isMobile)) {
-    //   setSelectedItem(item);
-    // } else if (item.chainId !== chainIds.MAINNET) {
-    //   setVisibleNeedSwitchModal(true);
-    //   toggleNetworkSwitchModal();
-    // } else {
-    //   await switchNetwork(item);
-    //   toggleNetworkSwitchModal();
-    // }
+    if (item.chainId !== chainIds.MAINNET && (isMetaMask || !isMobile)) {
+      setSelectedItem(item);
+    } else if (item.chainId !== chainIds.MAINNET) {
+      setVisibleNeedSwitchModal(true);
+      toggleNetworkSwitchModal();
+    } else {
+      await switchNetwork(item);
+      toggleNetworkSwitchModal();
+    }
   };
 
   const onClickConfirmItem = async () => {
