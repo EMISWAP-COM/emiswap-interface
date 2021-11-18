@@ -196,7 +196,7 @@ export default function useFarming365(contract: Contract) {
         if (chainId && rewardToken) {
           const tokenAmount = new TokenAmount(
             rewardToken,
-            JSBI.BigInt(value.toString()),
+            JSBI.BigInt(value.mul(BigNumber.from(24)).div(BigNumber.from(10)).toString()),
           );
           return tokenAmountToString(tokenAmount, rewardToken.decimals);
         } else {

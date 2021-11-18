@@ -261,6 +261,10 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
     setIsRowExtended(!isRowExtended);
   }, [isRowExtended]);
 
+  const aprTooltip = farming365
+    ? `APR ESW staking: ${(apr - 365).toFixed(2)}'% LP Staking: 365%`
+    : `${(apr - 365).toFixed(2)}'%`;
+
   return (
     <StyledRow>
       <StyledHeader>
@@ -312,7 +316,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
           <StyledBlock width={100}>
             <StyledBlockTitle>APR</StyledBlockTitle>
             <StyledBlockValue>
-              <Tooltip title={String(apr.toFixed(2)) + '%'}>
+              <Tooltip title={aprTooltip}>
                 <StyledTruncatedText>{apr.toFixed(2) + '%'}</StyledTruncatedText>
               </Tooltip>
             </StyledBlockValue>

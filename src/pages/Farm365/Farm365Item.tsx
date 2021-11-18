@@ -38,10 +38,11 @@ export default function Farm365Item({
   useEffect(() => {
     if (farming365.liquidity) {
       const liq = parseFloat(farming365.liquidity);
-      // 365 + 36000*365*0.237037037*ESW_rate*100/Liquidity
-      setApr(365 + ((36000 * 365 * 0.237037037 * eswRate * 100) / (liq + 1)));
+      const blockReward = parseFloat(farming365.blockReward);
+      // 365 + (36000 * 365 * blockReward * eswRate * 100 / (liquidity + 1))
+      setApr(365 + ((36000 * 365 * blockReward * eswRate * 100) / (liq + 1)));
     }
-  }, [eswRate, farming365.liquidity]);
+  }, [eswRate, farming365.blockReward, farming365.liquidity]);
 
   // console.log('farming', farming365);
 
@@ -53,7 +54,7 @@ export default function Farm365Item({
       rewardToken={farming365.rewardToken}
       projectedReward={farming365.reward}
       apr={apr}
-      blockReward={'0.237037037'}
+      blockReward={farming365.blockReward}
       liquidity={farming365.liquidity}
       endDate={farming365.endDate}
       deposit={farming365.balanceLp}
