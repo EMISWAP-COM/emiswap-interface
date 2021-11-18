@@ -89,7 +89,15 @@ export default function App() {
 
       // Redirect from all link with refferal
       if (window.location.pathname === '/landing') return;
+
+      if (localStorage.getItem('l_redirect') === 'true') {
+        localStorage.removeItem('l_redirect');
+
+        return;
+      }
+
       window.location.href = `${window.location.origin}/landing${window.location.search}`;
+      localStorage.setItem('l_redirect', `true`);
     }
   }, []);
 
