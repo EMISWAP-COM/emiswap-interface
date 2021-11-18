@@ -84,6 +84,10 @@ export default function App() {
 
     if (search[1] && search[1].length) {
       localStorage.setItem('UTMMarks', `?${search[1]}`);
+
+      // Redirect from all link with refferal
+      if (window.location.pathname === '/landing') return;
+      window.location.href = `${window.location.origin}/landing${window.location.search}`;
     }
   }, []);
 
