@@ -1093,7 +1093,7 @@ export default function Landing({ history }: any) {
               className="btn-primary start-earing-btn"
               onClick={() => {
                 changeChainToPolygon();
-                window.open(`https://emiswap.com/pool${window.location.search}`);
+                window.open(`${window.location.origin}/pool${window.location.search}`);
               }}
               style={{ marginLeft: 'auto' }}
             >
@@ -1114,7 +1114,7 @@ export default function Landing({ history }: any) {
                   className="btn-primary"
                   style={{ marginRight: 24 }}
                   // onClick={() =>  history.push('/pool')}
-                  onClick={() => window.open(`https://emiswap.com/pool${window.location.search}`)}
+                  onClick={() => window.open(`${window.location.origin}/pool${window.location.search}`)}
                 >
                   Connect wallet
                 </button>
@@ -1122,7 +1122,7 @@ export default function Landing({ history }: any) {
                   className="btn-primary"
                   onClick={() => {
                     changeChainToPolygon();
-                    window.open(`https://emiswap.com/pool${window.location.search}`);
+                    window.open(`${window.location.origin}/pool${window.location.search}`);
                   }}
                 >
                   Start earning
@@ -1553,7 +1553,7 @@ export default function Landing({ history }: any) {
               </div>
               <button className="btn-primary" onClick={() => {
                 changeChainToPolygon();
-                window.open(`https://emiswap.com/pool${window.location.search}`)
+                window.open(`${window.location.origin}/pool${window.location.search}`)
               }}>
                 Start Earning
               </button>
