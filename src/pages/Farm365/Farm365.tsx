@@ -9,6 +9,14 @@ import { useHistory } from 'react-router-dom';
 import Farm365Item from './Farm365Item';
 import { Contract } from '@ethersproject/contracts';
 import { getFarming365Contracts } from '../../utils';
+import styled from 'styled-components/macro';
+
+const FarmingInfo = styled.div`
+  margin: 16px auto 32px auto;
+  color: white;
+  max-width: 500px;
+  text-align: center;
+`;
 
 export default function Farm365() {
   // const dispatch = useDispatch<AppDispatch>();
@@ -56,6 +64,11 @@ export default function Farm365() {
     <>
       <AppBody>
         <SwapPoolTabs active={TabNames.FARM_365}/>
+
+        <FarmingInfo>
+          Stake LP tokens in pair with ESW into the farming pools and win a 365% APR airdrop per provided liquidity +
+          Additional % APR for Farming. Farming rewards are allocated to your EmiSwap account for every block.
+        </FarmingInfo>
 
         {farming365Contracts.map(contract =>
           <Farm365Item

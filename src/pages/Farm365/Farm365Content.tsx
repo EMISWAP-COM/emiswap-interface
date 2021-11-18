@@ -141,8 +141,9 @@ export default function Farm365Content({
   const [lpCurrency, setLpCurrency] = useState<Token>(null);
   const [lpBalance, setLpBalance] = useState<TokenAmount>(null);
 
+  const [stakeButtonText, setStakeButtonText] = useState<string>('Stake');
   const [isStakeButtonDisabled, setStakeButtonDisabled] = useState<boolean>(true);
-  const [isCollectButtonDisabled, /*setCollectButtonDisabled*/] = useState<boolean>(true);
+  const [isCollectButtonDisabled /*setCollectButtonDisabled*/] = useState<boolean>(true);
 
   const [isStakeAllowed, setStakeAllowed] = useState<boolean>(false);
 
@@ -192,26 +193,6 @@ export default function Farm365Content({
   }, [stakedTokens, eswCurrency]);
 
   useEffect(() => {
-    if (
-      +eswValue > 0
-      && +lpValue > 0
-      && lpCurrency
-      && approvalEsw === ApprovalState.APPROVED
-      && approvalLp === ApprovalState.APPROVED
-    ) {
-      setStakeButtonDisabled(false);
-    } else {
-      setStakeButtonDisabled(true);
-    }
-  }, [eswValue, lpValue, lpCurrency, approvalEsw, approvalLp]);
-
-  /*useEffect(() => {
-    if (stakedTokens?.length) {
-      setCollectButtonDisabled(false);
-    }
-  }, [stakedTokens]);*/
-
-  useEffect(() => {
     if (approvalEsw === ApprovalState.APPROVED && approvalLp === ApprovalState.APPROVED) {
       setStakeAllowed(true);
     } else {
@@ -220,39 +201,46 @@ export default function Farm365Content({
   }, [approvalEsw, approvalLp, lpCurrency, eswValue, lpValue]);
 
   useEffect(() => {
+    if (hasPendingTransactions) {
+      setStakeButtonText('Pending transaction...');
+      setStakeButtonDisabled(true);
+    } else if (!lpCurrency || !+eswValue || !+lpValue) {
+      setStakeButtonText('Stake');
+      setStakeButtonDisabled(true);
+    } else if (approvalEsw === ApprovalState.PENDING || approvalLp === ApprovalState.PENDING) {
+      setStakeButtonText('Pending approve...');
+      setStakeButtonDisabled(true);
+    } else if (approvalEsw === ApprovalState.UNKNOWN || approvalLp === ApprovalState.UNKNOWN) {
+      setStakeButtonText('Loading...');
+      setStakeButtonDisabled(true);
+    } else if (approvalEsw !== ApprovalState.APPROVED) {
+      setStakeButtonText('Approve ESW');
+      setStakeButtonDisabled(false);
+    } else if (approvalLp !== ApprovalState.APPROVED) {
+      setStakeButtonText(`Approve ${lpCurrency.name}`);
+      setStakeButtonDisabled(false);
+    } else if (approvalEsw === ApprovalState.APPROVED && approvalLp === ApprovalState.APPROVED) {
+      setStakeButtonText('Stake');
+      setStakeButtonDisabled(false);
+    } else {
+      setStakeButtonText('Approve');
+      setStakeButtonDisabled(false);
+    }
+  }, [hasPendingTransactions, eswValue, lpValue, lpCurrency, approvalEsw, approvalLp]);
+
+  /*useEffect(() => {
+    if (stakedTokens?.length) {
+      setCollectButtonDisabled(false);
+    }
+  }, [stakedTokens]);*/
+
+  useEffect(() => {
     if (!hasPendingTransactions) {
       farming365.updateStakedTokens();
     }
     // farming365 Не должно быть в deps, т.к. он обновится и будет рекурсия
     // eslint-disable-next-line
   }, [hasPendingTransactions]);
-
-  const stakeButtonText = useMemo(() => {
-    if (hasPendingTransactions) {
-      return 'Pending transaction...';
-    }
-    if (!lpCurrency) {
-      return 'Stake';
-    }
-    if (isStakeAllowed) {
-      return 'Stake';
-    }
-    if (approvalEsw === ApprovalState.PENDING || approvalLp === ApprovalState.PENDING) {
-      return 'Pending approve...';
-    }
-    if (approvalEsw === ApprovalState.UNKNOWN || approvalLp === ApprovalState.UNKNOWN) {
-      return 'Loading...';
-    }
-    if (approvalEsw !== ApprovalState.APPROVED) {
-      return 'Approve ESW';
-    }
-    if (approvalLp !== ApprovalState.APPROVED) {
-      return 'Approve LP';
-    }
-    return 'Approve';
-  }, [hasPendingTransactions, lpCurrency, isStakeAllowed, approvalEsw, approvalLp]);
-
-  const collectButtonText = 'Collect to wallet';
 
   const calcLpByEsw = async (_eswValue, currency) => {
     if (currency && _eswValue) {
@@ -308,6 +296,8 @@ export default function Farm365Content({
   const handleClickCollectBtn = () => {
 
   };
+
+  const collectButtonText = 'Collect to wallet';
 
   return (
     <Content>

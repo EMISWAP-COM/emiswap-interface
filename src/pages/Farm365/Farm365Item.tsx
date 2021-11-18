@@ -11,21 +11,25 @@ type Farm365ItemProps = {
 
 export default function Farm365Item({
   contract,
-  eswPriceInDai,
+  // eswPriceInDai,
 }: Farm365ItemProps) {
   const farming365 = useFarming365(contract);
 
   const [apr, setApr] = useState<number>(0);
 
   useEffect(() => {
-    if (farming365.blockReward && Number(farming365.liquidity)/* && eswPriceInDai*/) {
-      const block = parseFloat(farming365.blockReward);
-      // const dai = parseFloat(eswPriceInDai);
-      const liq = parseFloat(farming365.liquidity);
 
-      setApr(((block * 6400 * 100/* * dai*/) / liq) + 365);
+    // (Reward per block * blocks per year * 100% * Price of Reward token) / (Total Pool Value)
+
+    if (farming365.blockReward && Number(farming365.reward)) {
+      const block = parseFloat(farming365.blockReward);
+      const priceReward = parseFloat(farming365.reward);
+      const liq = parseFloat(farming365.liquidity);
+      const totalPoolValue = 100000;
+
+      setApr(((block * 37000 * 365 * 100 * priceReward) / totalPoolValue / liq) + 365);
     }
-  }, [eswPriceInDai, farming365.blockReward, farming365.liquidity]);
+  }, [farming365.blockReward, farming365.reward, farming365.liquidity]);
 
   // console.log('farming', farming365);
 
