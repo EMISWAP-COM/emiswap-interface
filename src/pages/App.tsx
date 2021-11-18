@@ -64,6 +64,8 @@ export default function App() {
   const { connector } = useActiveWeb3React();
 
   const changeChainToPolygon = useCallback(async () => {
+    if (!connector) return;
+
     const provider = await connector.getProvider();
 
     provider.request({
