@@ -64,6 +64,8 @@ export default function App() {
   const { connector } = useActiveWeb3React();
 
   const changeChainToPolygon = useCallback(async () => {
+    if (!connector) return;
+
     const provider = await connector.getProvider();
 
     provider.request({
@@ -84,6 +86,18 @@ export default function App() {
 
     if (search[1] && search[1].length) {
       localStorage.setItem('UTMMarks', `?${search[1]}`);
+
+      // Redirect from all link with refferal
+      if (window.location.pathname === '/landing') return;
+
+      if (localStorage.getItem('l_redirect') === 'true') {
+        localStorage.removeItem('l_redirect');
+
+        return;
+      }
+
+      window.location.href = `${window.location.origin}/landing${window.location.search}`;
+      localStorage.setItem('l_redirect', `true`);
     }
   }, []);
 
