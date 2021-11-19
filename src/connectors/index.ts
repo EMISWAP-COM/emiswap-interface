@@ -29,6 +29,7 @@ export const injected = new InjectedConnector({
     chainIds.KOVAN,
     chainIds.KUCOIN,
     chainIds.POLYGON,
+    chainIds.MUMBAI,
     chainIds.AVALANCHE,
   ],
 });
@@ -37,7 +38,7 @@ export const injected = new InjectedConnector({
 
 export const walletconnect = new WalletConnectConnector({
   infuraId: '2b7c5bba80094418abf5e746ba10dac0',
-  supportedChainIds: [chainIds.MAINNET, chainIds.KOVAN, chainIds.POLYGON, chainIds.AVALANCHE],
+  supportedChainIds: [chainIds.MAINNET, chainIds.KOVAN, chainIds.POLYGON, chainIds.MUMBAI, chainIds.AVALANCHE],
   rpc: {
     [CHAIN_ID]: NETWORK_URL,
     137: 'https://matic-mainnet.chainstacklabs.com',

@@ -15,7 +15,7 @@ export declare interface Window {
   env: Record<string, unknown>;
 }
 
-export function useAllTokens(): [{ [address: string]: Token }, boolean] {
+export function useAllTokens(isLpTokens?: boolean): [{ [address: string]: Token }, boolean] {
   const { chainId } = useActiveWeb3React();
   const userAddedTokens = useUserAddedTokens();
   const allTokens = useDefaultTokenList();
@@ -34,10 +34,10 @@ export function useAllTokens(): [{ [address: string]: Token }, boolean] {
           if (isKuCoinActive) {
             const exists = defaultCoins.tokens
               .find(ct =>
-                  ct.chainId === chainId
-                  && el.address.toLowerCase() === ct.address
-                  && mustVisibleAddresses.kucoin.includes(el.address.toLowerCase())
-                );
+                ct.chainId === chainId
+                && el.address.toLowerCase() === ct.address.toLowerCase()
+                && mustVisibleAddresses.kucoin.includes(el.address.toLowerCase()),
+              );
 
             // @ts-ignore
             return Boolean(exists) || el.address === window['env'].REACT_APP_ESW_ID || el.symbol === 'ESW';
@@ -45,8 +45,8 @@ export function useAllTokens(): [{ [address: string]: Token }, boolean] {
             const exists = defaultCoins.tokens
               .find(ct =>
                 ct.chainId === chainId
-                && el.address.toLowerCase() === ct.address
-                && ct.symbol !== 'WMATIC'
+                && el.address.toLowerCase() === ct.address.toLowerCase()
+                && ct.symbol !== 'WMATIC',
                 // && mustVisibleAddresses.polygon.includes(el.address.toLowerCase())
               );
 
@@ -57,6 +57,10 @@ export function useAllTokens(): [{ [address: string]: Token }, boolean] {
           // @ts-ignore // todo: fix it
           return enableTokensList.includes(el.address) || el.address === window['env'].REACT_APP_ESW_ID;
         })
+        /*.filter(el => {
+          return (isLpTokens && el.name?.includes('LP '))
+            || (!isLpTokens && !el.name?.includes('LP '));
+        })*/
         .reduce((acc: { [key: string]: WrappedTokenInfo }, val) => {
           acc[val.address] = val;
           return acc;
@@ -74,7 +78,9 @@ export function useAllTokens(): [{ [address: string]: Token }, boolean] {
             { ...filteredTokens },
           )
       );
-    }, [chainId, userAddedTokens, allTokens, enableTokensList, isKuCoinActive, isPolygonActive]),
+    }, [
+      chainId, userAddedTokens, allTokens, enableTokensList, isKuCoinActive, isPolygonActive,
+    ]),
     isLoading,
   ];
 }

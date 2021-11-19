@@ -21,9 +21,9 @@ import NetworkSwitchModal from './NetworkSwitchModal';
 import { useBridgeModalToggle, useNetworkSwitchModalToggle } from '../../state/application/hooks';
 import chainIds from '../../constants/chainIds';
 import { useNetworkData } from '../../hooks/Coins';
-import { isMobile } from "react-device-detect";
+import { isMobile } from 'react-device-detect';
+import { useRouteMatch } from 'react-router-dom';
 import BridgeModal from './BridgeModal';
-import { useRouteMatch } from "react-router-dom";
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -290,7 +290,7 @@ const NetworkIcon = styled.div`
   background: white;
 `;
 
-const NetworkLabel = styled.div`
+/*const NetworkLabel = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -301,7 +301,7 @@ const NetworkLabel = styled.div`
   font-size: 8px;
   background: #e478ff;
   color: ${({ theme }) => theme.dark2};
-`;
+`;*/
 
 const UniIcon = styled.div`
   width: 175px;
@@ -412,6 +412,7 @@ const NETWORK_LABELS: { [chainId in chainIds]: string | null } = {
   [ChainId.KOVAN]: 'Kovan',
   [chainIds.KUCOIN]: 'KuCoin',
   [chainIds.POLYGON]: 'Polygon',
+  [chainIds.MUMBAI]: 'Mumbai',
   [chainIds.AVALANCHE]: 'Avalanche',
 };
 
@@ -437,113 +438,113 @@ export default function Header() {
         <Wordmark />
       </LogoWrapper>
       <HeaderWrapper>
-        <HeaderFrame>
-          <RowBetweenStyled>
-            <LogoElem>
-              <Title href=".">
-                <UniIcon>
-                  <LogoImg src={isDark ? LogoDark : Logo} alt="logo" />
-                </UniIcon>
-                <TitleText>
-                  {/*<img style={{ marginLeft: '4px', marginTop: '4px' }} src={isDark ? WordmarkDark : Wordmark} alt="logo" width="160px"/>*/}
-                </TitleText>
-              </Title>
-            </LogoElem>
-            {is404Page ? (
-              <StyledGoToButton href="/">
-                <Text textAlign="center" fontWeight={500} fontSize={16}>
-                  Go to the platform
-                </Text>
-              </StyledGoToButton>
-            ) : (
-              <>
-                <HeaderControls>
-                  <HeaderElement>
-                    {false && (
-                      <AprButton>
-                        <Text textAlign="center" fontWeight={500} fontSize={14}>
-                          APR settings
-                        </Text>
-                      </AprButton>
-                    )}
-                    {!isMobile && (
-                      <>
-                        {networkItem.bridgeUrl ? (
-                          <a href={networkItem.bridgeUrl} target="_blank" rel="noopener noreferrer">
-                            <AprButton>
-                              <Text textAlign="center" fontWeight={500} fontSize={14}>
-                                Bridge Assets
-                              </Text>
-                            </AprButton>
-                          </a>
-                        ) : (
-                          <div>
-                            <AprButton onClick={toggleBridgeModal}>
-                              <Text textAlign="center" fontWeight={500} fontSize={14}>
-                                Bridge Assets
-                              </Text>
-                            </AprButton>
-                            <BridgeModal />
-                          </div>
-                        )}
-                      </>
-                    )}
-                    <NetworkWrapper>
-                      <NetworkButtonSwitch
-                        onClick={toggleNetworkSwitchModal}
-                      >
-                        {networkItem && (
-                          <NetworkIcon>
-                            <img
-                              style={{ maxHeight: '18px', maxWidth: '18px' }}
-                              src={networkItem.icon}
-                              alt={networkItem.name}
-                            />
-                          </NetworkIcon>
-                        )}
-                        <span>{NETWORK_LABELS[chainId] || 'Change Network'}</span>
-                        {![chainIds.MAINNET, chainIds.KUCOIN].includes(chainId as any) && (
-                          <NetworkLabel>Beta Version</NetworkLabel>
-                        )}
-                      </NetworkButtonSwitch>
-                      <NetworkSwitchModal />
-                    </NetworkWrapper>
-                    {chainId === (chainIds.MAINNET as any) && (
-                      <a className="purple-btn" href={`${window.location.origin}/magic_cards/`}>
-                        <span>Magic Hall</span>
+    <HeaderFrame>
+      <RowBetweenStyled>
+        <LogoElem>
+          <Title href=".">
+            <UniIcon>
+              <LogoImg src={isDark ? LogoDark : Logo} alt="logo"/>
+            </UniIcon>
+            <TitleText>
+              {/*<img style={{ marginLeft: '4px', marginTop: '4px' }} src={isDark ? WordmarkDark : Wordmark} alt="logo" width="160px"/>*/}
+            </TitleText>
+          </Title>
+        </LogoElem>
+        {is404Page ? (
+          <StyledGoToButton href="/">
+            <Text textAlign="center" fontWeight={500} fontSize={16}>
+              Go to the platform
+            </Text>
+          </StyledGoToButton>
+        ) : (
+          <>
+            <HeaderControls>
+              <HeaderElement>
+                {false && (
+                  <AprButton>
+                    <Text textAlign="center" fontWeight={500} fontSize={14}>
+                      APR settings
+                    </Text>
+                  </AprButton>
+                )}
+                {!isMobile && (
+                  <>
+                    {networkItem.bridgeUrl ? (
+                      <a href={networkItem.bridgeUrl} target="_blank" rel="noopener noreferrer">
+                        <AprButton>
+                          <Text textAlign="center" fontWeight={500} fontSize={14}>
+                            Bridge Assets
+                          </Text>
+                        </AprButton>
                       </a>
+                    ) : (
+                      <div>
+                        <AprButton onClick={toggleBridgeModal}>
+                          <Text textAlign="center" fontWeight={500} fontSize={14}>
+                            Bridge Assets
+                          </Text>
+                        </AprButton>
+                        <BridgeModal/>
+                      </div>
                     )}
-                    <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
-                      {account && userEthBalance ? (
-                        <>
-                          <BalanceText
-                            style={{ flexShrink: 0 }}
-                            pl="8px"
-                            pr="8px"
-                            mr="16px"
-                            fontWeight={450}
-                          >
-                            {tokenAmountToString(userEthBalance, 4)} {/*// @ts-ignore*/}
-                            {networkItem.currencySymbol}
-                          </BalanceText>
-                        </>
-                      ) : null}
-                      <Web3Status />
-                    </AccountElement>
-                  </HeaderElement>
-                </HeaderControls>
-                <HeaderElementWrap>
-                  <StyledMagicButton href={`${window.location.origin}/magic_cards/`}>
-                    <MagicIcon />
-                  </StyledMagicButton>
-                  <Settings />
-                  <Menu />
-                </HeaderElementWrap>
-              </>
-            )}
-          </RowBetweenStyled>
-        </HeaderFrame>
-      </HeaderWrapper>
-    </>
+                  </>
+                )}
+                <NetworkWrapper>
+                  <NetworkButtonSwitch
+                    onClick={toggleNetworkSwitchModal}
+                  >
+                    {networkItem && (
+                      <NetworkIcon>
+                        <img
+                          style={{ maxHeight: '18px', maxWidth: '18px' }}
+                          src={networkItem.icon}
+                          alt={networkItem.name}
+                        />
+                      </NetworkIcon>
+                    )}
+                    <span>{NETWORK_LABELS[chainId] || 'Change Network'}</span>
+                    {/*{![chainIds.MAINNET, chainIds.KUCOIN].includes(chainId as any) && (
+                      <NetworkLabel>Beta Version</NetworkLabel>
+                    )}*/}
+                  </NetworkButtonSwitch>
+                  <NetworkSwitchModal/>
+                </NetworkWrapper>
+                {chainId === (chainIds.MAINNET as any) && (
+                  <a className="purple-btn" href={`${window.location.origin}/magic_cards/`}>
+                    <span>Magic Hall</span>
+                  </a>
+                )}
+                <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
+                  {account && userEthBalance ? (
+                    <>
+                      <BalanceText
+                        style={{ flexShrink: 0 }}
+                        pl="8px"
+                        pr="8px"
+                        mr="16px"
+                        fontWeight={450}
+                      >
+                        {tokenAmountToString(userEthBalance, 4)} {/*// @ts-ignore*/}
+                        {networkItem.currencySymbol}
+                      </BalanceText>
+                    </>
+                  ) : null}
+                  <Web3Status/>
+                </AccountElement>
+              </HeaderElement>
+            </HeaderControls>
+            <HeaderElementWrap>
+              <StyledMagicButton href={`${window.location.origin}/magic_cards/`}>
+                <MagicIcon/>
+              </StyledMagicButton>
+              <Settings/>
+              <Menu/>
+            </HeaderElementWrap>
+          </>
+        )}
+      </RowBetweenStyled>
+    </HeaderFrame>
+</HeaderWrapper>
+</>
   );
 }
