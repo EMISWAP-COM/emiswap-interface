@@ -87,7 +87,7 @@ export default function AppBody({
   disabled?: boolean;
   className?: string;
 }) {
-  const match = useRouteMatch('/farm');
+  const match = useRouteMatch(['/farm', '/farm-365']);
 
   // const { chainId } = useActiveWeb3React();
   const isEthActive = useIsEthActive();

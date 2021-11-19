@@ -35,6 +35,7 @@ import NotFound from './NotFound';
 import SocButtons from '../components/SocButtons';
 import Landing from './Landing/Landing';
 import { useActiveWeb3React } from '../hooks';
+import Farm365 from './Farm365/Farm365';
 
 
 
@@ -163,9 +164,10 @@ export default function App() {
                     <Route exact strict path="/migrate/:address" component={MigrateV1Exchange}/>
                     {/*<Route exact strict path="/claim/:tokenName" component={Claim} />*/}
                     <Route exact strict path="/claim/:tokenName" component={RedirectPathToSwap}/>
-                    <Route exact strict path="/farm" component={Farm}/>
-                    <Route path="/404" component={NotFound}/>
-                    <Route component={RedirectPathToSwap}/>
+                    <Route exact strict path="/farm-365" component={Farm365} />
+                    <Route exact strict path="/farm" component={Farm} />
+                    <Route path="/404" component={NotFound} />
+                    <Route component={RedirectPathToSwap} />
                   </Switch>
                 </ErrorBoundary>
               </Web3ReactManager>

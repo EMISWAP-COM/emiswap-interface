@@ -45,6 +45,7 @@ const EMPTY_LIST: TokenAddressMap = {
   // @ts-ignore
   [chainIds.KUCOIN]: {},
   [chainIds.POLYGON]: {},
+  [chainIds.MUMBAI]: {},
   [chainIds.AVALANCHE]: {},
 };
 
@@ -80,6 +81,10 @@ export function useTokenList(url: string): TokenAddressMap {
   const lists = useSelector<AppState, AppState['lists']['byUrl']>(state => state.lists.byUrl);
   // const { chainId } = useActiveWeb3React();
   return useMemo(() => {
+    if (lists[url]?.error) {
+      console.error('Default coins errors:', lists[url].error);
+      console.error(lists[url]);
+    }
     const current = lists[url]?.current;
     if (!current) return EMPTY_LIST;
     const newCurrent = {

@@ -28,7 +28,10 @@ const addressesByNetworkId = {
   ],
   // TODO
   [chainIds.POLYGON]: [
-    '',
+    '0x18f38359551258C35e8593d775cb6Fe8D27fd89b', // RewardPoolMulti PROXY
+  ],
+  [chainIds.MUMBAI]: [
+    '0xeB274bcD6CA905b7dB5F65b8C2a126fb3fF39bc3', // RewardPoolMulti PROXY
   ],
   // TODO
   [chainIds.AVALANCHE]: [
@@ -36,7 +39,7 @@ const addressesByNetworkId = {
   ],
 };
 
-const getFarmingAddresses = (chainId: ChainId) => {
+const getFarmingAddresses = (chainId: ChainId): string[] => {
   return addressesByNetworkId[chainId] || [];
 };
 

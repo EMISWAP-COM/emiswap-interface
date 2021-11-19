@@ -21,6 +21,8 @@ import { networksItems } from '../constants';
 import { KCS } from '../constants/tokens/KCS';
 import { MATIC } from '../constants/tokens/MATIC';
 import { AVAX } from '../constants/tokens/AVAX';
+import { FARMING_365_ABI } from '../constants/abis/farming365';
+import { expNumberToStr } from './formats';
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
@@ -40,6 +42,7 @@ const ETHERSCAN_PREFIXES: { [chainId in chainIds]: string } = {
   321: 'kucoin.',
   137: 'polygon.',
   43114: 'avalanche.',
+  80001: 'mumbai.',
 };
 
 export function getExplorerLink(
@@ -199,6 +202,12 @@ export function getFarmingContracts(library: Web3Provider, account: string, chai
   );
 }
 
+export function getFarming365Contracts(library: Web3Provider, account: string, chainId: ChainId) {
+  return getFarmingAddresses(chainId).map((address: any) =>
+    getContract(address, FARMING_365_ABI, library, account),
+  );
+}
+
 export function getMyFarmingContracts(library: Web3Provider, account: string, chainId: ChainId) {
   return new Promise<Contract[]>(resolve => {
     const contracts = getFarmingAddresses(chainId).map((address: any) =>
@@ -231,4 +240,24 @@ export function getNetworkData(chainId: ChainId | number | undefined) {
 
 export function isEthereumActive(chainId: ChainId | number | undefined) {
   return [chainIds.MAINNET, chainIds.KOVAN].includes(chainId as any);
+}
+
+export function convertTokenAmount(token: Token, amount: string): BigNumber {
+  const splittedAmount = amount.split('.');
+
+  let decimals = splittedAmount[1];
+  if (decimals === undefined) {
+    decimals = '0';
+  }
+
+  const constrainedAmount = splittedAmount[0] + '.' + decimals.substring(0, token.decimals);
+
+  let bigIntAmount: BigNumber;
+  try {
+    bigIntAmount = BigNumber.from(expNumberToStr(+constrainedAmount * 10 ** token.decimals));
+  } catch (e) {
+    throw new Error('Convert amount error');
+  }
+
+  return bigIntAmount;
 }

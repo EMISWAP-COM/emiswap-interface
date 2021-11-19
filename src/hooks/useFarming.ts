@@ -278,6 +278,7 @@ const useFarming = (contract: Contract) => {
     if (!chainId) return;
 
     const liquidityTokenAddress = getFarmingLiquidityTokenAddress(contract.address);
+    console.log('liquidityTokenAddress: ', liquidityTokenAddress.toLowerCase());
     const defaultCoin = defaultCoins.tokens.find(
       token =>
         token.chainId === chainId &&
