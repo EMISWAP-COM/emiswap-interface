@@ -4,9 +4,9 @@ import React, { useEffect, useState } from 'react';
 import { Contract } from '@ethersproject/contracts';
 import useFarming365 from '../../hooks/useFarming365';
 import { ESW } from '../../constants';
-import chainIds from '../../constants/chainIds';
 import { Token } from '@uniswap/sdk';
 import { BigNumber } from '@ethersproject/bignumber';
+import { useActiveWeb3React } from '../../hooks';
 
 type Farm365ItemProps = {
   contract: Contract;
@@ -15,9 +15,10 @@ type Farm365ItemProps = {
 export default function Farm365Item({
   contract,
 }: Farm365ItemProps) {
+  const { chainId } = useActiveWeb3React();
   const farming365 = useFarming365(contract);
 
-  const eswCurrency: Token = ESW[chainIds.MUMBAI][0];
+  const eswCurrency: Token = ESW[chainId][0];
 
   const [eswRate, setEswRate] = useState(0);
   const [apr, setApr] = useState<number>(0);

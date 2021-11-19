@@ -6,7 +6,6 @@ import LpTokenSymbol from '../Farm/LpTokenSymbol';
 import { ESW } from '../../constants';
 import CurrencyInputPanel from '../../components/CurrencyInputPanel';
 import { JSBI, Token, TokenAmount } from '@uniswap/sdk';
-import chainIds from '../../constants/chainIds';
 import useFarming365 from '../../hooks/useFarming365';
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback';
 import getFarmingAddresses from '../Farm/getFarmingAddresses';
@@ -137,7 +136,7 @@ export default function Farm365Content({
   const [eswValue, setEswValue] = useState<string>('');
   const [lpValue, setLpValue] = useState<string>('');
 
-  const eswCurrency: Token = ESW[chainIds.MUMBAI][0];
+  const eswCurrency: Token = ESW[chainId][0];
   const [lpCurrency, setLpCurrency] = useState<Token>(null);
   const [lpBalance, setLpBalance] = useState<TokenAmount>(null);
 
