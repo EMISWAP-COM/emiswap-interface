@@ -21,7 +21,7 @@ import { useBridgeModalToggle, useNetworkSwitchModalToggle } from '../../state/a
 import chainIds from '../../constants/chainIds';
 import { useNetworkData } from '../../hooks/Coins';
 import { useLocation } from 'react-router-dom';
-import { isMobile } from "react-device-detect";
+import { isMobile } from 'react-device-detect';
 import BridgeModal from './BridgeModal';
 
 const HeaderFrame = styled.div`
@@ -289,7 +289,7 @@ const NetworkIcon = styled.div`
   background: white;
 `;
 
-const NetworkLabel = styled.div`
+/*const NetworkLabel = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -300,7 +300,7 @@ const NetworkLabel = styled.div`
   font-size: 8px;
   background: #e478ff;
   color: ${({ theme }) => theme.dark2};
-`;
+`;*/
 
 const UniIcon = styled.div`
   width: 175px;
@@ -480,9 +480,9 @@ export default function Header() {
                       </NetworkIcon>
                     )}
                     <span>{NETWORK_LABELS[chainId] || 'Change Network'}</span>
-                    {![chainIds.MAINNET, chainIds.KUCOIN].includes(chainId as any) && (
+                    {/*{![chainIds.MAINNET, chainIds.KUCOIN].includes(chainId as any) && (
                       <NetworkLabel>Beta Version</NetworkLabel>
-                    )}
+                    )}*/}
                   </NetworkButtonSwitch>
                   <NetworkSwitchModal/>
                 </NetworkWrapper>

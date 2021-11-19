@@ -13,6 +13,7 @@ import { useActiveWeb3React } from '../../hooks';
 import { parseUnits } from '@ethersproject/units';
 import { tokenAmountToString } from '../../utils/formats';
 import { useAllTransactions } from '../../state/transactions/hooks';
+import { useCurrencyBalance } from '../../state/wallet/hooks';
 
 const Content = styled.div`
   display: flex;
@@ -112,7 +113,7 @@ type Farm365ContentProps = {
 export default function Farm365Content({
   farming365,
 }: Farm365ContentProps) {
-  const { chainId } = useActiveWeb3React();
+  const { chainId, account } = useActiveWeb3React();
 
   const farmingAddresses = getFarmingAddresses(chainId)[0];
 
@@ -133,12 +134,12 @@ export default function Farm365Content({
 
   const hasPendingTransactions = useMemo(() => !!pending.length, [pending]);
 
+  const eswCurrency: Token = ESW[chainId][0];
+
   const [eswValue, setEswValue] = useState<string>('');
   const [lpValue, setLpValue] = useState<string>('');
 
-  const eswCurrency: Token = ESW[chainId][0];
   const [lpCurrency, setLpCurrency] = useState<Token>(null);
-  const [lpBalance, setLpBalance] = useState<TokenAmount>(null);
 
   const [stakeButtonText, setStakeButtonText] = useState<string>('Stake');
   const [isStakeButtonDisabled, setStakeButtonDisabled] = useState<boolean>(true);
@@ -146,15 +147,18 @@ export default function Farm365Content({
 
   const [isStakeAllowed, setStakeAllowed] = useState<boolean>(false);
 
+  const eswBalance = useCurrencyBalance(account, eswCurrency);
+  const lpBalance = useCurrencyBalance(account, lpCurrency);
+
   const eswValueParsed = useMemo(() => {
-    if (!eswValue || !eswCurrency) {
+    if (!eswValue || isNaN(+eswValue) || !eswCurrency) {
       return '0';
     }
     return parseUnits(eswValue, eswCurrency.decimals).toString();
   }, [eswValue, eswCurrency]);
 
   const lpValueParsed = useMemo(() => {
-    if (!lpValue || !lpCurrency) {
+    if (!lpValue || isNaN(+lpValue) || !lpCurrency) {
       return '0';
     }
     return parseUnits(lpValue, lpCurrency.decimals).toString();
@@ -203,7 +207,7 @@ export default function Farm365Content({
     if (hasPendingTransactions) {
       setStakeButtonText('Pending transaction...');
       setStakeButtonDisabled(true);
-    } else if (!lpCurrency || !+eswValue || !+lpValue) {
+    } else if (!eswCurrency || !lpCurrency || !+eswValue || !+lpValue) {
       setStakeButtonText('Stake');
       setStakeButtonDisabled(true);
     } else if (approvalEsw === ApprovalState.PENDING || approvalLp === ApprovalState.PENDING) {
@@ -219,13 +223,30 @@ export default function Farm365Content({
       setStakeButtonText(`Approve ${lpCurrency.name}`);
       setStakeButtonDisabled(false);
     } else if (approvalEsw === ApprovalState.APPROVED && approvalLp === ApprovalState.APPROVED) {
-      setStakeButtonText('Stake');
-      setStakeButtonDisabled(false);
+      const eswNumBalance = tokenAmountToString(eswBalance, eswCurrency.decimals);
+      const lpNumBalance = tokenAmountToString(lpBalance, lpCurrency.decimals);
+      if (+eswValue > +eswNumBalance || +lpValue > +lpNumBalance) {
+        setStakeButtonText('Not enough balance');
+        setStakeButtonDisabled(true);
+      } else {
+        setStakeButtonText('Stake');
+        setStakeButtonDisabled(false);
+      }
     } else {
       setStakeButtonText('Approve');
       setStakeButtonDisabled(false);
     }
-  }, [hasPendingTransactions, eswValue, lpValue, lpCurrency, approvalEsw, approvalLp]);
+  }, [
+    hasPendingTransactions,
+    eswBalance,
+    lpBalance,
+    eswValue,
+    eswCurrency,
+    lpValue,
+    lpCurrency,
+    approvalEsw,
+    approvalLp,
+  ]);
 
   /*useEffect(() => {
     if (stakedTokens?.length) {
@@ -273,7 +294,6 @@ export default function Farm365Content({
   const handleCurrencySelect = (currency: Token) => {
     setLpCurrency(currency);
     if (currency) {
-      setLpBalance(new TokenAmount(currency, JSBI.BigInt(2)));
       calcLpByEsw(eswValue, currency);
     }
   };
@@ -311,7 +331,7 @@ export default function Farm365Content({
             showMaxError={true}
             currency={eswCurrency}
             otherCurrency={lpCurrency}
-            currencyBalance={new TokenAmount(eswCurrency, JSBI.BigInt(2))}
+            currencyBalance={eswBalance}
             onUserInput={handleChangeEswInput}
             onMax={handleChangeEswInput}
           />

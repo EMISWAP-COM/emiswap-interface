@@ -290,7 +290,8 @@ export default function useFarming365(contract: Contract) {
 
         for (const tokenAddress of value) {
           const balance: BigNumber = await contract.balanceOfLPToken(account, tokenAddress);
-          const defaultCoin = defaultCoins.tokens.find(t => t.address === tokenAddress);
+          const defaultCoin = defaultCoins.tokens
+            .find(t => t.address.toLowerCase() === tokenAddress.toLowerCase());
           if (defaultCoin && chainId) {
             const token = new Token(
               chainId,
