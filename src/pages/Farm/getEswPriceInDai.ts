@@ -32,16 +32,16 @@ const getEswPriceInDai = (library: Web3Provider, account: string, chainId: numbe
   let mainCoinPrice = emiPrice2.getCoinPrices([eswCoin.address], stableTokens, 0);
   if (chainId === chainIds.KUCOIN) {
     mainCoinPrice = emiPrice2.getCoinPrices([koffeeCoin.address], stableTokens, 0);
-  } else if (chainId === chainIds.POLYGON) {
-    mainCoinPrice = emiPrice2.getCoinPrices([koffeeCoin.address], stableTokens, 0);
+  } else if (chainId === chainIds.POLYGON || chainId === chainIds.MUMBAI) {
+    mainCoinPrice = emiPrice2.getCoinPrices([eswCoin.address], stableTokens, 0);
   }
 
   return mainCoinPrice.then((value: BigInt[]) => {
     let coin = daiCoin;
     if (chainId === chainIds.KUCOIN) {
       coin = koffeeCoin;
-    } else if (chainId === chainIds.POLYGON) {
-      coin = koffeeCoin;
+    } else if (chainId === chainIds.POLYGON || chainId === chainIds.MUMBAI) {
+      coin = daiCoin;
     }
 
     const token = new Token(

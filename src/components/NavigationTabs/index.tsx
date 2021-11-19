@@ -7,7 +7,7 @@ import { Link as HistoryLink, NavLink } from 'react-router-dom';
 import { ArrowLeft } from 'react-feather';
 import { RowBetween } from '../Row';
 import QuestionHelper from '../QuestionHelper';
-import { useIsEthActive, useNetworkData } from '../../hooks/Coins';
+import { useIsEthActive, useIsPolygonActive, useNetworkData } from '../../hooks/Coins';
 import { isMobile } from 'react-device-detect';
 import { useBridgeModalToggle } from '../../state/application/hooks';
 
@@ -90,6 +90,7 @@ export enum TabNames {
   MIGRATE,
   INVEST,
   FARM,
+  FARM_365,
 }
 
 //TODO refactor. Component index.tsx must return single component
@@ -101,6 +102,7 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
 
   // const isKuCoinActive = useIsKuCoinActive();
   const isEthereumActive = useIsEthActive();
+  const isPolygonActive = useIsPolygonActive();
 
   const toggleBridgeModal = useBridgeModalToggle();
 
@@ -141,6 +143,15 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
           isActive={() => active === TabNames.FARM}
         >
           {t('Stake & Farm')}
+        </StyledNavLink>
+      )}
+      {isPolygonActive && (
+        <StyledNavLink
+          id={`farm-365-nav-link`}
+          to={'/farm-365'}
+          isActive={() => active === TabNames.FARM_365}
+        >
+          {t('Farm')}
         </StyledNavLink>
       )}
       {isMobile && !isEthereumActive && (
