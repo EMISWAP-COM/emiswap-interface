@@ -66,19 +66,19 @@ const Close = styled.div`
   cursor: pointer;
 `;
 
-export default function LandingModal({ isOpen, onDissmiss }) {
+export default function LandingModal({ isOpen, onDismiss }) {
   return (
     <Modal
       isOpen={isOpen}
       // maxHeight={90}
       maxWidth={606}
-      onDismiss={onDissmiss}
+      onDismiss={onDismiss}
       className="landing_modal"
     >
-      <Header>EmiSwap Smart Farming  <CloseWrapper onClick={onDissmiss} >Close  <Close>X</Close></CloseWrapper></Header>
+      <Header>EmiSwap Smart Farming  <CloseWrapper onClick={onDismiss} >Close  <Close>X</Close></CloseWrapper></Header>
       <ModalContent>
         <p className="lp_popup_heading">180% APR Airdrop</p>
-        
+
         <p>
           Users can provide liquidity in any pool with ESW token (for example ESW/USDT) for at least 1 month and get 180% APR.
         </p>

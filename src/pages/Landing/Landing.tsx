@@ -53,8 +53,10 @@ import listDotSvg from '../../assets/svg/list-dot.svg';
 import listDotVioletSvg from '../../assets/svg/list-dot-violet.svg';
 import hackenSvg from '../../assets/landing/header/hacken.svg';
 import blueswarmSvg from '../../assets/landing/header/blueswarm.svg';
-import { useActiveWeb3React } from '../../hooks';
+import { useSwitchNetwork } from '../../hooks';
 import Modal from './Modal';
+import { networksItems } from '../../constants';
+import chainIds from '../../constants/chainIds';
 
 const Body = styled.div`
   width: 100vw;
@@ -998,17 +1000,17 @@ const Body = styled.div`
 `;
 
 export default function Landing({ history }: any) {
-  const sliderRef = useRef<any>();
   const [t] = useTranslation();
+
+  const { switchNetwork } = useSwitchNetwork();
+
+  const sliderRef = useRef<any>();
 
   const [modalOpened, toggleModal] = useState(false);
 
-
-  const onDissmiss = () => {
+  const onDismiss = () => {
     toggleModal(!modalOpened);
-  }
-
-  const { connector } = useActiveWeb3React();
+  };
 
   const handleClickTeamNext = () => {
     sliderRef.current.slickNext();
@@ -1019,18 +1021,15 @@ export default function Landing({ history }: any) {
   };
 
   const changeChainToPolygon = async () => {
-    const provider = await connector.getProvider();
+    const polygonNetworkItem = networksItems
+      .find(item => item.chainId === chainIds.POLYGON);
 
-    provider.request({
-      "jsonrpc": "2.0",
-      "method": "wallet_switchEthereumChain",
-      "params": [
-        {
-          "chainId": "0x89"
-        }
-      ],
-      "id": 0
-    })
+    await switchNetwork(polygonNetworkItem);
+  };
+
+  const goToPool = () => {
+    // window.open(`${window.location.origin}/pool${window.location.search}`);
+    history.push('/pool');
   };
 
   // const changeLanguage = (lng) => () => {
@@ -1061,17 +1060,17 @@ export default function Landing({ history }: any) {
 
   return (
     <>
-      <Modal isOpen={modalOpened} onDissmiss={onDissmiss} />
+      <Modal isOpen={modalOpened} onDismiss={onDismiss}/>
       <Body>
 
         <div className="landing-wrapper">
           <section className="header">
             <a className="logo" href="/">
-              <img className="logo__img" src={LogoSvg} alt="" />
+              <img className="logo__img" src={LogoSvg} alt=""/>
             </a>
             <div className="nav">
               <a className="nav__link" href="#about">
-                <img className="nav__img" src={AboutSvg} alt="" />
+                <img className="nav__img" src={AboutSvg} alt=""/>
                 <div className="nav__name">{t('about')}</div>
               </a>
               {/* <a className="nav__link" href="#farms">
@@ -1079,11 +1078,11 @@ export default function Landing({ history }: any) {
               <div className="nav__name">Top Farms</div>
             </a> */}
               <a className="nav__link" href="#community">
-                <img className="nav__img" src={CommunitySvg} alt="" />
+                <img className="nav__img" src={CommunitySvg} alt=""/>
                 <div className="nav__name">Community</div>
               </a>
               <a className="nav__link" href="#team">
-                <img className="nav__img" src={TeamSvg} alt="" />
+                <img className="nav__img" src={TeamSvg} alt=""/>
                 <div className="nav__name">Team</div>
               </a>
               {/* <div onClick={changeLanguage('es-US')}>ES</div>
@@ -1093,7 +1092,7 @@ export default function Landing({ history }: any) {
               className="btn-primary start-earing-btn"
               onClick={() => {
                 changeChainToPolygon();
-                window.open(`${window.location.origin}/pool${window.location.search}`);
+                goToPool();
               }}
               style={{ marginLeft: 'auto' }}
             >
@@ -1107,14 +1106,13 @@ export default function Landing({ history }: any) {
                 {t('bannerTitle')}
               </div>
               <div className="banner__desc">
-                EmiSwap is live on Polygon<br /> – this is your chance to earn even more
+                EmiSwap is live on Polygon<br/> – this is your chance to earn even more
               </div>
               <div className="banner__buttons">
                 <button
                   className="btn-primary"
                   style={{ marginRight: 24 }}
-                  // onClick={() =>  history.push('/pool')}
-                  onClick={() => window.open(`${window.location.origin}/pool${window.location.search}`)}
+                  onClick={goToPool}
                 >
                   Connect wallet
                 </button>
@@ -1122,31 +1120,31 @@ export default function Landing({ history }: any) {
                   className="btn-primary"
                   onClick={() => {
                     changeChainToPolygon();
-                    window.open(`${window.location.origin}/pool${window.location.search}`);
+                    goToPool();
                   }}
                 >
                   Start earning
                 </button>
               </div>
               <div className="banner__audited">
-                Audited by: <img src={hackenSvg} alt="" /> & <img src={blueswarmSvg} alt="" />
+                Audited by: <img src={hackenSvg} alt=""/> & <img src={blueswarmSvg} alt=""/>
               </div>
             </div>
             <div className="chart">
               <div className="chart__pie">
-                <img className="chart__pie-img" src={PiePng} alt="" />
+                <img className="chart__pie-img" src={PiePng} alt=""/>
               </div>
               <div className="chart__stats">
                 <div className="chart__stat-item">
                   <div className="chart__stat-name">
-                    <img className="chart__list-dot" src={listDotSvg} alt="" />
+                    <img className="chart__list-dot" src={listDotSvg} alt=""/>
                     Liquidity supply
                   </div>
                   <div className="chart__percent">365%</div>
                 </div>
                 <div className="chart__stat-item">
                   <div className="chart__stat-name" style={{ color: '#7A2DF4' }}>
-                    <img className="chart__list-dot" src={listDotVioletSvg} alt="" />
+                    <img className="chart__list-dot" src={listDotVioletSvg} alt=""/>
                     Farming
                   </div>
                   <div>(coming on 17 Nov)</div>
@@ -1155,7 +1153,7 @@ export default function Landing({ history }: any) {
                 </div>
                 <div className="chart__stat-item">
                   <div className="chart__stat-name" style={{ color: '#E478FF' }}>
-                    <img className="chart__list-dot" src={listDotSvg} alt="" />
+                    <img className="chart__list-dot" src={listDotSvg} alt=""/>
                     Swap commision
                   </div>
                   <div>from volume</div>
@@ -1178,22 +1176,22 @@ export default function Landing({ history }: any) {
               <div className="numbers__list">
                 <div className="numbers__card">
                   <div className="numbers__value">$393K</div>
-                  <hr />
+                  <hr/>
                   <div className="numbers__desc">Total Value Locked</div>
                 </div>
                 <div className="numbers__card">
                   <div className="numbers__value">$3M</div>
-                  <hr />
+                  <hr/>
                   <div className="numbers__desc">Total Trading Volume</div>
                 </div>
                 <div className="numbers__card">
                   <div className="numbers__value">83K</div>
-                  <hr />
+                  <hr/>
                   <div className="numbers__desc">Unique Users</div>
                 </div>
                 <div className="numbers__card">
                   <div className="numbers__value">3K</div>
-                  <hr />
+                  <hr/>
                   <div className="numbers__desc">All-Time Trades</div>
                 </div>
               </div>
@@ -1218,25 +1216,26 @@ export default function Landing({ history }: any) {
                 <div className="apr__state">
                   <div className="apr__state-label">up to</div>
                   <div className="apr__value">
-                    <img className="apr__value-img" src={Apr2000Png} alt="" />
+                    <img className="apr__value-img" src={Apr2000Png} alt=""/>
                   </div>
                   <div className="apr__state-label">APR</div>
                 </div>
-                <img className="apr__line-img" src={rangesSvg} alt="" />
+                <img className="apr__line-img" src={rangesSvg} alt=""/>
               </div>
             </div>
             <div className="apr__list">
               <div className="apr__card">
                 <div className="apr__card-pie-img__wrapper">
-                  <img className="apr__card-pie-img" src={Apr365PiePng} alt="" />
+                  <img className="apr__card-pie-img" src={Apr365PiePng} alt=""/>
                 </div>
                 <div className="apr__card-text">
-                  365% APR: special Airdrop for Liquidity Providers on Polygon. Available only if LP tokens are staked with ESW in Farming pools.
+                  365% APR: special Airdrop for Liquidity Providers on Polygon. Available only if LP tokens are staked
+                  with ESW in Farming pools.
                 </div>
               </div>
               <div className="apr__card">
                 <div className="apr__card-pie-img__wrapper">
-                  <img className="apr__card-pie-img" src={Apr1000PiePng} alt="" />
+                  <img className="apr__card-pie-img" src={Apr1000PiePng} alt=""/>
                 </div>
                 <div className="apr__card-text">
                   Provide Liquidity and stake LP tokens in Farming pools with up to 1000% APR to multiply your rewards.
@@ -1244,7 +1243,7 @@ export default function Landing({ history }: any) {
               </div>
               <div className="apr__card">
                 <div className="apr__card-pie-img__wrapper">
-                  <img className="apr__card-pie-img" src={Apr025PiePng} alt="" />
+                  <img className="apr__card-pie-img" src={Apr025PiePng} alt=""/>
                 </div>
                 <div className="apr__card-text">
                   0.25% of the trading volume in any pool is distributed between Liquidity Providers.
@@ -1261,21 +1260,21 @@ export default function Landing({ history }: any) {
           <section className="about">
             <div className="about__card-list">
               <div className="about__card">
-                <div className="about__card__pennon multi" />
+                <div className="about__card__pennon multi"/>
                 <div className="about__card-name">Swapping fee for all pools</div>
                 <div className="about__card-value">0,30%</div>
               </div>
               <div className="about__card-list__offset">
                 <div className="about__card-list__offset__img">
-                  <img src={linesSvg} alt="" />
+                  <img src={linesSvg} alt=""/>
                 </div>
                 <div className="about__card top">
-                  <div className="about__card__pennon turquoise" />
+                  <div className="about__card__pennon turquoise"/>
                   <div className="about__card-name">LP reward rate</div>
                   <div className="about__card-value">0,25%</div>
                 </div>
                 <div className="about__card bottom">
-                  <div className="about__card__pennon heliotrope" />
+                  <div className="about__card__pennon heliotrope"/>
                   <div className="about__card-name">Distributed among ESW holders</div>
                   <div className="about__card-value">0,05%</div>
                 </div>
@@ -1290,15 +1289,15 @@ export default function Landing({ history }: any) {
               </div>
               <div className="about__info-list">
                 <div className="about__info-list-item">
-                  <div className="about__info-list-item-circle" />
+                  <div className="about__info-list-item-circle"/>
                   <span>100% of gas fees reimbursed (Ethereum)</span>
                 </div>
                 <div className="about__info-list-item">
-                  <div className="about__info-list-item-circle" />
+                  <div className="about__info-list-item-circle"/>
                   <span>Available on Polygon, Ethereum, and KuCoin Blockchain</span>
                 </div>
                 <div className="about__info-list-item">
-                  <div className="about__info-list-item-circle" />
+                  <div className="about__info-list-item-circle"/>
                   <span>Audited by Hacken and BluSwarm</span>
                 </div>
               </div>
@@ -1311,11 +1310,11 @@ export default function Landing({ history }: any) {
             <div className="steps__list">
               <div className="step__card">
                 <div className="step__img__wrapper">
-                  <img className="step__img" src={Step1Png} alt="" />
+                  <img className="step__img" src={Step1Png} alt=""/>
                 </div>
                 <div className="step__info">
                   <div className="step__name">01. Connect your wallet</div>
-                  <hr />
+                  <hr/>
                   <div className="step__desc">
                     EmiSwap supports MetaMask, Coinbase, Fortmatic, Portis & more
                   </div>
@@ -1323,11 +1322,11 @@ export default function Landing({ history }: any) {
               </div>
               <div className="step__card">
                 <div className="step__img__wrapper">
-                  <img className="step__img" src={Step2Png} alt="" />
+                  <img className="step__img" src={Step2Png} alt=""/>
                 </div>
                 <div className="step__info">
                   <div className="step__name">02. Pick a pool</div>
-                  <hr />
+                  <hr/>
                   <div className="step__desc">
                     Use ‘Add Liquidity’ tab to supply crypto to the pool
                   </div>
@@ -1335,11 +1334,11 @@ export default function Landing({ history }: any) {
               </div>
               <div className="step__card">
                 <div className="step__img__wrapper">
-                  <img className="step__img" src={Step3Png} alt="" />
+                  <img className="step__img" src={Step3Png} alt=""/>
                 </div>
                 <div className="step__info">
                   <div className="step__name">03. Get LP tokens</div>
-                  <hr />
+                  <hr/>
                   <div className="step__desc">
                     LP tokens are issued automatically. Use them to farm & earn even more
                   </div>
@@ -1347,11 +1346,11 @@ export default function Landing({ history }: any) {
               </div>
               <div className="step__card">
                 <div className="step__img__wrapper">
-                  <img className="step__img" src={Step4Png} alt="" />
+                  <img className="step__img" src={Step4Png} alt=""/>
                 </div>
                 <div className="step__info">
                   <div className="step__name">04. Start earning</div>
-                  <hr />
+                  <hr/>
                   <div className="step__desc">
                     Use the ‘Farming’ tab to stake LP tokens & earn $ESW rewards
                   </div>
@@ -1361,7 +1360,7 @@ export default function Landing({ history }: any) {
           </section>
           <section id="community" className="socials">
             <div className="socials__image">
-              <img className="socials__img" src={SocialsCardPng} alt="" />
+              <img className="socials__img" src={SocialsCardPng} alt=""/>
             </div>
             <div className="socials__links">
               <div className="section__header">
@@ -1381,7 +1380,7 @@ export default function Landing({ history }: any) {
                     </a>
                   </div>
                   <div>
-                    <img className="social__icon-img" src={TwitterPng} alt="" />
+                    <img className="social__icon-img" src={TwitterPng} alt=""/>
                   </div>
                 </div>
                 <div className="social__card">
@@ -1397,7 +1396,7 @@ export default function Landing({ history }: any) {
                     </a>
                   </div>
                   <div>
-                    <img className="social__icon-img" src={TelegramPng} alt="" />
+                    <img className="social__icon-img" src={TelegramPng} alt=""/>
                   </div>
                 </div>
                 <div className="social__card">
@@ -1413,7 +1412,7 @@ export default function Landing({ history }: any) {
                     </a>
                   </div>
                   <div>
-                    <img className="social__icon-img" src={MediumPng} alt="" />
+                    <img className="social__icon-img" src={MediumPng} alt=""/>
                   </div>
                 </div>
                 <div className="social__card">
@@ -1429,7 +1428,7 @@ export default function Landing({ history }: any) {
                     </a>
                   </div>
                   <div>
-                    <img className="social__icon-img" src={GitHubPng} alt="" />
+                    <img className="social__icon-img" src={GitHubPng} alt=""/>
                   </div>
                 </div>
               </div>
@@ -1441,23 +1440,23 @@ export default function Landing({ history }: any) {
             </div>
             <div className="partners__list">
               <div>
-                <img src={emirexLogo} alt="Emirex" />
-                <img src={bitmartLogo} alt="BitMart" />
-                <img src={everestLogo} alt="Everest" />
-                <img src={digifinexLogo} alt="Digifinex" />
+                <img src={emirexLogo} alt="Emirex"/>
+                <img src={bitmartLogo} alt="BitMart"/>
+                <img src={everestLogo} alt="Everest"/>
+                <img src={digifinexLogo} alt="Digifinex"/>
               </div>
               <div>
-                <img src={nearLogo} alt="Near" />
-                <img src={movrLogo} alt="Movr" />
-                <img src={kukoinLogo} alt="Kukoin" />
-                <img src={shidenLogo} alt="Shiden" />
-                <img src={uboostLogo} alt="Uboost" />
+                <img src={nearLogo} alt="Near"/>
+                <img src={movrLogo} alt="Movr"/>
+                <img src={kukoinLogo} alt="Kukoin"/>
+                <img src={shidenLogo} alt="Shiden"/>
+                <img src={uboostLogo} alt="Uboost"/>
               </div>
               <div>
-                <img src={alphaLogo} alt="Alpha" />
-                <img src={unilendLogo} alt="Unilend" />
-                <img src={yieldLogo} alt="Yield" />
-                <img src={polygonLogo} alt="Polygon" />
+                <img src={alphaLogo} alt="Alpha"/>
+                <img src={unilendLogo} alt="Unilend"/>
+                <img src={yieldLogo} alt="Yield"/>
+                <img src={polygonLogo} alt="Polygon"/>
               </div>
             </div>
           </section>
@@ -1473,41 +1472,41 @@ export default function Landing({ history }: any) {
                   />
                 </button>
                 <button className="team__slider-btn" onClick={handleClickTeamNext}>
-                  <img className="team__slider-btn-icon" src={SlideArrowSvg} alt="" />
+                  <img className="team__slider-btn-icon" src={SlideArrowSvg} alt=""/>
                 </button>
               </div>
             </div>
             <div className="team__slider">
               <Slider ref={sliderRef} {...sliderSettings}>
                 <div className="team__person-card">
-                  <img className="team__person-img" src={GregPng} alt="" />
+                  <img className="team__person-img" src={GregPng} alt=""/>
                   <div className="team__person-info">
                     <div className="team__person-name">Greg Mars</div>
-                    <hr />
+                    <hr/>
                     <div className="team__person-desc">Founder & CEO</div>
                   </div>
                 </div>
                 <div className="team__person-card">
-                  <img className="team__person-img" src={MarinaPng} alt="" />
+                  <img className="team__person-img" src={MarinaPng} alt=""/>
                   <div className="team__person-info">
                     <div className="team__person-name">Marina Moon</div>
-                    <hr />
+                    <hr/>
                     <div className="team__person-desc">Business Development Officer</div>
                   </div>
                 </div>
                 <div className="team__person-card">
-                  <img className="team__person-img" src={AndrePng} alt="" />
+                  <img className="team__person-img" src={AndrePng} alt=""/>
                   <div className="team__person-info">
                     <div className="team__person-name">Andre Antares</div>
-                    <hr />
+                    <hr/>
                     <div className="team__person-desc">Head of Marketing</div>
                   </div>
                 </div>
                 <div className="team__person-card">
-                  <img className="team__person-img" src={JuliaPng} alt="" />
+                  <img className="team__person-img" src={JuliaPng} alt=""/>
                   <div className="team__person-info">
                     <div className="team__person-name">Julia Yakubova</div>
-                    <hr />
+                    <hr/>
                     <div className="team__person-desc">Marketing Project Manager</div>
                   </div>
                 </div>
@@ -1520,10 +1519,10 @@ export default function Landing({ history }: any) {
                 </div>
               </div> */}
                 <div className="team__person-card">
-                  <img className="team__person-img" src={IsmailPng} alt="" />
+                  <img className="team__person-img" src={IsmailPng} alt=""/>
                   <div className="team__person-info">
                     <div className="team__person-name">Ismail Bagosher</div>
-                    <hr />
+                    <hr/>
                     <div className="team__person-desc">Business Development Officer</div>
                   </div>
                 </div>
@@ -1539,7 +1538,7 @@ export default function Landing({ history }: any) {
                 />
               </button>
               <button className="team__slider-btn" onClick={handleClickTeamNext}>
-                <img className="team__slider-btn-icon" src={SlideArrowSvg} alt="" />
+                <img className="team__slider-btn-icon" src={SlideArrowSvg} alt=""/>
               </button>
             </div>
           </section>
@@ -1549,16 +1548,21 @@ export default function Landing({ history }: any) {
                 <div className="section__title">Earn 1% a day on EmiSwap Polygon with 0 effort</div>
               </div>
               <div className="polygon__desc">
-                All LPs on EmiSwap Polygon are eligible for the unique 365% APR airdrop. Connect wallet, add liquidity to any pool, stake LP tokens in pair with $ESW – and get a daily 1% return + staking rewards. The first airdrop distribution will be three months after the user removes liquidity or the campaign ends. The rewards for staking are distributed on a daily basis.
+                All LPs on EmiSwap Polygon are eligible for the unique 365% APR airdrop. Connect wallet, add liquidity
+                to any pool, stake LP tokens in pair with $ESW – and get a daily 1% return + staking rewards. The first
+                airdrop distribution will be three months after the user removes liquidity or the campaign ends. The
+                rewards for staking are distributed on a daily basis.
               </div>
-              <button className="btn-primary" onClick={() => {
+              <button
+                className="btn-primary" onClick={() => {
                 changeChainToPolygon();
-                window.open(`${window.location.origin}/pool${window.location.search}`)
-              }}>
+                goToPool();
+              }}
+              >
                 Start Earning
               </button>
             </div>
-            <img className="polygon__img" src={PolygonCardPng} alt="" />
+            <img className="polygon__img" src={PolygonCardPng} alt=""/>
           </section>
         </div>
       </Body>
