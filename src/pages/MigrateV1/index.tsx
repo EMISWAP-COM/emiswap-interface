@@ -213,16 +213,16 @@ export default function MigrateV1() {
 
           <StyledHr style={{ margin: '24px 0' }} />
 
-          <TYPE.black fontSize={14} fontWeight={400} color={theme.text2} marginTop={'12px'}>
-            <ExternalGreenLink href="https://emiswap.medium.com/your-guide-to-the-emiswap-referral-program-f142a4170d1">
-              Find more about our multi-level EmiSwap Referral Program
-            </ExternalGreenLink>
-          </TYPE.black>
-          
           <div>
             <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
               <ExternalGreenLink href="https://wiki.emiswap.com/user-guide/how-to-migrate-liquidity">
                 Wiki How to migrate liquidity?
+              </ExternalGreenLink>
+            </TYPE.black>
+
+            <TYPE.black fontSize={14} fontWeight={400} color={theme.text2} marginTop={'12px'}>
+              <ExternalGreenLink href="https://emiswap.medium.com/your-guide-to-the-emiswap-referral-program-f142a4170d1">
+                Find more about our multi-level EmiSwap Referral Program
               </ExternalGreenLink>
             </TYPE.black>
           </div>

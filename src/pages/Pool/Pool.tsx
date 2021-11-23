@@ -160,12 +160,6 @@ const Pool = () => {
                   </StyledGreenLink>
                 </Text>
 
-                <TYPE.black fontSize={14} fontWeight={400} color={theme.text2} marginTop={'12px'}>
-                  <ExternalGreenLink href="https://emiswap.medium.com/your-guide-to-the-emiswap-referral-program-f142a4170d1">
-                    Find more about our multi-level EmiSwap Referral Program
-                  </ExternalGreenLink>
-                </TYPE.black>
-
                 <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
                   {/* <div>
                     <ExternalGreenLink href={MEDIUM_LINK}>
@@ -177,6 +171,12 @@ const Pool = () => {
                       Wiki How to provide liquidity?
                     </ExternalGreenLink>
                   </div>
+                </TYPE.black>
+
+                <TYPE.black fontSize={14} fontWeight={400} color={theme.text2} marginTop={'12px'}>
+                  <ExternalGreenLink href="https://emiswap.medium.com/your-guide-to-the-emiswap-referral-program-f142a4170d1">
+                    Find more about our multi-level EmiSwap Referral Program
+                  </ExternalGreenLink>
                 </TYPE.black>
               </div>
               <ReferralLink />
