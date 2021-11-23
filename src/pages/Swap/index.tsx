@@ -525,6 +525,13 @@ export default function Swap() {
           {isEthActive && (
             <GasFeeText>100% gas fee refund</GasFeeText>
           )}
+
+          <TYPE.black fontSize={14} fontWeight={400} color={theme.text2} marginTop={'24px'}>
+            <ExternalGreenLink href="https://emiswap.medium.com/your-guide-to-the-emiswap-referral-program-f142a4170d1">
+              Find more about our multi-level EmiSwap Referral Program
+            </ExternalGreenLink>
+          </TYPE.black>
+
           <TYPE.black fontSize={14} fontWeight={400} color={theme.text2} marginTop={'12px'}>
             <ExternalGreenLink href="https://wiki.emiswap.com/user-guide/how-to-make-swaps">
               Wiki How to make swaps?
