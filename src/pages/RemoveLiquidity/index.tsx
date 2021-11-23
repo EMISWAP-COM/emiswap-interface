@@ -54,7 +54,7 @@ export default function RemoveLiquidity({
   const [tokenA, tokenB] = useMemo(() => [currencyA, currencyB], [currencyA, currencyB]);
 
   // const isKuCoinActive = useIsKuCoinActive();
-  const {currencySymbolWrap} = useNetworkData();
+  const {currencySymbolWrap, value: network} = useNetworkData();
 
   const theme = useContext(ThemeContext);
 
@@ -317,6 +317,7 @@ export default function RemoveLiquidity({
             metric1: parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
             metric2: parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
             dimension3: account,
+            dimension5: network
           });
 
           ReactGA.event({
@@ -333,6 +334,7 @@ export default function RemoveLiquidity({
             metric1: parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
             metric2: parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
             dimension3: account,
+            dimension5: network
           });
 
           ReactGA.event({

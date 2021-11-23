@@ -30,7 +30,7 @@ import Modal from '../../components/Modal';
 import { BigNumber } from '@ethersproject/bignumber';
 import vamp_addresses from '../../constants/vamp_addresses';
 import ReactGA from 'react-ga';
-import { useIsKuCoinActive } from '../../hooks/Coins';
+import { useIsKuCoinActive, useNetworkData } from '../../hooks/Coins';
 
 const POOL_CURRENCY_AMOUNT_MIN = new Fraction(JSBI.BigInt(1), JSBI.BigInt(1000000));
 
@@ -195,6 +195,7 @@ export default function MigrateV1Exchange({
   const notEnoughBalance = !inputCurrencyBalance || +inputCurrencyBalance?.toExact() < +amount;
 
   const isKuCoinActive = useIsKuCoinActive();
+  const { value: network } = useNetworkData();
 
   useEffect(() => {
     // base pair tokens
@@ -230,6 +231,7 @@ export default function MigrateV1Exchange({
                 dimension2: currency1?.symbol,
                 metric1: parsedAmount?.toFixed(),
                 dimension3: account,
+                dimension5: network,
               });
 
               ReactGA.event({
@@ -246,6 +248,7 @@ export default function MigrateV1Exchange({
                 dimension2: currency1?.symbol,
                 metric1: parsedAmount?.toFixed(),
                 dimension3: account,
+                dimension5: network,
               });
 
               ReactGA.event({
@@ -267,6 +270,7 @@ export default function MigrateV1Exchange({
             dimension2: currency1?.symbol,
             metric1: parsedAmount?.toFixed(),
             dimension3: account,
+            dimension5: network,
           });
 
           ReactGA.event({
