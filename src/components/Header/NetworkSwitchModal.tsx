@@ -8,13 +8,9 @@ import {
 import { Text } from 'rebass';
 import styled from 'styled-components/macro';
 import CircleCheckIcon from '../../assets/svg/circle-check.svg';
-import { toHex } from 'web3-utils';
-import { useActiveWeb3React } from '../../hooks';
+import { useActiveWeb3React, useSwitchNetwork } from '../../hooks';
 import { INetworkItem, networksItems } from '../../constants';
 import ConfirmSwitchModal from './ConfirmSwitchModal';
-import { FortmaticConnector } from '../../connectors/Fortmatic';
-import { PortisConnector } from '@web3-react/portis-connector';
-import { useWeb3React } from '@web3-react/core';
 import chainIds from '../../constants/chainIds';
 import NetworkNeedSwitchModal from './NetworkNeedSwitchModal';
 import { useIsMetaMask } from '../../hooks/Coins';
@@ -68,12 +64,11 @@ const NetworkName = styled(Text)<{ active: boolean }>`
 
 export default function NetworkSwitchModal() {
 
-  const { ethereum } = window as any;
-
-  const { chainId, connector } = useActiveWeb3React();
-  const { deactivate } = useWeb3React();
+  const { chainId } = useActiveWeb3React();
 
   const isMetaMask = useIsMetaMask();
+
+  const { switchNetwork } = useSwitchNetwork();
 
   const [selectedItem, setSelectedItem] = useState<INetworkItem>(null);
   const [isVisibleNeedSwitchModal, setVisibleNeedSwitchModal] = useState<boolean>(false);
@@ -81,68 +76,6 @@ export default function NetworkSwitchModal() {
   const networkSwitchModalOpen = useNetworkSwitchModalOpen();
   const toggleNetworkSwitchModal = useNetworkSwitchModalToggle();
   const toggleConfirmSwitchModal = useConfirmSwitchModalToggle();
-
-  const switchNetwork = async (item: INetworkItem) => {
-    console.log(item);
-
-    try {
-      ethereum.removeAllListeners(["networkChanged"]);
-      
-      const result = await ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: toHex(item.chainId) }],
-      });
-      console.log(result);
-      console.log('switch 1');
-    } catch (switchError) {
-      if (switchError.code === 4902) {
-        try {
-          await ethereum.request({
-            method: 'wallet_addEthereumChain',
-            params: [
-              {
-                chainId: toHex(item.chainId),
-                chainName: item.name,
-                rpcUrls: item.rpcUrls,
-                nativeCurrency: {
-                  name: item.currencySymbol,
-                  symbol: item.currencySymbol,
-                  decimals: 18,
-                },
-              },
-            ],
-          });
-          console.log('switch 2');
-        } catch (addError) {
-          console.log(addError);
-        }
-      } else {
-        console.log(switchError);
-      }
-    } finally {
-      await providerLogout();
-    }
-  };
-
-  const providerLogout = async () => {
-    if (isMetaMask) {
-      return;
-    }
-
-    const provider = await connector.getProvider();
-
-    if (connector instanceof FortmaticConnector && connector?.fortmatic) {
-      connector.fortmatic?.user.logout();
-      deactivate();
-    } else if (connector instanceof PortisConnector && connector?.portis) {
-      connector.portis.logout();
-      deactivate();
-    } else if (provider?.close) {
-      provider.close();
-    } else {
-      deactivate();
-    }
-  };
 
   const onClickItem = async (item: INetworkItem) => {
     if (item.chainId === chainId) {

@@ -44,7 +44,7 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { AdvancedSwapDetails } from '../../components/swap/AdvancedSwapDetails';
 import { useTransactionPrice } from '../../hooks/useTransactionPrice';
 import ReferralLink from '../../components/RefferalLink';
-import { useIsEthActive } from '../../hooks/Coins';
+import { useIsEthActive, useNetworkData } from '../../hooks/Coins';
 
 const GasFeeText = styled.div`
   margin-top: 8px;
@@ -190,6 +190,7 @@ export default function Swap() {
   const atMaxAmountInput = Boolean(
     maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput),
   );
+  const { value: network } = useNetworkData();
 
   const slippageAdjustedAmounts = computeSlippageAdjustedAmounts(trade, allowedSlippage);
 
@@ -214,28 +215,31 @@ export default function Swap() {
           metric1: parsedAmounts[Field.INPUT]?.toFixed(),
           metric2: parsedAmounts[Field.OUTPUT]?.toFixed(),
           dimension3: account,
+          dimension5: network,
         });
 
         ReactGA.event({
           category: 'Transaction',
           action: 'new',
           label: 'swap',
+          value: parseFloat(parsedAmounts[Field.INPUT]?.toFixed() || ''),
         });
       })
       .catch(error => {
         setAttemptingTxn(false);
-        console.log("Cancel");
         ReactGA.set({
           dimension1: currencies[Field.INPUT]?.symbol,
           dimension2: currencies[Field.OUTPUT]?.symbol,
           metric1: parsedAmounts[Field.INPUT]?.toFixed(),
           metric2: parsedAmounts[Field.OUTPUT]?.toFixed(),
           dimension3: account,
+          dimension5: network,
         });
         ReactGA.event({
           category: 'Transaction',
           action: 'cancel',
           label: 'swap',
+          value: parseFloat(parsedAmounts[Field.INPUT]?.toFixed() || ''),
         });
         // we only care if the error is something _other_ than the user rejected the tx
         if (error?.code !== 4001) {
@@ -525,11 +529,19 @@ export default function Swap() {
           {isEthActive && (
             <GasFeeText>100% gas fee refund</GasFeeText>
           )}
-          <TYPE.black fontSize={14} fontWeight={400} color={theme.text2} marginTop={'12px'}>
+
+          <TYPE.black fontSize={14} fontWeight={400} color={theme.text2} marginTop={'24px'}>
             <ExternalGreenLink href="https://wiki.emiswap.com/user-guide/how-to-make-swaps">
               Wiki How to make swaps?
             </ExternalGreenLink>
           </TYPE.black>
+
+          <TYPE.black fontSize={14} fontWeight={400} color={theme.text2} marginTop={'12px'}>
+            <ExternalGreenLink href="https://emiswap.medium.com/your-guide-to-the-emiswap-referral-program-f142a4170d1">
+              Find more about our multi-level EmiSwap Referral Program
+            </ExternalGreenLink>
+          </TYPE.black>
+
           <ReferralLink />
         </Wrapper>
         <AdvancedSwapDetails trade={trade} />
