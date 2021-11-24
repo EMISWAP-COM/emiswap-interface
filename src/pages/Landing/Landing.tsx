@@ -68,7 +68,7 @@ export default function Landing({ history }: any) {
   const teamSectionRef = useRef<any>();
   const sliderRef = useRef<any>();
   const { t, i18n } = useTranslation();
-  const { account, connector } = useActiveWeb3React();
+  const { account } = useActiveWeb3React();
 
   const isAboutInViewport = useIntersection(aboutSectionRef, '0px');
   const isCommunityInViewport = useIntersection(communitySectionRef, '0px');
