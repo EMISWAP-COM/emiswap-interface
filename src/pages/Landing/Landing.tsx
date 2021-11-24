@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Slider from 'react-slick';
-import Switch from "react-switch";
+import Switch from 'react-switch';
 
 import LogoSvg from '../../assets/svg/logo.svg';
 import AboutSvg from '../../assets/landing/header/about.svg';
@@ -54,8 +54,10 @@ import listDotSvg from '../../assets/svg/list-dot.svg';
 import listDotVioletSvg from '../../assets/svg/list-dot-violet.svg';
 import hackenSvg from '../../assets/landing/header/hacken.svg';
 import blueswarmSvg from '../../assets/landing/header/blueswarm.svg';
-import { useActiveWeb3React } from '../../hooks';
+import { useActiveWeb3React, useSwitchNetwork } from '../../hooks';
 import { LandingModal } from './Modal';
+import { networksItems } from '../../constants';
+import chainIds from '../../constants/chainIds';
 
 import { Body } from './styleds';
 import useIntersection from '../../hooks/useIntersection';
@@ -77,17 +79,19 @@ export default function Landing({ history }: any) {
     const firstEl = [
       ['about', isAboutInViewport],
       ['community', isCommunityInViewport],
-      ['team', isTeamInViewport]
+      ['team', isTeamInViewport],
     ].find(el => el[1]);
 
     return firstEl && firstEl[0] === name;
   }, [isAboutInViewport, isCommunityInViewport, isTeamInViewport]);
 
+  const { switchNetwork } = useSwitchNetwork();
+
   const [modalOpened, toggleModal] = useState(false);
 
   const onDissmiss = () => {
     toggleModal(!modalOpened);
-  }
+  };
 
   const handleClickTeamNext = () => {
     sliderRef.current.slickNext();
@@ -98,18 +102,15 @@ export default function Landing({ history }: any) {
   };
 
   const changeChainToPolygon = async () => {
-    const provider = await connector.getProvider();
+    const polygonNetworkItem = networksItems
+      .find(item => item.chainId === chainIds.POLYGON);
 
-    provider.request({
-      "jsonrpc": "2.0",
-      "method": "wallet_switchEthereumChain",
-      "params": [
-        {
-          "chainId": "0x89"
-        }
-      ],
-      "id": 0
-    })
+    await switchNetwork(polygonNetworkItem);
+  };
+
+  const goToPool = () => {
+    // window.open(`${window.location.origin}/pool${window.location.search}`);
+    history.push('/pool');
   };
 
   const changeLanguage = (lng) => {
@@ -142,17 +143,17 @@ export default function Landing({ history }: any) {
 
   return (
     <>
-      <LandingModal isOpen={modalOpened} onDissmiss={onDissmiss} />
+      <LandingModal isOpen={modalOpened} onDissmiss={onDissmiss}/>
       <Body>
 
         <div className="landing-wrapper">
           <section className="header">
             <a className="logo" href="/">
-              <img className="logo__img" src={LogoSvg} alt="" />
+              <img className="logo__img" src={LogoSvg} alt=""/>
             </a>
             <div className="nav">
               <a className={`nav__link ${sectionInViewPort('about') ? 'nav__link--active' : ''}`} href="#about">
-                <img className="nav__img" src={AboutSvg} alt="" />
+                <img className="nav__img" src={AboutSvg} alt=""/>
                 <div className="nav__name">{t('landing.menu.about')}</div>
               </a>
               {/* <a className="nav__link" href="#farms">
@@ -160,11 +161,11 @@ export default function Landing({ history }: any) {
               <div className="nav__name">Top Farms</div>
             </a> */}
               <a className={`nav__link ${sectionInViewPort('community') ? 'nav__link--active' : ''}`} href="#community">
-                <img className="nav__img" src={CommunitySvg} alt="" />
+                <img className="nav__img" src={CommunitySvg} alt=""/>
                 <div className="nav__name">{t('landing.menu.community')}</div>
               </a>
               <a className={`nav__link ${sectionInViewPort('team') ? 'nav__link--active' : ''}`} href="#team">
-                <img className="nav__img" src={TeamSvg} alt="" />
+                <img className="nav__img" src={TeamSvg} alt=""/>
                 <div className="nav__name">{t('landing.menu.team')}</div>
               </a>
             </div>
@@ -184,16 +185,20 @@ export default function Landing({ history }: any) {
                 onChange={() => changeLanguage(currentLanguage === 'es-US' ? 'en' : 'es-US')}
               />
               <div className="options">
-                <div className={currentLanguage === 'en' ? 'active': ''} onClick={() => changeLanguage('en')}>Eng</div>|
-                <div className={currentLanguage === 'es-US' ? 'active': ''} onClick={() => changeLanguage('es-US')}>Esp</div>
+                <div className={currentLanguage === 'en' ? 'active' : ''} onClick={() => changeLanguage('en')}>Eng</div>
+                |
+                <div
+                  className={currentLanguage === 'es-US' ? 'active' : ''}
+                  onClick={() => changeLanguage('es-US')}
+                >Esp</div>
               </div>
               <button
                 className="btn-primary btn-earn"
                 onClick={() => {
                   changeChainToPolygon();
-                  window.open(`${window.location.origin}/pool${window.location.search}`);
+                  goToPool();
                 }}
-                
+
               >
                 {t('landing.button.startEarning')}
               </button>
@@ -212,7 +217,7 @@ export default function Landing({ history }: any) {
                   <button
                     className="btn-primary"
                     style={{ marginRight: 24 }}
-                    onClick={() => window.open(`${window.location.origin}/pool${window.location.search}`)}
+                    onClick={goToPool}
                   >
                     {t('landing.button.connect-wallet')}
                   </button>
@@ -221,31 +226,31 @@ export default function Landing({ history }: any) {
                   className="btn-primary"
                   onClick={() => {
                     changeChainToPolygon();
-                    window.open(`${window.location.origin}/pool${window.location.search}`);
+                    goToPool();
                   }}
                 >
                   {t('landing.button.startEarning')}
                 </button>
               </div>
               <div className="banner__audited">
-                Audited by: <img src={hackenSvg} alt="" /> & <img src={blueswarmSvg} alt="" />
+                Audited by: <img src={hackenSvg} alt=""/> & <img src={blueswarmSvg} alt=""/>
               </div>
             </div>
             <div className="chart">
               <div className="chart__pie">
-                <img className="chart__pie-img" src={currentLanguage === 'es-US' ? PieEs : PieEn} alt="" />
+                <img className="chart__pie-img" src={currentLanguage === 'es-US' ? PieEs : PieEn} alt=""/>
               </div>
               <div className="chart__stats">
                 <div className="chart__stat-item">
                   <div className="chart__stat-name">
-                    <img className="chart__list-dot" src={listDotSvg} alt="" />
+                    <img className="chart__list-dot" src={listDotSvg} alt=""/>
                     {t('landing.banner.supply')}
                   </div>
                   <div className="chart__percent">365%</div>
                 </div>
                 <div className="chart__stat-item">
                   <div className="chart__stat-name" style={{ color: '#7A2DF4' }}>
-                    <img className="chart__list-dot" src={listDotVioletSvg} alt="" />
+                    <img className="chart__list-dot" src={listDotVioletSvg} alt=""/>
                     {t('landing.banner.farming')}
                   </div>
                   <div className="chart__percent-label">{t('landing.upTo')}</div>
@@ -253,7 +258,7 @@ export default function Landing({ history }: any) {
                 </div>
                 <div className="chart__stat-item">
                   <div className="chart__stat-name" style={{ color: '#E478FF' }}>
-                    <img className="chart__list-dot" src={listDotSvg} alt="" />
+                    <img className="chart__list-dot" src={listDotSvg} alt=""/>
                     {t('landing.banner.swap')}
                   </div>
                   <div className="chart__percent-label">{t('landing.banner.volume')}</div>
@@ -276,22 +281,22 @@ export default function Landing({ history }: any) {
               <div className="numbers__list">
                 <div className="numbers__card">
                   <div className="numbers__value">$488K</div>
-                  <hr />
+                  <hr/>
                   <div className="numbers__desc">{t('landing.numbers.value')}</div>
                 </div>
                 <div className="numbers__card">
                   <div className="numbers__value">$3.2M</div>
-                  <hr />
+                  <hr/>
                   <div className="numbers__desc">{t('landing.numbers.volume')}</div>
                 </div>
                 <div className="numbers__card">
                   <div className="numbers__value">84K</div>
-                  <hr />
+                  <hr/>
                   <div className="numbers__desc">{t('landing.numbers.users')}</div>
                 </div>
                 <div className="numbers__card">
                   <div className="numbers__value">3.8K</div>
-                  <hr />
+                  <hr/>
                   <div className="numbers__desc">{t('landing.numbers.trades')}</div>
                 </div>
               </div>
@@ -316,17 +321,17 @@ export default function Landing({ history }: any) {
                 <div className="apr__state">
                   <div className="apr__state-label">{t('landing.upTo')}</div>
                   <div className="apr__value">
-                    <img className="apr__value-img" src={Apr2000Png} alt="" />
+                    <img className="apr__value-img" src={Apr2000Png} alt=""/>
                   </div>
                   <div className="apr__state-label">APR</div>
                 </div>
-                <img className="apr__line-img" src={rangesSvg} alt="" />
+                <img className="apr__line-img" src={rangesSvg} alt=""/>
               </div>
             </div>
             <div className="apr__list">
               <div className="apr__card">
                 <div className="apr__card-pie-img__wrapper">
-                  <img className="apr__card-pie-img" src={Apr365PiePng} alt="" />
+                  <img className="apr__card-pie-img" src={Apr365PiePng} alt=""/>
                 </div>
                 <div className="apr__card-text">
                   {t('landing.365')}
@@ -334,7 +339,7 @@ export default function Landing({ history }: any) {
               </div>
               <div className="apr__card">
                 <div className="apr__card-pie-img__wrapper">
-                  <img className="apr__card-pie-img" src={Apr1000PiePng} alt="" />
+                  <img className="apr__card-pie-img" src={Apr1000PiePng} alt=""/>
                 </div>
                 <div className="apr__card-text">
                   {t('landing.1000')}
@@ -342,7 +347,7 @@ export default function Landing({ history }: any) {
               </div>
               <div className="apr__card">
                 <div className="apr__card-pie-img__wrapper">
-                  <img className="apr__card-pie-img" src={Apr025PiePng} alt="" />
+                  <img className="apr__card-pie-img" src={Apr025PiePng} alt=""/>
                 </div>
                 <div className="apr__card-text">
                   {t('landing.025')}
@@ -359,21 +364,21 @@ export default function Landing({ history }: any) {
           <section className="about">
             <div className="about__card-list">
               <div className="about__card">
-                <div className="about__card__pennon multi" />
+                <div className="about__card__pennon multi"/>
                 <div className="about__card-name">{t('landing.about.swapping')}</div>
                 <div className="about__card-value">0,30%</div>
               </div>
               <div className="about__card-list__offset">
                 <div className="about__card-list__offset__img">
-                  <img src={linesSvg} alt="" />
+                  <img src={linesSvg} alt=""/>
                 </div>
                 <div className="about__card top">
-                  <div className="about__card__pennon turquoise" />
+                  <div className="about__card__pennon turquoise"/>
                   <div className="about__card-name">{t('landing.about.reward')}</div>
                   <div className="about__card-value">0,25%</div>
                 </div>
                 <div className="about__card bottom">
-                  <div className="about__card__pennon heliotrope" />
+                  <div className="about__card__pennon heliotrope"/>
                   <div className="about__card-name">{t('landing.about.distributed')}</div>
                   <div className="about__card-value">0,05%</div>
                 </div>
@@ -388,15 +393,15 @@ export default function Landing({ history }: any) {
               </div>
               <div className="about__info-list">
                 <div className="about__info-list-item">
-                  <div className="about__info-list-item-circle" />
+                  <div className="about__info-list-item-circle"/>
                   <span>{t('landing.about.list.1')}</span>
                 </div>
                 <div className="about__info-list-item">
-                  <div className="about__info-list-item-circle" />
+                  <div className="about__info-list-item-circle"/>
                   <span>{t('landing.about.list.2')}</span>
                 </div>
                 <div className="about__info-list-item">
-                  <div className="about__info-list-item-circle" />
+                  <div className="about__info-list-item-circle"/>
                   <span>{t('landing.about.list.3')}</span>
                 </div>
               </div>
@@ -405,7 +410,7 @@ export default function Landing({ history }: any) {
                 className="btn-primary apr__button-paper"
                 onClick={() => window.open('https://about.emiswap.com/whitepaper')}
               >
-                <img className="btn-icon" src={AboutSvg} alt="" />
+                <img className="btn-icon" src={AboutSvg} alt=""/>
                 {t('landing.button.paper')}
               </button>
             </div>
@@ -417,11 +422,11 @@ export default function Landing({ history }: any) {
             <div className="steps__list">
               <div className="step__card">
                 <div className="step__img__wrapper">
-                  <img className="step__img" src={Step1Png} alt="" />
+                  <img className="step__img" src={Step1Png} alt=""/>
                 </div>
                 <div className="step__info">
                   <div className="step__name">01. {t('landing.4steps.1.title')}</div>
-                  <hr />
+                  <hr/>
                   <div className="step__desc">
                     {t('landing.4steps.1.subtitle')}
                   </div>
@@ -429,11 +434,11 @@ export default function Landing({ history }: any) {
               </div>
               <div className="step__card">
                 <div className="step__img__wrapper">
-                  <img className="step__img" src={Step2Png} alt="" />
+                  <img className="step__img" src={Step2Png} alt=""/>
                 </div>
                 <div className="step__info">
                   <div className="step__name">02. {t('landing.4steps.2.title')}</div>
-                  <hr />
+                  <hr/>
                   <div className="step__desc">
                     {t('landing.4steps.2.subtitle')}
                   </div>
@@ -441,11 +446,11 @@ export default function Landing({ history }: any) {
               </div>
               <div className="step__card">
                 <div className="step__img__wrapper">
-                  <img className="step__img" src={Step3Png} alt="" />
+                  <img className="step__img" src={Step3Png} alt=""/>
                 </div>
                 <div className="step__info">
                   <div className="step__name">03. {t('landing.4steps.3.title')}</div>
-                  <hr />
+                  <hr/>
                   <div className="step__desc">
                     {t('landing.4steps.3.subtitle')}
                   </div>
@@ -453,11 +458,11 @@ export default function Landing({ history }: any) {
               </div>
               <div className="step__card">
                 <div className="step__img__wrapper">
-                  <img className="step__img" src={Step4Png} alt="" />
+                  <img className="step__img" src={Step4Png} alt=""/>
                 </div>
                 <div className="step__info">
                   <div className="step__name">04. {t('landing.4steps.4.title')}</div>
-                  <hr />
+                  <hr/>
                   <div className="step__desc">
                     {t('landing.4steps.4.subtitle')}
                   </div>
@@ -467,7 +472,7 @@ export default function Landing({ history }: any) {
           </section>
           <section id="community" className="socials" ref={communitySectionRef}>
             <div className="socials__image">
-              <img className="socials__img" src={SocialsCardPng} alt="" />
+              <img className="socials__img" src={SocialsCardPng} alt=""/>
             </div>
             <div className="socials__links">
               <div className="section__header">
@@ -487,7 +492,7 @@ export default function Landing({ history }: any) {
                     </a>
                   </div>
                   <div>
-                    <img className="social__icon-img" src={TwitterPng} alt="" />
+                    <img className="social__icon-img" src={TwitterPng} alt=""/>
                   </div>
                 </div>
                 <div className="social__card">
@@ -503,7 +508,7 @@ export default function Landing({ history }: any) {
                     </a>
                   </div>
                   <div>
-                    <img className="social__icon-img" src={TelegramPng} alt="" />
+                    <img className="social__icon-img" src={TelegramPng} alt=""/>
                   </div>
                 </div>
                 <div className="social__card">
@@ -519,7 +524,7 @@ export default function Landing({ history }: any) {
                     </a>
                   </div>
                   <div>
-                    <img className="social__icon-img" src={MediumPng} alt="" />
+                    <img className="social__icon-img" src={MediumPng} alt=""/>
                   </div>
                 </div>
                 <div className="social__card">
@@ -535,7 +540,7 @@ export default function Landing({ history }: any) {
                     </a>
                   </div>
                   <div>
-                    <img className="social__icon-img" src={GitHubPng} alt="" />
+                    <img className="social__icon-img" src={GitHubPng} alt=""/>
                   </div>
                 </div>
               </div>
@@ -547,23 +552,23 @@ export default function Landing({ history }: any) {
             </div>
             <div className="partners__list">
               <div>
-                <img src={emirexLogo} alt="Emirex" />
-                <img src={bitmartLogo} alt="BitMart" />
-                <img src={everestLogo} alt="Everest" />
-                <img src={digifinexLogo} alt="Digifinex" />
+                <img src={emirexLogo} alt="Emirex"/>
+                <img src={bitmartLogo} alt="BitMart"/>
+                <img src={everestLogo} alt="Everest"/>
+                <img src={digifinexLogo} alt="Digifinex"/>
               </div>
               <div>
-                <img src={nearLogo} alt="Near" />
-                <img src={movrLogo} alt="Movr" />
-                <img src={kukoinLogo} alt="Kukoin" />
-                <img src={shidenLogo} alt="Shiden" />
-                <img src={uboostLogo} alt="Uboost" />
+                <img src={nearLogo} alt="Near"/>
+                <img src={movrLogo} alt="Movr"/>
+                <img src={kukoinLogo} alt="Kukoin"/>
+                <img src={shidenLogo} alt="Shiden"/>
+                <img src={uboostLogo} alt="Uboost"/>
               </div>
               <div>
-                <img src={alphaLogo} alt="Alpha" />
-                <img src={unilendLogo} alt="Unilend" />
-                <img src={yieldLogo} alt="Yield" />
-                <img src={polygonLogo} alt="Polygon" />
+                <img src={alphaLogo} alt="Alpha"/>
+                <img src={unilendLogo} alt="Unilend"/>
+                <img src={yieldLogo} alt="Yield"/>
+                <img src={polygonLogo} alt="Polygon"/>
               </div>
             </div>
           </section>
@@ -579,41 +584,41 @@ export default function Landing({ history }: any) {
                   />
                 </button>
                 <button className="team__slider-btn" onClick={handleClickTeamNext}>
-                  <img className="team__slider-btn-icon" src={SlideArrowSvg} alt="" />
+                  <img className="team__slider-btn-icon" src={SlideArrowSvg} alt=""/>
                 </button>
               </div>
             </div>
             <div className="team__slider">
               <Slider ref={sliderRef} {...sliderSettings}>
                 <div className="team__person-card">
-                  <img className="team__person-img" src={GregPng} alt="" />
+                  <img className="team__person-img" src={GregPng} alt=""/>
                   <div className="team__person-info">
                     <div className="team__person-name">{t('landing.team.1.name')}</div>
-                    <hr />
+                    <hr/>
                     <div className="team__person-desc">{t('landing.team.1.position')}</div>
                   </div>
                 </div>
                 <div className="team__person-card">
-                  <img className="team__person-img" src={MarinaPng} alt="" />
+                  <img className="team__person-img" src={MarinaPng} alt=""/>
                   <div className="team__person-info">
                     <div className="team__person-name">{t('landing.team.2.name')}</div>
-                    <hr />
+                    <hr/>
                     <div className="team__person-desc">{t('landing.team.2.position')}</div>
                   </div>
                 </div>
                 <div className="team__person-card">
-                  <img className="team__person-img" src={AndrePng} alt="" />
+                  <img className="team__person-img" src={AndrePng} alt=""/>
                   <div className="team__person-info">
                     <div className="team__person-name">{t('landing.team.3.name')}</div>
-                    <hr />
+                    <hr/>
                     <div className="team__person-desc">{t('landing.team.3.position')}</div>
                   </div>
                 </div>
                 <div className="team__person-card">
-                  <img className="team__person-img" src={JuliaPng} alt="" />
+                  <img className="team__person-img" src={JuliaPng} alt=""/>
                   <div className="team__person-info">
                     <div className="team__person-name">{t('landing.team.4.name')}</div>
-                    <hr />
+                    <hr/>
                     <div className="team__person-desc">{t('landing.team.4.position')}</div>
                   </div>
                 </div>
@@ -626,10 +631,10 @@ export default function Landing({ history }: any) {
                 </div>
               </div> */}
                 <div className="team__person-card">
-                  <img className="team__person-img" src={IsmailPng} alt="" />
+                  <img className="team__person-img" src={IsmailPng} alt=""/>
                   <div className="team__person-info">
                     <div className="team__person-name">Ismail Bagosher</div>
-                    <hr />
+                    <hr/>
                     <div className="team__person-desc">Business Development Officer</div>
                   </div>
                 </div>
@@ -645,7 +650,7 @@ export default function Landing({ history }: any) {
                 />
               </button>
               <button className="team__slider-btn" onClick={handleClickTeamNext}>
-                <img className="team__slider-btn-icon" src={SlideArrowSvg} alt="" />
+                <img className="team__slider-btn-icon" src={SlideArrowSvg} alt=""/>
               </button>
             </div>
           </section>
@@ -657,10 +662,12 @@ export default function Landing({ history }: any) {
               <div className="polygon__desc">
                 {t('landing.polygon.text')}
               </div>
-              <button className="btn-primary" onClick={() => {
+              <button
+                className="btn-primary" onClick={() => {
                 changeChainToPolygon();
-                window.open(`${window.location.origin}/pool${window.location.search}`)
-              }}>
+                goToPool();
+              }}
+              >
                 {t('landing.button.startEarning')}
               </button>
 
@@ -668,11 +675,11 @@ export default function Landing({ history }: any) {
                 className="btn-primary transparent apr__button-paper"
                 onClick={() => window.open('https://polygonscan.com/address/0x18f38359551258c35e8593d775cb6fe8d27fd89b')}
               >
-                <img className="btn-icon" src={AboutSvg} alt="" />
+                <img className="btn-icon" src={AboutSvg} alt=""/>
                 {t('landing.button.viewOn')}
               </button>
             </div>
-            <img className="polygon__img" src={PolygonCardPng} alt="" />
+            <img className="polygon__img" src={PolygonCardPng} alt=""/>
           </section>
         </div>
       </Body>

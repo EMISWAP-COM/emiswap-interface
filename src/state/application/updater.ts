@@ -16,11 +16,37 @@ export default function Updater() {
     blockNumber: null,
   });
 
+  useEffect(() => {
+    if ((window as any).ethereum) {
+      handleEthereum();
+    } else {
+      window.addEventListener('ethereum#initialized', handleEthereum, {
+        once: true,
+      });
+
+      // If the event is not dispatched by the end of the timeout,
+      // the user probably doesn't have MetaMask installed.
+      setTimeout(handleEthereum, 3000);
+    }
+
+    function handleEthereum() {
+      const { ethereum } = (window as any);
+      if (ethereum && ethereum.isMetaMask) {
+        console.log('Ethereum successfully detected!');
+        // Access the decentralized web!
+      } else {
+        console.log('Please install MetaMask!');
+      }
+    }
+  }, []);
+
   const blockNumberCallback = useCallback(
     (blockNumber: number) => {
       setState(state => {
         if (chainId === state.chainId) {
-          if (typeof state.blockNumber !== 'number') return { chainId, blockNumber };
+          if (typeof state.blockNumber !== 'number') {
+            return { chainId, blockNumber };
+          }
           return { chainId, blockNumber: Math.max(blockNumber, state.blockNumber) };
         }
         return state;
@@ -31,7 +57,9 @@ export default function Updater() {
 
   // attach/detach listeners
   useEffect(() => {
-    if (!library || !chainId || !windowVisible) return;
+    if (!library || !chainId || !windowVisible) {
+      return;
+    }
 
     setState({ chainId, blockNumber: null });
 
@@ -49,7 +77,9 @@ export default function Updater() {
   const debouncedState = useDebounce(state, 100);
 
   useEffect(() => {
-    if (!debouncedState.chainId || !debouncedState.blockNumber || !windowVisible) return;
+    if (!debouncedState.chainId || !debouncedState.blockNumber || !windowVisible) {
+      return;
+    }
     dispatch(
       updateBlockNumber({
         chainId: debouncedState.chainId,
