@@ -114,6 +114,7 @@ const TokenCollect: React.FC<TokenInputProps> = ({
           category: 'Transaction',
           action: 'new',
           label: `un${isLpToken(tokenMode) ? 'farm' : 'stake'}`,
+          value: parseFloat(deposit),
         });
       })
       .catch(error => {
@@ -132,6 +133,7 @@ const TokenCollect: React.FC<TokenInputProps> = ({
           category: 'Transaction',
           action: 'cancel',
           label: `un${isLpToken(tokenMode) ? 'farm' : 'stake'}`,
+          value: parseFloat(deposit),
         });
       });
   }, [

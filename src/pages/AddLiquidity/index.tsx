@@ -209,6 +209,7 @@ export default function AddLiquidity({
                 category: 'Transaction',
                 action: 'new',
                 label: 'pool',
+                value:  parseFloat(parsedAmounts[Field.CURRENCY_A]?.raw.toString() || ''),
               });
 
               setShowConfirm(true);
@@ -237,6 +238,7 @@ export default function AddLiquidity({
               category: 'Transaction',
               action: 'cancel',
               label: 'pool',
+              value:  parseFloat(parsedAmounts[Field.CURRENCY_A]?.raw.toString() || ''),
             });
 
             setShowConfirm(false);
@@ -270,7 +272,8 @@ export default function AddLiquidity({
         ReactGA.event({
           category: 'Transaction',
           action: 'cancel',
-          label: 'pool',
+          label: 'pool', 
+          value:  parseFloat(parsedAmounts[Field.CURRENCY_A]?.raw.toString() || ''),
         });
 
         setShowConfirm(false);
@@ -371,6 +374,7 @@ export default function AddLiquidity({
                 category: 'Transaction',
                 action: 'new',
                 label: 'pool',
+                value:  parseFloat(parsedAmounts[Field.CURRENCY_A]?.raw.toString() || ''),
               });
             } catch (error) {
               ReactGA.set({
@@ -386,6 +390,7 @@ export default function AddLiquidity({
                 category: 'Transaction',
                 action: 'cancel',
                 label: 'pool',
+                value:  parseFloat(parsedAmounts[Field.CURRENCY_A]?.raw.toString() || ''),
               });
               throw new Error(`
               Account: ${account}\n
@@ -411,6 +416,7 @@ export default function AddLiquidity({
               category: 'Transaction',
               action: 'cancel',
               label: 'pool',
+              value:  parseFloat(parsedAmounts[Field.CURRENCY_A]?.raw.toString() || ''),
             });
             throw new Error(`
             Account: ${account}\n
@@ -441,6 +447,7 @@ export default function AddLiquidity({
           category: 'Transaction',
           action: 'cancel',
           label: 'pool',
+          value:  parseFloat(parsedAmounts[Field.CURRENCY_A]?.raw.toString() || ''),
         });
         throw new Error(`
             Account: ${account}\n

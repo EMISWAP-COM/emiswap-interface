@@ -324,6 +324,7 @@ export default function RemoveLiquidity({
             category: 'Transaction',
             action: 'new',
             label: 'unpool',
+            value:  parseFloat(parsedAmounts[Field.CURRENCY_A]?.raw.toString() || ''),
           });
         })
         .catch((error: Error) => {
@@ -339,8 +340,9 @@ export default function RemoveLiquidity({
 
           ReactGA.event({
             category: 'Transaction',
-            action: 'new',
+            action: 'cancel',
             label: 'unpool',
+            value:  parseFloat(parsedAmounts[Field.CURRENCY_A]?.raw.toString() || ''),
           });
           // we only care if the error is something _other_ than the user rejected the tx
           console.error(error);
