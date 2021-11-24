@@ -267,7 +267,7 @@ export default function Landing({ history }: any) {
               <div className="section__header">
                 <div className="section__title">{t('landing.numbers.title')}</div>
                 <button
-                  className="btn-primary numbers__btn-analytics-top"
+                  className="btn-primary transparent numbers__btn-analytics-top"
                   onClick={() => window.open('https://emiswap.com/analytics/home?network=polygon')}
                 >
                   {t('landing.button.analytics')}
@@ -296,7 +296,7 @@ export default function Landing({ history }: any) {
                 </div>
               </div>
               <button
-                className="btn-primary numbers__btn-analytics-bottom"
+                className="btn-primary transparent numbers__btn-analytics-bottom"
                 onClick={() => window.open('https://emiswap.com/analytics/home?network=polygon')}
               >
                 {t('landing.button.analytics')}
@@ -306,7 +306,7 @@ export default function Landing({ history }: any) {
 
           <section className="apr">
             <button
-              className="btn-primary apr__button-more"
+              className="btn-primary transparent apr__button-more"
               onClick={() => toggleModal(true)}
             >
               {t('landing.button.more')}
@@ -350,7 +350,7 @@ export default function Landing({ history }: any) {
               </div>
             </div>
             <button
-              className="btn-primary apr__button-more apr__button-more--bottom"
+              className="btn-primary transparent apr__button-more apr__button-more--bottom"
               onClick={() => toggleModal(true)}
             >
               {t('landing.button.more')}
@@ -400,6 +400,14 @@ export default function Landing({ history }: any) {
                   <span>{t('landing.about.list.3')}</span>
                 </div>
               </div>
+
+              <button
+                className="btn-primary apr__button-paper"
+                onClick={() => window.open('https://about.emiswap.com/whitepaper')}
+              >
+                <img className="btn-icon" src={AboutSvg} alt="" />
+                {t('landing.button.paper')}
+              </button>
             </div>
           </section>
           <section className="steps">
@@ -654,6 +662,14 @@ export default function Landing({ history }: any) {
                 window.open(`${window.location.origin}/pool${window.location.search}`)
               }}>
                 {t('landing.button.startEarning')}
+              </button>
+
+              <button
+                className="btn-primary transparent apr__button-paper"
+                onClick={() => window.open('https://polygonscan.com/address/0x18f38359551258c35e8593d775cb6fe8d27fd89b')}
+              >
+                <img className="btn-icon" src={AboutSvg} alt="" />
+                {t('landing.button.viewOn')}
               </button>
             </div>
             <img className="polygon__img" src={PolygonCardPng} alt="" />

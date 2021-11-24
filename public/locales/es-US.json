@@ -85,7 +85,9 @@
       "close": "Cerrar",
       "join": "únete ahora",
       "analytics": "Ir a los análisis",
-      "more": "Más información"
+      "more": "Más información",
+      "paper": "White paper",
+      "viewOn": "View on Polygonscan"
     },
     "banner": {
       "title": "365% APR y más\n Esfuerzo cero\n Solo en EmiSwap AMM DEX",

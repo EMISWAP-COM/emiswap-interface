@@ -18,7 +18,7 @@ export const Body = styled.div`
 
   .btn-primary {
     min-width: 150px;
-    padding: 8px 24px;
+    padding: 8px 32px;
     border: none;
     outline: none;
     border-radius: 4px;
@@ -29,6 +29,11 @@ export const Body = styled.div`
     color: #FFFFFF;
     box-shadow: none;
     cursor: pointer;
+
+    &.transparent {
+      border: 1px solid #7A2DF4;
+      background: transparent;
+    }
   }
   
   .landing-wrapper {
@@ -414,11 +419,33 @@ export const Body = styled.div`
         margin: 60px 20px;
      }
 
+    &__button-paper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 42px;
+
+      @media screen and (max-width: 769px) {
+        margin: 32px auto 0;
+        width: 100%;
+      }
+
+      .btn-icon {
+        filter: brightness(100);
+        margin-right: 14px;
+      }
+    }
+
     &__button-more {
       float: right;
 
       @media screen and (max-width: 1040px) {
         display: none;
+      }
+
+      @media screen and (max-width: 769px) {
+        width: 100%;
+        margin: 20px auto 20px;
       }
 
       &--bottom {
@@ -428,6 +455,10 @@ export const Body = styled.div`
           display: block;
           margin: 60px auto 20px;
           float: none;
+        }
+
+        @media screen and (max-width: 769px) {
+          margin: 20px auto 20px;
         }
       }
     }
@@ -1004,6 +1035,20 @@ export const Body = styled.div`
       
       @media screen and (max-width: 769px) {
         height: initial;
+      }
+    }
+
+    button {
+      :first-of-type {
+        margin-right: 20px;
+      }
+
+      &.apr__button-paper {
+        display: inline-flex;
+      }
+
+      @media screen and (max-width: 769px) {
+        width: 100%;
       }
     }
   }
