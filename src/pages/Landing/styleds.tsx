@@ -1045,6 +1045,7 @@ export const Body = styled.div`
 
       &.apr__button-paper {
         display: inline-flex;
+        vertical-align: bottom;
       }
 
       @media screen and (max-width: 769px) {
