@@ -131,29 +131,25 @@ export function useSwitchNetwork() {
       console.log(result);
       console.log('switch 1');
     } catch (switchError) {
-      if (switchError.code === 4902) {
-        try {
-          await ethereum.request({
-            method: 'wallet_addEthereumChain',
-            params: [
-              {
-                chainId: toHex(item.chainId),
-                chainName: item.name,
-                rpcUrls: item.rpcUrls,
-                nativeCurrency: {
-                  name: item.currencySymbol,
-                  symbol: item.currencySymbol,
-                  decimals: 18,
-                },
+      try {
+        await ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [
+            {
+              chainId: toHex(item.chainId),
+              chainName: item.name,
+              rpcUrls: item.rpcUrls,
+              nativeCurrency: {
+                name: item.currencySymbol,
+                symbol: item.currencySymbol,
+                decimals: 18,
               },
-            ],
-          });
-          console.log('switch 2');
-        } catch (addError) {
-          console.log(addError);
-        }
-      } else {
-        console.log(switchError);
+            },
+          ],
+        });
+        console.log('switch 2');
+      } catch (addError) {
+        console.log(addError);
       }
     } finally {
       await providerLogout();

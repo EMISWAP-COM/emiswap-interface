@@ -235,7 +235,7 @@ export const SUGGESTED_BASES: ChainTokenList = {
   // @ts-ignore
   [chainIds.POLYGON]: [ESW[chainIds.POLYGON][0]],
   // @ts-ignore
-  [chainIds.MUMBAI]:  [ESW[chainIds.MUMBAI][0]],
+  [chainIds.MUMBAI]: [ESW[chainIds.MUMBAI][0]],
   // @ts-ignore
   [chainIds.AVALANCHE]: [ESW[chainIds.AVALANCHE][0]],
 };
@@ -250,7 +250,7 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   // @ts-ignore
   [chainIds.POLYGON]: [ESW[chainIds.POLYGON][0]],
   // @ts-ignore
-  [chainIds.MUMBAI]:  [ESW[chainIds.MUMBAI][0]],
+  [chainIds.MUMBAI]: [ESW[chainIds.MUMBAI][0]],
   // @ts-ignore
   [chainIds.AVALANCHE]: [ESW[chainIds.AVALANCHE][0]],
 };
@@ -468,10 +468,8 @@ export const networksItems: INetworkItem[] = [
     chainId: chainIds.POLYGON,
     token: MATIC,
     icon: PolygonNetworkIcon,
-    name: 'Polygon', // 'Polygon (Matic)',
-    rpcUrls: [
-      'https://rpc-mumbai.matic.today',
-    ],
+    name: 'Polygon',
+    rpcUrls: ['https://polygon-rpc.com/'],
     currencySymbol: 'MATIC',
     currencySymbolWrap: 'WMATIC',
     currencySymbolWeth: 'WMATIC',
