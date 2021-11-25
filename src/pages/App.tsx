@@ -82,15 +82,19 @@ export default function App() {
   }, [connector]);
 
   useEffect(() => {
-    const search = window.location.href.split('?');
-    // throw new TypeError('type invalid')
+    if (window.location.hash) {
+      window.location.replace(window.location.href.replace('/#/', '/'))
+    }
 
-    if (search[1] && search[1].length) {
-      localStorage.setItem('UTMMarks', `?${search[1]}`);
+    const search = window.location.search;
+    
+    if (search.length && search.startsWith('?r=')) {
+      localStorage.setItem('UTMMarks', search);
 
-      // Redirect from all link with refferal
+      // Redirect from all links with refferal
       if (window.location.pathname === '/landing') return;
 
+      // Already redirected from landing
       if (localStorage.getItem('l_redirect') === 'true') {
         localStorage.removeItem('l_redirect');
 
@@ -103,8 +107,9 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    const search = window.location.href.split('?');
-    if (search[1] && search[1].length) {
+    // Change chain to Polygon if it's referral link
+    const search = window.location.search;
+    if (search.length && search.startsWith('?r=')) {
       if (isMobile && connector) changeChainToPolygon()
     }
   }, [connector, changeChainToPolygon]);
