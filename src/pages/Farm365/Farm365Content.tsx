@@ -1,5 +1,6 @@
 import styled from 'styled-components/macro';
 import React, { useEffect, useMemo, useState } from 'react';
+import ReactGA from 'react-ga';
 import Button from '../../base/ui/Button';
 import CurrencyLogo from '../../components/CurrencyLogo';
 import LpTokenSymbol from '../Farm/LpTokenSymbol';
@@ -14,6 +15,7 @@ import { parseUnits } from '@ethersproject/units';
 import { tokenAmountToString } from '../../utils/formats';
 import { useAllTransactions } from '../../state/transactions/hooks';
 import { useCurrencyBalance } from '../../state/wallet/hooks';
+import { useNetworkData } from '../../hooks/Coins';
 
 const Content = styled.div`
   display: flex;
@@ -114,6 +116,7 @@ export default function Farm365Content({
   farming365,
 }: Farm365ContentProps) {
   const { chainId, account } = useActiveWeb3React();
+  const { value: network } = useNetworkData();
 
   const farmingAddresses = getFarmingAddresses(chainId)[0];
 
@@ -301,10 +304,41 @@ export default function Farm365Content({
   const handleClickStakeBtn = async () => {
     console.log(approvalEsw);
     console.log(approvalLp);
-
+    
     if (isStakeAllowed) {
-      await farming365.stake(lpCurrency, lpValue, eswValue);
-      farming365.updateStakedTokens();
+      try {
+        await farming365.stake(lpCurrency, lpValue, eswValue);
+        farming365.updateStakedTokens();
+
+        ReactGA.set({
+          dimension1: lpCurrency,
+          metric1: lpValue,
+          dimension3: account,
+          dimension5: network,
+        });
+      
+        ReactGA.event({
+          category: "Transaction",
+          action: "new",
+          label: "stake",
+          value: parseFloat(lpValue),
+        });
+      } catch (e) {
+        ReactGA.set({
+          dimension1: lpCurrency,
+          metric1: lpValue,
+          dimension3: account,
+          dimension5: network,
+        });
+      
+        ReactGA.event({
+          category: "Transaction",
+          action: "cancel",
+          label: "stake",
+          value: parseFloat(lpValue),
+        });
+      }
+      
     } else if (![ApprovalState.PENDING, ApprovalState.APPROVED].includes(approvalEsw)) {
       approveEswCallback();
     } else if (![ApprovalState.PENDING, ApprovalState.APPROVED].includes(approvalLp)) {
