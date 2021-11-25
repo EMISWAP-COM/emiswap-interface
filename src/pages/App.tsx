@@ -37,8 +37,6 @@ import Landing from './Landing/Landing';
 import { useActiveWeb3React } from '../hooks';
 import Farm365 from './Farm365/Farm365';
 
-
-
 const BodyWrapper = styled.div`
   display: flex;
   flex-direction: column;
