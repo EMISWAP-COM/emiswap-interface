@@ -1,7 +1,8 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Slider from 'react-slick';
 import Switch from 'react-switch';
+import { isMobile } from 'react-device-detect';
 
 import LogoSvg from '../../assets/svg/logo.svg';
 import AboutSvg from '../../assets/landing/header/about.svg';
@@ -62,6 +63,51 @@ import chainIds from '../../constants/chainIds';
 import { Body } from './styleds';
 import useIntersection from '../../hooks/useIntersection';
 
+const getLiquidityAndValue = (url: string) =>
+  fetch(url, {
+    headers: {
+      "content-type": "application/json",
+    },
+    body: '{"query":"{\\n  emiswapFactories(first: 1) {\\n    totalLiquidityUSD\\n    totalVolumeUSD\\n  }\\n}\\n","variables":null}',
+    method: "POST",
+  });
+
+const useLiquidityAndVolume = () => {
+  const [pair, setPair] = useState(["$488K", "$3.2M"]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const ethRes = await getLiquidityAndValue(
+        "https://api.thegraph.com/subgraphs/name/lombardi22/emiswap8"
+      );
+      const ethData = await ethRes.json();
+      const kccRes = await getLiquidityAndValue(
+        "https://thegraph.kcc.network/subgraphs/name/emiswap/emiswap1"
+      );
+      const kccData = await kccRes.json();
+      const polygonRes = await getLiquidityAndValue(
+        "https://api.thegraph.com/subgraphs/name/lombardi22/polygon"
+      );
+      const polygonData = await polygonRes.json();
+
+      const data = [ethData, kccData, polygonData].reduce(
+        (acc, item) => [
+          acc[0] + parseInt(item.data.emiswapFactories[0].totalLiquidityUSD),
+          acc[1] + parseInt(item.data.emiswapFactories[0].totalVolumeUSD),
+        ],
+        [0, 0]
+      );
+
+      setPair([
+        `$${Math.ceil(data[0] / 1000)}K`,
+        `$${Math.ceil(data[1] / 100000) / 10}M`,
+      ]);
+    };
+    fetchData();
+  }, []);
+  return pair;
+};
+
+
 export default function Landing({ history }: any) {
   const aboutSectionRef = useRef<any>();
   const communitySectionRef = useRef<any>();
@@ -69,6 +115,9 @@ export default function Landing({ history }: any) {
   const sliderRef = useRef<any>();
   const { t, i18n } = useTranslation();
   const { account } = useActiveWeb3React();
+
+
+  const [totalValueLocked, totalTradingVolume] = useLiquidityAndVolume()
 
   const isAboutInViewport = useIntersection(aboutSectionRef, '0px');
   const isCommunityInViewport = useIntersection(communitySectionRef, '0px');
@@ -109,8 +158,11 @@ export default function Landing({ history }: any) {
   };
 
   const goToPool = () => {
-    // window.open(`${window.location.origin}/pool${window.location.search}`);
-    history.push('/pool');
+    if (isMobile) {
+      history.push('/pool');
+    } else {
+      window.open(`${window.location.origin}/pool${window.location.search}`);
+    }
   };
 
   const changeLanguage = (lng) => {
@@ -280,12 +332,12 @@ export default function Landing({ history }: any) {
               </div>
               <div className="numbers__list">
                 <div className="numbers__card">
-                  <div className="numbers__value">$488K</div>
+                  <div className="numbers__value">{totalValueLocked}</div>
                   <hr/>
                   <div className="numbers__desc">{t('landing.numbers.value')}</div>
                 </div>
                 <div className="numbers__card">
-                  <div className="numbers__value">$3.2M</div>
+                  <div className="numbers__value">{totalTradingVolume}</div>
                   <hr/>
                   <div className="numbers__desc">{t('landing.numbers.volume')}</div>
                 </div>
