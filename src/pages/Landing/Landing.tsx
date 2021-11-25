@@ -2,6 +2,7 @@ import React, { useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Slider from 'react-slick';
 import Switch from 'react-switch';
+import { isMobile } from 'react-device-detect';
 
 import LogoSvg from '../../assets/svg/logo.svg';
 import AboutSvg from '../../assets/landing/header/about.svg';
@@ -109,8 +110,11 @@ export default function Landing({ history }: any) {
   };
 
   const goToPool = () => {
-    // window.open(`${window.location.origin}/pool${window.location.search}`);
-    history.push('/pool');
+    if (isMobile) {
+      history.push('/pool');
+    } else {
+      window.open(`${window.location.origin}/pool${window.location.search}`);
+    }
   };
 
   const changeLanguage = (lng) => {
