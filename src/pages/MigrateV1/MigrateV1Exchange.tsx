@@ -238,7 +238,7 @@ export default function MigrateV1Exchange({
                 category: 'Transaction',
                 action: 'new',
                 label: 'migrate',
-                value: parseFloat(parsedAmount?.toFixed()),
+                value: parseInt(parsedAmount?.toFixed()),
               });
               setAmount('0');
               addTransaction(response);
@@ -256,7 +256,7 @@ export default function MigrateV1Exchange({
                 category: 'Transaction',
                 action: 'cancel',
                 label: 'migrate',
-                value: parseFloat(parsedAmount?.toFixed()),
+                value: parseInt(parsedAmount?.toFixed()),
               });
               if (error?.code === 4001) {
                 throw error;
@@ -279,7 +279,7 @@ export default function MigrateV1Exchange({
             category: 'Transaction',
             action: 'cancel',
             label: 'migrate',
-            value: parseFloat(parsedAmount?.toFixed()),
+            value: parseInt(parsedAmount?.toFixed()),
           });
           return undefined;
         });

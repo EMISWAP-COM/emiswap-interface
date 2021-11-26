@@ -180,7 +180,7 @@ const Invest = () => {
         ReactGA.event({
           category: 'purchase',
           action: 'Invest',
-          value: Number(parsedAmounts[Field.OUTPUT]?.toExact()),
+          value: Math.round(Number(parsedAmounts[Field.OUTPUT]?.toExact()))
         });
       })
       .catch((error: any) => {

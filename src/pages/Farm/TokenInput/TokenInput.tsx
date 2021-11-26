@@ -133,7 +133,7 @@ const TokenInput: React.FC<TokenInputProps> = ({ contractAddress, token, onStake
           category: 'Transaction',
           action: 'new',
           label: `${isLpToken(tokenMode) ? 'farm' : 'stake'}`,
-          value: parseFloat(inputValue),
+          value: parseInt(inputValue),
         });
       })
       .catch(error => {
@@ -150,7 +150,7 @@ const TokenInput: React.FC<TokenInputProps> = ({ contractAddress, token, onStake
           category: 'Transaction',
           action: 'cancel',
           label: `${isLpToken(tokenMode) ? 'farm' : 'stake'}`,
-          value: parseFloat(inputValue),
+          value: parseInt(inputValue),
         });
       });
   }, [onStake, inputValue, token.symbol, tokenMode, addEthErrorPopup, account, network]);

@@ -222,7 +222,7 @@ export default function Swap() {
           category: 'Transaction',
           action: 'new',
           label: 'swap',
-          value: parseFloat(parsedAmounts[Field.INPUT]?.toFixed() || ''),
+          value: parseInt(parsedAmounts[Field.INPUT]?.toFixed() || ''),
         });
       })
       .catch(error => {
@@ -239,7 +239,7 @@ export default function Swap() {
           category: 'Transaction',
           action: 'cancel',
           label: 'swap',
-          value: parseFloat(parsedAmounts[Field.INPUT]?.toFixed() || ''),
+          value: parseInt(parsedAmounts[Field.INPUT]?.toFixed() || ''),
         });
         // we only care if the error is something _other_ than the user rejected the tx
         if (error?.code !== 4001) {
