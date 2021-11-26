@@ -324,7 +324,7 @@ export default function RemoveLiquidity({
             category: 'Transaction',
             action: 'new',
             label: 'unpool',
-            value:  parseInt(parsedAmounts[Field.CURRENCY_A]?.toFixed() || ''),
+            value:  Math.round(parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || '')),
           });
         })
         .catch((error: Error) => {
@@ -342,7 +342,7 @@ export default function RemoveLiquidity({
             category: 'Transaction',
             action: 'cancel',
             label: 'unpool',
-            value:  parseInt(parsedAmounts[Field.CURRENCY_A]?.toFixed() || ''),
+            value:  Math.round(parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || '')),
           });
           // we only care if the error is something _other_ than the user rejected the tx
           console.error(error);
