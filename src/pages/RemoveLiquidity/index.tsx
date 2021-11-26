@@ -314,8 +314,8 @@ export default function RemoveLiquidity({
             dimension4: response.hash,
             dimension1: currencyA?.symbol,
             dimension2: currencyB?.symbol,
-            metric1: parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
-            metric2: parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
+            metric1: parsedAmounts[Field.CURRENCY_A]?.toFixed(),
+            metric2: parsedAmounts[Field.CURRENCY_B]?.toFixed(),
             dimension3: account,
             dimension5: network
           });
@@ -332,8 +332,8 @@ export default function RemoveLiquidity({
           ReactGA.set({
             dimension1: currencyA?.symbol,
             dimension2: currencyB?.symbol,
-            metric1: parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
-            metric2: parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
+            metric1: parsedAmounts[Field.CURRENCY_A]?.toFixed(),
+            metric2: parsedAmounts[Field.CURRENCY_B]?.toFixed(),
             dimension3: account,
             dimension5: network
           });

@@ -199,8 +199,8 @@ export default function AddLiquidity({
                 dimension4: response.hash,
                 dimension1: currencies[Field.CURRENCY_A]?.symbol,
                 dimension2: currencies[Field.CURRENCY_B]?.symbol,
-                metric1: parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
-                metric2: parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
+                metric1: parsedAmounts[Field.CURRENCY_A]?.toFixed(),
+                metric2: parsedAmounts[Field.CURRENCY_B]?.toFixed(),
                 dimension3: account,
                 dimension5: network,
               });
@@ -228,8 +228,8 @@ export default function AddLiquidity({
             ReactGA.set({
               dimension1: currencies[Field.CURRENCY_A]?.symbol,
               dimension2: currencies[Field.CURRENCY_B]?.symbol,
-              metric1: parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
-              metric2: parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
+              metric1: parsedAmounts[Field.CURRENCY_A]?.toFixed(),
+              metric2: parsedAmounts[Field.CURRENCY_B]?.toFixed(),
               dimension3: account,
               dimension5: network,
             });
@@ -263,8 +263,8 @@ export default function AddLiquidity({
         ReactGA.set({
           dimension1: currencies[Field.CURRENCY_A]?.symbol,
           dimension2: currencies[Field.CURRENCY_B]?.symbol,
-          metric1: parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
-          metric2: parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
+          metric1: parsedAmounts[Field.CURRENCY_A]?.toFixed(),
+          metric2: parsedAmounts[Field.CURRENCY_B]?.toFixed(),
           dimension3: account,
           dimension5: network,
         });
@@ -364,8 +364,8 @@ export default function AddLiquidity({
                 dimension4: response.hash,
                 dimension1: currencies[Field.CURRENCY_A]?.symbol,
                 dimension2: currencies[Field.CURRENCY_B]?.symbol,
-                metric1: parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
-                metric2: parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
+                metric1: parsedAmounts[Field.CURRENCY_A]?.toFixed(),
+                metric2: parsedAmounts[Field.CURRENCY_B]?.toFixed(),
                 dimension3: account,
                 dimension5: network,
               });
@@ -380,8 +380,8 @@ export default function AddLiquidity({
               ReactGA.set({
                 dimension1: currencies[Field.CURRENCY_A]?.symbol,
                 dimension2: currencies[Field.CURRENCY_B]?.symbol,
-                metric1: parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
-                metric2: parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
+                metric1: parsedAmounts[Field.CURRENCY_A]?.toFixed(),
+                metric2: parsedAmounts[Field.CURRENCY_B]?.toFixed(),
                 dimension3: account,
                 dimension5: network,
               });
@@ -406,8 +406,8 @@ export default function AddLiquidity({
             ReactGA.set({
               dimension1: currencies[Field.CURRENCY_A]?.symbol,
               dimension2: currencies[Field.CURRENCY_B]?.symbol,
-              metric1: parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
-              metric2: parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
+              metric1: parsedAmounts[Field.CURRENCY_A]?.toFixed(),
+              metric2: parsedAmounts[Field.CURRENCY_B]?.toFixed(),
               dimension3: account,
               dimension5: network,
             });
@@ -437,8 +437,8 @@ export default function AddLiquidity({
         ReactGA.set({
           dimension1: currencies[Field.CURRENCY_A]?.symbol,
           dimension2: currencies[Field.CURRENCY_B]?.symbol,
-          metric1: parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
-          metric2: parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
+          metric1: parsedAmounts[Field.CURRENCY_A]?.toFixed(),
+          metric2: parsedAmounts[Field.CURRENCY_B]?.toFixed(),
           dimension3: account,
           dimension5: network,
         });
