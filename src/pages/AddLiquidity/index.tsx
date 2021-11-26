@@ -209,7 +209,7 @@ export default function AddLiquidity({
                 category: 'Transaction',
                 action: 'new',
                 label: 'pool',
-                value:  parseFloat(parsedAmounts[Field.CURRENCY_A]?.raw.toString() || ''),
+                value:  parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || ''),
               });
 
               setShowConfirm(true);
@@ -238,7 +238,7 @@ export default function AddLiquidity({
               category: 'Transaction',
               action: 'cancel',
               label: 'pool',
-              value:  parseFloat(parsedAmounts[Field.CURRENCY_A]?.raw.toString() || ''),
+              value:  parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || ''),
             });
 
             setShowConfirm(false);
@@ -273,7 +273,7 @@ export default function AddLiquidity({
           category: 'Transaction',
           action: 'cancel',
           label: 'pool', 
-          value:  parseFloat(parsedAmounts[Field.CURRENCY_A]?.raw.toString() || ''),
+          value:  parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || ''),
         });
 
         setShowConfirm(false);
@@ -374,7 +374,7 @@ export default function AddLiquidity({
                 category: 'Transaction',
                 action: 'new',
                 label: 'pool',
-                value:  parseFloat(parsedAmounts[Field.CURRENCY_A]?.raw.toString() || ''),
+                value:  parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || ''),
               });
             } catch (error) {
               ReactGA.set({
@@ -390,7 +390,7 @@ export default function AddLiquidity({
                 category: 'Transaction',
                 action: 'cancel',
                 label: 'pool',
-                value:  parseFloat(parsedAmounts[Field.CURRENCY_A]?.raw.toString() || ''),
+                value:  parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || ''),
               });
               throw new Error(`
               Account: ${account}\n
@@ -416,7 +416,7 @@ export default function AddLiquidity({
               category: 'Transaction',
               action: 'cancel',
               label: 'pool',
-              value:  parseFloat(parsedAmounts[Field.CURRENCY_A]?.raw.toString() || ''),
+                value:  parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || ''),
             });
             throw new Error(`
             Account: ${account}\n
@@ -447,7 +447,7 @@ export default function AddLiquidity({
           category: 'Transaction',
           action: 'cancel',
           label: 'pool',
-          value:  parseFloat(parsedAmounts[Field.CURRENCY_A]?.raw.toString() || ''),
+          value:  parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || ''),
         });
         throw new Error(`
             Account: ${account}\n
