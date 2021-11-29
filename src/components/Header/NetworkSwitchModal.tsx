@@ -82,15 +82,23 @@ export default function NetworkSwitchModal() {
       return;
     }
 
-    if (item.chainId !== chainIds.MAINNET && (isMetaMask || !isMobile)) {
-      setSelectedItem(item);
-    } else if (item.chainId !== chainIds.MAINNET) {
-      setVisibleNeedSwitchModal(true);
-      toggleNetworkSwitchModal();
-    } else {
-      await switchNetwork(item);
-      toggleNetworkSwitchModal();
+    try {
+      const res = await switchNetwork(item);
+      console.log('Network switched', res);
+    } catch (err) {
+      console.log('Network switch ERR', err);
     }
+
+
+    // if (item.chainId !== chainIds.MAINNET && (isMetaMask || !isMobile)) {
+    //   setSelectedItem(item);
+    // } else if (item.chainId !== chainIds.MAINNET) {
+    //   setVisibleNeedSwitchModal(true);
+    //   toggleNetworkSwitchModal();
+    // } else {
+    //   await switchNetwork(item);
+    //   toggleNetworkSwitchModal();
+    // }
   };
 
   const onClickConfirmItem = async () => {

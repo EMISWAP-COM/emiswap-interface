@@ -131,6 +131,9 @@ export function useSwitchNetwork() {
       console.log(result);
       console.log('switch 1');
     } catch (switchError) {
+
+      console.log('SwitchError');
+
       try {
         await ethereum.request({
           method: 'wallet_addEthereumChain',
