@@ -314,8 +314,8 @@ export default function RemoveLiquidity({
             dimension4: response.hash,
             dimension1: currencyA?.symbol,
             dimension2: currencyB?.symbol,
-            metric1: parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
-            metric2: parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
+            metric1: parsedAmounts[Field.CURRENCY_A]?.toFixed(),
+            metric2: parsedAmounts[Field.CURRENCY_B]?.toFixed(),
             dimension3: account,
             dimension5: network
           });
@@ -324,7 +324,7 @@ export default function RemoveLiquidity({
             category: 'Transaction',
             action: 'new',
             label: 'unpool',
-            value:  parseFloat(parsedAmounts[Field.CURRENCY_A]?.raw.toString() || ''),
+            value:  Math.round(parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || '')),
           });
         })
         .catch((error: Error) => {
@@ -332,8 +332,8 @@ export default function RemoveLiquidity({
           ReactGA.set({
             dimension1: currencyA?.symbol,
             dimension2: currencyB?.symbol,
-            metric1: parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
-            metric2: parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
+            metric1: parsedAmounts[Field.CURRENCY_A]?.toFixed(),
+            metric2: parsedAmounts[Field.CURRENCY_B]?.toFixed(),
             dimension3: account,
             dimension5: network
           });
@@ -342,7 +342,7 @@ export default function RemoveLiquidity({
             category: 'Transaction',
             action: 'cancel',
             label: 'unpool',
-            value:  parseFloat(parsedAmounts[Field.CURRENCY_A]?.raw.toString() || ''),
+            value:  Math.round(parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || '')),
           });
           // we only care if the error is something _other_ than the user rejected the tx
           console.error(error);
