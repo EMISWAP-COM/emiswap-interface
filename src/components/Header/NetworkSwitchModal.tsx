@@ -13,8 +13,8 @@ import { INetworkItem, networksItems } from '../../constants';
 import ConfirmSwitchModal from './ConfirmSwitchModal';
 import chainIds from '../../constants/chainIds';
 import NetworkNeedSwitchModal from './NetworkNeedSwitchModal';
-import { useIsMetaMask } from '../../hooks/Coins';
-import { isMobile } from 'react-device-detect';
+// import { useIsMetaMask } from '../../hooks/Coins';
+// import { isMobile } from 'react-device-detect';
 
 const NetworkSwitchWrapped = styled.div`
   width: 100%;
@@ -66,7 +66,7 @@ export default function NetworkSwitchModal() {
 
   const { chainId } = useActiveWeb3React();
 
-  const isMetaMask = useIsMetaMask();
+  // const isMetaMask = useIsMetaMask();
 
   const { switchNetwork } = useSwitchNetwork();
 
