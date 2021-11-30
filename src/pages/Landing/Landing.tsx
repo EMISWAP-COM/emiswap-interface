@@ -265,7 +265,7 @@ export default function Landing({ history }: any) {
                 {t('landing.banner.subtitle')}
               </div>
               <div className="banner__buttons">
-                {account && (
+                {!account && (
                   <button
                     className="btn-primary"
                     style={{ marginRight: 24 }}
