@@ -215,6 +215,14 @@ export const Body = styled.div`
       display: block;
       padding: 210px 20px 45px 20px;
     }
+
+    &__buttons {
+      @media screen and (max-width: 425px) {
+       .btn-primary {
+         margin-top: 20px;
+       }
+      } 
+    }
     
     &__info {
       max-width: 80%;
