@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { SwapPoolTabs, TabNames } from '../../components/NavigationTabs';
 
 import AppBody from '../AppBody';
@@ -10,12 +10,18 @@ import Farm365Item from './Farm365Item';
 import { Contract } from '@ethersproject/contracts';
 import { getFarming365Contracts } from '../../utils';
 import styled from 'styled-components/macro';
+import Button from '../../base/ui/Button';
+import { useWalletModalToggle } from '../../state/application/hooks';
 
 const FarmingInfo = styled.div`
-    margin: 16px 0 32px 0;
-    color: white;
-    max-width: 500px;
-    text-align: left;
+  margin: 16px 0 32px 0;
+  color: white;
+  max-width: 500px;
+  text-align: left;
+`;
+
+const Info = styled.div`
+  color: ${({ theme }) => theme.darkWhite};
 `;
 
 export default function Farm365() {
@@ -25,7 +31,9 @@ export default function Farm365() {
   const { library, account, chainId } = useActiveWeb3React();
   const isPolygonActive = useIsPolygonActive();
 
-  const [loading, /*setLoading*/] = useState<boolean>(Boolean(account) && false);
+  const toggleWalletModal = useWalletModalToggle();
+
+  // const [loading, setLoading] = useState<boolean>(Boolean(account) && false);
 
   const farming365Contracts: Contract[] = useMemo(() => {
     if (!isPolygonActive) {
@@ -44,7 +52,7 @@ export default function Farm365() {
     return (
       <div>
         <div>
-          <img src={LogoIcon} alt="logo"/>
+          <img src={LogoIcon} alt="logo" />
         </div>
       </div>
     );
@@ -53,32 +61,29 @@ export default function Farm365() {
   return (
     <>
       <AppBody>
-        <SwapPoolTabs active={TabNames.FARM_365}/>
+        <SwapPoolTabs active={TabNames.FARM_365} />
 
-        <FarmingInfo>
-          Stake LP tokens in pair with ESW into the farming pools and win a 365% APR airdrop per provided liquidity +
-          Additional % APR for Farming. Farming rewards are allocated to your EmiSwap account for every block.
-        </FarmingInfo>
-
-        {farming365Contracts.map(contract =>
-          <Farm365Item
-            key={contract.address}
-            contract={contract}
-          />,
-        )}
-
-        {account && loading && (
-          <div>
-          </div>
-        )}
-
-        {account && !loading && (
+        {account ? (
           <>
-          </>
-        )}
+            <FarmingInfo>
+              Stake LP tokens in pair with ESW into the farming pools and win a 365% APR airdrop per
+              provided liquidity + Additional % APR for Farming. Farming rewards are allocated to
+              your EmiSwap account for every block.
+            </FarmingInfo>
 
-        {!account && (
-          <></>
+            {farming365Contracts.map(contract => (
+              <Farm365Item key={contract.address} contract={contract} />
+            ))}
+          </>
+        ) : (
+          <>
+            <Info>
+              Please connect your wallet to see all available farms
+              <br />
+              <br />
+              <Button onClick={toggleWalletModal}>Connect to a wallet</Button>
+            </Info>
+          </>
         )}
       </AppBody>
     </>
