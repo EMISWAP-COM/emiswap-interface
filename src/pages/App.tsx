@@ -110,7 +110,11 @@ export default function App() {
    useEffect(() => {
     Hook(
       window.console,
-      (log) => setLogs((currLogs) => [...currLogs, log]),
+      (log) => {
+        // @ts-ignore
+        if (log.startsWith('i18')) return;
+        setLogs((currLogs) => [...currLogs, log])
+      },
       false
     )
     // @ts-ignore
