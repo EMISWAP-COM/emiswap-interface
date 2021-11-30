@@ -155,9 +155,9 @@ export function useSwitchNetwork() {
         console.log('addError', addError);
       }
     } finally {
-      console.log('FINNALY, try to logout');
-      const res = await providerLogout();
-      console.log('Finnaly', res);
+      // console.log('FINNALY, try to logout');
+      // const res = await providerLogout();
+      // console.log('Finnaly logout', res);
     }
   };
 

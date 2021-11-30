@@ -112,7 +112,7 @@ export default function App() {
       window.console,
       (log) => {
         // @ts-ignore
-        if (log.startsWith('i18')) return;
+        if (log.data && log.data[0] && (log.data[0].startsWith('i18n') || log.data[0].startsWith('Warning: 0x'))) return;
         setLogs((currLogs) => [...currLogs, log])
       },
       false
