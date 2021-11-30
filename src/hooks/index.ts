@@ -119,43 +119,45 @@ export function useSwitchNetwork() {
   const switchNetwork = async (item: INetworkItem) => {
     const { ethereum } = window as any;
 
-    console.log(item);
-
     try {
+      console.log('Try to switch', item);
       ethereum.removeAllListeners(['networkChanged']);
 
       const result = await ethereum.request({
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: toHex(item.chainId) }],
       });
-      console.log(result);
-      console.log('switch 1');
+      console.log('Switched', result);
     } catch (switchError) {
+      console.log('SwitchError', switchError);
 
-      console.log('SwitchError');
+      const params = [
+        {
+          chainId: toHex(item.chainId),
+          chainName: item.name,
+          rpcUrls: item.rpcUrls,
+          nativeCurrency: {
+            name: item.currencySymbol,
+            symbol: item.currencySymbol,
+            decimals: 18,
+          },
+        },
+      ];
 
       try {
-        await ethereum.request({
+        console.log('Try to add wallet with params', params);
+        const res = await ethereum.request({
           method: 'wallet_addEthereumChain',
-          params: [
-            {
-              chainId: toHex(item.chainId),
-              chainName: item.name,
-              rpcUrls: item.rpcUrls,
-              nativeCurrency: {
-                name: item.currencySymbol,
-                symbol: item.currencySymbol,
-                decimals: 18,
-              },
-            },
-          ],
+          params
         });
-        console.log('switch 2');
+        console.log('Wallet added', res);
       } catch (addError) {
-        console.log(addError);
+        console.log('addError', addError);
       }
     } finally {
-      await providerLogout();
+      console.log('FINNALY, try to logout');
+      const res = await providerLogout();
+      console.log('Finnaly', res);
     }
   };
 

@@ -123,6 +123,7 @@
     "@rebass/preset": "^4.0.5",
     "@sentry/react": "^6.5.1",
     "@sentry/tracing": "^6.5.1",
+    "console-feed": "^3.2.2",
     "dayjs": "^1.10.5",
     "emotion-theming": "^10.0.27",
     "env-cmd": "^10.1.0",

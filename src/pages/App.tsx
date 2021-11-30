@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useCallback } from 'react';
+import React, { Suspense, useEffect, useCallback, useState } from 'react';
 import { BrowserRouter, Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 import styled from 'styled-components';
@@ -36,6 +36,7 @@ import SocButtons from '../components/SocButtons';
 import Landing from './Landing/Landing';
 import { useActiveWeb3React } from '../hooks';
 import Farm365 from './Farm365/Farm365';
+import { Console, Hook, Unhook } from 'console-feed'
 
 const BodyWrapper = styled.div`
   display: flex;
@@ -61,6 +62,7 @@ export function RedirectPathToSwap({ location }: RouteComponentProps) {
 
 export default function App() {
   const { connector } = useActiveWeb3React();
+  const [logs, setLogs] = useState([]);
 
   const changeChainToPolygon = useCallback(async () => {
     if (!connector) return;
@@ -103,6 +105,17 @@ export default function App() {
       localStorage.setItem('l_redirect', `true`);
     }
   }, []);
+
+   // run once!
+   useEffect(() => {
+    Hook(
+      window.console,
+      (log) => setLogs((currLogs) => [...currLogs, log]),
+      false
+    )
+    // @ts-ignore
+    return () => Unhook(window.console)
+  }, [])
 
   useEffect(() => {
     // Change chain to Polygon if it's referral link
@@ -176,6 +189,7 @@ export default function App() {
               </Web3ReactManager>
               <SocButtons/>
             </BodyWrapper>
+            <Console logs={logs} variant="dark" />
           </AppWrapper>
         </ReferralUrlParser>
       </BrowserRouter>
