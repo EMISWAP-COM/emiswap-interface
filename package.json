@@ -1,7 +1,6 @@
 {
   "name": "@emiswap/interface",
   "description": "EmiSwap Interface",
-  "homepage": ".",
   "private": true,
   "devDependencies": {
     "@ethersproject/address": "5.0.0-beta.134",
@@ -87,7 +86,7 @@
   },
   "scripts": {
     "start": "cross-env PORT=4202 react-scripts start",
-    "build": "react-scripts build && REACTBUILDVERSION=$(date +%Y-%m-%d)-$(date +%T) && sed -i -- 's/%REACTBUILDVERSION%/'$REACTBUILDVERSION'/g' build/docs/version.txt && echo React Build Version = $REACTBUILDVERSION",
+    "build": "react-scripts build",
     "build:stage": "rm -R -f ./build && env-cmd -f .env.staging react-scripts build && REACTBUILDVERSION=Stage_$(date +%Y-%m-%d)-$(date +%T) && sed -i -- 's/%REACTBUILDVERSION%/'$REACTBUILDVERSION'/g' build/docs/version.txt && echo React Build Version = $REACTBUILDVERSION",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
