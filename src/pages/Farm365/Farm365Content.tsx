@@ -322,7 +322,6 @@ export default function Farm365Content({
           });
         })
         .catch((err) => {
-          console.log('cancel')
           ReactGA.set({
             dimension1: lpCurrency.symbol,
             metric1: lpValue,
