@@ -360,6 +360,7 @@ export default function useFarming365(contract: Contract) {
       .catch((error: RequestError) => {
         const args = lpToken.address + ', ' + lpAmount.toString() + ', ' + eswWithSlippage.toString();
         showError('stake', args, error);
+        throw Error('cancel')
       })
   };
 

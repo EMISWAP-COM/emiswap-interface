@@ -1,7 +1,6 @@
 {
   "name": "@emiswap/interface",
   "description": "EmiSwap Interface",
-  "homepage": ".",
   "private": true,
   "devDependencies": {
     "@ethersproject/address": "5.0.0-beta.134",
