@@ -108,7 +108,15 @@ export default function App() {
 
    // run once!
    useEffect(() => {
-    const { ethereum } = window;
+    let { ethereum } = window;
+
+    const setProvider = async () => {
+      ethereum = await connector.getProvider();
+    }
+
+    if (!ethereum) {
+      setProvider();
+    }
     
     const logMMDisconnect = (e) => {
       console.log('## MM_disconnected', e);
