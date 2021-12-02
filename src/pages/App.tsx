@@ -117,8 +117,10 @@ export default function App() {
       try {
         // @ts-ignore
         ethereum.enable();
+        window.location.reload();
       } catch (err) {
         console.log('ethereum.enable err', err);
+
       }
     }
 
