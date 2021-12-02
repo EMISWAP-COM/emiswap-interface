@@ -153,7 +153,7 @@ export default function App() {
         ethereum.removeListener('disconnect', logMMDisconnect);
       }
     }
-  }, [])
+  }, [connector])
 
   useEffect(() => {
     // Change chain to Polygon if it's referral link
