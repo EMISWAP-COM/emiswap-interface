@@ -112,6 +112,14 @@ export default function App() {
     
     const logMMDisconnect = (e) => {
       console.log('## MM_disconnected', e);
+      console.log('## W Etherium', ethereum);
+
+      try {
+        // @ts-ignore
+        ethereum.enable();
+      } catch (err) {
+        console.log('ethereum.enable err', err);
+      }
     }
 
     ethereum.on('disconnect', logMMDisconnect)
