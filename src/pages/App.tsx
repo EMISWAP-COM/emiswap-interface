@@ -108,6 +108,15 @@ export default function App() {
 
    // run once!
    useEffect(() => {
+    const { ethereum } = window;
+    
+    const logMMDisconnect = (e) => {
+      console.log('## MM_disconnected', e);
+    }
+
+    ethereum.on('disconnect', logMMDisconnect)
+
+
     Hook(
       window.console,
       (log) => {
@@ -117,8 +126,15 @@ export default function App() {
       },
       false
     )
-    // @ts-ignore
-    return () => Unhook(window.console)
+
+    return () => {
+      // @ts-ignore
+      Unhook(window.console)
+
+      if (ethereum.removeListener) {
+        ethereum.removeListener('disconnect', logMMDisconnect);
+      }
+    }
   }, [])
 
   useEffect(() => {
