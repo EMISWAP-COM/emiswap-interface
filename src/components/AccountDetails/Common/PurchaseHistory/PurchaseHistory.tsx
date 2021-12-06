@@ -3,7 +3,7 @@ import React, { useMemo, useState } from 'react';
 
 import { AppState } from '../../../../state';
 import { useActiveWeb3React } from '../../../../hooks';
-
+import { useIsEthActive, useIsPolygonActive } from '../../../../hooks/Coins';
 import {
   CellProps,
   cellRenders,
@@ -30,6 +30,8 @@ const tabs: Record<string, TabProps> = {
 const tabsValues = Object.values(tabs);
 
 export const PurchaseHistory = () => {
+  const isEthActive = useIsEthActive();
+  const isPolygonActive = useIsPolygonActive();
   const { chainId } = useActiveWeb3React();
   const { referrals } = useSelector((state: AppState) => state.cabinets.performance);
   const { histories, details } = useSelector((state: AppState) => state.cabinets.balance);
@@ -37,7 +39,7 @@ export const PurchaseHistory = () => {
     (state: AppState) => state.cabinets.bonusDetails,
   );
   const { depositsEswHistory } = useSelector((state: AppState) => state.cabinets);
-
+  const { myRewardHistory } = useSelector((state: AppState) => state.polygonCabinet);
   const [liquidityTabActive, setLiquidityTabActive] = useState<string>(tabs.x10.value);
 
   const deposit = histories?.deposits;
@@ -239,48 +241,59 @@ export const PurchaseHistory = () => {
     [referrals],
   );
 
+  const myRewardHistoryFields: CellProps[] = React.useMemo(
+    () => [
+      { key: 'date', label: 'Date' },
+      { key: 'forWhat', label: 'For What' },
+      { key: 'ESW', label: 'ESW' },
+      { key: 'unlockDate', label: 'Unlock Date' },
+    ],
+    [],
+  );
   return (
     <>
-      <Table
-        title="Your Liquidity Reward History"
-        fields={liquidityRewardFields}
-        data={poolBonusDisplayData}
-        headerWrapperMarginTop={36}
-        headerMarginTop={0}
-        headerMarginBottom={24}
-        rightTitle={
-          <Tabs tabs={tabsValues} value={liquidityTabActive} onChange={setLiquidityTabActive} />
-        }
-      />
-
-      <Table title="Your Purchase History" fields={purchaseFields} data={deposit} />
-
-      <Table
-        title="Referral Purchase History"
-        fields={referralPurchaseFields}
-        data={referralsData}
-      />
-
-      <Table
-        title="Your Fee Compensation History"
-        fields={compensationHistoryFields}
-        desktopMaxHeight={414}
-        data={compensation}
-      />
-
-      <Table
-        title="ESW Holding Reward History"
-        fields={holdingRewardFields}
-        data={depositsEswHistory}
-        truncate
-      />
-
-      <Table
-        title="Your Swapping Reward History"
-        fields={swappingRewardFields}
-        desktopMaxHeight={474}
-        data={swapping}
-      />
+      {isEthActive && (
+        <>
+          <Table
+            title={'Your Liquidity Reward History'}
+            fields={liquidityRewardFields}
+            data={poolBonusDisplayData}
+            headerWrapperMarginTop={36}
+            headerMarginTop={0}
+            headerMarginBottom={24}
+            rightTitle={
+              <Tabs tabs={tabsValues} value={liquidityTabActive} onChange={setLiquidityTabActive} />
+            }
+          />
+          <Table title="Your Purchase History" fields={purchaseFields} data={deposit} />
+          <Table
+            title="Referral Purchase History"
+            fields={referralPurchaseFields}
+            data={referralsData}
+          />
+          <Table
+            title="Your Fee Compensation History"
+            fields={compensationHistoryFields}
+            desktopMaxHeight={414}
+            data={compensation}
+          />
+          <Table
+            title="ESW Holding Reward History"
+            fields={holdingRewardFields}
+            data={depositsEswHistory}
+            truncate
+          />
+          <Table
+            title="Your Swapping Reward History"
+            fields={swappingRewardFields}
+            desktopMaxHeight={474}
+            data={swapping}
+          />
+        </>
+      )}
+      {isPolygonActive && (
+        <Table title="My Reward History" fields={myRewardHistoryFields} data={myRewardHistory} />
+      )}
     </>
   );
 };

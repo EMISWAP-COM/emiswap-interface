@@ -13,6 +13,7 @@ import {
 } from './actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../index';
+import { loadPolygonBalance } from '../cabinets/action-polygon';
 
 export function useBlockNumber(): number | undefined {
   const { chainId } = useActiveWeb3React();
@@ -31,7 +32,10 @@ export function useWalletModalShow(): () => void {
 
 export function useWalletModalToggle(): () => void {
   const dispatch = useDispatch();
-  return useCallback(() => dispatch(toggleWalletModal()), [dispatch]);
+  return useCallback(() => {
+    dispatch(toggleWalletModal());
+    dispatch(loadPolygonBalance());
+  }, [dispatch]);
 }
 
 export function useNetworkSwitchModalOpen(): boolean {

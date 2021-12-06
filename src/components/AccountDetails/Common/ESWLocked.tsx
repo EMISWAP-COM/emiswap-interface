@@ -47,43 +47,54 @@ const LockedValue = styled(DarkText)`
   font-weight: 600;
 `;
 
+interface LockedItemInterface {
+  alt: string;
+  src: string;
+  label: string;
+  value: string;
+  isUnlockDate?: boolean;
+}
+
+const Item = ({ alt, src, label, value, isUnlockDate }: LockedItemInterface) => (
+  <LockedItem>
+    <img alt={alt} src={src} />
+    <LockedItemWrapper>
+      <span>{label}</span>
+      <div>
+        <LockedValue>{value}</LockedValue>
+        {isUnlockDate ? null : <>&nbsp;ESW</>}
+      </div>
+    </LockedItemWrapper>
+  </LockedItem>
+);
 export const ESWLocked = () => {
   const { details, total } = useSelector((state: AppState) => state.cabinets.balance);
 
-  const nextUnlock = details?.locked?.ESW ? details?.locked?.ESW[0] : null;
+  const nextUnlock = details?.locked.ESW ? details?.locked.ESW[0] : null;
 
   return (
     <div>
       <Header>ESW Locked Balance</Header>
       <LockedWrapper>
-        <LockedItem>
-          <img alt="lock" src={lock} />
-
-          <LockedItemWrapper>
-            <span>Locked at Emiswap</span>
-            <div>
-              <LockedValue>{convertBigDecimal(total.locked.ESW)}</LockedValue>&nbsp;ESW
-            </div>
-          </LockedItemWrapper>
-        </LockedItem>
-        <LockedItem>
-          <img alt="unlock" src={unlock} />
-
-          <LockedItemWrapper>
-            <span>Next unlock amount</span>
-            <div>
-              <LockedValue>{convertBigDecimal(nextUnlock?.amount)}</LockedValue>
-              &nbsp;ESW
-            </div>
-          </LockedItemWrapper>
-        </LockedItem>
-        <LockedItem>
-          <img alt="timer" src={timer} />
-          <LockedItemWrapper>
-            <span>Next unlock date</span>
-            <DarkText>{convertDate(nextUnlock?.available_at, DateFormat.full)}</DarkText>
-          </LockedItemWrapper>
-        </LockedItem>
+        <Item
+          alt="lock"
+          src={lock}
+          label="Next unlock amount"
+          value={convertBigDecimal(total.locked.ESW)}
+        />
+        <Item
+          alt="unlock"
+          src={unlock}
+          label="Locked at Emiswap"
+          value={convertBigDecimal(nextUnlock?.amount)}
+        />
+        <Item
+          alt="timer"
+          src={timer}
+          label="Next unlock date"
+          value={convertDate(nextUnlock?.available_at, DateFormat.full)}
+          isUnlockDate
+        />
       </LockedWrapper>
     </div>
   );

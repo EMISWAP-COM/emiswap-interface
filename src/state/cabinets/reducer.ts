@@ -28,11 +28,11 @@ interface ChangeLevel {
 
 //TODO: вывести в единый тип лейблов токенов.
 type TokenKey = 'ESW' | 'DAI';
-type PaymentOperationTokens = {
+export type PaymentOperationTokens = {
   [token in TokenKey]?: string;
 };
 
-interface Balance {
+export interface Balance {
   histories: {
     deposits: Deposit[];
     referral_bonus: Deposit[];
@@ -111,7 +111,7 @@ interface Reward {
   };
 }
 
-interface Deposit {
+export interface Deposit {
   transaction_hash: string;
   token: TokenKey;
   created_at: string;
@@ -129,7 +129,7 @@ interface PoolBonus {
   swap_turnover: string;
 }
 
-type LockedDeposit = {
+export type LockedDeposit = {
   [tokenKey in TokenKey]: Deposit[];
 };
 
