@@ -23,6 +23,8 @@ import { MATIC } from '../constants/tokens/MATIC';
 import { AVAX } from '../constants/tokens/AVAX';
 import { FARMING_365_ABI } from '../constants/abis/farming365';
 import { expNumberToStr } from './formats';
+import { abi as EMI_SWAP_ABI } from '../constants/abis/Emiswap.json';
+import { ERC20_ABI } from '../constants/abis/erc20';
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
@@ -50,7 +52,7 @@ export function getExplorerLink(
   data: string,
   type: 'transaction' | 'token' | 'address' | 'block',
 ): string {
-  const {blockExplorerUrl} = getNetworkData(chainId);
+  const { blockExplorerUrl } = getNetworkData(chainId);
   const isEthActive = isEthereumActive(chainId);
 
   let path = blockExplorerUrl;
@@ -260,4 +262,27 @@ export function convertTokenAmount(token: Token, amount: string): BigNumber {
   }
 
   return bigIntAmount;
+}
+
+export async function getLpTokenByAddress(
+  tokenAddress: string,
+  chainId: ChainId | any,
+  account: string,
+  library: Web3Provider,
+) {
+  const lpContract = getContract(tokenAddress, EMI_SWAP_ABI, library, account);
+
+  const pair = await lpContract.getTokens();
+  const token0Contract = getContract(pair[0], ERC20_ABI, library, account);
+  const token1Contract = getContract(pair[1], ERC20_ABI, library, account);
+
+  const decimals = await lpContract.decimals();
+  const symbol = 'LP ' + (await token0Contract.symbol()) + '-' + (await token1Contract.symbol());
+  const name = 'LP ' + (await token0Contract.symbol()) + '-' + (await token1Contract.symbol());
+
+  console.log(decimals, symbol, name);
+
+  const token = new Token(chainId, tokenAddress, decimals, symbol, name);
+
+  return token;
 }

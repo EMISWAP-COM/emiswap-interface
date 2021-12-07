@@ -12,8 +12,7 @@ import useEthErrorPopup, { RequestError } from './useEthErrorPopup';
 import getFarmingCoinNameAndSymbol from '../pages/Farm/getFarmingCoinNameAndSymbol';
 import getFarmingLiquidityTokenAddress from '../pages/Farm/getFarmingLiquidityTokenAddress';
 import dayjs from 'dayjs';
-import { convertTokenAmount, getContract } from '../utils';
-import { ERC20_ABI } from '../constants/abis/erc20';
+import { convertTokenAmount, getLpTokenByAddress } from '../utils';
 
 const logContractError = (
   methodName: string,
@@ -285,7 +284,7 @@ export default function useFarming365(contract: Contract) {
   }, [contract, account, chainId, showError, completedTransactionsCount, intervalUpdateCounter]);
 
   const updateStakedTokens = useCallback(() => {
-    // console.log(contract);
+    console.log(contract);
     // console.log(Object.keys(allTokens));
     contract
       .getStakedTokens(account)
@@ -300,15 +299,8 @@ export default function useFarming365(contract: Contract) {
 
           if (!defaultCoin && library && account && chainId) {
             try {
-              const tokenContract = getContract(tokenAddress, ERC20_ABI, library, account);
-              const token = new Token(
-                chainId,
-                tokenAddress,
-                await tokenContract.decimals(),
-                await tokenContract.symbol(),
-                await tokenContract.name(),
-              );
-              tokensAmounts.push(new TokenAmount(token, JSBI.BigInt(balance)));
+              const lpToken = await getLpTokenByAddress(tokenAddress, chainId, account, library);
+              tokensAmounts.push(new TokenAmount(lpToken, JSBI.BigInt(balance)));
             } catch (e) {
               console.log(e);
             }
