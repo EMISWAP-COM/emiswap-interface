@@ -1,6 +1,6 @@
 import styled from 'styled-components/macro';
-import dayjs from 'dayjs';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+// import dayjs from 'dayjs';
+import React, { useEffect, useMemo, useState } from 'react';
 import ReactGA from 'react-ga';
 import Button from '../../base/ui/Button';
 import CurrencyLogo from '../../components/CurrencyLogo';
@@ -144,9 +144,9 @@ export default function Farm365Content({ farming365 }: Farm365ContentProps) {
   const [lpCurrency, setLpCurrency] = useState<Token>(null);
 
   const [stakeButtonText, setStakeButtonText] = useState<string>('Stake');
-  const [collectButtonText, setCollectButtonText] = useState<string>('Collect to wallet');
+  const [collectButtonText /*, setCollectButtonText*/] = useState<string>('Collect to wallet');
   const [isStakeButtonDisabled, setStakeButtonDisabled] = useState<boolean>(true);
-  const [isCollectButtonDisabled, setCollectButtonDisabled] = useState<boolean>(true);
+  const [isCollectButtonDisabled /*, setCollectButtonDisabled*/] = useState<boolean>(true);
 
   const [isStakeAllowed, setStakeAllowed] = useState<boolean>(false);
 
@@ -248,7 +248,7 @@ export default function Farm365Content({ farming365 }: Farm365ContentProps) {
     approvalLp,
   ]);
 
-  const collectExitDateInterval = useRef<any>();
+  /*const collectExitDateInterval = useRef<any>();
   useEffect(() => {
     if (collectExitDateInterval.current) {
       clearInterval(collectExitDateInterval.current);
@@ -264,6 +264,10 @@ export default function Farm365Content({ farming365 }: Farm365ContentProps) {
 
         const timeout = (dayjs as any).duration(exitDate.diff(dateNow)).format('D[d] HH:mm:ss');
         setCollectButtonText(`Collect to wallet ${timeout}`);
+
+        if (exitDate.unix() < dateNow.unix() + 2000) {
+          clearInterval(collectExitDateInterval.current);
+        }
       }, 1000);
       setCollectButtonDisabled(true);
     } else if (stakedTokens?.length && farming365.exitDateLimit < dayjs().unix()) {
@@ -279,11 +283,11 @@ export default function Farm365Content({ farming365 }: Farm365ContentProps) {
         clearInterval(collectExitDateInterval.current);
       }
     };
-  }, [stakedTokens, hasPendingTransactions, farming365.exitDateLimit]);
+  }, [stakedTokens, hasPendingTransactions, farming365.exitDateLimit]);*/
 
   useEffect(() => {
     if (!hasPendingTransactions) {
-      farming365.updateStakedTokens();
+      farming365.update();
     }
     // farming365 Не должно быть в deps, т.к. он обновится и будет рекурсия
     // eslint-disable-next-line
@@ -358,7 +362,7 @@ export default function Farm365Content({ farming365 }: Farm365ContentProps) {
             value: Math.round(parseFloat(lpValue)),
           });
         });
-      farming365.updateStakedTokens();
+      farming365.update();
     } else if (![ApprovalState.PENDING, ApprovalState.APPROVED].includes(approvalEsw)) {
       approveEswCallback();
     } else if (![ApprovalState.PENDING, ApprovalState.APPROVED].includes(approvalLp)) {
@@ -368,7 +372,7 @@ export default function Farm365Content({ farming365 }: Farm365ContentProps) {
 
   const handleClickCollectBtn = async () => {
     await farming365.collect();
-    await farming365.updateStakedTokens();
+    farming365.update();
   };
 
   return (
