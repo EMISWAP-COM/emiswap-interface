@@ -44,18 +44,18 @@ const TokenAddresses = () => {
 
   const tokens = [
     {
-      address: '0x5a75a093747b72a0e14056352751edf03518031d',
+      chainName: 'Polygon',
+      address: '0xd2A2a353D28e4833FAFfC882f6649c9c884a7D8f',
       hex: '000000',
       icon: polygonSvg,
-      chainName: 'Polygon',
       symbol: 'ESW',
       decimals: 18
     },
     {
-      address: '0xd2A2a353D28e4833FAFfC882f6649c9c884a7D8f',
+      chainName: 'Ethereum',
+      address: '0x5a75a093747b72a0e14056352751edf03518031d',
       hex: '000000',
       icon: ethereumSvg,
-      chainName: 'Ethereum',
       symbol: 'ESW',
       decimals: 18
     }
