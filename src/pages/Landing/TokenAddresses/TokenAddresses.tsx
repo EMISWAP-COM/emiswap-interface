@@ -68,12 +68,12 @@ const TokenAddresses = () => {
         <S.Details>
           <S.Address>{shortenAddressHeadTail(tokens[activeIndex].address, 4, 20)}</S.Address>
           <S.Controls>
-            <S.Metamask onClick={() => addTokenToMetamsak(tokens[activeIndex])}><img src={mmPng} /></S.Metamask>
+            <S.Metamask onClick={() => addTokenToMetamsak(tokens[activeIndex])}><img src={mmPng} alt="" /></S.Metamask>
             <S.Copy onClick={() => copy(tokens[activeIndex].address)}>
-              <img src={copySvg} />
+              <img src={copySvg} alt="" />
             </S.Copy>
             <S.Chain onClick={() => setOptionsOpened(!optionsOpened)}>
-              <img src={tokens[activeIndex].icon} />
+              <img src={tokens[activeIndex].icon} alt="" />
               <S.Arrow src={arrowSvg} />
             </S.Chain>
           </S.Controls>
@@ -86,7 +86,7 @@ const TokenAddresses = () => {
               <S.Details>
                 <S.Address>{shortenAddressHeadTail(token.address)}</S.Address>
                 <S.Controls>
-                  <S.Chain><img src={token.icon} /><S.ChainName>{token.chainName}</S.ChainName></S.Chain>
+                  <S.Chain><img src={token.icon} alt="" /><S.ChainName>{token.chainName}</S.ChainName></S.Chain>
                 </S.Controls>
               </S.Details>
             </S.Option>

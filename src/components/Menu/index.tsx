@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 // import { Info, BookOpen, Code, PieChart, MessageCircle } from 'react-feather'
-import { BookOpen, Code, Info, MessageCircle, PieChart } from 'react-feather';
+import { BookOpen, Code, MessageCircle, PieChart } from 'react-feather';
 import WikiIcon from '../../assets/images/wiki.svg';
 import styled from 'styled-components';
 import { ReactComponent as MenuIcon } from '../../assets/images/menu.svg';
@@ -87,7 +87,7 @@ const MenuItem = styled(ExternalLink)`
 `;*/
 
 export default function Menu() {
-  const { analyticsUrl, eswExplorerUrl, eswExplorerName } = useNetworkData();
+  const { analyticsUrl } = useNetworkData();
 
   const node = useRef<HTMLDivElement>();
   const [open, toggle] = useToggle(false);
