@@ -24,6 +24,7 @@ import { useNetworkData } from '../../hooks/Coins';
 import { isMobile } from 'react-device-detect';
 import { useRouteMatch } from 'react-router-dom';
 import BridgeModal from './BridgeModal';
+import { NetworkSwitch } from '../NetworkSwitch';
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -254,41 +255,7 @@ const NetworkWrapper = styled.div`
   pointer-events: auto;
 `;
 
-const NetworkButtonSwitch = styled(ButtonGray)`
-  box-sizing: border-box;
-  width: fit-content;
-  min-width: 120px;
-  height: 40px;
-  margin-right: 24px;
-  padding: 0 16px;
-  border: 1px solid #615c69;
-  border-radius: 4px;
-  background: ${({ theme }) => theme.darkGrey};
-  color: white;
 
-  &:focus,
-  &:hover {
-    border: 1px solid ${({ theme }) => theme.purple};
-    background: ${({ theme }) => theme.darkGrey};
-    box-shadow: none;
-  }
-  &:active {
-    border: 1px solid #615c69;
-    background: ${({ theme }) => theme.darkGrey};
-    box-shadow: none;
-  }
-`;
-
-const NetworkIcon = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 24px;
-  height: 24px;
-  margin-right: 8px;
-  border-radius: 50%;
-  background: white;
-`;
 
 /*const NetworkLabel = styled.div`
   display: flex;
@@ -424,10 +391,9 @@ export default function Header() {
 
   const networkItem = useNetworkData();
 
-  const toggleNetworkSwitchModal = useNetworkSwitchModalToggle();
   const toggleBridgeModal = useBridgeModalToggle();
 
-  const isLandingPage = useRouteMatch("/landing");
+  const isLandingPage = useRouteMatch("/main");
   const is404Page = useRouteMatch("/404");
 
   if (isLandingPage) return null;
@@ -490,24 +456,7 @@ export default function Header() {
                   </>
                 )}
                 <NetworkWrapper>
-                  <NetworkButtonSwitch
-                    onClick={toggleNetworkSwitchModal}
-                  >
-                    {networkItem && (
-                      <NetworkIcon>
-                        <img
-                          style={{ maxHeight: '18px', maxWidth: '18px' }}
-                          src={networkItem.icon}
-                          alt={networkItem.name}
-                        />
-                      </NetworkIcon>
-                    )}
-                    <span>{NETWORK_LABELS[chainId] || 'Change Network'}</span>
-                    {/*{![chainIds.MAINNET, chainIds.KUCOIN].includes(chainId as any) && (
-                      <NetworkLabel>Beta Version</NetworkLabel>
-                    )}*/}
-                  </NetworkButtonSwitch>
-                  <NetworkSwitchModal/>
+                  <NetworkSwitch />
                 </NetworkWrapper>
                 {chainId === (chainIds.MAINNET as any) && (
                   <a className="purple-btn" href={`${window.location.origin}/magic_cards/`}>

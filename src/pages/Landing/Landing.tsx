@@ -3,6 +3,13 @@ import { useTranslation } from 'react-i18next';
 import Slider from 'react-slick';
 import Switch from 'react-switch';
 import { isMobile } from 'react-device-detect';
+import { LandingModal } from './Modal';
+import { networksItems } from '../../constants';
+import chainIds from '../../constants/chainIds';
+import { TokenAddresses } from './TokenAddresses';
+import useIntersection from '../../hooks/useIntersection';
+import Web3Status from '../../components/Web3Status';
+import Menu from '../../components/Menu';
 
 import LogoSvg from '../../assets/svg/logo.svg';
 import AboutSvg from '../../assets/landing/header/about.svg';
@@ -56,12 +63,10 @@ import listDotVioletSvg from '../../assets/svg/list-dot-violet.svg';
 import hackenSvg from '../../assets/landing/header/hacken.svg';
 import blueswarmSvg from '../../assets/landing/header/blueswarm.svg';
 import { useActiveWeb3React, useSwitchNetwork } from '../../hooks';
-import { LandingModal } from './Modal';
-import { networksItems } from '../../constants';
-import chainIds from '../../constants/chainIds';
 
 import { Body } from './styleds';
-import useIntersection from '../../hooks/useIntersection';
+import ReferralLink from '../../components/RefferalLink';
+import { NetworkSwitch } from '../../components/NetworkSwitch';
 
 const getLiquidityAndValue = (url: string) =>
   fetch(url, {
@@ -244,6 +249,11 @@ export default function Landing({ history }: any) {
                   onClick={() => changeLanguage('es-US')}
                 >Esp</div>
               </div>
+
+              <div className="web3-wrapper">
+                <Web3Status/>
+              </div>
+
               <button
                 className="btn-primary btn-earn"
                 onClick={() => {
@@ -254,9 +264,17 @@ export default function Landing({ history }: any) {
               >
                 {t('landing.button.startEarning')}
               </button>
+
+              <Menu/>
             </div>
           </section>
           <section id="about" className="banner" ref={aboutSectionRef}>
+            <div className="mobile-web3-buttons">
+                <NetworkSwitch />
+
+                <Web3Status/>
+            </div>
+
             <div className="banner__info">
               <div className="banner__title">
                 {t('landing.banner.title')}
@@ -265,25 +283,40 @@ export default function Landing({ history }: any) {
                 {t('landing.banner.subtitle')}
               </div>
               <div className="banner__buttons">
-                {!account && (
-                  <button
-                    className="btn-primary"
-                    style={{ marginRight: 24 }}
-                    onClick={goToPool}
-                  >
-                    {t('landing.button.connect-wallet')}
-                  </button>
-                )}
                 <button
                   className="btn-primary"
                   onClick={() => {
                     changeChainToPolygon();
                     goToPool();
                   }}
+                  style={{ flex: 1, padding: 0 }}
                 >
                   {t('landing.button.startEarning')}
                 </button>
+
+                {!account
+                  ? (
+                    <button
+                      className="btn-primary"
+                      onClick={goToPool}
+                    >
+                      {t('landing.button.connect-wallet')}
+                    </button>
+                  )
+                  : (
+                    <ReferralLink
+                      showText={false}
+                      showIcon={false}
+                      text={t('landing.button.copy')}
+                      onCopyText={t('landing.button.onCopy')}
+                      className="lp_referral_button"
+                    />
+                  )
+                }                
               </div>
+
+              <TokenAddresses />
+
               <div className="banner__audited">
                 Audited by: <img src={hackenSvg} alt=""/> & <img src={blueswarmSvg} alt=""/>
               </div>
@@ -332,24 +365,20 @@ export default function Landing({ history }: any) {
               </div>
               <div className="numbers__list">
                 <div className="numbers__card">
-                  <div className="numbers__value">{totalValueLocked}</div>
-                  <hr/>
                   <div className="numbers__desc">{t('landing.numbers.value')}</div>
+                  <div className="numbers__value">{totalValueLocked}</div>
                 </div>
                 <div className="numbers__card">
-                  <div className="numbers__value">{totalTradingVolume}</div>
-                  <hr/>
                   <div className="numbers__desc">{t('landing.numbers.volume')}</div>
+                  <div className="numbers__value">{totalTradingVolume}</div>
                 </div>
                 <div className="numbers__card">
-                  <div className="numbers__value">84K</div>
-                  <hr/>
                   <div className="numbers__desc">{t('landing.numbers.users')}</div>
+                  <div className="numbers__value">84K</div>
                 </div>
                 <div className="numbers__card">
-                  <div className="numbers__value">3.8K</div>
-                  <hr/>
                   <div className="numbers__desc">{t('landing.numbers.trades')}</div>
+                  <div className="numbers__value">3.8K</div>
                 </div>
               </div>
               <button
@@ -721,14 +750,6 @@ export default function Landing({ history }: any) {
               }}
               >
                 {t('landing.button.startEarning')}
-              </button>
-
-              <button
-                className="btn-primary transparent apr__button-paper"
-                onClick={() => window.open('https://polygonscan.com/address/0x18f38359551258c35e8593d775cb6fe8d27fd89b')}
-              >
-                <img className="btn-icon" src={AboutSvg} alt=""/>
-                {t('landing.button.viewOn')}
               </button>
             </div>
             <img className="polygon__img" src={PolygonCardPng} alt=""/>
