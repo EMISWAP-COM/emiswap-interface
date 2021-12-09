@@ -89,8 +89,12 @@ export default function App() {
     if (search.length && search.startsWith('?r=')) {
       localStorage.setItem('UTMMarks', search);
 
-      // Redirect from all links with refferal
-      if (window.location.pathname === '/landing') return;
+      // Redirect from all links with referral
+      if (window.location.pathname === '/main') {
+        localStorage.setItem('l_redirect', `true`);
+
+        return;
+      }
 
       // Already redirected from landing
       if (localStorage.getItem('l_redirect') === 'true') {
@@ -99,7 +103,7 @@ export default function App() {
         return;
       }
 
-      window.location.href = `${window.location.origin}/landing${window.location.search}`;
+      window.location.href = `${window.location.origin}/main${window.location.search}`;
       localStorage.setItem('l_redirect', `true`);
     }
   }, []);
@@ -132,8 +136,8 @@ export default function App() {
                 >
                   <Switch>
                     {/*<Route exact strict path="/invest" component={Invest} />*/}
-                    <Route exact strict path="/landing" component={Landing}/>
-                    <Redirect exact from="/" to="/landing" />
+                    <Route exact strict path="/main" component={Landing}/>
+                    <Redirect exact from="/" to="/main" />
                     <Route exact strict path="/swap" component={Swap}/>
                     <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap}/>
                     <Route exact strict path="/send" component={RedirectPathToSwapOnly}/>

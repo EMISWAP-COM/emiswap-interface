@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 // import { Info, BookOpen, Code, PieChart, MessageCircle } from 'react-feather'
-import { BookOpen, Code, Info, MessageCircle, PieChart } from 'react-feather';
+import { BookOpen, Code, MessageCircle, PieChart } from 'react-feather';
 import WikiIcon from '../../assets/images/wiki.svg';
 import styled from 'styled-components';
 import { ReactComponent as MenuIcon } from '../../assets/images/menu.svg';
@@ -87,7 +87,7 @@ const MenuItem = styled(ExternalLink)`
 `;*/
 
 export default function Menu() {
-  const { analyticsUrl, eswExplorerUrl, eswExplorerName } = useNetworkData();
+  const { analyticsUrl } = useNetworkData();
 
   const node = useRef<HTMLDivElement>();
   const [open, toggle] = useToggle(false);
@@ -119,10 +119,10 @@ export default function Menu() {
       </StyledMenuButton>
       {open && (
         <MenuFlyout>
-          <MenuItem id="link" href="https://emiswap.com/landing">
+          {/* <MenuItem id="link" href="https://emiswap.com/main">
             <Info size={14}/>
             About
-          </MenuItem>
+          </MenuItem> */}
           <MenuItem id="link" href="https://wiki.emiswap.com/">
             {/* TODO иконка не из react-feather нарушает единообразие*/}
             <img src={WikiIcon} width={14} height={14} alt=""/>
@@ -144,14 +144,14 @@ export default function Menu() {
             <BookOpen size={14}/>
             Whitepaper
           </MenuItem>
-          <MenuItem
+          {/* <MenuItem
             id="link"
             href={eswExplorerUrl}
             target="_blank"
           >
             <Info size={14}/>
             {eswExplorerName}
-          </MenuItem>
+          </MenuItem> */}
           <MenuItem
             id="link"
             // href="https://hacken.io/wp-content/uploads/2021/02/18022021_Emiswap_SC_Audit_Report.pdf"

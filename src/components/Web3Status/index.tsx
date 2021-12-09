@@ -105,16 +105,27 @@ const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
     `}
 `;
 
-const Web3StatusConnected = styled(Web3StatusGeneric)<{ pending?: boolean }>`
+const Web3StatusConnected = styled(Web3StatusGeneric)<{ pending?: boolean, disableClickOnConnected?: boolean }>`
   background-color: ${({ pending, theme }) => (pending ? theme.green5 : theme.purple)};
   border: 0 !important;
   color: ${({ theme }) => theme.white};
   font-weight: 500;
-  :hover,
-  :focus {
-    background-color: ${({ pending, theme }) => (pending ? theme.green5 : theme.purple)};
-    box-shadow: ${({ theme }) => theme.purpleBoxShadow};
-  }
+  ${({ disableClickOnConnected }) => disableClickOnConnected && `cursor: default`};
+  ${({ disableClickOnConnected }) => disableClickOnConnected
+    ? `
+      :hover,
+      :focus {
+        background-color: ${({ pending, theme }) => (pending ? theme.green5 : theme.purple)};
+        box-shadow: none;
+      }
+    `
+    : `
+      :hover,
+      :focus {
+        background-color: ${({ pending, theme }) => (pending ? theme.green5 : theme.purple)};
+        box-shadow: ${({ theme }) => theme.purpleBoxShadow};
+      }
+  `}
 `;
 
 const Text = styled.p`
@@ -143,7 +154,9 @@ function recentTransactionsOnly(a: TransactionDetails) {
   return new Date().getTime() - a.addedTime < 86_400_000;
 }
 
-export default function Web3Status() {
+export default function Web3Status({
+  disableClickOnConnected = false // used on the landing page
+}) {
   const { t } = useTranslation();
 
   const { active, account, connector, error } = useWeb3React();
@@ -214,8 +227,9 @@ export default function Web3Status() {
       return (
         <Web3StatusConnected
           id="web3-status-connected"
-          onClick={toggleWalletModal}
+          onClick={() => !disableClickOnConnected && toggleWalletModal()}
           pending={hasPendingTransactions}
+          disableClickOnConnected={disableClickOnConnected}
         >
           {hasPendingTransactions ? (
             <RowBetween>
