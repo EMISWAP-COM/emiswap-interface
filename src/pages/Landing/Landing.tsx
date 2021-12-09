@@ -66,7 +66,7 @@ import { useActiveWeb3React, useSwitchNetwork } from '../../hooks';
 
 import { Body } from './styleds';
 import ReferralLink from '../../components/RefferalLink';
-import { NetworkSwitch } from '../../components/NetworkSwitch';
+import { useWalletModalToggle } from '../../state/application/hooks';
 
 const getLiquidityAndValue = (url: string) =>
   fetch(url, {
@@ -120,7 +120,7 @@ export default function Landing({ history }: any) {
   const sliderRef = useRef<any>();
   const { t, i18n } = useTranslation();
   const { account } = useActiveWeb3React();
-
+  const toggleWalletModal = useWalletModalToggle();
 
   const [totalValueLocked, totalTradingVolume] = useLiquidityAndVolume()
 
@@ -251,7 +251,7 @@ export default function Landing({ history }: any) {
               </div>
 
               <div className="web3-wrapper">
-                <Web3Status/>
+                <Web3Status disableClickOnConnected />
               </div>
 
               <button
@@ -270,9 +270,7 @@ export default function Landing({ history }: any) {
           </section>
           <section id="about" className="banner" ref={aboutSectionRef}>
             <div className="mobile-web3-buttons">
-                <NetworkSwitch />
-
-                <Web3Status/>
+                <Web3Status disableClickOnConnected />
             </div>
 
             <div className="banner__info">
@@ -297,8 +295,8 @@ export default function Landing({ history }: any) {
                 {!account
                   ? (
                     <button
-                      className="btn-primary"
-                      onClick={goToPool}
+                      className="btn-primary lp_btn-connect"
+                      onClick={toggleWalletModal}
                     >
                       {t('landing.button.connect-wallet')}
                     </button>

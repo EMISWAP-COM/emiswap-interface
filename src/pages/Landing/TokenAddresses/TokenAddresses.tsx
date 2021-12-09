@@ -6,6 +6,7 @@ import mmPng from '../../../assets/images/metamask.png';
 import copySvg from '../../../assets/svg/copy.svg';
 import polygonSvg from '../../../assets/svg/polygon-network.svg';
 import ethereumSvg from '../../../assets/svg/ethereum-network.svg';
+import kucoinSvg from '../../../assets/svg/kucoin-network.svg';
 import arrowSvg from '../../../assets/svg/arrow.svg';
 import { shortenAddressHeadTail } from '../../../utils';
 import { useActiveWeb3React } from '../../../hooks';
@@ -22,10 +23,12 @@ const TokenAddresses = () => {
 
   useOnClickOutside(optionsRef, () => optionsOpened && setOptionsOpened(false));
 
-  const addTokenToMetamsak = useCallback(async (token) => {
-    const isMetamask = window.ethereum && window.ethereum.isMetaMask;
+  const isMetamask = window?.ethereum?.isMetaMask;
+  // @ts-ignore
+  const connectedNetworkId = window?.ethereum?.networkVersion;
 
-    if (!connector && !isMetamask) return;
+  const addTokenToMetamsak = useCallback(async (token) => {
+    if (!connector) return;
 
     const provider = await connector.getProvider();
 
@@ -46,20 +49,30 @@ const TokenAddresses = () => {
     {
       chainName: 'Polygon',
       address: '0xd2A2a353D28e4833FAFfC882f6649c9c884a7D8f',
-      hex: '000000',
+      chainId: '137',
       icon: polygonSvg,
       symbol: 'ESW',
-      decimals: 18
+      decimals: 18,
     },
     {
       chainName: 'Ethereum',
       address: '0x5a75a093747b72a0e14056352751edf03518031d',
-      hex: '000000',
+      chainId: '1',
       icon: ethereumSvg,
+      symbol: 'ESW',
+      decimals: 18
+    },
+    {
+      chainName: 'Kucoin',
+      address: '0x8933a6e58eeee063b5fd3221f2e1d17821dc1031',
+      chainId: '321',
+      icon: kucoinSvg,
       symbol: 'ESW',
       decimals: 18
     }
   ]
+
+  const enableAddToken = connector && isMetamask && connectedNetworkId === tokens[activeIndex].chainId;
 
   return (
     <S.Root>
@@ -68,7 +81,9 @@ const TokenAddresses = () => {
         <S.Details>
           <S.Address>{shortenAddressHeadTail(tokens[activeIndex].address, 4, 20)}</S.Address>
           <S.Controls>
-            <S.Metamask onClick={() => addTokenToMetamsak(tokens[activeIndex])}><img src={mmPng} alt="" /></S.Metamask>
+            <S.Metamask onClick={() => enableAddToken && addTokenToMetamsak(tokens[activeIndex])} disabled={!enableAddToken}>
+              <img src={mmPng} alt="" />
+            </S.Metamask>
             <S.Copy onClick={() => copy(tokens[activeIndex].address)}>
               <img src={copySvg} alt="" />
             </S.Copy>

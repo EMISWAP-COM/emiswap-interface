@@ -106,7 +106,7 @@
     "numbers": {
       "title": "EmiSwap en números",
       "value": "Valor total bloqueado",
-      "volume": "Volumen total de operaciones",
+      "volume": "Volumen",
       "users": "Usuarios únicos",
       "trades": "Operaciones totales"
     },

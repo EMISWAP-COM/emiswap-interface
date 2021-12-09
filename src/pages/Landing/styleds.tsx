@@ -243,6 +243,10 @@ export const Body = styled.div`
         top: 160px;
       }
     }
+    .lp_btn-connect {
+      background-color: #0f0f13;
+      border: 1px solid #7A2DF4;
+    }
 
     &__buttons {
       display: flex;

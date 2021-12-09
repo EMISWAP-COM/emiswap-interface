@@ -44,7 +44,7 @@ export const Controls = styled.div`
   gap: 10px;
 `;
 
-export const Metamask = styled.div`
+export const Metamask = styled.div<{ disabled?: boolean }>`
   display: flex;
   height: 18px;
   width: 18px;
@@ -53,6 +53,7 @@ export const Metamask = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  ${({ disabled }) => disabled && 'filter: grayscale(100%)'};
 
   img {
     height: 12px;
@@ -97,6 +98,7 @@ export const Arrow = styled.img`
 `;
 
 export const ChainName = styled.div`
+  min-width: 60px;
   font-size: 12px;
   color: #FFFFFF;
 `;
