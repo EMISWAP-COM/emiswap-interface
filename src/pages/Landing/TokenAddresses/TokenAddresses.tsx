@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 const TokenAddresses = () => {
   const { connector } = useActiveWeb3React();
   const { t } = useTranslation();
+  const { ethereum } = window as any;
 
   const optionsRef = useRef(null);
   const switchRef = useRef(null);
@@ -24,16 +25,14 @@ const TokenAddresses = () => {
 
   useOnClickOutside(optionsRef, switchRef, () => setOptionsOpened(false));
 
-  const isMetamask = window?.ethereum?.isMetaMask;
+  const isMetamask = ethereum?.isMetaMask;
   // @ts-ignore
-  const connectedNetworkId = window?.ethereum?.networkVersion;
+  const connectedNetworkId = ethereum?.networkVersion;
 
   const addTokenToMetamsak = useCallback(async (token) => {
-    if (!connector) return;
+    if (!ethereum) return;
 
-    const provider = await connector.getProvider();
-
-    provider.request({
+    await ethereum.request({
       method: 'wallet_watchAsset',
       params: {
         type: 'ERC20',
