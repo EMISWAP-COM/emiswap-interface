@@ -9,12 +9,10 @@ import ethereumSvg from '../../../assets/svg/ethereum-network.svg';
 import kucoinSvg from '../../../assets/svg/kucoin-network.svg';
 import arrowSvg from '../../../assets/svg/arrow.svg';
 import { shortenAddressHeadTail } from '../../../utils';
-import { useActiveWeb3React } from '../../../hooks';
 import { useTranslation } from 'react-i18next';
 
 
 const TokenAddresses = () => {
-  const { connector } = useActiveWeb3React();
   const { t } = useTranslation();
   const { ethereum } = window as any;
 
@@ -43,7 +41,7 @@ const TokenAddresses = () => {
         },
       },
     })
-  }, [connector]);
+  }, [ethereum]);
 
   const tokens = [
     {
@@ -72,7 +70,7 @@ const TokenAddresses = () => {
     }
   ]
 
-  const enableAddToken = connector && isMetamask && connectedNetworkId === tokens[activeIndex].chainId;
+  const enableAddToken = ethereum && isMetamask && connectedNetworkId === tokens[activeIndex].chainId;
 
   return (
     <S.Root>
