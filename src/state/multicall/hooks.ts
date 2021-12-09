@@ -71,7 +71,9 @@ function useCallsData(calls: (Call | undefined)[], options?: ListenerOptions): C
   // update listeners when there is an actual change that persists for at least 100ms
   useEffect(() => {
     const callKeys: string[] = JSON.parse(serializedCallKeys);
-    if (!chainId || callKeys.length === 0) return;
+    if (!chainId || callKeys.length === 0) {
+      return;
+    }
     const calls = callKeys.map(key => parseCallKey(key));
     dispatch(
       addMulticallListeners({
@@ -94,7 +96,9 @@ function useCallsData(calls: (Call | undefined)[], options?: ListenerOptions): C
 
   return useMemo(() => {
     return calls.map<CallResult>(call => {
-      if (!chainId || !call) return INVALID_RESULT;
+      if (!chainId || !call) {
+        return INVALID_RESULT;
+      }
       const result = callResults[chainId]?.[toCallKey(call)];
       let data;
       if (result?.data && result?.data !== '0x') {
@@ -139,11 +143,19 @@ function toCallState(
   fragment: FunctionFragment | undefined,
   latestBlockNumber: number | undefined,
 ): CallState {
-  if (!callResult) return INVALID_CALL_STATE;
+  if (!callResult) {
+    return INVALID_CALL_STATE;
+  }
   const { valid, data, blockNumber } = callResult;
-  if (!valid) return INVALID_CALL_STATE;
-  if (valid && !blockNumber) return LOADING_CALL_STATE;
-  if (!contractInterface || !fragment || !latestBlockNumber) return LOADING_CALL_STATE;
+  if (!valid) {
+    return INVALID_CALL_STATE;
+  }
+  if (valid && !blockNumber) {
+    return LOADING_CALL_STATE;
+  }
+  if (!contractInterface || !fragment || !latestBlockNumber) {
+    return LOADING_CALL_STATE;
+  }
   const success = data && data.length > 2;
   const syncing = (blockNumber ?? 0) < latestBlockNumber;
   let result: Result | undefined = undefined;
