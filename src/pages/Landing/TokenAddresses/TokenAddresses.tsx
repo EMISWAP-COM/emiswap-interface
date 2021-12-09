@@ -18,10 +18,11 @@ const TokenAddresses = () => {
   const { t } = useTranslation();
 
   const optionsRef = useRef(null);
+  const switchRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [optionsOpened, setOptionsOpened] = useState(false);
 
-  useOnClickOutside(optionsRef, () => optionsOpened && setOptionsOpened(false));
+  useOnClickOutside(optionsRef, switchRef, () => setOptionsOpened(false));
 
   const isMetamask = window?.ethereum?.isMetaMask;
   // @ts-ignore
@@ -87,7 +88,7 @@ const TokenAddresses = () => {
             <S.Copy onClick={() => copy(tokens[activeIndex].address)}>
               <img src={copySvg} alt="" />
             </S.Copy>
-            <S.Chain onClick={() => setOptionsOpened(!optionsOpened)}>
+            <S.Chain onClick={() => setOptionsOpened(!optionsOpened)} ref={switchRef}>
               <img src={tokens[activeIndex].icon} alt="" />
               <S.Arrow src={arrowSvg} />
             </S.Chain>
@@ -113,11 +114,11 @@ const TokenAddresses = () => {
 }
 
 // Hook
-function useOnClickOutside(ref, handler) {
+function useOnClickOutside(ref, ref2, handler) {
   useEffect(
     () => {
       const listener = (event) => {
-        if (!ref.current || ref.current.contains(event.target)) {
+        if (!ref.current || ref.current.contains(event.target) || ref2.current.contains(event.target)) {
           return;
         }
         handler(event);
