@@ -1,5 +1,13 @@
 import { Token, TokenAmount } from '@uniswap/sdk';
-import React, { KeyboardEvent, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  KeyboardEvent,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { isMobile } from 'react-device-detect';
 import { useTranslation } from 'react-i18next';
 import { Text } from 'rebass';
@@ -84,18 +92,24 @@ export default function CurrencySearchModal({
   const tokenComparator = useTokenComparator(invertSearchOrder);
 
   const filteredTokens: Token[] = useMemo(() => {
-    if (searchToken) return [searchToken];
+    if (searchToken) {
+      return [searchToken];
+    }
     return filterTokens(Object.values(allTokens), searchQuery, isLpTokens);
   }, [searchToken, allTokens, searchQuery, isLpTokens]);
 
   const filteredSortedTokens: Token[] = useMemo(() => {
-    if (searchToken) return [searchToken];
+    if (searchToken) {
+      return [searchToken];
+    }
     const sorted = filteredTokens.sort(tokenComparator);
     const symbolMatch = searchQuery
       .toLowerCase()
       .split(/\s+/)
       .filter(s => s.length > 0);
-    if (symbolMatch.length > 1) return sorted;
+    if (symbolMatch.length > 1) {
+      return sorted;
+    }
 
     return [
       ...(searchToken ? [searchToken] : []),
@@ -115,7 +129,9 @@ export default function CurrencySearchModal({
 
   // clear the input on open
   useEffect(() => {
-    if (isOpen) setSearchQuery('');
+    if (isOpen) {
+      setSearchQuery('');
+    }
   }, [isOpen, setSearchQuery]);
 
   // manage focus on modal show

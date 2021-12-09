@@ -1,4 +1,5 @@
 import styled from 'styled-components/macro';
+// import dayjs from 'dayjs';
 import React, { useEffect, useMemo, useState } from 'react';
 import ReactGA from 'react-ga';
 import Button from '../../base/ui/Button';
@@ -19,7 +20,7 @@ import { useNetworkData } from '../../hooks/Coins';
 
 const Content = styled.div`
   display: flex;
-  
+
   ${({ theme }) => theme.mediaWidth.upToLarge`
     display: block;
   `};
@@ -31,9 +32,9 @@ const BorderCard = styled.div`
   height: 318px;
   margin: 8px;
   padding: 16px;
-  border: 1px solid #615C69;
+  border: 1px solid #615c69;
   border-radius: 8px;
-  
+
   ${({ theme }) => theme.mediaWidth.upToLarge`
     margin: 8px 0;
     padding: 16px 0;
@@ -80,7 +81,7 @@ const StakeItem = styled.div`
   display: flex;
   margin-right: 8px;
   padding: 8px 0 12px 0;
-  border-bottom: 1px solid #615C69;
+  border-bottom: 1px solid #615c69;
 `;
 
 const StakeToken = styled.div`
@@ -93,7 +94,7 @@ const StakeTokenName = styled.div`
   font-weight: 500;
   font-size: 12px;
   line-height: 14px;
-  color: #B7B7CA;
+  color: #b7b7ca;
 `;
 
 const StakeTokenLine = styled.div`
@@ -105,16 +106,14 @@ const StakeTokenAmount = styled.div`
   font-weight: 500;
   font-size: 18px;
   line-height: 23px;
-  color: #FFFFFF;
+  color: #ffffff;
 `;
 
 type Farm365ContentProps = {
   farming365: ReturnType<typeof useFarming365>;
 };
 
-export default function Farm365Content({
-  farming365,
-}: Farm365ContentProps) {
+export default function Farm365Content({ farming365 }: Farm365ContentProps) {
   const { chainId, account } = useActiveWeb3React();
   const { value: network } = useNetworkData();
 
@@ -124,7 +123,7 @@ export default function Farm365Content({
 
   const recentTransactions = useMemo(() => {
     const txs = Object.values(allTransactions);
-    return txs.filter((t) => new Date().getTime() - t.addedTime < 86_400_000);
+    return txs.filter(t => new Date().getTime() - t.addedTime < 86_400_000);
   }, [allTransactions]);
 
   const pending = useMemo(() => {
@@ -145,8 +144,9 @@ export default function Farm365Content({
   const [lpCurrency, setLpCurrency] = useState<Token>(null);
 
   const [stakeButtonText, setStakeButtonText] = useState<string>('Stake');
+  const [collectButtonText /*, setCollectButtonText*/] = useState<string>('Collect to wallet');
   const [isStakeButtonDisabled, setStakeButtonDisabled] = useState<boolean>(true);
-  const [isCollectButtonDisabled /*setCollectButtonDisabled*/] = useState<boolean>(true);
+  const [isCollectButtonDisabled /*, setCollectButtonDisabled*/] = useState<boolean>(true);
 
   const [isStakeAllowed, setStakeAllowed] = useState<boolean>(false);
 
@@ -168,9 +168,7 @@ export default function Farm365Content({
   }, [lpValue, lpCurrency]);
 
   const [approvalEsw, approveEswCallback] = useApproveCallback(
-    eswValueParsed
-      ? new TokenAmount(eswCurrency, JSBI.BigInt(eswValueParsed))
-      : undefined,
+    eswValueParsed ? new TokenAmount(eswCurrency, JSBI.BigInt(eswValueParsed)) : undefined,
     farmingAddresses,
   );
 
@@ -185,8 +183,7 @@ export default function Farm365Content({
     return farming365.stakedTokens;
   }, [farming365.stakedTokens]);
 
-  const lpStakedTokens = stakedTokens
-    .filter(tokenAmount => tokenAmount.token.symbol !== 'ESW');
+  const lpStakedTokens = stakedTokens.filter(tokenAmount => tokenAmount.token.symbol !== 'ESW');
 
   const eswStakedBalance: string = useMemo(() => {
     const balance = stakedTokens
@@ -251,15 +248,46 @@ export default function Farm365Content({
     approvalLp,
   ]);
 
-  /*useEffect(() => {
-    if (stakedTokens?.length) {
-      setCollectButtonDisabled(false);
+  /*const collectExitDateInterval = useRef<any>();
+  useEffect(() => {
+    if (collectExitDateInterval.current) {
+      clearInterval(collectExitDateInterval.current);
     }
-  }, [stakedTokens]);*/
+
+    if (hasPendingTransactions) {
+      setCollectButtonText('Collect to wallet');
+      setCollectButtonDisabled(true);
+    } else if (farming365.exitDateLimit > dayjs().unix()) {
+      collectExitDateInterval.current = setInterval(() => {
+        const dateNow = dayjs();
+        const exitDate = dayjs(farming365.exitDateLimit * 1000);
+
+        const timeout = (dayjs as any).duration(exitDate.diff(dateNow)).format('D[d] HH:mm:ss');
+        setCollectButtonText(`Collect to wallet ${timeout}`);
+
+        if (exitDate.unix() < dateNow.unix() + 2000) {
+          clearInterval(collectExitDateInterval.current);
+        }
+      }, 1000);
+      setCollectButtonDisabled(true);
+    } else if (stakedTokens?.length && farming365.exitDateLimit < dayjs().unix()) {
+      setCollectButtonText('Collect to wallet');
+      setCollectButtonDisabled(false);
+    } else {
+      setCollectButtonText('Collect to wallet');
+      setCollectButtonDisabled(true);
+    }
+
+    return () => {
+      if (collectExitDateInterval.current) {
+        clearInterval(collectExitDateInterval.current);
+      }
+    };
+  }, [stakedTokens, hasPendingTransactions, farming365.exitDateLimit]);*/
 
   useEffect(() => {
     if (!hasPendingTransactions) {
-      farming365.updateStakedTokens();
+      farming365.update();
     }
     // farming365 Не должно быть в deps, т.к. он обновится и будет рекурсия
     // eslint-disable-next-line
@@ -274,7 +302,7 @@ export default function Farm365Content({
     }
   };
 
-  const calcEswByLp = async (_lpValue) => {
+  const calcEswByLp = async _lpValue => {
     if (lpCurrency && _lpValue) {
       const calcValue = await farming365.calcEswByLp(lpCurrency, _lpValue);
       setEswValue(Number(calcValue).toFixed(4));
@@ -283,15 +311,14 @@ export default function Farm365Content({
     }
   };
 
-  const handleChangeEswInput = (_eswValue) => {
+  const handleChangeEswInput = _eswValue => {
     setEswValue(_eswValue);
     calcLpByEsw(_eswValue, lpCurrency);
   };
 
-  const handleChangeLpInput = (_lpValue) => {
+  const handleChangeLpInput = _lpValue => {
     setLpValue(_lpValue);
     calcEswByLp(_lpValue);
-
   };
 
   const handleCurrencySelect = (currency: Token) => {
@@ -315,13 +342,13 @@ export default function Farm365Content({
             dimension5: network,
           });
           ReactGA.event({
-            category: "Transaction",
-            action: "new",
-            label: "stake365",
+            category: 'Transaction',
+            action: 'new',
+            label: 'stake365',
             value: Math.round(parseFloat(lpValue)),
           });
         })
-        .catch((err) => {
+        .catch(err => {
           ReactGA.set({
             dimension1: lpCurrency.symbol,
             metric1: lpValue,
@@ -329,25 +356,24 @@ export default function Farm365Content({
             dimension5: network,
           });
           ReactGA.event({
-            category: "Transaction",
-            action: "cancel",
-            label: "stake365",
+            category: 'Transaction',
+            action: 'cancel',
+            label: 'stake365',
             value: Math.round(parseFloat(lpValue)),
           });
         });
-      farming365.updateStakedTokens();
+      farming365.update();
     } else if (![ApprovalState.PENDING, ApprovalState.APPROVED].includes(approvalEsw)) {
       approveEswCallback();
     } else if (![ApprovalState.PENDING, ApprovalState.APPROVED].includes(approvalLp)) {
       approveLpCallback();
     }
   };
-  
-  const handleClickCollectBtn = () => {
 
+  const handleClickCollectBtn = async () => {
+    await farming365.collect();
+    farming365.update();
   };
-
-  const collectButtonText = 'Collect to wallet';
 
   return (
     <Content>
@@ -394,7 +420,7 @@ export default function Farm365Content({
             <StakeToken>
               <StakeTokenName>ESW</StakeTokenName>
               <StakeTokenLine>
-                <CurrencyLogo currency={eswCurrency} size={'24px'}/>
+                <CurrencyLogo currency={eswCurrency} size={'24px'} />
                 <StakeTokenAmount>{eswStakedBalance}</StakeTokenAmount>
               </StakeTokenLine>
             </StakeToken>
@@ -404,7 +430,7 @@ export default function Farm365Content({
               <StakeToken>
                 <StakeTokenName>{tokenAmount.token.name}</StakeTokenName>
                 <StakeTokenLine>
-                  <LpTokenSymbol/>
+                  <LpTokenSymbol />
                   <StakeTokenAmount>{tokenAmountToString(tokenAmount)}</StakeTokenAmount>
                 </StakeTokenLine>
               </StakeToken>
@@ -417,4 +443,4 @@ export default function Farm365Content({
       </BorderCard>
     </Content>
   );
-};
+}

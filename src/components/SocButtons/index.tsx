@@ -56,7 +56,7 @@ const Link = props => <ImgLink rel="noopener noreferrer" target="_blank" {...pro
 
 export default () => {
 
-  const isLandingPage = useRouteMatch("/landing");
+  const isLandingPage = useRouteMatch("/main");
 
   if (isLandingPage) return null;
 

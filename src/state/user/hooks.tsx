@@ -2,7 +2,11 @@ import { ChainId, Pair, Token } from '@uniswap/sdk';
 import flatMap from 'lodash.flatmap';
 import { useCallback, useEffect, useMemo } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS, REFERRAL_ADDRESS_STORAGE_KEY } from '../../constants';
+import {
+  BASES_TO_TRACK_LIQUIDITY_FOR,
+  PINNED_PAIRS,
+  REFERRAL_ADDRESS_STORAGE_KEY,
+} from '../../constants';
 
 import { useActiveWeb3React } from '../../hooks';
 import { useAllTokens } from '../../hooks/Tokens';
@@ -21,7 +25,7 @@ import {
   updateUserSlippageTolerance,
 } from './actions';
 import { useDefaultTokenList } from '../lists/hooks';
-import { isDefaultToken } from '../../utils';
+import { getLpTokenByAddress, isDefaultToken } from '../../utils';
 import { useTokens } from '../../hooks/useTokens';
 
 //TODO refactor after release
@@ -149,12 +153,20 @@ export function useUserDeadline(): [number, (slippage: number) => void] {
 }
 
 export function useAddUserToken(): (token: Token) => void {
+  const { chainId, account, library } = useActiveWeb3React();
+
   const dispatch = useDispatch<AppDispatch>();
+
   return useCallback(
-    (token: Token) => {
-      dispatch(addSerializedToken({ serializedToken: serializeToken(token) }));
+    async (token: Token) => {
+      if (token?.name?.includes('LP ') && account && library) {
+        const lpToken = await getLpTokenByAddress(token.address, chainId, account, library);
+        dispatch(addSerializedToken({ serializedToken: serializeToken(lpToken) }));
+      } else {
+        dispatch(addSerializedToken({ serializedToken: serializeToken(token) }));
+      }
     },
-    [dispatch],
+    [chainId, account, library, dispatch],
   );
 }
 
