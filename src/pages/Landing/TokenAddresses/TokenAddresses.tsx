@@ -114,11 +114,11 @@ const TokenAddresses = () => {
 }
 
 // Hook
-function useOnClickOutside(ref, ref2, handler) {
+function useOnClickOutside(ref, excludeRef, handler) {
   useEffect(
     () => {
       const listener = (event) => {
-        if (!ref.current || ref.current.contains(event.target) || ref2.current.contains(event.target)) {
+        if (!ref.current || ref.current.contains(event.target) || excludeRef.current.contains(event.target)) {
           return;
         }
         handler(event);
@@ -130,7 +130,7 @@ function useOnClickOutside(ref, ref2, handler) {
         document.removeEventListener("touchstart", listener);
       };
     },
-    [ref, handler]
+    [ref, excludeRef, handler]
   );
 }
 
