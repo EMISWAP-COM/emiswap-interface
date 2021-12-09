@@ -200,13 +200,23 @@ export const Body = styled.div`
     }
 
     .btn-earn {
-      @media screen and (max-width: 1160px) {
+      margin-left: 10px;
+      white-space: nowrap;
+
+      @media screen and (max-width: 1380px) {
+        display: none;
+      }
+    }
+
+    .web3-wrapper {
+      @media screen and (max-width: 1380px) {
         display: none;
       }
     }
   }
 
   .banner {
+    position: relative;
     display: flex;
     justify-content: space-between;
     padding: 225px 80px;
@@ -216,11 +226,58 @@ export const Body = styled.div`
       padding: 210px 20px 45px 20px;
     }
 
+    .mobile-web3-buttons {
+      display: flex;
+      position: absolute;
+      justify-content: center;
+      top: 120px;
+      left: 0;
+      right: 0;
+      padding: 0 40px;
+     
+      @media screen and (min-width: 1380px) {
+        display: none;
+      }
+
+      @media screen and (max-width: 950px) {
+        top: 160px;
+      }
+    }
+    .lp_btn-connect {
+      background-color: #0f0f13;
+      border: 1px solid #7A2DF4;
+    }
+
     &__buttons {
-      @media screen and (max-width: 425px) {
-       .btn-primary {
-         margin-top: 20px;
-       }
+      display: flex;
+      justify-content: space-between;
+      max-width: 384px;
+      height: 48px;
+      gap: 24px;
+
+      .btn-primary {
+        min-width: 0;
+      }
+
+      .lp_referral_button {
+        flex: 1;
+
+        > div {
+          padding: 0;
+
+          > div {
+            margin: 0 !important;
+          }
+
+          span {
+            white-space: pre;
+          }
+        }
+
+        button {
+          height: 48px;
+          padding: 0;
+        }
       } 
     }
     
@@ -390,7 +447,6 @@ export const Body = styled.div`
      
      &__card {
         flex: 1;
-        padding: 24px 20px;
         margin: 16px 14px;
         border: 1px solid rgba(255, 255, 255, 0.24);
         border-radius: 16px;
@@ -400,22 +456,28 @@ export const Body = styled.div`
         @media screen and (max-width: 769px) {
           margin: 16px 0;
         }
-        
-     }
-     
-     &__value {
-        margin-bottom: 20px;
-        font-weight: normal;
-        font-size: 48px;
-        line-height: 56px;
-        color: #FFFFFF;
      }
      
      &__desc {
-        margin-top: 12px;
+        background: radial-gradient(92.3% 366.59% at 52.58% 168.45%, #7A2DF4 0%, #A267FF 100%);
+        backdrop-filter: blur(48px);
+        border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
         font-weight: 500;
-        font-size: 18px;
-        line-height: 30px;
+        font-size: 24px;
+        line-height: 78px;
+        color: #FFFFFF;
+        text-align: center;
+        
+        height: 78px;
+     }
+
+     &__value {
+        margin: 20px 0;
+        font-weight: normal;
+        font-size: 48px;
+        line-height: 56px;
+        text-align: center;
         color: #FFFFFF;
      }
   }
