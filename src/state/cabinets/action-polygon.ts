@@ -10,7 +10,7 @@ export const loadPolygonBalance = createAsyncThunk(
   'loadPolygonBalance',
   async ({ userId, network }: { userId: string; network: string }, { dispatch, getState }) => {
     const url = `${baseUrl}/v1/public/users/${userId}/balances/${
-      network === 'polygon' ? 'polygon_main' : 'eth_main'
+      network === 'polygon' ? 'polygon_test' : 'eth_main'
     } `;
     try {
       const response = await fetchWrapper.get(url);
