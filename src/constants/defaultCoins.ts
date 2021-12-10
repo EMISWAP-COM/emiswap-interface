@@ -4213,6 +4213,20 @@ const defaultCoins: DefaultCoins = {
       decimals: 18,
     },
     {
+      address: '0x9f4da0bc5ebd2c7432d561f31483e09d2394040f',
+      chainId: 137,
+      name: 'LP MATIC-WETH',
+      symbol: 'MATICWETH',
+      decimals: 18,
+    },
+    {
+      address: '0x479062c2dfd9b758d3fdcf916c5f6aebcf51ad97',
+      chainId: 137,
+      name: 'LP WETH-USDT',
+      symbol: 'WETHUSDT',
+      decimals: 18,
+    },
+    {
       address: '0xbd15365b5883382A3ebFfDB0C8780F9881eff71e',
       chainId: 80001,
       decimals: 18,
@@ -4377,7 +4391,5 @@ export const mustVisibleAddresses = {
     '0xfc56a7e70f6c970538020cc39939929b4d393f1f',
     '0x1b465775469c71b898bb51b53b2d4464b7cd3448',
   ],
-  polygon: [
-    '',
-  ],
+  polygon: [''],
 };

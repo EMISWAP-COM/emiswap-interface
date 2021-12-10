@@ -44,7 +44,13 @@ const CopyIcon = styled(LinkStyledButton)`
   }
 `;
 
-export default function ReferralLink() {
+export default function ReferralLink({
+  showText = true,
+  showIcon = true,
+  text = 'Copy Referral Link',
+  onCopyText = 'Copied',
+  className = ''
+}) {
   const theme = useContext(ThemeContext);
   const { account } = useActiveWeb3React();
 
@@ -69,7 +75,7 @@ export default function ReferralLink() {
   }*/
 
   return (
-    <div>
+    <div className={className}>
       <ReferralLinkBox>
         {!account ? (
           <Text fontSize={16} fontWeight={400} color={theme.text2}>
@@ -77,9 +83,11 @@ export default function ReferralLink() {
           </Text>
         ) : (
           <>
-            <Text fontSize={16} fontWeight={400} color={theme.text2}>
-              Share referral link to earn cryptocurrency
-            </Text>
+            {showText && (
+              <Text fontSize={16} fontWeight={400} color={theme.text2}>
+                Share referral link to earn cryptocurrency
+              </Text>
+            )}
             <RowFixed style={{ marginTop: '10px', width: '100%' }}>
               <CopyIcon
                 onClick={() => {
@@ -89,13 +97,13 @@ export default function ReferralLink() {
               >
                 {isCopied ? (
                   <>
-                    <CheckCircle size={'16'} color={theme.blue}/>
-                    <span style={{ marginLeft: '4px' }}>Copied</span>
+                    {showIcon && <CheckCircle size={'16'} color={theme.blue}/>}
+                    <span style={{ marginLeft: '4px' }}>{onCopyText}</span>
                   </>
                 ) : (
                   <>
-                    <Copy size={'16'} color={theme.blue}/>
-                    <span style={{ marginLeft: '4px' }}>Copy Referral Link</span>
+                    {showIcon && <Copy size={'16'} color={theme.blue}/>}
+                    <span style={{ marginLeft: '4px' }}>{text}</span>
                   </>
                 )}
               </CopyIcon>

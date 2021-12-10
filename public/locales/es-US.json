@@ -87,7 +87,9 @@
       "analytics": "Ir a los análisis",
       "more": "Más información",
       "paper": "White paper",
-      "viewOn": "Ver en Polygonscan"
+      "viewOn": "Ver en Polygonscan",
+      "copy": "Copiar referencia",
+      "onCopy": "Copiado"
     },
     "banner": {
       "title": "365% de ARP y más\n con 0 esfuerzo\n sólo en EmiSwap AMM DEX",
@@ -95,7 +97,8 @@
       "supply": "Provision de liquidez",
       "farming": "Farming",
       "swap": "Comisión del swap",
-      "volume": "Del volumen"
+      "volume": "Del volumen",
+      "tokenAddress": "Dirección de token ESW:"
     },
     "365": "365% APR: nuestro Airdrop especial para LP de EmiSwap en Polygon. Gane 1% adicional por día por proporcionar liquidez.",
     "1000": "Proporcione tokens LP de liquidez y participación en farming pools con hasta 1000% APR para multiplicar sus recompensas.",
@@ -103,7 +106,7 @@
     "numbers": {
       "title": "EmiSwap en números",
       "value": "Valor total bloqueado",
-      "volume": "Volumen total de operaciones",
+      "volume": "Volumen",
       "users": "Usuarios únicos",
       "trades": "Operaciones totales"
     },
