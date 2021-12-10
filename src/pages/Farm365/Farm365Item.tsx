@@ -7,14 +7,13 @@ import { ESW } from '../../constants';
 import { Token } from '@uniswap/sdk';
 import { BigNumber } from '@ethersproject/bignumber';
 import { useActiveWeb3React } from '../../hooks';
+import { calcFarming365Apr } from './helpers';
 
 type Farm365ItemProps = {
   contract: Contract;
 };
 
-export default function Farm365Item({
-  contract,
-}: Farm365ItemProps) {
+export default function Farm365Item({ contract }: Farm365ItemProps) {
   const { chainId } = useActiveWeb3React();
   const farming365 = useFarming365(contract);
 
@@ -27,8 +26,6 @@ export default function Farm365Item({
     contract
       .getTokenPrice(eswCurrency.address)
       .then((value: BigNumber) => {
-        console.log('tokenPrice string', value.toString());
-        console.log('tokenPrice', +value.toString() / 1000000);
         setEswRate(+value.toString() / 1000000);
       })
       .catch(e => {
@@ -38,10 +35,7 @@ export default function Farm365Item({
 
   useEffect(() => {
     if (farming365.liquidity) {
-      const liq = parseFloat(farming365.liquidity);
-      const blockReward = parseFloat(farming365.blockReward);
-      // 365 + (36000 * 365 * blockReward * eswRate * 100 / (liquidity + 1))
-      setApr(365 + ((36000 * 365 * blockReward * eswRate * 100) / (liq + 1)));
+      setApr(calcFarming365Apr(farming365.liquidity, farming365.blockReward, eswRate));
     }
   }, [eswRate, farming365.blockReward, farming365.liquidity]);
 
@@ -55,6 +49,7 @@ export default function Farm365Item({
       rewardToken={farming365.rewardToken}
       projectedReward={farming365.reward}
       apr={apr}
+      eswRate={eswRate}
       blockReward={farming365.blockReward}
       liquidity={farming365.liquidity}
       endDate={farming365.endDate}
@@ -63,4 +58,4 @@ export default function Farm365Item({
       tokenMode={farming365.tokenMode}
     />
   );
-};
+}

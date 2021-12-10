@@ -20,7 +20,7 @@ const StyledRow = styled.div`
   background-color: ${({ theme }) => theme.border1Transparency};
   border-radius: 8px;
   margin-bottom: 8px;
-  
+
   ${({ theme }) => theme.mediaWidth.upToLarge`
     margin: 0 -16px 8px -16px;
   `};
@@ -211,6 +211,7 @@ type ExtendableRowProps = {
   rewardToken: Token | undefined;
   projectedReward: string;
   apr: number;
+  eswRate?: number;
   blockReward?: string;
   lockPeriod?: number;
   liquidity: string;
@@ -233,6 +234,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
   rewardToken,
   projectedReward,
   apr,
+  eswRate,
   blockReward,
   lockPeriod,
   liquidity,
@@ -245,10 +247,8 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
   availableToCollect,
   isKuCoinToken = false,
   farming365 = null,
-  onStake = ((...args) => {
-  }) as any,
-  onCollect = ((...args) => {
-  }) as any,
+  onStake = ((...args) => {}) as any,
+  onCollect = ((...args) => {}) as any,
 }) => {
   // const { chainId } = useActiveWeb3React();
   const { alias } = useNetworkData();
@@ -274,21 +274,18 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
             <StyledBlockValue>
               <StyledCurrencyLogo>
                 {isLpToken(tokenMode) ? (
-                  <LpTokenSymbol/>
+                  <LpTokenSymbol />
                 ) : (
-                  <CurrencyLogo currency={stakeToken} size={'24px'}/>
+                  <CurrencyLogo currency={stakeToken} size={'24px'} />
                 )}
               </StyledCurrencyLogo>
               {isPolygonActive ? (
-                  <StyledTruncatedText>
-                    LP - ESW
-                  </StyledTruncatedText>
-                ) :
-                (
-                  <StyledTruncatedText>
-                    {isLpToken(tokenMode) ? stakeToken?.name : stakeToken?.symbol}
-                  </StyledTruncatedText>
-                )}
+                <StyledTruncatedText>LP - ESW</StyledTruncatedText>
+              ) : (
+                <StyledTruncatedText>
+                  {isLpToken(tokenMode) ? stakeToken?.name : stakeToken?.symbol}
+                </StyledTruncatedText>
+              )}
               {isEthereumActive && (
                 <StyledAnalyticsLink>
                   <ExternalLink
@@ -296,7 +293,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
                       isLpToken(tokenMode) ? 'pair' : 'token'
                     }/${stakeToken?.address}?=network=${alias}`}
                   >
-                    <LinkIcon size={16}/>
+                    <LinkIcon size={16} />
                   </ExternalLink>
                 </StyledAnalyticsLink>
               )}
@@ -306,7 +303,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
             <StyledBlockTitle>Your reward</StyledBlockTitle>
             <StyledBlockValue>
               <StyledCurrencyLogo>
-                <CurrencyLogo currency={rewardToken} size={'24px'}/>
+                <CurrencyLogo currency={rewardToken} size={'24px'} />
               </StyledCurrencyLogo>
               <Tooltip title={projectedReward}>
                 <StyledTruncatedText>{projectedReward}</StyledTruncatedText>
@@ -321,32 +318,25 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
               </Tooltip>
             </StyledBlockValue>
           </StyledBlock>
-          {
-            (type === FarmingTimeType.variable || FarmingTimeType.farming365)
-            && typeof blockReward !== 'undefined'
-            && (
+          {(type === FarmingTimeType.variable || FarmingTimeType.farming365) &&
+            typeof blockReward !== 'undefined' && (
               <StyledBlock width={150}>
                 <StyledBlockTitle>Block reward</StyledBlockTitle>
                 <StyledBlockValue>
                   <StyledCurrencyLogo>
-                    <CurrencyLogo currency={rewardToken} size={'24px'}/>
+                    <CurrencyLogo currency={rewardToken} size={'24px'} />
                   </StyledCurrencyLogo>
                   <Tooltip title={blockReward}>
-                    <StyledTruncatedText>
-                      {blockReward}
-                    </StyledTruncatedText>
+                    <StyledTruncatedText>{blockReward}</StyledTruncatedText>
                   </Tooltip>
                 </StyledBlockValue>
               </StyledBlock>
-            )
-          }
+            )}
           {type === FarmingTimeType.fixed && typeof lockPeriod !== 'undefined' && (
             <StyledBlock width={150}>
               <StyledBlockTitle>Lock period</StyledBlockTitle>
               <StyledBlockValue>
-                <StyledTruncatedText>
-                  {lockPeriod} days
-                </StyledTruncatedText>
+                <StyledTruncatedText>{lockPeriod} days</StyledTruncatedText>
               </StyledBlockValue>
             </StyledBlock>
           )}
@@ -355,7 +345,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
             <StyledBlockValue>
               {isKuCoinToken && (
                 <StyledCurrencyLogo>
-                  <StyledEthereumLogo src={KucoinLogo} size={'24px'}/>
+                  <StyledEthereumLogo src={KucoinLogo} size={'24px'} />
                 </StyledCurrencyLogo>
               )}
               <StyledTruncatedText>
@@ -381,13 +371,13 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
           </StyledBlock>
         </StyledBlocksWrapper>
         <StyledExtendButtonDesktop onClick={handleExtendClick} isRowExtended={isRowExtended}>
-          {isRowExtended ? <ChevronUp size={24}/> : <ChevronDown size={24}/>}
+          {isRowExtended ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
         </StyledExtendButtonDesktop>
       </StyledHeader>
       {farming365 ? (
         <>
           <StyledExtendableContent isVisible={isRowExtended}>
-            <Farm365Content farming365={farming365}/>
+            <Farm365Content farming365={farming365} eswRate={eswRate || 0} />
           </StyledExtendableContent>
         </>
       ) : (
@@ -399,9 +389,9 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
                 <StyledBlockValue>
                   <StyledCurrencyLogo>
                     {isLpToken(tokenMode) ? (
-                      <LpTokenSymbol/>
+                      <LpTokenSymbol />
                     ) : (
-                      <CurrencyLogo currency={stakeToken} size={'24px'}/>
+                      <CurrencyLogo currency={stakeToken} size={'24px'} />
                     )}
                   </StyledCurrencyLogo>
                   <Tooltip title={deposit}>
@@ -413,7 +403,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
                 <StyledBlockTitle>Your reward</StyledBlockTitle>
                 <StyledBlockValue>
                   <StyledCurrencyLogo>
-                    <CurrencyLogo currency={rewardToken} size={'24px'}/>
+                    <CurrencyLogo currency={rewardToken} size={'24px'} />
                   </StyledCurrencyLogo>
                   <Tooltip title={projectedReward}>
                     <StyledTruncatedText>{projectedReward}</StyledTruncatedText>
@@ -425,7 +415,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
                   <StyledBlockTitle>Balance</StyledBlockTitle>
                   <StyledBlockValue>
                     <StyledCurrencyLogo>
-                      <CurrencyLogo currency={rewardToken} size={'24px'}/>
+                      <CurrencyLogo currency={rewardToken} size={'24px'} />
                     </StyledCurrencyLogo>
                     <Tooltip title={balance}>
                       <StyledTruncatedText>{balance}</StyledTruncatedText>
@@ -439,9 +429,9 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
                   <StyledBlockValue>
                     <StyledCurrencyLogo>
                       {isLpToken(tokenMode) ? (
-                        <LpTokenSymbol/>
+                        <LpTokenSymbol />
                       ) : (
-                        <CurrencyLogo currency={rewardToken} size={'24px'}/>
+                        <CurrencyLogo currency={rewardToken} size={'24px'} />
                       )}
                     </StyledCurrencyLogo>
                     <Tooltip title={availableToCollect}>
@@ -451,7 +441,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
                 </StyledBlock>
               )}
             </StyledBlocksWrapper>
-            <StyledHr/>
+            <StyledHr />
             <StyledInputsWrapper>
               <StyledTokenInputWrapper>
                 {stakeToken && (
@@ -480,7 +470,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
       )}
       <StyledExtendButtonMobile onClick={handleExtendClick} isRowExtended={isRowExtended}>
         <StyledMobileChevron>
-          {isRowExtended ? <ChevronUp size={24}/> : <ChevronDown size={24}/>}
+          {isRowExtended ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
         </StyledMobileChevron>
         Show all
       </StyledExtendButtonMobile>
