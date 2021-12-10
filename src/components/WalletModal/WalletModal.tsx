@@ -19,7 +19,7 @@ import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { Distributor } from '../AccountDetails/Distributor';
 import { useLogin } from '../../state/user/hooks';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../../state';
 import { Ambassador } from '../AccountDetails/Ambassador';
 import { Owner } from '../AccountDetails/Owner';
@@ -27,6 +27,8 @@ import { Owner } from '../AccountDetails/Owner';
 import * as Styled from './styled';
 import { useActiveWeb3React } from '../../hooks';
 import styled from 'styled-components/macro';
+import { useNetworkData } from '../../hooks/Coins';
+import { loadPolygonBalance } from '../../state/cabinets/action-polygon';
 
 export enum UserRoles {
   client = 'client',
@@ -56,6 +58,8 @@ const WalletModal: React.FC<WalletModalProps> = ({ ENSName }) => {
   // important that these are destructed from the account-specific web3-react context
   const { active, account, connector, activate, error } = useWeb3React();
   const { chainId } = useActiveWeb3React();
+  const { value: network } = useNetworkData();
+  const dispatch = useDispatch();
 
   const user = useSelector((state: AppState) => state.user.info);
 
@@ -80,6 +84,7 @@ const WalletModal: React.FC<WalletModalProps> = ({ ENSName }) => {
 
   // always reset to account view
   useEffect(() => {
+    dispatch(loadPolygonBalance({ userId: user.id, network }));
     if (walletModalOpen) {
       setPendingError(false);
       setWalletView(WALLET_VIEWS.ACCOUNT);
@@ -142,8 +147,7 @@ const WalletModal: React.FC<WalletModalProps> = ({ ENSName }) => {
           });
         };
       default:
-        return () => {
-        };
+        return () => {};
     }
   };
 
@@ -190,8 +194,7 @@ const WalletModal: React.FC<WalletModalProps> = ({ ENSName }) => {
           });
         };
       default:
-        return () => {
-        };
+        return () => {};
     }
   };
 
@@ -393,15 +396,15 @@ const WalletModal: React.FC<WalletModalProps> = ({ ENSName }) => {
           );
         case UserRoles.ambassador:
           return (
-            <Ambassador ENSName={ENSName} openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}/>
+            <Ambassador ENSName={ENSName} openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)} />
           );
         case UserRoles.client:
           return (
-            <Owner ENSName={ENSName} openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}/>
+            <Owner ENSName={ENSName} openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)} />
           );
         default:
           return (
-            <Owner ENSName={ENSName} openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}/>
+            <Owner ENSName={ENSName} openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)} />
             /*<Styled.NoUser>
               <WarningBlock
                 title={'Login failed'}
@@ -507,7 +510,7 @@ const WalletModal: React.FC<WalletModalProps> = ({ ENSName }) => {
       <Styled.Wrapper tabIndex={0}>
         <Styled.UpperSection>
           <Styled.CloseIcon onClick={toggleWalletModal}>
-            <Styled.CloseColor/>
+            <Styled.CloseColor />
           </Styled.CloseIcon>
           {getModalContent()}
         </Styled.UpperSection>

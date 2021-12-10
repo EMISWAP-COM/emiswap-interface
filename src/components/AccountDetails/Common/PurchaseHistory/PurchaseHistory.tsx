@@ -39,7 +39,9 @@ export const PurchaseHistory = () => {
     (state: AppState) => state.cabinets.bonusDetails,
   );
   const { depositsEswHistory } = useSelector((state: AppState) => state.cabinets);
-  const { myRewardHistory } = useSelector((state: AppState) => state.polygonCabinet);
+  const { histories: polygonHistories } = useSelector(
+    (state: AppState) => state.polygonCabinet.balance,
+  );
   const [liquidityTabActive, setLiquidityTabActive] = useState<string>(tabs.x10.value);
 
   const deposit = histories?.deposits;
@@ -243,13 +245,19 @@ export const PurchaseHistory = () => {
 
   const myRewardHistoryFields: CellProps[] = React.useMemo(
     () => [
-      { key: 'date', label: 'Date' },
+      { key: 'date', label: 'Date', cell: cellRenders.date },
       { key: 'forWhat', label: 'For What' },
-      { key: 'ESW', label: 'ESW' },
-      { key: 'unlockDate', label: 'Unlock Date' },
+      { key: 'amount', label: 'ESW' },
+      { key: 'unlockDate', label: 'Unlock Date', cell: cellRenders.dateTime },
     ],
     [],
   );
+  const myRewardHistory = polygonHistories.referral_bonus.reduce((acc, item) => {
+    (item.available_at as any).forEach(([date, amount]) => {
+      acc.push({ date: item.created_at, unlockDate: date, amount, forWhat: 'Referral Reward' });
+    });
+    return acc;
+  }, []);
   return (
     <>
       {isEthActive && (

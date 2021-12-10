@@ -128,17 +128,19 @@ const ChangeWalletBtn = styled(ActionBtn)<{ inactive: boolean }>`
     box-shadow: none;
   }
 
-  ${({ inactive }) => inactive && css`
-    background-color: transparent !important;
-    color: #615C69;
-    cursor: auto;
-    border: 1px solid rgb(97, 92, 105) !important;
-    opacity: 1 !important;
-    text-decoration: none !important;
-  `} @media screen and(max-width: 800 px) {
-  width: calc(50% - 5px);
-  margin-left: auto;
-}
+  ${({ inactive }) =>
+    inactive &&
+    css`
+      background-color: transparent !important;
+      color: #615c69;
+      cursor: auto;
+      border: 1px solid rgb(97, 92, 105) !important;
+      opacity: 1 !important;
+      text-decoration: none !important;
+    `} @media screen and(max-width: 800 px) {
+    width: calc(50% - 5px);
+    margin-left: auto;
+  }
 `;
 
 const CollectBtn = styled(ActionBtn)<{ inactive?: boolean }>`
@@ -152,15 +154,16 @@ const CollectBtn = styled(ActionBtn)<{ inactive?: boolean }>`
     box-shadow: none;
   }
 
-  ${({ inactive }) => inactive && css`
-  background-color: transparent !important;
-  color: #615C69;
-  cursor: auto;
-  border: 1px solid rgb(97, 92, 105) !important;
-  opacity: 1 !important;
-  text-decoration: none !important;
-`}
-
+  ${({ inactive }) =>
+    inactive &&
+    css`
+      background-color: transparent !important;
+      color: #615c69;
+      cursor: auto;
+      border: 1px solid rgb(97, 92, 105) !important;
+      opacity: 1 !important;
+      text-decoration: none !important;
+    `}
 `;
 
 const AccountControl = styled.div`
@@ -279,7 +282,7 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
   const toggle = useWalletModalToggle();
   const balance = useSelector((state: AppState) => {
     if (value === 'polygon') {
-      return state.polygonCabinet;
+      return state.polygonCabinet.balance;
     } else return state.cabinets.balance;
   });
   const isKuCoinActive = useIsKuCoinActive();
@@ -293,7 +296,7 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
           <WalletInfo>
             <span>Connected with {formatConnectorName(connector)}</span>
             <ChangeActionsBlock>
-              <ChangeAddress openOptions={openOptions}/>
+              <ChangeAddress openOptions={openOptions} />
               <ChangeWalletMessageTooltip
                 disableTooltip={isEnableChangeWallet}
                 whiteSpace={'normal'}

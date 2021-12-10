@@ -34,7 +34,6 @@ export function useWalletModalToggle(): () => void {
   const dispatch = useDispatch();
   return useCallback(() => {
     dispatch(toggleWalletModal());
-    dispatch(loadPolygonBalance());
   }, [dispatch]);
 }
 

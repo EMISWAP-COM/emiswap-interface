@@ -84,11 +84,11 @@ export const ESWRewards = () => {
   const isPolygonActive = useIsPolygonActive();
   const balance = useSelector((state: AppState) => {
     if (isPolygonActive) {
-      return state.polygonCabinet;
+      return state.polygonCabinet.balance;
     } else return state.cabinets.balance;
   });
   const farming365 = useSelector((state: AppState) => {
-    return state.polygonCabinet.farming365.ESW;
+    return state.polygonCabinet.balance.farming365.ESW;
   });
   const grouped = balance?.total?.grouped;
 
