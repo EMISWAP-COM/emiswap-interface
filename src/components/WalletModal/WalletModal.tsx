@@ -89,7 +89,7 @@ const WalletModal: React.FC<WalletModalProps> = ({ ENSName }) => {
       setPendingError(false);
       setWalletView(WALLET_VIEWS.ACCOUNT);
     }
-  }, [walletModalOpen]);
+  }, [walletModalOpen, dispatch, network, user.id]);
 
   // close modal when a connection is successful
   const activePrevious = usePrevious(active);

@@ -13,7 +13,6 @@ import {
 } from './actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../index';
-import { loadPolygonBalance } from '../cabinets/action-polygon';
 
 export function useBlockNumber(): number | undefined {
   const { chainId } = useActiveWeb3React();
