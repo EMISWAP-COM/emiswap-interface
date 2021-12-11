@@ -1,14 +1,11 @@
-import { currencyEquals } from '@uniswap/sdk';
-import { useWeb3React } from '@web3-react/core';
+
 import React, { CSSProperties, memo, useMemo } from 'react';
 import { Text } from 'rebass';
-import Column, { AutoColumn } from '../../components/Column';
+import Column from '../../components/Column';
 import CurrencyLogo from '../../components/CurrencyLogo';
 import { RowFixed } from '../../components/Row';
 import { StyledFixedSizeList, StyledMenuItem } from '../../components/SearchModal/styleds';
-import { useTokenBalances, useTokenSymbols } from '../../state/wallet/hooks';
 import { currencyKey } from '../../utils/currencyId';
-import { tokenAmountToString } from '../../utils/formats';
 
 export default function TokensList({
   items = [],

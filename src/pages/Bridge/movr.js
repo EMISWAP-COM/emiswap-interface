@@ -99,6 +99,8 @@ const movr = {
     signer,
     shouldApprove = true 
   ) => {
-};
+
+  }
+}
 
 export default movr;

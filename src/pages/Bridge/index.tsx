@@ -1,10 +1,8 @@
-import React, { useCallback, useEffect, useState, useMemo, useContext } from 'react';
-import { Movr, Chain, Token, RouteOptions, WatcherEvent } from '@movr/fund-movr-sdk';
-import { rpcList as chains, ChainType } from './rpcList';
+import React, { useCallback, useEffect, useState, useContext } from 'react';
+import { Movr, Chain, RouteOptions } from '@movr/fund-movr-sdk';
 import { SwapPoolTabs, TabNames } from '../../components/NavigationTabs';
 import AppBody from '../AppBody';
 import { AutoColumn } from '../../components/Column';
-import CurrencyInputPanel from '../../components/CurrencyInputPanel';
 import * as Styled from '../../components/CurrencyInputPanel/styled';
 
 import * as S from './styled';
@@ -12,17 +10,12 @@ import * as S from './styled';
 import { ArrowWrapper, Wrapper } from '../../components/swap/styleds';
 import { ButtonLight } from '../../components/Button';
 import { useWalletModalToggle } from '../../state/application/hooks';
-import { useWeb3React } from '@web3-react/core';
 import ethers from 'ethers';
-import { Field } from '../../state/swap/actions';
 import {
   useTokenBalances,
 } from '../../state/wallet/hooks';
-import { useToken } from '../../hooks/Tokens';
-import TokenOption from './TokenOption';
-import { Token as UniSwapToken, TokenAmount } from '@uniswap/sdk';
+import { Token as UniSwapToken } from '@uniswap/sdk';
 import { tokenAmountToString } from '../../utils/formats';
-import { currencyKey } from '../../utils/currencyId';
 import CurrencyLogo from '../../components/CurrencyLogo';
 import TokensSearchModal from './TokenSearchModal';
 import BridgeSearchModal from './BridgeSearchModal';
