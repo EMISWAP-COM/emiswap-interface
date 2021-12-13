@@ -468,7 +468,7 @@ export default function Farm365Content({ farming365, eswRate }: Farm365ContentPr
     farming365.update();
   };
 
-  const apr = calcFarming365Apr(farming365.liquidity, farming365.blockReward, eswRate).toFixed(0);
+  const apr = calcFarming365Apr(farming365.liquidity, farming365.blockReward, eswRate).toFixed(2);
 
   return (
     <Content>
@@ -524,10 +524,12 @@ export default function Farm365Content({ farming365, eswRate }: Farm365ContentPr
                 <StakeTokenAmount>{eswStakedBalance}</StakeTokenAmount>
               </StakeTokenLine>
             </StakeToken>
-            <StakeApr>{apr}%</StakeApr>
+            <StakeApr>
+              {parseFloat(eswStakedBalance) > 0 ? `${(+apr - 365).toFixed(2)}%` : '0'}
+            </StakeApr>
             <StakeReward>
               <CurrencyLogo currency={eswCurrency} size={'24px'} />
-              <div style={{ marginLeft: 4 }}>{farming365.blockReward.slice(0, 5)}</div>
+              <div style={{ marginLeft: 4 }}>{farming365.reward.slice(0, 8)}</div>
             </StakeReward>
           </StakeItem>
           {lpStakedTokens.map((tokenAmount, index) => (
