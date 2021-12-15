@@ -19,6 +19,8 @@ import { useCurrencyBalance } from '../../state/wallet/hooks';
 import { useNetworkData } from '../../hooks/Coins';
 import dayjs from 'dayjs';
 import { calcFarming365Apr } from './helpers';
+import { isMobile } from 'react-device-detect';
+import Tooltip from '../Farm/Tooltip';
 
 const Content = styled.div`
   display: flex;
@@ -104,18 +106,15 @@ const StakeItem = styled.div`
 `;
 
 const StakeToken = styled.div`
-  flex: 2;
-  margin-right: 24px;
+  flex: 1.4;
 `;
 
 const StakeApr = styled.div`
-  margin-top: 22px;
   flex: 1;
+  margin-top: 22px;
 `;
 
 const StakeReward = styled.div`
-  display: flex;
-  align-items: center;
   flex: 1;
   margin-top: 22px;
 `;
@@ -469,6 +468,7 @@ export default function Farm365Content({ farming365, eswRate }: Farm365ContentPr
   };
 
   const apr = calcFarming365Apr(farming365.liquidity, farming365.blockReward, eswRate).toFixed(2);
+  const headerMarginBottom = lpStakedTokens?.length > 1 ? (isMobile ? 12 : 24) : isMobile ? 12 : 0;
 
   return (
     <Content>
@@ -510,27 +510,34 @@ export default function Farm365Content({ farming365, eswRate }: Farm365ContentPr
       </BorderCard>
       <BorderCard>
         <StakeTitle>Staked tokens</StakeTitle>
-        <StakeHead>
-          <StakeHeadItem flex={1.4}>Staked</StakeHeadItem>
-          <StakeHeadItem flex={1.2}>Reward APR%</StakeHeadItem>
-          <StakeHeadItem>Received ESW</StakeHeadItem>
-        </StakeHead>
+        <div style={{ marginRight: headerMarginBottom }}>
+          <StakeHead>
+            <StakeHeadItem flex={1.4}>Staked</StakeHeadItem>
+            <StakeHeadItem flex={1}>Reward APR%</StakeHeadItem>
+            <StakeHeadItem flex={1}>Received ESW</StakeHeadItem>
+          </StakeHead>
+        </div>
         <StakeList>
           <StakeItem>
             <StakeToken>
               <StakeTokenName>ESW</StakeTokenName>
               <StakeTokenLine>
                 <CurrencyLogo currency={eswCurrency} size={'24px'} />
-                <StakeTokenAmount>{eswStakedBalance}</StakeTokenAmount>
+                <Tooltip title={eswStakedBalance}>
+                  <StakeTokenAmount>{Number(eswStakedBalance).toFixed(2)}</StakeTokenAmount>
+                </Tooltip>
               </StakeTokenLine>
             </StakeToken>
-            <StakeApr>
-              {parseFloat(eswStakedBalance) > 0 ? `${(+apr - 365).toFixed(2)}%` : '0'}
-            </StakeApr>
-            <StakeReward>
-              <CurrencyLogo currency={eswCurrency} size={'24px'} />
-              <div style={{ marginLeft: 4 }}>{farming365.reward.slice(0, 8)}</div>
-            </StakeReward>
+            <Tooltip title={parseFloat(eswStakedBalance) > 0 ? `${+apr - 365}%` : '0'}>
+              <StakeApr>
+                {parseFloat(eswStakedBalance) > 0 ? `${(+apr - 365).toFixed(2)}%` : '0'}
+              </StakeApr>
+            </Tooltip>
+            <Tooltip title={farming365.reward}>
+              <StakeReward>
+                <div>{Number(farming365.reward).toFixed(2)}</div>
+              </StakeReward>
+            </Tooltip>
           </StakeItem>
           {lpStakedTokens.map((tokenAmount, index) => (
             <StakeItem key={index}>
@@ -538,7 +545,11 @@ export default function Farm365Content({ farming365, eswRate }: Farm365ContentPr
                 <StakeTokenName>{tokenAmount.token.name}</StakeTokenName>
                 <StakeTokenLine>
                   <LpTokenSymbol />
-                  <StakeTokenAmount>{tokenAmountToString(tokenAmount)}</StakeTokenAmount>
+                  <Tooltip title={tokenAmountToString(tokenAmount)}>
+                    <StakeTokenAmount>
+                      {Number(tokenAmountToString(tokenAmount)).toFixed(2)}
+                    </StakeTokenAmount>
+                  </Tooltip>
                 </StakeTokenLine>
               </StakeToken>
               <StakeApr>365%</StakeApr>
