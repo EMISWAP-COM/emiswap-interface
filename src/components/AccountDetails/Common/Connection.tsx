@@ -277,11 +277,11 @@ interface Props {
 
 export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) => {
   const { chainId, account, connector } = useActiveWeb3React();
-  const { blockExplorerName, value } = useNetworkData();
+  const { blockExplorerName, value: network } = useNetworkData();
   const history = useHistory();
   const toggle = useWalletModalToggle();
   const balance = useSelector((state: AppState) => {
-    if (value === 'polygon') {
+    if (network === 'polygon' || network === 'mumbai') {
       return state.polygonCabinet.balance;
     } else return state.cabinets.balance;
   });
@@ -332,7 +332,7 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
                 return;
               }
               toggle();
-              history.push(`/claim/${value}`);
+              history.push(`/claim/${network}`);
             }}
             isPolygon
           >

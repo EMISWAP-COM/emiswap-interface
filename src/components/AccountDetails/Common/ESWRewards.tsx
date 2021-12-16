@@ -4,7 +4,7 @@ import { Header } from '../styleds';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { convertBigDecimal } from '../uitls';
-import { useIsEthActive, useIsPolygonActive } from '../../../hooks/Coins';
+import { useIsEthActive, useNetworkData } from '../../../hooks/Coins';
 
 // export const Calculating = styled.div`
 //   position: relative;
@@ -81,14 +81,12 @@ const Item = ({ text, count }: { text: string; count: string }) => (
 );
 export const ESWRewards = () => {
   const isEthActive = useIsEthActive();
-  const isPolygonActive = useIsPolygonActive();
+  const { value: network } = useNetworkData();
+
   const balance = useSelector((state: AppState) => {
-    if (isPolygonActive) {
+    if (network === 'polygon' || network === 'mumbai') {
       return state.polygonCabinet.balance;
     } else return state.cabinets.balance;
-  });
-  const farming365 = useSelector((state: AppState) => {
-    return state.polygonCabinet.balance.farming365.ESW;
   });
   const grouped = balance?.total?.grouped;
 
@@ -129,11 +127,11 @@ export const ESWRewards = () => {
           />
         </RewardsWrapper>
       )}
-      {isPolygonActive && (
+      {(network === 'polygon' || network === 'mumbai') && (
         <RewardsWrapperPolygon>
-          <Item text="Providing Liquidity" count={sumPoolBonuses()} />
-          <Item text="Farming 365+" count={convertBigDecimal(farming365)} />
-          <Item text=" Referral Reward" count={sumRewardsESW()} />
+          <Item text="Providing Liquidity" count={convertBigDecimal(grouped.pool_bonus?.ESW ?? "0")} />
+          <Item text="Farming 365+" count={convertBigDecimal((grouped as any).farming?.ESW)} />
+          <Item text="Referral Reward" count={grouped.pool_referral_bonus?.ESW ?? "0"} />
         </RewardsWrapperPolygon>
       )}
     </div>

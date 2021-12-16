@@ -6,11 +6,23 @@ const baseUrl = window.env ? window.env.REACT_APP_PUBLIC_URL : '';
 
 // export const loadPolygonBalance = createAction('loadPolygonBalance');
 
+const getNetworkUrl = (network: string): string => {
+  switch (network) {
+    case 'polygon':
+      return 'polygon_main';
+    case 'mumbai':
+      return 'polygon_test';
+    default:
+      return 'eth_main'
+  }
+}
+
 export const loadPolygonBalance = createAsyncThunk(
   'loadPolygonBalance',
   async ({ userId, network }: { userId: string; network: string }, { dispatch, getState }) => {
+    console.log(userId)
     const url = `${baseUrl}/v1/public/users/${userId}/balances/${
-      network === 'polygon' ? 'polygon_test' : 'eth_main'
+      getNetworkUrl(network)
     } `;
     try {
       const response = await fetchWrapper.get(url);

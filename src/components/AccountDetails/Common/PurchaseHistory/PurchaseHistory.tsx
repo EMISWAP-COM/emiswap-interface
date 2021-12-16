@@ -39,7 +39,7 @@ export const PurchaseHistory = () => {
     (state: AppState) => state.cabinets.bonusDetails,
   );
   const { depositsEswHistory } = useSelector((state: AppState) => state.cabinets);
-  const { histories: polygonHistories } = useSelector(
+  const { details: polygonDetails } = useSelector(
     (state: AppState) => state.polygonCabinet.balance,
   );
   const [liquidityTabActive, setLiquidityTabActive] = useState<string>(tabs.x10.value);
@@ -252,12 +252,29 @@ export const PurchaseHistory = () => {
     ],
     [],
   );
-  const myRewardHistory = polygonHistories.referral_bonus.reduce((acc, item) => {
-    (item.available_at as any).forEach(([date, amount]) => {
-      acc.push({ date: item.created_at, unlockDate: date, amount, forWhat: 'Referral Reward' });
-    });
-    return acc;
-  }, []);
+
+  const myRewardHistory = [
+    ...polygonDetails.pool_bonus.map((item) => ({
+      date: item.created_at,
+      unlockDate: item.created_at + 90,
+      amount: item.amount,
+      forWhat: "Providing liquidity",
+    })),
+    ...(polygonDetails as any).farming_bonus.map((item) => ({
+      date: item.created_at,
+      unlockDate: item.created_at + 90,
+      amount: item.amount,
+      forWhat: "Farming 365+",
+    })),
+    ...polygonDetails.pool_referral_bonus.map((item) => ({
+      date: item.created_at,
+      unlockDate: item.created_at + 90,
+      amount: item.amount,
+      forWhat: "Total Referral Reward",
+    })),
+  ];
+
+
   return (
     <>
       {isEthActive && (

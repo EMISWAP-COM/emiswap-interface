@@ -2,7 +2,7 @@
   "name": "@emiswap/interface",
   "description": "EmiSwap Interface",
   "private": true,
-  "proxy": "http://localhost:9002",
+  "proxy": "http://10.233.37.73:3000",
   "devDependencies": {
     "@ethersproject/address": "5.0.0-beta.134",
     "@ethersproject/bignumber": "5.0.0-beta.138",
