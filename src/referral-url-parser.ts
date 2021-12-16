@@ -1,12 +1,9 @@
 import { getAddress, isAddress } from '@ethersproject/address';
 import { REFERRAL_ADDRESS_STORAGE_KEY } from './constants';
-//
-const separator = 'r=';
-const offset = separator.length;
-//
+
 const isReferralLinkSetInLocalStorage = (): boolean => {
-  const x = localStorage.getItem(REFERRAL_ADDRESS_STORAGE_KEY);
-  return x && isAddress(x);
+  const item = localStorage.getItem(REFERRAL_ADDRESS_STORAGE_KEY);
+  return item && isAddress(item);
 };
 
 const saveReferralLinkToLocalStorage = (link: string): void => {
@@ -17,24 +14,24 @@ const removeReferralLinkToLocalStorage = (): void => {
   localStorage.removeItem(REFERRAL_ADDRESS_STORAGE_KEY);
 };
 
-const ReferralUrlParser = ({ children }) => {
-  const href = window.location.href;
-  const begin = href.indexOf(separator) + offset;
-  const addrStr = href.slice(begin, begin + 42);
-  if (isReferralLinkSetInLocalStorage()) {
-    const referralAddress = localStorage.getItem(REFERRAL_ADDRESS_STORAGE_KEY);
-    if (referralAddress === addrStr) {
-      return children;
-    }
+export function useReferralUrlParser(): string | null {
+  const query = new URLSearchParams(window.location.search);
+
+  const queryReferral = query.get('r');
+  const localReferral = localStorage.getItem(REFERRAL_ADDRESS_STORAGE_KEY);
+
+  if (isReferralLinkSetInLocalStorage() && localReferral === queryReferral) {
+    return localReferral;
   }
-  if (addrStr) {
-    if (isAddress(addrStr)) {
-      saveReferralLinkToLocalStorage(getAddress(addrStr));
+
+  if (queryReferral) {
+    if (isAddress(queryReferral)) {
+      saveReferralLinkToLocalStorage(getAddress(queryReferral));
+      return getAddress(queryReferral);
     } else {
       removeReferralLinkToLocalStorage();
     }
   }
-  return children;
-};
 
-export default ReferralUrlParser;
+  return null;
+}
