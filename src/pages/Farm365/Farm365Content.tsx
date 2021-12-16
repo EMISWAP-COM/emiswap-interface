@@ -1,6 +1,6 @@
-import styled from 'styled-components/macro';
+import styled, { css } from 'styled-components/macro';
 // import dayjs from 'dayjs';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import ReactGA from 'react-ga';
 import Button from '../../base/ui/Button';
 import CurrencyLogo from '../../components/CurrencyLogo';
@@ -17,6 +17,10 @@ import { tokenAmountToString } from '../../utils/formats';
 import { useAllTransactions } from '../../state/transactions/hooks';
 import { useCurrencyBalance } from '../../state/wallet/hooks';
 import { useNetworkData } from '../../hooks/Coins';
+import dayjs from 'dayjs';
+import { calcFarming365Apr } from './helpers';
+import { isMobile } from 'react-device-detect';
+import Tooltip from '../Farm/Tooltip';
 
 const Content = styled.div`
   display: flex;
@@ -28,8 +32,8 @@ const Content = styled.div`
 
 const BorderCard = styled.div`
   flex: 1;
-  min-height: 300px;
-  height: 318px;
+  min-height: 318px;
+  // height: 318px;
   margin: 8px;
   padding: 16px;
   border: 1px solid #615c69;
@@ -59,34 +63,60 @@ const StakeTitle = styled.div`
   color: white;
 `;
 
-const StakeButton = styled(Button)`
-  // margin-top: 38px;
-  // border: 1px solid #FFFFFF;
-  // background: transparent !important;
-  // color: white;
-  // box-shadow: none !important;
+const StakeHead = styled.div`
+  display: flex;
+  // justify-content: space-between;
+  margin-top: 20px;
 `;
 
+const StakeHeadItem = styled.div<{ flex?: number }>`
+  ${({ flex }) =>
+    flex
+      ? css`
+          flex: ${flex};
+        `
+      : null}
+  font-size: 12px;
+  color: #b7b7ca;
+`;
+
+const StakeButton = styled(Button)``;
+
 const StakeList = styled.div`
-  height: 180px;
+  // height: 135px;
+  height: 142px;
   margin-top: 8px;
   margin-bottom: 12px;
   overflow: auto;
   border: 1px solid white;
   border-right: 0;
   border-left: 0;
+
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    height: 180px;
+  `};
 `;
 
 const StakeItem = styled.div`
   display: flex;
+  // align-items: center;
   margin-right: 8px;
   padding: 8px 0 12px 0;
   border-bottom: 1px solid #615c69;
 `;
 
 const StakeToken = styled.div`
+  flex: 1.4;
+`;
+
+const StakeApr = styled.div`
   flex: 1;
-  margin-right: 24px;
+  margin-top: 22px;
+`;
+
+const StakeReward = styled.div`
+  flex: 1;
+  margin-top: 22px;
 `;
 
 const StakeTokenName = styled.div`
@@ -109,11 +139,64 @@ const StakeTokenAmount = styled.div`
   color: #ffffff;
 `;
 
+const Collect = styled.div`
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    display: block;
+  `};
+`;
+
+const CollectTimer = styled.div`
+  flex: 1.5;
+  margin-right: 50px;
+
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    display: block;
+    margin-bottom: 20px;
+  `};
+`;
+
+const CollectTimerHeadline = styled.div`
+  margin-bottom: 4px;
+  font-size: 12px;
+  color: #b7b7ca;
+`;
+
+const CollectDate = styled.div`
+  display: flex;
+  margin-left: -18px;
+`;
+
+const CollectDateItem = styled.div`
+  flex: 1;
+  text-align: center;
+`;
+
+const CollectDateValue = styled.div`
+  line-height: 1;
+  font-size: 20px;
+  font-weight: 500;
+  color: white;
+`;
+
+const CollectDateName = styled.div`
+  font-size: 12px;
+  color: #b7b7ca;
+`;
+
+const CollectAction = styled.div`
+  flex: 1.4;
+`;
+
 type Farm365ContentProps = {
   farming365: ReturnType<typeof useFarming365>;
+  eswRate: number;
 };
 
-export default function Farm365Content({ farming365 }: Farm365ContentProps) {
+export default function Farm365Content({ farming365, eswRate }: Farm365ContentProps) {
   const { chainId, account } = useActiveWeb3React();
   const { value: network } = useNetworkData();
 
@@ -144,11 +227,13 @@ export default function Farm365Content({ farming365 }: Farm365ContentProps) {
   const [lpCurrency, setLpCurrency] = useState<Token>(null);
 
   const [stakeButtonText, setStakeButtonText] = useState<string>('Stake');
-  const [collectButtonText /*, setCollectButtonText*/] = useState<string>('Collect to wallet');
+  const [collectButtonText, setCollectButtonText] = useState<string>('Collect to wallet');
   const [isStakeButtonDisabled, setStakeButtonDisabled] = useState<boolean>(true);
-  const [isCollectButtonDisabled /*, setCollectButtonDisabled*/] = useState<boolean>(true);
+  const [isCollectButtonDisabled, setCollectButtonDisabled] = useState<boolean>(true);
 
   const [isStakeAllowed, setStakeAllowed] = useState<boolean>(false);
+
+  const [timeoutDate, setTimeoutDate] = useState<TDataObject | null>(null);
 
   const eswBalance = useCurrencyBalance(account, eswCurrency);
   const lpBalance = useCurrencyBalance(account, lpCurrency);
@@ -248,7 +333,7 @@ export default function Farm365Content({ farming365 }: Farm365ContentProps) {
     approvalLp,
   ]);
 
-  /*const collectExitDateInterval = useRef<any>();
+  const collectExitDateInterval = useRef<any>();
   useEffect(() => {
     if (collectExitDateInterval.current) {
       clearInterval(collectExitDateInterval.current);
@@ -262,13 +347,20 @@ export default function Farm365Content({ farming365 }: Farm365ContentProps) {
         const dateNow = dayjs();
         const exitDate = dayjs(farming365.exitDateLimit * 1000);
 
-        const timeout = (dayjs as any).duration(exitDate.diff(dateNow)).format('D[d] HH:mm:ss');
-        setCollectButtonText(`Collect to wallet ${timeout}`);
+        const timeout = (dayjs as any).duration(exitDate.diff(dateNow));
+        const timeoutDateValue: TDataObject = {
+          days: timeout.format('D'),
+          hours: timeout.format('HH'),
+          minutes: timeout.format('mm'),
+          seconds: timeout.format('ss'),
+        };
+        setTimeoutDate(timeoutDateValue);
 
         if (exitDate.unix() < dateNow.unix() + 2000) {
           clearInterval(collectExitDateInterval.current);
         }
       }, 1000);
+      setCollectButtonText('Collect to wallet');
       setCollectButtonDisabled(true);
     } else if (stakedTokens?.length && farming365.exitDateLimit < dayjs().unix()) {
       setCollectButtonText('Collect to wallet');
@@ -283,7 +375,7 @@ export default function Farm365Content({ farming365 }: Farm365ContentProps) {
         clearInterval(collectExitDateInterval.current);
       }
     };
-  }, [stakedTokens, hasPendingTransactions, farming365.exitDateLimit]);*/
+  }, [stakedTokens, hasPendingTransactions, farming365.exitDateLimit]);
 
   useEffect(() => {
     if (!hasPendingTransactions) {
@@ -375,6 +467,9 @@ export default function Farm365Content({ farming365 }: Farm365ContentProps) {
     farming365.update();
   };
 
+  const apr = calcFarming365Apr(farming365.liquidity, farming365.blockReward, eswRate).toFixed(2);
+  const headerMarginBottom = lpStakedTokens?.length > 1 ? (isMobile ? 12 : 24) : isMobile ? 12 : 0;
+
   return (
     <Content>
       <BorderCard>
@@ -415,15 +510,34 @@ export default function Farm365Content({ farming365 }: Farm365ContentProps) {
       </BorderCard>
       <BorderCard>
         <StakeTitle>Staked tokens</StakeTitle>
+        <div style={{ marginRight: headerMarginBottom }}>
+          <StakeHead>
+            <StakeHeadItem flex={1.4}>Staked</StakeHeadItem>
+            <StakeHeadItem flex={1}>Reward APR%</StakeHeadItem>
+            <StakeHeadItem flex={1}>Received ESW</StakeHeadItem>
+          </StakeHead>
+        </div>
         <StakeList>
           <StakeItem>
             <StakeToken>
               <StakeTokenName>ESW</StakeTokenName>
               <StakeTokenLine>
                 <CurrencyLogo currency={eswCurrency} size={'24px'} />
-                <StakeTokenAmount>{eswStakedBalance}</StakeTokenAmount>
+                <Tooltip title={eswStakedBalance}>
+                  <StakeTokenAmount>{Number(eswStakedBalance).toFixed(2)}</StakeTokenAmount>
+                </Tooltip>
               </StakeTokenLine>
             </StakeToken>
+            <Tooltip title={parseFloat(eswStakedBalance) > 0 ? `${+apr - 365}%` : '0'}>
+              <StakeApr>
+                {parseFloat(eswStakedBalance) > 0 ? `${(+apr - 365).toFixed(2)}%` : '0'}
+              </StakeApr>
+            </Tooltip>
+            <Tooltip title={farming365.reward}>
+              <StakeReward>
+                <div>{Number(farming365.reward).toFixed(2)}</div>
+              </StakeReward>
+            </Tooltip>
           </StakeItem>
           {lpStakedTokens.map((tokenAmount, index) => (
             <StakeItem key={index}>
@@ -431,16 +545,59 @@ export default function Farm365Content({ farming365 }: Farm365ContentProps) {
                 <StakeTokenName>{tokenAmount.token.name}</StakeTokenName>
                 <StakeTokenLine>
                   <LpTokenSymbol />
-                  <StakeTokenAmount>{tokenAmountToString(tokenAmount)}</StakeTokenAmount>
+                  <Tooltip title={tokenAmountToString(tokenAmount)}>
+                    <StakeTokenAmount>
+                      {Number(tokenAmountToString(tokenAmount)).toFixed(2)}
+                    </StakeTokenAmount>
+                  </Tooltip>
                 </StakeTokenLine>
               </StakeToken>
+              <StakeApr>365%</StakeApr>
+              <StakeReward>Coming soon</StakeReward>
             </StakeItem>
           ))}
         </StakeList>
-        <Button isDisabled={isCollectButtonDisabled} onClick={handleClickCollectBtn}>
-          {collectButtonText}
-        </Button>
+        <Collect>
+          {timeoutDate && (
+            <CollectTimer>
+              <CollectTimerHeadline>Unlock time</CollectTimerHeadline>
+              <CollectDate>
+                <CollectDateItem>
+                  <CollectDateValue>{timeoutDate.days}</CollectDateValue>
+                  <CollectDateName>days</CollectDateName>
+                </CollectDateItem>
+                <div>:</div>
+                <CollectDateItem>
+                  <CollectDateValue>{timeoutDate.hours}</CollectDateValue>
+                  <CollectDateName>hours</CollectDateName>
+                </CollectDateItem>
+                <div>:</div>
+                <CollectDateItem>
+                  <CollectDateValue>{timeoutDate.minutes}</CollectDateValue>
+                  <CollectDateName>minutes</CollectDateName>
+                </CollectDateItem>
+                <div>:</div>
+                <CollectDateItem>
+                  <CollectDateValue>{timeoutDate.seconds}</CollectDateValue>
+                  <CollectDateName>seconds</CollectDateName>
+                </CollectDateItem>
+              </CollectDate>
+            </CollectTimer>
+          )}
+          <CollectAction>
+            <Button isDisabled={isCollectButtonDisabled} onClick={handleClickCollectBtn}>
+              {collectButtonText}
+            </Button>
+          </CollectAction>
+        </Collect>
       </BorderCard>
     </Content>
   );
 }
+
+export type TDataObject = {
+  days: string;
+  hours: string;
+  minutes: string;
+  seconds: string;
+};
