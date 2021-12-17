@@ -36,6 +36,23 @@ import SocButtons from '../components/SocButtons';
 import Landing from './Landing/Landing';
 import { useActiveWeb3React } from '../hooks';
 import Farm365 from './Farm365/Farm365';
+import Bridge from './Bridge';
+
+const LogoWrapper = styled.div`
+  display: none;
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    padding-left: 65px;
+    margin: 15px;
+    position: relative;
+  `};
+`;
+
+const HeaderWrapper = styled.div`
+  ${({ theme }) => theme.flexRowNoWrap}
+  width: 100%;
+  justify-content: space-between;
+`;
 
 const BodyWrapper = styled.div`
   display: flex;
@@ -138,13 +155,14 @@ export default function App() {
                     {/*<Route exact strict path="/invest" component={Invest} />*/}
                     <Route exact strict path="/main" component={Landing}/>
                     <Redirect exact from="/" to="/main" />
-                    <Route exact strict path="/swap" component={Swap}/>
-                    <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap}/>
-                    <Route exact strict path="/send" component={RedirectPathToSwapOnly}/>
-                    <Route exact strict path="/find" component={PoolFinder}/>
-                    <Route exact strict path="/pool" component={Pool}/>
-                    <Route exact strict path="/create" component={RedirectToAddLiquidity}/>
-                    <Route exact path="/add" component={AddLiquidity}/>
+                    <Route exact strict path="/swap" component={Swap} />
+                    <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
+                    <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
+                    <Route exact strict path="/find" component={PoolFinder} />
+                    <Route exact strict path="/pool" component={Pool} />
+                    <Route exact strict path="/bridge" component={Bridge} />
+                    <Route exact strict path="/create" component={RedirectToAddLiquidity} />
+                    <Route exact path="/add" component={AddLiquidity} />
                     <Route
                       exact
                       path="/add/:currencyIdA"

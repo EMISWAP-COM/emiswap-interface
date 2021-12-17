@@ -107,7 +107,7 @@ export function useTokenBalancesWithLoadingIndicator(
       () =>
         address && validatedTokens.length > 0
           ? validatedTokens.reduce<{ [tokenAddress: string]: TokenAmount | undefined }>(
-              (memo, token, i) => {
+              (memo, token, i) => {                
                 const value = balances?.[i]?.result?.[0];
                 let amount = value ? JSBI.BigInt(value.toString()) : undefined;
                 /*if (amount && isPolygonActive && token.symbol === 'USDT') {
