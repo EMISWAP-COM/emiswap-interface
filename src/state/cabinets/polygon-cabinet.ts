@@ -23,6 +23,7 @@ export interface Balance {
       pool_block_bonus?: PaymentOperationTokens;
       swap_bonus?: PaymentOperationTokens;
       swap_bonus_10x?: PaymentOperationTokens;
+      farming_bonus: PaymentOperationTokens 
     };
     locked: PaymentOperationTokens;
     unlocked: PaymentOperationTokens;
@@ -37,6 +38,7 @@ export interface Balance {
     pool_referral_bonus: Deposit[];
     swap_bonus: Deposit[];
     swap_bonus_10x: Deposit[];
+    farming_bonus: Deposit[]
   };
   total_fee_compensation: string;
   available: PaymentOperationTokens;
@@ -70,6 +72,7 @@ export const initialState: InitialState = {
         pool_block_bonus: {},
         swap_bonus: {},
         swap_bonus_10x: {},
+        farming_bonus: {}
       },
       locked: {},
       unlocked: {},
@@ -84,6 +87,7 @@ export const initialState: InitialState = {
       pool_referral_bonus: [],
       swap_bonus: [],
       swap_bonus_10x: [],
+      farming_bonus: [],
     },
     total_fee_compensation: '',
     available: {},

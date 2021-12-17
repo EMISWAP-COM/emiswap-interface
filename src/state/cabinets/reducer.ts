@@ -118,6 +118,7 @@ export interface Deposit {
   available_at: string;
   amount: string;
   amount_dai: string | null;
+  unlock_at: string
 }
 
 interface PoolBonus {
