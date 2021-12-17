@@ -130,7 +130,7 @@ export const ESWRewards = () => {
       {(network === 'polygon' || network === 'mumbai') && (
         <RewardsWrapperPolygon>
           <Item text="Providing Liquidity" count={convertBigDecimal(grouped.pool_bonus?.ESW ?? "0")} />
-          <Item text="Farming 365+" count={convertBigDecimal((grouped as any).farming_bonus.ESW ?? "0")} />
+          <Item text="Farming 365+" count={convertBigDecimal((grouped as any).farming_bonus?.ESW ?? "0")} />
           <Item text="Referral Reward" count={grouped.pool_referral_bonus?.ESW ?? "0"} />
         </RewardsWrapperPolygon>
       )}
