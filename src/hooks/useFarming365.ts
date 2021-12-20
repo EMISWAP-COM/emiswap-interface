@@ -85,7 +85,7 @@ export default function useFarming365(contract: Contract) {
           );
           setStakeToken(token);
         } else {
-          console.log('stakeToken', value);
+          // console.log('stakeToken', value);
         }
       })
       .catch((error: RequestError) => {
@@ -169,7 +169,7 @@ export default function useFarming365(contract: Contract) {
     contract
       .earned(account)
       .then((value: BigNumber) => {
-        console.log('earned', value.toString());
+        // console.log('earned', value.toString());
         if (chainId && rewardToken) {
           const tokenAmount = new TokenAmount(rewardToken, JSBI.BigInt(value.toString()));
           return tokenAmountToString(tokenAmount, rewardToken.decimals);
@@ -284,7 +284,7 @@ export default function useFarming365(contract: Contract) {
   }, [contract, account, chainId, showError, completedTransactionsCount, intervalUpdateCounter]);
 
   const updateStakedTokens = useCallback(() => {
-    console.log(contract);
+    // console.log(contract);
     // console.log(Object.keys(allTokens));
     contract
       .getStakedTokens(account)
@@ -330,16 +330,15 @@ export default function useFarming365(contract: Contract) {
 
   const [exitDateLimit, setExitDateLimit] = useState<number | undefined>(undefined);
   useEffect(() => {
-    console.log('exitLimits...');
     contract
       .exitLimits(account)
       .then((value: BigNumber) => {
         const unix = value.toNumber();
 
-        const timestampInMs = unix * 1000;
+        /*const timestampInMs = unix * 1000;
         const formattedDate = dayjs(timestampInMs).format('DD.MM.YYYY HH:MM:ss');
         console.log('exitLimits', unix);
-        console.log('exitLimits formatted', formattedDate);
+        console.log('exitLimits formatted', formattedDate);*/
 
         setExitDateLimit(unix);
       })
@@ -419,6 +418,7 @@ export default function useFarming365(contract: Contract) {
   };
 
   return {
+    contract,
     stakeToken,
     rewardToken,
     balanceLp,
