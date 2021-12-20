@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const StyledLink = styled.a<{ mobile?: boolean }>`
-  color: ${({ theme }) => theme.darkWhite};
+  color: ${({ theme }) => theme.text1};
 `;
 
 export default function DocLink({ title, href }: { title: string; href: string }) {

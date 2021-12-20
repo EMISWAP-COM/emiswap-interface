@@ -1,21 +1,13 @@
 import { isAddress } from '../../utils';
 import { Token } from '@uniswap/sdk';
 
-export function filterTokens(tokens: Token[], search: string, isLpTokens: boolean = false): Token[] {
-  let visibleTokens = tokens;
-
-  if (isLpTokens) {
-    visibleTokens = visibleTokens.filter(token => token.name.includes('LP '))
-  } else {
-    visibleTokens = visibleTokens.filter(token => !token.name.includes('LP '))
-  }
-
-  if (search.length === 0) return visibleTokens;
+export function filterTokens(tokens: Token[], search: string): Token[] {
+  if (search.length === 0) return tokens;
 
   const searchingAddress = isAddress(search);
 
   if (searchingAddress) {
-    return visibleTokens.filter(token => token.address === searchingAddress);
+    return tokens.filter(token => token.address === searchingAddress);
   }
 
   const lowerSearchParts = search
@@ -24,7 +16,7 @@ export function filterTokens(tokens: Token[], search: string, isLpTokens: boolea
     .filter(s => s.length > 0);
 
   if (lowerSearchParts.length === 0) {
-    return visibleTokens;
+    return tokens;
   }
 
   const matchesSearch = (s: string): boolean => {
@@ -38,7 +30,7 @@ export function filterTokens(tokens: Token[], search: string, isLpTokens: boolea
     );
   };
 
-  return visibleTokens.filter(token => {
+  return tokens.filter(token => {
     const { symbol, name } = token;
 
     return matchesSearch(symbol) || matchesSearch(name);

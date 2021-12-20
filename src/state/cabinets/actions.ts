@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ReferralPerformance } from './reducer';
 import { fetchWrapper } from '../../api/fetchWrapper';
+import { addPopup } from '../application/actions';
 // @ts-ignore
 const baseUrl = window.env ? window.env.REACT_APP_PUBLIC_URL : '';
 
@@ -13,24 +14,69 @@ export const loadPerformance = createAsyncThunk(
 
       return referrals as ReferralPerformance;
     } catch (e) {
-      console.debug('loadBalance: ', { e });
-      //FIXME - встроить централизованную обработку ошибок
-      // dispatch(
-      //   addPopup({
-      //     key: 'loadPerformance',
-      //     content: {
-      //       status: {
-      //         name: e.message,
-      //         isError: true,
-      //       },
-      //     },
-      //   }),
-      // );
+      dispatch(
+        addPopup({
+          key: 'loadPerformance',
+          content: {
+            status: {
+              name: e.message,
+              isError: true,
+            },
+          },
+        }),
+      );
       return Promise.reject(e);
     }
   },
 );
 
+// export const loadPurchaseHistory = createAsyncThunk(
+//   'cabinets/loadPurchaseHistory',
+//   async (userId: string, { dispatch }) => {
+//     const url = `${baseUrl}/v1/public/users/${userId}/purchases/history`;
+//     try {
+//       const response = await fetchWrapper.get(url);
+//       return response;
+//     } catch (e) {
+//       dispatch(
+//         addPopup({
+//           key: 'purchaseHistory',
+//           content: {
+//             status: {
+//               name: e.message,
+//               isError: true,
+//             },
+//           },
+//         }),
+//       );
+//       return Promise.reject(e);
+//     }
+//   },
+// );
+
+// export const loadReferralPurchaseHistory = createAsyncThunk(
+//   'cabinets/loadReferralPurchaseHistory',
+//   async (userId: string, { dispatch }) => {
+//     const url = `${baseUrl}/v1/public/users/${userId}/referrals/purchases/history`;
+//     try {
+//       const response = await fetchWrapper.get(url);
+//       return response;
+//     } catch (e) {
+//       dispatch(
+//         addPopup({
+//           key: 'refHistory',
+//           content: {
+//             status: {
+//               name: e.message,
+//               isError: true,
+//             },
+//           },
+//         }),
+//       );
+//       return Promise.reject(e);
+//     }
+//   },
+// );
 export const loadBalance = createAsyncThunk(
   'cabinets/loadBalance',
   async (userId: string, { dispatch }) => {
@@ -39,200 +85,17 @@ export const loadBalance = createAsyncThunk(
       const response = await fetchWrapper.get(url);
       return response;
     } catch (e) {
-      console.debug('loadBalance: ', { e });
-      //FIXME - встроить централизованную обработку ошибок
-      // dispatch(
-      //   addPopup({
-      //     key: 'loadBalance',
-      //     content: {
-      //       status: {
-      //         name: e.message,
-      //         isError: true,
-      //       },
-      //     },
-      //   }),
-      // );
-      return Promise.reject(e);
-    }
-  },
-);
-
-export const loadBonus = createAsyncThunk(
-  'cabinets/loadBonus',
-  async (userId: string, { dispatch }) => {
-    const url = `${baseUrl}/v1/public/users/${userId}/bonus_details`;
-    try {
-      const response = await fetchWrapper.get(url);
-      return response;
-    } catch (e) {
-      console.debug('loadBonus: ', { e });
-      //FIXME - встроить централизованную обработку ошибок
-      // dispatch(
-      //   addPopup({
-      //     key: 'loadBonus',
-      //     content: {
-      //       status: {
-      //         name: e.message,
-      //         isError: true,
-      //       },
-      //     },
-      //   }),
-      // );
-      return Promise.reject(e);
-    }
-  },
-);
-
-export const loadPoolBlockBonus = createAsyncThunk(
-  'cabinets/loadPoolBlockBonus',
-  async (userId: string, { dispatch }) => {
-    const url = `${baseUrl}/v1/public/users/${userId}/bonus_details/pool_block_bonus`;
-    try {
-      const response = await fetchWrapper.get(url);
-      return response;
-    } catch (e) {
-      console.debug('loadPoolBlockBonus: ', { e });
-      //FIXME - встроить централизованную обработку ошибок
-      // dispatch(
-      //   addPopup({
-      //     key: 'loadPoolBlockBonus',
-      //     content: {
-      //       status: {
-      //         name: e.message,
-      //         isError: true,
-      //       },
-      //     },
-      //   }),
-      // );
-      return Promise.reject(e);
-    }
-  },
-);
-
-export const loadPool = createAsyncThunk(
-  'cabinets/loadPool',
-  async (userId: string, { dispatch }) => {
-    const url = `${baseUrl}/v1/public/users/${userId}/bonus_details/pool`;
-    try {
-      const response = await fetchWrapper.get(url);
-      return response;
-    } catch (e) {
-      console.debug('loadPool: ', { e });
-      //FIXME - встроить централизованную обработку ошибок
-      // dispatch(
-      //   addPopup({
-      //     key: 'loadPool',
-      //     content: {
-      //       status: {
-      //         name: e.message,
-      //         isError: true,
-      //       },
-      //     },
-      //   }),
-      // );
-      return Promise.reject(e);
-    }
-  },
-);
-
-// https://emiswap.emirex.co/v1/public/users/c35b1a1c-d38b-466c-b743-c4dea98d7d29/bonus_details/pool_bonus
-export const loadPoolBonus = createAsyncThunk(
-  'cabinets/loadPoolBonus',
-  async (userId: string, { dispatch }) => {
-    const url = `${baseUrl}/v1/public/users/${userId}/bonus_details/pool_bonus`;
-    try {
-      const response = await fetchWrapper.get(url);
-      return response;
-    } catch (e) {
-      console.debug('loadBonusDetails: ', { e });
-      //FIXME - встроить централизованную обработку ошибок
-      // dispatch(
-      //   addPopup({
-      //     key: 'loadBonusDetails',
-      //     content: {
-      //       status: {
-      //         name: e.message,
-      //         isError: true,
-      //       },
-      //     },
-      //   }),
-      // );
-      return Promise.reject(e);
-    }
-  },
-);
-
-export const loadPoolBonus10X = createAsyncThunk(
-  'cabinets/loadPoolBonus10X',
-  async (userId: string, { dispatch }) => {
-    const url = `${baseUrl}/v1/public/users/${userId}/bonus_details/pool_bonus_10x`;
-    try {
-      const response = await fetchWrapper.get(url);
-      return response;
-    } catch (e) {
-      console.debug('loadPoolBonus10X: ', { e });
-      //FIXME - встроить централизованную обработку ошибок
-      // dispatch(
-      //   addPopup({
-      //     key: 'loadBonusDetails',
-      //     content: {
-      //       status: {
-      //         name: e.message,
-      //         isError: true,
-      //       },
-      //     },
-      //   }),
-      // );
-      return Promise.reject(e);
-    }
-  },
-);
-
-export const loadDepositsEswHistory = createAsyncThunk(
-  'cabinets/loadDepositsEswHistory',
-  async (userId: string, { dispatch }) => {
-    const url = `${baseUrl}/v1/public/users/${userId}/dividends/esw_history`;
-    try {
-      return await fetchWrapper.get(url);
-    } catch (e) {
-      console.debug('loadDepositsEswHistory: ', { e });
-      //FIXME - встроить централизованную обработку ошибок
-      // dispatch(
-      //   addPopup({
-      //     key: 'loadDepositsEswHistory',
-      //     content: {
-      //       status: {
-      //         name: e.message,
-      //         isError: true,
-      //       },
-      //     },
-      //   }),
-      // );
-      return Promise.reject(e);
-    }
-  },
-);
-
-export const loadDepositsEswHistoryRewards = createAsyncThunk(
-  'cabinets/loadDepositsEswHistoryRewards',
-  async (userId: string, { dispatch }) => {
-    const url = `${baseUrl}/v1/public/users/${userId}/dividends/esw_holding_rewards`;
-    try {
-      return await fetchWrapper.get(url);
-    } catch (e) {
-      console.debug('loadDepositsEswHistoryRewards: ', { e });
-      //FIXME - встроить централизованную обработку ошибок
-      // dispatch(
-      //   addPopup({
-      //     key: 'loadDepositsEswHistoryRewards',
-      //     content: {
-      //       status: {
-      //         name: e.message,
-      //         isError: true,
-      //       },
-      //     },
-      //   }),
-      // );
+      dispatch(
+        addPopup({
+          key: 'loadBalance',
+          content: {
+            status: {
+              name: e.message,
+              isError: true,
+            },
+          },
+        }),
+      );
       return Promise.reject(e);
     }
   },

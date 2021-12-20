@@ -1,5 +1,4 @@
-import { ChainId, Token, TokenAmount } from '@uniswap/sdk';
-import { getNetworkData } from './index';
+import { ChainId, Token, TokenAmount, ETHER } from '@uniswap/sdk';
 
 export function wrappedCurrency(
   currency: Token | undefined,
@@ -17,12 +16,15 @@ export function wrappedCurrencyAmount(
   return token && currencyAmount ? new TokenAmount(token, currencyAmount.raw) : undefined;
 }
 
-export function unwrappedToken(chainId: ChainId, token: Token): Token {
-  const networkData = getNetworkData(chainId);
-
-  if (token.symbol === networkData.currencySymbolWrap) {
-    return networkData.token;
-  }
-
+export function unwrappedToken(token: Token): Token {
+  if (token.equals(ETHER)) return ETHER;
   return token;
+}
+
+////////// MOONISWAP ////////
+export function normalizeToken(currency: Token | undefined): Token | undefined {
+  if (currency?.symbol === 'ETH') {
+    return new Token(1, '0x0000000000000000000000000000000000000000', 18, 'ETH', 'Ethereum');
+  }
+  return currency instanceof Token ? currency : undefined;
 }

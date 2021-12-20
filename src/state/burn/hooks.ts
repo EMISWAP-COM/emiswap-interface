@@ -1,4 +1,4 @@
-import { JSBI, Pair, Percent, Token, TokenAmount } from '@uniswap/sdk';
+import { Token, TokenAmount, JSBI, Pair, Percent } from '@uniswap/sdk';
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { usePair } from '../../data-mooniswap/Reserves';

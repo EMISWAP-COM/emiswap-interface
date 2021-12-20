@@ -1,11 +1,12 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import { animated, useSpring, useTransition } from 'react-spring';
+import { animated, useTransition, useSpring } from 'react-spring';
 import { Spring } from 'react-spring/renderprops';
 
-import { DialogContent, DialogOverlay } from '@reach/dialog';
+import { DialogOverlay, DialogContent } from '@reach/dialog';
 import { isMobile } from 'react-device-detect';
 import '@reach/dialog/styles.css';
+import { transparentize } from 'polished';
 import { useGesture } from 'react-use-gesture';
 
 const AnimatedDialogOverlay = animated(DialogOverlay);
@@ -22,8 +23,8 @@ const StyledDialogOverlay = styled(({ mobile, ...rest }) => <AnimatedDialogOverl
     overflow: hidden;
 
     ${({ mobile }) =>
-  mobile &&
-  css`
+      mobile &&
+      css`
         align-items: flex-end;
       `}
 
@@ -51,31 +52,30 @@ const StyledDialogContent = styled(
   &[data-reach-dialog-content] {
     border: none!important;
     margin: 0 0 2rem 0;
-    border: 1px solid ${({ theme }) => theme.border1};
-    background-color: ${({ theme }) => theme.dark1};
-    box-shadow: ${({ theme }) => theme.modalBoxShadow};
+    border: 1px solid ${({ theme }) => theme.bg1};
+    background-color: ${({ theme }) => theme.bg1};
+    box-shadow: 0 4px 8px 0 ${({ theme }) => transparentize(0.95, theme.shadow1)};
     padding: 0;
     width: 54vw;
-    overflow-x: scroll;
-    overflow-y: visible;
+    overflow: scroll;
 
     &::-webkit-scrollbar {
       display: none;
     }
 
     ${({ maxWidth }) =>
-  maxWidth &&
-  css`
+      maxWidth &&
+      css`
         max-width: ${maxWidth}px;
       `}
     ${({ maxHeight }) =>
-  maxHeight &&
-  css`
+      maxHeight &&
+      css`
         max-height: ${maxHeight}vh;
       `}
     ${({ minHeight }) =>
-  minHeight &&
-  css`
+      minHeight &&
+      css`
         min-height: ${minHeight}vh;
       `}
     display: flex;
@@ -87,7 +87,7 @@ const StyledDialogContent = styled(
     ${({ theme, mobile }) => theme.mediaWidth.upToSmall`
       width:  85vw;
       ${mobile &&
-css`
+        css`
           width: 100vw;
           border-radius: 20px;
           border-bottom-left-radius: 0;
@@ -105,7 +105,6 @@ interface ModalProps {
   maxWidth?: number;
   initialFocusRef?: React.RefObject<any>;
   children?: React.ReactNode;
-  className?: string;
 }
 
 export default function Modal({
@@ -116,7 +115,6 @@ export default function Modal({
   maxWidth = 440,
   initialFocusRef = null,
   children,
-  className,
 }: ModalProps) {
   const transitions = useTransition(isOpen, null, {
     config: { duration: 200 },
@@ -151,7 +149,7 @@ export default function Modal({
                 mobile={true}
               >
                 {/* prevents the automatic focusing of inputs on mobile by the reach dialog */}
-                {initialFocusRef ? null : <div tabIndex={1}/>}
+                {initialFocusRef ? null : <div tabIndex={1} />}
                 <Spring // animation for entrance and exit
                   from={{
                     transform: isOpen ? 'translateY(200px)' : 'translateY(100px)',
@@ -169,7 +167,6 @@ export default function Modal({
                     >
                       <StyledDialogContent
                         aria-label="dialog content"
-                        className={className}
                         style={props}
                         hidden={true}
                         minHeight={minHeight}
@@ -206,7 +203,6 @@ export default function Modal({
                   maxHeight={maxHeight}
                   maxWidth={maxWidth}
                   isOpen={isOpen}
-                  className={className}
                 >
                   {children}
                 </StyledDialogContent>

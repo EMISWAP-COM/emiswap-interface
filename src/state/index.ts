@@ -1,5 +1,5 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
-import { load, save } from 'redux-localstorage-simple';
+import { save, load } from 'redux-localstorage-simple';
 
 import application from './application/reducer';
 import user from './user/reducer';
@@ -12,12 +12,10 @@ import multicall from './multicall/reducer';
 import invest from './invest/reducer';
 import cabinets from './cabinets/reducer';
 import stats from './stats/reducer';
-import launchpad from './launchpad/reducer';
-import farming from './farming/reducer';
 
 import { updateVersion } from './user/actions';
 
-const PERSISTED_KEYS: string[] = ['lists', 'invest'];
+const PERSISTED_KEYS: string[] = ['transactions', 'lists', 'invest'];
 
 const store = configureStore({
   reducer: {
@@ -32,8 +30,6 @@ const store = configureStore({
     invest,
     cabinets,
     stats,
-    launchpad,
-    farming,
   },
   middleware: [
     ...getDefaultMiddleware({ serializableCheck: false }),

@@ -1,4 +1,4 @@
-import { ChainId, currencyEquals, JSBI, Token, TokenAmount } from '@uniswap/sdk';
+import { Token, TokenAmount, currencyEquals, ETHER, JSBI } from '@uniswap/sdk';
 import React, { CSSProperties, memo, useContext, useMemo } from 'react';
 import { Text } from 'rebass';
 import { ThemeContext } from 'styled-components';
@@ -19,7 +19,6 @@ import { currencyKey } from '../../utils/currencyId';
 import { tokenAmountToString } from '../../utils/formats';
 import defaultCoins from '../../constants/defaultCoins';
 import { KOVAN_WETH } from '../../constants';
-import { useNetworkData } from '../../hooks/Coins';
 
 export default function CurrencyList({
   currencies,
@@ -28,9 +27,7 @@ export default function CurrencyList({
   onCurrencySelect,
   otherCurrency,
   showSendWithSwap,
-  showName = false,
   isMatchEth = false,
-  isLpTokens = false,
 }: {
   currencies: Token[];
   selectedCurrency: Token;
@@ -38,13 +35,9 @@ export default function CurrencyList({
   onCurrencySelect: (currency: Token) => void;
   otherCurrency: Token;
   showSendWithSwap?: boolean;
-  showName?: boolean;
   isMatchEth?: boolean;
-  isLpTokens?: boolean;
 }) {
   const { account, chainId } = useActiveWeb3React();
-  const networkData = useNetworkData();
-
   const theme = useContext(ThemeContext);
   const [allTokens] = useAllTokens();
   const defaultTokens = useDefaultTokenList();
@@ -54,34 +47,22 @@ export default function CurrencyList({
 
   const CurrencyRow = useMemo(() => {
     return memo(function CurrencyRow({ index, style }: { index: number; style: CSSProperties }) {
-      const mainToken = networkData.token;
-
-      let currency = currencies[index];
-      if (!isLpTokens)
-        if (index === 0) {
-          currency = mainToken;
-        } else {
-          currency = currencies[index - 1];
-      }
-
+      const currency = index === 0 ? ETHER : currencies[index - 1];
       const key = currencyKey(currency);
       const isDefault = isDefaultToken(defaultTokens, currency);
       const customAdded = Boolean(
         !isDefault && currency instanceof Token && allTokens[currency.address],
       );
-      const balance = currency === mainToken ? ETHBalance : allBalances[key];
+      const balance = currency === ETHER ? ETHBalance : allBalances[key];
 
       const zeroBalance = balance && JSBI.equal(JSBI.BigInt(0), balance.raw);
       const wethTokenInfo = defaultCoins.tokens.find(
-        token =>
-          token.symbol === networkData.currencySymbolWeth &&
-          token.chainId === chainId,
+        token => token.symbol === 'WETH' && token.chainId === chainId,
       );
       const WETH: Token =
         wethTokenInfo && chainId
           ? new Token(
-              // @ts-ignore
-              chainId as ChainId,
+              chainId,
               wethTokenInfo.address,
               wethTokenInfo.decimals,
               wethTokenInfo.symbol,
@@ -110,7 +91,7 @@ export default function CurrencyList({
           <RowFixed>
             <CurrencyLogo currency={currency} size={'18px'} style={{ marginRight: '16px' }} />
             <Column>
-              <Text fontWeight={500}>{showName ? currency.name : currency.symbol}</Text>
+              <Text fontWeight={500}>{currency.symbol}</Text>
               <FadedSpan>
                 {customAdded ? (
                   <TYPE.main fontWeight={500}>
@@ -181,16 +162,13 @@ export default function CurrencyList({
     showSendWithSwap,
     theme.primary1,
     isMatchEth,
-    networkData,
-    showName,
-    isLpTokens,
   ]);
 
   return (
     <StyledFixedSizeList
       width="auto"
       height={500}
-      itemCount={isLpTokens ? currencies.length : currencies.length + 1}
+      itemCount={currencies.length + 1}
       itemSize={50}
       style={{ flex: '1', margin: '0 30px' }}
       itemKey={index => currencyKey(currencies[index])}

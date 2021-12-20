@@ -9,13 +9,12 @@ export const ClickableText = styled(Text)`
   :hover {
     cursor: pointer;
   }
-  color: ${({ theme }) => theme.blue};
+  color: ${({ theme }) => theme.primary1};
 `;
-
 export const MaxButton = styled.button<{ width: string }>`
   padding: 0.5rem 1rem;
-  background-color: ${({ theme }) => theme.purple};
-  border: 0;
+  background-color: ${({ theme }) => theme.primary1};
+  border: 1px solid ${({ theme }) => theme.primary1};
   border-radius: 0.5rem;
   font-size: 1rem;
   ${({ theme }) => theme.mediaWidth.upToSmall`
@@ -25,10 +24,12 @@ export const MaxButton = styled.button<{ width: string }>`
   cursor: pointer;
   margin: 0.25rem;
   overflow: hidden;
-  color: ${({ theme }) => theme.darkWhite};
-  :hover,
+  color: ${({ theme }) => theme.text1};
+  :hover {
+    border: 1px solid ${({ theme }) => theme.primary1};
+  }
   :focus {
-    box-shadow: ${({ theme }) => theme.purpleBoxShadow};
+    border: 1px solid ${({ theme }) => theme.primary1};
     outline: none;
   }
 `;
@@ -54,13 +55,9 @@ export const Dots = styled.span`
   }
 `;
 
-export const StyledHr = styled.hr`
-  width: 100%;
-  background: ${({ theme }) => theme.lightGrey};
-  border: none;
-  height: 1px;
-`;
-
-export const GasFeeText = styled.div`
-  color: ${({ theme }) => theme.darkText};
+export const ButtonText = styled.p`
+  margin: 0 0.5rem 0;
+  font-weight: 450;
+  font-size: 13px;
+  line-height: 19px;
 `;

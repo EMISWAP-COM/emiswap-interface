@@ -13,7 +13,7 @@ const handleResponse = (response: Response) => {
       console.log('response 477', response);
       return response.json().then(data => {
         console.log('data err', data, new CustomError(data?.error_message, data?.payload));
-        throw new CustomError('Your previous transaction is processing', data?.payload);
+        throw new CustomError(data?.error_message, data?.payload);
       });
     case 422:
       console.log('response 422', response);
@@ -22,11 +22,7 @@ const handleResponse = (response: Response) => {
         throw new CustomError(data?.error, data?.payload);
       });
     default:
-      throw new CustomError(`something went wrong while requesting ${url}`, {
-        code: status,
-        url: url,
-      });
-    // throw new Error(`something went wrong while requesting ${url}`);
+      throw new Error(`something went wrong while requesting ${url}`);
   }
 };
 
@@ -39,15 +35,9 @@ export const fetchWrapper = {
           : baseHeaders),
       },
       ...options,
-    })
-      .then(res => {
-        return handleResponse(res);
-      })
-      .catch(error => {
-        throw new CustomError(`get error ${endPoint}`, {
-          code: error.code,
-        });
-      });
+    }).then(res => {
+      return handleResponse(res);
+    });
   },
   post: (endPoint: string, options: RequestInit = {}) => {
     return fetch(endPoint, {
@@ -58,15 +48,9 @@ export const fetchWrapper = {
       },
       method: 'POST',
       ...options,
-    })
-      .then(res => {
-        return handleResponse(res);
-      })
-      .catch(error => {
-        throw new CustomError(`post error ${endPoint}`, {
-          code: error.code,
-        });
-      });
+    }).then(res => {
+      return handleResponse(res);
+    });
   },
   put: (endPoint: string, options: RequestInit = {}) => {
     return fetch(endPoint, {
@@ -77,15 +61,9 @@ export const fetchWrapper = {
       },
       method: 'PUT',
       ...options,
-    })
-      .then(res => {
-        return handleResponse(res);
-      })
-      .catch(error => {
-        throw new CustomError(`put error ${endPoint}`, {
-          code: error.code,
-        });
-      });
+    }).then(res => {
+      return handleResponse(res);
+    });
   },
 };
 

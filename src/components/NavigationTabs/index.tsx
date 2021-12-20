@@ -1,27 +1,18 @@
 import React from 'react';
-import styled from 'styled-components/macro';
-import { lighten } from 'polished';
+import styled from 'styled-components';
+import { darken } from 'polished';
 import { useTranslation } from 'react-i18next';
-import { Link as HistoryLink, NavLink } from 'react-router-dom';
+import { NavLink, Link as HistoryLink } from 'react-router-dom';
 
 import { ArrowLeft } from 'react-feather';
 import { RowBetween } from '../Row';
 import QuestionHelper from '../QuestionHelper';
-import { useIsEthActive, useIsPolygonActive, useNetworkData } from '../../hooks/Coins';
-import { isMobile } from 'react-device-detect';
-import { useBridgeModalToggle } from '../../state/application/hooks';
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: center;
   border-radius: 3rem;
   justify-content: space-evenly;
-  width: 380px;
-  margin: 0 auto;
-
-  ${({ theme }) => theme.mediaWidth.upToMedium`
-    width: 310px;
-  `};
 `;
 
 const activeClassName = 'ACTIVE';
@@ -37,41 +28,18 @@ const StyledNavLink = styled(NavLink).attrs({
   outline: none;
   cursor: pointer;
   text-decoration: none;
-  color: ${({ theme }) => theme.lightGrey};
-  font-size: 16px;
+  color: ${({ theme }) => theme.text3};
+  font-size: 20px;
 
   &.${activeClassName} {
     border-radius: 12px;
     font-weight: 500;
-    color: ${({ theme }) => theme.white};
-
-    :hover,
-    :focus {
-      color: ${({ theme }) => theme.white};
-    }
+    color: ${({ theme }) => theme.text1};
   }
 
   :hover,
   :focus {
-    color: ${({ theme }) => lighten(0.3, theme.lightGrey)};
-  }
-`;
-
-const ExternalNavLink = styled.div`
-  ${({ theme }) => theme.flexRowNoWrap}
-  align-items: center;
-  justify-content: center;
-  height: 3rem;
-  border-radius: 3rem;
-  outline: none;
-  cursor: pointer;
-  text-decoration: none;
-  color: ${({ theme }) => theme.lightGrey};
-  font-size: 16px;
-  
-  :hover,
-  :focus {
-    color: ${({ theme }) => lighten(0.3, theme.lightGrey)};
+    color: ${({ theme }) => darken(0.1, theme.text1)};
   }
 `;
 
@@ -89,31 +57,10 @@ export enum TabNames {
   POOL,
   MIGRATE,
   INVEST,
-  FARM,
-  FARM_365,
 }
-
-//TODO refactor. Component index.tsx must return single component
 
 export function SwapPoolTabs({ active }: { active: TabNames }) {
   const { t } = useTranslation();
-
-  const networkItem = useNetworkData();
-
-  // const isKuCoinActive = useIsKuCoinActive();
-  const isEthereumActive = useIsEthActive();
-  const isPolygonActive = useIsPolygonActive();
-
-  const toggleBridgeModal = useBridgeModalToggle();
-
-  const handleClickBridge = () => {
-    if (isMobile && networkItem.bridgeUrl) {
-      window.open(networkItem.bridgeUrl);
-    } else {
-      toggleBridgeModal();
-    }
-  };
-
   return (
     <Tabs style={{ marginBottom: '24px' }}>
       <StyledNavLink id={`swap-nav-link`} to={'/swap'} isActive={() => active === TabNames.SWAP}>
@@ -122,48 +69,20 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
       <StyledNavLink id={`pool-nav-link`} to={'/pool'} isActive={() => active === TabNames.POOL}>
         {t('pool')}
       </StyledNavLink>
+      {/*<StyledNavLink*/}
+      {/*  id={`migrate-nav-link`}*/}
+      {/*  to={'/migrate'}*/}
+      {/*  isActive={() => active === TabNames.MIGRATE}*/}
+      {/*>*/}
+      {/*  {t('migrate')}*/}
+      {/*</StyledNavLink>*/}
       <StyledNavLink
-        id={`migrate-nav-link`}
-        to={'/migrate'}
-        isActive={() => active === TabNames.MIGRATE}
-      >
-        {t('migrate')}
-      </StyledNavLink>
-      {/*<StyledNavLink
         id={`pool-nav-link`}
         to={'/invest'}
         isActive={() => active === TabNames.INVEST}
       >
         {t('invest')}
-      </StyledNavLink>*/}
-      {isEthereumActive && (
-        <StyledNavLink
-          id={`farm-nav-link`}
-          to={'/farm'}
-          isActive={() => active === TabNames.FARM}
-        >
-          {t('Stake & Farm')}
-        </StyledNavLink>
-      )}
-      {isPolygonActive && (
-        <StyledNavLink
-          id={`farm-365-nav-link`}
-          to={'/farm-365'}
-          isActive={() => active === TabNames.FARM_365}
-        >
-          {t('Farm')}
-        </StyledNavLink>
-      )}
-      {isMobile && !isEthereumActive && (
-        <>
-          <ExternalNavLink
-            onClick={handleClickBridge}
-          >
-            {t('Bridge')}
-          </ExternalNavLink>
-          {/*<BridgeModal/>*/}
-        </>
-      )}
+      </StyledNavLink>
     </Tabs>
   );
 }
@@ -173,11 +92,11 @@ export function FindPoolTabs() {
     <Tabs>
       <RowBetween style={{ padding: '1rem' }}>
         <HistoryLink to="/pool">
-          <StyledArrowLeft/>
+          <StyledArrowLeft />
         </HistoryLink>
         <ActiveText>Import Pool</ActiveText>
         <QuestionHelper
-          text={'Use this tool to find pairs that don\'t automatically appear in the interface.'}
+          text={"Use this tool to find pairs that don't automatically appear in the interface."}
         />
       </RowBetween>
     </Tabs>
@@ -189,7 +108,7 @@ export function AddRemoveTabs({ adding }: { adding: boolean }) {
     <Tabs>
       <RowBetween style={{ padding: '1rem' }}>
         <HistoryLink to="/pool">
-          <StyledArrowLeft/>
+          <StyledArrowLeft />
         </HistoryLink>
         <ActiveText>{adding ? 'Add' : 'Remove'} Liquidity</ActiveText>
         <QuestionHelper

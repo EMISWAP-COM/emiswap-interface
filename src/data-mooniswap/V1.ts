@@ -17,7 +17,11 @@ import { useActiveWeb3React } from '../hooks';
 import { useAllTokens } from '../hooks/Tokens';
 import { useEmiRouter, useV1FactoryContract } from '../hooks/useContract';
 import { Version } from '../hooks/useToggledVersion';
-import { NEVER_RELOAD, useSingleCallResult, useSingleContractMultipleData } from '../state/multicall/hooks';
+import {
+  NEVER_RELOAD,
+  useSingleCallResult,
+  useSingleContractMultipleData,
+} from '../state/multicall/hooks';
 import { useTokenBalances } from '../state/wallet/hooks';
 import { ETH_ADDRESS, ZERO_ADDRESS } from '../constants/one-split';
 import { usePair } from './Reserves';
@@ -205,9 +209,7 @@ export function useMooniswapTrade(
   const amount =
     inputCurrency?.decimals && inputCurrency?.decimals !== 0
       ? parseAmount
-          ?.multiply(
-            JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(Math.floor(inputCurrency?.decimals))),
-          )
+          ?.multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(inputCurrency?.decimals)))
           .toFixed(0)
       : parseAmount?.toFixed(0);
   const params = [
@@ -263,11 +265,7 @@ export function useMooniswapTrade(
 
   const exactAmount = new TokenAmount(
     independentField === Field.INPUT ? outputCurrency : inputCurrency,
-    JSBI.BigInt(
-      typeof results.result.returnAmount === 'number'
-        ? Math.floor(results.result.returnAmount)
-        : results.result.returnAmount,
-    ),
+    JSBI.BigInt(results.result.returnAmount),
   );
   const route =
     inputCurrency && pairs && pairs.length > 0 && new Route(pairs, inputCurrency, outputCurrency);

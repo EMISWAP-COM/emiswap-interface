@@ -22,7 +22,6 @@ export interface Colors {
 
   modalBG: Color;
   advancedBG: Color;
-  cardBG: Color;
 
   //blues
   primary1: Color;
@@ -58,24 +57,6 @@ export interface Colors {
   yellow3: Color;
   yellow4: Color;
   horse: Color;
-  whiteTransparent: Color;
-  purple: Color;
-  purpleBoxShadow: Color;
-  darkWhite: Color;
-  darkText: Color;
-  darkGrey: Color;
-  lightGrey: Color;
-  red: Color;
-  green: Color;
-  pink: Color;
-  blue: Color;
-  border1: Color;
-  border1Transparency: Color;
-  border2: Color;
-  dark1: Color;
-  dark2: Color;
-  dark1BoxShadow: Color;
-  modalBoxShadow: Color;
 }
 
 export interface Grids {

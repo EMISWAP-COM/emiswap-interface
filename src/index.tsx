@@ -19,37 +19,10 @@ import InvestUpdater from './state/invest/updater';
 import ThemeProvider, { FixedGlobalStyle, ThemedGlobalStyle } from './theme';
 import HttpsRedirect from './https-redirect';
 import { ErrorBoundary } from './components/ErrorBoundary/ErrorBoundary';
-import ReactPixel from 'react-facebook-pixel';
-
-import * as Sentry from '@sentry/react';
-import { Integrations } from '@sentry/tracing';
-
-import dayjs from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-import duration from 'dayjs/plugin/duration';
-
-dayjs.extend(customParseFormat)
-dayjs.extend(duration);
-
-const { REACT_APP_SENTRY_DSN, REACT_APP_SENTRY_PROJECT, REACT_APP_SENTRY_RELEASE } = window['env'];
-Sentry.init({
-  dsn: REACT_APP_SENTRY_DSN,
-  release: `${REACT_APP_SENTRY_PROJECT}@${REACT_APP_SENTRY_RELEASE}`,
-  integrations: [new Integrations.BrowserTracing()],
-  tracesSampleRate: 1.0,
-});
-
-const advancedMatching = { em: 'some@email.com' } as any;
-const options = {
-  autoConfig: true,
-  debug: true,
-};
-ReactPixel.init('980043795863508', advancedMatching, options);
-ReactPixel.pageView();
 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName);
 
-if (window.ethereum && (window.ethereum as any).hasOwnProperty('autoRefreshOnNetworkChange')) {
+if ('ethereum' in window) {
   (window.ethereum as any).autoRefreshOnNetworkChange = false;
 }
 
@@ -86,7 +59,6 @@ window.addEventListener('error', error => {
   });
 });
 
-
 // eslint-disable-next-line no-extend-native
 Object.defineProperty(Array.prototype, 'flat', {
   value: function(depth = 1) {
@@ -111,7 +83,7 @@ function Updaters() {
   );
 }
 
-const Root = Sentry.withProfiler(() => (
+ReactDOM.render(
   <HttpsRedirect>
     <Provider store={store}>
       <ThemeProvider>
@@ -127,7 +99,6 @@ const Root = Sentry.withProfiler(() => (
         </ErrorBoundary>
       </ThemeProvider>
     </Provider>
-  </HttpsRedirect>
-));
-
-ReactDOM.render(<Root />, document.getElementById('root'));
+  </HttpsRedirect>,
+  document.getElementById('root'),
+);

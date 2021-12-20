@@ -30,8 +30,7 @@ async function useCoinList(
   account: string,
   library: Web3Provider,
 ): Promise<any[]> {
-  // @ts-ignore
-  const contract: Contract | null = getCrowdsaleContract(library, account, chainId);
+  const contract: Contract | null = getCrowdsaleContract(library, account);
 
   const counter = await contract.coinCounter();
   let coins: any[] = [];

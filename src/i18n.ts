@@ -1,29 +1,21 @@
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import HttpApi from 'i18next-http-backend';
-
-// import XHR from 'i18next-xhr-backend';
+import XHR from 'i18next-xhr-backend';
 
 i18next
-  .use(HttpApi)
+  .use(XHR)
   .use(initReactI18next)
   .init({
     backend: {
-      loadPath: '/locales/{{lng}}.json',
-      requestOptions: {
-        cache: 'no-store',
-      },
+      loadPath: `./locales/en.json`,
     },
     react: {
-      useSuspense: false,
-      bindI18n: 'languageChanged',
+      useSuspense: true,
     },
-    returnObjects: false,
-    debug: true,
     lng: 'en',
     fallbackLng: 'en',
-    preload: ['en', 'es-US'],
-    // keySeparator: false,
+    preload: ['en'],
+    keySeparator: false,
     interpolation: { escapeValue: false },
   });
 

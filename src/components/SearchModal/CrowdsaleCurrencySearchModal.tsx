@@ -1,9 +1,17 @@
 import { Token } from '@uniswap/sdk';
-import React, { KeyboardEvent, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  KeyboardEvent,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { isMobile } from 'react-device-detect';
 import { useTranslation } from 'react-i18next';
 import { Text } from 'rebass';
-import { ThemeContext } from 'styled-components/macro';
+import { ThemeContext } from 'styled-components';
 import Card from '../../components/Card';
 import { useActiveWeb3React } from '../../hooks';
 import { useToken } from '../../hooks/Tokens';

@@ -1,7 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import {
   addTransaction,
-  cancelTransaction,
   checkedTransaction,
   clearAllTransactions,
   finalizeTransaction,
@@ -64,10 +63,5 @@ export default createReducer(initialState, builder =>
       }
       tx.receipt = receipt;
       tx.confirmedTime = now();
-    })
-    .addCase(cancelTransaction, (transactions, { payload: { chainId, hash } }) => {
-      const txs = transactions[chainId] ?? {};
-      delete txs[hash];
-      transactions[chainId] = txs;
     }),
 );

@@ -7,7 +7,7 @@ import { RouteComponentProps } from 'react-router';
 import { Text } from 'rebass';
 import { ThemeContext } from 'styled-components';
 import { ButtonConfirmed, ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button';
-import { OutlineCard } from '../../components/Card';
+import { LightCard } from '../../components/Card';
 import { AutoColumn, ColumnCenter } from '../../components/Column';
 import ConfirmationModal from '../../components/ConfirmationModal';
 import CurrencyInputPanel from '../../components/CurrencyInputPanel';
@@ -38,7 +38,6 @@ import defaultCoins from '../../constants/defaultCoins';
 import { KOVAN_WETH } from '../../constants';
 import { ZERO_ADDRESS } from '../../constants/one-split';
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback';
-import { useNetworkData } from '../../hooks/Coins';
 
 export default function RemoveLiquidity({
   history,
@@ -52,9 +51,6 @@ export default function RemoveLiquidity({
   ];
   const { account, chainId, library } = useActiveWeb3React();
   const [tokenA, tokenB] = useMemo(() => [currencyA, currencyB], [currencyA, currencyB]);
-
-  // const isKuCoinActive = useIsKuCoinActive();
-  const {currencySymbolWrap, value: network} = useNetworkData();
 
   const theme = useContext(ThemeContext);
 
@@ -78,9 +74,7 @@ export default function RemoveLiquidity({
   const [txHash, setTxHash] = useState<string>('');
   const [allowedSlippage] = useUserSlippageTolerance();
   const wethTokenInfo = defaultCoins.tokens.find(
-    token =>
-      token.symbol === currencySymbolWrap &&
-      token.chainId === chainId,
+    token => token.symbol === 'WETH' && token.chainId === chainId,
   );
   const WETH: Token =
     wethTokenInfo && chainId
@@ -310,40 +304,14 @@ export default function RemoveLiquidity({
 
           setTxHash(response.hash);
 
-          ReactGA.set({
-            dimension4: response.hash,
-            dimension1: currencyA?.symbol,
-            dimension2: currencyB?.symbol,
-            metric1: parsedAmounts[Field.CURRENCY_A]?.toFixed(),
-            metric2: parsedAmounts[Field.CURRENCY_B]?.toFixed(),
-            dimension3: account,
-            dimension5: network
-          });
-
           ReactGA.event({
-            category: 'Transaction',
-            action: 'new',
-            label: 'unpool',
-            value:  Math.round(parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || '')),
+            category: 'Liquidity',
+            action: 'Remove',
+            label: [currencyA?.symbol, currencyB?.symbol].join('/'),
           });
         })
         .catch((error: Error) => {
           setAttemptingTxn(false);
-          ReactGA.set({
-            dimension1: currencyA?.symbol,
-            dimension2: currencyB?.symbol,
-            metric1: parsedAmounts[Field.CURRENCY_A]?.toFixed(),
-            metric2: parsedAmounts[Field.CURRENCY_B]?.toFixed(),
-            dimension3: account,
-            dimension5: network
-          });
-
-          ReactGA.event({
-            category: 'Transaction',
-            action: 'cancel',
-            label: 'unpool',
-            value:  Math.round(parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || '')),
-          });
           // we only care if the error is something _other_ than the user rejected the tx
           console.error(error);
         });
@@ -354,42 +322,32 @@ export default function RemoveLiquidity({
     return (
       <AutoColumn gap={'md'} style={{ marginTop: '20px' }}>
         <RowBetween align="flex-end">
-          <Text color={theme.darkWhite} fontSize={24} fontWeight={500}>
+          <Text fontSize={24} fontWeight={500}>
             {tokenAmountToString(parsedAmounts[Field.CURRENCY_A])}
           </Text>
           <RowFixed gap="4px">
             <CurrencyLogo currency={currencyA} size={'24px'} />
-            <Text
-              color={theme.darkWhite}
-              fontSize={24}
-              fontWeight={500}
-              style={{ marginLeft: '10px' }}
-            >
+            <Text fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
               {currencyA?.symbol}
             </Text>
           </RowFixed>
         </RowBetween>
         <RowFixed>
-          <Plus size="16" color={theme.darkWhite} />
+          <Plus size="16" color={theme.text2} />
         </RowFixed>
         <RowBetween align="flex-end">
-          <Text color={theme.darkWhite} fontSize={24} fontWeight={500}>
+          <Text fontSize={24} fontWeight={500}>
             {tokenAmountToString(parsedAmounts[Field.CURRENCY_B])}
           </Text>
           <RowFixed gap="4px">
             <CurrencyLogo currency={currencyB} size={'24px'} />
-            <Text
-              color={theme.darkWhite}
-              fontSize={24}
-              fontWeight={500}
-              style={{ marginLeft: '10px' }}
-            >
+            <Text fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
               {currencyB?.symbol}
             </Text>
           </RowFixed>
         </RowBetween>
 
-        <TYPE.italic fontSize={12} color={theme.darkWhite} textAlign="left" padding={'12px 0 0 0'}>
+        <TYPE.italic fontSize={12} color={theme.text2} textAlign="left" padding={'12px 0 0 0'}>
           {`Output is estimated. If the price changes by more than ${allowedSlippage /
             100}% your transaction will revert.`}
         </TYPE.italic>
@@ -401,7 +359,7 @@ export default function RemoveLiquidity({
     return (
       <>
         <RowBetween>
-          <Text color={theme.darkWhite} fontWeight={500} fontSize={16}>
+          <Text color={theme.text2} fontWeight={500} fontSize={16}>
             {'Emi ' + currencyA?.symbol + '/' + currencyB?.symbol} Burned
           </Text>
           <RowFixed>
@@ -414,17 +372,17 @@ export default function RemoveLiquidity({
         {pair && (
           <>
             <RowBetween>
-              <Text color={theme.darkWhite} fontWeight={500} fontSize={16}>
+              <Text color={theme.text2} fontWeight={500} fontSize={16}>
                 Price
               </Text>
-              <Text fontWeight={500} fontSize={16} color={theme.darkWhite}>
+              <Text fontWeight={500} fontSize={16} color={theme.text1}>
                 1 {currencyA?.symbol} = {tokenA ? tokenAmountToString(pair.priceOf(tokenA)) : '-'}{' '}
                 {currencyB?.symbol}
               </Text>
             </RowBetween>
             <RowBetween>
               <div />
-              <Text fontWeight={500} fontSize={16} color={theme.darkWhite}>
+              <Text fontWeight={500} fontSize={16} color={theme.text1}>
                 1 {currencyB?.symbol} = {tokenB ? tokenAmountToString(pair.priceOf(tokenB)) : '-'}{' '}
                 {currencyA?.symbol}
               </Text>
@@ -498,12 +456,10 @@ export default function RemoveLiquidity({
             title="You will receive"
           />
           <AutoColumn gap="md">
-            <OutlineCard>
+            <LightCard>
               <AutoColumn gap="20px">
                 <RowBetween>
-                  <Text fontWeight={500} color={theme.darkWhite}>
-                    Amount
-                  </Text>
+                  <Text fontWeight={500}>Amount</Text>
                   <ClickableText
                     fontWeight={500}
                     onClick={() => {
@@ -514,7 +470,7 @@ export default function RemoveLiquidity({
                   </ClickableText>
                 </RowBetween>
                 <Row style={{ alignItems: 'flex-end' }}>
-                  <Text fontSize={72} fontWeight={500} color={theme.darkWhite}>
+                  <Text fontSize={72} fontWeight={500}>
                     {formattedAmounts[Field.LIQUIDITY_PERCENT]}%
                   </Text>
                 </Row>
@@ -553,42 +509,32 @@ export default function RemoveLiquidity({
                   </>
                 )}
               </AutoColumn>
-            </OutlineCard>
+            </LightCard>
             {!showDetailed && (
               <>
                 <ColumnCenter>
-                  <ArrowDown size="16" color={theme.darkWhite} />
+                  <ArrowDown size="16" color={theme.text2} />
                 </ColumnCenter>
-                <OutlineCard>
+                <LightCard>
                   <AutoColumn gap="10px">
                     <RowBetween>
-                      <Text fontSize={24} fontWeight={500} color={theme.darkWhite}>
+                      <Text fontSize={24} fontWeight={500}>
                         {formattedAmounts[Field.CURRENCY_A] || '-'}
                       </Text>
                       <RowFixed>
                         <CurrencyLogo currency={currencyA} style={{ marginRight: '12px' }} />
-                        <Text
-                          fontSize={24}
-                          fontWeight={500}
-                          color={theme.darkWhite}
-                          id="remove-liquidity-tokena-symbol"
-                        >
+                        <Text fontSize={24} fontWeight={500} id="remove-liquidity-tokena-symbol">
                           {currencyA?.symbol}
                         </Text>
                       </RowFixed>
                     </RowBetween>
                     <RowBetween>
-                      <Text fontSize={24} fontWeight={500} color={theme.darkWhite}>
+                      <Text fontSize={24} fontWeight={500}>
                         {formattedAmounts[Field.CURRENCY_B] || '-'}
                       </Text>
                       <RowFixed>
                         <CurrencyLogo currency={currencyB} style={{ marginRight: '12px' }} />
-                        <Text
-                          fontSize={24}
-                          fontWeight={500}
-                          color={theme.darkWhite}
-                          id="remove-liquidity-tokenb-symbol"
-                        >
+                        <Text fontSize={24} fontWeight={500} id="remove-liquidity-tokenb-symbol">
                           {currencyB?.symbol}
                         </Text>
                       </RowFixed>
@@ -601,7 +547,7 @@ export default function RemoveLiquidity({
                               currencyB?.isEther ? WETH.address : currencyIdB
                             }`}
                           >
-                            Receive {currencySymbolWrap}
+                            Receive WETH
                           </StyledInternalLink>
                         ) : oneCurrencyIsWETH ? (
                           <StyledInternalLink
@@ -615,7 +561,7 @@ export default function RemoveLiquidity({
                                 : currencyIdB
                             }`}
                           >
-                            Receive {currencySymbolWrap}
+                            Receive ETH
                           </StyledInternalLink>
                         ) : null}
                       </RowBetween>
@@ -630,7 +576,7 @@ export default function RemoveLiquidity({
                     {/*  </RowBetween>*/}
                     {/*) : null}*/}
                   </AutoColumn>
-                </OutlineCard>
+                </LightCard>
               </>
             )}
 
@@ -693,7 +639,8 @@ export default function RemoveLiquidity({
                   <div />
                   <div>
                     1 {currencyB?.symbol} ={' '}
-                    {tokenB ? tokenAmountToString(pair.priceOf(tokenB)) : '-'} {currencyA?.symbol}
+                    {tokenB ? tokenAmountToString(pair.priceOf(tokenB).invert()) : '-'}{' '}
+                    {currencyA?.symbol}
                   </div>
                 </RowBetween>
               </div>

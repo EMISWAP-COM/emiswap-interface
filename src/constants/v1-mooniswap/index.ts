@@ -1,40 +1,34 @@
+import { Interface } from '@ethersproject/abi';
 import { ChainId } from '@uniswap/sdk';
 import V1_MOONISWAP_EXCHANGE_ABI from './v1_mooniswap_exchange.json';
 import V1_MOONISWAP_FACTORY_ABI from './v1_mooniswap_factory.json';
-import chainIds from '../chainIds';
-import emirouter_addresses from '../emirouter_addresses';
-import factory_addresses from '../factory_addresses';
 
 const V1_MOONISWAP_FACTORY_ADDRESSES: { [chainId in ChainId]: string } = {
-  [ChainId.MAINNET]: factory_addresses[chainIds.MAINNET],
-  [ChainId.ROPSTEN]: factory_addresses[chainIds.ROPSTEN],
-  [ChainId.RINKEBY]: factory_addresses[chainIds.RINKEBY],
-  [ChainId.GÖRLI]: factory_addresses[chainIds.GÖRLI],
-  [ChainId.KOVAN]: factory_addresses[chainIds.KOVAN],
-  // @ts-ignore
-  [chainIds.KUCOIN]: factory_addresses[chainIds.KUCOIN],
-  // @ts-ignore
-  [chainIds.POLYGON]: factory_addresses[chainIds.POLYGON],
-  [chainIds.MUMBAI]: factory_addresses[chainIds.MUMBAI],
-  [chainIds.AVALANCHE]: factory_addresses[chainIds.AVALANCHE],
+  [ChainId.MAINNET]: '0x1771dff85160768255f0a44d20965665806cbf48',
+  [ChainId.ROPSTEN]: '0x71CD6666064C3A1354a3B4dca5fA1E2D3ee7D303',
+  [ChainId.RINKEBY]: '0x71CD6666064C3A1354a3B4dca5fA1E2D3ee7D303',
+  [ChainId.GÖRLI]: '0x71CD6666064C3A1354a3B4dca5fA1E2D3ee7D303',
+  [ChainId.KOVAN]: '0xb9Cba89F4caFa60f9040D6d495a56344F37EBA23',
 };
 
 const V1_EMIROUTER_HELPER_ADDRESSES: { [chainId in ChainId]: string } = {
-  [ChainId.MAINNET]: emirouter_addresses[chainIds.MAINNET],
-  [ChainId.ROPSTEN]: emirouter_addresses[chainIds.ROPSTEN],
-  [ChainId.RINKEBY]: emirouter_addresses[chainIds.RINKEBY],
-  [ChainId.GÖRLI]: emirouter_addresses[chainIds.GÖRLI],
-  [ChainId.KOVAN]: emirouter_addresses[chainIds.KOVAN],
-  // @ts-ignore
-  [chainIds.KUCOIN]: emirouter_addresses[chainIds.KUCOIN],
-  [chainIds.POLYGON]: emirouter_addresses[chainIds.POLYGON],
-  [chainIds.MUMBAI]: emirouter_addresses[chainIds.MUMBAI],
-  [chainIds.AVALANCHE]: emirouter_addresses[chainIds.AVALANCHE],
+  [ChainId.MAINNET]: window['env'].REACT_APP_EMI_ROUTER_MAINNET,
+  [ChainId.ROPSTEN]: window['env'].REACT_APP_EMI_ROUTER_ROPSTEN,
+  [ChainId.RINKEBY]: window['env'].REACT_APP_EMI_ROUTER_RINKEBY,
+  [ChainId.GÖRLI]: window['env'].REACT_APP_EMI_ROUTER_GÖRLI,
+  [ChainId.KOVAN]: window['env'].REACT_APP_EMI_ROUTER_KOVAN,
 };
 
+const VAMP_ADDRESS = window['env'].REACT_APP_EMI_VAMP;
+const V1_FACTORY_INTERFACE = new Interface(V1_MOONISWAP_FACTORY_ABI);
+const V1_EXCHANGE_INTERFACE = new Interface(V1_MOONISWAP_EXCHANGE_ABI);
+
 export {
+  V1_FACTORY_INTERFACE,
   V1_MOONISWAP_FACTORY_ABI,
+  V1_EXCHANGE_INTERFACE,
   V1_MOONISWAP_EXCHANGE_ABI,
   V1_MOONISWAP_FACTORY_ADDRESSES,
   V1_EMIROUTER_HELPER_ADDRESSES,
+  VAMP_ADDRESS,
 };

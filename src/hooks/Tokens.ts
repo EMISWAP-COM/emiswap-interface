@@ -1,82 +1,29 @@
 import { parseBytes32String } from '@ethersproject/strings';
-import { ETHER, Token, ZERO_ADDRESS } from '@uniswap/sdk';
-import { useEffect, useMemo, useState } from 'react';
+import { Token, ETHER } from '@uniswap/sdk';
+import { useMemo } from 'react';
 import { useDefaultTokenList, WrappedTokenInfo } from '../state/lists/hooks';
 import { NEVER_RELOAD, useSingleCallResult } from '../state/multicall/hooks';
 import { useUserAddedTokens } from '../state/user/hooks';
-import { getLpTokenByAddress, isAddress } from '../utils';
+import { isAddress } from '../utils';
 import { useActiveWeb3React } from './index';
 import { useBytes32TokenContract, useTokenContract } from './useContract';
-import {
-  useDefaultCoin,
-  useIsEthActive,
-  useIsKuCoinActive,
-  useIsPolygonActive,
-  useNetworkData,
-} from './Coins';
+import { useDefaultCoin } from './Coins';
+import { ZERO_ADDRESS } from '@uniswap/sdk';
 import { useTokenListWithPair } from './useTokenListWithPair';
-import defaultCoins, { mustVisibleAddresses } from '../constants/defaultCoins';
 
-export declare interface Window {
-  env: Record<string, unknown>;
-}
-
-export function useAllTokens(isLpTokens?: boolean): [{ [address: string]: Token }, boolean] {
+export function useAllTokens(): [{ [address: string]: Token }, boolean] {
   const { chainId } = useActiveWeb3React();
   const userAddedTokens = useUserAddedTokens();
   const allTokens = useDefaultTokenList();
   const [enableTokensList, isLoading] = useTokenListWithPair();
-
-  const isKuCoinActive = useIsKuCoinActive();
-  const isPolygonActive = useIsPolygonActive();
-
   return [
     useMemo(() => {
-      if (!chainId) {
-        return {};
-      }
+      if (!chainId) return {};
       const filteredTokens = Object.values(allTokens[chainId])
-        .filter(el => {
-          if (isKuCoinActive) {
-            const exists = defaultCoins.tokens.find(
-              ct =>
-                ct.chainId === chainId &&
-                el.address.toLowerCase() === ct.address.toLowerCase() &&
-                mustVisibleAddresses.kucoin.includes(el.address.toLowerCase()),
-            );
-
-            // @ts-ignore
-            return (
-              Boolean(exists) ||
-              el.address === window['env'].REACT_APP_ESW_ID ||
-              el.symbol === 'ESW'
-            );
-          } else if (isPolygonActive) {
-            const exists = defaultCoins.tokens.find(
-              ct =>
-                ct.chainId === chainId &&
-                el.address.toLowerCase() === ct.address.toLowerCase() &&
-                ct.symbol !== 'WMATIC',
-              // && mustVisibleAddresses.polygon.includes(el.address.toLowerCase())
-            );
-
-            // @ts-ignore
-            return (
-              Boolean(exists) ||
-              el.address === window['env'].REACT_APP_ESW_ID ||
-              el.symbol === 'ESW'
-            );
-          }
-
-          // @ts-ignore // todo: fix it
-          return (
-            enableTokensList.includes(el.address) || el.address === window['env'].REACT_APP_ESW_ID
-          );
-        })
-        /*.filter(el => {
-          return (isLpTokens && el.name?.includes('LP '))
-            || (!isLpTokens && !el.name?.includes('LP '));
-        })*/
+        .filter(
+          el =>
+            enableTokensList.includes(el.address) || el.address === window['env'].REACT_APP_ESW_ID,
+        )
         .reduce((acc: { [key: string]: WrappedTokenInfo }, val) => {
           acc[val.address] = val;
           return acc;
@@ -94,14 +41,13 @@ export function useAllTokens(isLpTokens?: boolean): [{ [address: string]: Token 
             { ...filteredTokens },
           )
       );
-    }, [chainId, userAddedTokens, allTokens, enableTokensList, isKuCoinActive, isPolygonActive]),
+    }, [chainId, userAddedTokens, allTokens, enableTokensList]),
     isLoading,
   ];
 }
 
 // parse a name or symbol from a token response
 const BYTES32_REGEX = /^0x[a-fA-F0-9]{64}$/;
-
 function parseStringOrBytes32(
   str: string | undefined,
   bytes32: string | undefined,
@@ -159,15 +105,9 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
   );
 
   return useMemo(() => {
-    if (token) {
-      return token;
-    }
-    if (!chainId || !address) {
-      return undefined;
-    }
-    if (decimals.loading || symbol.loading || tokenName.loading) {
-      return null;
-    }
+    if (token) return token;
+    if (!chainId || !address) return undefined;
+    if (decimals.loading || symbol.loading || tokenName.loading) return null;
     if (decimals.result) {
       return new Token(
         chainId,
@@ -193,30 +133,9 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
   ]);
 }
 
-export function useTokenEx(tokenAddress?: string): Token | undefined | null {
-  const { chainId, account, library } = useActiveWeb3React();
-
-  const token = useToken(tokenAddress);
-
-  const [exToken, setExToken] = useState(token);
-
-  useEffect(() => {
-    if (token?.name?.includes('LP ') && account && library) {
-      getLpTokenByAddress(token.address, chainId, account, library).then(lpToken => {
-        setExToken(lpToken);
-      });
-    }
-  }, [token, chainId, account, library]);
-
-  return exToken;
-}
-
 export function useCurrency(currencyId: string | undefined): Token | null | undefined {
   const { chainId } = useActiveWeb3React();
-  const networkData = useNetworkData();
-  const isEthActive = useIsEthActive();
 
-  // @ts-ignore // todo: fix it
   const isESW = currencyId?.toUpperCase() === window['env'].REACT_APP_ESW_ID?.toUpperCase();
   const defaultCoin = useDefaultCoin(currencyId);
   const isETH = currencyId?.toUpperCase() === ETHER.address.toUpperCase();
@@ -224,8 +143,5 @@ export function useCurrency(currencyId: string | undefined): Token | null | unde
 
   const ether = new Token(chainId || 1, ZERO_ADDRESS, 18, 'ETH', 'Ethereum');
 
-  // @ts-ignore
-  const ethereumOrKcsCoin = isEthActive ? ether : networkData.token;
-
-  return isESW ? defaultCoin : isETH ? ethereumOrKcsCoin : token;
+  return isESW ? defaultCoin : isETH ? ether : token;
 }

@@ -1,9 +1,8 @@
 import { JSBI, TokenAmount } from '@uniswap/sdk';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import ReactGA from 'react-ga';
 import { ArrowDown, ArrowUp } from 'react-feather';
 import { Text } from 'rebass';
-import styled, { ThemeContext } from 'styled-components';
+import { ThemeContext } from 'styled-components';
 import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button';
 import Card, { GreyCard } from '../../components/Card';
 import { AutoColumn } from '../../components/Column';
@@ -13,7 +12,13 @@ import { SwapPoolTabs, TabNames } from '../../components/NavigationTabs';
 import { AutoRow, RowBetween } from '../../components/Row';
 import BetterTradeLink from '../../components/swap/BetterTradeLink';
 import confirmPriceImpactWithoutFee from '../../components/swap/confirmPriceImpactWithoutFee';
-import { ArrowWrapper, BottomGrouping, Dots, ErrorText, Wrapper } from '../../components/swap/styleds';
+import {
+  ArrowWrapper,
+  BottomGrouping,
+  Dots,
+  ErrorText,
+  Wrapper,
+} from '../../components/swap/styleds';
 import SwapModalFooter from '../../components/swap/SwapModalFooter';
 import SwapModalHeader from '../../components/swap/SwapModalHeader';
 import TradePrice from '../../components/swap/TradePrice';
@@ -25,6 +30,7 @@ import { ApprovalState, useApproveCallbackFromTrade } from '../../hooks/useAppro
 import { useSwap } from '../../hooks/useSwapCallback';
 import useToggledVersion, { Version } from '../../hooks/useToggledVersion';
 import useWrapCallback, { WrapType } from '../../hooks/useWrapCallback';
+// import { useTradeExactIn } from '../../hooks/Trades';
 import { useToggleSettingsMenu, useWalletModalToggle } from '../../state/application/hooks';
 import { Field } from '../../state/swap/actions';
 import {
@@ -33,23 +39,26 @@ import {
   useSwapActionHandlers,
   useSwapState,
 } from '../../state/swap/hooks';
-import { useExpertModeManager, useTokenWarningDismissal, useUserSlippageTolerance } from '../../state/user/hooks';
-import { CursorPointer, ExternalGreenLink, StyledButtonNavigation, TYPE } from '../../theme';
+import {
+  useExpertModeManager,
+  useUserSlippageTolerance,
+  useTokenWarningDismissal,
+} from '../../state/user/hooks';
+import { CursorPointer, StyledButtonNavigation, TYPE } from '../../theme';
 import { maxAmountSpend } from '../../utils/maxAmountSpend';
-import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown, warningSeverity } from '../../utils/prices';
+import {
+  computeSlippageAdjustedAmounts,
+  computeTradePriceBreakdown,
+  warningSeverity,
+} from '../../utils/prices';
 import AppBody from '../AppBody';
 import { ClickableText } from '../Pool/styleds';
 import { isUseOneSplitContract } from '../../utils';
+import ReferralLink from '../../components/RefferalLink';
+import GasConsumption from '../../components/swap/GasConsumption';
 import { BigNumber } from '@ethersproject/bignumber';
 import { AdvancedSwapDetails } from '../../components/swap/AdvancedSwapDetails';
-import { useTransactionPrice } from '../../hooks/useTransactionPrice';
-import ReferralLink from '../../components/RefferalLink';
-import { useIsEthActive, useNetworkData } from '../../hooks/Coins';
-
-const GasFeeText = styled.div`
-  margin-top: 8px;
-  color: ${({ theme }) => theme.darkText};
-`;
+import { useMockEstimate } from '../../hooks/useMockEstimate';
 
 export default function Swap() {
   useDefaultsFromURLSearch();
@@ -80,6 +89,7 @@ export default function Swap() {
     currencies,
     error,
   } = useDerivedSwapInfo();
+  console.log('connect', useActiveWeb3React());
 
   let distribution: any[] = [];
   // mcck distibution
@@ -91,12 +101,19 @@ export default function Swap() {
     }
   }
 
-  const isEthActive = useIsEthActive();
-
   const { wrapType, execute: onWrap, error: wrapError } = useWrapCallback();
+  // currencies[Field.INPUT],
+  // currencies[Field.OUTPUT],
   // typedValue
   const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE;
   const toggledVersion = useToggledVersion();
+  // const trade = showWrap
+  //   ? undefined
+  //   : {
+  //       [Version.v1]: v1Trade,
+  //       [Version.v2]: v2Trade,
+  //       [Version.v3]: mooniswapTrade?.[0],
+  //     }[toggledVersion];
   const trade = v2Trade;
   const betterTradeLinkVersion: Version | undefined =
     toggledVersion === Version.v2 && isTradeBetter(v2Trade, v1Trade, BETTER_TRADE_LINK_THRESHOLD)
@@ -107,14 +124,14 @@ export default function Swap() {
 
   const parsedAmounts = showWrap
     ? {
-      [Field.INPUT]: parsedAmount,
-      [Field.OUTPUT]: parsedAmount,
-    }
+        [Field.INPUT]: parsedAmount,
+        [Field.OUTPUT]: parsedAmount,
+      }
     : {
-      // [Field.INPUT]: parsedAmount,
-      [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
-      [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
-    };
+        [Field.INPUT]: parsedAmount,
+        // [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
+        [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
+      };
 
   const isValid = !error;
   const dependentField: Field = independentField === Field.INPUT ? Field.OUTPUT : Field.INPUT;
@@ -126,12 +143,7 @@ export default function Swap() {
     [onUserInput],
   );
 
-  const handleTypeOutput = useCallback(
-    (value: string) => {
-      onUserInput(Field.OUTPUT, value);
-    },
-    [onUserInput],
-  );
+  const handleNothing = () => {};
 
   // modal and loading
   const [showConfirm, setShowConfirm] = useState<boolean>(false); // show confirmation modal
@@ -144,7 +156,7 @@ export default function Swap() {
       : parsedAmounts[dependentField]?.toSignificant(6) ?? '',
   };
 
-  const [isEnough] = useTransactionPrice('swap', currencies[Field.INPUT]);
+  const [isEnough] = useMockEstimate('swap');
 
   const route = trade?.route;
   const userHasSpecifiedInputOutput = Boolean(
@@ -171,14 +183,17 @@ export default function Swap() {
     }
   }, [approval, approvalSubmitted]);
 
+  const [gas, setGas] = useState(0);
+  const [gasWhenUseChi, setGasWhenUseChi] = useState(0);
+
   const onReject = () => {
     setSwapErrorMessage('Transaction rejected.');
   };
 
   // the callback to execute the swap
-  const [swapCallback] = useSwap(
+  const [isChiApplied, swapCallback, estimate] = useSwap(
     chainId,
-    parsedAmounts[Field.INPUT],
+    parsedAmount,
     trade,
     distribution,
     allowedSlippage,
@@ -186,11 +201,48 @@ export default function Swap() {
     onReject,
   );
 
+  const srcAmount = trade?.inputAmount?.toExact();
+
+  // TODO: for sure should be more elegant solution for estimation calls
+  useEffect(() => {
+    let unmounted = false;
+
+    function handleStatusChange(result: number[]) {
+      if (unmounted || !result || !result[1]) {
+        return;
+      }
+
+      const gasWithoutChi = result[0];
+      const gasWithChi = result[1];
+
+      // As base gas amount on UI show the same amount of gas that metamask would show (red one)
+      const gas = Math.round(gasWithChi / 1000);
+
+      // Chi allow to safe up to 43% from original transaction (the one without CHI burn) green
+      const gasWhenUseChi = Math.round((gasWithoutChi * 0.57) / 1000);
+      //
+      setGas(gas);
+      setGasWhenUseChi(gasWhenUseChi);
+    }
+
+    srcAmount &&
+      estimate &&
+      estimate().then(result => {
+        handleStatusChange(result);
+      });
+
+    // Specify how to clean up after this effect:
+    return function cleanup() {
+      unmounted = true;
+    };
+
+    // eslint-disable-next-line
+  }, [srcAmount]);
+
   const maxAmountInput: TokenAmount | undefined = maxAmountSpend(currencyBalances[Field.INPUT]);
   const atMaxAmountInput = Boolean(
     maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput),
   );
-  const { value: network } = useNetworkData();
 
   const slippageAdjustedAmounts = computeSlippageAdjustedAmounts(trade, allowedSlippage);
 
@@ -208,39 +260,19 @@ export default function Swap() {
       .then(hash => {
         setAttemptingTxn(false);
         setTxHash(hash);
-        ReactGA.set({
-          dimension4: hash,
-          dimension1: currencies[Field.INPUT]?.symbol,
-          dimension2: currencies[Field.OUTPUT]?.symbol,
-          metric1: parsedAmounts[Field.INPUT]?.toFixed(),
-          metric2: parsedAmounts[Field.OUTPUT]?.toFixed(),
-          dimension3: account,
-          dimension5: network,
-        });
 
-        ReactGA.event({
-          category: 'Transaction',
-          action: 'new',
-          label: 'swap',
-          value: Math.round(parseFloat(parsedAmounts[Field.INPUT]?.toFixed() || ''))
-        });
+        // ReactGA.event({
+        //   category: 'Swap',
+        //   action: account
+        //   label: [
+        //     trade?.inputAmount?.token?.symbol,
+        //     trade?.outputAmount?.token?.symbol,
+        //     getTradeVersion(trade)
+        //   ].join('/')
+        // })
       })
       .catch(error => {
         setAttemptingTxn(false);
-        ReactGA.set({
-          dimension1: currencies[Field.INPUT]?.symbol,
-          dimension2: currencies[Field.OUTPUT]?.symbol,
-          metric1: parsedAmounts[Field.INPUT]?.toFixed(),
-          metric2: parsedAmounts[Field.OUTPUT]?.toFixed(),
-          dimension3: account,
-          dimension5: network,
-        });
-        ReactGA.event({
-          category: 'Transaction',
-          action: 'cancel',
-          label: 'swap',
-          value: Math.round(parseFloat(parsedAmounts[Field.INPUT]?.toFixed() || ''))
-        });
         // we only care if the error is something _other_ than the user rejected the tx
         if (error?.code !== 4001) {
           console.error(error);
@@ -256,14 +288,12 @@ export default function Swap() {
   const priceImpactSeverity = warningSeverity(priceImpactWithoutFee);
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
   // never show if price impact is above threshold in non expert mode
-
   const showApproveFlow =
-    (approval === ApprovalState.UNKNOWN ||
-      approval === ApprovalState.NOT_APPROVED ||
+    !error &&
+    (approval === ApprovalState.NOT_APPROVED ||
       approval === ApprovalState.PENDING ||
       (approvalSubmitted && approval === ApprovalState.APPROVED)) &&
-    !(priceImpactSeverity > 3);
-
+    !(priceImpactSeverity > 3 && !expertMode);
   function modalHeader() {
     return (
       <SwapModalHeader
@@ -306,9 +336,7 @@ export default function Swap() {
     (!dismissedToken1 && !!currencies[Field.OUTPUT]);
 
   const notEnoughBalance =
-    maxAmountInput
-    && parsedAmounts[Field.INPUT]?.raw
-    && JSBI.lessThan(maxAmountInput.raw, parsedAmounts[Field.INPUT]!.raw);
+    maxAmountInput && parsedAmount && JSBI.lessThan(maxAmountInput.raw, parsedAmount.raw);
 
   return (
     <>
@@ -371,8 +399,8 @@ export default function Swap() {
                         size="16"
                         color={
                           currencies[Field.INPUT] && currencies[Field.OUTPUT]
-                            ? theme.green
-                            : theme.darkWhite
+                            ? theme.grey6
+                            : theme.text2
                         }
                       />
                       <span style={{ marginLeft: '-3px' }}>
@@ -380,8 +408,8 @@ export default function Swap() {
                           size="16"
                           color={
                             currencies[Field.INPUT] && currencies[Field.OUTPUT]
-                              ? theme.red
-                              : theme.darkWhite
+                              ? theme.grey6
+                              : theme.text2
                           }
                         />
                       </span>
@@ -392,7 +420,7 @@ export default function Swap() {
             </CursorPointer>
             <CurrencyInputPanel
               value={formattedAmounts[Field.OUTPUT]}
-              onUserInput={handleTypeOutput}
+              onUserInput={handleNothing}
               label={independentField === Field.INPUT && !showWrap ? 'To (estimated)' : 'To'}
               showMaxButton={false}
               currency={currencies[Field.OUTPUT]}
@@ -418,6 +446,18 @@ export default function Swap() {
                       setShowInverted={setShowInverted}
                     />
                   </RowBetween>
+
+                  {isChiApplied && gas ? (
+                    <RowBetween align="center">
+                      <Text fontWeight={500} fontSize={14} color={theme.text2}>
+                        Gas consumption
+                      </Text>
+                      {<GasConsumption gas={gas} gasWhenUseChi={gasWhenUseChi} />}
+                    </RowBetween>
+                  ) : (
+                    ''
+                  )}
+
                   {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
                     <RowBetween align="center">
                       <ClickableText
@@ -470,8 +510,6 @@ export default function Swap() {
                     <Dots>Approving</Dots>
                   ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
                     'Approved'
-                  ) : approval === ApprovalState.UNKNOWN ? (
-                    <Dots>Approve checking</Dots>
                   ) : (
                     'Approve ' + currencies[Field.INPUT]?.symbol
                   )}
@@ -522,27 +560,12 @@ export default function Swap() {
             {betterTradeLinkVersion && <BetterTradeLink version={betterTradeLinkVersion} />}
             {!isEnough && (
               <ErrorText fontWeight={500} fontSize="11pt" severity={3}>
-                Probably insufficient balance
+                Probably insufficient ETH balance
               </ErrorText>
             )}
           </BottomGrouping>
-          {isEthActive && (
-            <GasFeeText>100% gas fee refund</GasFeeText>
-          )}
 
-          <TYPE.black fontSize={14} fontWeight={400} color={theme.text2} marginTop={'24px'}>
-            <ExternalGreenLink href="https://wiki.emiswap.com/user-guide/how-to-make-swaps">
-              Wiki How to make swaps?
-            </ExternalGreenLink>
-          </TYPE.black>
-
-          <TYPE.black fontSize={14} fontWeight={400} color={theme.text2} marginTop={'12px'}>
-            <ExternalGreenLink href="https://emiswap.medium.com/your-guide-to-the-emiswap-referral-program-f142a4170d1">
-              Find more about our multi-level EmiSwap Referral Program
-            </ExternalGreenLink>
-          </TYPE.black>
-
-          <ReferralLink />
+          {account ? <ReferralLink /> : 'Please connect to get a referral link.'}
         </Wrapper>
         <AdvancedSwapDetails trade={trade} />
       </AppBody>

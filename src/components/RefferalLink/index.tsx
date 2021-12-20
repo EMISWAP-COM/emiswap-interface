@@ -3,64 +3,37 @@ import { useLocation } from 'react-router-dom';
 import styled, { ThemeContext } from 'styled-components';
 import ReactGA from 'react-ga';
 import { RowFixed } from '../Row';
-import { useActiveWeb3React } from '../../hooks';
 import { Text } from 'rebass';
-import useCopyClipboard from '../../hooks/useCopyClipboard';
-import { LinkStyledButton } from '../../theme';
-import { CheckCircle, Copy } from 'react-feather';
+import { TYPE } from '../../theme';
+import Copy from '../AccountDetails/Copy';
+import { useActiveWeb3React } from '../../hooks';
 
 const ReferralLinkBox = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  padding: 24px 0 8px 0;
 
   > div:first-child {
     width: 100%;
-    font-size: 16px;
-    text-align: center;
-    color: white;
+    text-align: left;
   }
 `;
 
-const CopyIcon = styled(LinkStyledButton)`
+const ButtonLightGreen = styled(Copy)`
+  background-color: #54b489;
+  color: ${({ theme }) => theme.green1};
+  width: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 56px;
-  border: 1px solid #4A4757;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 400;
-  text-decoration: none;
-  color: white;
-  transition: all 0.3s ease-in-out;
-  
-  :hover,
-  :active,
-  :focus {
-    text-decoration: none;
-  }
 `;
 
-export default function ReferralLink({
-  showText = true,
-  showIcon = true,
-  text = 'Copy Referral Link',
-  onCopyText = 'Copied',
-  className = ''
-}) {
+export default function ReferralLink() {
   const theme = useContext(ThemeContext);
   const { account } = useActiveWeb3React();
+  let location = useLocation();
 
-  // const isPolygonActive = useIsPolygonActive();
-
-  const location = useLocation();
-  const [isCopied, setCopied] = useCopyClipboard();
-
-  function getReferralLink(currentUserAddress: string): string {
-    return `${window.location.origin}${location.pathname}?r=${currentUserAddress}`;
+  function getRefferalLink(currentUserAddress: string): string {
+    return `${window.location.origin}/#${location.pathname}?r=${currentUserAddress}`;
   }
 
   const handleGA = () => {
@@ -70,48 +43,23 @@ export default function ReferralLink({
     });
   };
 
-  /*if (!isEthereumActive(chainId) && !isPolygonActive) {
-    return null;
-  }*/
-
   return (
-    <div className={className}>
-      <ReferralLinkBox>
-        {!account ? (
-          <Text fontSize={16} fontWeight={400} color={theme.text2}>
-            Connect to a wallet to get your referral link
-          </Text>
-        ) : (
-          <>
-            {showText && (
-              <Text fontSize={16} fontWeight={400} color={theme.text2}>
-                Share referral link to earn cryptocurrency
-              </Text>
-            )}
-            <RowFixed style={{ marginTop: '10px', width: '100%' }}>
-              <CopyIcon
-                onClick={() => {
-                  setCopied(getReferralLink(account));
-                  handleGA();
-                }}
-              >
-                {isCopied ? (
-                  <>
-                    {showIcon && <CheckCircle size={'16'} color={theme.blue}/>}
-                    <span style={{ marginLeft: '4px' }}>{onCopyText}</span>
-                  </>
-                ) : (
-                  <>
-                    {showIcon && <Copy size={'16'} color={theme.blue}/>}
-                    <span style={{ marginLeft: '4px' }}>{text}</span>
-                  </>
-                )}
-              </CopyIcon>
-            </RowFixed>
-          </>
-        )}
-
-      </ReferralLinkBox>
+    <div>
+      <Text textAlign="center" fontSize={14} style={{ padding: '.5rem 0 .5rem 0' }}>
+        <ReferralLinkBox>
+          {/*<RowFixed>*/}
+          <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
+            Share referral link to Earn cryptocurrency
+          </TYPE.black>
+          {/*<QuestionHelper text="Your transaction will revert if there is a large, unfavorable price movement before it is confirmed." />*/}
+          {/*</RowFixed>*/}
+          <RowFixed style={{ marginTop: '10px', width: '100%' }}>
+            <ButtonLightGreen toCopy={getRefferalLink(account)} onClick={handleGA}>
+              <span style={{ marginLeft: '4px' }}>Copy Referral Link</span>
+            </ButtonLightGreen>
+          </RowFixed>
+        </ReferralLinkBox>
+      </Text>
     </div>
   );
 }

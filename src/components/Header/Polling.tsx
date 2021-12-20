@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { ExternalLink, TYPE } from '../../theme';
+import { TYPE, ExternalLink } from '../../theme';
 
 import { useBlockNumber } from '../../state/application/hooks';
-import { getExplorerLink } from '../../utils';
+import { getEtherscanLink } from '../../utils';
 import { useActiveWeb3React } from '../../hooks';
 
 const StyledPolling = styled.div`
@@ -86,9 +86,7 @@ export default function Polling() {
   return (
     <ExternalLink
       href={
-        chainId && blockNumber
-          ? getExplorerLink(chainId, blockNumber.toString(), 'block')
-          : ''
+        chainId && blockNumber ? getEtherscanLink(chainId, blockNumber.toString(), 'block') : ''
       }
     >
       <StyledPolling>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from 'rebass';
-import { ChainId, currencyEquals, ETHER, Token } from '@uniswap/sdk';
+import { ChainId, Token, currencyEquals, ETHER } from '@uniswap/sdk';
 import styled from 'styled-components';
 
 import { KOVAN_WETH, SUGGESTED_BASES } from '../../constants';
@@ -10,7 +10,6 @@ import { AutoRow } from '../Row';
 import CurrencyLogo from '../CurrencyLogo';
 import { darken } from 'polished';
 import defaultCoins from '../../constants/defaultCoins';
-import { useNetworkData } from '../../hooks/Coins';
 
 const BaseWrapper = styled.div<{ disable?: boolean }>`
   border: 1px solid ${({ theme, disable }) => (disable ? 'transparent' : theme.bg3)};
@@ -40,19 +39,14 @@ export default function CommonBases({
   onSelect: (currency: Token) => void;
   otherSelectedCurrency: Token | undefined;
 }) {
-  const networkData = useNetworkData();
-
   const wethTokenInfo = defaultCoins.tokens.find(
-    token =>
-      token.symbol === networkData.currencySymbolWeth &&
-      token.chainId === chainId,
+    token => token.symbol === 'WETH' && token.chainId === chainId,
   );
 
   const WETH: Token =
     wethTokenInfo && chainId
       ? new Token(
-          // @ts-ignore
-          chainId as ChainId,
+          chainId,
           wethTokenInfo.address,
           wethTokenInfo.decimals,
           wethTokenInfo.symbol,
@@ -77,12 +71,9 @@ export default function CommonBases({
               (otherSelectedCurrency.isEther || otherSelectedCurrency.equals(WETH)))
           }
         >
-          <CurrencyLogo
-            currency={networkData.token}
-            style={{ marginRight: 8 }}
-          />
+          <CurrencyLogo currency={ETHER} style={{ marginRight: 8 }} />
           <Text fontWeight={500} fontSize={16}>
-            {networkData.currencySymbol}
+            ETH
           </Text>
         </BaseWrapper>
         {(chainId ? SUGGESTED_BASES[chainId] : []).map((token: Token) => {

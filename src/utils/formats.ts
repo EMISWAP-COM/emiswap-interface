@@ -1,9 +1,7 @@
 import { MAX_NUM_DECIMALS } from '../constants';
 
-export const tokenAmountToString = (value: any, decimals: number = 6): string => {
-  if (!value) {
-    return '';
-  }
+export const tokenAmountToString = (value, decimals: number = 6): string => {
+  if (!value) return '';
   if (value.token && MAX_NUM_DECIMALS > value.token.decimals) {
     decimals = value.token.decimals;
   }
@@ -12,13 +10,10 @@ export const tokenAmountToString = (value: any, decimals: number = 6): string =>
     maximumFractionDigits: decimals,
   });
 };
-
 // need to avoid specific notation for large numbers
 export const expNumberToStr = (num: number) => {
   let str = num.toFixed();
-  if (str.indexOf('e+') === -1) {
-    return str;
-  }
+  if (str.indexOf('e+') === -1) return str;
 
   str = str
     .replace('.', '')
@@ -28,13 +23,4 @@ export const expNumberToStr = (num: number) => {
     });
 
   return str;
-};
-
-export const numberWithSpaces = (value: number | string | null): string => {
-  if (!value) {
-    return '0';
-  }
-  return Number(Number(value).toFixed(0)).toLocaleString('ru', {
-    useGrouping: true,
-  });
 };

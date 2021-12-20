@@ -1,4 +1,4 @@
-import { ETHER, JSBI, Token, TokenAmount } from '@uniswap/sdk';
+import { Token, TokenAmount, ETHER, JSBI } from '@uniswap/sdk';
 import { useMemo } from 'react';
 import ERC20_INTERFACE from '../../constants/abis/erc20';
 import { useAllTokens } from '../../hooks/Tokens';
@@ -6,7 +6,7 @@ import { useActiveWeb3React } from '../../hooks';
 import { useMulticallContract } from '../../hooks/useContract';
 import { useAllCoins } from '../../hooks/Coins';
 import { isAddress } from '../../utils';
-import { useMultipleContractSingleData, useSingleContractMultipleData } from '../multicall/hooks';
+import { useSingleContractMultipleData, useMultipleContractSingleData } from '../multicall/hooks';
 
 /**
  * Returns a map of the given addresses to their eventually consistent ETH balances.
@@ -67,7 +67,7 @@ export function useESWBalances(
   return useMemo(
     () =>
       addresses.reduce<{ [address: string]: TokenAmount }>((memo, address, i) => {
-        const value = JSBI.BigInt(0);
+        const value = BigInt(0);
         if (value) memo[address] = new TokenAmount(ETHER, JSBI.BigInt(value.toString()));
         return memo;
       }, {}),
@@ -82,8 +82,6 @@ export function useTokenBalancesWithLoadingIndicator(
   address?: string,
   tokens?: (Token | undefined)[],
 ): [{ [tokenAddress: string]: TokenAmount | undefined }, boolean] {
-  // const isPolygonActive = useIsPolygonActive();
-
   const validatedTokens: Token[] = useMemo(
     () => tokens?.filter((t?: Token): t is Token => isAddress(t?.address) !== false) ?? [],
     [tokens],
@@ -109,10 +107,7 @@ export function useTokenBalancesWithLoadingIndicator(
           ? validatedTokens.reduce<{ [tokenAddress: string]: TokenAmount | undefined }>(
               (memo, token, i) => {
                 const value = balances?.[i]?.result?.[0];
-                let amount = value ? JSBI.BigInt(value.toString()) : undefined;
-                /*if (amount && isPolygonActive && token.symbol === 'USDT') {
-                  amount = JSBI.multiply(amount, JSBI.BigInt(1000000000000));
-                }*/
+                const amount = value ? JSBI.BigInt(value.toString()) : undefined;
                 if (amount) {
                   try {
                     memo[token.address] = new TokenAmount(token, amount);

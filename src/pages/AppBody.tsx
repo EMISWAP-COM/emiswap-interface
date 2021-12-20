@@ -1,26 +1,45 @@
 import React from 'react';
 import Wordmark from '../components/Wordmark';
-import styled from 'styled-components/macro';
+import Logo from '../components/Logo';
+import styled from 'styled-components';
+import PolygonSvg from '../assets/images/polygon.svg';
 import BonusProgram from '../components/BonusProgram';
 import { ThemeProvider } from 'emotion-theming';
 import theme from '@rebass/preset';
 import FAQInfo from '../components/FAQInfo';
-import { useRouteMatch } from 'react-router';
-import { YMInitializer } from 'react-yandex-metrika';
-import { useIsEthActive } from '../hooks/Coins';
 
-export const HeadersPlusBodyWrapper = styled.div<{ isLarge?: boolean }>`
+export const HeadersPlusBodyWrapper = styled.div<{ disabled?: boolean }>`
   position: relative;
-  max-width: ${({ isLarge }) => isLarge ? '1200px' : '440px'};
+  max-width: 440px;
   width: 100%;
   text-align: center;
+
+  :after {
+    content: '';
+    background: center / contain no-repeat url('${PolygonSvg}');
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, 0%);
+    width: 875px;
+    height: 857px;
+    z-index: -1;
+
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+      display: none;
+    `};
+  }
+
 `;
 
 export const BodyWrapper = styled.div<{ disabled?: boolean; data?: string }>`
   position: relative;
+  max-width: 440px;
   width: 100%;
-  background: ${({ theme }) => theme.dark1};
-  box-shadow: ${({ theme }) => theme.dark1BoxShadow};
+  background: ${({ theme }) => theme.bg1};
+  box-shadow: 0px 0px 10px -2px rgba(231, 215, 175, 0.9),
+    0px 21px 20px -15px rgba(140, 125, 85, 0.15);
   border-radius: 24px;
   padding: 34px 30px 40px;
   opacity: ${({ disabled }) => (disabled ? '0.4' : '1')};
@@ -87,27 +106,20 @@ export default function AppBody({
   disabled?: boolean;
   className?: string;
 }) {
-  const match = useRouteMatch(['/farm', '/farm-365']);
-
-  // const { chainId } = useActiveWeb3React();
-  const isEthActive = useIsEthActive();
-
   return (
     <ThemeProvider theme={theme}>
-      <HeadersPlusBodyWrapper isLarge={!!match}>
+      <HeadersPlusBodyWrapper>
         <div className="onlyDesktop">
-          <Wordmark/>
+          <Logo />
+          <Wordmark />
         </div>
-        <YMInitializer accounts={[78893968]} options={{ webvisor: true }}/>
         <BodyWrapper className={className} data="test" disabled={disabled}>
           {children}
         </BodyWrapper>
-        <BonusProgram/>
+        <BonusProgram />
       </HeadersPlusBodyWrapper>
       <FAQWrapper>
-        {isEthActive && (
-          <FAQInfo/>
-        )}
+        <FAQInfo />
       </FAQWrapper>
     </ThemeProvider>
   );

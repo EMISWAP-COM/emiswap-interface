@@ -1,4 +1,4 @@
-import { Token, TokenAmount } from '@uniswap/sdk';
+import { Token } from '@uniswap/sdk';
 import React, {
   KeyboardEvent,
   useCallback,
@@ -11,7 +11,7 @@ import React, {
 import { isMobile } from 'react-device-detect';
 import { useTranslation } from 'react-i18next';
 import { Text } from 'rebass';
-import styled, { ThemeContext } from 'styled-components/macro';
+import styled, { ThemeContext } from 'styled-components';
 import Card from '../../components/Card';
 import { useActiveWeb3React } from '../../hooks';
 import { useAllTokens, useToken } from '../../hooks/Tokens';
@@ -41,7 +41,6 @@ interface CurrencySearchModalProps {
   otherSelectedCurrency?: Token;
   showCommonBases?: boolean;
   isMatchEth?: boolean;
-  isLpTokens?: boolean;
 }
 
 const LoaderBox = styled.div`
@@ -61,7 +60,6 @@ export default function CurrencySearchModal({
   otherSelectedCurrency,
   showCommonBases = false,
   isMatchEth = false,
-  isLpTokens = false,
 }: CurrencySearchModalProps) {
   const { t } = useTranslation();
   const { account, chainId } = useActiveWeb3React();
@@ -70,46 +68,33 @@ export default function CurrencySearchModal({
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [tooltipOpen, setTooltipOpen] = useState<boolean>(false);
   const [invertSearchOrder, setInvertSearchOrder] = useState<boolean>(false);
-  const [allTokens, isLoading] = useAllTokens(isLpTokens);
+  const [allTokens, isLoading] = useAllTokens();
 
   // if the current input is an address, and we don't have the token in context, try to fetch it and import
   const searchToken = useToken(searchQuery);
   const searchTokenBalance = useTokenBalance(account, searchToken);
-  const allTokenBalances = useAllTokenBalances();
-
-  const getVisibleTokenBalances = (): { [token: string]: TokenAmount } => {
-    let balances = allTokenBalances || {};
-    if (searchToken) {
-      balances = {
+  const allTokenBalances_ = useAllTokenBalances();
+  const allTokenBalances = searchToken
+    ? {
         [searchToken.address]: searchTokenBalance,
-      };
-    }
-    return balances;
-  };
-
-  const visibleTokenBalances = getVisibleTokenBalances();
+      }
+    : allTokenBalances_ ?? {};
 
   const tokenComparator = useTokenComparator(invertSearchOrder);
 
   const filteredTokens: Token[] = useMemo(() => {
-    if (searchToken) {
-      return [searchToken];
-    }
-    return filterTokens(Object.values(allTokens), searchQuery, isLpTokens);
-  }, [searchToken, allTokens, searchQuery, isLpTokens]);
+    if (searchToken) return [searchToken];
+    return filterTokens(Object.values(allTokens), searchQuery);
+  }, [searchToken, allTokens, searchQuery]);
 
   const filteredSortedTokens: Token[] = useMemo(() => {
-    if (searchToken) {
-      return [searchToken];
-    }
+    if (searchToken) return [searchToken];
     const sorted = filteredTokens.sort(tokenComparator);
     const symbolMatch = searchQuery
       .toLowerCase()
       .split(/\s+/)
       .filter(s => s.length > 0);
-    if (symbolMatch.length > 1) {
-      return sorted;
-    }
+    if (symbolMatch.length > 1) return sorted;
 
     return [
       ...(searchToken ? [searchToken] : []),
@@ -129,9 +114,7 @@ export default function CurrencySearchModal({
 
   // clear the input on open
   useEffect(() => {
-    if (isOpen) {
-      setSearchQuery('');
-    }
+    if (isOpen) setSearchQuery('');
   }, [isOpen, setSearchQuery]);
 
   // manage focus on modal show
@@ -232,14 +215,12 @@ export default function CurrencySearchModal({
         ) : (
           <CurrencyList
             currencies={filteredSortedTokens}
-            allBalances={visibleTokenBalances}
+            allBalances={allTokenBalances}
             onCurrencySelect={handleCurrencySelect}
             otherCurrency={otherSelectedCurrency}
             selectedCurrency={hiddenCurrency}
             showSendWithSwap={showSendWithSwap}
-            showName={isLpTokens}
             isMatchEth={isMatchEth}
-            isLpTokens={isLpTokens}
           />
         )}
         <div style={{ height: '1px', backgroundColor: theme.bg2, margin: '0 30px' }} />

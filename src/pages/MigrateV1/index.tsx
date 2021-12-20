@@ -6,21 +6,17 @@ import Column, { AutoColumn } from '../../components/Column';
 import { StyledFixedSizeList, StyledMenuItem } from '../../components/SearchModal/styleds';
 import { RowFixed } from '../../components/Row';
 import { Text } from 'rebass';
-import { ExternalGreenLink, TYPE } from '../../theme';
+import { ExternalLink, TYPE } from '../../theme';
 import { useHistory } from 'react-router-dom';
-import { ButtonLight, ButtonPrimary } from '../../components/Button';
+import { ButtonGreen, ButtonLight } from '../../components/Button';
 import DoubleCurrencyLogo from '../../components/DoubleLogo';
 import { useLpTokens } from '../../hooks/useLpTokens';
 import Loader from '../../components/Loader';
 import { amountToString } from './utils';
 import { useActiveWeb3React } from '../../hooks';
 import { useWalletModalToggle } from '../../state/application/hooks';
-import { formatConnectorName } from '../../components/AccountDetails/uitls';
-import { unwrappedToken } from '../../utils/wrappedCurrency';
-import ReferralLink from '../../components/RefferalLink';
 
 const StyledSubTitle = styled.p`
-  color: ${({ theme }) => theme.white};
   text-align: left;
   padding: 0.75rem;
   margin: 0;
@@ -31,7 +27,7 @@ const StyledSubTitle = styled.p`
 
 const StyledHr = styled.hr`
   width: 100%;
-  background: ${({ theme }) => theme.lightGrey};
+  background: #eaeeee;
   border: none;
   height: 1px;
 `;
@@ -57,16 +53,16 @@ const WrapperLoader = styled.div`
 
 const StyledMenuItemMigrate = styled(StyledMenuItem)<{ selected?: boolean }>`
   .balance {
-    color: ${({ theme, selected }) => theme[selected ? 'purple' : 'white']};
+    color: ${({ theme, selected }) => theme[selected ? 'green1' : 'grey1']};
   }
-  color: ${({ theme, selected }) => theme[selected ? 'purple' : 'white']};
+  color: ${({ theme, selected }) => theme[selected ? 'green1' : 'text1']};
   transition: none;
   opacity: ${({ selected }) => (selected ? 'inherit' : 'none')};
 
   :hover {
-    color: ${({ theme }) => theme.purple};
+    color: ${({ theme }) => theme.green1};
     .balance {
-      color: ${({ theme }) => theme.purple};
+      color: ${({ theme }) => theme.green1};
     }
   }
   @media screen and (max-width: 375px) {
@@ -81,7 +77,7 @@ const StyledMenuItemMigrate = styled(StyledMenuItem)<{ selected?: boolean }>`
 
 export default function MigrateV1() {
   const theme = useContext(ThemeContext);
-  const { account, connector, chainId } = useActiveWeb3React();
+  const { account } = useActiveWeb3React();
   const history = useHistory();
   const toggleWalletModal = useWalletModalToggle();
   const [selected, setSelected] = useState(null);
@@ -89,18 +85,16 @@ export default function MigrateV1() {
   const onSelect = (address: string) => {
     setSelected(address);
   };
-
   const formatedTokenList = lpTokensDetailedInfo
     .map((lpTokenDetailedInfo, idx) => ({ ...lpTokenDetailedInfo, balance: balances[idx] }))
     .filter((lpTokenDetailedInfoWithBalance, idx) => {
       const {
         addresses: [address0, address1],
       } = lpTokenDetailedInfoWithBalance;
-
       return (
         tokens.find(token => token.address === address0) &&
         tokens.find(token => token.address === address1) &&
-        +amountToString(balances[idx], 18)
+        +amountToString(balances[idx], 10)
       );
     });
   const handleRedirect = () => {
@@ -114,14 +108,8 @@ export default function MigrateV1() {
         base,
         balance,
       } = formatedTokenList[index];
-      const token0 = unwrappedToken(
-        chainId,
-        tokens.find(el => el.address === address0),
-      );
-      const token1 = unwrappedToken(
-        chainId,
-        tokens.find(el => el.address === address1),
-      );
+      const token0 = tokens.find(el => el.address === address0);
+      const token1 = tokens.find(el => el.address === address1);
       return (
         <StyledMenuItemMigrate
           style={{ ...style, width: '100%' }}
@@ -146,47 +134,28 @@ export default function MigrateV1() {
         </StyledMenuItemMigrate>
       );
     };
-  }, [selected, tokens, formatedTokenList, chainId]);
-
-  const isMetaMask = formatConnectorName(connector) === 'MetaMask';
-
-  const isShowLoader =
-    (!formatedTokenList.length &&
-      lpTokensDetailedInfo.length &&
-      balances.every(balance => balance === undefined)) ||
-    isLoading;
-
-  const isTokensNotFound = balances.every(balance => {
-    return +amountToString(balance, 18) === 0;
-  });
+  }, [selected, tokens, formatedTokenList]);
 
   return (
     <>
       <AppBody>
         <SwapPoolTabs active={TabNames.MIGRATE} />
-        {account && isMetaMask && <StyledSubTitle>You have</StyledSubTitle>}
-        <AutoColumn gap="sm" justify="center">
+        {account && <StyledSubTitle>You have</StyledSubTitle>}
+        <AutoColumn gap="lg" justify="center">
           {!account ? (
             <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
-          ) : !isMetaMask ? (
-            <>
-              <StyledSubTitle>
-                Functionality of Liquidity migration is supported only with the MetaMask Wallet.
-                Please use this wallet to enjoy this opportunity.
-              </StyledSubTitle>
-              <ButtonPrimary style={{ width: '100%', padding: '15px 16px' }} disabled>
-                <Text fontWeight={500} fontSize={16}>
-                  Migrate
-                </Text>
-              </ButtonPrimary>
-            </>
-          ) : isShowLoader ? (
+          ) : (!formatedTokenList.length &&
+              lpTokensDetailedInfo.length &&
+              balances.every(balance => balance === undefined)) ||
+            isLoading ? (
             <>
               <WrapperLoader>
                 <Loader size="100px" />
               </WrapperLoader>
             </>
-          ) : isTokensNotFound ? (
+          ) : balances.every(balance => {
+              return +amountToString(balance, 10) === 0;
+            }) ? (
             <TYPE.body>No LP tokens found</TYPE.body>
           ) : (
             <>
@@ -199,7 +168,7 @@ export default function MigrateV1() {
               >
                 {CurrencyRow}
               </StyledFixedSizeList>
-              <ButtonPrimary
+              <ButtonGreen
                 style={{ width: '100%', padding: '15px 16px' }}
                 disabled={selected === null}
                 onClick={handleRedirect}
@@ -207,26 +176,21 @@ export default function MigrateV1() {
                 <Text fontWeight={500} fontSize={16}>
                   Migrate
                 </Text>
-              </ButtonPrimary>
+              </ButtonGreen>
             </>
           )}
 
-          <StyledHr style={{ margin: '24px 0' }} />
-
-          <div>
-            <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
-              <ExternalGreenLink href="https://wiki.emiswap.com/user-guide/how-to-migrate-liquidity">
-                Wiki How to migrate liquidity?
-              </ExternalGreenLink>
-            </TYPE.black>
-
-            <TYPE.black fontSize={14} fontWeight={400} color={theme.text2} marginTop={'12px'}>
-              <ExternalGreenLink href="https://emiswap.medium.com/your-guide-to-the-emiswap-referral-program-f142a4170d1">
-                Find more about our multi-level EmiSwap Referral Program
-              </ExternalGreenLink>
-            </TYPE.black>
-          </div>
-          <ReferralLink />
+          <StyledHr />
+          <Text textAlign="center" fontSize={14} style={{ padding: '.5rem 0 .5rem 0' }}>
+            {'Discover EmiSwap Crowdsale'}{' '}
+            <ExternalLink
+              id="import-pool-link"
+              href="https://crowdsale.emidao.org/en"
+              style={{ color: theme.green1, textDecoration: 'none' }}
+            >
+              {'Terms'}
+            </ExternalLink>
+          </Text>
         </AutoColumn>
       </AppBody>
     </>

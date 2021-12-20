@@ -1,10 +1,10 @@
+import { BLOCKED_PRICE_IMPACT_NON_EXPERT } from '../constants';
+import { TokenAmount, Fraction, JSBI, Percent, Trade } from '@uniswap/sdk';
 import {
   ALLOWED_PRICE_IMPACT_HIGH,
   ALLOWED_PRICE_IMPACT_LOW,
   ALLOWED_PRICE_IMPACT_MEDIUM,
-  BLOCKED_PRICE_IMPACT_NON_EXPERT,
 } from '../constants';
-import { Fraction, JSBI, Percent, TokenAmount, Trade } from '@uniswap/sdk';
 import { Field } from '../state/swap/actions';
 import { basisPointsToPercent } from './index';
 import { tokenAmountToString } from './formats';

@@ -1,5 +1,5 @@
 import { createStore, Store } from 'redux';
-import { acceptListUpdate, addList, fetchTokenList } from './actions';
+import { fetchTokenList, acceptListUpdate, addList } from './actions';
 import reducer, { ListsState } from './reducer';
 
 const STUB_TOKEN_LIST = {

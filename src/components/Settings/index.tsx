@@ -1,18 +1,24 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useRef, useEffect, useContext, useState } from 'react';
 import { Settings, X } from 'react-feather';
-import styled, { ThemeContext } from 'styled-components';
+import styled from 'styled-components';
 
-import { useExpertModeManager, useUserDeadline, useUserSlippageTolerance } from '../../state/user/hooks';
+import {
+  useUserSlippageTolerance,
+  useExpertModeManager,
+  useUserDeadline,
+} from '../../state/user/hooks';
 import SlippageTabs from '../SlippageTabs';
-import { RowBetween, RowFixed } from '../Row';
+import { RowFixed, RowBetween } from '../Row';
 import { TYPE } from '../../theme';
 import QuestionHelper from '../QuestionHelper';
 import Toggle from '../Toggle';
+import { ThemeContext } from 'styled-components';
 import { AutoColumn } from '../Column';
 import { ButtonError } from '../Button';
 import { useSettingsMenuOpen, useToggleSettingsMenu } from '../../state/application/hooks';
 import { Text } from 'rebass';
 import Modal from '../Modal';
+import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg';
 import Option from '../WalletModal/Option';
 
 const StyledMenuIcon = styled(Settings)`
@@ -20,7 +26,7 @@ const StyledMenuIcon = styled(Settings)`
   width: 20px;
 
   > * {
-    stroke: ${({ theme }) => theme.white};
+    stroke: ${({ theme }) => theme.green4};
   }
 `;
 
@@ -42,10 +48,10 @@ const StyledMenuButton = styled.button`
   height: 100%;
   border: none;
   background-color: transparent;
-  border: 1px solid ${({ theme }) => theme.whiteTransparent};
   margin: 0;
   padding: 0;
   height: 40px;
+  background-color: ${({ theme }) => theme.green2};
   display: flex;
   align-items: center;
   transition: all 0.3s ease-in-out;
@@ -57,7 +63,7 @@ const StyledMenuButton = styled.button`
   :focus {
     cursor: pointer;
     outline: none;
-    border-color: ${({ theme }) => theme.purple};
+    background-color: ${({ theme }) => theme.green3};
   }
 `;
 const EmojiWrapper = styled.div`
@@ -88,8 +94,11 @@ const OptionGrid = styled.div`
 
 const MenuFlyout = styled.span`
   min-width: 20.125rem;
-  background-color: ${({ theme }) => theme.dark1};
-  box-shadow: ${({ theme }) => theme.dark1BoxShadow};
+  background-color: ${({ theme }) => theme.bg1};
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04),
+    0px 16px 24px rgba(0, 0, 0, 0.04), 0px 24px 32px rgba(0, 0, 0, 0.01);
+
+  border: 1px solid ${({ theme }) => theme.bg3};
 
   border-radius: 0.5rem;
   display: flex;
@@ -121,6 +130,17 @@ const ModalContentWrapper = styled.div`
   border-radius: 20px;
 `;
 
+const DropDownIcon = styled(DropDown)<{ selected: boolean }>`
+  margin: 0 0.25rem 0.1rem 0.25rem;
+  width: 10px;
+  height: 17px;
+
+  path {
+    stroke: ${({ selected, theme }) => (selected ? theme.text1 : theme.white)};
+    stroke-width: 1.5px;
+  }
+`;
+
 const langNameMap = {
   de: 'German',
   en: 'English',
@@ -134,6 +154,29 @@ const langNameMap = {
   'zh-CN': 'Chinese (PRC)',
   'zh-TW': 'Chinese (Taiwan)',
 };
+
+export function LanguageSelect({ handleClick }: { handleClick: () => void }) {
+  const langCode = window.localStorage.getItem('i18nextLng');
+  const theme = useContext(ThemeContext);
+
+  return (
+    <span
+      style={{
+        cursor: 'pointer',
+        fontSize: 14,
+        color: theme.text2,
+        display: 'flex',
+        borderRadius: 16,
+        border: `1px solid ${theme.text4}`,
+        padding: '0.25rem 0.5rem',
+      }}
+      onClick={handleClick}
+    >
+      {langNameMap[langCode] || 'English'}
+      <DropDownIcon selected={true}></DropDownIcon>
+    </span>
+  );
+}
 
 function getLangOptions() {
   const langList = [
@@ -283,7 +326,7 @@ export default function SettingsTab() {
       {open && (
         <MenuFlyout>
           <AutoColumn gap="md" style={{ padding: '1rem' }}>
-            <Text color={theme.white} fontWeight={600} fontSize={14}>
+            <Text fontWeight={600} fontSize={14}>
               Transaction Settings
             </Text>
             <SlippageTabs
@@ -293,12 +336,12 @@ export default function SettingsTab() {
               setDeadline={setDeadline}
             />
 
-            <Text fontWeight={600} fontSize={14} color={theme.white}>
+            <Text fontWeight={600} fontSize={14}>
               Interface Settings
             </Text>
             <RowBetween>
               <RowFixed>
-                <TYPE.black fontWeight={400} fontSize={14} color={theme.darkWhite}>
+                <TYPE.black fontWeight={400} fontSize={14} color={theme.text2}>
                   Toggle Expert Mode
                 </TYPE.black>
                 <QuestionHelper text="Bypasses confirmation modals and allows high slippage trades. Use at your own risk." />

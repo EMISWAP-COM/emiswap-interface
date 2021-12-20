@@ -3,7 +3,6 @@ import { Token } from '@uniswap/sdk';
 import { useMultipleTokenInfo } from './useMultipleTokenInfo';
 import { useVampContract } from './useContract';
 import { useDispatch } from 'react-redux';
-import { useActiveWeb3React } from './index';
 
 export function useLpTokens(): {
   lpTokensDetailedInfo: { addresses: string[]; base: string }[];
@@ -12,8 +11,7 @@ export function useLpTokens(): {
   balances: number[];
   isLoading: boolean;
 } {
-  const { chainId } = useActiveWeb3React();
-  const contract = useVampContract(chainId);
+  const contract = useVampContract();
   const [lpTokensInfo, setLpTokensInfo] = useState<any[]>([]);
   const [lpTokensDetailedInfo, setLpTokensDetailedInfot] = useState<{ addresses: string[]; base: string }[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -23,7 +21,6 @@ export function useLpTokens(): {
     .flat()
     .filter((el, idx, arr) => arr.findIndex(address => address === el) === idx);
   const { tokens, balances } = useMultipleTokenInfo(formattedAddresses, lpTokensInfo);
-
   useEffect(() => {
     const fetchInfo = async () => {
       try {
@@ -41,17 +38,12 @@ export function useLpTokens(): {
           listPair.map((el, idx) => ({ addresses: el, base: lpTokensInfo[idx].lpToken })),
         );
         setIsLoading(false);
-        console.log(tokens, balances);
       } catch (e) {
-        console.log(contract);
-        console.log(e);
         throw new Error('Failed to migrate ');
       }
     };
     fetchInfo();
-    //eslint-disable-next-line
   }, [contract, dispatch]);
-
   return useMemo(() => {
     return { lpTokensDetailedInfo, lpTokensInfo, balances, tokens, isLoading };
   }, [balances, isLoading, lpTokensInfo, lpTokensDetailedInfo, tokens]);

@@ -1,4 +1,4 @@
-import { ETHER, JSBI, TokenAmount } from '@uniswap/sdk';
+import { TokenAmount, ETHER, JSBI } from '@uniswap/sdk';
 import { MIN_ETH, MIN_ETH_INVEST } from '../constants';
 
 /**

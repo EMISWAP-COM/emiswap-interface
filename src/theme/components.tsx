@@ -69,7 +69,7 @@ export const LinkStyledButton = styled.button`
 export const StyledInternalLink = styled(Link)`
   text-decoration: none;
   cursor: pointer;
-  color: ${({ theme }) => theme.blue};
+  color: ${({ theme }) => theme.primary1};
   font-weight: 500;
 
   :hover {
@@ -84,10 +84,6 @@ export const StyledInternalLink = styled(Link)`
   :active {
     text-decoration: none;
   }
-`;
-
-export const StyledGreenLink = styled(StyledInternalLink)`
-  color: ${({ theme }) => theme.blue};
 `;
 
 const StyledLink = styled.a`
@@ -109,31 +105,10 @@ const StyledLink = styled.a`
   }
 `;
 
-export const ExternalGreenLink = styled(ExternalLink)`
-  font-weight: 500;
-  text-decoration: none;
-  color: ${({ theme }) => theme.blue};
-  cursor: pointer;
-
-  :hover {
-    text-decoration: underline;
-  }
-
-  :focus {
-    outline: none;
-    text-decoration: underline;
-  }
-
-  :active {
-    text-decoration: none;
-  }
-`;
-
 /**
  * Outbound link that handles firing google analytics events
  */
 export function ExternalLink({
-  className = '',
   target = '_blank',
   href,
   rel = 'noopener noreferrer',
@@ -156,13 +131,7 @@ export function ExternalLink({
     },
     [href, target],
   );
-  return <StyledLink
-    className={className}
-    target={target}
-    rel={rel}
-    href={href}
-    onClick={handleClick} {...rest}
-  />;
+  return <StyledLink target={target} rel={rel} href={href} onClick={handleClick} {...rest} />;
 }
 
 const rotate = keyframes`
@@ -194,11 +163,10 @@ const BackArrowLink = styled(StyledInternalLink)`
     text-decoration: none;
   }
 `;
-
 export function BackArrow({ to }: { to: string }) {
   return (
     <BackArrowLink to={to}>
-      <ArrowLeft/> <p>Back</p>
+      <ArrowLeft /> <p>Back</p>
     </BackArrowLink>
   );
 }
@@ -206,7 +174,7 @@ export function BackArrow({ to }: { to: string }) {
 export const StyledButtonNavigation = styled.div`
   height: 24px;
   width: 100%;
-  background: #4A4757;
+  background: #eaeeee;
   opacity: 0.5;
   border-radius: 16px;
   display: flex;

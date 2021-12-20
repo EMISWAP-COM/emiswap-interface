@@ -1,4 +1,5 @@
 import { Placement } from '@popperjs/core';
+import { transparentize } from 'polished';
 import React, { useState } from 'react';
 import { usePopper } from 'react-popper';
 import styled from 'styled-components';
@@ -12,10 +13,10 @@ const PopoverContainer = styled.div<{ show: boolean }>`
   opacity: ${props => (props.show ? 1 : 0)};
   transition: visibility 150ms linear, opacity 150ms linear;
 
-  background: ${({ theme }) => theme.dark1};
-  border: 1px solid ${({ theme }) => theme.border1};
-  box-shadow: ${({ theme }) => theme.dark1BoxShadow};
-  color: ${({ theme }) => theme.darkWhite};
+  background: ${({ theme }) => theme.bg2};
+  border: 1px solid ${({ theme }) => theme.bg3};
+  box-shadow: 0 4px 8px 0 ${({ theme }) => transparentize(0.9, theme.shadow1)};
+  color: ${({ theme }) => theme.text2};
   border-radius: 8px;
 `;
 
@@ -35,9 +36,9 @@ const Arrow = styled.div`
     z-index: 9998;
 
     content: '';
-    border: 1px solid ${({ theme }) => theme.border1};
+    border: 1px solid ${({ theme }) => theme.bg3};
     transform: rotate(45deg);
-    background: ${({ theme }) => theme.dark1};
+    background: ${({ theme }) => theme.bg2};
   }
 
   &.arrow-top {
@@ -91,10 +92,6 @@ export default function Popover({ content, show, children, placement = 'auto' }:
     modifiers: [
       { name: 'offset', options: { offset: [8, 8] } },
       { name: 'arrow', options: { element: arrowElement } },
-      {
-        name: 'preventOverflow',
-        options: { boundary: 'clippingParents', rootBoundary: 'viewport' },
-      },
     ],
   });
   useInterval(update, show ? 100 : null);

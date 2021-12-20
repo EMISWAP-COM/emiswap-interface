@@ -2,7 +2,7 @@ import { Fraction, JSBI, Token, TokenAmount } from '@uniswap/sdk';
 import React, { useEffect, useState } from 'react';
 import { Redirect, RouteComponentProps } from 'react-router';
 import { Text } from 'rebass';
-import { ButtonLight, ButtonPrimary } from '../../components/Button';
+import { ButtonGreen, ButtonLight, ButtonPrimary } from '../../components/Button';
 import CurrencyLogo from '../../components/CurrencyLogo';
 import QuestionHelper from '../../components/QuestionHelper';
 import { AutoRow, RowBetween, RowFixed } from '../../components/Row';
@@ -16,39 +16,20 @@ import { BackArrow, TYPE } from '../../theme';
 import { calculateGasMargin, isAddress } from '../../utils';
 import AppBody from '../AppBody';
 import DoubleCurrencyLogo from '../../components/DoubleLogo';
-import { expNumberToStr, tokenAmountToString } from '../../utils/formats';
+import { tokenAmountToString } from '../../utils/formats';
 import CurrencyInputPanel, { StyledTokenName } from '../../components/CurrencyInputPanel';
 import styled from 'styled-components';
 import Loader from '../../components/Loader';
 import { useLpCurrencies } from '../../hooks/useLpCurrencies';
 import { useLpTokens } from '../../hooks/useLpTokens';
+import { EmiVampAddress } from '../../constants/emi/addresses';
 import { tryParseAmount } from '../../state/swap/hooks';
 import { useWalletModalToggle } from '../../state/application/hooks';
 import { useCurrency } from '../../hooks/Tokens';
 import { useTransactionAdder } from '../../state/transactions/hooks';
 import Modal from '../../components/Modal';
-import { BigNumber } from '@ethersproject/bignumber';
-import vamp_addresses from '../../constants/vamp_addresses';
-import ReactGA from 'react-ga';
-import { useIsKuCoinActive, useNetworkData } from '../../hooks/Coins';
 
 const POOL_CURRENCY_AMOUNT_MIN = new Fraction(JSBI.BigInt(1), JSBI.BigInt(1000000));
-
-function replaceWKCS(token: Token): Token {
-  if (token?.symbol?.includes('WKCS')) {
-    const newToken = new Token(
-      token.chainId,
-      token.address,
-      token.decimals,
-      token.symbol.replace('WKCS', 'KCS'),
-      token.name,
-    );
-
-    return newToken;
-  }
-
-  return token;
-}
 
 const StyledContainer = styled.div`
   min-height: 230px;
@@ -89,7 +70,7 @@ const TokensInfoBlock = styled.div`
   align-items: center;
 `;
 
-const ButtonGreenConfirm = styled(ButtonPrimary)`
+const ButtonGreenConfirm = styled(ButtonGreen)`
   padding: 15px 16px;
   margin: 20px auto 10px;
   max-width: 60%;
@@ -108,8 +89,8 @@ function FormattedPoolCurrencyAmount({ currencyAmount }: { currencyAmount: Token
       {currencyAmount.equalTo(JSBI.BigInt(0))
         ? '0'
         : currencyAmount.greaterThan(POOL_CURRENCY_AMOUNT_MIN)
-          ? tokenAmountToString(currencyAmount, 4)
-          : `<${tokenAmountToString(POOL_CURRENCY_AMOUNT_MIN, 1)}`}
+        ? tokenAmountToString(currencyAmount, 4)
+        : `<${tokenAmountToString(POOL_CURRENCY_AMOUNT_MIN, 1)}`}
     </>
   );
 }
@@ -132,10 +113,10 @@ export function V1LiquidityInfo({
   return (
     <>
       <AutoRow style={{ justifyContent: 'flex-start', width: 'fit-content' }}>
-        <DoubleCurrencyLogo currency0={token0} currency1={token1}/>
+        <DoubleCurrencyLogo currency0={token0} currency1={token1} />
         <div style={{ marginLeft: '.75rem' }}>
           <TYPE.mediumHeader>
-            {<FormattedPoolCurrencyAmount currencyAmount={liquidityTokenAmount}/>} {token0.symbol}/
+            {<FormattedPoolCurrencyAmount currencyAmount={liquidityTokenAmount} />} {token0.symbol}/
             {token1.symbol}
           </TYPE.mediumHeader>
         </div>
@@ -149,7 +130,7 @@ export function V1LiquidityInfo({
           <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
             {tokenAmountToString(token0Worth, 4)}
           </Text>
-          <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={token0}/>
+          <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={token0} />
         </RowFixed>
       </RowBetween>
       <RowBetween mb="1rem">
@@ -158,9 +139,9 @@ export function V1LiquidityInfo({
         </Text>
         <RowFixed>
           <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
-            <FormattedPoolCurrencyAmount currencyAmount={token1Worth}/>
+            <FormattedPoolCurrencyAmount currencyAmount={token1Worth} />
           </Text>
-          <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={token1}/>
+          <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={token1} />
         </RowFixed>
       </RowBetween>
     </>
@@ -174,14 +155,14 @@ export default function MigrateV1Exchange({
 }: RouteComponentProps<{ address: string }>) {
   const validatedAddress = isAddress(address);
   const toggleWalletModal = useWalletModalToggle();
-  const { account, chainId } = useActiveWeb3React();
-  const contract = useVampContract(chainId);
+  const { account } = useActiveWeb3React();
+  const contract = useVampContract();
   const { lpTokensDetailedInfo, lpTokensInfo } = useLpTokens();
   const tokens = lpTokensDetailedInfo.find(el => el.base === address)?.addresses ?? [];
-  const inputCurrency = replaceWKCS(useLpCurrencies(tokens, address));
+  const inputCurrency = useLpCurrencies(tokens, address);
   const [isPairExist, setIsPairExist] = useState(false);
-  const currency0 = replaceWKCS(useCurrency(tokens[0]));
-  const currency1 = replaceWKCS(useCurrency(tokens[1]));
+  const currency0 = useCurrency(tokens[0]);
+  const currency1 = useCurrency(tokens[1]);
   const pair = usePair(currency0, currency1)[1];
   const selectedCurrencyBalance = useCurrencyBalance(account, inputCurrency);
   const inputCurrencyBalance = useCurrencyBalance(account, inputCurrency);
@@ -190,12 +171,9 @@ export default function MigrateV1Exchange({
   const addTransaction = useTransactionAdder();
 
   const parsedAmount = tryParseAmount(amount, inputCurrency);
-  const [approval, approveCallback] = useApproveCallback(parsedAmount, vamp_addresses[chainId]);
+  const [approval, approveCallback] = useApproveCallback(parsedAmount, EmiVampAddress);
 
   const notEnoughBalance = !inputCurrencyBalance || +inputCurrencyBalance?.toExact() < +amount;
-
-  const isKuCoinActive = useIsKuCoinActive();
-  const { value: network } = useNetworkData();
 
   useEffect(() => {
     // base pair tokens
@@ -208,79 +186,37 @@ export default function MigrateV1Exchange({
   // redirect for invalid url params
   if (!validatedAddress) {
     console.error('Invalid address in path', address);
-    return <Redirect to="/migrate"/>;
+    return <Redirect to="/migrate" />;
   }
+
+  const onSuccess = response => {
+    setAmount('0');
+    addTransaction(response);
+  };
+
+  const onError = error => {
+    if (error?.code === 4001) {
+      throw error;
+    } else {
+      throw Error('An error occurred while migration. Please contact support.');
+    }
+  };
 
   const handleMigrate = () => {
     const idx = lpTokensInfo.findIndex(el => el === address);
     if (idx !== -1) {
-      const bigIntAmount = BigNumber.from(expNumberToStr(+amount * 10 ** 18));
-      const args = [idx.toString(), `${bigIntAmount.toString()}`];
-
+      const args = [idx.toString(), `${10 ** 18 * +parsedAmount.toExact()}`];
       contract.estimateGas
         .deposit(...args)
         .then(data => {
           const gasLimit = calculateGasMargin(data);
           return contract
             .deposit(...args, { gasLimit })
-            .then(response => {
-              const { hash } = response;
-              ReactGA.set({
-                dimension4: hash,
-                dimension1: currency0?.symbol,
-                dimension2: currency1?.symbol,
-                metric1: parsedAmount?.toFixed(),
-                dimension3: account,
-                dimension5: network,
-              });
-
-              ReactGA.event({
-                category: 'Transaction',
-                action: 'new',
-                label: 'migrate',
-                value: Math.round(parseFloat(parsedAmount?.toFixed())),
-              });
-              setAmount('0');
-              addTransaction(response);
-            })
-            .catch(error => {
-              ReactGA.set({
-                dimension1: currency0?.symbol,
-                dimension2: currency1?.symbol,
-                metric1: parsedAmount?.toFixed(),
-                dimension3: account,
-                dimension5: network,
-              });
-
-              ReactGA.event({
-                category: 'Transaction',
-                action: 'cancel',
-                label: 'migrate',
-                value: Math.round(parseFloat(parsedAmount?.toFixed())),
-              });
-              if (error?.code === 4001) {
-                throw error;
-              } else {
-                throw Error('An error occurred while migration. Please contact support.');
-              }
-            });
+            .then(onSuccess)
+            .catch(onError);
         })
         .catch(error => {
           console.error('estimateGas failed for deposit', error);
-          ReactGA.set({
-            dimension1: currency0?.symbol,
-            dimension2: currency1?.symbol,
-            metric1: parsedAmount?.toFixed(),
-            dimension3: account,
-            dimension5: network,
-          });
-
-          ReactGA.event({
-            category: 'Transaction',
-            action: 'cancel',
-            label: 'migrate',
-            value: Math.round(parseFloat(parsedAmount?.toFixed())),
-          });
           return undefined;
         });
     }
@@ -298,17 +234,15 @@ export default function MigrateV1Exchange({
   return (
     <AppBody>
       <AutoRow style={{ alignItems: 'center', justifyContent: 'space-between' }}>
-        <BackArrow to="/migrate"/>
+        <BackArrow to="/migrate" />
         <div>
-          <QuestionHelper
-            text={`Migrate your liquidity tokens from ${isKuCoinActive ? 'KoffeSwap' : 'Uniswap V2'} to Emiswap.`}
-          />
+          <QuestionHelper text="Migrate your liquidity tokens from Uniswap V2 to Emiswap." />
         </div>
       </AutoRow>
       <StyledContainer>
         {!inputCurrency ? (
           <LoaderBox>
-            <Loader size="100px"/>
+            <Loader size="100px" />
           </LoaderBox>
         ) : (
           <>
@@ -327,17 +261,17 @@ export default function MigrateV1Exchange({
               balanceDecimals={12}
             />
             {(approval === ApprovalState.PENDING || approval === ApprovalState.NOT_APPROVED) &&
-            !notEnoughBalance && (
-              <ButtonPrimary onClick={approveCallback}>
-                <Text fontWeight={500} fontSize={16}>
-                  {approval === ApprovalState.PENDING ? <Dots>Approving</Dots> : 'Approve'}
-                </Text>
-              </ButtonPrimary>
-            )}
+              !notEnoughBalance && (
+                <ButtonPrimary onClick={approveCallback}>
+                  <Text fontWeight={500} fontSize={16}>
+                    {approval === ApprovalState.PENDING ? <Dots>Approving</Dots> : 'Approve'}
+                  </Text>
+                </ButtonPrimary>
+              )}
             {!account ? (
               <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
             ) : (
-              <ButtonPrimary
+              <ButtonGreen
                 style={{ width: '100%', padding: '15px 16px' }}
                 disabled={approval !== ApprovalState.APPROVED || notEnoughBalance}
                 onClick={isPairExist ? handleMigrate : showConfirmModal}
@@ -345,7 +279,7 @@ export default function MigrateV1Exchange({
                 <Text fontWeight={500} fontSize={16}>
                   {notEnoughBalance ? 'Not enough balance' : 'Migrate'}
                 </Text>
-              </ButtonPrimary>
+              </ButtonGreen>
             )}
           </>
         )}
@@ -371,9 +305,9 @@ export default function MigrateV1Exchange({
                   margin={true}
                 />
               </TokensInfoBlock>
-              <QuestionHelper text="It will cost a lot more to make a new pair"/>
+              <QuestionHelper text="It will cost a lot more to make a new pair" />
             </ModalHeaderWrapper>
-            <Separator/>
+            <Separator />
             <Text textAlign="center" fontWeight={500} fontSize={16}>
               Pair does not exist. Do you want to create?
             </Text>

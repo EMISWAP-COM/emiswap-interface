@@ -1,17 +1,17 @@
 import React, { useContext } from 'react';
-import styled, { ThemeContext } from 'styled-components/macro';
+import styled, { ThemeContext } from 'styled-components';
 import Modal from '../Modal';
-import { CloseIcon, ExternalLink, Spinner } from '../../theme';
+import { ExternalLink } from '../../theme';
 import { Text } from 'rebass';
+import { CloseIcon, Spinner } from '../../theme/components';
 import { RowBetween } from '../Row';
 import { AlertTriangle, ArrowUpCircle } from 'react-feather';
 import { ButtonPrimary } from '../Button';
 import { AutoColumn, ColumnCenter } from '../Column';
 import Circle from '../../assets/images/blue-loader.svg';
 
-import { getExplorerLink } from '../../utils';
+import { getEtherscanLink } from '../../utils';
 import { useActiveWeb3React } from '../../hooks';
-import { useNetworkData } from '../../hooks/Coins';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -21,7 +21,7 @@ const Section = styled(AutoColumn)`
 `;
 
 const BottomSection = styled(Section)`
-  background-color: ${({ theme }) => theme.darkGrey};
+  background-color: ${({ theme }) => theme.bg2};
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
 `;
@@ -59,7 +59,6 @@ export default function ConfirmationModal({
   swapErrorMessage = undefined,
 }: ConfirmationModalProps) {
   const { chainId } = useActiveWeb3React();
-  const { blockExplorerName } = useNetworkData();
   const theme = useContext(ThemeContext);
 
   const transactionBroadcast = !!hash;
@@ -76,28 +75,26 @@ export default function ConfirmationModal({
             </RowBetween>
             <ConfirmedIcon>
               {transactionBroadcast ? (
-                <ArrowUpCircle strokeWidth={0.5} size={90} color={theme.purple} />
+                <ArrowUpCircle strokeWidth={0.5} size={90} color={theme.primary1} />
               ) : (
                 <CustomLightSpinner src={Circle} alt="loader" size={'90px'} />
               )}
             </ConfirmedIcon>
             <AutoColumn gap="12px" justify={'center'}>
-              <Text color={theme.white} fontWeight={500} fontSize={20}>
+              <Text fontWeight={500} fontSize={20}>
                 {transactionBroadcast ? 'Transaction Submitted' : 'Waiting For Confirmation'}
               </Text>
               <AutoColumn gap="12px" justify={'center'}>
-                <Text fontWeight={600} fontSize={14} color={theme.darkText} textAlign="center">
+                <Text fontWeight={600} fontSize={14} color="" textAlign="center">
                   {pendingText}
                 </Text>
               </AutoColumn>
 
               {transactionBroadcast ? (
                 <>
-                  <ExternalLink
-                    href={getExplorerLink(chainId, hash, 'transaction')}
-                  >
-                    <Text fontWeight={500} fontSize={14} color={theme.blue}>
-                      View on {blockExplorerName}
+                  <ExternalLink href={getEtherscanLink(chainId, hash, 'transaction')}>
+                    <Text fontWeight={500} fontSize={14} color={theme.primary1}>
+                      View on Etherscan
                     </Text>
                   </ExternalLink>
                   <ButtonPrimary onClick={onDismiss} style={{ margin: '20px 0 0 0' }}>
@@ -107,7 +104,7 @@ export default function ConfirmationModal({
                   </ButtonPrimary>
                 </>
               ) : (
-                <Text fontSize={12} color={theme.darkText} textAlign="center">
+                <Text fontSize={12} color="#565A69" textAlign="center">
                   Confirm this transaction in your wallet
                 </Text>
               )}
@@ -132,10 +129,10 @@ export default function ConfirmationModal({
       <Wrapper>
         <Section>
           <RowBetween>
-            <Text color={theme.white} fontWeight={500} fontSize={20}>
+            <Text fontWeight={500} fontSize={20}>
               {title}
             </Text>
-            <CloseIcon color={theme.white} onClick={onDismiss} />
+            <CloseIcon onClick={onDismiss} />
           </RowBetween>
           {topContent()}
         </Section>

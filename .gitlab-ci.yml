@@ -70,11 +70,9 @@ deploy:release:
 deploy:uat:
   extends: .deploy:uat
   stage: deploy:uat
-  when: manual
   only:
     refs:
     - production
-    - /^release-.*$/
 
 deploy:prod:
   extends: .deploy:prod

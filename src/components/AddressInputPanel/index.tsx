@@ -1,12 +1,11 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useContext, useCallback } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import useENS from '../../hooks/useENS';
 import { useActiveWeb3React } from '../../hooks';
 import { ExternalLink, TYPE } from '../../theme';
 import { AutoColumn } from '../Column';
 import { RowBetween } from '../Row';
-import { getExplorerLink } from '../../utils';
-import { useNetworkData } from '../../hooks/Coins';
+import { getEtherscanLink } from '../../utils';
 
 const InputPanel = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap}
@@ -83,8 +82,6 @@ export default function AddressInputPanel({
   onChange: (value: string) => void;
 }) {
   const { chainId } = useActiveWeb3React();
-  const { blockExplorerName } = useNetworkData();
-
   const theme = useContext(ThemeContext);
 
   const { address, loading, name } = useENS(value);
@@ -111,10 +108,10 @@ export default function AddressInputPanel({
               </TYPE.black>
               {address && (
                 <ExternalLink
-                  href={getExplorerLink(chainId, name ?? address, 'address')}
+                  href={getEtherscanLink(chainId, name ?? address, 'address')}
                   style={{ fontSize: '14px' }}
                 >
-                  (View on {blockExplorerName})
+                  (View on Etherscan)
                 </ExternalLink>
               )}
             </RowBetween>

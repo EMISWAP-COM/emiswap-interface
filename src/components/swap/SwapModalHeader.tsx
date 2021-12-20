@@ -32,37 +32,37 @@ export default function SwapModalHeader({
   return (
     <AutoColumn gap={'md'} style={{ marginTop: '20px' }}>
       <RowBetween align="flex-end">
-        <TruncatedText color={theme.darkWhite} fontSize={24} fontWeight={500}>
+        <TruncatedText fontSize={24} fontWeight={500}>
           {formattedAmounts[Field.INPUT]}
         </TruncatedText>
         <RowFixed gap="4px">
           <CurrencyLogo currency={currencies[Field.INPUT]} size={'24px'} />
-          <Text color={theme.darkWhite} fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
+          <Text fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
             {currencies[Field.INPUT]?.symbol}
           </Text>
         </RowFixed>
       </RowBetween>
       <RowFixed>
-        <ArrowDown size="16" color={theme.darkWhite} />
+        <ArrowDown size="16" color={theme.text2} />
       </RowFixed>
       <RowBetween align="flex-end">
         <TruncatedText
           fontSize={24}
           fontWeight={500}
-          color={priceImpactSeverity > 2 ? theme.red1 : theme.darkWhite}
+          color={priceImpactSeverity > 2 ? theme.red1 : ''}
         >
           {formattedAmounts[Field.OUTPUT]}
         </TruncatedText>
         <RowFixed gap="4px">
           <CurrencyLogo currency={currencies[Field.OUTPUT]} size={'24px'} />
-          <Text color={theme.darkWhite} fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
+          <Text fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
             {currencies[Field.OUTPUT]?.symbol}
           </Text>
         </RowFixed>
       </RowBetween>
       <AutoColumn justify="flex-start" gap="sm" style={{ padding: '12px 0 0 0px' }}>
         {independentField === Field.INPUT ? (
-          <TYPE.italic color={theme.darkWhite} textAlign="left" style={{ width: '100%' }}>
+          <TYPE.italic textAlign="left" style={{ width: '100%' }}>
             {`Output is estimated. You will receive at least `}
             <b>
               {tokenAmountToString(slippageAdjustedAmounts[Field.OUTPUT])}{' '}
@@ -71,7 +71,7 @@ export default function SwapModalHeader({
             {' or the transaction will revert.'}
           </TYPE.italic>
         ) : (
-          <TYPE.italic color={theme.darkWhite} textAlign="left" style={{ width: '100%' }}>
+          <TYPE.italic textAlign="left" style={{ width: '100%' }}>
             {`Input is estimated. You will sell at most `}
             <b>
               {tokenAmountToString(slippageAdjustedAmounts[Field.INPUT])}{' '}
@@ -83,7 +83,7 @@ export default function SwapModalHeader({
       </AutoColumn>
       {recipient !== null ? (
         <AutoColumn justify="flex-start" gap="sm" style={{ padding: '12px 0 0 0px' }}>
-          <TYPE.main color={theme.darkWhite}>
+          <TYPE.main>
             Output will be sent to{' '}
             <b title={recipient}>{isAddress(recipient) ? shortenAddress(recipient) : recipient}</b>
           </TYPE.main>

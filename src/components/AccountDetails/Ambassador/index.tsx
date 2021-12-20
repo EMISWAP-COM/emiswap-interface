@@ -1,18 +1,15 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { convertBigDecimal } from '../uitls';
+import { PurchaseHistory } from '../Common/PurchaseHistory';
+import { ReferralPerformance } from '../Common/ReferralPerformance';
+import { loadBalance, loadPerformance } from '../../../state/cabinets/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, AppState } from '../../../state';
 import { packageNames } from '../constant';
 import { Connection } from '../Common/Connection';
-import { loadBalance, loadPerformance } from '../../../state/cabinets/actions';
-import { useActiveWeb3React } from '../../../hooks';
-import { ESWRewards } from '../Common/ESWRewards';
-import { ESWHoldingRewards } from '../Common/ESWHoldingRewards';
-import { ReferralPerformance } from '../Common/ReferralPerformance';
-import { PurchaseHistory } from '../Common/PurchaseHistory';
 import { ESWLocked } from '../Common/ESWLocked';
-import { useIsEthActive } from '../../../hooks/Coins';
+import { ESWRewards } from '../Common/ESWRewards';
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -67,21 +64,16 @@ interface Props {
 }
 
 const Ambassador: React.FC<Props> = ({ openOptions, ENSName }) => {
-  const isEthActive = useIsEthActive();
   const dispatch = useDispatch<AppDispatch>();
-
-  const { chainId } = useActiveWeb3React();
 
   const { id: userId, bonus_role_name = '', next_bonus_role } = useSelector(
     (state: AppState) => state.user.info,
   );
 
   useEffect(() => {
-    if (isEthActive) {
-      dispatch(loadPerformance(userId) as any);
-      dispatch(loadBalance(userId) as any);
-    }
-  }, [dispatch, chainId, userId, isEthActive]);
+    dispatch(loadPerformance(userId) as any);
+    dispatch(loadBalance(userId) as any);
+  }, [dispatch, userId]);
 
   return (
     <Wrapper>
@@ -107,16 +99,12 @@ const Ambassador: React.FC<Props> = ({ openOptions, ENSName }) => {
           )}
         </OptionsPromo>
       </Connection>
-      {isEthActive && (
-        <>
-          <ESWRewards />
-          <ESWHoldingRewards/>
-          <ESWLocked />
+      <ESWRewards />
 
-          <ReferralPerformance />
-          <PurchaseHistory />
-        </>
-      )}
+      <ESWLocked />
+
+      <ReferralPerformance />
+      <PurchaseHistory />
     </Wrapper>
   );
 };

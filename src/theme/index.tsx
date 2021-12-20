@@ -1,10 +1,10 @@
 import { transparentize } from 'polished';
 import React, { useMemo } from 'react';
 import styled, {
+  ThemeProvider as StyledComponentsThemeProvider,
   createGlobalStyle,
   css,
   DefaultTheme,
-  ThemeProvider as StyledComponentsThemeProvider,
 } from 'styled-components';
 import { useIsDarkMode } from '../state/user/hooks';
 import { Text, TextProps } from 'rebass';
@@ -58,7 +58,6 @@ export function colors(darkMode: boolean): Colors {
     //specialty colors
     modalBG: darkMode ? 'rgba(0,0,0,0.85)' : '#03160D',
     advancedBG: darkMode ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.6)',
-    cardBG: '#27272E',
 
     //primary colors
     primary1: darkMode ? '#FFD541' : '#FFD541',
@@ -95,24 +94,6 @@ export function colors(darkMode: boolean): Colors {
     yellow3: '#C39465',
     yellow4: '#ffd54170',
     horse: darkMode ? '#ffffff' : '#FFD541',
-    whiteTransparent: 'rgba(255, 255, 255, 0.4)',
-    purple: '#7A2DF4',
-    purpleBoxShadow: '0px 4px 8px rgba(169, 115, 255, 0.32)',
-    darkWhite: '#E8E7EF',
-    darkText: '#B7B7CA',
-    darkGrey: '#393946',
-    lightGrey: '#615C69',
-    red: '#E85E59',
-    green: '#54B489',
-    pink: '#E478FF',
-    blue: '#37FFDB',
-    border1: 'rgb(74, 71, 87)',
-    border1Transparency: 'rgba(74, 71, 87, 0.32)',
-    border2: '#4A4757',
-    dark1: '#272530',
-    dark2: '#0F0F13',
-    dark1BoxShadow: '0px 0px 10px rgba(169, 115, 255, 0.32)',
-    modalBoxShadow: '0px 0px 8px 4px #7a2df4',
 
     // dont wanna forget these blue yet
     // blue4: darkMode ? '#153d6f70' : '#C4D9F8',
@@ -262,9 +243,6 @@ html {
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
-
---cursorXPos: 50vh;
---cursorYPos: 50vh;
 `;
 
 export const ThemedGlobalStyle = createGlobalStyle`
@@ -283,17 +261,4 @@ body {
       theme.primary1,
     )} 0%, ${transparentize(1, theme.bg1)} 100%)`};
 }
-
-  .landing_modal {
-    background-color: transparent !important;
-    box-shadow: none !important;
-    flex-direction: column;
-    max-height: 80vh !important;
-    border-radius: 0 !important;
-  }
-
-  [data-reach-dialog-overlay]::after {
-    opacity: 0.8 !important;
-    filter: blur(11px);
-  }
 `;
