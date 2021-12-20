@@ -8,12 +8,14 @@ import { Token } from '@uniswap/sdk';
 import { BigNumber } from '@ethersproject/bignumber';
 import { useActiveWeb3React } from '../../hooks';
 import { calcFarming365Apr } from './helpers';
+import dayjs from 'dayjs';
 
 type Farm365ItemProps = {
   contract: Contract;
+  selectedFilterTab: 'active' | 'finished';
 };
 
-export default function Farm365Item({ contract }: Farm365ItemProps) {
+export default function Farm365Item({ contract, selectedFilterTab }: Farm365ItemProps) {
   const { chainId } = useActiveWeb3React();
   const farming365 = useFarming365(contract);
 
@@ -41,7 +43,12 @@ export default function Farm365Item({ contract }: Farm365ItemProps) {
 
   // console.log('farming', farming365);
 
-  return (
+  const dateNow = dayjs();
+  const endDate = dayjs(farming365.endDate, 'DD.MM.YYYY HH:mm:ss');
+
+  const isVisibleFarm = selectedFilterTab === 'active' ? endDate > dateNow : endDate < dateNow;
+
+  return isVisibleFarm ? (
     <ExtendableRow
       farming365={farming365}
       contractAddress={contract.address}
@@ -57,5 +64,5 @@ export default function Farm365Item({ contract }: Farm365ItemProps) {
       type={FarmingTimeType.farming365}
       tokenMode={farming365.tokenMode}
     />
-  );
+  ) : null;
 }
