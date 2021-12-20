@@ -10,7 +10,6 @@ import CurrencyInputPanel from '../../components/CurrencyInputPanel';
 import { JSBI, Token, TokenAmount } from '@uniswap/sdk';
 import useFarming365 from '../../hooks/useFarming365';
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback';
-import getFarmingAddresses from '../Farm/getFarmingAddresses';
 import { useActiveWeb3React } from '../../hooks';
 import { parseUnits } from '@ethersproject/units';
 import { tokenAmountToString } from '../../utils/formats';
@@ -200,7 +199,7 @@ export default function Farm365Content({ farming365, eswRate }: Farm365ContentPr
   const { chainId, account } = useActiveWeb3React();
   const { value: network } = useNetworkData();
 
-  const farmingAddresses = getFarmingAddresses(chainId)[0];
+  const farmingAddresses = farming365.contract.address;
 
   const allTransactions = useAllTransactions();
 
@@ -218,6 +217,13 @@ export default function Farm365Content({ farming365, eswRate }: Farm365ContentPr
   }, [recentTransactions]);*/
 
   const hasPendingTransactions = useMemo(() => !!pending.length, [pending]);
+
+  const isFinished = useMemo(() => {
+    const dateNow = dayjs();
+    const endDate = dayjs(farming365.endDate, 'DD.MM.YYYY HH:mm:ss');
+
+    return endDate < dateNow;
+  }, [farming365.endDate]);
 
   const eswCurrency: Token = ESW[chainId][0];
 
@@ -256,7 +262,6 @@ export default function Farm365Content({ farming365, eswRate }: Farm365ContentPr
     eswValueParsed ? new TokenAmount(eswCurrency, JSBI.BigInt(eswValueParsed)) : undefined,
     farmingAddresses,
   );
-
   const [approvalLp, approveLpCallback] = useApproveCallback(
     lpCurrency && lpValueParsed
       ? new TokenAmount(lpCurrency, JSBI.BigInt(lpValueParsed))
@@ -292,6 +297,9 @@ export default function Farm365Content({ farming365, eswRate }: Farm365ContentPr
     if (hasPendingTransactions) {
       setStakeButtonText('Pending transaction...');
       setStakeButtonDisabled(true);
+    } else if (isFinished) {
+      setStakeButtonText('Finished');
+      setStakeButtonDisabled(true);
     } else if (!eswCurrency || !lpCurrency || !+eswValue || !+lpValue) {
       setStakeButtonText('Stake');
       setStakeButtonDisabled(true);
@@ -323,6 +331,7 @@ export default function Farm365Content({ farming365, eswRate }: Farm365ContentPr
     }
   }, [
     hasPendingTransactions,
+    isFinished,
     eswBalance,
     lpBalance,
     eswValue,
@@ -342,14 +351,18 @@ export default function Farm365Content({ farming365, eswRate }: Farm365ContentPr
     if (hasPendingTransactions) {
       setCollectButtonText('Collect to wallet');
       setCollectButtonDisabled(true);
-    } else if (farming365.exitDateLimit > dayjs().unix()) {
+    } /*else if (isFinished) {
+      setCollectButtonText('Collect to wallet');
+      setCollectButtonDisabled(true);
+    }*/ else if (
+      farming365.exitDateLimit > dayjs().unix()
+    ) {
       collectExitDateInterval.current = setInterval(() => {
         const dateNow = dayjs();
         const exitDate = dayjs(farming365.exitDateLimit * 1000);
 
         const timeout = (dayjs as any).duration(exitDate.diff(dateNow));
         const days: string = (+timeout.format('D') + +timeout.format('M') * 30).toString();
-        console.log(+timeout.format('M'), 30);
         const timeoutDateValue: TDataObject = {
           days,
           hours: timeout.format('HH'),

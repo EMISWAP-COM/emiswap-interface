@@ -418,6 +418,7 @@ export default function useFarming365(contract: Contract) {
   };
 
   return {
+    contract,
     stakeToken,
     rewardToken,
     balanceLp,
