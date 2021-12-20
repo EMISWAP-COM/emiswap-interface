@@ -32,3 +32,7 @@ export const checkedTransaction = createAction<{
   hash: string;
   blockNumber: number;
 }>('transactions/checkedTransaction');
+export const cancelTransaction = createAction<{
+  chainId: ChainId;
+  hash: string;
+}>('transactions/cancelTransaction');

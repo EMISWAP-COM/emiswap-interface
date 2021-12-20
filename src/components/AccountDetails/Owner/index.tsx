@@ -1,15 +1,18 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components/macro';
-import { PurchaseHistory } from '../Common/PurchaseHistory';
-import { ReferralPerformance } from '../Common/ReferralPerformance';
-
-import { loadBalance, loadPerformance } from '../../../state/cabinets/actions';
+import { Connection } from '../Common/Connection';
+import { ExternalLink } from '../../../theme';
+import { loadBalance, loadDepositsEswHistory, loadPerformance } from '../../../state/cabinets/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, AppState } from '../../../state';
-import { Connection } from '../Common/Connection';
+import { useActiveWeb3React } from '../../../hooks';
 import { ESWRewards } from '../Common/ESWRewards';
+import { ESWHoldingRewards } from '../Common/ESWHoldingRewards';
 import { ESWLocked } from '../Common/ESWLocked';
-import { ExternalLink } from '../../../theme';
+import { ReferralPerformance } from '../Common/ReferralPerformance';
+import { PurchaseHistory } from '../Common/PurchaseHistory';
+import FarmingRewards from '../Common/FarmingRewards';
+import { useIsEthActive } from '../../../hooks/Coins';
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -23,16 +26,15 @@ const ProfileStatus = styled.div`
   text-transform: capitalize;
   padding: 0 1rem 1rem 1rem;
   flex-wrap: wrap;
-  align-items:
-  background: lightgreen;
   gap: 12px;
+  color: ${({ theme }) => theme.darkText};
 
   @media screen and (max-width: 1200px) {
     padding: 0 0 1rem 0;
   }
 
   span {
-  color: ${({ theme }) => theme.grey3};
+    color: ${({ theme }) => theme.white};
     font-weight: 700;
     text-transform: uppercase;
   }
@@ -50,16 +52,20 @@ interface Props {
 }
 
 const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
+  const isEthActive = useIsEthActive();
   const dispatch = useDispatch<AppDispatch>();
 
+  const { chainId } = useActiveWeb3React();
+
   const { id: userId } = useSelector((state: AppState) => state.user.info);
-  // const balance = useSelector((state: AppState) => state.cabinets.balance);
-  // const { reward } = useSelector((state: AppState) => state.cabinets.performance);
 
   useEffect(() => {
-    dispatch(loadPerformance(userId) as any);
-    dispatch(loadBalance(userId) as any);
-  }, [dispatch, userId]);
+    if (isEthActive) {
+      dispatch(loadPerformance(userId) as any);
+      dispatch(loadBalance(userId) as any);
+      dispatch(loadDepositsEswHistory(userId) as any);
+    }
+  }, [dispatch, chainId, userId, isEthActive]);
 
   return (
     <Wrapper>
@@ -77,21 +83,27 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
               'https://emiswap.medium.com/your-guide-to-the-emiswap-referral-program-f142a4170d1'
             }
           >
-            Referral Program
+            Referral Program.
           </ExternalLink>
-          , become an&nbsp;
+          {/* become an&nbsp;
           <ExternalLink href={'https://crowdsale.emidao.org/en#rec240950289'}>
             Ambassador
           </ExternalLink>
           &nbsp;or farm your&nbsp;
-          <ExternalLink href={'https://crowdsale.emidao.org/magic-nft'}>Magic Cards!</ExternalLink>
+          <ExternalLink href={'https://crowdsale.emidao.org/magic-nft'}>Magic Cards!</ExternalLink> */}
         </OptionsPromo>
       </Connection>
-      <ESWRewards />
-      <ESWLocked />
-      <ReferralPerformance />
+      {isEthActive && (
+        <>
+          <ESWRewards />
+          <ESWHoldingRewards/>
+          <ESWLocked />
+          <FarmingRewards />
+          <ReferralPerformance />
 
-      <PurchaseHistory />
+          <PurchaseHistory />
+        </>
+      )}
     </Wrapper>
   );
 };

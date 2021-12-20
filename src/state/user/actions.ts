@@ -1,9 +1,8 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { UserInfo } from './reducer';
-import { loadBalance, loadPerformance } from '../cabinets/actions';
+import { loadBalance, loadBonus, loadPerformance } from '../cabinets/actions';
 import { loadGasPrice } from '../stats/actions';
 import { fetchWrapper } from '../../api/fetchWrapper';
-import { addPopup } from '../application/actions';
 
 export interface SerializedToken {
   chainId: number;
@@ -60,18 +59,20 @@ export const loadWalletAddress = createAsyncThunk(
       const user = await fetchWrapper.get(url).then(data => data);
       return user.address;
     } catch (e) {
-      alert(e.message);
-      dispatch(
-        addPopup({
-          key: 'loadPerformance',
-          content: {
-            status: {
-              name: e.message,
-              isError: true,
-            },
-          },
-        }),
-      );
+      console.debug('loadBalance: ', { e });
+      //FIXME - встроить централизованную обработку ошибок
+      // alert(e.message);
+      // dispatch(
+      //   addPopup({
+      //     key: 'loadPerformance',
+      //     content: {
+      //       status: {
+      //         name: e.message,
+      //         isError: true,
+      //       },
+      //     },
+      //   }),
+      // );
     }
   },
 );
@@ -81,10 +82,13 @@ export const loginCabinets = createAsyncThunk(
   async (payload: { account: string; referral_address?: string }, thunkAPI) => {
     const { dispatch } = thunkAPI;
     const { account, referral_address } = payload;
+
+    const testAddress = window['env'] ? window['env'].REACT_APP_TEST_WALLET_ADDRESS : null;
+
     fetchWrapper
       .post(`${baseUrl}/v1/public/users`, {
         body: JSON.stringify({
-          address: account,
+          address: testAddress || account,
           referral_address,
         }),
       })
@@ -92,24 +96,29 @@ export const loginCabinets = createAsyncThunk(
         dispatch(login(data));
         dispatch(loadPerformance(data.id) as any);
         dispatch(loadBalance(data.id) as any);
+        dispatch(loadBonus(data.id) as any);
         dispatch(loadGasPrice() as any);
         if (data.referral_id) {
           dispatch(loadWalletAddress(data.referral_id) as any);
         }
       })
       .catch(e => {
-        console.log(e);
-        dispatch(
-          addPopup({
-            key: 'loginCabinets',
-            content: {
-              status: {
-                name: e.message,
-                isError: true,
-              },
-            },
-          }),
-        );
+        console.debug('loginCabinets: ', { e });
+        //FIXME - встроить централизованную обработку ошибок
+        // Do not show fetch error
+        // if (e.message === 'Failed to fetch') return;
+
+        // dispatch(
+        //   addPopup({
+        //     key: 'loginCabinets',
+        //     content: {
+        //       status: {
+        //         name: e.message,
+        //         isError: true,
+        //       },
+        //     },
+        //   }),
+        // );
       });
   },
 );

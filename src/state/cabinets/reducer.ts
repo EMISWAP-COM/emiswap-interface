@@ -1,5 +1,17 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { loadBalance, loadPerformance } from './actions';
+import {
+  loadBalance,
+  loadBonus,
+  loadDepositsEswHistory,
+  loadDepositsEswHistoryRewards,
+  loadPerformance,
+} from './actions';
+
+export interface DepositsEswHistoryRewards {
+  total: number;
+  collected: number;
+  available_collect: number;
+}
 
 interface Unlock {
   amount: string;
@@ -34,6 +46,9 @@ interface Balance {
       compensation?: PaymentOperationTokens;
       referral_bonus?: PaymentOperationTokens;
       pool_referral_bonus?: PaymentOperationTokens;
+      pool_block_bonus?: PaymentOperationTokens;
+      swap_bonus?: PaymentOperationTokens;
+      swap_bonus_10x?: PaymentOperationTokens;
     };
     locked: PaymentOperationTokens;
     unlocked: PaymentOperationTokens;
@@ -41,6 +56,13 @@ interface Balance {
   details: {
     locked: LockedDeposit;
     deposit: Deposit[];
+    compensation: Deposit[];
+    pool_bonus: Deposit[];
+    pool_bonus_10x: Deposit[];
+    pool_swap_bonus: Deposit[];
+    pool_referral_bonus: Deposit[];
+    swap_bonus: Deposit[];
+    swap_bonus_10x: Deposit[];
   };
   total_fee_compensation: string;
   available: PaymentOperationTokens;
@@ -48,11 +70,26 @@ interface Balance {
   change_level_info: ChangeLevel | null;
 }
 
+interface BonusDetails {
+  pool_block_bonuses: PoolBonus[];
+  pool_bonuses: PoolBonus[];
+}
+
+export interface DepositsEswHistory {
+  date: '2021-06-28';
+  total_system_reward: 124.02;
+  share: 2.42;
+  reward: 3.0;
+}
+
 interface CabinetState {
   performance: ReferralPerformance;
   balance: Balance;
+  bonusDetails: BonusDetails;
   purchaseHistory: PurchaseHistory[];
   referralHistory: ReferralPurchaseHistory[];
+  depositsEswHistory: DepositsEswHistory[];
+  depositsEswHistoryRewards: DepositsEswHistoryRewards;
 }
 
 interface PerformanceLevel {
@@ -80,6 +117,16 @@ interface Deposit {
   created_at: string;
   available_at: string;
   amount: string;
+  amount_dai: string | null;
+}
+
+interface PoolBonus {
+  date: string;
+  name: string;
+  esw_reward: string;
+  esw_price: string;
+  pool_part: string;
+  swap_turnover: string;
 }
 
 type LockedDeposit = {
@@ -145,6 +192,9 @@ const initialState: CabinetState = {
         pool_swap_bonus: {},
         compensation: {},
         referral_bonus: {},
+        pool_block_bonus: {},
+        swap_bonus: {},
+        swap_bonus_10x: {},
       },
       locked: {},
       unlocked: {},
@@ -152,30 +202,44 @@ const initialState: CabinetState = {
     details: {
       locked: {} as LockedDeposit,
       deposit: [] as Deposit[],
+      compensation: [],
+      pool_bonus: [],
+      pool_bonus_10x: [],
+      pool_swap_bonus: [],
+      pool_referral_bonus: [],
+      swap_bonus: [],
+      swap_bonus_10x: [],
     },
     total_fee_compensation: '',
     available: {},
     nearest_unlock: null,
     change_level_info: null,
   },
+  bonusDetails: {
+    pool_block_bonuses: [],
+    pool_bonuses: [],
+  },
   purchaseHistory: [] as PurchaseHistory[],
   referralHistory: [] as ReferralPurchaseHistory[],
+  depositsEswHistory: new Array<DepositsEswHistory>(),
+  depositsEswHistoryRewards: {} as DepositsEswHistoryRewards,
 };
 
-export default createReducer(
-  initialState,
-  builder =>
-    builder
-      .addCase(loadPerformance.fulfilled, (state, action) => {
-        state.performance = action.payload;
-      })
-      // .addCase(loadPurchaseHistory.fulfilled, (state, action) => {
-      //   state.purchaseHistory = action.payload;
-      // })
-      .addCase(loadBalance.fulfilled, (state, action) => {
-        state.balance = action.payload;
-      }),
-  // .addCase(loadReferralPurchaseHistory.fulfilled, (state, action) => {
-  //   state.referralHistory = action.payload;
-  // }),
+export default createReducer(initialState, builder =>
+  builder
+    .addCase(loadPerformance.fulfilled, (state, action) => {
+      state.performance = action.payload;
+    })
+    .addCase(loadBalance.fulfilled, (state, action) => {
+      state.balance = action.payload;
+    })
+    .addCase(loadBonus.fulfilled, (state, action) => {
+      state.bonusDetails = action.payload;
+    })
+    .addCase(loadDepositsEswHistory.fulfilled, (state, action) => {
+      state.depositsEswHistory = action.payload;
+    })
+    .addCase(loadDepositsEswHistoryRewards.fulfilled, (state, action) => {
+      state.depositsEswHistoryRewards = action.payload;
+    }),
 );

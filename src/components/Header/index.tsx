@@ -1,8 +1,6 @@
-import { ChainId } from '@uniswap/sdk';
 import React from 'react';
-import { isMobile, isTablet } from 'react-device-detect';
 import { Text } from 'rebass';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import Logo from '../../assets/svg/logo.svg';
 import LogoDark from '../../assets/svg/logo_dark.svg';
 // import Wordmark from '../../assets/svg/wordmark.svg';
@@ -10,13 +8,21 @@ import LogoDark from '../../assets/svg/logo_dark.svg';
 import { useActiveWeb3React } from '../../hooks';
 import { useDarkModeManager } from '../../state/user/hooks';
 import { useETHBalances } from '../../state/wallet/hooks';
-import { YellowCard } from '../Card';
 import Settings from '../Settings';
 import Menu from '../Menu';
 import Row, { RowBetween } from '../Row';
 import Web3Status from '../Web3Status';
+import Wordmark from '../Wordmark';
 import { tokenAmountToString } from '../../utils/formats';
 import { ReactComponent as MagicIcon } from '../../assets/images/magic_icon.svg';
+import {  ButtonOutlined } from '../Button';
+import { useBridgeModalToggle } from '../../state/application/hooks';
+import chainIds from '../../constants/chainIds';
+import { useNetworkData } from '../../hooks/Coins';
+import { isMobile } from 'react-device-detect';
+import { useRouteMatch } from 'react-router-dom';
+import BridgeModal from './BridgeModal';
+import { NetworkSwitch } from '../NetworkSwitch';
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -66,7 +72,7 @@ const HeaderElement = styled.div`
     height: 40px;
     padding: 12px 22px;
     text-decoration: none;
-    background: #9a56d1;
+    background: ${({ theme }) => theme.purple};
     border-radius: 4px;
     font-family: IBM Plex Sans;
     font-style: normal;
@@ -78,7 +84,12 @@ const HeaderElement = styled.div`
     text-align: center;
     letter-spacing: 0.02em;
     color: #ffffff;
-    margin-right: 10px;
+    margin-right: 16px;
+
+    &:hover,
+    &:focus {
+      box-shadow: ${({ theme }) => theme.purpleBoxShadow};
+    }
   }
 
   .purple-btn > span {
@@ -107,9 +118,9 @@ const LogoElem = styled(HeaderElement)`
     width: calc(100% - 124px);
   `};
   ${({ theme }) => theme.mediaWidth.upToTabletop`
-    background-color: white;
-    width: calc(100% - 156px);
-    padding-right: 0px;
+    width: calc(100% - 160px);
+    padding: 22px 0px 22px 16px;
+    border-radius: 0;
   `};
 `;
 
@@ -118,7 +129,7 @@ const StyledMagicButton = styled.a`
   position: relative;
   border: none;
   height: 40px;
-  background-color: #9a56d1;
+  background-color: ${({ theme }) => theme.purple};
   align-items: center;
   transition: all 0.3s ease-in-out;
 
@@ -136,6 +147,31 @@ const StyledMagicButton = styled.a`
   `};
 `;
 
+const StyledGoToButton = styled.a`
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+  padding: 0.15rem 2rem;
+  height: 40px;
+  background-color: ${({ theme }) => theme.blue};
+  border: none;
+  transition: all 0.3s ease-in-out;
+  border-radius: 4px;
+  color:  ${({ theme }) => theme.dark2};
+  text-decoration: none;
+
+  ${({ theme }) => theme.mediaWidth.upToTabletop`
+    position: fixed;
+    bottom: 0;
+    width: calc(100% - 48px);
+    margin: 0 auto 16px;
+    height: 56px;
+    left: 0;
+    right: 0;
+  `};
+`;
+
 const HeaderElementWrap = styled.div`
   display: flex;
   align-items: center;
@@ -148,7 +184,6 @@ const HeaderElementWrap = styled.div`
     padding-right: 16px;
     height: 55px;
     box-sizing: content-box;
-    background-color: white;
   `};
 `;
 
@@ -175,48 +210,82 @@ const AccountElement = styled.div<{ active: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: ${({ theme, active }) => (!active ? theme.bg1 : 'transparent')};
+  background-color: transparent;
   color: ${({ theme }) => theme.grey3};
   border-radius: 12px;
   white-space: nowrap;
-  width: 100%;
+  // width: 100%;
+  background: #000000;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    max-width: 440px;
+    margin: auto;
+  }
 
   :focus {
     border: 1px solid blue;
   }
 `;
 
-const TestnetWrapper = styled.div`
+const AprButton = styled(ButtonOutlined)`
+  box-sizing: border-box;
+  width: auto;
+  height: 40px;
+  margin-right: 14px;
+  padding: 8.5px 20px;
+  border-color: #615c69;
+  border-radius: 4px;
+  color: white;
+
+  &:focus,
+  &:hover {
+    border: 1px solid ${({ theme }) => theme.purple};
+    background: ${({ theme }) => theme.darkGrey};
+    box-shadow: none;
+  }
+`;
+
+const NetworkWrapper = styled.div`
   white-space: nowrap;
   width: fit-content;
   margin-left: 10px;
   pointer-events: auto;
 `;
 
-const NetworkCard = styled(YellowCard)`
-  width: fit-content;
-  margin-right: 10px;
-  border-radius: 12px;
-  padding: 8px 12px;
-`;
+
+
+/*const NetworkLabel = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 18px;
+  margin-left: 16px;
+  padding: 0 8px;
+  border-radius: 50px;
+  font-size: 8px;
+  background: #e478ff;
+  color: ${({ theme }) => theme.dark2};
+`;*/
 
 const UniIcon = styled.div`
+  width: 175px;
+  height: 47px;
   transition: transform 0.3s ease;
   :hover {
     transform: rotate(-5deg);
   }
 `;
 
+const LogoImg = styled.img`
+  width: 100%;
+`;
+
 const HeaderControls = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: calc(100% - 285px);
-  justify-content: flex-end;
-
-  :last-child {
-    margin-left: auto;
-  }
+  margin-left: auto;
 
   ${({ theme }) => theme.mediaWidth.upToMedium`
     order: 3;
@@ -226,7 +295,6 @@ const HeaderControls = styled.div`
 
   ${({ theme }) => theme.mediaWidth.upToTabletop`
   :last-child {
-    margin-left: 0;
     width: 100%;
     background: transparent;
 
@@ -248,6 +316,7 @@ const BalanceText = styled(Text)`
   letter-spacing: 0.02em;
   display: flex;
   align-items: center;
+  color: ${({ theme }) => theme.white};
 
   ${({ theme }) => theme.mediaWidth.upToTabletop`
     display: none;
@@ -268,74 +337,149 @@ const RowBetweenStyled = styled(RowBetween)`
   `};
 `;
 
-const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
-  [ChainId.MAINNET]: null,
-  [ChainId.RINKEBY]: 'Rinkeby',
-  [ChainId.ROPSTEN]: 'Ropsten',
-  [ChainId.GÖRLI]: 'Görli',
-  [ChainId.KOVAN]: 'Kovan',
-};
+const LogoWrapper = styled.div`
+  display: none;
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    padding-left: 65px;
+    margin: 15px;
+    position: relative;
+  `};
+`;
+
+const HeaderWrapper = styled.div`
+  ${({ theme }) => theme.flexRowNoWrap}
+  width: 100%;
+  justify-content: space-between;
+`;
+
+/*const BridgeDropdown = styled.span`
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  position: absolute;
+  top: 48px;
+  left: 10px;
+  min-width: 20.125rem;
+
+  border-radius: 0.5rem;
+  font-size: 1rem;
+
+  background-color: ${({ theme }) => theme.dark1};
+  box-shadow: ${({ theme }) => theme.dark1BoxShadow};
+`;*/
 
 export default function Header() {
   const { account, chainId } = useActiveWeb3React();
   const userEthBalance = useETHBalances([account])[account];
+
   const [isDark] = useDarkModeManager();
+
+  const networkItem = useNetworkData();
+
+  const toggleBridgeModal = useBridgeModalToggle();
+
+  const isLandingPage = useRouteMatch("/main");
+  const is404Page = useRouteMatch("/404");
+
+  if (isLandingPage) return null;
+
   return (
+    <>
+      <LogoWrapper>
+        <Wordmark />
+      </LogoWrapper>
+      <HeaderWrapper>
     <HeaderFrame>
       <RowBetweenStyled>
         <LogoElem>
           <Title href=".">
             <UniIcon>
-              <img src={isDark ? LogoDark : Logo} alt="logo" />
+              <LogoImg src={isDark ? LogoDark : Logo} alt="logo"/>
             </UniIcon>
             <TitleText>
               {/*<img style={{ marginLeft: '4px', marginTop: '4px' }} src={isDark ? WordmarkDark : Wordmark} alt="logo" width="160px"/>*/}
             </TitleText>
           </Title>
         </LogoElem>
-        <HeaderControls>
-          <HeaderElement>
-            <a
-              className="white-btn"
-              href="http://emirex.com/?refid=ID0A9FBA8B3E&utm_source=emiswap_website&utm_medium=main&utm_campaign=button"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Buy Crypto with fiat
-            </a>
-            <a className="purple-btn" href={`${window.location.origin}/magic_cards/`}>
-              <span>Magic Hall</span>
-            </a>
-            {!isMobile && !isTablet && NETWORK_LABELS[chainId] && (
-              <TestnetWrapper>
-                <NetworkCard>{NETWORK_LABELS[chainId]}</NetworkCard>
-              </TestnetWrapper>
-            )}
-            <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
-              {account && userEthBalance ? (
-                <>
-                  <BalanceText
-                    style={{ flexShrink: 0 }}
-                    pl="0.75rem"
-                    pr="1.125rem"
-                    fontWeight={450}
-                  >
-                    {tokenAmountToString(userEthBalance, 4)} ETH
-                  </BalanceText>
-                </>
-              ) : null}
-              <Web3Status />
-            </AccountElement>
-          </HeaderElement>
-        </HeaderControls>
-        <HeaderElementWrap>
-          <StyledMagicButton href={`${window.location.origin}/magic_cards/`}>
-            <MagicIcon />
-          </StyledMagicButton>
-          <Settings />
-          <Menu />
-        </HeaderElementWrap>
+        {is404Page ? (
+          <StyledGoToButton href="/">
+            <Text textAlign="center" fontWeight={500} fontSize={16}>
+              Go to the platform
+            </Text>
+          </StyledGoToButton>
+        ) : (
+          <>
+            <HeaderControls>
+              <HeaderElement>
+                {false && (
+                  <AprButton>
+                    <Text textAlign="center" fontWeight={500} fontSize={14}>
+                      APR settings
+                    </Text>
+                  </AprButton>
+                )}
+                {!isMobile && (
+                  <>
+                    {networkItem.bridgeUrl ? (
+                      <a href={networkItem.bridgeUrl} target="_blank" rel="noopener noreferrer">
+                        <AprButton>
+                          <Text textAlign="center" fontWeight={500} fontSize={14}>
+                            Bridge Assets
+                          </Text>
+                        </AprButton>
+                      </a>
+                    ) : (
+                      <div>
+                        <AprButton onClick={toggleBridgeModal}>
+                          <Text textAlign="center" fontWeight={500} fontSize={14}>
+                            Bridge Assets
+                          </Text>
+                        </AprButton>
+                        <BridgeModal/>
+                      </div>
+                    )}
+                  </>
+                )}
+                <NetworkWrapper>
+                  <NetworkSwitch />
+                </NetworkWrapper>
+                {chainId === (chainIds.MAINNET as any) && (
+                  <a className="purple-btn" href={`${window.location.origin}/magic_cards/`}>
+                    <span>Magic Hall</span>
+                  </a>
+                )}
+                <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
+                  {account && userEthBalance ? (
+                    <>
+                      <BalanceText
+                        style={{ flexShrink: 0 }}
+                        pl="8px"
+                        pr="8px"
+                        mr="16px"
+                        fontWeight={450}
+                      >
+                        {tokenAmountToString(userEthBalance, 4)} {/*// @ts-ignore*/}
+                        {networkItem.currencySymbol}
+                      </BalanceText>
+                    </>
+                  ) : null}
+                  <Web3Status/>
+                </AccountElement>
+              </HeaderElement>
+            </HeaderControls>
+            <HeaderElementWrap>
+              <StyledMagicButton href={`${window.location.origin}/magic_cards/`}>
+                <MagicIcon/>
+              </StyledMagicButton>
+              <Settings/>
+              <Menu/>
+            </HeaderElementWrap>
+          </>
+        )}
       </RowBetweenStyled>
     </HeaderFrame>
+</HeaderWrapper>
+</>
   );
 }

@@ -1,12 +1,16 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
+import { useDispatch } from 'react-redux';
 import styled, { css } from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import { darken } from 'polished';
-import { Activity } from 'react-feather';
+import { Activity, X } from 'react-feather';
+
+import { useActiveWeb3React } from '../../hooks';
 import useENSName from '../../hooks/useENSName';
-import { useWalletModalToggle } from '../../state/application/hooks';
+import { useNetworkSwitchModalToggle, useWalletModalToggle } from '../../state/application/hooks';
 import { TransactionDetails } from '../../state/transactions/reducer';
+import { clearAllTransactions } from '../../state/transactions/actions';
 
 import Identicon from '../Identicon';
 import PortisIcon from '../../assets/images/portisIcon.png';
@@ -32,15 +36,23 @@ const IconWrapper = styled.div<{ size?: number }>`
   }
 `;
 
+const CloseIcon = styled(X)<{ onClick: (event: React.MouseEvent) => void }>`
+  cursor: pointer;
+`;
+
 const Web3StatusGeneric = styled(ButtonSecondary)`
   ${({ theme }) => theme.flexRowNoWrap}
-  width: 100%;
+  width: 240px;
   align-items: center;
   padding: 0.35rem 0.5rem;
   border-radius: 4px;
   cursor: pointer;
   user-select: none;
   height: 40px;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
 
   :focus {
     outline: none;
@@ -80,30 +92,40 @@ const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
   ${({ faded }) =>
     faded &&
     css`
-      background-color: ${({ theme }) => theme.primary1};
-      border: 1px solid ${({ theme }) => theme.primary1};
-      color: ${({ theme }) => theme.grey2};
+      background-color: transparent;
+      border: 1px solid ${({ theme }) => theme.whiteTransparent};
+      color: ${({ theme }) => theme.white};
 
       :hover,
       :focus {
-        border: 1px solid ${({ theme }) => darken(0.05, theme.yellow4)};
-        color: ${({ theme }) => darken(0.05, theme.primaryText1)};
+        border-color: ${({ theme }) => theme.purple};
+        background-color: transparent;
+        color: ${({ theme }) => theme.white};
       }
     `}
 `;
 
-const Web3StatusConnected = styled(Web3StatusGeneric)<{ pending?: boolean }>`
-  background-color: ${({ pending, theme }) => (pending ? theme.green5 : theme.primary1)};
-  border: 1px solid ${({ pending, theme }) => (pending ? theme.green5 : theme.primary1)};
-  color: ${({ pending, theme }) => (pending ? theme.white : theme.grey2)};
+const Web3StatusConnected = styled(Web3StatusGeneric)<{ pending?: boolean, disableClickOnConnected?: boolean }>`
+  background-color: ${({ pending, theme }) => (pending ? theme.green5 : theme.purple)};
+  border: 0 !important;
+  color: ${({ theme }) => theme.white};
   font-weight: 500;
-  :hover,
-  :focus {
-    background-color: ${({ pending, theme }) =>
-      darken(0.05, pending ? theme.green5 : theme.primary1)};
-    border: 1px solid transparent;
-    box-shadow: none;
-  }
+  ${({ disableClickOnConnected }) => disableClickOnConnected && `cursor: default`};
+  ${({ disableClickOnConnected }) => disableClickOnConnected
+    ? `
+      :hover,
+      :focus {
+        background-color: ${({ pending, theme }) => (pending ? theme.green5 : theme.purple)};
+        box-shadow: none;
+      }
+    `
+    : `
+      :hover,
+      :focus {
+        background-color: ${({ pending, theme }) => (pending ? theme.green5 : theme.purple)};
+        box-shadow: ${({ theme }) => theme.purpleBoxShadow};
+      }
+  `}
 `;
 
 const Text = styled.p`
@@ -132,10 +154,16 @@ function recentTransactionsOnly(a: TransactionDetails) {
   return new Date().getTime() - a.addedTime < 86_400_000;
 }
 
-export default function Web3Status() {
+export default function Web3Status({
+  disableClickOnConnected = false // used on the landing page
+}) {
   const { t } = useTranslation();
+
   const { active, account, connector, error } = useWeb3React();
+
+  const { chainId } = useActiveWeb3React();
   const contextNetwork = useWeb3React(NetworkContextName);
+  const dispatch = useDispatch();
 
   const { ENSName } = useENSName(account);
 
@@ -146,12 +174,22 @@ export default function Web3Status() {
     return txs.filter(recentTransactionsOnly).sort(newTranscationsFirst);
   }, [allTransactions]);
 
+  const clearAllTransactionsCallback = useCallback(
+    (event: React.MouseEvent) => {
+      event.stopPropagation();
+      dispatch(clearAllTransactions({ chainId }));
+    },
+    [dispatch, chainId],
+  );
+
   const pending = sortedRecentTransactions.filter(tx => !tx.receipt).map(tx => tx.hash);
   const confirmed = sortedRecentTransactions.filter(tx => tx.receipt).map(tx => tx.hash);
 
   const hasPendingTransactions = !!pending.length;
   // const hasSocks = useHasSocks()
+
   const toggleWalletModal = useWalletModalToggle();
+  const toggleNetworkSwitchModal = useNetworkSwitchModalToggle();
 
   // handle the logo we want to show with the account
   function getStatusIcon() {
@@ -189,12 +227,15 @@ export default function Web3Status() {
       return (
         <Web3StatusConnected
           id="web3-status-connected"
-          onClick={toggleWalletModal}
+          onClick={() => !disableClickOnConnected && toggleWalletModal()}
           pending={hasPendingTransactions}
+          disableClickOnConnected={disableClickOnConnected}
         >
           {hasPendingTransactions ? (
             <RowBetween>
-              <Text>{pending?.length} Pending</Text> <SingleLoader stroke="white" />
+              <SingleLoader stroke="white" />
+              <Text>{pending?.length} Pending</Text>
+              <CloseIcon onClick={clearAllTransactionsCallback} />
             </RowBetween>
           ) : (
             <>
@@ -207,7 +248,7 @@ export default function Web3Status() {
       );
     } else if (error) {
       return (
-        <Web3StatusError onClick={toggleWalletModal}>
+        <Web3StatusError onClick={toggleNetworkSwitchModal}>
           <NetworkIcon />
           <Text>{error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error'}</Text>
         </Web3StatusError>

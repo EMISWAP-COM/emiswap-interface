@@ -1,4 +1,27 @@
-export default {
+type DefaultCoinsToken = {
+  address: string;
+  chainId: number;
+  name: string;
+  symbol: string;
+  decimals: number;
+  logoURI?: string;
+  isLpToken?: boolean;
+};
+
+type DefaultCoins = {
+  name: string;
+  timestamp: string;
+  version: {
+    major: number;
+    minor: number;
+    patch: number;
+  };
+  keywords: string[];
+  tokens: DefaultCoinsToken[];
+  logoURI?: string;
+};
+
+const defaultCoins: DefaultCoins = {
   name: '1inch',
   timestamp: '2020-11-17T17:06:20+00:00',
   version: {
@@ -2185,7 +2208,7 @@ export default {
       logoURI: 'https://tokens.1inch.exchange/0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0.png',
     },
     {
-      address: '0xE380B174d75974Fd6f425b0A0E9c8489890Cd8F9',
+      address: '0x6b175474e89094c44da98b954eedeac495271d0f',
       chainId: 1,
       name: 'DaiStablecoin',
       symbol: 'DAI',
@@ -3797,7 +3820,7 @@ export default {
         'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x39eAE99E685906fF1C11A962a743440d0a1A6e09/logo.png',
     },
     {
-      address: '0xEe6CE89559d68719366C1a8150C9227910CA8B2F',
+      address: '0x7b5f80e135296144837d5427D562797f72F66754',
       chainId: 42,
       name: 'DaiStablecoin',
       symbol: 'DAI',
@@ -3805,7 +3828,7 @@ export default {
       logoURI: 'https://tokConens.1inch.exchange/0x6b175474e89094c44da98b954eedeac495271d0f.png',
     },
     {
-      address: '0x685E323f912C1a5FE2Ae089D1a743942C458A9E3',
+      address: '0x1c879c2681Cb1c63F6CEBc11A5F2B65Fc8AD23ba',
       chainId: 42,
       name: 'USDCoin',
       symbol: 'USDC',
@@ -3813,7 +3836,7 @@ export default {
       logoURI: 'https://tokens.1inch.exchange/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.png',
     },
     {
-      address: '0xcfc833888943ec8d4b31bccde4d235368014161b',
+      address: '0x1F319B3dE5606D48c46d1a983704f4C0188A1e53',
       chainId: 42,
       name: 'WrappedBTC',
       symbol: 'WBTC',
@@ -3828,6 +3851,32 @@ export default {
       decimals: 18,
       logoURI: 'https://tokens.1inch.exchange/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png',
     },
+    {
+      address: '0xa64C17e97771705e904C9d74C511d44b9Bc23974',
+      chainId: 42,
+      name: 'TetherUSD',
+      symbol: 'USDT',
+      decimals: 6,
+      logoURI: 'https://tokens.1inch.exchange/0xdac17f958d2ee523a2206206994597c13d831ec7.png',
+    },
+    {
+      address: '0xe37Ae239a84110009426071B7828A6fbd6be5F45',
+      chainId: 42,
+      name: 'EmiSwap - EmiDao Token',
+      symbol: 'ESW',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
+      address: '0x5a75a093747b72a0e14056352751edf03518031d',
+      chainId: 1,
+      name: 'EmiSwap - EmiDao Token',
+      symbol: 'ESW',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
     // {
     //   address: '0x0000000000000000000000000000000000000000',
     //   chainId: 42,
@@ -3836,6 +3885,511 @@ export default {
     //   decimals: 18,
     //   logoURI: 'https://tokens.1inch.exchange/0x2260fac5e5542a773aa44fbcfedf7c193bc2c599.png',
     // },
+
+    // LP tokens
+    {
+      address: '0x8228BF323C23193f9663aD5BEB651e11E8672c8b',
+      chainId: 42,
+      name: 'LP ESW-ETH',
+      symbol: 'ESWETH',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
+      address: '0xeb69C3Cb52e0002842d978b401f0e5784F8c0590',
+      chainId: 42,
+      name: 'LP WBTC-ETH',
+      symbol: 'WBTCETH',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
+      address: '0xf6a7D96Cc0278D60cDc00D82D87ACd38064d9176',
+      chainId: 1,
+      name: 'LP ESW-ETH',
+      symbol: 'ESWETH',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
+      address: '0xBFd4065A7004B1c8DE08e965969E306Be6bE78D4',
+      chainId: 1,
+      name: 'LP ESW-USDT',
+      symbol: 'ESWUSDT',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
+      address: '0xE04242A9421Cb7a3868D54803835Ce88B494F574',
+      chainId: 321,
+      name: 'LP KOFFEE-WKCS',
+      symbol: 'KOFFEEWKCS',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
+      address: '0xe95C9f40F3Bffa2ADe0fC274EF97b8e1138B2eFf',
+      chainId: 321,
+      name: 'LP KOFFEE-MUG',
+      symbol: 'KOFFEEMUG',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    //NEW Tokens
+    {
+      address: '0x28686f2f64C2Ed0591B2063A49De5b630D32284a',
+      chainId: 1,
+      name: 'LP USDC-USDT',
+      symbol: 'USDCUSDT',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
+      address: '0xd9e85DD2f43E92eFB6F9d8e62Db4bbDB47527282',
+      chainId: 1,
+      name: 'LP USDT-BDQ',
+      symbol: 'USDTBDQ',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
+      address: '0x527721ae4e9ac7286f3bbac9ca49c4e659c59b49',
+      chainId: 1,
+      name: 'LP USDC-FLEX',
+      symbol: 'USDCFLEX',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
+      address: '0x0d7dea5922535087078dd3d7c554ea9f2655d4cb',
+      chainId: 1,
+      name: 'BerezkaFLEX',
+      symbol: 'FLEX',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x0d7dea5922535087078dd3d7c554ea9f2655d4cb.png',
+    },
+    {
+      address: '0xf6ce9bfa82d1088d3257a76ec2e0ce1c8060bf8c',
+      chainId: 1,
+      name: 'BerezkaDepositQToken',
+      symbol: 'BDQ',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0xf6ce9bfa82d1088d3257a76ec2e0ce1c8060bf8c.png',
+    },
+    {
+      address: '0xf1efd79fcee1f1cd2871a3de134eb950d5c19ec4',
+      chainId: 1,
+      name: 'LP ESW-DAI',
+      symbol: 'ESWDAI',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
+      address: '0x2580c9c5a57975b5820e471ef141deffd729d5d3',
+      chainId: 1,
+      name: 'LP ESW-BTC',
+      symbol: 'ESWBTC',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    /*{
+      address: '0x5a75a093747b72a0e14056352751edf03518031d',
+      chainId: 1,
+      name: 'ESW V3',
+      symbol: 'ESWV3',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },*/
+    /*{
+      address: '0xf6a7d96cc0278d60cdc00d82d87acd38064d9176',
+      chainId: 1,
+      name: 'LP ESW - ETH V2',
+      symbol: 'ESWETHV2',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0xf6a7d96cc0278d60cdc00d82d87acd38064d9176.png',
+    },
+    {
+      address: '0x22B8CCdeEEACB1F3879E36e06af413d44FD79F01',
+      chainId: 1,
+      name: 'LP ETH - USDT',
+      symbol: 'ETHUSDT',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x22B8CCdeEEACB1F3879E36e06af413d44FD79F01.png',
+    },*/
+    /*{
+      address: '0x527721ae4e9ac7286f3bbac9ca49c4e659c59b49',
+      chainId: 1,
+      name: 'LP USDC - FLEX V3',
+      symbol: 'USDCFLEXV3',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x527721ae4e9ac7286f3bbac9ca49c4e659c59b49.png',
+    },*/
+    {
+      address: '0xc02AEE6E383b53b4b04dFBB9C5C76eBc2751522a',
+      chainId: 1,
+      decimals: 18,
+      name: 'LP ESW',
+      symbol: 'ESW',
+    },
+    {
+      address: '0x4446fc4eb47f2f6586f9faab68b3498f86c07521',
+      chainId: 321,
+      decimals: 18,
+      name: 'WKCS',
+      symbol: 'WKCS',
+    },
+    {
+      address: '0xc0ffee0000921eb8dd7d506d4de8d5b79b856157',
+      chainId: 321,
+      decimals: 18,
+      name: 'KOFFEE',
+      symbol: 'KOFFEE',
+    },
+    {
+      address: '0x8933a6e58eEeE063B5fd3221F2E1D17821Dc1031',
+      chainId: 321,
+      name: 'EmiSwap - EmiDao Token',
+      symbol: 'ESW',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
+      address: '0x0000000000000000000000000000000000000000',
+      chainId: 321,
+      name: 'KCS',
+      decimals: 18,
+      symbol: 'KCS',
+    },
+    {
+      address: '0x980a5afef3d17ad98635f6c5aebcbaeded3c3430',
+      chainId: 321,
+      name: 'USDC',
+      decimals: 6,
+      symbol: 'USDC',
+    },
+    {
+      address: '0x0039f574ee5cc39bdd162e9a88e3eb1f111baf48',
+      chainId: 321,
+      name: 'USDT',
+      decimals: 6,
+      symbol: 'USDT',
+    },
+    {
+      address: '0x6665d66afa48f527d86623723342cfa258cb8666',
+      chainId: 321,
+      name: 'KuDoge',
+      decimals: 18,
+      symbol: 'KuDo',
+      logoURI:
+        'https://raw.githubusercontent.com/KoffeeSwap/kcc-assets/main/mainnet/tokens/0x6665D66aFA48F527d86623723342CfA258cB8666/logo.png',
+    },
+    {
+      address: '0x1b465775469c71b898bb51b53b2d4464b7cd3448',
+      chainId: 321,
+      name: 'KuDOS',
+      decimals: 18,
+      symbol: 'KuDOS',
+      logoURI:
+        'https://raw.githubusercontent.com/KoffeeSwap/kcc-assets/main/mainnet/tokens/0x1B465775469C71b898Bb51B53b2D4464b7Cd3448/logo.png',
+    },
+    {
+      address: '0xfc56a7e70f6c970538020cc39939929b4d393f1f',
+      chainId: 321,
+      name: 'KUST',
+      decimals: 18,
+      symbol: 'KUST',
+      logoURI:
+        'https://raw.githubusercontent.com/KoffeeSwap/kcc-assets/main/mainnet/tokens/0xfC56A7E70F6c970538020cc39939929b4d393F1F/logo.png',
+    },
+    {
+      address: '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
+      chainId: 137,
+      decimals: 18,
+      name: 'WMATIC',
+      symbol: 'WMATIC',
+    },
+    {
+      address: '0xd2A2a353D28e4833FAFfC882f6649c9c884a7D8f',
+      chainId: 137,
+      name: 'EmiSwap - EmiDao Token',
+      symbol: 'ESW',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
+      address: '0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
+      chainId: 137,
+      name: 'USDT',
+      decimals: 6,
+      symbol: 'USDT',
+    },
+    {
+      address: '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
+      chainId: 137,
+      name: 'USDC',
+      decimals: 6,
+      symbol: 'USDC',
+    },
+    {
+      address: '0x8f3cf7ad23cd3cadbd9735aff958023239c6a063',
+      chainId: 137,
+      name: 'DAI',
+      decimals: 18,
+      symbol: 'DAI',
+    },
+    {
+      address: '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619',
+      chainId: 137,
+      name: 'ETH',
+      decimals: 18,
+      symbol: 'ETH',
+    },
+    {
+      address: '0x055a93a5624b386ae5eace5906b61eec8ddffa8b',
+      chainId: 137,
+      name: 'LP WETH-ESW',
+      symbol: 'WETHESW',
+      decimals: 18,
+    },
+    {
+      address: '0x9c263902f5c34cefb81e4916148c4fcb68f4674d',
+      chainId: 137,
+      name: 'LP WMATIC-USDT',
+      symbol: 'WMATICUSDT',
+      decimals: 18,
+    },
+    {
+      address: '0x214ce506b042e55999dac132416bfbc952c5388c',
+      chainId: 137,
+      name: 'LP WMATIC-ESW',
+      symbol: 'WMATICESW',
+      decimals: 18,
+    },
+    {
+      address: '0xd47fef0cd3caba8f478143f666d70f2fafd3db3b',
+      chainId: 137,
+      name: 'LP DAI-USDT',
+      symbol: 'DAIUSDT',
+      decimals: 18,
+    },
+    {
+      address: '0xe1b90c9b6f1410c07427056d8316eee0be9ad91c',
+      chainId: 137,
+      name: 'LP USDT-ESW',
+      symbol: 'USDTESW',
+      decimals: 18,
+    },
+    /*{
+      address: '0x5e77DB14D840E048e6dad72CC3AE223C45232678',
+      chainId: 137,
+      name: 'LP USDC-USDT',
+      symbol: 'USDCUSDT',
+      decimals: 18,
+    },*/
+    {
+      address: '0xe541d1b5531b6cc64121a76b6c25f0af707c82ae',
+      chainId: 137,
+      name: 'LP WMATIC-USDC',
+      symbol: 'WMATICUSDC',
+      decimals: 18,
+    },
+    {
+      address: '0x9f4da0bc5ebd2c7432d561f31483e09d2394040f',
+      chainId: 137,
+      name: 'LP MATIC-WETH',
+      symbol: 'MATICWETH',
+      decimals: 18,
+    },
+    {
+      address: '0x479062c2dfd9b758d3fdcf916c5f6aebcf51ad97',
+      chainId: 137,
+      name: 'LP WETH-USDT',
+      symbol: 'WETHUSDT',
+      decimals: 18,
+    },
+    {
+      address: '0xbd15365b5883382A3ebFfDB0C8780F9881eff71e',
+      chainId: 80001,
+      decimals: 18,
+      name: 'WMATIC',
+      symbol: 'WMATIC',
+    },
+    {
+      address: '0x11430f40919803dFE42A725EA4d4b7D6e013279C',
+      chainId: 80001,
+      name: 'EmiSwap - EmiDao Token',
+      symbol: 'ESW',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
+      address: '0x104F372E54A1cA4a15a7CD9Be7B3CaA02E81428D',
+      chainId: 80001,
+      name: 'USDT',
+      decimals: 6,
+      symbol: 'USDT',
+    },
+    {
+      address: '0x37e103a3BFabC8Fb542BA24C7e4594E5534806A3',
+      chainId: 80001,
+      name: 'USDC',
+      decimals: 6,
+      symbol: 'USDC',
+    },
+    {
+      address: '0xFdbb9d38406ea5662aa522F0b849591D589E6aEa',
+      chainId: 80001,
+      name: 'DAI',
+      decimals: 18,
+      symbol: 'DAI',
+    },
+    {
+      address: '0xF3580B709376DD58DEBA80b2728EDa85202b0a6F',
+      chainId: 80001,
+      name: 'WBTC ',
+      decimals: 8,
+      symbol: 'WBTC',
+    },
+    {
+      address: '0x80dA7377E82628542eDc10fDef0815A901c44E88',
+      chainId: 80001,
+      name: 'WETH',
+      decimals: 18,
+      symbol: 'WETH',
+    },
+    {
+      address: '0x0954bbA74C6a04F94897b28018a634627fDDA791',
+      chainId: 80001,
+      name: 'LP WETH-ESW',
+      symbol: 'WETHESW',
+      decimals: 18,
+    },
+    {
+      address: '0xe5fE5647b2aa354E559f1AE4E5851FA13Ed30138',
+      chainId: 80001,
+      name: 'LP WMATIC-USDT',
+      symbol: 'WMATICUSDT',
+      decimals: 18,
+    },
+    /*{
+      address: '0xe051eE93C8FD56F8bFcFF5D13036ac2B5b1182Db',
+      chainId: 80001,
+      name: 'LP WMATIC-ESW ',
+      symbol: 'WMATICESW ',
+      decimals: 18,
+    },*/
+    {
+      address: '0x5C27D3eB1DfAB3eF615a11aE8dA5f13933955689',
+      chainId: 80001,
+      name: 'LP DAI-USDT',
+      symbol: 'DAIUSDT',
+      decimals: 18,
+    },
+    {
+      address: '0x98568B9CbAC5561260EA0662e5d4631A155C045d',
+      chainId: 80001,
+      name: 'LP USDT-ESW',
+      symbol: 'USDTESW',
+      decimals: 18,
+    },
+    {
+      address: '0x5e77DB14D840E048e6dad72CC3AE223C45232678',
+      chainId: 80001,
+      name: 'LP USDC-USDT',
+      symbol: 'USDCUSDT',
+      decimals: 18,
+    },
+    {
+      address: '0xd6cf822BF1D8dDEdd82E32090B7411949DCf1250',
+      chainId: 80001,
+      name: 'LP WMATIC-USDC',
+      symbol: 'WMATICUSDC',
+      decimals: 18,
+    },
+    /*{
+      address: '0x853ee4b2a13f8a742d64c8f088be7ba2131f670d',
+      chainId: 137,
+      name: 'LP WETH-USDC',
+      symbol: 'WETH-USDC',
+      decimals: 18,
+    },
+    {
+      address: '0xadbf1854e5883eb8aa7baf50705338739e558e5b',
+      chainId: 137,
+      name: 'LP WETH-WMATIC',
+      symbol: 'WETH-WMATIC',
+      decimals: 18,
+    },
+    {
+      address: '0xdc9232e2df177d7a12fdff6ecbab114e2231198d',
+      chainId: 137,
+      name: 'LP WETH-WBTC',
+      symbol: 'WETH-WBTC',
+      decimals: 18,
+    },
+    {
+      address: '0x2cf7252e74036d1da831d11089d326296e64a728',
+      chainId: 137,
+      name: 'LP USDC-USDT',
+      symbol: 'USDC-USDT',
+      decimals: 18,
+    },
+    {
+      address: '0x604229c960e5cacf2aaeac8be68ac07ba9df81c3',
+      chainId: 137,
+      name: 'LP WMATIC-USDT',
+      symbol: 'WMATIC-USDT',
+      decimals: 18,
+    },*/
+    {
+      address: '0xc7198437980c041c805A1EDcbA50c1Ce5db95118',
+      chainId: 43114,
+      name: 'USDT',
+      decimals: 6,
+      symbol: 'USDT',
+    },
+    {
+      address: '0xd586E7F844cEa2F87f50152665BCbc2C279D8d70',
+      chainId: 43114,
+      name: 'DAI',
+      decimals: 18,
+      symbol: 'DAI',
+    },
   ],
   logoURI: 'https://1inch.exchange/assets/images/logo.png',
+};
+
+export default defaultCoins;
+
+export const mustVisibleAddresses = {
+  kucoin: [
+    '0x4446fc4eb47f2f6586f9faab68b3498f86c07521',
+    '0xc0ffee0000921eb8dd7d506d4de8d5b79b856157',
+    '0x980a5afef3d17ad98635f6c5aebcbaeded3c3430',
+    '0x0039f574ee5cc39bdd162e9a88e3eb1f111baf48',
+    '0x6665d66afa48f527d86623723342cfa258cb8666',
+    '0xfc56a7e70f6c970538020cc39939929b4d393f1f',
+    '0x1b465775469c71b898bb51b53b2d4464b7cd3448',
+  ],
+  polygon: [''],
 };

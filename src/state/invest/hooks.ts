@@ -20,10 +20,13 @@ import {
   switchCurrencies,
   typeInput,
 } from './actions';
-import { InvestState } from './reducer';
 import { TokenAddressMap, WrappedTokenInfo } from '../lists/hooks';
 import { ESW } from '../../constants';
-import { investMinESW } from '../../constants/invest';
+import { investMaxESW } from '../../constants/invest';
+import { maxAmountSpendInvest } from '../../utils/maxAmountSpend';
+import { InvestState } from './reducer';
+import { LaunchpadState } from '../launchpad/reducer';
+import chainIds from '../../constants/chainIds';
 
 const num2str = (value: number, decimals: number): string => {
   return value.toLocaleString('en', {
@@ -41,6 +44,11 @@ const EMPTY_LIST: TokenAddressMap = {
   [ChainId.ROPSTEN]: {},
   [ChainId.GÖRLI]: {},
   [ChainId.MAINNET]: {},
+  // @ts-ignore
+  [chainIds.KUCOIN]: {},
+  [chainIds.POLYGON]: {},
+  [chainIds.MUMBAI]: {},
+  [chainIds.AVALANCHE]: {},
 };
 
 export function useInvestState(): AppState['invest'] {
@@ -136,6 +144,8 @@ export function useDerivedInvestInfo(): {
   parsedAmount: TokenAmount | undefined;
   parsedOutputAmount: TokenAmount | undefined;
   error?: string;
+  // isSmallInvestment: boolean;
+  isMaxInvestment: boolean | undefined;
 } {
   const { account } = useActiveWeb3React();
 
@@ -146,6 +156,8 @@ export function useDerivedInvestInfo(): {
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
   } = useInvestState();
+
+  const launchpadState = useSelector((state: AppState) => state.launchpad as LaunchpadState);
 
   const inputCurrency = useCurrency(inputCurrencyId);
   const outputCurrency = useCurrency(outputCurrencyId);
@@ -175,32 +187,56 @@ export function useDerivedInvestInfo(): {
     [Field.OUTPUT]: outputCurrency ?? undefined,
   };
 
+  // const isSmallInvestment = parsedOutputAmount && parsedOutputAmount.lessThan(JSBI.BigInt(investMinESW));
+  const isMaxInvestment =
+    parsedOutputAmount && parsedOutputAmount.greaterThan(JSBI.BigInt(investMaxESW));
+
+  const maxAmountInput: TokenAmount | undefined = maxAmountSpendInvest(
+    currencyBalances[Field.INPUT],
+  );
+
+  const notEnoughBalance =
+    maxAmountInput && parsedAmount && JSBI.lessThan(maxAmountInput.raw, parsedAmount.raw);
+
   let error: string | undefined;
   if (!account) {
     error = 'Connect Wallet';
+  }
+
+  if (Object.values(currencies).includes(undefined)) {
+    error = error ?? 'Select a token';
   }
 
   if (!parsedAmount) {
     error = error ?? 'Enter amount';
   }
 
-  if (!currencies[Field.INPUT] || !currencies[Field.OUTPUT]) {
-    error = error ?? 'Select a token';
+  if (Number(typedValue) > 0 && Number(outputAmount) === 0) {
+    error = error ?? 'Try to buy less ESW, you are reaching the limits of our private';
   }
+  // if (!currencies[Field.INPUT] || !currencies[Field.OUTPUT]) {
+  //   error = error ?? 'Select a token';
+  // }
 
   if (!to) {
     error = error ?? 'Enter a recipient';
   }
 
-  // compare input balance to max input based on version
-  const [balanceIn, amountIn] = [currencyBalances[Field.INPUT], null];
-
-  if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
-    error = 'Insufficient ' + amountIn.token.symbol + ' balance';
+  if (notEnoughBalance) {
+    error = 'Insufficient ' + maxAmountInput.token.symbol + ' balance';
+    console.log('insufficient', error);
   }
 
-  if (parsedOutputAmount && parsedOutputAmount.lessThan(JSBI.BigInt(investMinESW))) {
+  /*if (isSmallInvestment) {
     error = "We've moved to the private sale stage with a minimum investment of $25,000";
+  }*/
+
+  if (isMaxInvestment) {
+    error = 'Sorry, there’s a limit of $500 purchase with one wallet';
+  }
+
+  if (launchpadState.user_deposits_count > 0) {
+    error = 'You’ve already made a purchase. Users can not join launchpad sales several times';
   }
 
   if (parsedAmount && !parsedOutputAmount) {
@@ -213,6 +249,8 @@ export function useDerivedInvestInfo(): {
     parsedAmount,
     parsedOutputAmount,
     error,
+    // isSmallInvestment,
+    isMaxInvestment,
   };
 }
 
@@ -336,8 +374,9 @@ export function listToTokenMap(list: Token[]): TokenAddressMap {
 }
 
 export function useCoinCounter(): number {
-  const { account, library } = useActiveWeb3React();
-  const contract: Contract | null = getCrowdsaleContract(library, account);
+  const { account, library, chainId } = useActiveWeb3React();
+  // @ts-ignore
+  const contract: Contract | null = getCrowdsaleContract(library, account, chainId);
   try {
     return contract.coinCounter();
   } catch (error) {
@@ -347,8 +386,9 @@ export function useCoinCounter(): number {
 }
 
 export function useCoin(index: number) {
-  const { account, library } = useActiveWeb3React();
-  const contract: Contract | null = getCrowdsaleContract(library, account);
+  const { account, library, chainId } = useActiveWeb3React();
+  // @ts-ignore
+  const contract: Contract | null = getCrowdsaleContract(library, account, chainId);
   try {
     return contract.coin(index);
   } catch (error) {
@@ -359,7 +399,8 @@ export function useCoin(index: number) {
 export function useBuyCoinAmount() {
   const dispatch = useDispatch<AppDispatch>();
   const { chainId, account, library } = useActiveWeb3React();
-  const contract: Contract | null = getCrowdsaleContract(library, account);
+  // @ts-ignore
+  const contract: Contract | null = getCrowdsaleContract(library, account, chainId);
 
   const executeBuyCoinAmount = useCallback(
     (field: Field, currency?: Token, amount?: number) => {
@@ -405,8 +446,9 @@ export function useBuyCoinAmount() {
 }
 
 export function useCoinGetRate(index: string) {
-  const { account, library } = useActiveWeb3React();
-  const contract: Contract | null = getCrowdsaleContract(library, account);
+  const { account, library, chainId } = useActiveWeb3React();
+  // @ts-ignore
+  const contract: Contract | null = getCrowdsaleContract(library, account, chainId);
   try {
     return contract.coinRate(index);
   } catch (error) {

@@ -8,7 +8,7 @@ import QuestionHelper from '../../components/QuestionHelper';
 import { Input as NumericalInput } from '../../components/NumericalInput';
 import { InputRow } from '../../components/CurrencyInputPanel';
 import { CursorPointer, TYPE } from '../../theme';
-import { darken } from 'polished';
+import { lighten } from 'polished';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../state';
 import { Image } from '../../components/CurrencyLogo';
@@ -34,8 +34,7 @@ const StyledArrowLeft = styled(ArrowLeft)`
 
 const Container = styled.div<{ hideInput: boolean }>`
   border-radius: 8px;
-  border: 1px solid ${({ theme }) => theme.grey1};
-  background-color: ${({ theme }) => theme.bg1};
+  border: 1px solid ${({ theme }) => theme.border1};
 `;
 
 const LabelRow = styled.div`
@@ -53,8 +52,8 @@ const TokenInfoBlock = styled.div`
   height: 2rem;
   font-size: 20px;
   font-weight: 500;
-  background-color: ${({ theme }) => theme.grey5};
-  color: ${({ theme }) => theme.grey2};
+  background-color: ${({ theme }) => theme.darkGrey};
+  color: ${({ theme }) => theme.white};
   border-radius: 12px;
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.075);
   outline: none;
@@ -70,7 +69,7 @@ const TokenInfoBlock = styled.div`
 
   :focus,
   :hover {
-    background-color: ${({ theme }) => darken(0.05, theme.grey5)};
+    background-color: ${({ theme }) => lighten(0.1, theme.darkGrey)};
   }
 `;
 
@@ -81,7 +80,7 @@ const StyledTokenName = styled.span`
 
 const StyledBalanceMax = styled.button`
   height: 2rem;
-  background-color: ${({ theme }) => theme.primary5};
+  background-color: ${({ theme }) => theme.red};
   border: 1px solid transparent;
   border-radius: 0.5rem;
   font-size: 0.875rem;
@@ -90,7 +89,7 @@ const StyledBalanceMax = styled.button`
   font-weight: 500;
   cursor: pointer;
   margin-right: 0.5rem;
-  color: ${({ theme }) => theme.red3};
+  color: ${({ theme }) => theme.white};
 
   :hover {
     border: 1px solid ${({ theme }) => theme.red3};
@@ -114,15 +113,17 @@ export default function Claim({
   },
 }) {
   const theme = useContext(ThemeContext);
+
   const [typedValue, setTypedValue] = useState('0');
-  const { account } = useActiveWeb3React();
-  const contract = useESWContract();
+  const [isCollectProcessing, setCollectProcessing] = useState(false);
+
+  const { account, chainId } = useActiveWeb3React();
+  const contract = useESWContract(chainId);
   const { claimCallback } = useClaim();
   const addTransaction = useTransactionAdder();
   const { available: unfrozenESWbalance } = useSelector(
     (state: AppState) => state.cabinets.balance,
   );
-
   const handleAuth = useAuth();
   const dispatch = useDispatch();
 
@@ -144,71 +145,83 @@ export default function Claim({
   };
 
   const onSuccess = () => {
+    setCollectProcessing(false);
+
     toggleWalletModal();
     return { state: 'sent' };
   };
 
-  const onError = error => {
-    if (error?.code) {
-      return { state: 'errored', error_message: `${error.code} - ${error.message}` };
+  const onError = (error, args = []) => {
+    setCollectProcessing(false);
+
+    if (error?.code === 4001) {
+      return;
     }
 
-    throw error;
+    dispatch(
+      addPopup({
+        key: 'useClaim',
+        content: {
+          status: {
+            name: error.message,
+            isError: true,
+          },
+        },
+      }),
+    );
+
+    // Для тестирования
+    console.log(`
+        Account: ${account}\n
+        ChainId: ${chainId}\n
+        Contract address: ${contract.address}\n
+        Args: ${args}\n
+        Error message: ${error.message}\n
+    `);
   };
 
-  const handleSubmit = () => {
-    claimCallback(tokenName, +typedValue).then(data => {
-      const { signature, nonce, amount, user_id, id } = data;
-      const args = [account, amount, nonce, `0x${signature}`];
+  const handleSubmit = async () => {
+    setCollectProcessing(true);
 
-      contract.estimateGas
-        .mintSigned(...args)
-        .then(gasLimit => {
-          return contract
-            .mintSigned(...args, { gasLimit })
-            .then(response => {
-              console.log('mintSigned response', response);
-              addTransaction(response);
-              return response.hash;
-            })
-            .then(onSuccess)
-            .catch(onError);
-        })
-        .catch(error => {
-          console.log('contract.mintSigned unexpected error', error);
-          dispatch(
-            addPopup({
-              key: 'useClaim',
-              content: {
-                status: {
-                  name: error.message,
-                  isError: true,
-                },
-              },
-            }),
-          );
-          return { state: 'errored', error_message: error.message };
-        })
-        .then(transactionResult => {
-          const transactionStateEndPoint = `${baseUrl}/v1/private/users/${user_id}/transactions/${id}`;
+    let authToken;
 
-          handleAuth().then(token => {
+    try {
+      authToken = await handleAuth();
+    } catch (e) {
+      setCollectProcessing(false);
+      throw e;
+    }
+
+    claimCallback(tokenName, +typedValue)
+      .then(data => {
+        const { signature, nonce, amount, user_id, id } = data;
+        const args = [account, amount, nonce, `0x${signature}`];
+
+        return contract.estimateGas
+          .mintSigned(...args)
+          .then(gasLimit => contract.mintSigned(...args, { gasLimit }))
+          .then(contractResponse => addTransaction(contractResponse))
+          .then(onSuccess)
+          .catch(error => {
+            onError(error, args);
+            return { state: 'errored', error_message: `${error?.code} - ${error.message}` };
+          })
+          .then(transactionResult => {
+            const transactionStateEndPoint = `${baseUrl}/v1/private/users/${user_id}/transactions/${id}`;
             fetchWrapper.put(transactionStateEndPoint, {
               headers: {
-                authorization: token,
+                authorization: authToken,
               },
               body: JSON.stringify(transactionResult),
             });
           });
-        });
-    });
+      })
+      .catch(error => {
+        onError(error, [{method: 'claimCallback'}]);
+      });
   };
 
   const isTransactionDisabled = () => {
-    console.log(unfrozenESWbalance.ESW, formattedUnfrozenBalance, typedValue);
-    // console.log(
-    //   unfrozenESWbalance.ESW
-    //   .toString(), parseUnits(typedValue.toString(), 18))
     if (unfrozenESWbalance.ESW && typedValue) {
       return (
         parseUnits(unfrozenESWbalance.ESW.toString(), 18).lt(
@@ -225,7 +238,7 @@ export default function Claim({
         <HistoryLink to="/pool">
           <StyledArrowLeft />
         </HistoryLink>
-        <Tittle> Collect to my wallet</Tittle>
+        <Tittle>Collect to my wallet</Tittle>
         <QuestionHelper
           text={
             "Press “Collect” to transfer your ESW tokens from the EmiSwap platform to your wallet. You'll continue getting a share from EmiSwap's trading volume in this case as well."
@@ -237,7 +250,7 @@ export default function Claim({
           <CursorPointer>
             <TYPE.body
               onClick={onMax}
-              color={theme.text2}
+              color={theme.darkWhite}
               fontWeight={500}
               fontSize={14}
               style={{ display: 'inline' }}
@@ -269,7 +282,7 @@ export default function Claim({
       </Container>
       <ButtonPrimary
         style={{ marginTop: '20px' }}
-        disabled={isTransactionDisabled()}
+        disabled={true || isTransactionDisabled() || isCollectProcessing}
         onClick={handleSubmit}
       >
         Collect

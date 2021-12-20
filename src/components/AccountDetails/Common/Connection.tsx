@@ -4,7 +4,7 @@ import { WalletAction } from '../styleds';
 import styled from 'styled-components/macro';
 import { useActiveWeb3React } from '../../../hooks';
 import { StatusIcon } from '../StatusIcon';
-import { getEtherscanLink, shortenAddress } from '../../../utils';
+import { getExplorerLink, shortenAddress } from '../../../utils';
 import { useHistory } from 'react-router';
 import { useWalletModalToggle } from '../../../state/application/hooks';
 import { ExternalLink as LinkIcon } from 'react-feather';
@@ -12,11 +12,16 @@ import Copy from '../Copy';
 import { ExternalLink } from '../../../theme';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
+import { darken } from 'polished';
+import { ChangeAddress } from './ChangeAddress';
+import { useIsEthActive, useIsKuCoinActive, useNetworkData } from '../../../hooks/Coins';
+import { MessageTooltip } from '../../../base/ui';
+import { css } from 'styled-components';
 
 const Container = styled.div`
   font-size: 13px;
-  color: ${({ theme }) => theme.grey6};
-  border: 1px solid #dbdede;
+  color: ${({ theme }) => theme.darkText};
+  border: 1px solid ${({ theme }) => theme.darkGrey};
   border-radius: 12px;
 
   @media screen and (max-width: 1200px) {
@@ -33,7 +38,7 @@ const Main = styled.div`
 `;
 
 const DarkText = styled.span`
-  color: ${({ theme }) => theme.grey3};
+  color: ${({ theme }) => theme.white};
 `;
 
 const Account = styled(DarkText)`
@@ -42,14 +47,19 @@ const Account = styled(DarkText)`
 
 const WalletInfo = styled.div`
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  color: ${({ theme }) => theme.white};
 `;
 
 const Wallet = styled.div`
-  margin-top: 5px;
   display: flex;
+  width: 100%;
+  margin-top: 5px;
+  margin-bottom: 5px;
 `;
+
 const BalanceWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -63,7 +73,7 @@ const BalanceWrapper = styled.div`
 
 const BalanceItem = styled.div`
   padding: 14px;
-  background: #f7f8fa;
+  background: ${({ theme }) => theme.darkGrey};
 `;
 const BalanceValue = styled(DarkText)`
   font-size: 16px;
@@ -85,17 +95,79 @@ const Options = styled.div`
 const ActionBtn = styled(WalletAction)`
   height: 32px;
 `;
-const CollectBtn = styled(ActionBtn)`
+
+const ChangeActionsBlock = styled.div`
+  display: flex;
+
+  @media screen and (max-width: 800px) {
+    order: 2;
+    width: 100%;
+    margin: 8px 0 16px 0;
+  }
+`;
+
+const ChangeWalletMessageTooltip = styled(MessageTooltip)`
+  max-width: 400px !important;
+
+  &:before {
+    display: none;
+  }
+`;
+
+const ChangeWalletBtn = styled(ActionBtn)<{ inactive: boolean }>`
+  margin-left: 8px !important;
+  background-color: ${({ theme }) => theme.purple} !important;
+  border: 1px solid ${({ theme }) => theme.purple} !important;
+  color: ${({ inactive }) => (inactive ? '#615C69' : '#FFFFFF')};
+
+  &:hover,
+  &:focus,
+  &:active {
+    background: ${({ theme, inactive }) => (inactive ? 'transparent' : theme.purple)} !important;
+    box-shadow: none;
+  }
+
+  ${({ inactive }) => inactive && css`
+    background-color: transparent !important;
+    color: #615C69;
+    cursor: auto;
+    border: 1px solid rgb(97, 92, 105) !important;
+    opacity: 1 !important;
+    text-decoration: none !important;
+  `} @media screen and(max-width: 800 px) {
+  width: calc(50% - 5px);
+  margin-left: auto;
+}
+`;
+
+const CollectBtn = styled(ActionBtn)<{ inactive?: boolean }>`
   min-width: 180px;
   margin-bottom: 10px;
+  
+  &:hover,
+  &:focus,
+  &:active {
+    background: ${({ theme, inactive }) => (inactive ? 'transparent' : theme.purple)} !important;
+    box-shadow: none;
+  }
+  
+  ${({ inactive }) => inactive && css`
+    background-color: transparent !important;
+    color: #615C69;
+    cursor: auto;
+    border: 1px solid rgb(97, 92, 105) !important;
+    opacity: 1 !important;
+    text-decoration: none !important;
+  `}
+  
 `;
 
 const AccountControl = styled.div`
   display: flex;
   height: 53px;
-  font-weight: 450;
+  font-weight: 400;
   font-size: 1.25rem;
-  background: #f7f8fa;
+  background: ${({ theme }) => theme.darkGrey};
 
   a:hover {
     text-decoration: underline;
@@ -118,11 +190,12 @@ const AccountControl = styled.div`
 
 const AddressLink = styled(ExternalLink)`
   font-size: 0.825rem;
-  color: ${({ theme }) => theme.text3};
+  color: ${({ theme }) => theme.blue};
   margin-left: 1rem;
   display: flex;
+
   :hover {
-    color: ${({ theme }) => theme.text2};
+    color: ${({ theme }) => darken(0.3, theme.blue)};
   }
 `;
 
@@ -133,8 +206,18 @@ interface Props {
 
 export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) => {
   const { chainId, account, connector } = useActiveWeb3React();
+  const { blockExplorerName } = useNetworkData();
+
+  const history = useHistory();
+  const toggle = useWalletModalToggle();
+
+  const isEthereumActive = useIsEthActive();
+  const isKuCoinActive = useIsKuCoinActive();
+  const isEnableChangeWallet = !isKuCoinActive;
 
   const balance = useSelector((state: AppState) => state.cabinets.balance);
+
+  const isCollectDisabled = true || !Number(balance?.available.ESW);
 
   const sumESW = () => {
     const walletESW = balance?.wallet.ESW || 0;
@@ -146,76 +229,107 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
     return convertBigDecimal(sum.toString());
   };
 
-  const history = useHistory();
-  const toggle = useWalletModalToggle();
+  const handleChangeWallet = () => {
+    if (!isEnableChangeWallet) {
+      return;
+    }
+
+    openOptions();
+  };
 
   const handleClaim = () => {
+    if (isCollectDisabled) {
+      return;
+    }
+
     toggle();
     history.push('/claim/ESW');
   };
-
-  const isCollectDisabled = !balance?.available.ESW;
 
   return (
     <>
       <Container>
         <Main>
           <WalletInfo>
-            <span>
-              Connected with <DarkText>{formatConnectorName(connector)}</DarkText>
-            </span>
-            <ActionBtn
-              onClick={() => {
-                openOptions();
-              }}
-            >
-              Change
-            </ActionBtn>
+            <span>Connected with {formatConnectorName(connector)}</span>
+            <ChangeActionsBlock>
+              <ChangeAddress openOptions={openOptions}/>
+              <ChangeWalletMessageTooltip
+                disableTooltip={isEnableChangeWallet}
+                whiteSpace={'normal'}
+                position={{ top: '4px', left: '284px' }}
+                text="Only Metamask wallet is supported. You need to change the address inside the Metamask wallet."
+              >
+                <ChangeWalletBtn inactive={!isEnableChangeWallet} onClick={handleChangeWallet}>
+                  Change wallet
+                </ChangeWalletBtn>
+              </ChangeWalletMessageTooltip>
+            </ChangeActionsBlock>
+            <Wallet>
+              <StatusIcon connectorName={connector}/>
+              <Account>{ENSName || shortenAddress(account)}</Account>
+            </Wallet>
           </WalletInfo>
-          <Wallet>
-            <StatusIcon connectorName={connector} />
-            <Account>{ENSName || shortenAddress(account)}</Account>
-          </Wallet>
-          <BalanceWrapper>
-            <BalanceItem>
-              <span>Total</span>
-              <div>
-                <BalanceValue>{sumESW()}</BalanceValue>&nbsp;ESW
-              </div>
-            </BalanceItem>
-            <BalanceItem>
-              <span>Wallet</span>
-              <div>
-                <BalanceValue>{convertBigDecimal(balance?.wallet.ESW)}</BalanceValue>&nbsp;ESW
-              </div>
-            </BalanceItem>
-            <BalanceItem>
-              <span>Locked at Emiswap </span>
-              <div>
-                <BalanceValue>{convertBigDecimal(balance?.total.locked.ESW)}</BalanceValue>&nbsp;ESW
-              </div>{' '}
-            </BalanceItem>
-            <BalanceItem>
-              <span>Available to collect</span>
-              <div>
-                <BalanceValue>{convertBigDecimal(balance?.available.ESW)}</BalanceValue>&nbsp;ESW
-              </div>{' '}
-            </BalanceItem>
-          </BalanceWrapper>
-          <Options>
-            {children}
-            <CollectBtn disabled={isCollectDisabled} onClick={handleClaim}>
-              Collect to my wallet
-            </CollectBtn>
-          </Options>
+
+          {isEthereumActive && (
+            <>
+              <BalanceWrapper>
+                <BalanceItem>
+                  <span>Total</span>
+                  <div>
+                    <BalanceValue>{sumESW()}</BalanceValue>&nbsp;ESW
+                  </div>
+                </BalanceItem>
+                <BalanceItem>
+                  <span>Wallet</span>
+                  <div>
+                    <BalanceValue>{convertBigDecimal(balance?.wallet.ESW)}</BalanceValue>&nbsp;ESW
+                  </div>
+                </BalanceItem>
+                <BalanceItem>
+                  <span>Locked at Emiswap </span>
+                  <div>
+                    <BalanceValue>{convertBigDecimal(balance?.total.locked.ESW)}</BalanceValue>
+                    &nbsp;ESW
+                  </div>
+                  {' '}
+                </BalanceItem>
+                <BalanceItem>
+                  <span>Available to collect</span>
+                  <div>
+                    <BalanceValue>{convertBigDecimal(balance?.available.ESW)}</BalanceValue>
+                    &nbsp;ESW
+                  </div>
+                  {' '}
+                </BalanceItem>
+              </BalanceWrapper>
+              <Options>
+                {children}
+                <MessageTooltip
+                  disableTooltip={!isCollectDisabled}
+                  whiteSpace={'normal'}
+                  position={{ top: '175px', left: '490px' }}
+                  text="Temporarily unavailable"
+                >
+                  <CollectBtn inactive={isCollectDisabled} onClick={handleClaim}>
+                    Collect to my wallet
+                  </CollectBtn>
+                </MessageTooltip>
+              </Options>
+            </>
+          )}
         </Main>
         <AccountControl>
           <Copy toCopy={account}>
             <span style={{ marginLeft: '4px' }}>Copy Address</span>
           </Copy>
-          <AddressLink href={getEtherscanLink(chainId, ENSName || account, 'address')}>
-            <LinkIcon size={16} />
-            <span style={{ marginLeft: '4px' }}>View on Etherscan</span>
+          <AddressLink
+            href={getExplorerLink(chainId, ENSName || account, 'address')}
+          >
+            <LinkIcon size={16}/>
+            <span style={{ marginLeft: '4px' }}>
+              View on {blockExplorerName}
+            </span>
           </AddressLink>
         </AccountControl>
       </Container>

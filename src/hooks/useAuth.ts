@@ -2,8 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../state';
 import { useActiveWeb3React } from './index';
 import Web3 from 'web3';
-import { useLocalStorage } from './useLocalStorage';
-// import { MOCK_USER } from './useClaim';
+// import { useLocalStorage } from './useLocalStorage';
 import { useCallback } from 'react';
 import { fetchWrapper } from '../api/fetchWrapper';
 import { addPopup } from '../state/application/actions';
@@ -27,59 +26,57 @@ export function useAuth() {
   const user = useSelector((state: AppState) => state.user);
   const id = user?.info?.id;
   const { library, account } = useActiveWeb3React();
-  const [authToken, setAuthToken] = useLocalStorage('auth_token', null);
-
+  // const [authToken, setAuthToken] = useLocalStorage('auth_token', null);
   const dispatch = useDispatch();
-  const initSession = useCallback(
-    async (userID: string) => {
-      try {
-        return await fetchWrapper.post(`${baseUrl}/v1/public/sessions`, {
-          body: JSON.stringify({ user_id: userID }),
-        });
-      } catch (e) {
-        dispatch(
-          addPopup({
-            key: 'useAuth_sessions',
-            content: {
-              status: {
-                name: e.message,
-                isError: true,
-              },
-            },
-          }),
-        );
-        return Promise.reject(e);
-      }
-    },
-    [dispatch],
-  );
 
-  const signSession = useCallback(
-    async (sessionID: string, signature: string) => {
-      try {
-        return await fetchWrapper.post(`${baseUrl}/v1/public/sessions/confirm`, {
-          body: JSON.stringify({
-            id: sessionID,
-            signature,
-          }),
-        });
-      } catch (e) {
-        dispatch(
-          addPopup({
-            key: 'useAuth_sign_session',
-            content: {
-              status: {
-                name: e.message,
-                isError: true,
-              },
-            },
-          }),
-        );
-        return Promise.reject(e);
-      }
-    },
-    [dispatch],
-  );
+  const initSession = useCallback(async (userID: string) => {
+    try {
+      return await fetchWrapper.post(`${baseUrl}/v1/public/sessions`, {
+        body: JSON.stringify({ user_id: userID }),
+      });
+    } catch (e) {
+      console.debug('useAuth_sessions: ', { e });
+      //FIXME - встроить централизованную обработку ошибок
+      // dispatch(
+      //   addPopup({
+      //     key: 'useAuth_sessions',
+      //     content: {
+      //       status: {
+      //         name: e.message,
+      //         isError: true,
+      //       },
+      //     },
+      //   }),
+      // );
+      return Promise.reject(e);
+    }
+  }, []);
+
+  const signSession = useCallback(async (sessionID: string, signature: string) => {
+    try {
+      return await fetchWrapper.post(`${baseUrl}/v1/public/sessions/confirm`, {
+        body: JSON.stringify({
+          id: sessionID,
+          signature,
+        }),
+      });
+    } catch (e) {
+      console.debug('useAuth_sign_session: ', { e });
+      //FIXME - встроить централизованную обработку ошибок
+      // dispatch(
+      //   addPopup({
+      //     key: 'useAuth_sign_session',
+      //     content: {
+      //       status: {
+      //         name: e.message,
+      //         isError: true,
+      //       },
+      //     },
+      //   }),
+      // );
+      return Promise.reject(e);
+    }
+  }, []);
 
   const signToMetamask = useCallback(
     async (signature: string, walletID: string) => {
@@ -90,7 +87,12 @@ export function useAuth() {
   );
 
   const init = useCallback(async () => {
-    if (authToken) {
+    const authTokenData = window.localStorage.getItem('auth_token');
+    const storedAccount = window.localStorage.getItem('stored_account');
+    const isAccountChanged = account !== storedAccount;
+
+    const authToken = authTokenData ? JSON.parse(authTokenData) : null;
+    if (authToken && !isAccountChanged) {
       const isExpired = Date.now() - authToken.time > 0;
       if (!isExpired) {
         return authToken.token;
@@ -102,7 +104,12 @@ export function useAuth() {
         const signature = await signToMetamask(session.auth_message, account);
         const sessionToken = await signSession(session.session_id, signature);
         const tokenLifespan = parseJWT(sessionToken.token)?.exp;
-        setAuthToken({ time: tokenLifespan * 1000, token: sessionToken.token });
+
+        const tokenData = JSON.stringify({ time: tokenLifespan * 1000, token: sessionToken.token });
+        window.localStorage.setItem('auth_token', tokenData);
+
+        // setAuthToken({ time: tokenLifespan * 1000, token: sessionToken.token });
+        window.localStorage.setItem('stored_account', account);
         return sessionToken.token;
       } catch (e) {
         dispatch(
@@ -119,7 +126,7 @@ export function useAuth() {
         return Promise.reject(e);
       }
     }
-  }, [authToken, account, id, setAuthToken, signToMetamask, dispatch, initSession, signSession]);
+  }, [account, id, signToMetamask, dispatch, initSession, signSession]);
 
   return init;
 }

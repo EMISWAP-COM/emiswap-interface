@@ -13,3 +13,20 @@ export const TabsTitle = styled.div`
   line-height: 36px;
   font-weight: 450;
 `;
+
+export const PrivateSaleText = styled.div`
+  max-width: 380px;
+  font-size: 16px;
+  line-height: 24px;
+  color: ${({ theme }) => theme.darkText};
+  margin: 24px auto 0 auto;
+`;
+
+export const OnlyInvestorsText = styled.div`
+  max-width: 340px;
+  font-size: 16px;
+  line-height: 24px;
+  color: ${({ theme }) => theme.white};
+  margin: 16px auto 0 auto;
+`;
+

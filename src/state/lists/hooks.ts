@@ -3,8 +3,9 @@ import { TokenInfo, TokenList } from '@uniswap/token-lists';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { DEFAULT_TOKEN_LIST_URL } from '../../constants';
+import defaultCoins from '../../constants/defaultCoins';
 import { AppState } from '../index';
-import { useActiveWeb3React } from '../../hooks';
+import chainIds from '../../constants/chainIds';
 
 /**
  * Token instances created from token info.
@@ -41,6 +42,11 @@ const EMPTY_LIST: TokenAddressMap = {
   [ChainId.ROPSTEN]: {},
   [ChainId.GÖRLI]: {},
   [ChainId.MAINNET]: {},
+  // @ts-ignore
+  [chainIds.KUCOIN]: {},
+  [chainIds.POLYGON]: {},
+  [chainIds.MUMBAI]: {},
+  [chainIds.AVALANCHE]: {},
 };
 
 const listCache: WeakMap<TokenList, TokenAddressMap> | null =
@@ -73,25 +79,20 @@ export function listToTokenMap(list: TokenList): TokenAddressMap {
 
 export function useTokenList(url: string): TokenAddressMap {
   const lists = useSelector<AppState, AppState['lists']['byUrl']>(state => state.lists.byUrl);
-  const { chainId } = useActiveWeb3React();
+  // const { chainId } = useActiveWeb3React();
   return useMemo(() => {
+    if (lists[url]?.error) {
+      console.error('Default coins errors:', lists[url].error);
+      console.error(lists[url]);
+    }
     const current = lists[url]?.current;
     if (!current) return EMPTY_LIST;
     const newCurrent = {
       ...current,
-      tokens: [
-        {
-          address: window['env'].REACT_APP_ESW_ID,
-          chainId: chainId ?? 42,
-          name: 'EmiDAO Token',
-          decimals: 18,
-          symbol: 'ESW',
-        },
-        ...current.tokens,
-      ],
+      ...defaultCoins,
     };
     return listToTokenMap(newCurrent);
-  }, [lists, url, chainId]);
+  }, [lists, url /*, chainId*/]);
 }
 
 export function useDefaultTokenList(): TokenAddressMap {

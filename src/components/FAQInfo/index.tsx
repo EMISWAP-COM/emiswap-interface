@@ -1,11 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import Accordion from '../Accordion';
-import Colon from '../../assets/svg/FAQIcon/colon.svg';
-import Board from '../../assets/svg/FAQIcon/board.svg';
-import Coins from '../../assets/svg/FAQIcon/coins.svg';
+import Accordion, { AccordionButton, AccordionButtonsWrapper } from '../Accordion';
 import YellowCircle from '../../assets/svg/FAQIcon/yellowCircle.svg';
-import PieChart from '../../assets/svg/pie_chart.svg';
 
 const Body = styled.div`
   .title {
@@ -15,7 +11,7 @@ const Body = styled.div`
     font-size: 18px;
     line-height: 160%;
     letter-spacing: 0.01em;
-    color: #555959;
+    color: ${({ theme }) => theme.white};
     margin-bottom: 40px;
 
     @media screen and (max-width: 1000px) {
@@ -30,11 +26,16 @@ const Body = styled.div`
     font-size: 20px;
     line-height: 32px;
     letter-spacing: -0.01em;
-    color: #000000;
+    color: ${({ theme }) => theme.white};
 
     @media screen and (max-width: 1000px) {
       font-size: 16px;
     }
+  }
+  
+  .f16 {
+    line-height: 21px;
+    font-size: 16px;
   }
 
   .mb16 {
@@ -55,9 +56,11 @@ const Body = styled.div`
 
   .InfoBlock {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     width: 100%;
     margin-bottom: 40px;
+    
     &__block {
       width: 50%;
       display: flex;
@@ -84,7 +87,7 @@ const Body = styled.div`
         font-size: 18px;
         line-height: 32px;
         letter-spacing: -0.01em;
-        color: #555959;
+        color: ${({ theme }) => theme.darkText};
       }
     }
 
@@ -123,6 +126,7 @@ const Body = styled.div`
       &__block {
         flex-direction: column;
         align-items: center;
+        width: 100%;
 
         .InfoBlockBody {
           &__header {
@@ -142,10 +146,8 @@ const Body = styled.div`
     justify-content: space-between;
 
     .card {
-      background: #ffffff;
-      border: 1px solid #eaeeee;
+      background: ${({ theme }) => theme.darkGrey};
       box-sizing: border-box;
-      box-shadow: 0px 9px 25px rgba(73, 73, 73, 0.07);
       border-radius: 4px;
 
       .card-title {
@@ -171,7 +173,7 @@ const Body = styled.div`
         font-weight: normal;
         font-size: 14px;
         line-height: 21px;
-        color: #89919a;
+        color: ${({ theme }) => theme.darkText};
       }
 
       .card-description {
@@ -190,12 +192,14 @@ const Body = styled.div`
 
       span {
         position: relative;
+        z-index: 0;
       }
 
       &__YellowCircle {
         position: absolute;
-        right: -13px;
-        top: 7px;
+        left: 0;
+        top: 4px;
+        z-index: -1;
       }
     }
 
@@ -256,7 +260,7 @@ const Body = styled.div`
     font-size: 20px;
     line-height: 32px;
     letter-spacing: -0.01em;
-    color: #555959;
+    color: ${({ theme }) => theme.darkWhite};
 
     @media screen and (max-width: 1300px) {
       font-size: 14px;
@@ -264,78 +268,170 @@ const Body = styled.div`
   }
 
   .grey-text-bold {
-    color: #24272c;
+    color: ${({ theme }) => theme.white};
     font-weight: 500;
   }
 
   .chart-block {
     display: flex;
 
+    .chart-pie {
+      margin-top: 80px;
+      margin-left: auto;
+
+      &__img {
+        width: 330px;
+        max-width: 100%;
+      }
+    }
+
     &__color-block {
       border-radius: 10px;
       width: 32px;
       height: 32px;
     }
-    &__color0 {
-      background: #c79d6a;
+    
+          
+      /*color 5
+      color 6
+      color 7
+      color 3
+      color 8
+      color 4*/
+      
+    &__color5 {
+      background: #5D09E1;
     }
+    
+    &__color6 {
+      background: #8479FF;
+    }
+    
+    &__color7 {
+      background: #E478FF;
+    }
+    
+    &__color3 {
+      background: #57D7FF;
+    }
+    
+    &__color8 {
+      background: #A973FF;
+    }
+    
+    &__color4 {
+      background: #37FFDB;
+    }
+
+    &__color0 {
+      background: #D4D3FF;
+    }
+
     &__color1 {
-      background: #074223;
+      background: #47FF37;
     }
     &__color2 {
-      background: #006450;
-    }
-    &__color3 {
-      background: #ffc925;
-    }
-    &__color4 {
-      background: #58ae00;
-    }
-    &__color5 {
-      background: #09ce95;
+      background: #37FFDB;
     }
 
     &__text-line {
       display: flex;
+      position: relative;
       margin-bottom: 21px;
+    }
+
+    &__item-name {
+      margin-right: 80px;
+      text-align: left;
+    }
+
+    &__item-value {
+      margin-left: auto !important;
+      margin-right: 80px;
+      text-align: left;
+
+      &--mobile {
+        display: none;
+      }
+    }
+
+    &__item-percent {
+      position: absolute;
+      right: 0;
     }
 
     .grey-text {
       margin-left: 10px;
+      line-height: 1.4;
+    }
+
+    @media screen and (max-width: 1300px) {
+      &__item-name {
+        margin-right: 30px;
+      }
+
+      &__item-value {
+        margin-right: 50px;
+      }
     }
 
     @media screen and (max-width: 1000px) {
       flex-direction: column-reverse;
+
       .chart-pie {
-        width: 200px;
+        width: 80%;
+        max-width: 300px;
         margin: 0 auto 30px;
         img {
           width: 100%;
         }
       }
+
+      .chart-block__info {
+        max-width: 400px;
+        margin: auto;
+      }
     }
 
-    @media screen and (max-width: 500px) {
+    @media screen and (max-width: 450px) {
+      .chart-block__info {
+        // margin: 0 20px 0 15px;
+      }
+
       &__text-line {
         flex-wrap: wrap;
-        justify-content: center;
+        justify-content: flex-start;
 
         .grey-text {
-          width: 100%;
+          // width: 100%;
           margin-left: 5px;
         }
       }
-    }
-  }
 
-  .chart-description {
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: 300;
-    font-size: 18px;
-    line-height: 160%;
-    letter-spacing: 0.01em;
-    color: #555959;
+      &__item-name {
+        width: 70%;
+        max-width: 70%;
+        margin-left: 10px !important;
+      }
+
+      &__item-value {
+        display: none;
+        width: 60%;
+        margin-top: 4px;
+        margin-left: 42px !important;
+        margin-right: 0;
+
+        &--mobile {
+          display: block !important;
+        }
+      }
+
+      &__item-percent {
+        position: relative;
+        margin-left: auto !important;
+        margin-right: 10px;
+      }
+    }
   }
 
   .last-block {
@@ -353,13 +449,17 @@ const Body = styled.div`
           font-style: normal;
           font-weight: 300;
           font-size: 18px;
-          line-height: 32px;
+          line-height: 26px;
           letter-spacing: 0.01em;
-          color: #555959;
+          color: ${({ theme }) => theme.darkText};
           margin-bottom: 20px;
 
           @media screen and (max-width: 1000px) {
             font-size: 14px;
+          }
+          
+          b {
+            color: white;
           }
         }
       }
@@ -373,6 +473,8 @@ const Body = styled.div`
       &__block {
         flex-direction: column;
         align-items: center;
+        margin-bottom: 32px;
+
         .text-block {
           margin-left: 0;
 
@@ -392,7 +494,9 @@ const Body = styled.div`
     font-size: 18px;
     line-height: 160%;
     letter-spacing: 0.01em;
-    color: #555959;
+    margin-bottom: 20px;
+    margin-top: 50px;
+    color: #B7B7CA;
 
     @media screen and (max-width: 1000px) {
       font-size: 16px;
@@ -402,97 +506,138 @@ const Body = styled.div`
       font-size: 14px;
       margin-top: 20px;
     }
+    
+    b {
+      color: white;
+    }
+  }
+  
+  .list-wrapper {
+    display: flex;
+    justify-content: space-between;
+    
+    @media screen and (max-width: 500px) {
+      display: block;
+    }
+    
+    ul {
+      list-style: none;
+    }
+    
+    li {
+      margin-bottom: 16px;
+      color: white;
+      font-weight: 300;
+      font-family: Roboto;
+      font-style: normal;
+      
+      &::before {
+        content: "\\2022";
+        color: #E478FF;
+        font-weight: bold;
+        display: inline-block;
+        width: 1em;
+        margin-left: -1em;
+      }
+    }
+    
   }
 `;
 
+const Tabs = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 24px;
+    
+    @media screen and (max-width: 500px) {
+      margin: 0 -10px 24px -10px;
+    }
+`;
+
+const Tab = styled.div<{active?: boolean}>`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 34px;
+    margin: 0 5px;
+    padding: 0 16px;
+    border: 1px solid #4A4757;
+    border-radius: 8px;
+    font-size: 14px;
+    text-transform: uppercase;
+    background: ${({active}) => active ? '#7A2DF4' : '#272530'};
+    color: white;
+    cursor: pointer;
+    
+    @media screen and (max-width: 500px) {
+      margin: 0 3px;
+      padding: 0 7px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 10px;
+    }
+`;
+
 export default () => {
-  const btnClick1 = () => {
-    const win = window.open('https://crowdsale.emidao.org/whitepaper', '_blank');
+
+  const btnClickIntro = () => {
+    const win = window.open('https://about.emiswap.com/whitepaper', '_blank');
     win.focus();
   };
-  const btnClick2 = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-  const btnClick3 = () => {
-    const win = window.open('https://crowdsale.emidao.org/presentation', '_blank');
+
+  const btnClickFarming = () => {
+    const win = window.open('https://wiki.emiswap.com/user-guide/how-to-farm-usdesw', '_blank');
     win.focus();
   };
+
+  const btnClickStaking = () => {
+    const win = window.open('https://wiki.emiswap.com/user-guide/how-to-stake-usdesw', '_blank');
+    win.focus();
+  };
+
+  const btnClickPresentation = () => {
+    const win = window.open('https://about.emiswap.com/presentation', '_blank');
+    win.focus();
+  };
+
+  const btnClickVesting = () => {
+    const win = window.open('https://about.emiswap.com/onepage', '_blank');
+    win.focus();
+  };
+
   return (
     <div className="for-scroll-faq">
-      <Accordion
-        header="Early Swappers and Liquidity Providers Rewards"
-        openClass="isOpen4"
-        headerClass="blink1-text"
-      >
-        <Body>
-          <div className="last-block">
-            <div className="last-block__block">
-              <img className="last-block__img" src={Board} alt="" />
-              <div className="text-block">
-                <div className="h4 mb16">Rewards for Liquidity Providers</div>
-                <div className="text-block__text">
-                  From the 11th to the 100th day after the launch <b>30,000 ESW</b> will be
-                  proportionally distributed among LP’s for <b>1 million DAI</b> trading volume.
-                </div>
-                <div className="text-block__text">
-                  From the 11th to the 40th day after the launch <b>6,150 ESW</b> will be issued
-                  additionally every 1000 blocks and will be distributed among LP’s in proportion to
-                  the amount of liquidity provided.
-                </div>
-              </div>
-            </div>
-            <div className="last-block__block">
-              <img className="last-block__img" src={Coins} alt="" />
-              <div className="text-block">
-                <div className="h4 mb16">Rewards for Swappers</div>
-                <div className="text-block__text">
-                  From the 11th to the 100th day after the launch Swappers are rewarded with{' '}
-                  <b>16 ESW</b> for every <b>1,000 DAI</b> of personal trading volume.
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="last-string">
-            The EmiSwap early liquidity provider and swap allocation fund is capped at{' '}
-            <b>6,000,000 ESW</b>
-          </div>
-        </Body>
-      </Accordion>
+      <Tabs>
+        <Tab onClick={btnClickIntro} active={true}>White Paper</Tab>
+        <Tab onClick={btnClickPresentation}>Presentation</Tab>
+        <Tab onClick={btnClickVesting}>Check Vesting Schedule</Tab>
+      </Tabs>
       <Accordion
         header="Introduction to EmiSwap"
         btnText="Read White Paper"
-        btnClick={btnClick1}
-        openClass="isOpen1"
+        btnClick={btnClickIntro}
       >
         <Body>
           <div className="title">
-            EmiSwap is an automated market maker exchange with an ESW voting token as well as
-            yield-increasing NFT Magic Cards mechanics. EmiSwap is the first project in the EmiDAO
-            ecosystem.
+            EmiSwap is an audited, high APR, and cross-chain AMM DEX that offers users a secure environment to extract
+            daily high yields from liquidity mining and farming.
           </div>
-          <div className="InfoBlock">
-            <div className="InfoBlock__block">
-              <img className="InfoBlock__img" src={Colon} alt="" />
-              <div className="InfoBlockBody">
-                <div className="InfoBlockBody__header h4">ESW</div>
-                <div className="InfoBlockBody__description">
-                  is a governance token that gives holders a right to receive a share of project’s
-                  profit proportionate to the share of token ownership and gives a right to
-                  participate in voting on the development of the project.
-                </div>
-              </div>
-            </div>
+          <div className="title">
+            EmiSwap is the first project in the EmiDAO ecosystem, the world's first truly autonomous DAO with ESW native
+            token.
           </div>
-          <div className="h4 mb40">
-            EmiSwap is an open-source, decentralized platform, a fork of Uniswap V2 and Mooniswap
-            with increased performance and supplemented functionality.
+          <div className="title">
+            ESW is a governance token that gives holders a right to receive a share of distributing fees proportionate
+            to the share of token ownership and gives a right to participate in voting on the development of the
+            project.
           </div>
           <div className="card-blocks">
             <div className="card width1_3">
               <div className="h4 mb16">
                 <span>
                   0.3%
-                  <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle" />
+                  <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle"/>
                 </span>
               </div>
               <div className="card__description-text">Trading commission in any pool is 0.3%</div>
@@ -501,7 +646,7 @@ export default () => {
               <div className="h4 mb16">
                 <span>
                   0.25%
-                  <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle" />
+                  <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle"/>
                 </span>
               </div>
               <div className="card__description-text">
@@ -512,7 +657,7 @@ export default () => {
               <div className="h4 mb16">
                 <span>
                   0.05%
-                  <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle" />
+                  <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle"/>
                 </span>
               </div>
               <div className="card__description-text">
@@ -522,104 +667,128 @@ export default () => {
           </div>
         </Body>
       </Accordion>
+
       <Accordion
-        header="Crowdsale Information"
-        btnText="Participate in crowdsale"
-        btnClick={btnClick2}
-        openClass="isOpen2"
+        header="Farming & Staking"
+        btnText="Guide to Farming"
+        btnClick={btnClickFarming}
       >
         <Body>
-          <div className="card-blocks">
-            <div className="card width1_5">
-              <div className="card-title">
-                Price
-                <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle" />
-              </div>
-              <div className="card-description">0.11 DAI</div>
-            </div>
-            <div className="card width1_5">
-              <div className="card-title">
-                Total Supply
-                <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle" />
-              </div>
-              <div className="card-description">200,000,000 ESW</div>
-            </div>
-            <div className="card width1_5">
-              <div className="card-title">
-                Crowdsale Allocation
-                <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle" />
-              </div>
-              <div className="card-description">Crowdsale Allocation 20% or 40,000,000 ESW</div>
-            </div>
-            <div className="card width1_5">
-              <div className="card-title">
-                Vesting
-                <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle" />
-              </div>
-              <div className="card-description">1 year with quarterly unlock by equal shares</div>
-            </div>
-            <div className="card width1_5">
-              <div className="card-title">
-                Token Type
-                <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle" />
-              </div>
-              <div className="card-description">ERC-20</div>
-            </div>
+          <div className="title">
+            Staking allows users to deposit their tokens for any period of time into a smart contract (liquidity pool)
+            to receive extra rewards. The longer the user keeps their tokens in a staking smart contract, the larger
+            reward they receive.
           </div>
-          <div className="h4 mt46">
-            Users will be able to buy ESW tokens using following cryptocurrencies: DAI, USDT, USDC,
-            USDB, ETH, EMRX, WETH, WBTC, renBTC.{' '}
+          <div style={{ marginBottom: '32px', marginTop: '-16px' }}>
+            <AccordionButtonsWrapper>
+              <AccordionButton onClick={btnClickStaking}>Guide to Staking</AccordionButton>
+            </AccordionButtonsWrapper>
+          </div>
+          <div className="title">
+            In some sense, farming can be paralleled with staking. Users deposit their LP tokens, which they received
+            for providing liquidity on EmiSwap, into a smart contract and receive higher rewards. Thus, users first need
+            to provide liquidity with a token which increases projects liquidity and boosts trading volumes.
           </div>
         </Body>
       </Accordion>
+
       <Accordion
-        header="Token Allocation Schedule"
-        btnText="Vesting Schedule"
-        btnClick={btnClick3}
-        openClass="isOpen3"
+        header="Ethereum gas fee compensations"
       >
         <Body>
-          <div className="grey-text mb24">Total Supply - 200,000,000 ESW</div>
-          <div className="chart-block">
-            <div className="chart-block__info">
-              <div className="chart-block__text-line">
-                <div className="chart-block__color-block chart-block__color0" />
-                <div className="grey-text">- Protocol Security and Maintenance -</div>
-                <div className="grey-text grey-text-bold"> 30% (60,000,000 ESW)</div>
-              </div>
-              <div className="chart-block__text-line">
-                <div className="chart-block__color-block chart-block__color1" />
-                <div className="grey-text">- EmiSwap Decentralized Developers Community -</div>
-                <div className="grey-text grey-text-bold"> 20% (40,000,000 ESW)</div>
-              </div>
-              <div className="chart-block__text-line">
-                <div className="chart-block__color-block chart-block__color2" />
-                <div className="grey-text">- Ecosystem Growth and Community Building -</div>
-                <div className="grey-text grey-text-bold"> 22% (44,000,000 ESW)</div>
-              </div>
-              <div className="chart-block__text-line">
-                <div className="chart-block__color-block chart-block__color3" />
-                <div className="grey-text">- Crowdsale Participants -</div>
-                <div className="grey-text grey-text-bold"> 20% (40,000,000 ESW)</div>
-              </div>
-              <div className="chart-block__text-line">
-                <div className="chart-block__color-block chart-block__color4" />
-                <div className="grey-text">- Advisers and Ambassadors -</div>
-                <div className="grey-text grey-text-bold"> 5% (10,000,000 ESW)</div>
-              </div>
-              <div className="chart-block__text-line">
-                <div className="chart-block__color-block chart-block__color5" />
-                <div className="grey-text">- Early Liquidity Providers -</div>
-                <div className="grey-text grey-text-bold"> 3% (6,000,000 ESW)</div>
-              </div>
-            </div>
-            <div className="chart-pie">
-              <img src={PieChart} alt="PieChart" />
-            </div>
+          <div className="title">
+            EmiSwap understands that operations on the Ethereum blockchain have become a nightmare for swappers and
+            liquidity providers due to high gas prices. Making a single operation on a decentralized exchange can cost
+            dozens of dollars in Ethereum equivalent.
           </div>
-          <div className="chart-description">Learn more about ESW tokens vesting.</div>
+          <div className="title">
+            Thus, EmiSwap compensates the gas price for all users who make Swaps or Provide Liquidity on EmiSwap DEX. As
+            compensation, users receive an equal amount of ESW tokens that play an increasingly important role in the
+            EmiDAO ecosystem.
+          </div>
         </Body>
       </Accordion>
+
+      <Accordion
+        header="NFTs for Liquidity Providers"
+        btnText="Guide to Staking"
+        btnClick={btnClickStaking}
+      >
+        <Body>
+          <div className="title">
+            EmiSwap plans to reach a $100 million TVL and gives away 1001 yield boosting and rare NFT Magic Cards to
+            Liquidity Providers.
+          </div>
+          <div className="title">
+            Each time the Total Value Locked on EmiSwap DEX is increased by $10 million, the EmiSwap team will
+            distribute 100 NFT Magic Cards to users who provided liquidity and crossed the milestones.
+          </div>
+          <div className="title">
+            Every $100,000 of Total Value Locked on EmiSwap marks a milestone. The further the user is from the
+            milestone as he crosses it, the better NFT Magic Card he will receive. In a nutshell, the user which adds
+            the most liquidity will get the highest tier.
+          </div>
+          <div className="title">
+            One powerful user who added the most liquidity will get a legendary card. The top 2 to 6 users get 5 Epic
+            Cards and so on. In total, EmiSwap will issue 1001 limited edition NFTs for this campaign divided into:
+          </div>
+          <div className="list-wrapper" style={{ maxWidth: 700 }}>
+            <ul>
+              <li>1 Mythic Card</li>
+              <li>10 Legendary Cards</li>
+            </ul>
+            <ul>
+              <li>40 Epic Cards</li>
+              <li>150 Rare Cards</li>
+            </ul>
+            <ul>
+              <li>300 Uncommon Cards</li>
+              <li>500 Ordinary Cards</li>
+            </ul>
+          </div>
+        </Body>
+      </Accordion>
+
+      <Accordion
+        header="NFT Magic Cards"
+        btnText="Guide to Staking"
+        btnClick={btnClickStaking}
+      >
+        <Body>
+          <div className="title">
+            NFT Magic Cards are cutting-edge loyalty items that increase users' benefits on the EmiSwap DEX. Offering
+            much more than usual NFT units, they are playable, tradable, and yield-boosting NFT collectibles that are
+            available for EmiSwap users only.
+          </div>
+          <div className="title">
+            There are 6 tiers of NFT Magic Cards.
+          </div>
+          <div className="title">
+            The higher the tier, the larger the bonus they contain. Though, the higher the tier of NFT Magic Card, the
+            better the bonus users receive. The list includes:
+          </div>
+          <div className="list-wrapper">
+            <ul>
+              <li>Extra ESW tokens</li>
+              <li>Yield-boosting bonuses for providing liquidity</li>
+              <li>Yield-boosting bonuses for swapping</li>
+            </ul>
+            <ul>
+              <li>Yield-boosting bonuses for ESW staking</li>
+              <li>NFT Card farm-speeding powers</li>
+              <li>Multiplying Cards</li>
+            </ul>
+            <ul>
+              <li>Battle Cards for participating in Card Wars</li>
+              <li>Extra rare Collectible Cards</li>
+            </ul>
+          </div>
+          <div className="title">
+            The bonus users get is determined randomly, but all of them increase their yield on the platform.
+          </div>
+        </Body>
+      </Accordion>
+
     </div>
   );
 };

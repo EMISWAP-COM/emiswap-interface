@@ -3,6 +3,7 @@ import { injected } from '../../connectors';
 
 export enum DateFormat {
   short = 'Month, D, YYYY',
+  short_day = 'DD Month YY',
   full = 'YYYY-MM-DD HH:MM:SS',
 }
 
@@ -21,6 +22,24 @@ export function formatConnectorName(connectorName) {
   return name;
 }
 
+/*export async function metaMaskChangeAccount() {
+  const { ethereum } = window as any;
+
+  await ethereum
+    .request({ method: 'eth_requestAccounts' })
+    .then((data) => {
+      console.log(data);
+    })
+    .catch((error) => {
+      if (error.code === 4001) {
+        console.log('Please connect to MetaMask.');
+      } else {
+        console.error(error);
+      }
+    });
+}
+*/
+
 export const convertBigDecimal = (bigDecimal: string) => {
   if (!isNaN(Number(bigDecimal))) {
     return Number(bigDecimal).toFixed(2);
@@ -37,12 +56,17 @@ export const normalizeNumber = (number: number) => {
 };
 
 export function shortenHash(hash: string, chars = 4): string {
-  return `${hash.substring(0, chars + 2)}...${hash.substring(42 - chars)}`;
+  return `${hash.substring(0, chars + 2)}...${hash.substring(66 - chars)}`;
 }
 
 const getShortDate = (date: string) => {
   const newDate = new Date(date);
   return `${months[newDate.getMonth()]} ${newDate.getDate()}, ${newDate.getFullYear()}`;
+};
+
+const getShortDayDate = (date: string) => {
+  const newDate = new Date(date);
+  return `${newDate.getDate()} ${months[newDate.getMonth()]} ${newDate.getFullYear()}`;
 };
 
 const getFullDate = (date: string) => {
@@ -55,7 +79,7 @@ const getFullDate = (date: string) => {
   return `${day}-${months[d.getMonth()]}-${d.getFullYear()}, ${hours}:${minutes}:${seconds}`;
 };
 
-const convertToISOSafari = (dateString: string) => {
+export const convertToISOSafari = (dateString: string) => {
   try {
     if (Date.parse(dateString)) {
       return dateString;
@@ -86,6 +110,8 @@ export const convertDate = (dateSourceString: string, format: string) => {
     switch (format) {
       case DateFormat.short:
         return getShortDate(date);
+      case DateFormat.short_day:
+        return getShortDayDate(date);
       case DateFormat.full:
         return getFullDate(date);
       default:

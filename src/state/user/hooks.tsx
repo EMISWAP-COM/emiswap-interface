@@ -24,8 +24,8 @@ import {
   updateUserExpertMode,
   updateUserSlippageTolerance,
 } from './actions';
-import { useDefaultTokenList} from '../lists/hooks';
-import { isDefaultToken } from '../../utils';
+import { useDefaultTokenList } from '../lists/hooks';
+import { getLpTokenByAddress, isDefaultToken } from '../../utils';
 import { useTokens } from '../../hooks/useTokens';
 
 //TODO refactor after release
@@ -153,12 +153,20 @@ export function useUserDeadline(): [number, (slippage: number) => void] {
 }
 
 export function useAddUserToken(): (token: Token) => void {
+  const { chainId, account, library } = useActiveWeb3React();
+
   const dispatch = useDispatch<AppDispatch>();
+
   return useCallback(
-    (token: Token) => {
-      dispatch(addSerializedToken({ serializedToken: serializeToken(token) }));
+    async (token: Token) => {
+      if (token?.name?.includes('LP ') && account && library) {
+        const lpToken = await getLpTokenByAddress(token.address, chainId, account, library);
+        dispatch(addSerializedToken({ serializedToken: serializeToken(lpToken) }));
+      } else {
+        dispatch(addSerializedToken({ serializedToken: serializeToken(token) }));
+      }
     },
-    [dispatch],
+    [chainId, account, library, dispatch],
   );
 }
 

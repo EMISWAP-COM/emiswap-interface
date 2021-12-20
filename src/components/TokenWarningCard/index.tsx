@@ -1,13 +1,13 @@
 import { Token } from '@uniswap/sdk';
-import { transparentize } from 'polished';
-import React, { useEffect, useMemo } from 'react';
-import styled from 'styled-components';
+import { lighten } from 'polished';
+import React, { useContext, useEffect, useMemo } from 'react';
+import styled, { ThemeContext } from 'styled-components';
 import { useActiveWeb3React } from '../../hooks';
 import { useAllTokens } from '../../hooks/Tokens';
 import { useDefaultTokenList } from '../../state/lists/hooks';
 import { Field } from '../../state/swap/actions';
 import { ExternalLink, TYPE } from '../../theme';
-import { getEtherscanLink, isDefaultToken } from '../../utils';
+import { getExplorerLink, isDefaultToken } from '../../utils';
 import PropsOfExcluding from '../../utils/props-of-excluding';
 import CurrencyLogo from '../CurrencyLogo';
 import { AutoRow, RowBetween } from '../Row';
@@ -15,9 +15,10 @@ import { AutoColumn } from '../Column';
 import { AlertTriangle } from 'react-feather';
 import { ButtonError } from '../Button';
 import { useTokenWarningDismissal } from '../../state/user/hooks';
+import { useNetworkData } from '../../hooks/Coins';
 
 const Wrapper = styled.div<{ error: boolean }>`
-  background: ${({ theme }) => transparentize(0.6, theme.white)};
+  background: ${({ theme }) => lighten(0.3, theme.dark1)};
   padding: 0.75rem;
   border-radius: 20px;
 `;
@@ -26,8 +27,8 @@ const WarningContainer = styled.div`
   max-width: 440px;
   width: 100%;
   padding: 1rem;
-  background: rgba(242, 150, 2, 0.05);
-  border: 1px solid #f3841e;
+  background: ${({ theme }) => theme.dark1};
+  box-shadow: ${({ theme }) => theme.dark1BoxShadow};
   box-sizing: border-box;
   border-radius: 20px;
   margin-bottom: 2rem;
@@ -46,7 +47,10 @@ interface TokenWarningCardProps extends PropsOfExcluding<typeof Wrapper, 'error'
 }
 
 export default function TokenWarningCard({ token, ...rest }: TokenWarningCardProps) {
+  const theme = useContext(ThemeContext);
   const { chainId } = useActiveWeb3React();
+  const { blockExplorerName } = useNetworkData();
+
   const defaultTokens = useDefaultTokenList();
   const isDefault = isDefaultToken(defaultTokens, token);
 
@@ -79,16 +83,16 @@ export default function TokenWarningCard({ token, ...rest }: TokenWarningCardPro
           <div> </div>
         </AutoColumn>
         <AutoColumn gap="10px" justify="flex-start">
-          <TYPE.main>
+          <TYPE.main color={theme.white}>
             {token && token.name && token.symbol && token.name !== token.symbol
               ? `${token.name} (${token.symbol})`
               : token.name || token.symbol}
           </TYPE.main>
           <ExternalLink
-            style={{ fontWeight: 400 }}
-            href={getEtherscanLink(chainId, token.address, 'token')}
+            style={{ fontWeight: 400, color: theme.blue }}
+            href={getExplorerLink(chainId, token.address, 'token')}
           >
-            <TYPE.blue> (View on Etherscan)</TYPE.blue>
+            (View on {blockExplorerName})
           </ExternalLink>
         </AutoColumn>
       </AutoRow>

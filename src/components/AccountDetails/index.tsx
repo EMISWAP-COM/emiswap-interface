@@ -6,7 +6,7 @@ import { useActiveWeb3React } from '../../hooks';
 import { useAccountInfo } from '../../hooks/useAccountInfo';
 import { AppDispatch } from '../../state';
 import { clearAllTransactions } from '../../state/transactions/actions';
-import { getEtherscanLink, shortenAddress } from '../../utils';
+import { getExplorerLink, shortenAddress } from '../../utils';
 import { ButtonSecondary } from '../Button';
 import { AutoRow } from '../Row';
 import Copy from './Copy';
@@ -18,7 +18,8 @@ import { injected, walletlink } from '../../connectors';
 import { ReactComponent as Close } from '../../assets/images/x.svg';
 import { ExternalLink, LinkStyledButton, TYPE } from '../../theme';
 import { formatConnectorName } from './uitls';
-import { StatusIcon } from './StatusIcon'
+import { StatusIcon } from './StatusIcon';
+import { useNetworkData } from '../../hooks/Coins';
 
 const HeaderRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
@@ -29,7 +30,6 @@ const HeaderRow = styled.div`
     padding: 1rem;
   `};
 `;
-
 
 const UpperSection = styled.div`
   position: relative;
@@ -205,6 +205,7 @@ export default function AccountDetails({
   openOptions,
 }: AccountDetailsProps) {
   const { chainId, account, connector } = useActiveWeb3React();
+  const { blockExplorerName } = useNetworkData();
   const theme = useContext(ThemeContext);
   const dispatch = useDispatch<AppDispatch>();
   const {
@@ -221,8 +222,6 @@ export default function AccountDetails({
     crowdSaleReferralRewardAlreadyMinted,
     crowdSaleReferralRewardAvailableForMinting,
   } = useAccountInfo();
-
-
 
   const clearAllTransactionsCallback = useCallback(
     (event: React.MouseEvent) => {
@@ -295,10 +294,12 @@ export default function AccountDetails({
                         <AddressLink
                           hasENS={!!ENSName}
                           isENS={true}
-                          href={getEtherscanLink(chainId, ENSName, 'address')}
+                          href={getExplorerLink(chainId, ENSName, 'address')}
                         >
                           <LinkIcon size={16} />
-                          <span style={{ marginLeft: '4px' }}>View on Etherscan</span>
+                          <span style={{ marginLeft: '4px' }}>
+                            View on {blockExplorerName}
+                          </span>
                         </AddressLink>
                       </div>
                     </AccountControl>
@@ -313,10 +314,13 @@ export default function AccountDetails({
                         <AddressLink
                           hasENS={!!ENSName}
                           isENS={false}
-                          href={getEtherscanLink(chainId, account, 'address')}
+                          href={getExplorerLink(chainId, account, 'address')}
                         >
                           <LinkIcon size={16} />
-                          <span style={{ marginLeft: '4px' }}>View on Etherscan</span>
+                          <span style={{ marginLeft: '4px' }}>
+                            {/*// @ts-ignore*/}
+                            View on {blockExplorerName}
+                          </span>
                         </AddressLink>
                       </div>
                     </AccountControl>

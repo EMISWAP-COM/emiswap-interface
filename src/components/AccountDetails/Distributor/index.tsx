@@ -2,18 +2,18 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components/macro';
 
 import { convertBigDecimal } from '../uitls';
-import { PurchaseHistory } from '../Common/PurchaseHistory';
-import { ReferralPerformance } from '../Common/ReferralPerformance';
-
-import { loadBalance, loadPerformance } from '../../../state/cabinets/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, AppState } from '../../../state';
 import { packageNames } from '../constant';
-import { useWalletModalToggle } from '../../../state/application/hooks';
-import { useHistory } from 'react-router';
 import { Connection } from '../Common/Connection';
-import { ESWLocked } from '../Common/ESWLocked';
 import { ESWRewards } from '../Common/ESWRewards';
+import { ESWHoldingRewards } from '../Common/ESWHoldingRewards';
+import { ESWLocked } from '../Common/ESWLocked';
+import { ReferralPerformance } from '../Common/ReferralPerformance';
+import { PurchaseHistory } from '../Common/PurchaseHistory';
+import { useActiveWeb3React } from '../../../hooks';
+import { loadBalance, loadPerformance } from '../../../state/cabinets/actions';
+import { useIsEthActive } from '../../../hooks/Coins';
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -51,6 +51,7 @@ const Package = styled.div`
   }
 `;
 
+/* TODO removed Invest tab until further notice.
 const UpgradeBtn = styled.span`
   display: block;
   border-radius: 5px;
@@ -70,7 +71,7 @@ const UpgradeBtn = styled.span`
   @media screen and (max-width: 1200px) {
     margin-right: 0;
   }
-`;
+`;*/
 
 const OptionsPromo = styled.div`
   color: ${({ theme }) => theme.red3};
@@ -83,18 +84,26 @@ interface Props {
 }
 
 const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
+  const isEthActive = useIsEthActive();
   const dispatch = useDispatch<AppDispatch>();
-  const toggleWalletModal = useWalletModalToggle();
-  const history = useHistory();
+
+  const { chainId } = useActiveWeb3React();
+
+  /* TODO removed Invest tab until further notice.
+  const toggleWalletModal = useWalletModalToggle();*/
+
   const { id: userId, bonus_role_name = '', next_bonus_role } = useSelector(
     (state: AppState) => state.user.info,
   );
 
   useEffect(() => {
-    dispatch(loadPerformance(userId) as any);
-    dispatch(loadBalance(userId) as any);
-  }, [dispatch, userId]);
+    if (isEthActive) {
+      dispatch(loadPerformance(userId) as any);
+      dispatch(loadBalance(userId) as any);
+    }
+  }, [dispatch, chainId, userId, isEthActive]);
 
+  /* TODO removed Invest tab until further notice.
   function scrollIntoInvest() {
     const investForm = document.querySelector('#invest-page');
     const headerOffset = 150;
@@ -105,13 +114,14 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
       top: offsetPosition,
       behavior: 'smooth',
     });
-  }
+  }*/
 
+  /* TODO removed Invest tab until further notice.
   const handlePackageUpgrade = () => {
     toggleWalletModal();
     history.push('/invest');
     setTimeout(scrollIntoInvest, 300);
-  };
+  };*/
 
   return (
     <Wrapper>
@@ -123,7 +133,8 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
           <div>
             Package: <ProfileText>{packageNames[bonus_role_name]}</ProfileText>
           </div>
-          <UpgradeBtn onClick={handlePackageUpgrade}>Upgrade</UpgradeBtn>
+          {/* TODO removed Invest tab until further notice.
+          <UpgradeBtn onClick={handlePackageUpgrade}>Upgrade</UpgradeBtn>*/}
         </Package>
       </ProfileStatus>
 
@@ -135,10 +146,16 @@ const Distributor: React.FC<Props> = ({ openOptions, ENSName }) => {
         )}
       </Connection>
 
-      <ESWRewards />
-      <ESWLocked />
-      <ReferralPerformance />
-      <PurchaseHistory />
+      {isEthActive && (
+        <>
+          <ESWRewards />
+          <ESWHoldingRewards/>
+          <ESWLocked />
+
+          <ReferralPerformance />
+          <PurchaseHistory />
+        </>
+      )}
     </Wrapper>
   );
 };

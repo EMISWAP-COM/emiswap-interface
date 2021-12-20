@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
 import QuestionHelper from '../QuestionHelper';
@@ -19,21 +19,19 @@ enum SlippageError {
 // }
 
 const FancyButton = styled.button`
-  color: ${({ theme }) => theme.text1};
+  color: ${({ theme }) => theme.white};
   align-items: center;
   height: 2rem;
   border-radius: 36px;
   font-size: 12px;
   width: auto;
   min-width: 3rem;
-  border: 1px solid ${({ theme }) => theme.bg3};
+  border: 1px solid ${({ theme }) => theme.lightGrey};
   outline: none;
-  background: ${({ theme }) => theme.bg1};
-  :hover {
-    border: 1px solid ${({ theme }) => theme.bg4};
-  }
+  background: transparent;
+  :hover,
   :focus {
-    border: 1px solid ${({ theme }) => theme.primary1};
+    border: 1px solid ${({ theme }) => theme.purple};
   }
 `;
 
@@ -42,12 +40,12 @@ const Option = styled(FancyButton)<{ active: boolean }>`
   :hover {
     cursor: pointer;
   }
-  background-color: ${({ active, theme }) => active && theme.green5};
-  color: ${({ active, theme }) => (active ? theme.white : theme.text1)};
+  background-color: ${({ active, theme }) => active ? theme.purple : 'transparent'};
+  color: ${({ theme }) => theme.white};
 `;
 
 const Input = styled.input`
-  background: ${({ theme }) => theme.bg1};
+  background: transparent;
   font-size: 16px;
   width: auto;
   outline: none;
@@ -55,7 +53,10 @@ const Input = styled.input`
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;
   }
-  color: ${({ theme, color }) => (color === 'red' ? theme.red1 : theme.text1)};
+  &::placeholder {
+    color: ${({ theme, color }) => (color === 'red' ? theme.red1 : theme.white)};
+  }
+  color: ${({ theme, color }) => (color === 'red' ? theme.red1 : theme.white)};
   text-align: right;
 `;
 
@@ -65,10 +66,10 @@ const OptionCustom = styled(FancyButton)<{ active?: boolean; warning?: boolean }
   padding: 0 0.75rem;
   flex: 1;
   border: ${({ theme, active, warning }) =>
-    active && `1px solid ${warning ? theme.red1 : theme.primary1}`};
+    active && `1px solid ${warning ? theme.red : theme.lightGrey}`};
   :hover {
     border: ${({ theme, active, warning }) =>
-      active && `1px solid ${warning ? darken(0.1, theme.red1) : darken(0.1, theme.primary1)}`};
+      active && `1px solid ${warning ? darken(0.1, theme.red1) : darken(0.1, theme.purple)}`};
   }
 
   input {
@@ -161,7 +162,7 @@ export default function SlippageTabs({
     <AutoColumn gap="md">
       <AutoColumn gap="sm">
         <RowFixed>
-          <TYPE.black fontWeight={400} fontSize={14} color={theme.text2}>
+          <TYPE.black fontWeight={400} fontSize={14} color={theme.darkWhite}>
             Slippage tolerance
           </TYPE.black>
           <QuestionHelper text="Your transaction will revert if the price changes unfavorably by more than this percentage." />

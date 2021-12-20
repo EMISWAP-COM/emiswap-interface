@@ -73,7 +73,8 @@ export function useInvestCallback(
     const inputParseAmount = !inputField ? parsedAmounts[Field.INPUT] : parsedAmounts[Field.OUTPUT];
 
     return async function onInvest() {
-      const contract: Contract | null = getCrowdsaleContract(library, account);
+      // @ts-ignore
+      const contract: Contract | null = getCrowdsaleContract(library, account, chainId);
 
       if (!contract) {
         throw new Error('Failed to get a crowdsale contract');
@@ -110,7 +111,12 @@ export function useInvestCallback(
       const amount: string =
         (inputCurrency?.decimals && inputCurrency?.decimals !== 0
           ? inputParseAmount
-              ?.multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(inputCurrency?.decimals)))
+              ?.multiply(
+                JSBI.exponentiate(
+                  JSBI.BigInt(10),
+                  JSBI.BigInt(Math.floor(inputCurrency?.decimals)),
+                ),
+              )
               .toFixed(0)
           : inputParseAmount?.toFixed(0)) || '';
 
@@ -125,7 +131,7 @@ export function useInvestCallback(
                 ?.multiply(
                   JSBI.exponentiate(
                     JSBI.BigInt(10),
-                    JSBI.BigInt(currencies[Field.INPUT]?.decimals),
+                    JSBI.BigInt(Math.floor(currencies[Field.INPUT]?.decimals as number)),
                   ),
                 )
                 .toFixed(0)

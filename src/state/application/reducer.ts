@@ -3,8 +3,11 @@ import {
   addPopup,
   PopupContent,
   removePopup,
-  toggleWalletModal,
+  showWalletModal, toggleBridgeModal,
+  toggleConfirmSwitchModal,
+  toggleNetworkSwitchModal,
   toggleSettingsMenu,
+  toggleWalletModal,
   updateBlockNumber,
 } from './actions';
 
@@ -14,13 +17,25 @@ export interface ApplicationState {
   blockNumber: { [chainId: number]: number };
   popupList: PopupList;
   walletModalOpen: boolean;
+  confirmSwitchModalOpen: boolean;
+  networkSwitchModalOpen: boolean;
+  bridgeModalOpen: boolean;
   settingsMenuOpen: boolean;
+}
+
+// for reopen modal after change address see: src/components/AccountDetails/Common/ChangeAddress.tsx changeAddress()
+const walletModalOpen = localStorage.getItem('showWalletModal') === 'true';
+if (walletModalOpen) {
+  localStorage.setItem('showWalletModal', 'false');
 }
 
 const initialState: ApplicationState = {
   blockNumber: {},
   popupList: [],
-  walletModalOpen: false,
+  walletModalOpen,
+  confirmSwitchModalOpen: false,
+  networkSwitchModalOpen: false,
+  bridgeModalOpen: false,
   settingsMenuOpen: false,
 };
 
@@ -34,16 +49,28 @@ export default createReducer(initialState, builder =>
         state.blockNumber[chainId] = Math.max(blockNumber, state.blockNumber[chainId]);
       }
     })
+    .addCase(showWalletModal, state => {
+      state.walletModalOpen = true;
+    })
     .addCase(toggleWalletModal, state => {
       state.walletModalOpen = !state.walletModalOpen;
+    })
+    .addCase(toggleNetworkSwitchModal, state => {
+      state.networkSwitchModalOpen = !state.networkSwitchModalOpen;
+    })
+    .addCase(toggleConfirmSwitchModal, state => {
+      state.confirmSwitchModalOpen = !state.confirmSwitchModalOpen;
+    })
+    .addCase(toggleBridgeModal, state => {
+      state.bridgeModalOpen = !state.bridgeModalOpen;
     })
     .addCase(toggleSettingsMenu, state => {
       state.settingsMenuOpen = !state.settingsMenuOpen;
     })
     .addCase(addPopup, (state, { payload: { content, key } }) => {
       state.popupList = (key
-        ? state.popupList.filter(popup => popup.key !== key)
-        : state.popupList
+          ? state.popupList.filter(popup => popup.key !== key)
+          : state.popupList
       ).concat([
         {
           key: key || nanoid(),

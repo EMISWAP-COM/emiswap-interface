@@ -1,13 +1,13 @@
 import React, { useContext } from 'react';
 import { CheckCircle, XCircle } from 'react-feather';
-import { ThemeContext } from 'styled-components';
+import styled, { ThemeContext } from 'styled-components';
 import { useActiveWeb3React } from '../../hooks';
 import { TYPE } from '../../theme';
 import { ExternalLink } from '../../theme/components';
-import { getEtherscanLink } from '../../utils';
+import { getExplorerLink } from '../../utils';
 import { AutoColumn } from '../Column';
 import { AutoRow } from '../Row';
-import styled from 'styled-components';
+import { useNetworkData } from '../../hooks/Coins';
 
 const Wrapper = styled(AutoRow)`
   flex-wrap: nowrap;
@@ -25,6 +25,7 @@ export default function TxnPopup({
   summary?: string;
 }) {
   const { chainId } = useActiveWeb3React();
+  const { blockExplorerName } = useNetworkData();
 
   const theme = useContext(ThemeContext);
 
@@ -41,8 +42,10 @@ export default function TxnPopup({
         <TYPE.body fontWeight={500} color={theme[success ? 'green1' : 'red3']}>
           {summary ?? 'Hash: ' + hash.slice(0, 8) + '...' + hash.slice(58, 65)}
         </TYPE.body>
-        <ExternalLink href={getEtherscanLink(chainId, hash, 'transaction')}>
-          View on Etherscan
+        <ExternalLink
+          href={getExplorerLink(chainId, hash, 'transaction')}
+        >
+          View on {blockExplorerName}
         </ExternalLink>
       </AutoColumn>
     </Wrapper>

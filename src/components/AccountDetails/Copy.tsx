@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
+import { darken } from 'polished';
 import useCopyClipboard from '../../hooks/useCopyClipboard';
 
 import { LinkStyledButton } from '../../theme';
 import { CheckCircle, Copy } from 'react-feather';
 
 const CopyIcon = styled(LinkStyledButton)`
-  color: ${({ theme }) => theme.text3};
+  color: ${({ theme }) => theme.blue};
   flex-shrink: 0;
   display: flex;
   text-decoration: none;
@@ -16,7 +17,7 @@ const CopyIcon = styled(LinkStyledButton)`
   :active,
   :focus {
     text-decoration: none;
-    color: ${({ theme }) => theme.text2};
+    color: ${({ theme }) => darken(0.3, theme.blue)};
   }
 `;
 const TransactionStatusText = styled.span`
@@ -28,12 +29,14 @@ const TransactionStatusText = styled.span`
 
 export default function CopyHelper(props: {
   toCopy: string;
+  className?: string;
   children?: React.ReactNode;
   onClick?: () => void;
 }) {
   const [isCopied, setCopied] = useCopyClipboard();
   return (
     <CopyIcon
+      className={props.className}
       onClick={() => {
         setCopied(props.toCopy);
         props.onClick && props.onClick();

@@ -18,17 +18,28 @@ export const LightCard = styled(Card)`
   background-color: ${({ theme }) => theme.bg1};
 `;
 
+export const LightGreyCard = styled(Card)`
+  border: 1px solid ${({ theme }) => theme.bg2};
+  background: #eaeeee80;
+`;
+
 export const GreyCard = styled(Card)`
   background-color: ${({ theme }) => theme.advancedBG};
 `;
 
 export const OutlineCard = styled(Card)`
-  border: 1px solid ${({ theme }) => theme.advancedBG};
+  border: 1px solid ${({ theme }) => theme.border1};
 `;
 
 export const YellowCard = styled(Card)`
   background-color: rgba(243, 132, 30, 0.05);
   color: ${({ theme }) => theme.yellow2};
+  font-weight: 500;
+`;
+
+export const WhiteCard = styled(Card)`
+  background-color: rgba(255, 255, 255, 0.05);
+  color: ${({ theme }) => theme.white};
   font-weight: 500;
 `;
 

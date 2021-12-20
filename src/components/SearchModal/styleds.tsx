@@ -1,26 +1,11 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { FixedSizeList } from 'react-window';
 import { AutoColumn } from '../Column';
 import { RowBetween, RowFixed } from '../Row';
 
-export const ModalInfo = styled.div`
-  ${({ theme }) => theme.flexRowNoWrap}
-  align-items: center;
-  padding: 1rem 1rem;
-  margin: 0.25rem 0.5rem;
-  justify-content: center;
-  flex: 1;
-  user-select: none;
-`;
-
 export const FadedSpan = styled(RowFixed)`
   color: ${({ theme }) => theme.primary1};
   font-size: 14px;
-`;
-
-export const GreySpan = styled.span`
-  color: ${({ theme }) => theme.text3};
-  font-weight: 400;
 `;
 
 export const Input = styled.input`
@@ -34,7 +19,7 @@ export const Input = styled.input`
   border: none;
   outline: none;
   border-radius: 8px;
-  color: ${({ theme }) => theme.grey3};
+  color: ${({ theme }) => theme.darkWhite};
   border-style: solid;
   border: 1px solid ${({ theme }) => theme.bg3};
   -webkit-appearance: none;
@@ -42,7 +27,7 @@ export const Input = styled.input`
   font-size: 18px;
 
   ::placeholder {
-    color: ${({ theme }) => theme.text3};
+    color: ${({ theme }) => theme.lightGrey};
   }
 `;
 
@@ -57,8 +42,9 @@ export const MenuItem = styled(RowBetween)`
   cursor: ${({ disabled }) => !disabled && 'pointer'};
   pointer-events: ${({ disabled }) => disabled && 'none'};
   transition: all 0.3s ease-in-out;
+    border: 1px solid transparent;
   :hover {
-    background-color: ${({ theme, disabled }) => !disabled && theme.bg2};
+    border: 1px solid ${({ theme }) => theme.border1};
   }
   opacity: ${({ disabled, selected }) => (disabled || selected ? 0.5 : 1)};
 `;

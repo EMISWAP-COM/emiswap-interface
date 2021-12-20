@@ -1,12 +1,14 @@
 import { parseBytes32String } from '@ethersproject/strings';
-import { Token, ETHER } from '@uniswap/sdk';
+import { ETHER, Token } from '@uniswap/sdk';
 import { useMemo } from 'react';
 import { NEVER_RELOAD, useSingleCallResult } from '../state/multicall/hooks';
 import { useCoinList } from '../state/invest/hooks';
-import { isAddress } from '../utils';
+import { getNetworkData, isAddress, isEthereumActive } from '../utils';
 import { useActiveWeb3React } from './index';
 import { useBytes32TokenContract, useTokenContract } from './useContract';
 import { ESW } from '../constants';
+import chainIds from '../constants/chainIds';
+import { injected } from '../connectors';
 
 export function useAllCoins(): { [address: string]: Token } {
   const { chainId } = useActiveWeb3React();
@@ -121,4 +123,34 @@ export function useDefaultCoin(address?: string): Token | undefined {
     }
     return undefined;
   }, [defaultCoin]);
+}
+
+export function useIsEthActive(): boolean {
+  const { chainId } = useActiveWeb3React();
+
+  return isEthereumActive(chainId);
+}
+
+export function useIsKuCoinActive(): boolean {
+  const { chainId } = useActiveWeb3React();
+
+  return (chainId as any) === chainIds.KUCOIN;
+}
+
+export function useIsPolygonActive(): boolean {
+  const { chainId } = useActiveWeb3React();
+
+  return [chainIds.POLYGON, chainIds.MUMBAI].includes(chainId as any);
+}
+
+export function useIsMetaMask(): boolean {
+  const { connector } = useActiveWeb3React();
+
+  return connector === injected;
+}
+
+export function useNetworkData() {
+  const { chainId } = useActiveWeb3React();
+
+  return getNetworkData(chainId);
 }
