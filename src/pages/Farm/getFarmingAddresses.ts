@@ -27,8 +27,10 @@ const addressesByNetworkId = {
   // TODO
   [chainIds.POLYGON]: [
     '0x18f38359551258C35e8593d775cb6Fe8D27fd89b', // RewardPoolMulti PROXY
+    '0x18f38359551258C35e8593d775cb6Fe8D27fd89b', // RewardPoolMulti PROXY
   ],
   [chainIds.MUMBAI]: [
+    '0xb7Ff11b03DD28cDea45D65E274381a4E3D90778D', // RewardPoolMulti PROXY
     '0xb7Ff11b03DD28cDea45D65E274381a4E3D90778D', // RewardPoolMulti PROXY
   ],
   // TODO

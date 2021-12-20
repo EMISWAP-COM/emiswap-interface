@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { SwapPoolTabs, TabNames } from '../../components/NavigationTabs';
 
 import AppBody from '../AppBody';
@@ -12,6 +12,16 @@ import { getFarming365Contracts } from '../../utils';
 import styled from 'styled-components/macro';
 import Button from '../../base/ui/Button';
 import { useWalletModalToggle } from '../../state/application/hooks';
+import Tabs from '../../base/ui/Tabs';
+
+const StyledTabs = styled.div`
+  display: flex;
+  justify-content: flex-start;
+
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    margin-bottom: 32px;
+  `};
+`;
 
 const FarmingInfo = styled.div`
   margin: 16px 0 32px 0;
@@ -24,6 +34,17 @@ const Info = styled.div`
   color: ${({ theme }) => theme.darkWhite};
 `;
 
+const filterItems: Array<{ id: 'active' | 'finished'; title: string }> = [
+  {
+    id: 'active',
+    title: 'Active',
+  },
+  {
+    id: 'finished',
+    title: 'Finished',
+  },
+];
+
 export default function Farm365() {
   // const dispatch = useDispatch<AppDispatch>();
   const history = useHistory();
@@ -34,6 +55,7 @@ export default function Farm365() {
   const toggleWalletModal = useWalletModalToggle();
 
   // const [loading, setLoading] = useState<boolean>(Boolean(account) && false);
+  const [selectedFilterTab, setSelectedFilterTab] = useState<'active' | 'finished'>('active');
 
   const farming365Contracts: Contract[] = useMemo(() => {
     if (!isPolygonActive) {
@@ -65,6 +87,13 @@ export default function Farm365() {
 
         {account ? (
           <>
+            <StyledTabs>
+              <Tabs
+                items={filterItems}
+                selectedItemId={selectedFilterTab}
+                onChange={setSelectedFilterTab as any}
+              />
+            </StyledTabs>
             <FarmingInfo>
               Stake LP tokens in pair with ESW into the farming pools and win a 365% APR airdrop per
               provided liquidity + Additional % APR for Farming. Farming rewards are allocated to
@@ -72,7 +101,11 @@ export default function Farm365() {
             </FarmingInfo>
 
             {farming365Contracts.map(contract => (
-              <Farm365Item key={contract.address} contract={contract} />
+              <Farm365Item
+                key={contract.address}
+                contract={contract}
+                selectedFilterTab={selectedFilterTab}
+              />
             ))}
           </>
         ) : (

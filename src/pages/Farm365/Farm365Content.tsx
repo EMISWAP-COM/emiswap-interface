@@ -348,8 +348,10 @@ export default function Farm365Content({ farming365, eswRate }: Farm365ContentPr
         const exitDate = dayjs(farming365.exitDateLimit * 1000);
 
         const timeout = (dayjs as any).duration(exitDate.diff(dateNow));
+        const days: string = (+timeout.format('D') + +timeout.format('M') * 30).toString();
+        console.log(+timeout.format('M'), 30);
         const timeoutDateValue: TDataObject = {
-          days: timeout.format('D'),
+          days,
           hours: timeout.format('HH'),
           minutes: timeout.format('mm'),
           seconds: timeout.format('ss'),
