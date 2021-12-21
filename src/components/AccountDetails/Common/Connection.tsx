@@ -245,7 +245,15 @@ const Balance = ({
       </BalanceWrapper>
       <Options>
         {children}
-        {isPolygon && <CollectBtn>Request collect</CollectBtn>}
+        {isPolygon && (
+          <MessageTooltip
+            whiteSpace={"normal"}
+            position={{ top: "175px", left: "320px" }}
+            text="Temporarily unavailable"
+          >
+            <CollectBtn inactive>Request collect</CollectBtn>
+          </MessageTooltip>
+        )}
         <MessageTooltip
           disableTooltip={!isCollectDisabled}
           whiteSpace={'normal'}
