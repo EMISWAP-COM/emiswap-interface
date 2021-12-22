@@ -123,7 +123,7 @@ export const ESWRewards = () => {
           <Item text=" Referral Reward" count={sumRewardsESW()} />
           <Item
             text="Fee Compensation"
-            count={convertBigDecimal(balance?.total.grouped.compensation.ESW)}
+            count={balance?.total.grouped.compensation?.ESW}
           />
         </RewardsWrapper>
       )}
