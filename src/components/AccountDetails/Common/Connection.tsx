@@ -203,6 +203,11 @@ const AddressLink = styled(ExternalLink)`
   }
 `;
 
+const AccountNetwork = styled.span`
+  align-self: center; 
+  margin-left: 1rem; 
+`
+
 interface BalanceItemInterface {
   label: string;
   value: string;
@@ -322,7 +327,8 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
             </ChangeActionsBlock>
             <Wallet>
               <StatusIcon connectorName={connector} />
-              <Account>{ENSName || shortenAddress(account)} {isKuCoinActive?'':'Ethereum + Polygon'}</Account>
+              <Account>{ENSName || shortenAddress(account)}</Account>
+              <AccountNetwork>{isKuCoinActive?'':'Ethereum & Polygon'}</AccountNetwork>
             </Wallet>
           </WalletInfo>
           {isKuCoinActive? null:(

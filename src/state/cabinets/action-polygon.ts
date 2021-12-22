@@ -20,7 +20,6 @@ const getNetworkUrl = (network: string): string => {
 export const loadPolygonBalance = createAsyncThunk(
   'loadPolygonBalance',
   async ({ userId, network }: { userId: string; network: string }, { dispatch, getState }) => {
-    console.log(userId)
     const url = `${baseUrl}/v1/public/users/${userId}/balances/${
       getNetworkUrl(network)
     } `;
