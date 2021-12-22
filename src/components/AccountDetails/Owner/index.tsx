@@ -16,7 +16,7 @@ import { ESWLocked } from '../Common/ESWLocked';
 import { ReferralPerformance } from '../Common/ReferralPerformance';
 import { PurchaseHistory } from '../Common/PurchaseHistory';
 import FarmingRewards from '../Common/FarmingRewards';
-import { useIsEthActive } from '../../../hooks/Coins';
+import { useIsEthActive, useIsKuCoinActive } from '../../../hooks/Coins';
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -57,6 +57,7 @@ interface Props {
 
 const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
   const isEthActive = useIsEthActive();
+  const isKuCoinActive = useIsKuCoinActive()
   const dispatch = useDispatch<AppDispatch>();
 
   const { chainId } = useActiveWeb3React();
@@ -97,6 +98,7 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
           <ExternalLink href={'https://crowdsale.emidao.org/magic-nft'}>Magic Cards!</ExternalLink> */}
         </OptionsPromo>
       </Connection>
+      {isKuCoinActive? null: (
       <>
         <ESWRewards />
         {isEthActive && <ESWHoldingRewards />}
@@ -105,6 +107,7 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
         <ReferralPerformance />
         <PurchaseHistory />
       </>
+      )}
     </Wrapper>
   );
 };

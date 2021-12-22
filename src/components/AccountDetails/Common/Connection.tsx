@@ -325,23 +325,25 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
               <Account>{ENSName || shortenAddress(account)}</Account>
             </Wallet>
           </WalletInfo>
-          <Balance
-            total={sumESW('ESW', balance)}
-            wallet={convertBigDecimal(balance?.wallet.ESW)}
-            locked={convertBigDecimal(balance?.total.locked.ESW)}
-            avalible={convertBigDecimal(balance?.available.ESW)}
-            isCollectDisabled={isCollectDisabled}
-            handleClaim={() => {
-              if (isCollectDisabled) {
-                return;
-              }
-              toggle();
-              history.push(`/claim/${network}`);
-            }}
-            isPolygon
-          >
-            {children}
-          </Balance>
+          {isKuCoinActive? null:(
+            <Balance
+              total={sumESW('ESW', balance)}
+              wallet={convertBigDecimal(balance?.wallet.ESW)}
+              locked={convertBigDecimal(balance?.total.locked.ESW)}
+              avalible={convertBigDecimal(balance?.available.ESW)}
+              isCollectDisabled={isCollectDisabled}
+              handleClaim={() => {
+                if (isCollectDisabled) {
+                  return;
+                }
+                toggle();
+                history.push(`/claim/${network}`);
+              }}
+              isPolygon
+            >
+              {children}
+            </Balance>
+          )}
         </Main>
         <AccountControl>
           <Copy toCopy={account}>
