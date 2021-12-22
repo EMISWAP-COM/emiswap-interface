@@ -288,11 +288,7 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
   const { blockExplorerName, value: network } = useNetworkData();
   const history = useHistory();
   const toggle = useWalletModalToggle();
-  const balance = useSelector((state: AppState) => {
-    if (network === 'polygon' || network === 'mumbai') {
-      return state.polygonCabinet.balance;
-    } else return state.cabinets.balance;
-  });
+  const balance = useSelector((state: AppState) => state.cabinets.totalBalance);
   const isKuCoinActive = useIsKuCoinActive();
   const isEnableChangeWallet = !isKuCoinActive;
   const isCollectDisabled = true || !Number(balance?.available.ESW);

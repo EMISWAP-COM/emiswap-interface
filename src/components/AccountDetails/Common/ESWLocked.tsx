@@ -7,6 +7,7 @@ import { Header } from '../styleds';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { convertBigDecimal, convertDate, DateFormat } from '../uitls';
+import { useNetworkData } from '../../../hooks/Coins';
 
 const DarkText = styled.span`
   color: ${({ theme }) => theme.white};
@@ -67,10 +68,29 @@ const Item = ({ alt, src, label, value, isUnlockDate }: LockedItemInterface) => 
     </LockedItemWrapper>
   </LockedItem>
 );
+
+const getValues = (network, total, polygonTotal, nextUnlock, nextPolygonUnlock ) => {
+  if (network === 'polygon' || network === 'mumbai') { 
+    const nextUnlockAmount = nextPolygonUnlock?.amount
+    const lockedAtEmiswap = polygonTotal?.locked?.ESW
+    const nextUnlockDate = nextPolygonUnlock?.available_at
+    return [nextUnlockAmount, lockedAtEmiswap, nextUnlockDate]
+  } else {
+    const nextUnlockAmount = total?.locked?.ESW
+    const lockedAtEmiswap = nextUnlock?.amount
+    const nextUnlockDate = nextUnlock?.available_at
+    return [nextUnlockAmount, lockedAtEmiswap, nextUnlockDate]
+  }
+}
+
 export const ESWLocked = () => {
   const { details, total } = useSelector((state: AppState) => state.cabinets.balance);
-
+  const { details: polygonDetails, total: polygonTotal } = useSelector((state: AppState) => state.polygonCabinet.balance);
+  const { value: network } = useNetworkData();
   const nextUnlock = details?.locked.ESW ? details?.locked.ESW[0] : null;
+  const nextPolygonUnlock = polygonDetails?.locked.ESW ? polygonDetails?.locked.ESW[0] : null;
+
+  const [nextUnlockAmount, lockedAtEmiswap, nextUnlockDate] = getValues(network, total, polygonTotal, nextUnlock, nextPolygonUnlock)
 
   return (
     <div>
@@ -80,19 +100,19 @@ export const ESWLocked = () => {
           alt="lock"
           src={lock}
           label="Next unlock amount"
-          value={convertBigDecimal(total.locked.ESW)}
+          value={convertBigDecimal(nextUnlockAmount)}
         />
         <Item
           alt="unlock"
           src={unlock}
           label="Locked at Emiswap"
-          value={convertBigDecimal(nextUnlock?.amount)}
+          value={convertBigDecimal(lockedAtEmiswap)}
         />
         <Item
           alt="timer"
           src={timer}
           label="Next unlock date"
-          value={convertDate(nextUnlock?.available_at, DateFormat.full)}
+          value={convertDate(nextUnlockDate, DateFormat.full)}
           isUnlockDate
         />
       </LockedWrapper>

@@ -5,6 +5,7 @@ import {
   loadDepositsEswHistory,
   loadDepositsEswHistoryRewards,
   loadPerformance,
+  loadTotalBalance,
 } from './actions';
 
 export interface DepositsEswHistoryRewards {
@@ -90,7 +91,19 @@ interface CabinetState {
   referralHistory: ReferralPurchaseHistory[];
   depositsEswHistory: DepositsEswHistory[];
   depositsEswHistoryRewards: DepositsEswHistoryRewards;
+  totalBalance: any
 }
+
+interface TotalBalance {
+  available: { ESW: string },
+  wallet: { ESW: string },
+  total: {
+    locked: { ESW: string },
+    unlocked: { ESW: string },
+    withdrawn: {},
+  },
+};
+
 
 interface PerformanceLevel {
   total_count: number;
@@ -224,6 +237,15 @@ const initialState: CabinetState = {
   referralHistory: [] as ReferralPurchaseHistory[],
   depositsEswHistory: new Array<DepositsEswHistory>(),
   depositsEswHistoryRewards: {} as DepositsEswHistoryRewards,
+  totalBalance:{
+    available: { ESW: "0"},
+    wallet: { ESW: "0"},
+    total: {
+      locked: { ESW: "0"},
+      unlocked: { ESW: "0"},
+      withdrawn: {},
+    },
+  }
 };
 
 export default createReducer(initialState, builder =>
@@ -240,7 +262,10 @@ export default createReducer(initialState, builder =>
     .addCase(loadDepositsEswHistory.fulfilled, (state, action) => {
       state.depositsEswHistory = action.payload;
     })
+    .addCase(loadTotalBalance.fulfilled, (state, action)=> {
+      state.totalBalance = action.payload
+    })
     .addCase(loadDepositsEswHistoryRewards.fulfilled, (state, action) => {
       state.depositsEswHistoryRewards = action.payload;
-    }),
+    })
 );
