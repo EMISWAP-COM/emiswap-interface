@@ -322,7 +322,7 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
             </ChangeActionsBlock>
             <Wallet>
               <StatusIcon connectorName={connector} />
-              <Account>{ENSName || shortenAddress(account)}</Account>
+              <Account>{ENSName || shortenAddress(account)} {isKuCoinActive?'':'Ethereum + Polygon'}</Account>
             </Wallet>
           </WalletInfo>
           {isKuCoinActive? null:(

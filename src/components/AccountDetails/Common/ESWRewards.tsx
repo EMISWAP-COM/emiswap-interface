@@ -115,7 +115,7 @@ export const ESWRewards = () => {
 
   return (
     <div>
-      <Header>My ESW Rewards</Header>
+      <Header>My {isEthActive? 'Ethereum': 'Polygon'} ESW Rewards</Header>
       {isEthActive && (
         <RewardsWrapper>
           <Item text="Providing Liquidity" count={sumPoolBonuses()} />
