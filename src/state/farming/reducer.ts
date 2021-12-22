@@ -66,7 +66,7 @@ export default createReducer<FarmState>(initialState, builder =>
       };
     })
     .addCase(loadUserFarmsForLK.fulfilled, (state, action) => {
-      const includedStakes = [...action.payload.included];
+      const includedStakes = [...action.payload.included || []];
 
       return {
         ...state,
