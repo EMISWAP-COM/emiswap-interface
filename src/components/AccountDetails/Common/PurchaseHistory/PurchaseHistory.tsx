@@ -18,7 +18,6 @@ import {
 } from './components';
 
 import { TruncatedTextWithTooltip } from '../../../../base/ui/TruncatedTextWithTooltip';
-import { convertToISOSafari } from '../../uitls';
 
 const MAGIC_CHAIN_ID = 42; // todo: what it is?
 const ETHERSCAN_URL = 'https://etherscan.io';
@@ -30,15 +29,8 @@ const tabs: Record<string, TabProps> = {
 };
 const tabsValues = Object.values(tabs);
 
-const add90Days = (date) => {
-  const day = new Date(convertToISOSafari(date))
-  day.setDate(day.getDate() + 90);
-  return day
-}
-
-const getTableItem = (forWhat) => (item: {created_at: string,  amount: string})=> ({
-    date: item.created_at,
-    unlockDate: add90Days(item.created_at),
+const getTableItem = (forWhat: string) => (item: any)=> ({
+    date: item.availiable_at,
     amount: item.amount,
     forWhat,
 })
@@ -262,7 +254,6 @@ export const PurchaseHistory = () => {
       { key: 'date', label: 'Date', cell: cellRenders.date },
       { key: 'forWhat', label: 'For What' },
       { key: 'amount', label: 'ESW' },
-      { key: 'unlockDate', label: 'Unlock Date', cell: cellRenders.date },
     ],
     [],
   );
