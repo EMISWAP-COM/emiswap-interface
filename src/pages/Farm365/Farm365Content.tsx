@@ -20,6 +20,8 @@ import dayjs from 'dayjs';
 import { calcFarming365Apr } from './helpers';
 import { isMobile } from 'react-device-detect';
 import Tooltip from '../Farm/Tooltip';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../state';
 
 const Content = styled.div`
   display: flex;
@@ -198,6 +200,8 @@ type Farm365ContentProps = {
 export default function Farm365Content({ farming365, eswRate }: Farm365ContentProps) {
   const { chainId, account } = useActiveWeb3React();
   const { value: network } = useNetworkData();
+
+  const farmingBonuses = useSelector((state: AppState) => state.user.farmingBonuses);
 
   const farmingAddresses = farming365.contract.address;
 
@@ -485,6 +489,20 @@ export default function Farm365Content({ farming365, eswRate }: Farm365ContentPr
   const apr = calcFarming365Apr(farming365.liquidity, farming365.blockReward, eswRate).toFixed(2);
   const headerMarginBottom = lpStakedTokens?.length > 1 ? (isMobile ? 12 : 24) : isMobile ? 12 : 0;
 
+  const getReward = (address: string): string | null => {
+    const totalPool = farmingBonuses?.bonus_amount?.total_by_pools?.find(value => {
+      return Boolean(value[address]);
+    });
+
+    // console.log(totalPool, address);
+
+    if (totalPool) {
+      return totalPool[address] || null;
+    }
+
+    return null;
+  };
+
   return (
     <Content>
       <BorderCard>
@@ -568,7 +586,7 @@ export default function Farm365Content({ farming365, eswRate }: Farm365ContentPr
                 </StakeTokenLine>
               </StakeToken>
               <StakeApr>365%</StakeApr>
-              <StakeReward>Coming soon</StakeReward>
+              <StakeReward>{getReward(tokenAmount.token.address) || '-'}</StakeReward>
             </StakeItem>
           ))}
         </StakeList>

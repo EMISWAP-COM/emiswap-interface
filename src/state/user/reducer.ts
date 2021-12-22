@@ -4,6 +4,7 @@ import {
   addSerializedPair,
   addSerializedToken,
   dismissTokenWarning,
+  loadFarmingBonuses,
   loadWalletAddress,
   login,
   removeSerializedPair,
@@ -25,7 +26,7 @@ export enum InvestRequestStatus {
   PENDING = 'pending',
   REJECTED = 'rejected',
   ACCEPTED = 'accepted',
-  SENT = 'sent'
+  SENT = 'sent',
 }
 
 export interface UserInfo {
@@ -81,6 +82,22 @@ export interface UserState {
 
   timestamp: number;
   info: UserInfo;
+  farmingBonuses: {
+    data: {
+      [address: string]: Array<{
+        user_id: string;
+        bonus_amount: string;
+        pool_address: string;
+        day: number;
+      }>;
+    };
+    bonus_amount: {
+      total: string;
+      total_by_pools: Array<{
+        [address: string]: string;
+      }>;
+    };
+  };
 }
 
 function pairKey(token0Address: string, token1Address: string) {
@@ -109,6 +126,13 @@ export const initialState: UserState = {
     },
     invest_requested: false,
     invest_request_state: null,
+  },
+  farmingBonuses: {
+    data: {},
+    bonus_amount: {
+      total: '',
+      total_by_pools: [],
+    },
   },
 };
 
@@ -198,5 +222,8 @@ export default createReducer(initialState, builder =>
     )
     .addCase(loadWalletAddress.fulfilled, (state, { payload }) => {
       state.info.walletAddress = payload;
+    })
+    .addCase(loadFarmingBonuses.fulfilled, (state, { payload }) => {
+      state.farmingBonuses = payload;
     }),
 );

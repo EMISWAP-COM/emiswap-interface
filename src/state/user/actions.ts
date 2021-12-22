@@ -122,3 +122,16 @@ export const loginCabinets = createAsyncThunk(
       });
   },
 );
+
+export const loadFarmingBonuses = createAsyncThunk(
+  'user/loadFarmingBonuses',
+  async (payload: { userId: string }) => {
+    const { userId } = payload;
+    try {
+      const resp = await fetchWrapper.get(`${baseUrl}/v1/public/users/${userId}/farming_bonuses`);
+      return resp;
+    } catch (e) {
+      console.debug('loadFarmingBonuses: ', { e });
+    }
+  },
+);

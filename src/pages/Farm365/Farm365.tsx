@@ -13,6 +13,9 @@ import styled from 'styled-components/macro';
 import Button from '../../base/ui/Button';
 import { useWalletModalToggle } from '../../state/application/hooks';
 import Tabs from '../../base/ui/Tabs';
+import { loadFarmingBonuses } from '../../state/user/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, AppState } from '../../state';
 
 const StyledTabs = styled.div`
   display: flex;
@@ -46,11 +49,13 @@ const filterItems: Array<{ id: 'active' | 'finished'; title: string }> = [
 ];
 
 export default function Farm365() {
-  // const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch<AppDispatch>();
   const history = useHistory();
 
   const { library, account, chainId } = useActiveWeb3React();
   const isPolygonActive = useIsPolygonActive();
+
+  const { id: userId } = useSelector((state: AppState) => state.user.info);
 
   const toggleWalletModal = useWalletModalToggle();
 
@@ -63,6 +68,12 @@ export default function Farm365() {
     }
     return getFarming365Contracts(library, account, chainId);
   }, [library, account, chainId, isPolygonActive]);
+
+  useEffect(() => {
+    if (userId) {
+      dispatch(loadFarmingBonuses({ userId }) as any);
+    }
+  }, [dispatch, userId]);
 
   useEffect(() => {
     if (!isPolygonActive) {
