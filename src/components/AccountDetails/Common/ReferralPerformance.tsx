@@ -172,13 +172,23 @@ export const ReferralPerformance = () => {
           secondLevel={normalizeNumber(level2?.referrals_count)}
           thirdLevel={normalizeNumber(level3?.referrals_count)}
         />
-        <ReferalElement
-          title={isEthActive ? 'Total Ref. Purchases, ESW' : 'Ref. Rewards by lvl., ESW'}
-          referals={convertBigDecimal(total.bought.ESW)}
-          firstLevel={convertBigDecimal(level1?.bought.ESW)}
-          secondLevel={convertBigDecimal(level2?.bought.ESW)}
-          thirdLevel={convertBigDecimal(level3?.bought.ESW)}
-        />
+        {isEthActive ? (
+          <ReferalElement
+            title={'Total Ref. Purchases, ESW'}
+            referals={convertBigDecimal(total.bought.ESW)}
+            firstLevel={convertBigDecimal(level1?.bought.ESW)}
+            secondLevel={convertBigDecimal(level2?.bought.ESW)}
+            thirdLevel={convertBigDecimal(level3?.bought.ESW)}
+          />
+        ) : (
+          <ReferalElement
+            title={'Ref. Rewards by lvl., ESW'}
+            referals={convertBigDecimal(total.reward.ESW)}
+            firstLevel={"—"}
+            secondLevel={"—"}
+            thirdLevel={"—"}
+          />
+        )}
         {/*<ReferralPurchases>*/}
         {/*  <Title>Total Ref. Purchases, DAI</Title>*/}
         {/*  <Cell>{convertBigDecimal(total.bought.DAI)}</Cell>*/}
