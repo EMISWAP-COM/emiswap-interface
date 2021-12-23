@@ -14,6 +14,7 @@ import cabinets from './cabinets/reducer';
 import stats from './stats/reducer';
 import launchpad from './launchpad/reducer';
 import farming from './farming/reducer';
+import polygonCabinet from './cabinets/polygon-cabinet';
 
 import { updateVersion } from './user/actions';
 
@@ -34,6 +35,7 @@ const store = configureStore({
     stats,
     launchpad,
     farming,
+    polygonCabinet,
   },
   middleware: [
     ...getDefaultMiddleware({ serializableCheck: false }),

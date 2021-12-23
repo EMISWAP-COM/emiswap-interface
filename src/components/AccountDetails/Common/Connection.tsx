@@ -14,9 +14,10 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { darken } from 'polished';
 import { ChangeAddress } from './ChangeAddress';
-import { useIsEthActive, useIsKuCoinActive, useNetworkData } from '../../../hooks/Coins';
+import { useIsKuCoinActive, useNetworkData } from '../../../hooks/Coins';
 import { MessageTooltip } from '../../../base/ui';
 import { css } from 'styled-components';
+import { Balance as BalanceType } from '../../../state/cabinets/reducer';
 
 const Container = styled.div`
   font-size: 13px;
@@ -127,39 +128,42 @@ const ChangeWalletBtn = styled(ActionBtn)<{ inactive: boolean }>`
     box-shadow: none;
   }
 
-  ${({ inactive }) => inactive && css`
-    background-color: transparent !important;
-    color: #615C69;
-    cursor: auto;
-    border: 1px solid rgb(97, 92, 105) !important;
-    opacity: 1 !important;
-    text-decoration: none !important;
-  `} @media screen and(max-width: 800 px) {
-  width: calc(50% - 5px);
-  margin-left: auto;
-}
+  ${({ inactive }) =>
+    inactive &&
+    css`
+      background-color: transparent !important;
+      color: #615c69;
+      cursor: auto;
+      border: 1px solid rgb(97, 92, 105) !important;
+      opacity: 1 !important;
+      text-decoration: none !important;
+    `} @media screen and(max-width: 800 px) {
+    width: calc(50% - 5px);
+    margin-left: auto;
+  }
 `;
 
 const CollectBtn = styled(ActionBtn)<{ inactive?: boolean }>`
   min-width: 180px;
   margin-bottom: 10px;
-  
+
   &:hover,
   &:focus,
   &:active {
     background: ${({ theme, inactive }) => (inactive ? 'transparent' : theme.purple)} !important;
     box-shadow: none;
   }
-  
-  ${({ inactive }) => inactive && css`
-    background-color: transparent !important;
-    color: #615C69;
-    cursor: auto;
-    border: 1px solid rgb(97, 92, 105) !important;
-    opacity: 1 !important;
-    text-decoration: none !important;
-  `}
-  
+
+  ${({ inactive }) =>
+    inactive &&
+    css`
+      background-color: transparent !important;
+      color: #615c69;
+      cursor: auto;
+      border: 1px solid rgb(97, 92, 105) !important;
+      opacity: 1 !important;
+      text-decoration: none !important;
+    `}
 `;
 
 const AccountControl = styled.div`
@@ -199,6 +203,86 @@ const AddressLink = styled(ExternalLink)`
   }
 `;
 
+const AccountNetwork = styled.span`
+  align-self: center; 
+  margin-left: 1rem; 
+`
+
+interface BalanceItemInterface {
+  label: string;
+  value: string;
+}
+const Item = ({ label, value }: BalanceItemInterface) => (
+  <BalanceItem>
+    <span>{label}</span>
+    <div>
+      <BalanceValue>{value}</BalanceValue>&nbsp;ESW
+    </div>
+  </BalanceItem>
+);
+interface BalanceInterface {
+  total: string;
+  wallet: string;
+  locked: string;
+  avalible: string;
+  children?: React.ReactNode;
+  isCollectDisabled: boolean;
+  handleClaim: () => void;
+  isPolygon?: boolean;
+}
+const Balance = ({
+  total,
+  wallet,
+  locked,
+  avalible,
+  children,
+  isCollectDisabled,
+  isPolygon,
+  handleClaim,
+}: BalanceInterface) => {
+  return (
+    <>
+      <BalanceWrapper>
+        <Item label="Total" value={total} />
+        <Item label="Wallet" value={wallet} />
+        <Item label="Locked at Emiswap" value={locked} />
+        <Item label="Available to collect" value={avalible} />
+      </BalanceWrapper>
+      <Options>
+        {children}
+        {isPolygon && (
+          <MessageTooltip
+            whiteSpace={"normal"}
+            position={{ top: "175px", left: "320px" }}
+            text="Temporarily unavailable"
+          >
+            <CollectBtn inactive>Request collect</CollectBtn>
+          </MessageTooltip>
+        )}
+        <MessageTooltip
+          disableTooltip={!isCollectDisabled}
+          whiteSpace={'normal'}
+          position={{ top: '175px', left: '490px' }}
+          text="Temporarily unavailable"
+        >
+          <CollectBtn inactive={isCollectDisabled} onClick={handleClaim}>
+            Collect to my wallet
+          </CollectBtn>
+        </MessageTooltip>
+      </Options>
+    </>
+  );
+};
+
+const sumESW = (currency: string, balance: BalanceType) => {
+  const walletESW = balance?.wallet[currency] || 0;
+  const availableESW = balance?.available[currency] || 0;
+  const lockedESW = balance?.total.locked[currency] || 0;
+
+  const sum = Number(walletESW) + Number(availableESW) + Number(lockedESW);
+
+  return convertBigDecimal(sum.toString());
+};
 interface Props {
   ENSName?: string;
   openOptions: () => void;
@@ -206,45 +290,13 @@ interface Props {
 
 export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) => {
   const { chainId, account, connector } = useActiveWeb3React();
-  const { blockExplorerName } = useNetworkData();
-
+  const { blockExplorerName, value: network } = useNetworkData();
   const history = useHistory();
   const toggle = useWalletModalToggle();
-
-  const isEthereumActive = useIsEthActive();
+  const balance = useSelector((state: AppState) => state.cabinets.totalBalance);
   const isKuCoinActive = useIsKuCoinActive();
   const isEnableChangeWallet = !isKuCoinActive;
-
-  const balance = useSelector((state: AppState) => state.cabinets.balance);
-
   const isCollectDisabled = true || !Number(balance?.available.ESW);
-
-  const sumESW = () => {
-    const walletESW = balance?.wallet.ESW || 0;
-    const availableESW = balance?.available.ESW || 0;
-    const lockedESW = balance?.total.locked.ESW || 0;
-
-    const sum = Number(walletESW) + Number(availableESW) + Number(lockedESW);
-
-    return convertBigDecimal(sum.toString());
-  };
-
-  const handleChangeWallet = () => {
-    if (!isEnableChangeWallet) {
-      return;
-    }
-
-    openOptions();
-  };
-
-  const handleClaim = () => {
-    if (isCollectDisabled) {
-      return;
-    }
-
-    toggle();
-    history.push('/claim/ESW');
-  };
 
   return (
     <>
@@ -253,83 +305,59 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
           <WalletInfo>
             <span>Connected with {formatConnectorName(connector)}</span>
             <ChangeActionsBlock>
-              <ChangeAddress openOptions={openOptions}/>
+              <ChangeAddress openOptions={openOptions} />
               <ChangeWalletMessageTooltip
                 disableTooltip={isEnableChangeWallet}
                 whiteSpace={'normal'}
                 position={{ top: '4px', left: '284px' }}
                 text="Only Metamask wallet is supported. You need to change the address inside the Metamask wallet."
               >
-                <ChangeWalletBtn inactive={!isEnableChangeWallet} onClick={handleChangeWallet}>
+                <ChangeWalletBtn
+                  inactive={!isEnableChangeWallet}
+                  onClick={() => {
+                    if (!isEnableChangeWallet) {
+                      return;
+                    }
+                    openOptions();
+                  }}
+                >
                   Change wallet
                 </ChangeWalletBtn>
               </ChangeWalletMessageTooltip>
             </ChangeActionsBlock>
             <Wallet>
-              <StatusIcon connectorName={connector}/>
+              <StatusIcon connectorName={connector} />
               <Account>{ENSName || shortenAddress(account)}</Account>
+              <AccountNetwork>{isKuCoinActive?'':'Ethereum & Polygon'}</AccountNetwork>
             </Wallet>
           </WalletInfo>
-
-          {isEthereumActive && (
-            <>
-              <BalanceWrapper>
-                <BalanceItem>
-                  <span>Total</span>
-                  <div>
-                    <BalanceValue>{sumESW()}</BalanceValue>&nbsp;ESW
-                  </div>
-                </BalanceItem>
-                <BalanceItem>
-                  <span>Wallet</span>
-                  <div>
-                    <BalanceValue>{convertBigDecimal(balance?.wallet.ESW)}</BalanceValue>&nbsp;ESW
-                  </div>
-                </BalanceItem>
-                <BalanceItem>
-                  <span>Locked at Emiswap </span>
-                  <div>
-                    <BalanceValue>{convertBigDecimal(balance?.total.locked.ESW)}</BalanceValue>
-                    &nbsp;ESW
-                  </div>
-                  {' '}
-                </BalanceItem>
-                <BalanceItem>
-                  <span>Available to collect</span>
-                  <div>
-                    <BalanceValue>{convertBigDecimal(balance?.available.ESW)}</BalanceValue>
-                    &nbsp;ESW
-                  </div>
-                  {' '}
-                </BalanceItem>
-              </BalanceWrapper>
-              <Options>
-                {children}
-                <MessageTooltip
-                  disableTooltip={!isCollectDisabled}
-                  whiteSpace={'normal'}
-                  position={{ top: '175px', left: '490px' }}
-                  text="Temporarily unavailable"
-                >
-                  <CollectBtn inactive={isCollectDisabled} onClick={handleClaim}>
-                    Collect to my wallet
-                  </CollectBtn>
-                </MessageTooltip>
-              </Options>
-            </>
+          {isKuCoinActive? null:(
+            <Balance
+              total={sumESW('ESW', balance)}
+              wallet={convertBigDecimal(balance?.wallet.ESW)}
+              locked={convertBigDecimal(balance?.total.locked.ESW)}
+              avalible={convertBigDecimal(balance?.available.ESW)}
+              isCollectDisabled={isCollectDisabled}
+              handleClaim={() => {
+                if (isCollectDisabled) {
+                  return;
+                }
+                toggle();
+                history.push(`/claim/${network}`);
+              }}
+              isPolygon
+            >
+              {children}
+            </Balance>
           )}
         </Main>
         <AccountControl>
           <Copy toCopy={account}>
             <span style={{ marginLeft: '4px' }}>Copy Address</span>
           </Copy>
-          <AddressLink
-            href={getExplorerLink(chainId, ENSName || account, 'address')}
-          >
-            <LinkIcon size={16}/>
-            <span style={{ marginLeft: '4px' }}>
-              View on {blockExplorerName}
-            </span>
+          <AddressLink href={getExplorerLink(chainId, ENSName || account, 'address')}>
+            <LinkIcon size={16} />
+            <span style={{ marginLeft: '4px' }}>View on {blockExplorerName}</span>
           </AddressLink>
         </AccountControl>
       </Container>
