@@ -31,7 +31,9 @@ export function useWalletModalShow(): () => void {
 
 export function useWalletModalToggle(): () => void {
   const dispatch = useDispatch();
-  return useCallback(() => dispatch(toggleWalletModal()), [dispatch]);
+  return useCallback(() => {
+    dispatch(toggleWalletModal());
+  }, [dispatch]);
 }
 
 export function useNetworkSwitchModalOpen(): boolean {

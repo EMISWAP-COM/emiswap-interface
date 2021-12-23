@@ -2,7 +2,11 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components/macro';
 import { Connection } from '../Common/Connection';
 import { ExternalLink } from '../../../theme';
-import { loadBalance, loadDepositsEswHistory, loadPerformance } from '../../../state/cabinets/actions';
+import {
+  loadBalance,
+  loadDepositsEswHistory,
+  loadPerformance,
+} from '../../../state/cabinets/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, AppState } from '../../../state';
 import { useActiveWeb3React } from '../../../hooks';
@@ -12,7 +16,7 @@ import { ESWLocked } from '../Common/ESWLocked';
 import { ReferralPerformance } from '../Common/ReferralPerformance';
 import { PurchaseHistory } from '../Common/PurchaseHistory';
 import FarmingRewards from '../Common/FarmingRewards';
-import { useIsEthActive } from '../../../hooks/Coins';
+import { useIsEthActive, useIsKuCoinActive } from '../../../hooks/Coins';
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -53,10 +57,11 @@ interface Props {
 
 const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
   const isEthActive = useIsEthActive();
+  const isKuCoinActive = useIsKuCoinActive()
   const dispatch = useDispatch<AppDispatch>();
 
   const { chainId } = useActiveWeb3React();
-
+  
   const { id: userId } = useSelector((state: AppState) => state.user.info);
 
   useEffect(() => {
@@ -93,16 +98,15 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
           <ExternalLink href={'https://crowdsale.emidao.org/magic-nft'}>Magic Cards!</ExternalLink> */}
         </OptionsPromo>
       </Connection>
-      {isEthActive && (
-        <>
-          <ESWRewards />
-          <ESWHoldingRewards/>
-          <ESWLocked />
-          <FarmingRewards />
-          <ReferralPerformance />
-
-          <PurchaseHistory />
-        </>
+      {isKuCoinActive? null: (
+      <>
+        <ESWRewards />
+        {isEthActive && <ESWHoldingRewards />}
+        <ESWLocked />
+        {isEthActive && <FarmingRewards />}
+        <ReferralPerformance />
+        <PurchaseHistory />
+      </>
       )}
     </Wrapper>
   );
