@@ -3,7 +3,7 @@ import React, { useMemo, useState } from 'react';
 
 import { AppState } from '../../../../state';
 import { useActiveWeb3React } from '../../../../hooks';
-
+import { useIsEthActive, useIsPolygonActive } from '../../../../hooks/Coins';
 import {
   CellProps,
   cellRenders,
@@ -29,7 +29,15 @@ const tabs: Record<string, TabProps> = {
 };
 const tabsValues = Object.values(tabs);
 
+const getTableItem = (forWhat) => (item: { available_at: string, amount: string })=> ({
+    unlockDate: item.available_at,
+    amount: item.amount,
+    forWhat,
+})
+
 export const PurchaseHistory = () => {
+  const isEthActive = useIsEthActive();
+  const isPolygonActive = useIsPolygonActive();
   const { chainId } = useActiveWeb3React();
   const { referrals } = useSelector((state: AppState) => state.cabinets.performance);
   const { histories, details } = useSelector((state: AppState) => state.cabinets.balance);
@@ -37,7 +45,9 @@ export const PurchaseHistory = () => {
     (state: AppState) => state.cabinets.bonusDetails,
   );
   const { depositsEswHistory } = useSelector((state: AppState) => state.cabinets);
-
+  const { details: polygonDetails } = useSelector(
+    (state: AppState) => state.polygonCabinet.balance,
+  );
   const [liquidityTabActive, setLiquidityTabActive] = useState<string>(tabs.x10.value);
 
   const deposit = histories?.deposits;
@@ -239,48 +249,65 @@ export const PurchaseHistory = () => {
     [referrals],
   );
 
+  const myRewardHistoryFields: CellProps[] = React.useMemo(
+    () => [
+      { key: 'forWhat', label: 'For What' },
+      { key: 'amount', label: 'ESW' },
+      { key: 'unlockDate', label: 'Unlock Date', cell: cellRenders.date },
+    ],
+    [],
+  );
+
+  const myRewardHistory = [
+    ...polygonDetails.pool_bonus.map(getTableItem("Providing liquidity")),
+    ...polygonDetails.farming_bonus.map(getTableItem("Farming 365+")),
+    ...polygonDetails.pool_referral_bonus.map(getTableItem("Total Referral Reward")),
+  ];
+
   return (
     <>
-      <Table
-        title="Your Liquidity Reward History"
-        fields={liquidityRewardFields}
-        data={poolBonusDisplayData}
-        headerWrapperMarginTop={36}
-        headerMarginTop={0}
-        headerMarginBottom={24}
-        rightTitle={
-          <Tabs tabs={tabsValues} value={liquidityTabActive} onChange={setLiquidityTabActive} />
-        }
-      />
-
-      <Table title="Your Purchase History" fields={purchaseFields} data={deposit} />
-
-      <Table
-        title="Referral Purchase History"
-        fields={referralPurchaseFields}
-        data={referralsData}
-      />
-
-      <Table
-        title="Your Fee Compensation History"
-        fields={compensationHistoryFields}
-        desktopMaxHeight={414}
-        data={compensation}
-      />
-
-      <Table
-        title="ESW Holding Reward History"
-        fields={holdingRewardFields}
-        data={depositsEswHistory}
-        truncate
-      />
-
-      <Table
-        title="Your Swapping Reward History"
-        fields={swappingRewardFields}
-        desktopMaxHeight={474}
-        data={swapping}
-      />
+      {isEthActive && (
+        <>
+          <Table
+            title={'Your Liquidity Reward History'}
+            fields={liquidityRewardFields}
+            data={poolBonusDisplayData}
+            headerWrapperMarginTop={36}
+            headerMarginTop={0}
+            headerMarginBottom={24}
+            rightTitle={
+              <Tabs tabs={tabsValues} value={liquidityTabActive} onChange={setLiquidityTabActive} />
+            }
+          />
+          <Table title="Your Purchase History" fields={purchaseFields} data={deposit} />
+          <Table
+            title="Referral Purchase History"
+            fields={referralPurchaseFields}
+            data={referralsData}
+          />
+          <Table
+            title="Your Fee Compensation History"
+            fields={compensationHistoryFields}
+            desktopMaxHeight={414}
+            data={compensation}
+          />
+          <Table
+            title="ESW Holding Reward History"
+            fields={holdingRewardFields}
+            data={depositsEswHistory}
+            truncate
+          />
+          <Table
+            title="Your Swapping Reward History"
+            fields={swappingRewardFields}
+            desktopMaxHeight={474}
+            data={swapping}
+          />
+        </>
+      )}
+      {isPolygonActive && (
+        <Table title="My Reward History" fields={myRewardHistoryFields} data={myRewardHistory} />
+      )}
     </>
   );
 };
