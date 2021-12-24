@@ -115,23 +115,26 @@ export const ESWRewards = () => {
 
   return (
     <div>
-      <Header>My {isEthActive? 'Ethereum': 'Polygon'} ESW Rewards</Header>
+      <Header>My {isEthActive ? 'Ethereum' : 'Polygon'} ESW Rewards</Header>
       {isEthActive && (
         <RewardsWrapper>
           <Item text="Providing Liquidity" count={sumPoolBonuses()} />
           <Item text="Swapping" count={sumSwapBonuses()} />
           <Item text=" Referral Reward" count={sumRewardsESW()} />
-          <Item
-            text="Fee Compensation"
-            count={balance?.total.grouped.compensation?.ESW}
-          />
+          <Item text="Fee Compensation" count={balance?.total.grouped.compensation?.ESW} />
         </RewardsWrapper>
       )}
       {(network === 'polygon' || network === 'mumbai') && (
         <RewardsWrapperPolygon>
-          <Item text="Providing Liquidity" count={convertBigDecimal(grouped.pool_bonus?.ESW ?? "0")} />
-          <Item text="Farming 365+" count={convertBigDecimal((grouped as any).farming_bonus?.ESW ?? "0")} />
-          <Item text="Referral Reward" count={grouped.pool_referral_bonus?.ESW ?? "0"} />
+          <Item text="180% APR campain" count={convertBigDecimal(grouped.pool_bonus?.ESW ?? '0')} />
+          <Item
+            text="365+% APR campain"
+            count={convertBigDecimal((grouped as any).farming_bonus?.ESW ?? '0')}
+          />
+          <Item
+            text="Referral Reward"
+            count={convertBigDecimal(grouped.pool_referral_bonus?.ESW ?? '0')}
+          />
         </RewardsWrapperPolygon>
       )}
     </div>
