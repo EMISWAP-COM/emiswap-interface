@@ -204,8 +204,8 @@ const AddressLink = styled(ExternalLink)`
 `;
 
 const AccountNetwork = styled.span`
-  align-self: center; 
-  margin-left: 1rem; 
+  align-self: center;
+  margin-left: 1rem;
 `
 
 interface BalanceItemInterface {
@@ -229,6 +229,7 @@ interface BalanceInterface {
   isCollectDisabled: boolean;
   handleClaim: () => void;
   isPolygon?: boolean;
+  handleRequest: () => void;
 }
 const Balance = ({
   total,
@@ -239,6 +240,7 @@ const Balance = ({
   isCollectDisabled,
   isPolygon,
   handleClaim,
+  handleRequest,
 }: BalanceInterface) => {
   return (
     <>
@@ -251,13 +253,9 @@ const Balance = ({
       <Options>
         {children}
         {isPolygon && (
-          <MessageTooltip
-            whiteSpace={"normal"}
-            position={{ top: "175px", left: "320px" }}
-            text="Temporarily unavailable"
-          >
-            <CollectBtn inactive>Request collect</CollectBtn>
-          </MessageTooltip>
+          <CollectBtn onClick={handleRequest}>
+            Request collect
+          </CollectBtn>
         )}
         <MessageTooltip
           disableTooltip={!isCollectDisabled}
@@ -265,7 +263,7 @@ const Balance = ({
           position={{ top: '175px', left: '490px' }}
           text="Temporarily unavailable"
         >
-          <CollectBtn inactive={isCollectDisabled} onClick={handleClaim}>
+          <CollectBtn inactive={isCollectDisabled} onClick={null && handleClaim}>
             Collect to my wallet
           </CollectBtn>
         </MessageTooltip>
@@ -286,9 +284,15 @@ const sumESW = (currency: string, balance: BalanceType) => {
 interface Props {
   ENSName?: string;
   openOptions: () => void;
+  changeCollectButtonState?: (value: string) => void;
 }
 
-export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) => {
+export const Connection: React.FC<Props> = ({
+  openOptions,
+  ENSName,
+  children,
+  changeCollectButtonState,
+}) => {
   const { chainId, account, connector } = useActiveWeb3React();
   const { blockExplorerName, value: network } = useNetworkData();
   const history = useHistory();
@@ -328,20 +332,24 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
             <Wallet>
               <StatusIcon connectorName={connector} />
               <Account>{ENSName || shortenAddress(account)}</Account>
-              <AccountNetwork>{isKuCoinActive?'':'Ethereum & Polygon'}</AccountNetwork>
+              <AccountNetwork>{isKuCoinActive ? '' : 'Ethereum & Polygon'}</AccountNetwork>
             </Wallet>
           </WalletInfo>
-          {isKuCoinActive? null:(
+          {isKuCoinActive ? null : (
             <Balance
               total={sumESW('ESW', balance)}
               wallet={convertBigDecimal(balance?.wallet.ESW)}
               locked={convertBigDecimal(balance?.total.locked.ESW)}
               avalible={convertBigDecimal(balance?.available.ESW)}
               isCollectDisabled={isCollectDisabled}
+              handleRequest={() => changeCollectButtonState('request')}
               handleClaim={() => {
+                changeCollectButtonState('wallet');
+
                 if (isCollectDisabled) {
                   return;
                 }
+
                 toggle();
                 history.push(`/claim/${network}`);
               }}
