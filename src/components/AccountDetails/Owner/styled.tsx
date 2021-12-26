@@ -94,6 +94,8 @@ export const Label = styled.div`
 export const Value = styled.span`
   color: #ffffff;
   margin-left: 5px;
+  display: flex;
+  align-items: center;
 `;
 
 export const UnlockLabel = styled.div`
@@ -110,8 +112,9 @@ export const LogoStyle = styled.div`
   background: #555959 !important;
   border-radius: 3px;
   color: #ffffff;
+`;
 
-  :first-child {
-    margin-right: 10px;
-  }
+export const EpochValue = styled.span`
+  color: #ffffff;
+  margin-left: 5px;
 `;
