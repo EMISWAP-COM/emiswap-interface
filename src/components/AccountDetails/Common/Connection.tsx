@@ -18,6 +18,7 @@ import { useIsKuCoinActive, useNetworkData } from '../../../hooks/Coins';
 import { MessageTooltip } from '../../../base/ui';
 import { css } from 'styled-components';
 import { Balance as BalanceType } from '../../../state/cabinets/reducer';
+import { useGetRemainder } from '../Owner/hooks';
 
 const Container = styled.div`
   font-size: 13px;
@@ -206,7 +207,7 @@ const AddressLink = styled(ExternalLink)`
 const AccountNetwork = styled.span`
   align-self: center;
   margin-left: 1rem;
-`
+`;
 
 interface BalanceItemInterface {
   label: string;
@@ -230,6 +231,7 @@ interface BalanceInterface {
   handleClaim: () => void;
   isPolygon?: boolean;
   handleRequest: () => void;
+  titleCollectToMyWallet: string;
 }
 const Balance = ({
   total,
@@ -241,6 +243,7 @@ const Balance = ({
   isPolygon,
   handleClaim,
   handleRequest,
+  titleCollectToMyWallet,
 }: BalanceInterface) => {
   return (
     <>
@@ -252,19 +255,15 @@ const Balance = ({
       </BalanceWrapper>
       <Options>
         {children}
-        {isPolygon && (
-          <CollectBtn onClick={handleRequest}>
-            Request collect
-          </CollectBtn>
-        )}
+        {isPolygon && <CollectBtn onClick={handleRequest}>Request collect</CollectBtn>}
         <MessageTooltip
           disableTooltip={!isCollectDisabled}
           whiteSpace={'normal'}
           position={{ top: '175px', left: '490px' }}
           text="Temporarily unavailable"
         >
-          <CollectBtn inactive={isCollectDisabled} onClick={null && handleClaim}>
-            Collect to my wallet
+          <CollectBtn inactive={isCollectDisabled} onClick={handleClaim}>
+            {titleCollectToMyWallet}
           </CollectBtn>
         </MessageTooltip>
       </Options>
@@ -301,6 +300,7 @@ export const Connection: React.FC<Props> = ({
   const isKuCoinActive = useIsKuCoinActive();
   const isEnableChangeWallet = !isKuCoinActive;
   const isCollectDisabled = true || !Number(balance?.available.ESW);
+  const { value: title, status } = useGetRemainder();
 
   return (
     <>
@@ -341,7 +341,8 @@ export const Connection: React.FC<Props> = ({
               wallet={convertBigDecimal(balance?.wallet.ESW)}
               locked={convertBigDecimal(balance?.total.locked.ESW)}
               avalible={convertBigDecimal(balance?.available.ESW)}
-              isCollectDisabled={isCollectDisabled}
+              isCollectDisabled={status === 'disable'}
+              titleCollectToMyWallet={title}
               handleRequest={() => changeCollectButtonState('request')}
               handleClaim={() => {
                 changeCollectButtonState('wallet');
