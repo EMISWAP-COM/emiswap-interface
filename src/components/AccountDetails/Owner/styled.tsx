@@ -72,8 +72,8 @@ export const WalletWrapper = styled.div`
   background-color: ${({ theme }) => theme.dark1};
   box-shadow: ${({ theme }) => theme.modalBoxShadow};
   padding: 40px;
+  min-width: 80%;
   max-width: 90%;
-  min-width: 70%;
   border-radius: 20px;
   ${({ theme }) => theme.mediaWidth.upToMedium`
   width: 96vw;
@@ -84,25 +84,22 @@ export const WalletWrapper = styled.div`
 export const Field = styled.div`
   padding-bottom: 20px;
   margin-right: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 
 export const Label = styled.div`
   font-size: 14px;
   padding-bottom: 8px;
+  color: #b7b7ca;
 `;
 
 export const Value = styled.span`
   color: #ffffff;
-  margin-left: 5px;
   display: flex;
   align-items: center;
-`;
-
-export const UnlockLabel = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  font-size: 14px;
 `;
 
 export const LogoStyle = styled.div`
@@ -114,7 +111,15 @@ export const LogoStyle = styled.div`
   color: #ffffff;
 `;
 
-export const EpochValue = styled.span`
-  color: #ffffff;
-  margin-left: 5px;
+export const Frame = styled.div`
+  border: 1px solid #4a4757 !important;
+  width: 100%;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+`;
+
+export const FrameRow = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 `;
