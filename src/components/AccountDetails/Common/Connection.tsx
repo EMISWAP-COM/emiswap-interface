@@ -345,7 +345,7 @@ export const Connection: React.FC<Props> = ({
               titleCollectToMyWallet={title}
               handleRequest={() => changeCollectButtonState('request')}
               handleClaim={() => {
-                // changeCollectButtonState('wallet');
+                changeCollectButtonState('wallet');
 
                 if (isCollectDisabled) {
                   return;
