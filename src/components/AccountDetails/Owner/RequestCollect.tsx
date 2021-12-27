@@ -108,7 +108,9 @@ const RequestCollect = ({
         value={userInputValue.toString()}
         onUserInput={value => setUseInput(value)}
         onMax={() => {
-          setUseInput(availableReqestCollect);
+          if (availableReqestCollect) {
+            setUseInput(availableReqestCollect);
+          }
         }}
       />
       <Buttons>
