@@ -3,7 +3,7 @@ import React from 'react';
 import CurrencyLogo from '../../CurrencyLogo';
 import {
   Title,
-  CanselButton,
+  CancelButton,
   RequestButton,
   Field,
   Label,
@@ -102,7 +102,7 @@ const CollectToMyWallet = ({
           <Item label="Next Epoch daily limit" value={nextValue} />
         </FrameRow>
       </Frame>
-      <CanselButton onClick={changeCollectButtonState}>Cansel</CanselButton>
+      <CancelButton onClick={changeCollectButtonState}>Cancel</CancelButton>
     </WalletWrapper>
   );
 };

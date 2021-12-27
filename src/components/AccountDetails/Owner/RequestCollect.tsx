@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Wrapper, Buttons, CanselButton, RequestButton, Title, LogoStyle } from './styled';
+import { Wrapper, Buttons, CancelButton, RequestButton, Title, LogoStyle } from './styled';
 import * as Styled from '../../CurrencyInputPanel/styled';
 import { RowBetween } from '../../Row';
 import { TYPE, CursorPointer } from '../../../theme';
@@ -112,7 +112,7 @@ const RequestCollect = ({
         }}
       />
       <Buttons>
-        <CanselButton onClick={changeCollectButtonState}>Cansel</CanselButton>
+        <CancelButton onClick={changeCollectButtonState}>Cancel</CancelButton>
         <RequestButton onClick={handler}>Request</RequestButton>
       </Buttons>
     </Wrapper>

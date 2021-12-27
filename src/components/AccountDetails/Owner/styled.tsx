@@ -33,7 +33,7 @@ export const Buttons = styled.div`
   text-align: center;
 `;
 
-export const CanselButton = styled.button`
+export const CancelButton = styled.button`
   border: 1px solid #7a2df4;
   padding: 10px 0;
   width: 100%;
