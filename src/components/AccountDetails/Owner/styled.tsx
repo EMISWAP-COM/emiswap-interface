@@ -3,7 +3,7 @@ import styled from 'styled-components/macro';
 export const Wrapper = styled.div`
   position: absolute;
   z-index: 10;
-  top: 30%;
+  top: 200px;
   left: 50%;
   transform: translate(-50%, -50%);
   border: none !important;
@@ -14,11 +14,12 @@ export const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.dark1};
   box-shadow: ${({ theme }) => theme.modalBoxShadow};
   padding: 40px;
-  width: 60%;
+  min-width: 60%;
+  max-width: 90%;
   border-radius: 20px;
   ${({ theme }) => theme.mediaWidth.upToMedium`
   width: 96vw;
-  
+  padding: 10px;
 `}
 `;
 
@@ -31,6 +32,9 @@ export const Buttons = styled.div`
   justify-content: space-between;
   margin-top: 25px;
   text-align: center;
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+  flex-wrap: wrap;
+`}
 `;
 
 export const CancelButton = styled.button`
@@ -44,6 +48,10 @@ export const CancelButton = styled.button`
   font-size: 16px;
   color: #ffffff;
   cursor: pointer;
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+  margin-right: 0;
+  margin-bottom:5px;
+`}
 `;
 
 export const RequestButton = styled.button`
@@ -61,7 +69,7 @@ export const RequestButton = styled.button`
 export const WalletWrapper = styled.div`
   position: absolute;
   z-index: 10;
-  top: 30%;
+  top: 330px;
   left: 50%;
   transform: translate(-50%, -50%);
   border: none !important;
@@ -77,6 +85,8 @@ export const WalletWrapper = styled.div`
   border-radius: 20px;
   ${({ theme }) => theme.mediaWidth.upToMedium`
   width: 96vw;
+  padding: 10px;
+  margin-top: 20px;
   
 `}
 `;
