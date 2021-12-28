@@ -15,6 +15,7 @@ const ESW_CLAIM_API = window['env'].REACT_APP_ESW_CLAIM_API;
 export const useRequestCollect = (userInput: string, closeWindow: () => void) => {
   const { library, account, chainId } = useActiveWeb3React();
   const [isValidInput, changeIsValidInput] = useState(true);
+  const [title, changeTitle] = useState('Request');
   const {
     available: { ESW: availableESW },
   } = useSelector((state: AppState) => state.cabinets.totalBalance);
@@ -33,6 +34,7 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
   const amount = parseUnits(userInput, 18).toString();
 
   const handler = () => {
+    changeTitle('Pending');
     contract
       .getWalletNonce()
       .then(nonce => Number(nonce) + 1)
@@ -69,12 +71,13 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
                 }),
               });
               closeWindow();
+              changeTitle('Request');
             });
         }),
       );
   };
 
-  return { handler, availableReqestCollect: availableESW, isValidInput };
+  return { handler, availableReqestCollect: availableESW, isValidInput, title };
 };
 
 type ButtonStatus =

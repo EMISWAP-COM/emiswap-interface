@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Wrapper, Buttons, CancelButton, RequestButton, Title, LogoStyle } from './styled';
 import * as Styled from '../../CurrencyInputPanel/styled';
 import { RowBetween } from '../../Row';
@@ -7,7 +7,6 @@ import { useActiveWeb3React } from '../../../hooks';
 import NumericalInput from '../../NumericalInput';
 import CurrencyLogo from '../../CurrencyLogo';
 import { Token } from '@uniswap/sdk';
-import { useRequestCollect } from './hooks';
 interface CurrencyInputInterface {
   id?: string;
   label: string;
@@ -89,15 +88,19 @@ const CurrencyInput = ({
 
 const RequestCollect = ({
   changeCollectButtonState,
+  requestHandler,
+  availableReqestCollect,
+  setUseInput,
+  userInputValue,
+  title,
 }: {
   changeCollectButtonState: () => void;
+  requestHandler: () => void;
+  availableReqestCollect: string;
+  setUseInput: (value: string) => void;
+  userInputValue: string;
+  title: string;
 }): React.ReactElement => {
-  const [userInputValue, setUseInput] = useState<string>('0');
-  const { handler, availableReqestCollect } = useRequestCollect(
-    userInputValue,
-    changeCollectButtonState,
-  );
-
   return (
     <Wrapper>
       <Title>Request collect</Title>
@@ -115,7 +118,7 @@ const RequestCollect = ({
       />
       <Buttons>
         <CancelButton onClick={changeCollectButtonState}>Cancel</CancelButton>
-        <RequestButton onClick={handler}>Request</RequestButton>
+        <RequestButton onClick={requestHandler}>{title}</RequestButton>
       </Buttons>
     </Wrapper>
   );

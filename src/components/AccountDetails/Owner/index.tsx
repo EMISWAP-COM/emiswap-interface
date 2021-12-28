@@ -19,7 +19,7 @@ import FarmingRewards from '../Common/FarmingRewards';
 import { useIsEthActive, useIsKuCoinActive } from '../../../hooks/Coins';
 import RequestCollect from './RequestCollect';
 import CollectToMyWallet from './CollectToMyWallet';
-import { useCollectData } from './hooks';
+import { useCollectData, useRequestCollect } from './hooks';
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -87,8 +87,14 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
     nextTime,
     nextDay,
     nextValue,
-    handler,
+    handler: collectHandler,
   } = useCollectData(closeWindow);
+
+  const [userInputValue, setUseInput] = useState<string>('0');
+  const { handler: requestHandler, availableReqestCollect, title } = useRequestCollect(
+    userInputValue,
+    closeWindow,
+  );
 
   return (
     <>
@@ -129,7 +135,14 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
         )}
       </Wrapper>
       {collectButtonState === 'request' && (
-        <RequestCollect changeCollectButtonState={() => changeCollectButtonState('')} />
+        <RequestCollect
+          changeCollectButtonState={() => changeCollectButtonState('')}
+          requestHandler={requestHandler}
+          availableReqestCollect={availableReqestCollect}
+          setUseInput={setUseInput}
+          userInputValue={userInputValue}
+          title={title}
+        />
       )}
       {collectButtonState === 'wallet' && (
         <CollectToMyWallet
@@ -142,7 +155,7 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
           nextTime={nextTime}
           nextDay={nextDay}
           nextValue={nextValue}
-          changeCollect={handler}
+          changeCollect={collectHandler}
         />
       )}
     </>
