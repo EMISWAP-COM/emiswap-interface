@@ -7,6 +7,7 @@ import { bytecode } from './abis/Emiswap.json';
 import chainIds from './chainIds';
 import esw_addresses from './esw_addresses';
 import PolygonNetworkIcon from '../assets/svg/polygon-network.svg';
+import ShidenNetworkIcon from '../assets/images/shiden-network.png';
 import AvalancheNetworkIcon from '../assets/svg/avalanche-network.svg';
 
 import { KCS } from './tokens/KCS';
@@ -59,6 +60,15 @@ export const MUMBAI_WMATIC = new Token(
   18,
   'WMATIC',
   'WMATIC',
+);
+
+export const WSDN = new Token(
+  // @ts-ignore
+  chainIds.SHIDEN,
+  '0x0f933Dc137D21cA519ae4C7E93f87a4C8EF365Ef',
+  18,
+  'WSDN',
+  'WSDN',
 );
 
 export const WAVAX = new Token(
@@ -194,6 +204,10 @@ export const ESW: ChainTokenList = {
     // @ts-ignore
     new Token(chainIds.MUMBAI, esw_addresses[chainIds.MUMBAI], 18, 'ESW', 'EmiDAO Token'),
   ],
+  [chainIds.SHIDEN]: [
+    // @ts-ignore
+    new Token(chainIds.SHIDEN, esw_addresses[chainIds.SHIDEN], 18, 'ESW', 'EmiDAO Token'),
+  ],
   [chainIds.AVALANCHE]: [
     // @ts-ignore
     new Token(chainIds.AVALANCHE, esw_addresses[chainIds.AVALANCHE], 18, 'ESW', 'EmiDAO Token'),
@@ -210,6 +224,7 @@ const ETH_ONLY: ChainTokenList = {
   [chainIds.KUCOIN]: [ETHER],
   [chainIds.POLYGON]: [ETHER],
   [chainIds.MUMBAI]: [ETHER],
+  [chainIds.SHIDEN]: [ETHER],
   [chainIds.AVALANCHE]: [ETHER],
 };
 
@@ -222,6 +237,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   [chainIds.KUCOIN]: [WKCS],
   [chainIds.POLYGON]: [WMATIC],
   [chainIds.MUMBAI]: [MUMBAI_WMATIC],
+  [chainIds.SHIDEN]: [WSDN],
   [chainIds.AVALANCHE]: [WAVAX],
 };
 
@@ -237,6 +253,8 @@ export const SUGGESTED_BASES: ChainTokenList = {
   // @ts-ignore
   [chainIds.MUMBAI]: [ESW[chainIds.MUMBAI][0]],
   // @ts-ignore
+  [chainIds.SHIDEN]: [ESW[chainIds.SHIDEN][0]],
+  // @ts-ignore
   [chainIds.AVALANCHE]: [ESW[chainIds.AVALANCHE][0]],
 };
 
@@ -251,6 +269,8 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   [chainIds.POLYGON]: [ESW[chainIds.POLYGON][0]],
   // @ts-ignore
   [chainIds.MUMBAI]: [ESW[chainIds.MUMBAI][0]],
+  // @ts-ignore
+  [chainIds.SHIDEN]: [ESW[chainIds.SHIDEN][0]],
   // @ts-ignore
   [chainIds.AVALANCHE]: [ESW[chainIds.AVALANCHE][0]],
 };
@@ -323,7 +343,7 @@ export const SUPPORTED_WALLETS = {
       iconName: 'coinbaseWalletIcon.svg',
       description: 'Use Coinbase Wallet app on mobile device',
       href: null,
-      unavailableNetworksIds: [chainIds.KUCOIN],
+      unavailableNetworksIds: [chainIds.KUCOIN, chainIds.SHIDEN],
       color: '#315CF5',
     },
     COINBASE_LINK: {
@@ -331,7 +351,7 @@ export const SUPPORTED_WALLETS = {
       iconName: 'coinbaseWalletIcon.svg',
       description: 'Open in Coinbase Wallet app.',
       href: 'https://go.cb-w.com/fWpxXDRLvhb',
-      unavailableNetworksIds: [chainIds.KUCOIN],
+      unavailableNetworksIds: [chainIds.KUCOIN, chainIds.SHIDEN],
       color: '#315CF5',
       mobile: true,
       mobileOnly: true,
@@ -342,7 +362,7 @@ export const SUPPORTED_WALLETS = {
       iconName: 'fortmaticIcon.png',
       description: 'Login using Fortmatic hosted wallet',
       href: null,
-      unavailableNetworksIds: [chainIds.KUCOIN, chainIds.POLYGON, chainIds.MUMBAI],
+      unavailableNetworksIds: [chainIds.KUCOIN, chainIds.POLYGON, chainIds.MUMBAI, chainIds.SHIDEN],
       color: '#6748FF',
       mobile: true,
     },
@@ -352,7 +372,7 @@ export const SUPPORTED_WALLETS = {
       iconName: 'portisIcon.png',
       description: 'Login using Portis hosted wallet',
       href: null,
-      unavailableNetworksIds: [chainIds.KUCOIN],
+      unavailableNetworksIds: [chainIds.KUCOIN, chainIds.SHIDEN],
       color: '#4A6C9B',
       mobile: true,
     },
@@ -482,15 +502,32 @@ export const networksItems: INetworkItem[] = [
     bridgeUrl: 'https://wallet.matic.network/bridge',
   },
   {
+    alias: 'shiden',
+    value: 'shiden',
+    chainId: chainIds.SHIDEN,
+    token: WSDN,
+    icon: ShidenNetworkIcon,
+    name: 'Shiden',
+    rpcUrls: ['https://rpc.shiden.astar.network:8545/'],
+    currencySymbol: 'SDN',
+    currencySymbolWrap: 'WSDN',
+    currencySymbolWeth: 'WSDN',
+    blockExplorerUrl: 'https://shiden.subscan.io/',
+    blockExplorerName: 'Shiden Subscan',
+    analyticsUrl: 'https://emiswap.com/analytics?network=shiden',
+    eswExplorerUrl: 'https://shiden.subscan.io/token/0xd2A2a353D28e4833FAFfC882f6649c9c884a7D8f',
+    eswExplorerName: 'ESW Shiden Subscan',
+    active: true,
+    bridgeUrl: '',
+  },
+  {
     alias: 'avalanche',
     value: 'avalanche',
     chainId: chainIds.AVALANCHE,
     token: AVAX,
     icon: AvalancheNetworkIcon,
     name: 'Avalanche',
-    rpcUrls: [
-      'https://api.avax.network/ext/bc/C/rpc',
-    ],
+    rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
     currencySymbol: 'AVAX',
     currencySymbolWrap: 'WAVAX',
     currencySymbolWeth: 'WAVAX',
@@ -508,16 +545,15 @@ export const networksItems: INetworkItem[] = [
     token: MUMBAI_WMATIC,
     icon: PolygonNetworkIcon,
     name: 'Mumbai',
-    rpcUrls: [
-      'https://rpc-mumbai.matic.today',
-    ],
+    rpcUrls: ['https://rpc-mumbai.matic.today'],
     currencySymbol: 'MATIC',
     currencySymbolWrap: 'WMATIC',
     currencySymbolWeth: 'WMATIC',
     blockExplorerUrl: 'https://mumbai.polygonscan.com/',
     blockExplorerName: 'Polygonscan',
     analyticsUrl: 'https://emiswap.com/analytics?network=polygon',
-    eswExplorerUrl: 'https://mumbai.polygonscan.com/token/0xd2A2a353D28e4833FAFfC882f6649c9c884a7D8f',
+    eswExplorerUrl:
+      'https://mumbai.polygonscan.com/token/0xd2A2a353D28e4833FAFfC882f6649c9c884a7D8f',
     eswExplorerName: 'ESW Polygonscan',
     active: false,
     bridgeUrl: 'https://wallet.matic.network/bridge',

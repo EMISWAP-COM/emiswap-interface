@@ -9,7 +9,8 @@ const factory_addresses: any = {
   [chainIds.KUCOIN]: '0x945316F2964ef5C6C84921b435a528DD1790E93a',
   [chainIds.POLYGON]: '0x23c1b313152e276e0CF61665dc3AC160b3c5aB19',
   [chainIds.MUMBAI]: '0x86112534878341cc42695C7171f2eeB94c02B01E',
+  [chainIds.SHIDEN]: '0x7449314B698f918E98c76279B5570613b243eECf',
   [chainIds.AVALANCHE]: '0xaD6b9b31832A88Bb59dB4ACD820F8df2CfA84f0f',
-}
+};
 
-export default factory_addresses
+export default factory_addresses;

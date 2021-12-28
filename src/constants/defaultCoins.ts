@@ -4361,6 +4361,7 @@ const defaultCoins: DefaultCoins = {
       symbol: 'WMATIC-USDT',
       decimals: 18,
     },*/
+
     {
       address: '0xc7198437980c041c805A1EDcbA50c1Ce5db95118',
       chainId: 43114,

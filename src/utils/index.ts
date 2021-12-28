@@ -25,6 +25,7 @@ import { FARMING_365_ABI } from '../constants/abis/farming365';
 import { expNumberToStr } from './formats';
 import { abi as EMI_SWAP_ABI } from '../constants/abis/Emiswap.json';
 import { ERC20_ABI } from '../constants/abis/erc20';
+import { SDN } from '../constants/tokens/SDN';
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
@@ -43,8 +44,9 @@ const ETHERSCAN_PREFIXES: { [chainId in chainIds]: string } = {
   42: 'kovan.',
   321: 'kucoin.',
   137: 'polygon.',
-  43114: 'avalanche.',
   80001: 'mumbai.',
+  336: 'shiden',
+  43114: 'avalanche.',
 };
 
 export function getExplorerLink(
@@ -177,7 +179,7 @@ export function escapeRegExp(string: string): string {
 }
 
 export function isDefaultToken(defaultTokens: TokenAddressMap, currency?: Token): boolean {
-  const defaultAddresses = [ETHER.address, KCS.address, MATIC.address, AVAX.address];
+  const defaultAddresses = [ETHER.address, KCS.address, MATIC.address, SDN.address, AVAX.address];
 
   if (currency && defaultAddresses.includes(currency.address)) {
     return true;
