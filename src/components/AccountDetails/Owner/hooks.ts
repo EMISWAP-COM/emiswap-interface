@@ -58,7 +58,7 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
             })
             .catch(_ => {
               changeStatus(
-                'Please wait for the previous request being processed. It Is usually less than two minutes',
+                'Please wait for the previous request being processed. It usually takes less than two minutes',
               );
               changeTitle('Request');
             })
