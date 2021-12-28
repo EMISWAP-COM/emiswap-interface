@@ -341,7 +341,7 @@ export const Connection: React.FC<Props> = ({
               wallet={convertBigDecimal(balance?.wallet.ESW)}
               locked={convertBigDecimal(balance?.total.locked.ESW)}
               avalible={convertBigDecimal(balance?.available.ESW)}
-              isCollectDisabled={status === 'disable'}
+              isCollectDisabled={status !== 'enable'}
               titleCollectToMyWallet={title}
               handleRequest={() => changeCollectButtonState('request')}
               handleClaim={() => {

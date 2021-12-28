@@ -41,27 +41,27 @@ const Item = ({
 );
 
 const CollectToMyWallet = ({
-  requested = '100',
-  unlocked = '3',
-  avalible = '44',
-  currentTime = '08:12:00',
-  currentDay = '12th of December',
-  nextTime = '08:12:00',
-  nextDay = '13th of December',
-  nextValue = '1000',
+  requested,
+  unlocked,
+  avalible,
+  currentTime,
+  currentDay,
+  nextTime,
+  nextDay,
+  nextValue,
   changeCollectButtonState,
   changeCollect,
 }: {
-  requested?: string;
-  unlocked?: string;
-  avalible?: string;
+  requested: string;
+  unlocked: string;
+  avalible: string;
   changeCollectButtonState: () => void;
   changeCollect?: () => void;
-  currentTime?: string;
-  currentDay?: string;
-  nextTime?: string;
-  nextDay?: string;
-  nextValue?: string;
+  currentTime: string;
+  currentDay: string;
+  nextTime: string;
+  nextDay: string;
+  nextValue: string;
 }): React.ReactElement => {
   const avalibleCollect = unlocked === '0' ? '0' : avalible;
   const isVerificationCurrentValue = unlocked !== '0' && avalible === '0';

@@ -3,11 +3,12 @@ import { useActiveWeb3React } from '../../../hooks';
 import { AppState } from '../../../state';
 import { getCollectContract } from '../../../utils';
 import { Contract } from '@ethersproject/contracts';
-import { parseUnits } from '@ethersproject/units';
+import { formatUnits, parseUnits } from '@ethersproject/units';
 import { useAuth } from '../../../hooks/useAuth';
 import { useSelector } from 'react-redux';
 import { fetchWrapper } from '../../../api/fetchWrapper';
 import { EMI_DELIVERY } from '../../../constants/emi/addresses';
+import { format } from 'date-fns/fp';
 
 const ESW_CLAIM_API = window['env'].REACT_APP_ESW_CLAIM_API;
 
@@ -124,5 +125,61 @@ export const useGetRemainder = () => {
       }
     });
   }, [contract]);
+  return state;
+};
+
+const timeFormating = format('k:mm:ss');
+const formatDateing = format("io 'of' MMMM");
+
+const toDate = bigNumberTimestamp => new Date(Number(bigNumberTimestamp) * 1000);
+
+const formatTime = bigNumber => timeFormating(toDate(bigNumber));
+const formatDate = bigNumber => formatDateing(toDate(bigNumber));
+
+export const useCollectData = () => {
+  const [state, changeState] = useState({
+    requested: '',
+    unlocked: '',
+    avalible: '',
+    currentTime: '',
+    currentDay: '',
+    nextTime: '',
+    nextDay: '',
+    nextValue: '',
+  });
+  const { library, account, chainId } = useActiveWeb3React();
+  const contract: Contract | null = useMemo(() => getCollectContract(library, account, chainId), [
+    library,
+    account,
+    chainId,
+  ]);
+
+  useEffect(() => {
+    Promise.all([
+      contract.getRemainderOfRequests(),
+      contract.getAvailableToClaim(),
+      contract.getDatesStarts(),
+      contract.claimDailyLimit(),
+    ]).then(
+      ([
+        { remainderTotal, remainderPreparedForClaim },
+        { available },
+        { todayStart, tomorrowStart },
+        claimLimit,
+      ]) => {
+        changeState({
+          requested: formatUnits(remainderTotal, 18),
+          unlocked: formatUnits(remainderPreparedForClaim, 18),
+          avalible: formatUnits(available, 18),
+          currentTime: formatTime(todayStart),
+          currentDay: formatDate(todayStart),
+          nextTime: formatTime(tomorrowStart),
+          nextDay: formatDate(tomorrowStart),
+          nextValue: formatUnits(claimLimit, 18),
+        });
+      },
+    );
+  }, [contract]);
+
   return state;
 };

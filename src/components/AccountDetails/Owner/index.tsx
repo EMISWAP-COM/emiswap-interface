@@ -19,6 +19,7 @@ import FarmingRewards from '../Common/FarmingRewards';
 import { useIsEthActive, useIsKuCoinActive } from '../../../hooks/Coins';
 import RequestCollect from './RequestCollect';
 import CollectToMyWallet from './CollectToMyWallet';
+import { useCollectData } from './hooks';
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -59,7 +60,7 @@ interface Props {
 
 const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
   const isEthActive = useIsEthActive();
-  const isKuCoinActive = useIsKuCoinActive()
+  const isKuCoinActive = useIsKuCoinActive();
   const dispatch = useDispatch<AppDispatch>();
   const [collectButtonState, changeCollectButtonState] = useState<string | null>(null);
 
@@ -74,6 +75,16 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
       dispatch(loadDepositsEswHistory(userId) as any);
     }
   }, [dispatch, chainId, userId, isEthActive]);
+  const {
+    requested,
+    unlocked,
+    avalible,
+    currentTime,
+    currentDay,
+    nextTime,
+    nextDay,
+    nextValue,
+  } = useCollectData();
 
   return (
     <>
@@ -102,7 +113,7 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
           <ExternalLink href={'https://crowdsale.emidao.org/magic-nft'}>Magic Cards!</ExternalLink> */}
           </OptionsPromo>
         </Connection>
-        {isKuCoinActive? null: (
+        {isKuCoinActive ? null : (
           <>
             <ESWRewards />
             {isEthActive && <ESWHoldingRewards />}
@@ -113,8 +124,22 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
           </>
         )}
       </Wrapper>
-      {collectButtonState === 'request' && <RequestCollect changeCollectButtonState={() => changeCollectButtonState('')} />}
-      {collectButtonState === 'wallet' && <CollectToMyWallet changeCollectButtonState={() => changeCollectButtonState('')} />}
+      {collectButtonState === 'request' && (
+        <RequestCollect changeCollectButtonState={() => changeCollectButtonState('')} />
+      )}
+      {collectButtonState === 'wallet' && (
+        <CollectToMyWallet
+          changeCollectButtonState={() => changeCollectButtonState('')}
+          requested={requested}
+          unlocked={unlocked}
+          avalible={avalible}
+          currentTime={currentTime}
+          currentDay={currentDay}
+          nextTime={nextTime}
+          nextDay={nextDay}
+          nextValue={nextValue}
+        />
+      )}
     </>
   );
 };
