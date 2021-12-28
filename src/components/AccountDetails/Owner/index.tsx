@@ -91,7 +91,7 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
   } = useCollectData(closeWindow);
 
   const [userInputValue, setUseInput] = useState<string>('0');
-  const { handler: requestHandler, availableReqestCollect, title } = useRequestCollect(
+  const { handler: requestHandler, availableReqestCollect, title, status } = useRequestCollect(
     userInputValue,
     closeWindow,
   );
@@ -142,6 +142,7 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
           setUseInput={setUseInput}
           userInputValue={userInputValue}
           title={title}
+          status={status}
         />
       )}
       {collectButtonState === 'wallet' && (

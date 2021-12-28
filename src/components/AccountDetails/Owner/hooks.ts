@@ -16,6 +16,7 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
   const { library, account, chainId } = useActiveWeb3React();
   const [isValidInput, changeIsValidInput] = useState(true);
   const [title, changeTitle] = useState('Request');
+  const [status, changeStatus] = useState('');
   const {
     available: { ESW: availableESW },
   } = useSelector((state: AppState) => state.cabinets.totalBalance);
@@ -40,6 +41,7 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
       .then(nonce => Number(nonce) + 1)
       .then(nonce =>
         handleAuth().then(token => {
+          changeStatus('');
           fetchWrapper
             .post(ESW_CLAIM_API, {
               body: JSON.stringify({
@@ -53,6 +55,12 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
                 userID,
               }),
               headers: { Authorization: token },
+            })
+            .catch(_ => {
+              changeStatus(
+                'Please wait for the previous request being processed. It Is usually less than two minutes',
+              );
+              changeTitle('Request');
             })
             .then(({ signature, id }) => {
               return contract
@@ -72,12 +80,15 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
               });
               closeWindow();
               changeTitle('Request');
+            })
+            .catch(e => {
+              // TODO error handling
             });
         }),
       );
   };
 
-  return { handler, availableReqestCollect: availableESW, isValidInput, title };
+  return { handler, availableReqestCollect: availableESW, isValidInput, title, status };
 };
 
 type ButtonStatus =

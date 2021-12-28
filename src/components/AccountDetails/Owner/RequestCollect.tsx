@@ -1,5 +1,5 @@
 import React from 'react';
-import { Wrapper, Buttons, CancelButton, RequestButton, Title, LogoStyle } from './styled';
+import { Wrapper, Buttons, CancelButton, RequestButton, Title, LogoStyle, Status } from './styled';
 import * as Styled from '../../CurrencyInputPanel/styled';
 import { RowBetween } from '../../Row';
 import { TYPE, CursorPointer } from '../../../theme';
@@ -93,6 +93,7 @@ const RequestCollect = ({
   setUseInput,
   userInputValue,
   title,
+  status,
 }: {
   changeCollectButtonState: () => void;
   requestHandler: () => void;
@@ -100,6 +101,7 @@ const RequestCollect = ({
   setUseInput: (value: string) => void;
   userInputValue: string;
   title: string;
+  status: string;
 }): React.ReactElement => {
   return (
     <Wrapper>
@@ -116,6 +118,7 @@ const RequestCollect = ({
           }
         }}
       />
+      {status && <Status>{status}</Status>}
       <Buttons>
         <CancelButton onClick={changeCollectButtonState}>Cancel</CancelButton>
         <RequestButton onClick={requestHandler}>{title}</RequestButton>

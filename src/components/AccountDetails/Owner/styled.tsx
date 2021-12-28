@@ -133,3 +133,9 @@ export const FrameRow = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
 `;
+
+export const Status = styled.div`
+  color: #e85e59;
+  padding: 0.3rem;
+  font-size: 14px;
+`;
