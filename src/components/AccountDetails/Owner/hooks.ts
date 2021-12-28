@@ -143,7 +143,7 @@ export const useGetRemainder = () => {
 };
 
 const timeFormating = format('k:mm:ss');
-const formatDateing = format("io 'of' MMMM");
+const formatDateing = format("do 'of' MMMM");
 
 const toDate = bigNumberTimestamp => new Date(Number(bigNumberTimestamp) * 1000);
 

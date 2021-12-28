@@ -262,7 +262,10 @@ const Balance = ({
           position={{ top: '175px', left: '490px' }}
           text="Temporarily unavailable"
         >
-          <CollectBtn inactive={isCollectDisabled} onClick={!isCollectDisabled && handleClaim}>
+          <CollectBtn
+            inactive={isCollectDisabled}
+            onClick={!isCollectDisabled ? handleClaim : undefined}
+          >
             {titleCollectToMyWallet}
           </CollectBtn>
         </MessageTooltip>
