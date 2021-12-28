@@ -91,13 +91,13 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
   return { handler, availableReqestCollect: availableESW, isValidInput, title, status };
 };
 
-type ButtonStatus =
+export type RemainderStatus =
   | { status: 'remaindTime'; value: string }
   | { status: 'disable'; value: string }
   | { status: 'enable'; value: string };
 
 export const useGetRemainder = () => {
-  const [state, changeState] = useState<ButtonStatus>({
+  const [state, changeState] = useState<RemainderStatus>({
     status: 'disable',
     value: 'Collect to my wallet',
   });

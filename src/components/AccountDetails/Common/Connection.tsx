@@ -1,4 +1,5 @@
 import React from 'react';
+import Countdown from 'react-countdown';
 import { convertBigDecimal, formatConnectorName } from '../uitls';
 import { WalletAction } from '../styleds';
 import styled from 'styled-components/macro';
@@ -18,7 +19,7 @@ import { useIsKuCoinActive, useNetworkData } from '../../../hooks/Coins';
 import { MessageTooltip } from '../../../base/ui';
 import { css } from 'styled-components';
 import { Balance as BalanceType } from '../../../state/cabinets/reducer';
-import { useGetRemainder } from '../Owner/hooks';
+import { useGetRemainder, RemainderStatus } from '../Owner/hooks';
 
 const Container = styled.div`
   font-size: 13px;
@@ -231,7 +232,7 @@ interface BalanceInterface {
   handleClaim: () => void;
   isPolygon?: boolean;
   handleRequest: () => void;
-  titleCollectToMyWallet: string;
+  remainderValue: RemainderStatus;
 }
 const Balance = ({
   total,
@@ -243,7 +244,7 @@ const Balance = ({
   isPolygon,
   handleClaim,
   handleRequest,
-  titleCollectToMyWallet,
+  remainderValue,
 }: BalanceInterface) => {
   return (
     <>
@@ -266,7 +267,11 @@ const Balance = ({
             inactive={isCollectDisabled}
             onClick={!isCollectDisabled ? handleClaim : undefined}
           >
-            {titleCollectToMyWallet}
+            {remainderValue.status === 'remaindTime' ? (
+              <Countdown date={new Date(remainderValue.value)}></Countdown>
+            ) : (
+              remainderValue.value
+            )}
           </CollectBtn>
         </MessageTooltip>
       </Options>
@@ -303,7 +308,7 @@ export const Connection: React.FC<Props> = ({
   const isKuCoinActive = useIsKuCoinActive();
   const isEnableChangeWallet = !isKuCoinActive;
   const isCollectDisabled = true || !Number(balance?.available.ESW);
-  const { value: title, status } = useGetRemainder();
+  const remainderValue = useGetRemainder();
 
   return (
     <>
@@ -344,8 +349,8 @@ export const Connection: React.FC<Props> = ({
               wallet={convertBigDecimal(balance?.wallet.ESW)}
               locked={convertBigDecimal(balance?.total.locked.ESW)}
               avalible={convertBigDecimal(balance?.available.ESW)}
-              isCollectDisabled={status !== 'enable'}
-              titleCollectToMyWallet={title}
+              isCollectDisabled={remainderValue.status !== 'enable'}
+              remainderValue={remainderValue}
               handleRequest={() => changeCollectButtonState('request')}
               handleClaim={() => {
                 changeCollectButtonState('wallet');
