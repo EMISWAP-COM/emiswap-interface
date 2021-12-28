@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components/macro';
 import { Connection } from '../Common/Connection';
 import { ExternalLink } from '../../../theme';
@@ -67,6 +67,9 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
   const { chainId } = useActiveWeb3React();
 
   const { id: userId } = useSelector((state: AppState) => state.user.info);
+  const closeWindow = useCallback(() => {
+    changeCollectButtonState('');
+  }, [changeCollectButtonState]);
 
   useEffect(() => {
     if (isEthActive) {
@@ -84,7 +87,8 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
     nextTime,
     nextDay,
     nextValue,
-  } = useCollectData();
+    handler,
+  } = useCollectData(closeWindow);
 
   return (
     <>
@@ -138,6 +142,7 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
           nextTime={nextTime}
           nextDay={nextDay}
           nextValue={nextValue}
+          changeCollect={handler}
         />
       )}
     </>

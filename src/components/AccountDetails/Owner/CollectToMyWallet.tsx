@@ -56,7 +56,7 @@ const CollectToMyWallet = ({
   unlocked: string;
   avalible: string;
   changeCollectButtonState: () => void;
-  changeCollect?: () => void;
+  changeCollect: () => void;
   currentTime: string;
   currentDay: string;
   nextTime: string;

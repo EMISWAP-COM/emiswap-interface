@@ -106,15 +106,15 @@ export const useGetRemainder = () => {
               4,
               6,
             )}-${numberDate.slice(6, 8)}`;
-            const date = new Date(stringDate);
-            if (date < new Date()) {
-              changeState({ status: 'enable', value: 'Collect' });
-            } else {
-              changeState({
-                value: stringDate,
-                status: 'remaindTime',
-              });
-            }
+            // const date = new Date(stringDate);
+            // if (date < new Date()) {
+            //   changeState({ status: 'enable', value: 'Collect' });
+            // } else {
+            changeState({
+              value: stringDate,
+              status: 'remaindTime',
+            });
+            // }
           } else {
             changeState({
               value: 'Collect to my wallet',
@@ -136,7 +136,7 @@ const toDate = bigNumberTimestamp => new Date(Number(bigNumberTimestamp) * 1000)
 const formatTime = bigNumber => timeFormating(toDate(bigNumber));
 const formatDate = bigNumber => formatDateing(toDate(bigNumber));
 
-export const useCollectData = () => {
+export const useCollectData = closeWindow => {
   const [state, changeState] = useState({
     requested: '',
     unlocked: '',
@@ -146,6 +146,7 @@ export const useCollectData = () => {
     nextTime: '',
     nextDay: '',
     nextValue: '',
+    handler: () => {},
   });
   const { library, account, chainId } = useActiveWeb3React();
   const contract: Contract | null = useMemo(() => getCollectContract(library, account, chainId), [
@@ -176,10 +177,15 @@ export const useCollectData = () => {
           nextTime: formatTime(tomorrowStart),
           nextDay: formatDate(tomorrowStart),
           nextValue: formatUnits(claimLimit, 18),
+          handler: () => {
+            contract.claim().then(() => {
+              closeWindow();
+            });
+          },
         });
       },
     );
-  }, [contract]);
+  }, [contract, closeWindow]);
 
   return state;
 };
