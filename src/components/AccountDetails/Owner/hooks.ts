@@ -9,7 +9,6 @@ import { useSelector } from 'react-redux';
 import { fetchWrapper } from '../../../api/fetchWrapper';
 import { EMI_DELIVERY } from '../../../constants/emi/addresses';
 import { format } from 'date-fns/fp';
-import { BigNumber } from '@ethersproject/bignumber';
 
 const ESW_CLAIM_API = window['env'].REACT_APP_ESW_CLAIM_API;
 
@@ -27,8 +26,7 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
 
   useEffect(() => {
     contract.availableForRequests().then(max => {
-      const maxMinusOne = max.sub(BigNumber.from(1));
-      const formatedMax = formatUnits(maxMinusOne);
+      const formatedMax = formatUnits(max);
       setMaxAvailableForRequests(Number(formatedMax));
     });
   }, [contract]);

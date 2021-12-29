@@ -109,7 +109,9 @@ const RequestCollect = ({ closeWindow }: { closeWindow: () => void }): React.Rea
         onMax={() => {
           if (availableReqestCollect) {
             setUseInput(
-              Math.min(Number(availableReqestCollect), Number(maxAvailableForRequests)).toString(),
+              Math.floor(
+                Math.min(Number(availableReqestCollect), Number(maxAvailableForRequests)),
+              ).toString(),
             );
           }
         }}
