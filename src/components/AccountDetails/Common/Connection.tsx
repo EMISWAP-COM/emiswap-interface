@@ -212,6 +212,16 @@ const AccountNetwork = styled.span`
 const ButtonText = styled.span`
   white-space: nowrap;
 `;
+
+const ButtonGroup = styled.div`
+  display: flex;
+  flex-direction: row;
+  @media screen and (max-width: 800px) {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+`;
+
 interface BalanceItemInterface {
   label: string;
   value: string;
@@ -259,7 +269,7 @@ const Balance = ({
       <Options>
         {children}
         {isPolygon && (
-          <div>
+          <ButtonGroup>
             <CollectBtn onClick={handleRequest}>Request collect</CollectBtn>
             <CollectBtn
               inactive={isCollectDisabled}
@@ -274,7 +284,7 @@ const Balance = ({
                 remainderValue.value
               )}
             </CollectBtn>
-          </div>
+          </ButtonGroup>
         )}
       </Options>
     </>
