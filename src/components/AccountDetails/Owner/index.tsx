@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/macro';
 import { Connection } from '../Common/Connection';
 import { ExternalLink } from '../../../theme';
@@ -19,7 +19,6 @@ import FarmingRewards from '../Common/FarmingRewards';
 import { useIsEthActive, useIsKuCoinActive } from '../../../hooks/Coins';
 import RequestCollect from './RequestCollect';
 import CollectToMyWallet from './CollectToMyWallet';
-import { useCollectData, useRequestCollect } from './hooks';
 
 const Wrapper = styled.div`
   padding: 1rem;

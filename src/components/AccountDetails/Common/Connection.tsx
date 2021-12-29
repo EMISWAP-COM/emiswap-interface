@@ -19,7 +19,7 @@ import { useIsKuCoinActive, useIsPolygonActive, useNetworkData } from '../../../
 import { MessageTooltip } from '../../../base/ui';
 import { css } from 'styled-components';
 import { Balance as BalanceType } from '../../../state/cabinets/reducer';
-import { useGetRemainder, RemainderStatus } from '../Owner/hooks';
+import { useGetRemainder } from '../Owner/hooks';
 
 const Container = styled.div`
   font-size: 13px;
