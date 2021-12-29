@@ -299,10 +299,20 @@ const RemainderButton = ({
   handleRequest: () => void;
 }) => {
   const remainderValue = useGetRemainder();
+  const {
+    available: { ESW: availableESW },
+  } = useSelector((state: AppState) => state.cabinets.totalBalance);
   const isCollectDisabled = remainderValue.status !== 'enable';
+  const isUnavailableCollect = availableESW === undefined || availableESW <= 0;
+  console.log(availableESW);
   return (
     <ButtonGroup>
-      <CollectBtn onClick={handleRequest}>Request collect</CollectBtn>
+      <CollectBtn
+        inactive={isUnavailableCollect}
+        onClick={isUnavailableCollect ? undefined : handleRequest}
+      >
+        Request collect
+      </CollectBtn>
       <CollectBtn
         inactive={isCollectDisabled}
         onClick={!isCollectDisabled ? handleClaim : undefined}
