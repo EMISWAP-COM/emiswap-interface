@@ -32,6 +32,11 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
       .then(nonce =>
         handleAuth().then(token => {
           changeStatus('');
+          if (parseFloat(userInput) <= 0 || Number.isNaN(parseFloat(userInput))) {
+            changeStatus('Error input. Amount is not valid');
+            changeTitle('Request');
+            return Promise.resolve();
+          }
           const amount = parseUnits(userInput, 18).toString();
           fetchWrapper
             .post(ESW_CLAIM_API, {
@@ -57,6 +62,10 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
               return contract
                 .request(account, amount, nonce, `0x${signature}`)
                 .then(transactionResult => [transactionResult, id]);
+            })
+            .catch(_ => {
+              // TODO handle errors
+              changeTitle('Request');
             })
             .then(([transactionResult, id]) => {
               const transactionStateEndPoint = `/v1/private/users/${userID}/transactions/${id}`;

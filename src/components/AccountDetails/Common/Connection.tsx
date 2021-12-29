@@ -257,23 +257,16 @@ const Balance = ({
       <Options>
         {children}
         {isPolygon && <CollectBtn onClick={handleRequest}>Request collect</CollectBtn>}
-        <MessageTooltip
-          disableTooltip={!isCollectDisabled}
-          whiteSpace={'normal'}
-          position={{ top: '175px', left: '490px' }}
-          text="Temporarily unavailable"
+        <CollectBtn
+          inactive={isCollectDisabled}
+          onClick={!isCollectDisabled ? handleClaim : undefined}
         >
-          <CollectBtn
-            inactive={isCollectDisabled}
-            onClick={!isCollectDisabled ? handleClaim : undefined}
-          >
-            {remainderValue.status === 'remaindTime' ? (
-              <Countdown date={new Date(remainderValue.value)}></Countdown>
-            ) : (
-              remainderValue.value
-            )}
-          </CollectBtn>
-        </MessageTooltip>
+          {remainderValue.status === 'remaindTime' ? (
+            <Countdown date={new Date(remainderValue.value)}></Countdown>
+          ) : (
+            remainderValue.value
+          )}
+        </CollectBtn>
       </Options>
     </>
   );
