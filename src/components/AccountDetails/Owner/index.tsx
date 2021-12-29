@@ -90,7 +90,7 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
     handler: collectHandler,
   } = useCollectData(closeWindow);
 
-  const [userInputValue, setUseInput] = useState<string>('0');
+  const [userInputValue, setUseInput] = useState<string>('');
   const { handler: requestHandler, availableReqestCollect, title, status } = useRequestCollect(
     userInputValue,
     closeWindow,

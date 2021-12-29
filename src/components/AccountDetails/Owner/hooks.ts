@@ -24,16 +24,6 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
   const handleAuth = useAuth();
   const { id: userID } = useSelector((state: AppState) => state.user.info);
 
-  try {
-    parseUnits(userInput, 18).toString();
-  } catch {
-    if (isValidInput === true) {
-      changeIsValidInput(false);
-    }
-    return { isValidInput };
-  }
-  const amount = parseUnits(userInput, 18).toString();
-
   const handler = () => {
     changeTitle('Pending');
     contract
@@ -42,6 +32,7 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
       .then(nonce =>
         handleAuth().then(token => {
           changeStatus('');
+          const amount = parseUnits(userInput, 18).toString();
           fetchWrapper
             .post(ESW_CLAIM_API, {
               body: JSON.stringify({
