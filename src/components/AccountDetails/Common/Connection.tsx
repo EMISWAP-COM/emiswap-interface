@@ -218,7 +218,7 @@ const ButtonGroup = styled.div`
   display: flex;
   flex-direction: row;
   @media screen and (max-width: 800px) {
-    flex-direction: column-reverse;
+    flex-direction: column;
     align-items: stretch;
   }
 `;
