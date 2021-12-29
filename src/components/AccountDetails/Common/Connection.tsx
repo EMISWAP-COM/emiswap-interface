@@ -211,6 +211,7 @@ const AccountNetwork = styled.span`
 `;
 const ButtonText = styled.span`
   white-space: nowrap;
+  padding-right: 0.2rem;
 `;
 
 const ButtonGroup = styled.div`
@@ -277,7 +278,7 @@ const Balance = ({
             >
               {remainderValue.status === 'remaindTime' ? (
                 <>
-                  <ButtonText>Сollect to my wallet | </ButtonText>{' '}
+                  <ButtonText>Сollect to my wallet | </ButtonText>
                   <Countdown date={new Date(remainderValue.value)}></Countdown>
                 </>
               ) : (
