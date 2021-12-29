@@ -1,4 +1,5 @@
 import React from 'react';
+import Countdown from 'react-countdown';
 import { convertBigDecimal, formatConnectorName } from '../uitls';
 import { WalletAction } from '../styleds';
 import styled from 'styled-components/macro';
@@ -14,10 +15,11 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { darken } from 'polished';
 import { ChangeAddress } from './ChangeAddress';
-import { useIsKuCoinActive, useNetworkData } from '../../../hooks/Coins';
+import { useIsKuCoinActive, useIsPolygonActive, useNetworkData } from '../../../hooks/Coins';
 import { MessageTooltip } from '../../../base/ui';
 import { css } from 'styled-components';
 import { Balance as BalanceType } from '../../../state/cabinets/reducer';
+import { useGetRemainder } from '../Owner/hooks';
 
 const Container = styled.div`
   font-size: 13px;
@@ -204,9 +206,22 @@ const AddressLink = styled(ExternalLink)`
 `;
 
 const AccountNetwork = styled.span`
-  align-self: center; 
-  margin-left: 1rem; 
-`
+  align-self: center;
+  margin-left: 1rem;
+`;
+const ButtonText = styled.span`
+  white-space: nowrap;
+  padding-right: 0.2rem;
+`;
+
+const ButtonGroup = styled.div`
+  display: flex;
+  flex-direction: row;
+  @media screen and (max-width: 800px) {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+`;
 
 interface BalanceItemInterface {
   label: string;
@@ -226,9 +241,9 @@ interface BalanceInterface {
   locked: string;
   avalible: string;
   children?: React.ReactNode;
-  isCollectDisabled: boolean;
   handleClaim: () => void;
   isPolygon?: boolean;
+  handleRequest: () => void;
 }
 const Balance = ({
   total,
@@ -236,10 +251,10 @@ const Balance = ({
   locked,
   avalible,
   children,
-  isCollectDisabled,
-  isPolygon,
   handleClaim,
+  handleRequest,
 }: BalanceInterface) => {
+  const isPolygon = useIsPolygonActive();
   return (
     <>
       <BalanceWrapper>
@@ -250,27 +265,58 @@ const Balance = ({
       </BalanceWrapper>
       <Options>
         {children}
-        {isPolygon && (
-          <MessageTooltip
-            whiteSpace={"normal"}
-            position={{ top: "175px", left: "320px" }}
-            text="Temporarily unavailable"
-          >
-            <CollectBtn inactive>Request collect</CollectBtn>
-          </MessageTooltip>
+        {isPolygon ? (
+          <RemainderButton handleClaim={handleClaim} handleRequest={handleRequest} />
+        ) : (
+          <>
+            <MessageTooltip
+              whiteSpace={'normal'}
+              position={{ top: '175px', left: '320px' }}
+              text="Temporarily unavailable"
+            >
+              <CollectBtn inactive>Request collect</CollectBtn>
+            </MessageTooltip>
+            <MessageTooltip
+              disableTooltip={false}
+              whiteSpace={'normal'}
+              position={{ top: '175px', left: '490px' }}
+              text="Temporarily unavailable"
+            >
+              <CollectBtn inactive>Collect to my wallet</CollectBtn>
+            </MessageTooltip>
+          </>
         )}
-        <MessageTooltip
-          disableTooltip={!isCollectDisabled}
-          whiteSpace={'normal'}
-          position={{ top: '175px', left: '490px' }}
-          text="Temporarily unavailable"
-        >
-          <CollectBtn inactive={isCollectDisabled} onClick={handleClaim}>
-            Collect to my wallet
-          </CollectBtn>
-        </MessageTooltip>
       </Options>
     </>
+  );
+};
+
+const RemainderButton = ({
+  handleRequest,
+  handleClaim,
+}: {
+  handleClaim: () => void;
+  handleRequest: () => void;
+}) => {
+  const remainderValue = useGetRemainder();
+  const isCollectDisabled = remainderValue.status !== 'enable';
+  return (
+    <ButtonGroup>
+      <CollectBtn onClick={handleRequest}>Request collect</CollectBtn>
+      <CollectBtn
+        inactive={isCollectDisabled}
+        onClick={!isCollectDisabled ? handleClaim : undefined}
+      >
+        {remainderValue.status === 'remaindTime' ? (
+          <>
+            <ButtonText>Сollect to my wallet | </ButtonText>
+            <Countdown date={new Date(remainderValue.value)}></Countdown>
+          </>
+        ) : (
+          remainderValue.value
+        )}
+      </CollectBtn>
+    </ButtonGroup>
   );
 };
 
@@ -286,9 +332,15 @@ const sumESW = (currency: string, balance: BalanceType) => {
 interface Props {
   ENSName?: string;
   openOptions: () => void;
+  changeCollectButtonState?: (value: string) => void;
 }
 
-export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) => {
+export const Connection: React.FC<Props> = ({
+  openOptions,
+  ENSName,
+  children,
+  changeCollectButtonState,
+}) => {
   const { chainId, account, connector } = useActiveWeb3React();
   const { blockExplorerName, value: network } = useNetworkData();
   const history = useHistory();
@@ -328,24 +380,26 @@ export const Connection: React.FC<Props> = ({ openOptions, ENSName, children }) 
             <Wallet>
               <StatusIcon connectorName={connector} />
               <Account>{ENSName || shortenAddress(account)}</Account>
-              <AccountNetwork>{isKuCoinActive?'':'Ethereum & Polygon'}</AccountNetwork>
+              <AccountNetwork>{isKuCoinActive ? '' : 'Ethereum & Polygon'}</AccountNetwork>
             </Wallet>
           </WalletInfo>
-          {isKuCoinActive? null:(
+          {isKuCoinActive ? null : (
             <Balance
               total={sumESW('ESW', balance)}
               wallet={convertBigDecimal(balance?.wallet.ESW)}
               locked={convertBigDecimal(balance?.total.locked.ESW)}
               avalible={convertBigDecimal(balance?.available.ESW)}
-              isCollectDisabled={isCollectDisabled}
+              handleRequest={() => changeCollectButtonState('request')}
               handleClaim={() => {
+                changeCollectButtonState('wallet');
+
                 if (isCollectDisabled) {
                   return;
                 }
+
                 toggle();
                 history.push(`/claim/${network}`);
               }}
-              isPolygon
             >
               {children}
             </Balance>
