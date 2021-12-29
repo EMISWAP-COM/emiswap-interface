@@ -209,7 +209,9 @@ const AccountNetwork = styled.span`
   align-self: center;
   margin-left: 1rem;
 `;
-
+const ButtonText = styled.span`
+  white-space: nowrap;
+`;
 interface BalanceItemInterface {
   label: string;
   value: string;
@@ -256,17 +258,24 @@ const Balance = ({
       </BalanceWrapper>
       <Options>
         {children}
-        {isPolygon && <CollectBtn onClick={handleRequest}>Request collect</CollectBtn>}
-        <CollectBtn
-          inactive={isCollectDisabled}
-          onClick={!isCollectDisabled ? handleClaim : undefined}
-        >
-          {remainderValue.status === 'remaindTime' ? (
-            <Countdown date={new Date(remainderValue.value)}></Countdown>
-          ) : (
-            remainderValue.value
-          )}
-        </CollectBtn>
+        {isPolygon && (
+          <div>
+            <CollectBtn onClick={handleRequest}>Request collect</CollectBtn>
+            <CollectBtn
+              inactive={isCollectDisabled}
+              onClick={!isCollectDisabled ? handleClaim : undefined}
+            >
+              {remainderValue.status === 'remaindTime' ? (
+                <>
+                  <ButtonText>Сollect to my wallet | </ButtonText>{' '}
+                  <Countdown date={new Date(remainderValue.value)}></Countdown>
+                </>
+              ) : (
+                remainderValue.value
+              )}
+            </CollectBtn>
+          </div>
+        )}
       </Options>
     </>
   );
