@@ -15,7 +15,7 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { darken } from 'polished';
 import { ChangeAddress } from './ChangeAddress';
-import { useIsKuCoinActive, useNetworkData } from '../../../hooks/Coins';
+import { useIsKuCoinActive, useIsPolygonActive, useNetworkData } from '../../../hooks/Coins';
 import { MessageTooltip } from '../../../base/ui';
 import { css } from 'styled-components';
 import { Balance as BalanceType } from '../../../state/cabinets/reducer';
@@ -241,11 +241,9 @@ interface BalanceInterface {
   locked: string;
   avalible: string;
   children?: React.ReactNode;
-  isCollectDisabled: boolean;
   handleClaim: () => void;
   isPolygon?: boolean;
   handleRequest: () => void;
-  remainderValue: RemainderStatus;
 }
 const Balance = ({
   total,
@@ -253,12 +251,10 @@ const Balance = ({
   locked,
   avalible,
   children,
-  isCollectDisabled,
-  isPolygon,
   handleClaim,
   handleRequest,
-  remainderValue,
 }: BalanceInterface) => {
+  const isPolygon = useIsPolygonActive();
   return (
     <>
       <BalanceWrapper>
@@ -269,26 +265,38 @@ const Balance = ({
       </BalanceWrapper>
       <Options>
         {children}
-        {isPolygon && (
-          <ButtonGroup>
-            <CollectBtn onClick={handleRequest}>Request collect</CollectBtn>
-            <CollectBtn
-              inactive={isCollectDisabled}
-              onClick={!isCollectDisabled ? handleClaim : undefined}
-            >
-              {remainderValue.status === 'remaindTime' ? (
-                <>
-                  <ButtonText>Сollect to my wallet | </ButtonText>
-                  <Countdown date={new Date(remainderValue.value)}></Countdown>
-                </>
-              ) : (
-                remainderValue.value
-              )}
-            </CollectBtn>
-          </ButtonGroup>
-        )}
+        {isPolygon && <RemainderButton handleClaim={handleClaim} handleRequest={handleRequest} />}
       </Options>
     </>
+  );
+};
+
+const RemainderButton = ({
+  handleRequest,
+  handleClaim,
+}: {
+  handleClaim: () => void;
+  handleRequest: () => void;
+}) => {
+  const remainderValue = useGetRemainder();
+  const isCollectDisabled = remainderValue.status !== 'enable';
+  return (
+    <ButtonGroup>
+      <CollectBtn onClick={handleRequest}>Request collect</CollectBtn>
+      <CollectBtn
+        inactive={isCollectDisabled}
+        onClick={!isCollectDisabled ? handleClaim : undefined}
+      >
+        {remainderValue.status === 'remaindTime' ? (
+          <>
+            <ButtonText>Сollect to my wallet | </ButtonText>
+            <Countdown date={new Date(remainderValue.value)}></Countdown>
+          </>
+        ) : (
+          remainderValue.value
+        )}
+      </CollectBtn>
+    </ButtonGroup>
   );
 };
 
@@ -321,7 +329,6 @@ export const Connection: React.FC<Props> = ({
   const isKuCoinActive = useIsKuCoinActive();
   const isEnableChangeWallet = !isKuCoinActive;
   const isCollectDisabled = true || !Number(balance?.available.ESW);
-  const remainderValue = useGetRemainder();
 
   return (
     <>
@@ -362,8 +369,6 @@ export const Connection: React.FC<Props> = ({
               wallet={convertBigDecimal(balance?.wallet.ESW)}
               locked={convertBigDecimal(balance?.total.locked.ESW)}
               avalible={convertBigDecimal(balance?.available.ESW)}
-              isCollectDisabled={remainderValue.status !== 'enable'}
-              remainderValue={remainderValue}
               handleRequest={() => changeCollectButtonState('request')}
               handleClaim={() => {
                 changeCollectButtonState('wallet');
@@ -375,7 +380,6 @@ export const Connection: React.FC<Props> = ({
                 toggle();
                 history.push(`/claim/${network}`);
               }}
-              isPolygon
             >
               {children}
             </Balance>

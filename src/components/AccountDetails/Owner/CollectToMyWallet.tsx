@@ -1,6 +1,7 @@
 import { Token } from '@uniswap/sdk';
 import React from 'react';
 import CurrencyLogo from '../../CurrencyLogo';
+import { useCollectData } from './hooks';
 import {
   Title,
   CancelButton,
@@ -40,29 +41,19 @@ const Item = ({
   </Field>
 );
 
-const CollectToMyWallet = ({
-  requested,
-  unlocked,
-  avalible,
-  currentTime,
-  currentDay,
-  nextTime,
-  nextDay,
-  nextValue,
-  changeCollectButtonState,
-  changeCollect,
-}: {
-  requested: string;
-  unlocked: string;
-  avalible: string;
-  changeCollectButtonState: () => void;
-  changeCollect: () => void;
-  currentTime: string;
-  currentDay: string;
-  nextTime: string;
-  nextDay: string;
-  nextValue: string;
-}): React.ReactElement => {
+const CollectToMyWallet = ({ closeWindow }: { closeWindow: () => void }): React.ReactElement => {
+  const {
+    requested,
+    unlocked,
+    avalible,
+    currentTime,
+    currentDay,
+    nextTime,
+    nextDay,
+    nextValue,
+    handler: changeCollect,
+  } = useCollectData(() => closeWindow());
+
   const avalibleCollect = unlocked === '0' ? '0' : avalible;
   const isVerificationCurrentValue = unlocked !== '0' && avalible === '0';
   return (
@@ -102,7 +93,7 @@ const CollectToMyWallet = ({
           <Item label="Next Epoch daily limit" value={nextValue} />
         </FrameRow>
       </Frame>
-      <CancelButton onClick={changeCollectButtonState}>Cancel</CancelButton>
+      <CancelButton onClick={closeWindow}>Cancel</CancelButton>
     </WalletWrapper>
   );
 };

@@ -67,9 +67,6 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
   const { chainId } = useActiveWeb3React();
 
   const { id: userId } = useSelector((state: AppState) => state.user.info);
-  const closeWindow = useCallback(() => {
-    changeCollectButtonState('');
-  }, [changeCollectButtonState]);
 
   useEffect(() => {
     if (isEthActive) {
@@ -78,26 +75,6 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
       dispatch(loadDepositsEswHistory(userId) as any);
     }
   }, [dispatch, chainId, userId, isEthActive]);
-  const {
-    requested,
-    unlocked,
-    avalible,
-    currentTime,
-    currentDay,
-    nextTime,
-    nextDay,
-    nextValue,
-    handler: collectHandler,
-  } = useCollectData(closeWindow);
-
-  const [userInputValue, setUseInput] = useState<string>('');
-  const {
-    handler: requestHandler,
-    availableReqestCollect,
-    title,
-    status,
-    maxAvailableForRequests,
-  } = useRequestCollect(userInputValue, closeWindow);
 
   return (
     <>
@@ -138,30 +115,10 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
         )}
       </Wrapper>
       {collectButtonState === 'request' && (
-        <RequestCollect
-          changeCollectButtonState={() => changeCollectButtonState('')}
-          requestHandler={requestHandler}
-          availableReqestCollect={availableReqestCollect}
-          setUseInput={setUseInput}
-          userInputValue={userInputValue}
-          title={title}
-          status={status}
-          maxAvailableForRequests={maxAvailableForRequests}
-        />
+        <RequestCollect closeWindow={() => changeCollectButtonState('')} />
       )}
       {collectButtonState === 'wallet' && (
-        <CollectToMyWallet
-          changeCollectButtonState={() => changeCollectButtonState('')}
-          requested={requested}
-          unlocked={unlocked}
-          avalible={avalible}
-          currentTime={currentTime}
-          currentDay={currentDay}
-          nextTime={nextTime}
-          nextDay={nextDay}
-          nextValue={nextValue}
-          changeCollect={collectHandler}
-        />
+        <CollectToMyWallet closeWindow={() => changeCollectButtonState('')} />
       )}
     </>
   );
