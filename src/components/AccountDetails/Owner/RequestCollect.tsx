@@ -94,6 +94,7 @@ const RequestCollect = ({
   userInputValue,
   title,
   status,
+  maxAvailableForRequests,
 }: {
   changeCollectButtonState: () => void;
   requestHandler: () => void;
@@ -102,6 +103,7 @@ const RequestCollect = ({
   userInputValue: string;
   title: string;
   status: string;
+  maxAvailableForRequests: number;
 }): React.ReactElement => {
   return (
     <Wrapper>
@@ -114,7 +116,9 @@ const RequestCollect = ({
         onUserInput={value => setUseInput(value)}
         onMax={() => {
           if (availableReqestCollect) {
-            setUseInput(availableReqestCollect);
+            setUseInput(
+              Math.min(Number(availableReqestCollect), Number(maxAvailableForRequests)).toString(),
+            );
           }
         }}
       />

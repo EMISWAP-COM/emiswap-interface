@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { fetchWrapper } from '../../../api/fetchWrapper';
 import { EMI_DELIVERY } from '../../../constants/emi/addresses';
 import { format } from 'date-fns/fp';
+import { BigNumber } from '@ethersproject/bignumber';
 
 const ESW_CLAIM_API = window['env'].REACT_APP_ESW_CLAIM_API;
 
@@ -22,6 +23,15 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
   const contract: Contract | null = getCollectContract(library, account, chainId);
   const handleAuth = useAuth();
   const { id: userID } = useSelector((state: AppState) => state.user.info);
+  const [maxAvailableForRequests, setMaxAvailableForRequests] = useState(0);
+
+  useEffect(() => {
+    contract.availableForRequests().then(max => {
+      const maxMinusOne = max.sub(BigNumber.from(1));
+      const formatedMax = formatUnits(maxMinusOne);
+      setMaxAvailableForRequests(Number(formatedMax));
+    });
+  }, [library, account, chainId]);
 
   const handler = () => {
     changeTitle('Pending');
@@ -32,7 +42,12 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
         handleAuth().then(token => {
           changeStatus('');
           if (parseFloat(userInput) <= 0 || Number.isNaN(parseFloat(userInput))) {
-            changeStatus('Error input. Amount is not valid');
+            changeStatus('Error input. The Request amount is not valid');
+            changeTitle('Request');
+            return Promise.resolve();
+          }
+          if (parseFloat(userInput) > maxAvailableForRequests) {
+            changeStatus('Error input. The Request amount is too big');
             changeTitle('Request');
             return Promise.resolve();
           }
@@ -87,7 +102,7 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
       );
   };
 
-  return { handler, availableReqestCollect: availableESW, title, status };
+  return { handler, availableReqestCollect: availableESW, title, status, maxAvailableForRequests };
 };
 
 export type RemainderStatus =
