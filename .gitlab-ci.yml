@@ -63,6 +63,7 @@ deploy:review:
 deploy:release:
   extends: .deploy:review
   stage: deploy:review
+  when: manual
   only:
     refs:
     - /^release-.*$/
