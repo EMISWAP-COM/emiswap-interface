@@ -26,12 +26,13 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
   const [maxAvailableForRequests, setMaxAvailableForRequests] = useState(0);
 
   useEffect(() => {
+    console.log('trigger');
     contract.availableForRequests().then(max => {
       const maxMinusOne = max.sub(BigNumber.from(1));
       const formatedMax = formatUnits(maxMinusOne);
       setMaxAvailableForRequests(Number(formatedMax));
     });
-  }, [library, account, chainId]);
+  }, [contract]);
 
   const handler = () => {
     changeTitle('Pending');
