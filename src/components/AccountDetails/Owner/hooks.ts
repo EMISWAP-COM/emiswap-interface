@@ -14,7 +14,6 @@ const ESW_CLAIM_API = window['env'].REACT_APP_ESW_CLAIM_API;
 
 export const useRequestCollect = (userInput: string, closeWindow: () => void) => {
   const { library, account, chainId } = useActiveWeb3React();
-  const [isValidInput, changeIsValidInput] = useState(true);
   const [title, changeTitle] = useState('Request');
   const [status, changeStatus] = useState('');
   const {
@@ -88,7 +87,7 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
       );
   };
 
-  return { handler, availableReqestCollect: availableESW, isValidInput, title, status };
+  return { handler, availableReqestCollect: availableESW, title, status };
 };
 
 export type RemainderStatus =
