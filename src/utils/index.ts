@@ -10,6 +10,7 @@ import { TokenAddressMap } from '../state/lists/hooks';
 import { V1_EMIROUTER_HELPER_ADDRESSES } from '../constants/v1-mooniswap';
 import { EMISWAP_CROWDSALE_ABI } from '../constants/abis/crowdsale';
 import { EMISWAP_VESTING_ABI } from '../constants/abis/emiswap-vesting';
+import { EMISWAP_COLLECT_ABI } from '../constants/abis/emiswap-collect';
 import { FARMING_ABI } from '../constants/abis/farming';
 import { EMI_PRICE_2_ABI } from '../constants/abis/emiPrice2';
 import crowdsale_addresses from '../constants/crowdsale_addresses';
@@ -25,6 +26,7 @@ import { FARMING_365_ABI } from '../constants/abis/farming365';
 import { expNumberToStr } from './formats';
 import { abi as EMI_SWAP_ABI } from '../constants/abis/Emiswap.json';
 import { ERC20_ABI } from '../constants/abis/erc20';
+import { EMI_DELIVERY } from '../constants/emi/addresses';
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
@@ -201,6 +203,15 @@ export function getVestingContract(library: Web3Provider, account: string, chain
   return getContract(
     vesting_addresses[chainId] ? vesting_addresses[chainId] : vesting_addresses[chainIds.MAINNET],
     EMISWAP_VESTING_ABI,
+    library,
+    account,
+  );
+}
+
+export function getCollectContract(library: Web3Provider, account: string, chainId: ChainId) {
+  return getContract(
+    EMI_DELIVERY,
+    EMISWAP_COLLECT_ABI,
     library,
     account,
   );
