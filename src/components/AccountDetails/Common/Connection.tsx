@@ -265,7 +265,27 @@ const Balance = ({
       </BalanceWrapper>
       <Options>
         {children}
-        {isPolygon && <RemainderButton handleClaim={handleClaim} handleRequest={handleRequest} />}
+        {isPolygon ? (
+          <RemainderButton handleClaim={handleClaim} handleRequest={handleRequest} />
+        ) : (
+          <>
+            <MessageTooltip
+              whiteSpace={'normal'}
+              position={{ top: '175px', left: '320px' }}
+              text="Temporarily unavailable"
+            >
+              <CollectBtn inactive>Request collect</CollectBtn>
+            </MessageTooltip>
+            <MessageTooltip
+              disableTooltip={false}
+              whiteSpace={'normal'}
+              position={{ top: '175px', left: '490px' }}
+              text="Temporarily unavailable"
+            >
+              <CollectBtn inactive>Collect to my wallet</CollectBtn>
+            </MessageTooltip>
+          </>
+        )}
       </Options>
     </>
   );
