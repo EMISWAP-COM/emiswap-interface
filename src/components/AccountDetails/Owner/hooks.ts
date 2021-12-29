@@ -58,8 +58,8 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
                 contract_address: EMI_DELIVERY,
                 nonce,
                 // TODO: use from env
-                blockchain_network: 'polygon_test',
-                chainID: 'ETH_KV',
+                blockchain_network: 'polygon_main',
+                chainID: 'ETH_MN',
                 userID,
               }),
               headers: { Authorization: token },
