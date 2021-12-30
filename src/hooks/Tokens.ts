@@ -109,7 +109,15 @@ export function useAllTokens(isLpTokens?: boolean): [{ [address: string]: Token 
             { ...filteredTokens },
           )
       );
-    }, [chainId, userAddedTokens, allTokens, enableTokensList, isKuCoinActive, isPolygonActive]),
+    }, [
+      chainId,
+      userAddedTokens,
+      allTokens,
+      enableTokensList,
+      isKuCoinActive,
+      isPolygonActive,
+      isShidenActive,
+    ]),
     isLoading,
   ];
 }
