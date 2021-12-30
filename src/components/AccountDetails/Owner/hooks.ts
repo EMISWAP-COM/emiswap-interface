@@ -9,13 +9,17 @@ import { useSelector } from 'react-redux';
 import { fetchWrapper } from '../../../api/fetchWrapper';
 import { EMI_DELIVERY } from '../../../constants/emi/addresses';
 import { format } from 'date-fns/fp';
+import { useNetworkData } from '../../../hooks/Coins';
+import { getNetworkUrl } from '../../../state/cabinets/action-polygon';
 
 const ESW_CLAIM_API = window['env'].REACT_APP_ESW_CLAIM_API;
+const ESW_CLAIM_CHAIN_ID = window['env'].REACT_APP_ESW_CLAIM_CHAIN_ID;
 
 export const useRequestCollect = (userInput: string, closeWindow: () => void) => {
   const { library, account, chainId } = useActiveWeb3React();
   const [title, changeTitle] = useState('Request');
   const [status, changeStatus] = useState('');
+  const { value: network } = useNetworkData();
   const {
     available: { ESW: availableESW },
   } = useSelector((state: AppState) => state.cabinets.totalBalance);
@@ -58,14 +62,13 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
                 contract_address: EMI_DELIVERY,
                 nonce,
                 // TODO: use from env
-                blockchain_network: 'polygon_main',
-                chainID: 'ETH_MN',
+                blockchain_network: getNetworkUrl(network),
+                chainID: ESW_CLAIM_CHAIN_ID,
                 userID,
               }),
               headers: { Authorization: token },
             })
             .catch(e => {
-              console.log(e);
               if (e.error_message === 'withdrawal_amount_is_more_than_available') {
                 changeStatus('Withdrawal amount is more than available');
               } else {
