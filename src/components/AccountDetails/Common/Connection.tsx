@@ -306,7 +306,6 @@ const RemainderButton = ({
   } = useSelector((state: AppState) => state.cabinets.totalBalance);
   const isCollectDisabled = remainderValue.status !== 'enable';
   const isUnavailableCollect = availableESW === undefined || availableESW <= 0;
-  console.log(availableESW);
   return (
     <ButtonGroup>
       <CollectBtn

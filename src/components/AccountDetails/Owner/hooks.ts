@@ -64,10 +64,15 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
               }),
               headers: { Authorization: token },
             })
-            .catch(_ => {
-              changeStatus(
-                'Please wait for the previous request being processed. It usually takes less than two minutes',
-              );
+            .catch(e => {
+              console.log(e);
+              if (e.error_message === 'withdrawal_amount_is_more_than_available') {
+                changeStatus('Withdrawal amount is more than available');
+              } else {
+                changeStatus(
+                  'Please wait for the previous request being processed. It usually takes less than two minutes',
+                );
+              }
               changeTitle('Request');
             })
             .then(({ signature, id }) => {
