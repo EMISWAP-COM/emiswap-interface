@@ -12,6 +12,7 @@ import {
   useIsEthActive,
   useIsKuCoinActive,
   useIsPolygonActive,
+  useIsShidenActive,
   useNetworkData,
 } from './Coins';
 import { useTokenListWithPair } from './useTokenListWithPair';
@@ -29,6 +30,7 @@ export function useAllTokens(isLpTokens?: boolean): [{ [address: string]: Token 
 
   const isKuCoinActive = useIsKuCoinActive();
   const isPolygonActive = useIsPolygonActive();
+  const isShidenActive = useIsShidenActive();
 
   return [
     useMemo(() => {
@@ -61,6 +63,19 @@ export function useAllTokens(isLpTokens?: boolean): [{ [address: string]: Token 
             );
 
             // @ts-ignore
+            return (
+              Boolean(exists) ||
+              el.address === window['env'].REACT_APP_ESW_ID ||
+              el.symbol === 'ESW'
+            );
+          } else if (isShidenActive) {
+            const exists = defaultCoins.tokens.find(
+              ct =>
+                ct.chainId === chainId &&
+                el.address.toLowerCase() === ct.address.toLowerCase() &&
+                ct.symbol !== 'WSDN',
+            );
+
             return (
               Boolean(exists) ||
               el.address === window['env'].REACT_APP_ESW_ID ||
