@@ -3,6 +3,9 @@ import chainIds from '../chainIds';
 
 export const EmiSwapAddress = '0xBFd4065A7004B1c8DE08e965969E306Be6bE78D4';
 
+// polygon
+export const EMI_DELIVERY = '0xcee73E084f75E5aB861007052D3a427a1c9D3545';
+
 export const EMI_ROUTER_ADRESSES: { [chainId in ChainId]: string } = {
   [ChainId.MAINNET]: '0x22B8CCdeEEACB1F3879E36e06af413d44FD79F01',
   [ChainId.KOVAN]: '0x7EeE1d070924B8255DAd03ddE989ebBffC1000eB',
