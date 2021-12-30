@@ -64,17 +64,15 @@ const Wallet = styled.div`
 `;
 
 const BalanceWrapper = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 12px;
-
-  @media screen and (max-width: 1200px) {
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 8px;
-  }
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  flex: 1;
 `;
 
 const BalanceItem = styled.div`
+  flex: 1;
+  flex-basis: 25%;
   padding: 14px;
   background: ${({ theme }) => theme.darkGrey};
 `;
@@ -258,10 +256,14 @@ const Balance = ({
   return (
     <>
       <BalanceWrapper>
-        <Item label="Total" value={total} />
-        <Item label="Wallet" value={wallet} />
-        <Item label="Locked at Emiswap" value={locked} />
-        <Item label="Available to collect" value={avalible} />
+        <BalanceWrapper>
+          <Item label="Total" value={total} />
+          <Item label="Wallet" value={wallet} />
+        </BalanceWrapper>
+        <BalanceWrapper>
+          <Item label="Locked at Emiswap" value={locked} />
+          <Item label="Available to collect" value={avalible} />
+        </BalanceWrapper>
       </BalanceWrapper>
       <Options>
         {children}
