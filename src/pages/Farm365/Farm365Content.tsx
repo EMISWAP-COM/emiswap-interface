@@ -20,6 +20,7 @@ import dayjs from 'dayjs';
 import { calcFarming365Apr } from './helpers';
 import { isMobile } from 'react-device-detect';
 import Tooltip from '../Farm/Tooltip';
+import { useWalletModalToggle } from '../../state/application/hooks';
 
 const Content = styled.div`
   display: flex;
@@ -118,6 +119,11 @@ const StakeReward = styled.div`
   margin-top: 22px;
 `;
 
+const StakeRewardWallet = styled(StakeReward)`
+  text-decoration: underline;
+  cursor: pointer;
+`;
+
 const StakeTokenName = styled.div`
   margin-bottom: 8px;
   font-weight: 500;
@@ -198,6 +204,8 @@ type Farm365ContentProps = {
 export default function Farm365Content({ farming365, eswRate }: Farm365ContentProps) {
   const { chainId, account } = useActiveWeb3React();
   const { value: network } = useNetworkData();
+
+  const toggleWalletModal = useWalletModalToggle();
 
   const farmingAddresses = farming365.contract.address;
 
@@ -568,7 +576,7 @@ export default function Farm365Content({ farming365, eswRate }: Farm365ContentPr
                 </StakeTokenLine>
               </StakeToken>
               <StakeApr>365%</StakeApr>
-              <StakeReward>Coming soon</StakeReward>
+              <StakeRewardWallet onClick={toggleWalletModal}>See details</StakeRewardWallet>
             </StakeItem>
           ))}
         </StakeList>
