@@ -12,7 +12,7 @@ export const useTokens = (): Token[] => {
   const [tokenAddresses, setTokenAddresses] = useState<string[]>([]);
   const { tokens } = useMultipleTokenInfo(tokenAddresses);
   useEffect(() => {
-    if (factoryContract) {
+    if (factoryContract && account) {
       factoryContract
         .getAllPools()
         .then((data: string[]) => {
