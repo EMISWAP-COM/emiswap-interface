@@ -13,7 +13,7 @@ const handleResponse = (response: Response) => {
       console.log('response 477', response);
       return response.json().then(data => {
         console.log('data err', data, new CustomError(data?.error_message, data?.payload));
-        throw new CustomError('Your previous transaction is processing', data?.payload);
+        throw new CustomError(data?.error_message, data?.payload);
       });
     case 422:
       console.log('response 422', response);
@@ -65,6 +65,7 @@ export const fetchWrapper = {
       .catch(error => {
         throw new CustomError(`post error ${endPoint}`, {
           code: error.code,
+          error_message: error.message,
         });
       });
   },
