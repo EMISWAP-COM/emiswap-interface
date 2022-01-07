@@ -1,5 +1,4 @@
 import React from 'react';
-import Countdown from 'react-countdown';
 import { convertBigDecimal, formatConnectorName } from '../uitls';
 import { WalletAction } from '../styleds';
 import styled from 'styled-components/macro';
@@ -19,7 +18,6 @@ import { useIsKuCoinActive, useIsPolygonActive, useNetworkData } from '../../../
 import { MessageTooltip } from '../../../base/ui';
 import { css } from 'styled-components';
 import { Balance as BalanceType } from '../../../state/cabinets/reducer';
-import { useGetRemainder } from '../Owner/hooks';
 
 const Container = styled.div`
   font-size: 13px;
@@ -64,17 +62,15 @@ const Wallet = styled.div`
 `;
 
 const BalanceWrapper = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 12px;
-
-  @media screen and (max-width: 1200px) {
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 8px;
-  }
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  flex: 1;
 `;
 
 const BalanceItem = styled.div`
+  flex: 1;
+  flex-basis: 25%;
   padding: 14px;
   background: ${({ theme }) => theme.darkGrey};
 `;
@@ -213,16 +209,6 @@ const ButtonText = styled.span`
   white-space: nowrap;
   padding-right: 0.2rem;
 `;
-
-const ButtonGroup = styled.div`
-  display: flex;
-  flex-direction: row;
-  @media screen and (max-width: 800px) {
-    flex-direction: column-reverse;
-    align-items: stretch;
-  }
-`;
-
 interface BalanceItemInterface {
   label: string;
   value: string;
@@ -258,10 +244,14 @@ const Balance = ({
   return (
     <>
       <BalanceWrapper>
-        <Item label="Total" value={total} />
-        <Item label="Wallet" value={wallet} />
-        <Item label="Locked at Emiswap" value={locked} />
-        <Item label="Available to collect" value={avalible} />
+        <BalanceWrapper>
+          <Item label="Total" value={total} />
+          <Item label="Wallet" value={wallet} />
+        </BalanceWrapper>
+        <BalanceWrapper>
+          <Item label="Locked at Emiswap" value={locked} />
+          <Item label="Available to collect" value={avalible} />
+        </BalanceWrapper>
       </BalanceWrapper>
       <Options>
         {children}
@@ -298,35 +288,10 @@ const RemainderButton = ({
   handleClaim: () => void;
   handleRequest: () => void;
 }) => {
-  const remainderValue = useGetRemainder();
-  const {
-    available: { ESW: availableESW },
-  } = useSelector((state: AppState) => state.cabinets.totalBalance);
-  const isCollectDisabled = remainderValue.status !== 'enable';
-  const isUnavailableCollect = availableESW === undefined || availableESW <= 0;
-  console.log(availableESW);
   return (
-    <ButtonGroup>
-      <CollectBtn
-        inactive={isUnavailableCollect}
-        onClick={isUnavailableCollect ? undefined : handleRequest}
-      >
-        Request collect
-      </CollectBtn>
-      <CollectBtn
-        inactive={isCollectDisabled}
-        onClick={!isCollectDisabled ? handleClaim : undefined}
-      >
-        {remainderValue.status === 'remaindTime' ? (
-          <>
-            <ButtonText>Сollect to my wallet | </ButtonText>
-            <Countdown date={new Date(remainderValue.value)}></Countdown>
-          </>
-        ) : (
-          remainderValue.value
-        )}
-      </CollectBtn>
-    </ButtonGroup>
+    <CollectBtn onClick={handleClaim}>
+      <ButtonText>Сollect to my wallet</ButtonText>
+    </CollectBtn>
   );
 };
 
