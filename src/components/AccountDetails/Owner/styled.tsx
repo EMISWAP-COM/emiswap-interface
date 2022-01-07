@@ -152,7 +152,8 @@ export const ButtonGroup = styled.div`
 
   > * {
     margin: 0.5rem;
-    width: calc(100% - 1rem);
+    width: calc(100% - 1rem) !important;
+    flex: 1;
   }
 `;
 
