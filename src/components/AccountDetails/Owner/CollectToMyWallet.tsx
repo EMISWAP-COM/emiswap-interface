@@ -1,17 +1,20 @@
 import { Token } from '@uniswap/sdk';
 import React from 'react';
+import Countdown from 'react-countdown';
 import CurrencyLogo from '../../CurrencyLogo';
-import { useCollectData } from './hooks';
+import { useCollectData, useGetRemainder } from './hooks';
 import {
   Title,
   CancelButton,
-  RequestButton,
   Field,
   Label,
   Value,
   WalletWrapper,
   Frame,
   FrameRow,
+  ButtonGroup,
+  CollectBtn,
+  ButtonText,
 } from './styled';
 
 const Item = ({
@@ -41,7 +44,13 @@ const Item = ({
   </Field>
 );
 
-const CollectToMyWallet = ({ closeWindow }: { closeWindow: () => void }): React.ReactElement => {
+const CollectToMyWallet = ({
+  closeWindow,
+  openRequestCollect,
+}: {
+  closeWindow: () => void;
+  openRequestCollect: () => void;
+}): React.ReactElement => {
   const {
     requested,
     unlocked,
@@ -55,7 +64,8 @@ const CollectToMyWallet = ({ closeWindow }: { closeWindow: () => void }): React.
   } = useCollectData(() => closeWindow());
 
   const avalibleCollect = unlocked === '0' ? '0' : avalible;
-  const isVerificationCurrentValue = unlocked !== '0' && avalible === '0';
+  const remainderValue = useGetRemainder();
+  const isCollectDisabled = remainderValue.status !== 'enable';
   return (
     <WalletWrapper>
       <Title>Collect to my Wallet</Title>
@@ -71,16 +81,23 @@ const CollectToMyWallet = ({ closeWindow }: { closeWindow: () => void }): React.
           />
           <Item label="Available ESW to collect in the current Epoch" value={avalibleCollect} />
         </FrameRow>
-        <RequestButton
-          style={{
-            background: avalibleCollect === '0' || isVerificationCurrentValue ? 'none' : '#7a2df4',
-            border:
-              avalibleCollect === '0' || isVerificationCurrentValue ? '1px solid #7a2df4' : 'none',
-          }}
-          onClick={Number(avalible) > 0 ? changeCollect : () => null}
-        >
-          Collect
-        </RequestButton>
+        <ButtonGroup>
+          <CollectBtn onClick={openRequestCollect}>Request collect</CollectBtn>
+
+          <CollectBtn
+            inactive={isCollectDisabled}
+            onClick={!isCollectDisabled ? changeCollect : undefined}
+          >
+            {remainderValue.status === 'remaindTime' ? (
+              <>
+                <ButtonText>Сollect to my wallet | </ButtonText>
+                <Countdown date={new Date(remainderValue.value)}></Countdown>
+              </>
+            ) : (
+              remainderValue.value
+            )}
+          </CollectBtn>
+        </ButtonGroup>
       </Frame>
       <Frame>
         <FrameRow>

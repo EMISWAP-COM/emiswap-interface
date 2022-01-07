@@ -1,5 +1,4 @@
 import React from 'react';
-import Countdown from 'react-countdown';
 import { convertBigDecimal, formatConnectorName } from '../uitls';
 import { WalletAction } from '../styleds';
 import styled from 'styled-components/macro';
@@ -19,7 +18,6 @@ import { useIsKuCoinActive, useIsPolygonActive, useNetworkData } from '../../../
 import { MessageTooltip } from '../../../base/ui';
 import { css } from 'styled-components';
 import { Balance as BalanceType } from '../../../state/cabinets/reducer';
-import { useGetRemainder } from '../Owner/hooks';
 
 const Container = styled.div`
   font-size: 13px;
@@ -211,16 +209,6 @@ const ButtonText = styled.span`
   white-space: nowrap;
   padding-right: 0.2rem;
 `;
-
-const ButtonGroup = styled.div`
-  display: flex;
-  flex-direction: row;
-  @media screen and (max-width: 800px) {
-    flex-direction: column;
-    align-items: stretch;
-  }
-`;
-
 interface BalanceItemInterface {
   label: string;
   value: string;
@@ -300,34 +288,10 @@ const RemainderButton = ({
   handleClaim: () => void;
   handleRequest: () => void;
 }) => {
-  const remainderValue = useGetRemainder();
-  const {
-    available: { ESW: availableESW },
-  } = useSelector((state: AppState) => state.cabinets.totalBalance);
-  const isCollectDisabled = remainderValue.status !== 'enable';
-  const isUnavailableCollect = availableESW === undefined || availableESW <= 0;
   return (
-    <ButtonGroup>
-      <CollectBtn
-        inactive={isUnavailableCollect}
-        onClick={isUnavailableCollect ? undefined : handleRequest}
-      >
-        Request collect
-      </CollectBtn>
-      <CollectBtn
-        inactive={isCollectDisabled}
-        onClick={!isCollectDisabled ? handleClaim : undefined}
-      >
-        {remainderValue.status === 'remaindTime' ? (
-          <>
-            <ButtonText>Сollect to my wallet | </ButtonText>
-            <Countdown date={new Date(remainderValue.value)}></Countdown>
-          </>
-        ) : (
-          remainderValue.value
-        )}
-      </CollectBtn>
-    </ButtonGroup>
+    <CollectBtn onClick={handleClaim}>
+      <ButtonText>Сollect to my wallet</ButtonText>
+    </CollectBtn>
   );
 };
 

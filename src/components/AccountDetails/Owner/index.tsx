@@ -114,10 +114,15 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
         )}
       </Wrapper>
       {collectButtonState === 'request' && (
-        <RequestCollect closeWindow={() => changeCollectButtonState('')} />
+        <RequestCollect closeWindow={() => changeCollectButtonState('wallet')} />
       )}
       {collectButtonState === 'wallet' && (
-        <CollectToMyWallet closeWindow={() => changeCollectButtonState('')} />
+        <CollectToMyWallet
+          closeWindow={() => changeCollectButtonState('')}
+          openRequestCollect={() => {
+            changeCollectButtonState('request');
+          }}
+        />
       )}
     </>
   );

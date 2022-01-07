@@ -1,4 +1,6 @@
 import styled from 'styled-components/macro';
+import { css } from 'styled-components';
+import { WalletAction } from '../styleds';
 
 export const Wrapper = styled.div`
   position: absolute;
@@ -138,4 +140,50 @@ export const Status = styled.div`
   color: #e85e59;
   padding: 0.3rem;
   font-size: 14px;
+`;
+
+export const ButtonGroup = styled.div`
+  display: flex;
+  flex-direction: row;
+  @media screen and (max-width: 800px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  > * {
+    margin: 0.5rem;
+    width: calc(100% - 1rem);
+  }
+`;
+
+const ActionBtn = styled(WalletAction)`
+  height: 32px;
+`;
+
+export const CollectBtn = styled(ActionBtn)<{ inactive?: boolean }>`
+  min-width: 180px;
+  margin-bottom: 10px;
+
+  &:hover,
+  &:focus,
+  &:active {
+    background: ${({ theme, inactive }) => (inactive ? 'transparent' : theme.purple)} !important;
+    box-shadow: none;
+  }
+
+  ${({ inactive }) =>
+    inactive &&
+    css`
+      background-color: transparent !important;
+      color: #615c69;
+      cursor: auto;
+      border: 1px solid rgb(97, 92, 105) !important;
+      opacity: 1 !important;
+      text-decoration: none !important;
+    `}
+`;
+
+export const ButtonText = styled.span`
+  white-space: nowrap;
+  padding-right: 0.2rem;
 `;
