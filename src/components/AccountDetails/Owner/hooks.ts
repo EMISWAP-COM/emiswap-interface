@@ -7,7 +7,7 @@ import { formatUnits, parseUnits } from '@ethersproject/units';
 import { useAuth } from '../../../hooks/useAuth';
 import { useSelector } from 'react-redux';
 import { fetchWrapper } from '../../../api/fetchWrapper';
-import { EMI_DELIVERY } from '../../../constants/emi/addresses';
+import { EMI_DELIVERY_POLYGON } from '../../../constants/emi/addresses';
 import { format } from 'date-fns/fp';
 import { useNetworkData } from '../../../hooks/Coins';
 import { getNetworkUrl } from '../../../state/cabinets/action-polygon';
@@ -59,7 +59,7 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
               body: JSON.stringify({
                 token_name: 'ESW',
                 amount,
-                contract_address: EMI_DELIVERY,
+                contract_address: EMI_DELIVERY_POLYGON,
                 nonce,
                 // TODO: use from env
                 blockchain_network: getNetworkUrl(network),
@@ -111,6 +111,9 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
   return { handler, availableReqestCollect: availableESW, title, status, maxAvailableForRequests };
 };
 
+const toDate = bigNumberTimestamp => new Date(Number(bigNumberTimestamp) * 1000);
+const formatTomorrow = format('RRRR-MM-dd');
+
 export type RemainderStatus =
   | { status: 'remaindTime'; value: string }
   | { status: 'disable'; value: string }
@@ -140,15 +143,18 @@ export const useGetRemainder = () => {
               4,
               6,
             )}-${numberDate.slice(6, 8)}`;
-            // const date = new Date(stringDate);
-            // if (date < new Date()) {
-            //   changeState({ status: 'enable', value: 'Collect' });
-            // } else {
-            changeState({
-              value: stringDate,
-              status: 'remaindTime',
-            });
-            // }
+            const date = new Date(stringDate);
+            if (date < new Date()) {
+              contract.getDatesStarts().then(({ tomorrowStart }) => {
+                const tomorrow = formatTomorrow(toDate(tomorrowStart));
+                changeState({ status: 'remaindTime', value: tomorrow });
+              });
+            } else {
+              changeState({
+                value: stringDate,
+                status: 'remaindTime',
+              });
+            }
           } else {
             changeState({
               value: 'Collect to my wallet',
@@ -164,8 +170,6 @@ export const useGetRemainder = () => {
 
 const timeFormating = format('k:mm:ss');
 const formatDateing = format("do 'of' MMMM");
-
-const toDate = bigNumberTimestamp => new Date(Number(bigNumberTimestamp) * 1000);
 
 const formatTime = bigNumber => timeFormating(toDate(bigNumber));
 const formatDate = bigNumber => formatDateing(toDate(bigNumber));
