@@ -7,7 +7,7 @@ import { formatUnits, parseUnits } from '@ethersproject/units';
 import { useAuth } from '../../../hooks/useAuth';
 import { useSelector } from 'react-redux';
 import { fetchWrapper } from '../../../api/fetchWrapper';
-import { EMI_DELIVERY_POLYGON } from '../../../constants/emi/addresses';
+import { EMI_DELIVERY } from '../../../constants/emi/addresses';
 import { format } from 'date-fns/fp';
 import { useNetworkData } from '../../../hooks/Coins';
 import { getNetworkUrl } from '../../../state/cabinets/action-polygon';
@@ -59,7 +59,7 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
               body: JSON.stringify({
                 token_name: 'ESW',
                 amount,
-                contract_address: EMI_DELIVERY_POLYGON,
+                contract_address: EMI_DELIVERY,
                 nonce,
                 // TODO: use from env
                 blockchain_network: getNetworkUrl(network),
