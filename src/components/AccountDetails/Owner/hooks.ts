@@ -9,13 +9,17 @@ import { useSelector } from 'react-redux';
 import { fetchWrapper } from '../../../api/fetchWrapper';
 import { EMI_DELIVERY } from '../../../constants/emi/addresses';
 import { format } from 'date-fns/fp';
+import { useNetworkData } from '../../../hooks/Coins';
+import { getNetworkUrl } from '../../../state/cabinets/action-polygon';
 
 const ESW_CLAIM_API = window['env'].REACT_APP_ESW_CLAIM_API;
+const ESW_CLAIM_CHAIN_ID = window['env'].REACT_APP_ESW_CLAIM_CHAIN_ID;
 
 export const useRequestCollect = (userInput: string, closeWindow: () => void) => {
   const { library, account, chainId } = useActiveWeb3React();
   const [title, changeTitle] = useState('Request');
   const [status, changeStatus] = useState('');
+  const { value: network } = useNetworkData();
   const {
     available: { ESW: availableESW },
   } = useSelector((state: AppState) => state.cabinets.totalBalance);
@@ -58,16 +62,20 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
                 contract_address: EMI_DELIVERY,
                 nonce,
                 // TODO: use from env
-                blockchain_network: 'polygon_main',
-                chainID: 'ETH_MN',
+                blockchain_network: getNetworkUrl(network),
+                chainID: ESW_CLAIM_CHAIN_ID,
                 userID,
               }),
               headers: { Authorization: token },
             })
-            .catch(_ => {
-              changeStatus(
-                'Please wait for the previous request being processed. It usually takes less than two minutes',
-              );
+            .catch(e => {
+              if (e?.payload?.error_message === 'withdrawal_amount_is_more_than_available') {
+                changeStatus('Withdrawal amount is more than available');
+              } else {
+                changeStatus(
+                  'Please wait for the previous request being processed. It usually takes less than two minutes',
+                );
+              }
               changeTitle('Request');
             })
             .then(({ signature, id }) => {
@@ -103,6 +111,9 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
   return { handler, availableReqestCollect: availableESW, title, status, maxAvailableForRequests };
 };
 
+const toDate = bigNumberTimestamp => new Date(Number(bigNumberTimestamp) * 1000);
+const formatTomorrow = format('RRRR-MM-dd');
+
 export type RemainderStatus =
   | { status: 'remaindTime'; value: string }
   | { status: 'disable'; value: string }
@@ -132,15 +143,18 @@ export const useGetRemainder = () => {
               4,
               6,
             )}-${numberDate.slice(6, 8)}`;
-            // const date = new Date(stringDate);
-            // if (date < new Date()) {
-            //   changeState({ status: 'enable', value: 'Collect' });
-            // } else {
-            changeState({
-              value: stringDate,
-              status: 'remaindTime',
-            });
-            // }
+            const date = new Date(stringDate);
+            if (date < new Date()) {
+              contract.getDatesStarts().then(({ tomorrowStart }) => {
+                const tomorrow = formatTomorrow(toDate(tomorrowStart));
+                changeState({ status: 'remaindTime', value: tomorrow });
+              });
+            } else {
+              changeState({
+                value: stringDate,
+                status: 'remaindTime',
+              });
+            }
           } else {
             changeState({
               value: 'Collect to my wallet',
@@ -156,8 +170,6 @@ export const useGetRemainder = () => {
 
 const timeFormating = format('k:mm:ss');
 const formatDateing = format("do 'of' MMMM");
-
-const toDate = bigNumberTimestamp => new Date(Number(bigNumberTimestamp) * 1000);
 
 const formatTime = bigNumber => timeFormating(toDate(bigNumber));
 const formatDate = bigNumber => formatDateing(toDate(bigNumber));
