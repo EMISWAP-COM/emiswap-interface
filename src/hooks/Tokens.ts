@@ -150,6 +150,8 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
   const defaultToken = useDefaultCoin(tokenAddress);
   const token: Token | undefined = (address ? tokens[address] : undefined) || defaultToken;
 
+  console.log(address, tokenContract);
+
   const tokenName = useSingleCallResult(
     token ? undefined : tokenContract,
     'name',
