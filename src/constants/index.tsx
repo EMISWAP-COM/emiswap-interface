@@ -499,7 +499,7 @@ export const networksItems: INetworkItem[] = [
     analyticsUrl: 'https://emiswap.com/analytics?network=avalanche',
     eswExplorerUrl: 'https://etherscan.io/token/0x5a75A093747b72a0e14056352751eDF03518031d',
     eswExplorerName: 'ESW KCC Explorer',
-    active: false,
+    active: true,
   },
   {
     alias: 'mumbai',
