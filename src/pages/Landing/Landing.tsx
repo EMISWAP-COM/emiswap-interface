@@ -479,10 +479,6 @@ export default function Landing({ history }: any) {
                   <div className="about__info-list-item-circle"/>
                   <span>{t('landing.about.list.2')}</span>
                 </div>
-                <div className="about__info-list-item">
-                  <div className="about__info-list-item-circle"/>
-                  <span>{t('landing.about.list.3')}</span>
-                </div>
               </div>
 
               <button
