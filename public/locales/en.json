@@ -108,5 +108,120 @@
   "lastCall": "The last call",
   "dividendPool": "Dividend pool",
   "migrate": "Migrate",
-  "collectHelper": "Press “Collect” to transfer your ESW tokens from the EmiSwap platform to your wallet. You'll continue getting a share from EmiSwap's trading volume in this case as well."
+  "collectHelper": "Press “Collect” to transfer your ESW tokens from the EmiSwap platform to your wallet. You'll continue getting a share from EmiSwap's trading volume in this case as well.",
+  "brtest": "test <br /> nexttext",
+  "about": "About",
+
+  "landing": {
+    "menu": {
+      "about": "About",
+      "community": "Community",
+      "team": "Team"
+    },
+    "button": {
+      "startEarning": "Start Earning",
+      "connect-wallet": "Connect Wallet",
+      "close": "Close",
+      "join": "Join now",
+      "analytics": "Go to analytics",
+      "more": "Learn more",
+      "paper": "White paper",
+      "viewOn": "View on Polygonscan",
+      "copy": "Copy referral",
+      "onCopy": "Copied"
+    },
+    "banner": {
+      "title": "365% APR and higher\n Zero effort\n Only on EmiSwap AMM DEX",
+      "subtitle": "EmiSwap is live on Polygon – this is your\n chance to earn even more.",
+      "supply": "Liquidity supply",
+      "farming": "Farming",
+      "swap": "Swap commision",
+      "volume": "From volume",
+      "tokenAddress": "ESW token address:"
+    },
+    "365": "365% APR: special Airdrop for EmiSwap Liquidity Providers on Polygon. Available only if LP tokens are staked with ESW in Farming pools.",
+    "1000": "Farming pools with up to 1000% APR to multiply your rewards.",
+    "025": "0.25% of the trading volume in any pool is distributed between Liquidity Providers.",
+    "numbers": {
+      "title": "EmiSwap in Numbers",
+      "value": "Total Value Locked",
+      "volume": "Total Trading Volume",
+      "users": "Unique Users",
+      "trades": "All-Time Trades"
+    },
+    "upTo": "Up to",
+    "about": {
+      "title": "About EmiSwap",
+      "subtitle": "EmiSwap is an audited cross-chain AMM with higher rewards for LPs than on any other DEX.",
+      "list": {
+        "1": "100% of gas fees reimbursed",
+        "2": "Available on Polygon, Ethereum, and KuCoin Blockchain",
+        "3": "Audited by Hacken and BluSwarm"
+      },
+      "swapping": "Swapping fee for all pools",
+      "reward": "LP reward rate",
+      "distributed": "Distributed among ESW holders"
+    },
+    "4steps": {
+      "title": "4 Easy Steps to Big Rewards",
+      "1": {
+        "title": "Connect your wallet",
+        "subtitle": "EmiSwap supports MetaMask, Coinbase, Fortmatic, Portis & more"
+      },
+      "2": {
+        "title": "Pick a pool",
+        "subtitle": "Use ‘Add Liquidity’ tab to supply crypto to the pool, e.g. USDT & ESW"
+      },
+      "3": {
+        "title": "Get LP tokens",
+        "subtitle": "LP tokens are issued automatically. Use them to farm & earn even more"
+      },
+      "4": {
+        "title": "Start earning",
+        "subtitle": "Use the ‘Farming’ tab to stake LP tokens & earn $ESW rewards every 13 seconds"
+      }
+    },
+    "join": "Join EmiSwap Community",
+    "partners" : {
+      "title": "EmiSwap Partners & Investors"
+    },
+    "team" : {
+      "title": "EmiSwap Team",
+      "1": {
+        "name": "Greg Mars",
+        "position": "Founder & CEO"
+      },
+      "2": {
+        "name": "Marina Moon",
+        "position": "BizDev"
+      },
+      "3": {
+        "name": "Andre Antares",
+        "position": "Head of Marketing"
+      },
+      "4": {
+        "name": "Julia Yakubova",
+        "position": "Marketing Project Manager"
+      }
+    },
+    "polygon": {
+      "title": "Earn 1% a day on EmiSwap Polygon with 0 effort",
+      "text": "All LPs on EmiSwap Polygon are eligible for the unique 365% APR airdrop. Connect wallet, add liquidity to any pool – and get a daily 1% return until October 31, 2022. The first reward distribution is on February 3, 2022."
+    },
+    "popup": {
+      "title": "EmiSwap Smart Farming",
+      "p": {
+        "1": "Smart Farming allows you to get 365% APR on your LP token plus an additional percentage (XXX%) on staked LP-ESW tokens in Farming pool.",
+        "2": "How to get 365% APR? ",
+        "3": "Staking your LP tokens with ESW into the farming pool will make you eligible for getting a 365% APR! It doesn’t end there, as you get an extra 0.25% of the pool’s trading fees as a liquidity provider.",
+        "4": "The 365% APR will be allocated to all farmers three months after the campaign has ended or after users remove liquidity."
+      },
+      "list": {
+        "1": "Provide liquidity for any pair and get LP tokens",
+        "2": "Stake your LP tokens in pair with ESW tokens in Farming pool",
+        "3": "Get 365% on your LP tokens",
+        "4": "Get XXX% APR on your LP+ESW tokens in Farming pool"
+      }
+    }
+  }
 }

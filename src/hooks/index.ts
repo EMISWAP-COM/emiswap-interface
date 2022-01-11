@@ -1,11 +1,15 @@
 import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React as useWeb3ReactCore } from '@web3-react/core';
+import { useWeb3React, useWeb3React as useWeb3ReactCore } from '@web3-react/core';
 import { Web3ReactContextInterface } from '@web3-react/core/dist/types';
 import { useEffect, useState } from 'react';
 import { isMobile } from 'react-device-detect';
 import { injected } from '../connectors';
-import { NetworkContextName } from '../constants';
+import { INetworkItem, NetworkContextName } from '../constants';
 import { ChainId } from '@uniswap/sdk';
+import { toHex } from 'web3-utils';
+import { FortmaticConnector } from '../connectors/Fortmatic';
+import { PortisConnector } from '@web3-react/portis-connector';
+import { useIsMetaMask } from './Coins';
 
 export { default as useToggle } from './useToggle';
 export { default as useMediaQuery } from './useMediaQuery';
@@ -103,4 +107,78 @@ export function useInactiveListener(suppress = false) {
     }
     return;
   }, [active, error, suppress, activate]);
+}
+
+export function useSwitchNetwork() {
+  const { connector } = useActiveWeb3React();
+  const { deactivate } = useWeb3React();
+
+  const isMetaMask = useIsMetaMask();
+
+  const switchNetwork = async (item: INetworkItem) => {
+    const { ethereum } = window as any;
+
+    console.log(item);
+
+    try {
+      ethereum.removeAllListeners(['networkChanged']);
+
+      const result = await ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: toHex(item.chainId) }],
+      });
+      console.log(result);
+      console.log('switch 1');
+    } catch (switchError) {
+      try {
+        await ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [
+            {
+              chainId: toHex(item.chainId),
+              chainName: item.name,
+              rpcUrls: item.rpcUrls,
+              nativeCurrency: {
+                name: item.currencySymbol,
+                symbol: item.currencySymbol,
+                decimals: 18,
+              },
+            },
+          ],
+        });
+        console.log('switch 2');
+      } catch (addError) {
+        console.log(addError);
+      }
+    } finally {
+      await providerLogout();
+    }
+  };
+
+  const providerLogout = async () => {
+    if (isMetaMask) {
+      return;
+    }
+
+    if (!connector) {
+      deactivate();
+      return;
+    }
+
+    const provider = await connector.getProvider();
+
+    if (connector instanceof FortmaticConnector && connector?.fortmatic) {
+      connector.fortmatic?.user.logout();
+      deactivate();
+    } else if (connector instanceof PortisConnector && connector?.portis) {
+      connector.portis.logout();
+      deactivate();
+    } else if (provider?.close) {
+      provider.close();
+    } else {
+      deactivate();
+    }
+  };
+
+  return { switchNetwork, providerLogout };
 }

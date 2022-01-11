@@ -1,5 +1,13 @@
-import { Token } from '@uniswap/sdk';
-import React, { KeyboardEvent, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { Token, TokenAmount } from '@uniswap/sdk';
+import React, {
+  KeyboardEvent,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { isMobile } from 'react-device-detect';
 import { useTranslation } from 'react-i18next';
 import { Text } from 'rebass';
@@ -33,6 +41,7 @@ interface CurrencySearchModalProps {
   otherSelectedCurrency?: Token;
   showCommonBases?: boolean;
   isMatchEth?: boolean;
+  isLpTokens?: boolean;
 }
 
 const LoaderBox = styled.div`
@@ -52,6 +61,7 @@ export default function CurrencySearchModal({
   otherSelectedCurrency,
   showCommonBases = false,
   isMatchEth = false,
+  isLpTokens = false,
 }: CurrencySearchModalProps) {
   const { t } = useTranslation();
   const { account, chainId } = useActiveWeb3React();
@@ -60,33 +70,46 @@ export default function CurrencySearchModal({
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [tooltipOpen, setTooltipOpen] = useState<boolean>(false);
   const [invertSearchOrder, setInvertSearchOrder] = useState<boolean>(false);
-  const [allTokens, isLoading] = useAllTokens();
+  const [allTokens, isLoading] = useAllTokens(isLpTokens);
 
   // if the current input is an address, and we don't have the token in context, try to fetch it and import
   const searchToken = useToken(searchQuery);
   const searchTokenBalance = useTokenBalance(account, searchToken);
-  const allTokenBalances_ = useAllTokenBalances();
-  const allTokenBalances = searchToken
-    ? {
+  const allTokenBalances = useAllTokenBalances();
+
+  const getVisibleTokenBalances = (): { [token: string]: TokenAmount } => {
+    let balances = allTokenBalances || {};
+    if (searchToken) {
+      balances = {
         [searchToken.address]: searchTokenBalance,
-      }
-    : allTokenBalances_ ?? {};
+      };
+    }
+    return balances;
+  };
+
+  const visibleTokenBalances = getVisibleTokenBalances();
 
   const tokenComparator = useTokenComparator(invertSearchOrder);
 
   const filteredTokens: Token[] = useMemo(() => {
-    if (searchToken) return [searchToken];
-    return filterTokens(Object.values(allTokens), searchQuery);
-  }, [searchToken, allTokens, searchQuery]);
+    if (searchToken) {
+      return [searchToken];
+    }
+    return filterTokens(Object.values(allTokens), searchQuery, isLpTokens);
+  }, [searchToken, allTokens, searchQuery, isLpTokens]);
 
   const filteredSortedTokens: Token[] = useMemo(() => {
-    if (searchToken) return [searchToken];
+    if (searchToken) {
+      return [searchToken];
+    }
     const sorted = filteredTokens.sort(tokenComparator);
     const symbolMatch = searchQuery
       .toLowerCase()
       .split(/\s+/)
       .filter(s => s.length > 0);
-    if (symbolMatch.length > 1) return sorted;
+    if (symbolMatch.length > 1) {
+      return sorted;
+    }
 
     return [
       ...(searchToken ? [searchToken] : []),
@@ -106,7 +129,9 @@ export default function CurrencySearchModal({
 
   // clear the input on open
   useEffect(() => {
-    if (isOpen) setSearchQuery('');
+    if (isOpen) {
+      setSearchQuery('');
+    }
   }, [isOpen, setSearchQuery]);
 
   // manage focus on modal show
@@ -207,12 +232,14 @@ export default function CurrencySearchModal({
         ) : (
           <CurrencyList
             currencies={filteredSortedTokens}
-            allBalances={allTokenBalances}
+            allBalances={visibleTokenBalances}
             onCurrencySelect={handleCurrencySelect}
             otherCurrency={otherSelectedCurrency}
             selectedCurrency={hiddenCurrency}
             showSendWithSwap={showSendWithSwap}
+            showName={isLpTokens}
             isMatchEth={isMatchEth}
+            isLpTokens={isLpTokens}
           />
         )}
         <div style={{ height: '1px', backgroundColor: theme.bg2, margin: '0 30px' }} />

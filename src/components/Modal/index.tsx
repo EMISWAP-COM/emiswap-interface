@@ -22,8 +22,8 @@ const StyledDialogOverlay = styled(({ mobile, ...rest }) => <AnimatedDialogOverl
     overflow: hidden;
 
     ${({ mobile }) =>
-  mobile &&
-  css`
+      mobile &&
+      css`
         align-items: flex-end;
       `}
 
@@ -64,18 +64,18 @@ const StyledDialogContent = styled(
     }
 
     ${({ maxWidth }) =>
-  maxWidth &&
-  css`
+      maxWidth &&
+      css`
         max-width: ${maxWidth}px;
       `}
     ${({ maxHeight }) =>
-  maxHeight &&
-  css`
+      maxHeight &&
+      css`
         max-height: ${maxHeight}vh;
       `}
     ${({ minHeight }) =>
-  minHeight &&
-  css`
+      minHeight &&
+      css`
         min-height: ${minHeight}vh;
       `}
     display: flex;
@@ -87,7 +87,7 @@ const StyledDialogContent = styled(
     ${({ theme, mobile }) => theme.mediaWidth.upToSmall`
       width:  85vw;
       ${mobile &&
-css`
+        css`
           width: 100vw;
           border-radius: 20px;
           border-bottom-left-radius: 0;
@@ -151,7 +151,7 @@ export default function Modal({
                 mobile={true}
               >
                 {/* prevents the automatic focusing of inputs on mobile by the reach dialog */}
-                {initialFocusRef ? null : <div tabIndex={1}/>}
+                {initialFocusRef ? null : <div tabIndex={1} />}
                 <Spring // animation for entrance and exit
                   from={{
                     transform: isOpen ? 'translateY(200px)' : 'translateY(100px)',
@@ -206,6 +206,7 @@ export default function Modal({
                   maxHeight={maxHeight}
                   maxWidth={maxWidth}
                   isOpen={isOpen}
+                  className={className}
                 >
                   {children}
                 </StyledDialogContent>

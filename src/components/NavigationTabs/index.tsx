@@ -7,7 +7,7 @@ import { Link as HistoryLink, NavLink } from 'react-router-dom';
 import { ArrowLeft } from 'react-feather';
 import { RowBetween } from '../Row';
 import QuestionHelper from '../QuestionHelper';
-import { useIsEthActive, useNetworkData } from '../../hooks/Coins';
+import { useIsEthActive, useIsPolygonActive, useNetworkData } from '../../hooks/Coins';
 import { isMobile } from 'react-device-detect';
 import { useBridgeModalToggle } from '../../state/application/hooks';
 
@@ -68,7 +68,7 @@ const ExternalNavLink = styled.div`
   text-decoration: none;
   color: ${({ theme }) => theme.lightGrey};
   font-size: 16px;
-  
+
   :hover,
   :focus {
     color: ${({ theme }) => lighten(0.3, theme.lightGrey)};
@@ -90,6 +90,7 @@ export enum TabNames {
   MIGRATE,
   INVEST,
   FARM,
+  FARM_365,
 }
 
 //TODO refactor. Component index.tsx must return single component
@@ -101,6 +102,7 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
 
   // const isKuCoinActive = useIsKuCoinActive();
   const isEthereumActive = useIsEthActive();
+  const isPolygonActive = useIsPolygonActive();
 
   const toggleBridgeModal = useBridgeModalToggle();
 
@@ -135,21 +137,22 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
         {t('invest')}
       </StyledNavLink>*/}
       {isEthereumActive && (
-        <StyledNavLink
-          id={`farm-nav-link`}
-          to={'/farm'}
-          isActive={() => active === TabNames.FARM}
-        >
+        <StyledNavLink id={`farm-nav-link`} to={'/farm'} isActive={() => active === TabNames.FARM}>
           {t('Stake & Farm')}
+        </StyledNavLink>
+      )}
+      {isPolygonActive && (
+        <StyledNavLink
+          id={`farm-365-nav-link`}
+          to={'/farm-365'}
+          isActive={() => active === TabNames.FARM_365}
+        >
+          {t('Farm')}
         </StyledNavLink>
       )}
       {isMobile && !isEthereumActive && (
         <>
-          <ExternalNavLink
-            onClick={handleClickBridge}
-          >
-            {t('Bridge')}
-          </ExternalNavLink>
+          <ExternalNavLink onClick={handleClickBridge}>{t('Bridge')}</ExternalNavLink>
           {/*<BridgeModal/>*/}
         </>
       )}
@@ -162,11 +165,11 @@ export function FindPoolTabs() {
     <Tabs>
       <RowBetween style={{ padding: '1rem' }}>
         <HistoryLink to="/pool">
-          <StyledArrowLeft/>
+          <StyledArrowLeft />
         </HistoryLink>
         <ActiveText>Import Pool</ActiveText>
         <QuestionHelper
-          text={'Use this tool to find pairs that don\'t automatically appear in the interface.'}
+          text={"Use this tool to find pairs that don't automatically appear in the interface."}
         />
       </RowBetween>
     </Tabs>
@@ -178,7 +181,7 @@ export function AddRemoveTabs({ adding }: { adding: boolean }) {
     <Tabs>
       <RowBetween style={{ padding: '1rem' }}>
         <HistoryLink to="/pool">
-          <StyledArrowLeft/>
+          <StyledArrowLeft />
         </HistoryLink>
         <ActiveText>{adding ? 'Add' : 'Remove'} Liquidity</ActiveText>
         <QuestionHelper

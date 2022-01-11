@@ -15,6 +15,7 @@ const V1_MOONISWAP_FACTORY_ADDRESSES: { [chainId in ChainId]: string } = {
   [chainIds.KUCOIN]: factory_addresses[chainIds.KUCOIN],
   // @ts-ignore
   [chainIds.POLYGON]: factory_addresses[chainIds.POLYGON],
+  [chainIds.MUMBAI]: factory_addresses[chainIds.MUMBAI],
   [chainIds.AVALANCHE]: factory_addresses[chainIds.AVALANCHE],
   [chainIds.AURORA]: factory_addresses[chainIds.AURORA],
 };
@@ -28,6 +29,7 @@ const V1_EMIROUTER_HELPER_ADDRESSES: { [chainId in ChainId]: string } = {
   // @ts-ignore
   [chainIds.KUCOIN]: emirouter_addresses[chainIds.KUCOIN],
   [chainIds.POLYGON]: emirouter_addresses[chainIds.POLYGON],
+  [chainIds.MUMBAI]: emirouter_addresses[chainIds.MUMBAI],
   [chainIds.AVALANCHE]: emirouter_addresses[chainIds.AVALANCHE],
   [chainIds.AURORA]: emirouter_addresses[chainIds.AURORA],
 };

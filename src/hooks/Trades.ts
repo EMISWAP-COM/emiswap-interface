@@ -75,12 +75,13 @@ export function useTradeExactIn(currencyAmountIn?: TokenAmount, currencyOut?: To
   const allowedPairs = useAllCommonPairs(currencyAmountIn?.token, currencyOut);
   return useMemo(() => {
     if (currencyAmountIn && currencyOut && allowedPairs.length > 0) {
-      return (
+      const bestTrade =
         Trade.bestTradeExactIn(allowedPairs, currencyAmountIn, currencyOut, {
           maxHops: 3,
           maxNumResults: 1,
-        })[0] ?? null
-      );
+        })[0] ?? null;
+
+      return bestTrade;
     }
     return null;
   }, [allowedPairs, currencyAmountIn, currencyOut]);

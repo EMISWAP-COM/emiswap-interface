@@ -22,12 +22,18 @@ const liquidityTokensMap = {
 
   // KuCoin
   '0x8667dcf5498bEFBBFd7faEA7FD70F704f5A75685': '0x4446fc4eb47f2f6586f9faab68b3498f86c07521',
-}
 
+  // Polygon RewardPoolMulti PROXY
+  '0x18f38359551258C35e8593d775cb6Fe8D27fd89b': '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
+  '0xd2Fa7C9386040f260e3Ec934601982aD4Cd7902B': '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
 
+  // Mumbai RewardPoolMulti PROXY
+  '0xeB274bcD6CA905b7dB5F65b8C2a126fb3fF39bc3': '0x37e103a3BFabC8Fb542BA24C7e4594E5534806A3',
+  '0xb7Ff11b03DD28cDea45D65E274381a4E3D90778D': '0x37e103a3BFabC8Fb542BA24C7e4594E5534806A3',
+};
 
 const getFarmingLiquidityTokenAddress = (farmContractAddress: string): string => {
   return liquidityTokensMap[farmContractAddress] || '';
-}
+};
 
 export default getFarmingLiquidityTokenAddress;

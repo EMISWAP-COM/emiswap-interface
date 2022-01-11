@@ -20,7 +20,11 @@ import { useCurrency } from '../../hooks/Tokens';
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback';
 import { useWalletModalToggle } from '../../state/application/hooks';
 import { Field } from '../../state/mint/actions';
-import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint-mooniswap/hooks';
+import {
+  useDerivedMintInfo,
+  useMintActionHandlers,
+  useMintState,
+} from '../../state/mint-mooniswap/hooks';
 import { useTransactionAdder } from '../../state/transactions/hooks';
 import { useIsExpertMode, useUserSlippageTolerance } from '../../state/user/hooks';
 import { StyledButtonNavigation, TYPE } from '../../theme';
@@ -37,6 +41,7 @@ import { ErrorText } from '../../components/swap/styleds';
 import { useTransactionPrice } from '../../hooks/useTransactionPrice';
 import { useReferralAddress } from '../../hooks/useReferralAddress';
 import { Web3Provider } from '@ethersproject/providers';
+import { useNetworkData } from '../../hooks/Coins';
 
 export default function AddLiquidity({
   match: {
@@ -134,6 +139,7 @@ export default function AddLiquidity({
   );
   const methodName = currencyA?.isEther || currencyB?.isEther ? 'addLiquidityETH' : 'addLiquidity';
   const method = emiRouterContract[methodName];
+  const { value: network } = useNetworkData();
 
   async function onPoolCreate() {
     if (!chainId || !library || !account || !currencyA || !currencyB) return;
@@ -197,15 +203,17 @@ export default function AddLiquidity({
                 dimension4: response.hash,
                 dimension1: currencies[Field.CURRENCY_A]?.symbol,
                 dimension2: currencies[Field.CURRENCY_B]?.symbol,
-                metric1: parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
-                metric2: parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
+                metric1: parsedAmounts[Field.CURRENCY_A]?.toFixed(),
+                metric2: parsedAmounts[Field.CURRENCY_B]?.toFixed(),
                 dimension3: account,
+                dimension5: network,
               });
 
               ReactGA.event({
                 category: 'Transaction',
                 action: 'new',
                 label: 'pool',
+                value: Math.round(parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || '')),
               });
 
               setShowConfirm(true);
@@ -224,15 +232,17 @@ export default function AddLiquidity({
             ReactGA.set({
               dimension1: currencies[Field.CURRENCY_A]?.symbol,
               dimension2: currencies[Field.CURRENCY_B]?.symbol,
-              metric1: parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
-              metric2: parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
+              metric1: parsedAmounts[Field.CURRENCY_A]?.toFixed(),
+              metric2: parsedAmounts[Field.CURRENCY_B]?.toFixed(),
               dimension3: account,
+              dimension5: network,
             });
 
             ReactGA.event({
               category: 'Transaction',
               action: 'cancel',
               label: 'pool',
+              value: Math.round(parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || '')),
             });
 
             setShowConfirm(false);
@@ -257,15 +267,17 @@ export default function AddLiquidity({
         ReactGA.set({
           dimension1: currencies[Field.CURRENCY_A]?.symbol,
           dimension2: currencies[Field.CURRENCY_B]?.symbol,
-          metric1: parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
-          metric2: parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
+          metric1: parsedAmounts[Field.CURRENCY_A]?.toFixed(),
+          metric2: parsedAmounts[Field.CURRENCY_B]?.toFixed(),
           dimension3: account,
+          dimension5: network,
         });
 
         ReactGA.event({
           category: 'Transaction',
           action: 'cancel',
           label: 'pool',
+          value: Math.round(parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || '')),
         });
 
         setShowConfirm(false);
@@ -356,29 +368,33 @@ export default function AddLiquidity({
                 dimension4: response.hash,
                 dimension1: currencies[Field.CURRENCY_A]?.symbol,
                 dimension2: currencies[Field.CURRENCY_B]?.symbol,
-                metric1: parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
-                metric2: parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
+                metric1: parsedAmounts[Field.CURRENCY_A]?.toFixed(),
+                metric2: parsedAmounts[Field.CURRENCY_B]?.toFixed(),
                 dimension3: account,
+                dimension5: network,
               });
 
               ReactGA.event({
                 category: 'Transaction',
                 action: 'new',
                 label: 'pool',
+                value: Math.round(parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || '')),
               });
             } catch (error) {
               ReactGA.set({
                 dimension1: currencies[Field.CURRENCY_A]?.symbol,
                 dimension2: currencies[Field.CURRENCY_B]?.symbol,
-                metric1: parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
-                metric2: parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
+                metric1: parsedAmounts[Field.CURRENCY_A]?.toFixed(),
+                metric2: parsedAmounts[Field.CURRENCY_B]?.toFixed(),
                 dimension3: account,
+                dimension5: network,
               });
 
               ReactGA.event({
                 category: 'Transaction',
                 action: 'cancel',
                 label: 'pool',
+                value: Math.round(parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || '')),
               });
               throw new Error(`
               Account: ${account}\n
@@ -394,15 +410,17 @@ export default function AddLiquidity({
             ReactGA.set({
               dimension1: currencies[Field.CURRENCY_A]?.symbol,
               dimension2: currencies[Field.CURRENCY_B]?.symbol,
-              metric1: parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
-              metric2: parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
+              metric1: parsedAmounts[Field.CURRENCY_A]?.toFixed(),
+              metric2: parsedAmounts[Field.CURRENCY_B]?.toFixed(),
               dimension3: account,
+              dimension5: network,
             });
 
             ReactGA.event({
               category: 'Transaction',
               action: 'cancel',
               label: 'pool',
+              value: Math.round(parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || '')),
             });
             throw new Error(`
             Account: ${account}\n
@@ -423,15 +441,17 @@ export default function AddLiquidity({
         ReactGA.set({
           dimension1: currencies[Field.CURRENCY_A]?.symbol,
           dimension2: currencies[Field.CURRENCY_B]?.symbol,
-          metric1: parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
-          metric2: parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
+          metric1: parsedAmounts[Field.CURRENCY_A]?.toFixed(),
+          metric2: parsedAmounts[Field.CURRENCY_B]?.toFixed(),
           dimension3: account,
+          dimension5: network,
         });
 
         ReactGA.event({
           category: 'Transaction',
           action: 'cancel',
           label: 'pool',
+          value: Math.round(parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || '')),
         });
         throw new Error(`
             Account: ${account}\n

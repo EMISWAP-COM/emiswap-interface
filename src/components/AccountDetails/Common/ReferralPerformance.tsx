@@ -4,6 +4,7 @@ import { Header, Level } from '../styleds';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { convertBigDecimal, normalizeNumber } from '../uitls';
+import { useIsEthActive } from '../../../hooks/Coins';
 
 // const DarkText = styled.span`
 //   color: ${({ theme }) => theme.grey3};
@@ -97,16 +98,44 @@ const Amount = styled.span`
 
 const Referrals = styled(Table)``;
 
-const ReferralPurchases = styled(Table)``;
-
 // const CollectBtn = styled(WalletAction)`
 //   max-width: 160px;
 // `;
 
+const ReferalElement = ({
+  title,
+  referals,
+  firstLevel,
+  secondLevel,
+  thirdLevel,
+}: {
+  title: string;
+  referals: number | string;
+  firstLevel: number | string;
+  secondLevel: number | string;
+  thirdLevel: number | string;
+}) => (
+  <Referrals>
+    <Title>{title}</Title>
+    <Cell>{referals}</Cell>
+    <Cell>
+      <Amount>{firstLevel}</Amount>
+      <Level>1lvl</Level>
+    </Cell>
+    <Cell>
+      <Amount>{secondLevel}</Amount>
+      <Level>2lvl</Level>
+    </Cell>
+    <Cell>
+      <Amount>{thirdLevel}</Amount>
+      <Level>3lvl</Level>
+    </Cell>
+  </Referrals>
+);
 export const ReferralPerformance = () => {
   const { total, referrals } = useSelector((state: AppState) => state.cabinets.performance);
-
   const { level1, level2, level3 } = total;
+  const isEthActive = useIsEthActive();
 
   return (
     <div>
@@ -136,39 +165,30 @@ export const ReferralPerformance = () => {
       {/*</RewardsWrapper>*/}
 
       <Wrapper>
-        <Referrals>
-          <Title>Total Referrals</Title>
-          <Cell>{normalizeNumber(referrals.length)}</Cell>
-          <Cell>
-            <Amount>{normalizeNumber(level1?.referrals_count)}</Amount>
-            <Level>1lvl</Level>
-          </Cell>
-          <Cell>
-            <Amount>{normalizeNumber(level2?.referrals_count)}</Amount>
-            <Level>2lvl</Level>
-          </Cell>
-          <Cell>
-            <Amount>{normalizeNumber(level3?.referrals_count)}</Amount>
-            <Level>3lvl</Level>
-          </Cell>
-        </Referrals>
-
-        <ReferralPurchases>
-          <Title>Total Ref. Purchases, ESW</Title>
-          <Cell>{convertBigDecimal(total.bought.ESW)}</Cell>
-          <Cell>
-            <Amount>{convertBigDecimal(level1?.bought.ESW)}</Amount>
-            <Level>1lvl</Level>
-          </Cell>
-          <Cell>
-            <Amount>{convertBigDecimal(level2?.bought.ESW)}</Amount>
-            <Level>2lvl</Level>
-          </Cell>
-          <Cell>
-            <Amount>{convertBigDecimal(level3?.bought.ESW)}</Amount>
-            <Level>3lvl</Level>
-          </Cell>
-        </ReferralPurchases>
+        <ReferalElement
+          title={isEthActive ? 'Total Referrals' : 'Total Referral Dashboard'}
+          referals={normalizeNumber(referrals.length)}
+          firstLevel={normalizeNumber(level1?.referrals_count)}
+          secondLevel={normalizeNumber(level2?.referrals_count)}
+          thirdLevel={normalizeNumber(level3?.referrals_count)}
+        />
+        {isEthActive ? (
+          <ReferalElement
+            title={'Total Ref. Purchases, ESW'}
+            referals={convertBigDecimal(total.bought.ESW)}
+            firstLevel={convertBigDecimal(level1?.bought.ESW)}
+            secondLevel={convertBigDecimal(level2?.bought.ESW)}
+            thirdLevel={convertBigDecimal(level3?.bought.ESW)}
+          />
+        ) : (
+          <ReferalElement
+            title={'Ref. Rewards by lvl., ESW'}
+            referals={convertBigDecimal(total.reward.ESW)}
+            firstLevel={'—'}
+            secondLevel={'—'}
+            thirdLevel={'—'}
+          />
+        )}
         {/*<ReferralPurchases>*/}
         {/*  <Title>Total Ref. Purchases, DAI</Title>*/}
         {/*  <Cell>{convertBigDecimal(total.bought.DAI)}</Cell>*/}

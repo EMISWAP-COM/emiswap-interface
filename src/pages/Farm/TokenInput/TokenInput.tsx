@@ -17,6 +17,7 @@ import { useWalletModalToggle } from '../../../state/application/hooks';
 import LpTokenSymbol from '../LpTokenSymbol';
 import isLpToken from '../isLpToken';
 import useEthErrorPopup from '../../../hooks/useEthErrorPopup';
+import { useNetworkData } from '../../../hooks/Coins';
 
 const StyledTokenInputWrapper = styled.div`
   border: 1px solid ${({ theme }) => theme.lightGrey};
@@ -112,6 +113,7 @@ const TokenInput: React.FC<TokenInputProps> = ({ contractAddress, token, onStake
   const veryLargeAmount = new TokenAmount(token, JSBI.BigInt('99999999999999999999999999999'));
   const [approvalState, doApprove] = useApproveCallback(veryLargeAmount, contractAddress, true);
   const addEthErrorPopup = useEthErrorPopup();
+  const { value: network } = useNetworkData();
 
   // This counter is used to update isStakeInProgress whenever transaction finishes
   const completedTransactionsCount = useCompletedTransactionsCount();
@@ -124,12 +126,14 @@ const TokenInput: React.FC<TokenInputProps> = ({ contractAddress, token, onStake
           dimension1: token.symbol,
           metric1: inputValue,
           dimension3: account,
+          dimension5: network,
         });
 
         ReactGA.event({
           category: 'Transaction',
           action: 'new',
           label: `${isLpToken(tokenMode) ? 'farm' : 'stake'}`,
+          value: Math.round(parseFloat(inputValue)),
         });
       })
       .catch(error => {
@@ -139,15 +143,17 @@ const TokenInput: React.FC<TokenInputProps> = ({ contractAddress, token, onStake
           dimension1: token.symbol,
           metric1: inputValue,
           dimension3: account,
+          dimension5: network,
         });
 
         ReactGA.event({
           category: 'Transaction',
           action: 'cancel',
           label: `${isLpToken(tokenMode) ? 'farm' : 'stake'}`,
+          value: Math.round(parseFloat(inputValue)),
         });
       });
-  }, [onStake, inputValue, token.symbol, tokenMode, addEthErrorPopup, account]);
+  }, [onStake, inputValue, token.symbol, tokenMode, addEthErrorPopup, account, network]);
 
   const handleApprove = useCallback(() => {
     setIsApprovalInProgress(true);

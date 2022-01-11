@@ -4,6 +4,7 @@ import { Header } from '../styleds';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { convertBigDecimal } from '../uitls';
+import { useIsEthActive, useNetworkData } from '../../../hooks/Coins';
 
 // export const Calculating = styled.div`
 //   position: relative;
@@ -44,6 +45,22 @@ const RewardsWrapper = styled.div`
   }
 `;
 
+const RewardsWrapperPolygon = styled.div`
+  font-size: 13px;
+  color: ${({ theme }) => theme.darkText};
+
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 12px;
+
+  @media screen and (max-width: 1200px) {
+    margin-top: 16px;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 8px;
+  }
+`;
+
 const RewardsItem = styled.div`
   padding: 14px;
   background: ${({ theme }) => theme.darkGrey};
@@ -53,11 +70,27 @@ const RewardsValue = styled(DarkText)`
   font-weight: 600;
 `;
 
+const Item = ({ text, count }: { text: string; count: string }) => (
+  <RewardsItem>
+    <span>{text}</span>
+    <div>
+      <RewardsValue>{count}</RewardsValue>
+      &nbsp;ESW
+    </div>
+  </RewardsItem>
+);
 export const ESWRewards = () => {
-  const balance = useSelector((state: AppState) => state.cabinets.balance);
+  const isEthActive = useIsEthActive();
+  const { value: network } = useNetworkData();
+
+  const balance = useSelector((state: AppState) => {
+    if (network === 'polygon' || network === 'mumbai') {
+      return state.polygonCabinet.balance;
+    } else return state.cabinets.balance;
+  });
   const grouped = balance?.total?.grouped;
 
-  const sumRewardsESW = () => {
+  const sumRewardsESW = (): string => {
     const referralBonus = grouped.referral_bonus?.ESW || 0;
     const poolRefferalBonus = grouped.pool_referral_bonus?.ESW || 0;
 
@@ -65,14 +98,14 @@ export const ESWRewards = () => {
     return convertBigDecimal(reward.toString());
   };
 
-  const sumSwapBonuses = () => {
+  const sumSwapBonuses = (): string => {
     const swapBonus = grouped.swap_bonus?.ESW ?? 0;
     const swapBonus10x = grouped.swap_bonus_10x?.ESW ?? 0;
     const sum = Number(swapBonus) + Number(swapBonus10x);
     return convertBigDecimal(sum.toString());
   };
 
-  const sumPoolBonuses = () => {
+  const sumPoolBonuses = (): string => {
     const poolBonus = grouped.pool_bonus?.ESW ?? 0;
     const poolBonus10x = grouped.pool_bonus_10x?.ESW ?? 0;
     const poolBlockBonus = grouped.pool_block_bonus?.ESW ?? 0;
@@ -82,39 +115,28 @@ export const ESWRewards = () => {
 
   return (
     <div>
-      <Header>My ESW Rewards</Header>
-      <RewardsWrapper>
-        <RewardsItem>
-          <span>Providing Liquidity</span>
-          <div>
-            <RewardsValue>{sumPoolBonuses()}</RewardsValue>
-            &nbsp;ESW
-          </div>
-        </RewardsItem>
-        <RewardsItem>
-          <span>Swapping</span>
-          <div>
-            <RewardsValue>{sumSwapBonuses()}</RewardsValue>
-            &nbsp;ESW
-          </div>
-        </RewardsItem>
-        <RewardsItem>
-          <span>Referral Reward</span>
-          <div>
-            <RewardsValue>{sumRewardsESW()}</RewardsValue>
-            &nbsp;ESW
-          </div>
-        </RewardsItem>
-        <RewardsItem>
-          <span>Fee Compensation</span>
-          <div>
-            <RewardsValue>
-              {convertBigDecimal(balance?.total.grouped.compensation?.ESW)}
-            </RewardsValue>
-            &nbsp;ESW
-          </div>
-        </RewardsItem>
-      </RewardsWrapper>
+      <Header>My {isEthActive ? 'Ethereum' : 'Polygon'} ESW Rewards</Header>
+      {isEthActive && (
+        <RewardsWrapper>
+          <Item text="Providing Liquidity" count={sumPoolBonuses()} />
+          <Item text="Swapping" count={sumSwapBonuses()} />
+          <Item text=" Referral Reward" count={sumRewardsESW()} />
+          <Item text="Fee Compensation" count={balance?.total.grouped.compensation?.ESW} />
+        </RewardsWrapper>
+      )}
+      {(network === 'polygon' || network === 'mumbai') && (
+        <RewardsWrapperPolygon>
+          <Item text="180% APR campain" count={convertBigDecimal(grouped.pool_bonus?.ESW ?? '0')} />
+          <Item
+            text="365+% APR campain"
+            count={convertBigDecimal((grouped as any).farming_bonus?.ESW ?? '0')}
+          />
+          <Item
+            text="Referral Reward"
+            count={convertBigDecimal(grouped.pool_referral_bonus?.ESW ?? '0')}
+          />
+        </RewardsWrapperPolygon>
+      )}
     </div>
   );
 };

@@ -13,7 +13,13 @@ import { SwapPoolTabs, TabNames } from '../../components/NavigationTabs';
 import { AutoRow, RowBetween } from '../../components/Row';
 import BetterTradeLink from '../../components/swap/BetterTradeLink';
 import confirmPriceImpactWithoutFee from '../../components/swap/confirmPriceImpactWithoutFee';
-import { ArrowWrapper, BottomGrouping, Dots, ErrorText, Wrapper } from '../../components/swap/styleds';
+import {
+  ArrowWrapper,
+  BottomGrouping,
+  Dots,
+  ErrorText,
+  Wrapper,
+} from '../../components/swap/styleds';
 import SwapModalFooter from '../../components/swap/SwapModalFooter';
 import SwapModalHeader from '../../components/swap/SwapModalHeader';
 import TradePrice from '../../components/swap/TradePrice';
@@ -33,10 +39,18 @@ import {
   useSwapActionHandlers,
   useSwapState,
 } from '../../state/swap/hooks';
-import { useExpertModeManager, useTokenWarningDismissal, useUserSlippageTolerance } from '../../state/user/hooks';
+import {
+  useExpertModeManager,
+  useTokenWarningDismissal,
+  useUserSlippageTolerance,
+} from '../../state/user/hooks';
 import { CursorPointer, ExternalGreenLink, StyledButtonNavigation, TYPE } from '../../theme';
 import { maxAmountSpend } from '../../utils/maxAmountSpend';
-import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown, warningSeverity } from '../../utils/prices';
+import {
+  computeSlippageAdjustedAmounts,
+  computeTradePriceBreakdown,
+  warningSeverity,
+} from '../../utils/prices';
 import AppBody from '../AppBody';
 import { ClickableText } from '../Pool/styleds';
 import { isUseOneSplitContract } from '../../utils';
@@ -44,7 +58,7 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { AdvancedSwapDetails } from '../../components/swap/AdvancedSwapDetails';
 import { useTransactionPrice } from '../../hooks/useTransactionPrice';
 import ReferralLink from '../../components/RefferalLink';
-import { useIsEthActive } from '../../hooks/Coins';
+import { useIsEthActive, useNetworkData } from '../../hooks/Coins';
 
 const GasFeeText = styled.div`
   margin-top: 8px;
@@ -107,14 +121,14 @@ export default function Swap() {
 
   const parsedAmounts = showWrap
     ? {
-      [Field.INPUT]: parsedAmount,
-      [Field.OUTPUT]: parsedAmount,
-    }
+        [Field.INPUT]: parsedAmount,
+        [Field.OUTPUT]: parsedAmount,
+      }
     : {
-      // [Field.INPUT]: parsedAmount,
-      [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
-      [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
-    };
+        // [Field.INPUT]: parsedAmount,
+        [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
+        [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
+      };
 
   const isValid = !error;
   const dependentField: Field = independentField === Field.INPUT ? Field.OUTPUT : Field.INPUT;
@@ -190,6 +204,7 @@ export default function Swap() {
   const atMaxAmountInput = Boolean(
     maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput),
   );
+  const { value: network } = useNetworkData();
 
   const slippageAdjustedAmounts = computeSlippageAdjustedAmounts(trade, allowedSlippage);
 
@@ -214,28 +229,31 @@ export default function Swap() {
           metric1: parsedAmounts[Field.INPUT]?.toFixed(),
           metric2: parsedAmounts[Field.OUTPUT]?.toFixed(),
           dimension3: account,
+          dimension5: network,
         });
 
         ReactGA.event({
           category: 'Transaction',
           action: 'new',
           label: 'swap',
+          value: Math.round(parseFloat(parsedAmounts[Field.INPUT]?.toFixed() || '')),
         });
       })
       .catch(error => {
         setAttemptingTxn(false);
-        console.log("Cancel");
         ReactGA.set({
           dimension1: currencies[Field.INPUT]?.symbol,
           dimension2: currencies[Field.OUTPUT]?.symbol,
           metric1: parsedAmounts[Field.INPUT]?.toFixed(),
           metric2: parsedAmounts[Field.OUTPUT]?.toFixed(),
           dimension3: account,
+          dimension5: network,
         });
         ReactGA.event({
           category: 'Transaction',
           action: 'cancel',
           label: 'swap',
+          value: Math.round(parseFloat(parsedAmounts[Field.INPUT]?.toFixed() || '')),
         });
         // we only care if the error is something _other_ than the user rejected the tx
         if (error?.code !== 4001) {
@@ -302,9 +320,9 @@ export default function Swap() {
     (!dismissedToken1 && !!currencies[Field.OUTPUT]);
 
   const notEnoughBalance =
-    maxAmountInput
-    && parsedAmounts[Field.INPUT]?.raw
-    && JSBI.lessThan(maxAmountInput.raw, parsedAmounts[Field.INPUT]!.raw);
+    maxAmountInput &&
+    parsedAmounts[Field.INPUT]?.raw &&
+    JSBI.lessThan(maxAmountInput.raw, parsedAmounts[Field.INPUT]!.raw);
 
   return (
     <>
@@ -522,14 +540,20 @@ export default function Swap() {
               </ErrorText>
             )}
           </BottomGrouping>
-          {isEthActive && (
-            <GasFeeText>100% gas fee refund</GasFeeText>
-          )}
-          <TYPE.black fontSize={14} fontWeight={400} color={theme.text2} marginTop={'12px'}>
+          {isEthActive && <GasFeeText>100% gas fee refund</GasFeeText>}
+
+          <TYPE.black fontSize={14} fontWeight={400} color={theme.text2} marginTop={'24px'}>
             <ExternalGreenLink href="https://wiki.emiswap.com/user-guide/how-to-make-swaps">
               Wiki How to make swaps?
             </ExternalGreenLink>
           </TYPE.black>
+
+          <TYPE.black fontSize={14} fontWeight={400} color={theme.text2} marginTop={'12px'}>
+            <ExternalGreenLink href="https://emiswap.medium.com/your-guide-to-the-emiswap-referral-program-f142a4170d1">
+              Find more about our multi-level EmiSwap Referral Program
+            </ExternalGreenLink>
+          </TYPE.black>
+
           <ReferralLink />
         </Wrapper>
         <AdvancedSwapDetails trade={trade} />

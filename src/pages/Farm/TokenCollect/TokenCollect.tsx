@@ -9,6 +9,7 @@ import isLpToken from '../isLpToken';
 import LpTokenSymbol from '../LpTokenSymbol';
 import useEthErrorPopup from '../../../hooks/useEthErrorPopup';
 import { useActiveWeb3React } from '../../../hooks';
+import { useNetworkData } from '../../../hooks/Coins';
 
 const StyledTokenInputWrapper = styled.div`
   border: 1px solid ${({ theme }) => theme.lightGrey};
@@ -94,6 +95,7 @@ const TokenCollect: React.FC<TokenInputProps> = ({
   // This counter is used to update isCollectInProgress whenever transaction finishes
   const completedTransactionsCount = useCompletedTransactionsCount();
   const addEthErrorPopup = useEthErrorPopup();
+  const { value: network } = useNetworkData();
 
   const handleButtonClick = useCallback(() => {
     setIsCollectInProgress(true);
@@ -105,12 +107,14 @@ const TokenCollect: React.FC<TokenInputProps> = ({
           metric1: deposit,
           metric2: projectedReward,
           dimension3: account,
+          dimension5: network,
         });
 
         ReactGA.event({
           category: 'Transaction',
           action: 'new',
           label: `un${isLpToken(tokenMode) ? 'farm' : 'stake'}`,
+          value: Math.round(parseFloat(deposit)),
         });
       })
       .catch(error => {
@@ -122,12 +126,14 @@ const TokenCollect: React.FC<TokenInputProps> = ({
           metric1: deposit,
           metric2: projectedReward,
           dimension3: account,
+          dimension5: network,
         });
 
         ReactGA.event({
           category: 'Transaction',
           action: 'cancel',
           label: `un${isLpToken(tokenMode) ? 'farm' : 'stake'}`,
+          value: Math.round(parseFloat(deposit)),
         });
       });
   }, [
@@ -139,6 +145,7 @@ const TokenCollect: React.FC<TokenInputProps> = ({
     projectedReward,
     rewardToken,
     stakeToken,
+    network,
   ]);
 
   useEffect(() => {

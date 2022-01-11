@@ -10,6 +10,7 @@ import { TokenAddressMap } from '../state/lists/hooks';
 import { V1_EMIROUTER_HELPER_ADDRESSES } from '../constants/v1-mooniswap';
 import { EMISWAP_CROWDSALE_ABI } from '../constants/abis/crowdsale';
 import { EMISWAP_VESTING_ABI } from '../constants/abis/emiswap-vesting';
+import { EMISWAP_COLLECT_ABI } from '../constants/abis/emiswap-collect';
 import { FARMING_ABI } from '../constants/abis/farming';
 import { EMI_PRICE_2_ABI } from '../constants/abis/emiPrice2';
 import crowdsale_addresses from '../constants/crowdsale_addresses';
@@ -21,6 +22,11 @@ import { networksItems } from '../constants';
 import { KCS } from '../constants/tokens/KCS';
 import { MATIC } from '../constants/tokens/MATIC';
 import { AVAX } from '../constants/tokens/AVAX';
+import { FARMING_365_ABI } from '../constants/abis/farming365';
+import { expNumberToStr } from './formats';
+import { abi as EMI_SWAP_ABI } from '../constants/abis/Emiswap.json';
+import { ERC20_ABI } from '../constants/abis/erc20';
+import { EMI_DELIVERY } from '../constants/emi/addresses';
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
@@ -40,6 +46,7 @@ const ETHERSCAN_PREFIXES: { [chainId in chainIds]: string } = {
   321: 'kucoin.',
   137: 'polygon.',
   43114: 'avalanche.',
+  80001: 'mumbai.',
   1313161554: 'aurora.',
 };
 
@@ -48,7 +55,7 @@ export function getExplorerLink(
   data: string,
   type: 'transaction' | 'token' | 'address' | 'block',
 ): string {
-  const {blockExplorerUrl} = getNetworkData(chainId);
+  const { blockExplorerUrl } = getNetworkData(chainId);
   const isEthActive = isEthereumActive(chainId);
 
   let path = blockExplorerUrl;
@@ -90,6 +97,14 @@ export function shortenAddress(address: string, chars = 4): string {
     throw Error(`Invalid 'address' parameter '${address}'.`);
   }
   return `${parsed.substring(0, chars + 2)}...${parsed.substring(42 - chars)}`;
+}
+
+export function shortenAddressHeadTail(address: string, headchars = 4, tailChars = 20): string {
+  const parsed = isAddress(address);
+  if (!parsed) {
+    throw Error(`Invalid 'address' parameter '${address}'.`);
+  }
+  return `${parsed.substring(0, headchars + 2)}...${parsed.substring(42 - tailChars)}`;
 }
 
 // add 10%
@@ -194,9 +209,19 @@ export function getVestingContract(library: Web3Provider, account: string, chain
   );
 }
 
+export function getCollectContract(library: Web3Provider, account: string, chainId: ChainId) {
+  return getContract(EMI_DELIVERY, EMISWAP_COLLECT_ABI, library, account);
+}
+
 export function getFarmingContracts(library: Web3Provider, account: string, chainId: ChainId) {
   return getFarmingAddresses(chainId).map((address: any) =>
     getContract(address, FARMING_ABI, library, account),
+  );
+}
+
+export function getFarming365Contracts(library: Web3Provider, account: string, chainId: ChainId) {
+  return getFarmingAddresses(chainId).map((address: any) =>
+    getContract(address, FARMING_365_ABI, library, account),
   );
 }
 
@@ -232,4 +257,47 @@ export function getNetworkData(chainId: ChainId | number | undefined) {
 
 export function isEthereumActive(chainId: ChainId | number | undefined) {
   return [chainIds.MAINNET, chainIds.KOVAN].includes(chainId as any);
+}
+
+export function convertTokenAmount(token: Token, amount: string): BigNumber {
+  const splittedAmount = amount.split('.');
+
+  let decimals = splittedAmount[1];
+  if (decimals === undefined) {
+    decimals = '0';
+  }
+
+  const constrainedAmount = splittedAmount[0] + '.' + decimals.substring(0, token.decimals);
+
+  let bigIntAmount: BigNumber;
+  try {
+    bigIntAmount = BigNumber.from(expNumberToStr(+constrainedAmount * 10 ** token.decimals));
+  } catch (e) {
+    throw new Error('Convert amount error');
+  }
+
+  return bigIntAmount;
+}
+
+export async function getLpTokenByAddress(
+  tokenAddress: string,
+  chainId: ChainId | any,
+  account: string,
+  library: Web3Provider,
+) {
+  const lpContract = getContract(tokenAddress, EMI_SWAP_ABI, library, account);
+
+  const pair = await lpContract.getTokens();
+  const token0Contract = getContract(pair[0], ERC20_ABI, library, account);
+  const token1Contract = getContract(pair[1], ERC20_ABI, library, account);
+
+  const decimals = await lpContract.decimals();
+  const symbol = 'LP ' + (await token0Contract.symbol()) + '-' + (await token1Contract.symbol());
+  const name = 'LP ' + (await token0Contract.symbol()) + '-' + (await token1Contract.symbol());
+
+  console.log(decimals, symbol, name);
+
+  const token = new Token(chainId, tokenAddress, decimals, symbol, name);
+
+  return token;
 }

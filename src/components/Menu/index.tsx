@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 // import { Info, BookOpen, Code, PieChart, MessageCircle } from 'react-feather'
-import { BookOpen, Code, Info, MessageCircle, PieChart } from 'react-feather';
+import { BookOpen, Code, MessageCircle, PieChart } from 'react-feather';
 import WikiIcon from '../../assets/images/wiki.svg';
 import styled from 'styled-components';
 import { ReactComponent as MenuIcon } from '../../assets/images/menu.svg';
@@ -87,7 +87,7 @@ const MenuItem = styled(ExternalLink)`
 `;*/
 
 export default function Menu() {
-  const { analyticsUrl, eswExplorerUrl, eswExplorerName } = useNetworkData();
+  const { analyticsUrl } = useNetworkData();
 
   const node = useRef<HTMLDivElement>();
   const [open, toggle] = useToggle(false);
@@ -115,21 +115,21 @@ export default function Menu() {
   return (
     <StyledMenu ref={node}>
       <StyledMenuButton onClick={toggle}>
-        <StyledMenuIcon/>
+        <StyledMenuIcon />
       </StyledMenuButton>
       {open && (
         <MenuFlyout>
-          <MenuItem id="link" href="https://about.emiswap.com">
+          {/* <MenuItem id="link" href="https://emiswap.com/main">
             <Info size={14}/>
             About
-          </MenuItem>
+          </MenuItem> */}
           <MenuItem id="link" href="https://wiki.emiswap.com/">
             {/* TODO иконка не из react-feather нарушает единообразие*/}
-            <img src={WikiIcon} width={14} height={14} alt=""/>
+            <img src={WikiIcon} width={14} height={14} alt="" />
             Wiki
           </MenuItem>
           <MenuItem id="link" href={analyticsUrl}>
-            <PieChart size={14}/>
+            <PieChart size={14} />
             Analytics
           </MenuItem>
           <MenuItem
@@ -137,28 +137,28 @@ export default function Menu() {
             href="https://emiswap.medium.com/all-you-need-to-know-about-nft-magic-cards-7c0ec9875800"
             target="_blank"
           >
-            <MessageCircle size={14}/>
+            <MessageCircle size={14} />
             NFT Magic Cards
           </MenuItem>
           <MenuItem id="link" href="https://about.emiswap.com/whitepaper" target="_blank">
-            <BookOpen size={14}/>
+            <BookOpen size={14} />
             Whitepaper
           </MenuItem>
-          <MenuItem
+          {/* <MenuItem
             id="link"
             href={eswExplorerUrl}
             target="_blank"
           >
             <Info size={14}/>
             {eswExplorerName}
-          </MenuItem>
+          </MenuItem> */}
           <MenuItem
             id="link"
             // href="https://hacken.io/wp-content/uploads/2021/02/18022021_Emiswap_SC_Audit_Report.pdf"
             href="/docs/06042021_Emiswap_SC_Audit_Report.pdf"
             target="_blank"
           >
-            <BookOpen size={14}/>
+            <BookOpen size={14} />
             Smart Contract Audit
           </MenuItem>
           <MenuItem
@@ -167,15 +167,15 @@ export default function Menu() {
             href="/docs/12072021_Emiswap_SC_Audit_Report_V2.pdf"
             target="_blank"
           >
-            <BookOpen size={14}/>
+            <BookOpen size={14} />
             Smart Contract Audit 2
           </MenuItem>
           <MenuItem id="link" href={window['env'].REACT_APP_CODE_LINK} target="_blank">
-            <Code size={14}/>
+            <Code size={14} />
             Code
           </MenuItem>
           <MenuItem id="link" href="https://about.emiswap.com/farming" target="_blank">
-            <BookOpen size={14}/>
+            <BookOpen size={14} />
             Earn with EmiSwap
           </MenuItem>
         </MenuFlyout>

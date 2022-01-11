@@ -1,5 +1,5 @@
 window['env'] = {
-  REACT_APP_CHAIN_ID: '321',
+  REACT_APP_CHAIN_ID: '137',
   REACT_APP_NETWORK_URL: 'https://kovan.infura.io/v3/2b7c5bba80094418abf5e746ba10dac0',
   REACT_APP_PORTIS_ID: '9db2fb8f-577f-4af1-8a50-20ebb262b115',
   REACT_APP_FORTMATIC_KEY: 'pk_test_503A6AA72877C8DE',
@@ -7,7 +7,7 @@ window['env'] = {
   REACT_APP_ESW_ID: '0xe37Ae239a84110009426071B7828A6fbd6be5F45',
   REACT_APP_ANALYTICS_URL: 'https://moon.firstbridge.online/',
   REACT_APP_CODE_LINK: 'https://github.com/EMISWAP-COM',
-  REACT_APP_PUBLIC_URL: 'https://emiswap.com',
+  REACT_APP_PUBLIC_URL: '',
   REACT_APP_MIN_GAS_FOR_SWAP: '320000',
   REACT_APP_MIN_GAS_FOR_POOL: '320000',
   REACT_APP_MIN_GAS_FOR_INVEST: '90000',

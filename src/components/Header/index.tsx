@@ -1,4 +1,3 @@
-import { ChainId } from '@uniswap/sdk';
 import React from 'react';
 import { Text } from 'rebass';
 import styled from 'styled-components/macro';
@@ -13,16 +12,17 @@ import Settings from '../Settings';
 import Menu from '../Menu';
 import Row, { RowBetween } from '../Row';
 import Web3Status from '../Web3Status';
+import Wordmark from '../Wordmark';
 import { tokenAmountToString } from '../../utils/formats';
 import { ReactComponent as MagicIcon } from '../../assets/images/magic_icon.svg';
-import { ButtonGray, ButtonOutlined } from '../Button';
-import NetworkSwitchModal from './NetworkSwitchModal';
-import { useBridgeModalToggle, useNetworkSwitchModalToggle } from '../../state/application/hooks';
+import { ButtonOutlined } from '../Button';
+import { useBridgeModalToggle } from '../../state/application/hooks';
 import chainIds from '../../constants/chainIds';
 import { useNetworkData } from '../../hooks/Coins';
-import { useLocation } from 'react-router-dom';
-import { isMobile } from "react-device-detect";
+import { isMobile } from 'react-device-detect';
+import { useRouteMatch } from 'react-router-dom';
 import BridgeModal from './BridgeModal';
+import { NetworkSwitch } from '../NetworkSwitch';
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -158,7 +158,7 @@ const StyledGoToButton = styled.a`
   border: none;
   transition: all 0.3s ease-in-out;
   border-radius: 4px;
-  color:  ${({ theme }) => theme.dark2};
+  color: ${({ theme }) => theme.dark2};
   text-decoration: none;
 
   ${({ theme }) => theme.mediaWidth.upToTabletop`
@@ -253,43 +253,7 @@ const NetworkWrapper = styled.div`
   pointer-events: auto;
 `;
 
-const NetworkButtonSwitch = styled(ButtonGray)`
-  box-sizing: border-box;
-  width: fit-content;
-  min-width: 120px;
-  height: 40px;
-  margin-right: 24px;
-  padding: 0 16px;
-  border: 1px solid #615c69;
-  border-radius: 4px;
-  background: ${({ theme }) => theme.darkGrey};
-  color: white;
-
-  &:focus,
-  &:hover {
-    border: 1px solid ${({ theme }) => theme.purple};
-    background: ${({ theme }) => theme.darkGrey};
-    box-shadow: none;
-  }
-  &:active {
-    border: 1px solid #615c69;
-    background: ${({ theme }) => theme.darkGrey};
-    box-shadow: none;
-  }
-`;
-
-const NetworkIcon = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 24px;
-  height: 24px;
-  margin-right: 8px;
-  border-radius: 50%;
-  background: white;
-`;
-
-const NetworkLabel = styled.div`
+/*const NetworkLabel = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -300,7 +264,7 @@ const NetworkLabel = styled.div`
   font-size: 8px;
   background: #e478ff;
   color: ${({ theme }) => theme.dark2};
-`;
+`;*/
 
 const UniIcon = styled.div`
   width: 175px;
@@ -371,6 +335,22 @@ const RowBetweenStyled = styled(RowBetween)`
   `};
 `;
 
+const LogoWrapper = styled.div`
+  display: none;
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    padding-left: 65px;
+    margin: 15px;
+    position: relative;
+  `};
+`;
+
+const HeaderWrapper = styled.div`
+  ${({ theme }) => theme.flexRowNoWrap}
+  width: 100%;
+  justify-content: space-between;
+`;
+
 /*const BridgeDropdown = styled.span`
   display: flex;
   flex-direction: column;
@@ -387,21 +367,7 @@ const RowBetweenStyled = styled(RowBetween)`
   box-shadow: ${({ theme }) => theme.dark1BoxShadow};
 `;*/
 
-const NETWORK_LABELS: { [chainId in chainIds]: string | null } = {
-  [ChainId.MAINNET]: 'Ethereum',
-  [ChainId.RINKEBY]: 'Rinkeby',
-  [ChainId.ROPSTEN]: 'Ropsten',
-  [ChainId.GÖRLI]: 'Görli',
-  [ChainId.KOVAN]: 'Kovan',
-  [chainIds.KUCOIN]: 'KuCoin',
-  [chainIds.POLYGON]: 'Polygon',
-  [chainIds.AVALANCHE]: 'Avalanche',
-  [chainIds.AURORA]: 'Aurora',
-};
-
 export default function Header() {
-  const { pathname } = useLocation();
-
   const { account, chainId } = useActiveWeb3React();
   const userEthBalance = useETHBalances([account])[account];
 
@@ -409,117 +375,109 @@ export default function Header() {
 
   const networkItem = useNetworkData();
 
-  const toggleNetworkSwitchModal = useNetworkSwitchModalToggle();
   const toggleBridgeModal = useBridgeModalToggle();
 
-  const is404Page = pathname === '/404';
+  const isLandingPage = useRouteMatch('/main');
+  const is404Page = useRouteMatch('/404');
+
+  if (isLandingPage) return null;
 
   return (
-    <HeaderFrame>
-      <RowBetweenStyled>
-        <LogoElem>
-          <Title href=".">
-            <UniIcon>
-              <LogoImg src={isDark ? LogoDark : Logo} alt="logo"/>
-            </UniIcon>
-            <TitleText>
-              {/*<img style={{ marginLeft: '4px', marginTop: '4px' }} src={isDark ? WordmarkDark : Wordmark} alt="logo" width="160px"/>*/}
-            </TitleText>
-          </Title>
-        </LogoElem>
-        {is404Page ? (
-          <StyledGoToButton href="/">
-            <Text textAlign="center" fontWeight={500} fontSize={16}>
-              Go to the platform
-            </Text>
-          </StyledGoToButton>
-        ) : (
-          <>
-            <HeaderControls>
-              <HeaderElement>
-                {false && (
-                  <AprButton>
-                    <Text textAlign="center" fontWeight={500} fontSize={14}>
-                      APR settings
-                    </Text>
-                  </AprButton>
-                )}
-                {!isMobile && (
-                  <>
-                    {networkItem.bridgeUrl ? (
-                      <a href={networkItem.bridgeUrl} target="_blank" rel="noopener noreferrer">
-                        <AprButton>
-                          <Text textAlign="center" fontWeight={500} fontSize={14}>
-                            Bridge Assets
-                          </Text>
-                        </AprButton>
+    <>
+      <LogoWrapper>
+        <Wordmark />
+      </LogoWrapper>
+      <HeaderWrapper>
+        <HeaderFrame>
+          <RowBetweenStyled>
+            <LogoElem>
+              <Title href=".">
+                <UniIcon>
+                  <LogoImg src={isDark ? LogoDark : Logo} alt="logo" />
+                </UniIcon>
+                <TitleText>
+                  {/*<img style={{ marginLeft: '4px', marginTop: '4px' }} src={isDark ? WordmarkDark : Wordmark} alt="logo" width="160px"/>*/}
+                </TitleText>
+              </Title>
+            </LogoElem>
+            {is404Page ? (
+              <StyledGoToButton href="/">
+                <Text textAlign="center" fontWeight={500} fontSize={16}>
+                  Go to the platform
+                </Text>
+              </StyledGoToButton>
+            ) : (
+              <>
+                <HeaderControls>
+                  <HeaderElement>
+                    {false && (
+                      <AprButton>
+                        <Text textAlign="center" fontWeight={500} fontSize={14}>
+                          APR settings
+                        </Text>
+                      </AprButton>
+                    )}
+                    {!isMobile && (
+                      <>
+                        {networkItem.bridgeUrl ? (
+                          <a href={networkItem.bridgeUrl} target="_blank" rel="noopener noreferrer">
+                            <AprButton>
+                              <Text textAlign="center" fontWeight={500} fontSize={14}>
+                                Bridge Assets
+                              </Text>
+                            </AprButton>
+                          </a>
+                        ) : (
+                          <div>
+                            <AprButton onClick={toggleBridgeModal}>
+                              <Text textAlign="center" fontWeight={500} fontSize={14}>
+                                Bridge Assets
+                              </Text>
+                            </AprButton>
+                            <BridgeModal />
+                          </div>
+                        )}
+                      </>
+                    )}
+                    <NetworkWrapper>
+                      <NetworkSwitch />
+                    </NetworkWrapper>
+                    {chainId === (chainIds.MAINNET as any) && (
+                      <a className="purple-btn" href={`${window.location.origin}/magic_cards/`}>
+                        <span>Magic Hall</span>
                       </a>
-                    ) : (
-                      <div>
-                        <AprButton onClick={toggleBridgeModal}>
-                          <Text textAlign="center" fontWeight={500} fontSize={14}>
-                            Bridge Assets
-                          </Text>
-                        </AprButton>
-                        <BridgeModal/>
-                      </div>
                     )}
-                  </>
-                )}
-                <NetworkWrapper>
-                  <NetworkButtonSwitch
-                    onClick={toggleNetworkSwitchModal}
-                  >
-                    {networkItem && (
-                      <NetworkIcon>
-                        <img
-                          style={{ maxHeight: '18px', maxWidth: '18px' }}
-                          src={networkItem.icon}
-                          alt={networkItem.name}
-                        />
-                      </NetworkIcon>
-                    )}
-                    <span>{NETWORK_LABELS[chainId] || 'Change Network'}</span>
-                    {![chainIds.MAINNET, chainIds.KUCOIN].includes(chainId as any) && (
-                      <NetworkLabel>Beta Version</NetworkLabel>
-                    )}
-                  </NetworkButtonSwitch>
-                  <NetworkSwitchModal/>
-                </NetworkWrapper>
-                {chainId === (chainIds.MAINNET as any) && (
-                  <a className="purple-btn" href={`${window.location.origin}/magic_cards/`}>
-                    <span>Magic Hall</span>
-                  </a>
-                )}
-                <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
-                  {account && userEthBalance ? (
-                    <>
-                      <BalanceText
-                        style={{ flexShrink: 0 }}
-                        pl="8px"
-                        pr="8px"
-                        mr="16px"
-                        fontWeight={450}
-                      >
-                        {tokenAmountToString(userEthBalance, 4)} {/*// @ts-ignore*/}
-                        {networkItem.currencySymbol}
-                      </BalanceText>
-                    </>
-                  ) : null}
-                  <Web3Status/>
-                </AccountElement>
-              </HeaderElement>
-            </HeaderControls>
-            <HeaderElementWrap>
-              <StyledMagicButton href={`${window.location.origin}/magic_cards/`}>
-                <MagicIcon/>
-              </StyledMagicButton>
-              <Settings/>
-              <Menu/>
-            </HeaderElementWrap>
-          </>
-        )}
-      </RowBetweenStyled>
-    </HeaderFrame>
+                    <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
+                      {account && userEthBalance ? (
+                        <>
+                          <BalanceText
+                            style={{ flexShrink: 0 }}
+                            pl="8px"
+                            pr="8px"
+                            mr="16px"
+                            fontWeight={450}
+                          >
+                            {tokenAmountToString(userEthBalance, 4)} {/*// @ts-ignore*/}
+                            {networkItem.currencySymbol}
+                          </BalanceText>
+                        </>
+                      ) : null}
+                      <Web3Status />
+                    </AccountElement>
+                  </HeaderElement>
+                </HeaderControls>
+                <HeaderElementWrap>
+                  <StyledMagicButton href={`${window.location.origin}/magic_cards/`}>
+                    <MagicIcon />
+                  </StyledMagicButton>
+                  <Settings />
+                  <Menu />
+                </HeaderElementWrap>
+              </>
+            )}
+          </RowBetweenStyled>
+        </HeaderFrame>
+      </HeaderWrapper>
+    </>
   );
 }

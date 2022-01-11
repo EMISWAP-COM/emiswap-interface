@@ -54,7 +54,7 @@ export default function RemoveLiquidity({
   const [tokenA, tokenB] = useMemo(() => [currencyA, currencyB], [currencyA, currencyB]);
 
   // const isKuCoinActive = useIsKuCoinActive();
-  const {currencySymbolWrap} = useNetworkData();
+  const { currencySymbolWrap, value: network } = useNetworkData();
 
   const theme = useContext(ThemeContext);
 
@@ -78,9 +78,7 @@ export default function RemoveLiquidity({
   const [txHash, setTxHash] = useState<string>('');
   const [allowedSlippage] = useUserSlippageTolerance();
   const wethTokenInfo = defaultCoins.tokens.find(
-    token =>
-      token.symbol === currencySymbolWrap &&
-      token.chainId === chainId,
+    token => token.symbol === currencySymbolWrap && token.chainId === chainId,
   );
   const WETH: Token =
     wethTokenInfo && chainId
@@ -314,15 +312,17 @@ export default function RemoveLiquidity({
             dimension4: response.hash,
             dimension1: currencyA?.symbol,
             dimension2: currencyB?.symbol,
-            metric1: parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
-            metric2: parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
+            metric1: parsedAmounts[Field.CURRENCY_A]?.toFixed(),
+            metric2: parsedAmounts[Field.CURRENCY_B]?.toFixed(),
             dimension3: account,
+            dimension5: network,
           });
 
           ReactGA.event({
             category: 'Transaction',
             action: 'new',
             label: 'unpool',
+            value: Math.round(parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || '')),
           });
         })
         .catch((error: Error) => {
@@ -330,15 +330,17 @@ export default function RemoveLiquidity({
           ReactGA.set({
             dimension1: currencyA?.symbol,
             dimension2: currencyB?.symbol,
-            metric1: parsedAmounts[Field.CURRENCY_A]?.raw.toString(),
-            metric2: parsedAmounts[Field.CURRENCY_B]?.raw.toString(),
+            metric1: parsedAmounts[Field.CURRENCY_A]?.toFixed(),
+            metric2: parsedAmounts[Field.CURRENCY_B]?.toFixed(),
             dimension3: account,
+            dimension5: network,
           });
 
           ReactGA.event({
             category: 'Transaction',
-            action: 'new',
+            action: 'cancel',
             label: 'unpool',
+            value: Math.round(parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || '')),
           });
           // we only care if the error is something _other_ than the user rejected the tx
           console.error(error);

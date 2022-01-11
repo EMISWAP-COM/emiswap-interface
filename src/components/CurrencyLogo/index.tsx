@@ -2,12 +2,14 @@ import { ETHER, Token } from '@uniswap/sdk';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
+import EswLogo from '../../assets/currencies/ESW.png';
 import EthereumLogo from '../../assets/images/ethereum-logo.png';
 import KucoinLogo from '../../assets/currencies/KCS.png';
 import MaticLogo from '../../assets/currencies/MATIC.png';
 import AvaxLogo from '../../assets/currencies/AVAX.png';
 import defaultCoins from '../../constants/defaultCoins';
 import { useActiveWeb3React } from '../../hooks';
+import LpTokenSymbol from '../../pages/Farm/LpTokenSymbol';
 
 const getTokenLogoInRaw = address =>
   `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`;
@@ -28,8 +30,7 @@ const getTokenLogoURL = async (urls: string[]): Promise<string> => {
         const responseBlob = await response.blob();
         return URL.createObjectURL(responseBlob);
       }
-    } catch {
-    }
+    } catch {}
   }
 
   return '';
@@ -95,9 +96,22 @@ export default function CurrencyLogo({
     return <StyledEthereumLogo src={AvaxLogo} size={size} {...rest} />;
   }
 
+  if (currency?.symbol === 'ESW') {
+    return <StyledEthereumLogo src={EswLogo} size={size} {...rest} />;
+  }
+
+  if (currency?.name?.includes('LP ')) {
+    return (
+      <div {...rest}>
+        <LpTokenSymbol size={18} fontSize={10} />
+      </div>
+    );
+  }
+
   if (currency instanceof Token) {
-    const coinToken = defaultCoins.tokens
-      .find(ct => ct.address === currency.address.toLowerCase() && ct.chainId === chainId);
+    const coinToken = defaultCoins.tokens.find(ct => {
+      return ct.address.toLowerCase() === currency.address.toLowerCase() && ct.chainId === chainId;
+    });
 
     let uri: string | undefined = coinToken?.logoURI;
 
@@ -132,5 +146,5 @@ export default function CurrencyLogo({
     }
   }
 
-  return <span style={{ width: '20px', height: '20px' }}/>;
+  return <span style={{ width: '20px', height: '20px' }} />;
 }

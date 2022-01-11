@@ -57,6 +57,32 @@ export const loadBalance = createAsyncThunk(
   },
 );
 
+export const loadTotalBalance = createAsyncThunk(
+  'cabinets/loadTotalBalance',
+  async (userId: string, { dispatch }) => {
+    const url = `${baseUrl}/v1/public/users/${userId}/total_balances`;
+    try {
+      const response = await fetchWrapper.get(url);
+      return response;
+    } catch (e) {
+      console.debug('loadTotalBalance: ', { e });
+      //FIXME - встроить централизованную обработку ошибок
+      // dispatch(
+      //   addPopup({
+      //     key: 'loadBalance',
+      //     content: {
+      //       status: {
+      //         name: e.message,
+      //         isError: true,
+      //       },
+      //     },
+      //   }),
+      // );
+      return Promise.reject(e);
+    }
+  },
+);
+
 export const loadBonus = createAsyncThunk(
   'cabinets/loadBonus',
   async (userId: string, { dispatch }) => {

@@ -8,13 +8,9 @@ import {
 import { Text } from 'rebass';
 import styled from 'styled-components/macro';
 import CircleCheckIcon from '../../assets/svg/circle-check.svg';
-import { toHex } from 'web3-utils';
-import { useActiveWeb3React } from '../../hooks';
+import { useActiveWeb3React, useSwitchNetwork } from '../../hooks';
 import { INetworkItem, networksItems } from '../../constants';
 import ConfirmSwitchModal from './ConfirmSwitchModal';
-import { FortmaticConnector } from '../../connectors/Fortmatic';
-import { PortisConnector } from '@web3-react/portis-connector';
-import { useWeb3React } from '@web3-react/core';
 import chainIds from '../../constants/chainIds';
 import NetworkNeedSwitchModal from './NetworkNeedSwitchModal';
 import { useIsMetaMask } from '../../hooks/Coins';
@@ -49,7 +45,7 @@ const NetworkIcon = styled.div<{ active: boolean }>`
   width: 48px;
   height: 48px;
   margin: 0 auto 12px auto;
-  border: 3px solid ${({ theme, active }) => active ? theme.green5 : 'white'};
+  border: 3px solid ${({ theme, active }) => (active ? theme.green5 : 'white')};
   border-radius: 4px;
   background: white;
 `;
@@ -60,20 +56,18 @@ const CircleCheckImg = styled.img`
 `;
 
 const NetworkName = styled(Text)<{ active: boolean }>`
-  font-size: 16px; 
-  font-weight: 500; 
+  font-size: 16px;
+  font-weight: 500;
   text-align: center;
-  color: ${({ theme, active }) => active ? theme.green5 : 'white'};
+  color: ${({ theme, active }) => (active ? theme.green5 : 'white')};
 `;
 
 export default function NetworkSwitchModal() {
-
-  const { ethereum } = window as any;
-
-  const { chainId, connector } = useActiveWeb3React();
-  const { deactivate } = useWeb3React();
+  const { chainId } = useActiveWeb3React();
 
   const isMetaMask = useIsMetaMask();
+
+  const { switchNetwork } = useSwitchNetwork();
 
   const [selectedItem, setSelectedItem] = useState<INetworkItem>(null);
   const [isVisibleNeedSwitchModal, setVisibleNeedSwitchModal] = useState<boolean>(false);
@@ -81,66 +75,6 @@ export default function NetworkSwitchModal() {
   const networkSwitchModalOpen = useNetworkSwitchModalOpen();
   const toggleNetworkSwitchModal = useNetworkSwitchModalToggle();
   const toggleConfirmSwitchModal = useConfirmSwitchModalToggle();
-
-  const switchNetwork = async (item: INetworkItem) => {
-    try {
-      ethereum.removeAllListeners(["networkChanged"]);
-
-      const result = await ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: toHex(item.chainId) }],
-      });
-      console.log(result);
-      console.log('switch 1');
-    } catch (switchError) {
-      if (switchError.code === 4902) {
-        try {
-          await ethereum.request({
-            method: 'wallet_addEthereumChain',
-            params: [
-              {
-                chainId: toHex(item.chainId),
-                chainName: item.name,
-                rpcUrls: item.rpcUrls,
-                nativeCurrency: {
-                  name: item.currencySymbol,
-                  symbol: item.currencySymbol,
-                  decimals: 18,
-                },
-              },
-            ],
-          });
-          console.log('switch 2');
-        } catch (addError) {
-          console.log(addError);
-        }
-      } else {
-        console.log(switchError);
-      }
-    } finally {
-      await providerLogout();
-    }
-  };
-
-  const providerLogout = async () => {
-    if (isMetaMask) {
-      return;
-    }
-
-    const provider = await connector.getProvider();
-
-    if (connector instanceof FortmaticConnector && connector?.fortmatic) {
-      connector.fortmatic?.user.logout();
-      deactivate();
-    } else if (connector instanceof PortisConnector && connector?.portis) {
-      connector.portis.logout();
-      deactivate();
-    } else if (provider?.close) {
-      provider.close();
-    } else {
-      deactivate();
-    }
-  };
 
   const onClickItem = async (item: INetworkItem) => {
     if (item.chainId === chainId) {
@@ -195,27 +129,28 @@ export default function NetworkSwitchModal() {
       >
         <NetworkSwitchWrapped>
           <div>
-            <Text textAlign="center" fontWeight={500} fontSize={20} color="white">Choose Network</Text>
+            <Text textAlign="center" fontWeight={500} fontSize={20} color="white">
+              Choose Network
+            </Text>
           </div>
 
           <NetworkItemsRow>
-            {networksItems.filter(item => item.active).map(item => (
-              <NetworkItem key={item.chainId} onClick={() => onClickItem(item)}>
-                <NetworkIcon active={item.chainId === chainId}>
-                  {item.chainId === chainId && (
-                    <CircleCheckImg src={CircleCheckIcon}/>
-                  )}
-                  <img
-                    style={{ maxWidth: logosMaxWidths[item.chainId] || '100%' }}
-                    src={item.icon}
-                    alt={item.name}
-                  />
-                </NetworkIcon>
-                <NetworkName active={item.chainId === chainId}>{item.name}</NetworkName>
-              </NetworkItem>
-            ))}
+            {networksItems
+              .filter(item => item.active)
+              .map(item => (
+                <NetworkItem key={item.chainId} onClick={() => onClickItem(item)}>
+                  <NetworkIcon active={item.chainId === chainId}>
+                    {item.chainId === chainId && <CircleCheckImg src={CircleCheckIcon} />}
+                    <img
+                      style={{ maxWidth: logosMaxWidths[item.chainId] || '100%' }}
+                      src={item.icon}
+                      alt={item.name}
+                    />
+                  </NetworkIcon>
+                  <NetworkName active={item.chainId === chainId}>{item.name}</NetworkName>
+                </NetworkItem>
+              ))}
           </NetworkItemsRow>
-
         </NetworkSwitchWrapped>
       </Modal>
       {selectedItem && (
@@ -225,9 +160,7 @@ export default function NetworkSwitchModal() {
           onCancel={onClickCancel}
         />
       )}
-      {isVisibleNeedSwitchModal && (
-        <NetworkNeedSwitchModal onClose={onCloseNeedSwitch}/>
-      )}
+      {isVisibleNeedSwitchModal && <NetworkNeedSwitchModal onClose={onCloseNeedSwitch} />}
     </div>
   );
 }

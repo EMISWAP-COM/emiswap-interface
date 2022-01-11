@@ -10,16 +10,20 @@ import Tooltip from '../Tooltip';
 import LpTokenSymbol from '../LpTokenSymbol';
 import isLpToken from '../isLpToken';
 import { ExternalLink } from '../../../theme';
-import chainIds from '../../../constants/chainIds';
-import { useActiveWeb3React } from '../../../hooks';
 import { FarmingTimeType } from '../constants';
 import KucoinLogo from '../../../assets/currencies/KCS.png';
-import { useNetworkData } from '../../../hooks/Coins';
+import { useIsEthActive, useIsPolygonActive, useNetworkData } from '../../../hooks/Coins';
+import Farm365Content from '../../Farm365/Farm365Content';
+import useFarming365 from '../../../hooks/useFarming365';
 
 const StyledRow = styled.div`
   background-color: ${({ theme }) => theme.border1Transparency};
   border-radius: 8px;
   margin-bottom: 8px;
+
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    margin: 0 -16px 8px -16px;
+  `};
 `;
 
 const StyledHeader = styled.div`
@@ -145,6 +149,7 @@ const StyledExtendableContent = styled.div<{ isVisible: boolean }>`
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
     border-radius: 8px 8px 0 0;
+    padding: 16px;
   `};
 `;
 
@@ -206,18 +211,21 @@ type ExtendableRowProps = {
   rewardToken: Token | undefined;
   projectedReward: string;
   apr: number;
+  eswRate?: number;
   blockReward?: string;
   lockPeriod?: number;
   liquidity: string;
   endDate: string;
   deposit: string;
   type: string;
-  onStake: (amount: string) => Promise<unknown>;
-  onCollect: () => Promise<unknown>;
   tokenMode: number;
-  isKuCoinToken: boolean;
+  stakedTokens?: any[];
+  isKuCoinToken?: boolean;
   balance?: string;
   availableToCollect?: string;
+  farming365?: ReturnType<typeof useFarming365>;
+  onStake?: (amount: string) => Promise<unknown>;
+  onCollect?: () => Promise<unknown>;
 };
 
 const ExtendableRow: React.FC<ExtendableRowProps> = ({
@@ -226,26 +234,36 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
   rewardToken,
   projectedReward,
   apr,
+  eswRate,
   blockReward,
   lockPeriod,
   liquidity,
   endDate,
   deposit,
   type,
-  onStake,
-  onCollect,
   tokenMode,
+  // stakedTokens = [],
   balance,
   availableToCollect,
-  isKuCoinToken,
+  isKuCoinToken = false,
+  farming365 = null,
+  onStake = ((...args) => {}) as any,
+  onCollect = ((...args) => {}) as any,
 }) => {
+  // const { chainId } = useActiveWeb3React();
   const { alias } = useNetworkData();
+  const isEthereumActive = useIsEthActive();
+  const isPolygonActive = useIsPolygonActive();
+
   const [isRowExtended, setIsRowExtended] = useState(false);
-  const { chainId } = useActiveWeb3React();
 
   const handleExtendClick = useCallback(() => {
     setIsRowExtended(!isRowExtended);
   }, [isRowExtended]);
+
+  const aprTooltip = farming365
+    ? `APR ESW staking: ${(apr - 365).toFixed(2)}'% LP Staking: 365%`
+    : `${apr}'%`;
 
   return (
     <StyledRow>
@@ -256,23 +274,26 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
             <StyledBlockValue>
               <StyledCurrencyLogo>
                 {isLpToken(tokenMode) ? (
-                  <LpTokenSymbol/>
+                  <LpTokenSymbol />
                 ) : (
-                  <CurrencyLogo currency={stakeToken} size={'24px'}/>
+                  <CurrencyLogo currency={stakeToken} size={'24px'} />
                 )}
               </StyledCurrencyLogo>
-              <StyledTruncatedText>
-                {isLpToken(tokenMode) ? stakeToken?.name : stakeToken?.symbol}
-              </StyledTruncatedText>
-              {/*// @ts-ignore*/}
-              {chainId !== chainIds.KUCOIN && (
+              {isPolygonActive ? (
+                <StyledTruncatedText>LP - ESW</StyledTruncatedText>
+              ) : (
+                <StyledTruncatedText>
+                  {isLpToken(tokenMode) ? stakeToken?.name : stakeToken?.symbol}
+                </StyledTruncatedText>
+              )}
+              {isEthereumActive && (
                 <StyledAnalyticsLink>
                   <ExternalLink
                     href={`https://emiswap.com/analytics/${
                       isLpToken(tokenMode) ? 'pair' : 'token'
                     }/${stakeToken?.address}?=network=${alias}`}
                   >
-                    <LinkIcon size={16}/>
+                    <LinkIcon size={16} />
                   </ExternalLink>
                 </StyledAnalyticsLink>
               )}
@@ -282,7 +303,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
             <StyledBlockTitle>Your reward</StyledBlockTitle>
             <StyledBlockValue>
               <StyledCurrencyLogo>
-                <CurrencyLogo currency={rewardToken} size={'24px'}/>
+                <CurrencyLogo currency={rewardToken} size={'24px'} />
               </StyledCurrencyLogo>
               <Tooltip title={projectedReward}>
                 <StyledTruncatedText>{projectedReward}</StyledTruncatedText>
@@ -292,33 +313,30 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
           <StyledBlock width={100}>
             <StyledBlockTitle>APR</StyledBlockTitle>
             <StyledBlockValue>
-              <Tooltip title={String(apr.toFixed(2)) + '%'}>
+              <Tooltip title={aprTooltip}>
                 <StyledTruncatedText>{apr.toFixed(2) + '%'}</StyledTruncatedText>
               </Tooltip>
             </StyledBlockValue>
           </StyledBlock>
-          {type === FarmingTimeType.variable && typeof blockReward !== 'undefined' && (
-            <StyledBlock width={150}>
-              <StyledBlockTitle>Block reward</StyledBlockTitle>
-              <StyledBlockValue>
-                <StyledCurrencyLogo>
-                  <CurrencyLogo currency={rewardToken} size={'24px'}/>
-                </StyledCurrencyLogo>
-                <Tooltip title={blockReward}>
-                  <StyledTruncatedText>
-                    {blockReward}
-                  </StyledTruncatedText>
-                </Tooltip>
-              </StyledBlockValue>
-            </StyledBlock>
-          )}
+          {(type === FarmingTimeType.variable || FarmingTimeType.farming365) &&
+            typeof blockReward !== 'undefined' && (
+              <StyledBlock width={150}>
+                <StyledBlockTitle>Block reward</StyledBlockTitle>
+                <StyledBlockValue>
+                  <StyledCurrencyLogo>
+                    <CurrencyLogo currency={rewardToken} size={'24px'} />
+                  </StyledCurrencyLogo>
+                  <Tooltip title={blockReward}>
+                    <StyledTruncatedText>{blockReward}</StyledTruncatedText>
+                  </Tooltip>
+                </StyledBlockValue>
+              </StyledBlock>
+            )}
           {type === FarmingTimeType.fixed && typeof lockPeriod !== 'undefined' && (
             <StyledBlock width={150}>
               <StyledBlockTitle>Lock period</StyledBlockTitle>
               <StyledBlockValue>
-                <StyledTruncatedText>
-                  {lockPeriod} days
-                </StyledTruncatedText>
+                <StyledTruncatedText>{lockPeriod} days</StyledTruncatedText>
               </StyledBlockValue>
             </StyledBlock>
           )}
@@ -327,7 +345,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
             <StyledBlockValue>
               {isKuCoinToken && (
                 <StyledCurrencyLogo>
-                  <StyledEthereumLogo src={KucoinLogo} size={'24px'}/>
+                  <StyledEthereumLogo src={KucoinLogo} size={'24px'} />
                 </StyledCurrencyLogo>
               )}
               <StyledTruncatedText>
@@ -353,96 +371,106 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
           </StyledBlock>
         </StyledBlocksWrapper>
         <StyledExtendButtonDesktop onClick={handleExtendClick} isRowExtended={isRowExtended}>
-          {isRowExtended ? <ChevronUp size={24}/> : <ChevronDown size={24}/>}
+          {isRowExtended ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
         </StyledExtendButtonDesktop>
       </StyledHeader>
-      <StyledExtendableContent isVisible={isRowExtended}>
-        <StyledBlocksWrapper>
-          <StyledBlock width={150}>
-            <StyledBlockTitle>Deposit</StyledBlockTitle>
-            <StyledBlockValue>
-              <StyledCurrencyLogo>
-                {isLpToken(tokenMode) ? (
-                  <LpTokenSymbol/>
-                ) : (
-                  <CurrencyLogo currency={stakeToken} size={'24px'}/>
+      {farming365 ? (
+        <>
+          <StyledExtendableContent isVisible={isRowExtended}>
+            <Farm365Content farming365={farming365} eswRate={eswRate || 0} />
+          </StyledExtendableContent>
+        </>
+      ) : (
+        <>
+          <StyledExtendableContent isVisible={isRowExtended}>
+            <StyledBlocksWrapper>
+              <StyledBlock width={150}>
+                <StyledBlockTitle>Deposit</StyledBlockTitle>
+                <StyledBlockValue>
+                  <StyledCurrencyLogo>
+                    {isLpToken(tokenMode) ? (
+                      <LpTokenSymbol />
+                    ) : (
+                      <CurrencyLogo currency={stakeToken} size={'24px'} />
+                    )}
+                  </StyledCurrencyLogo>
+                  <Tooltip title={deposit}>
+                    <StyledTruncatedText>{deposit}</StyledTruncatedText>
+                  </Tooltip>
+                </StyledBlockValue>
+              </StyledBlock>
+              <StyledBlock width={150}>
+                <StyledBlockTitle>Your reward</StyledBlockTitle>
+                <StyledBlockValue>
+                  <StyledCurrencyLogo>
+                    <CurrencyLogo currency={rewardToken} size={'24px'} />
+                  </StyledCurrencyLogo>
+                  <Tooltip title={projectedReward}>
+                    <StyledTruncatedText>{projectedReward}</StyledTruncatedText>
+                  </Tooltip>
+                </StyledBlockValue>
+              </StyledBlock>
+              {typeof balance !== 'undefined' && (
+                <StyledBlock width={150}>
+                  <StyledBlockTitle>Balance</StyledBlockTitle>
+                  <StyledBlockValue>
+                    <StyledCurrencyLogo>
+                      <CurrencyLogo currency={rewardToken} size={'24px'} />
+                    </StyledCurrencyLogo>
+                    <Tooltip title={balance}>
+                      <StyledTruncatedText>{balance}</StyledTruncatedText>
+                    </Tooltip>
+                  </StyledBlockValue>
+                </StyledBlock>
+              )}
+              {typeof availableToCollect !== 'undefined' && (
+                <StyledBlock>
+                  <StyledBlockTitle>Available to collect</StyledBlockTitle>
+                  <StyledBlockValue>
+                    <StyledCurrencyLogo>
+                      {isLpToken(tokenMode) ? (
+                        <LpTokenSymbol />
+                      ) : (
+                        <CurrencyLogo currency={rewardToken} size={'24px'} />
+                      )}
+                    </StyledCurrencyLogo>
+                    <Tooltip title={availableToCollect}>
+                      <StyledTruncatedText>{availableToCollect}</StyledTruncatedText>
+                    </Tooltip>
+                  </StyledBlockValue>
+                </StyledBlock>
+              )}
+            </StyledBlocksWrapper>
+            <StyledHr />
+            <StyledInputsWrapper>
+              <StyledTokenInputWrapper>
+                {stakeToken && (
+                  <TokenInput
+                    token={stakeToken}
+                    contractAddress={contractAddress}
+                    onStake={onStake}
+                    tokenMode={tokenMode}
+                  />
                 )}
-              </StyledCurrencyLogo>
-              <Tooltip title={deposit}>
-                <StyledTruncatedText>{deposit}</StyledTruncatedText>
-              </Tooltip>
-            </StyledBlockValue>
-          </StyledBlock>
-          <StyledBlock width={150}>
-            <StyledBlockTitle>Your reward</StyledBlockTitle>
-            <StyledBlockValue>
-              <StyledCurrencyLogo>
-                <CurrencyLogo currency={rewardToken} size={'24px'}/>
-              </StyledCurrencyLogo>
-              <Tooltip title={projectedReward}>
-                <StyledTruncatedText>{projectedReward}</StyledTruncatedText>
-              </Tooltip>
-            </StyledBlockValue>
-          </StyledBlock>
-          {typeof balance !== 'undefined' && (
-            <StyledBlock width={150}>
-              <StyledBlockTitle>Balance</StyledBlockTitle>
-              <StyledBlockValue>
-                <StyledCurrencyLogo>
-                  <CurrencyLogo currency={rewardToken} size={'24px'}/>
-                </StyledCurrencyLogo>
-                <Tooltip title={balance}>
-                  <StyledTruncatedText>{balance}</StyledTruncatedText>
-                </Tooltip>
-              </StyledBlockValue>
-            </StyledBlock>
-          )}
-          {typeof availableToCollect !== 'undefined' && (
-            <StyledBlock>
-              <StyledBlockTitle>Available to collect</StyledBlockTitle>
-              <StyledBlockValue>
-                <StyledCurrencyLogo>
-                  {isLpToken(tokenMode) ? (
-                    <LpTokenSymbol/>
-                  ) : (
-                    <CurrencyLogo currency={rewardToken} size={'24px'}/>
-                  )}
-                </StyledCurrencyLogo>
-                <Tooltip title={availableToCollect}>
-                  <StyledTruncatedText>{availableToCollect}</StyledTruncatedText>
-                </Tooltip>
-              </StyledBlockValue>
-            </StyledBlock>
-          )}
-        </StyledBlocksWrapper>
-        <StyledHr/>
-        <StyledInputsWrapper>
-          <StyledTokenInputWrapper>
-            {stakeToken && (
-              <TokenInput
-                token={stakeToken}
-                contractAddress={contractAddress}
-                onStake={onStake}
-                tokenMode={tokenMode}
-              />
-            )}
-          </StyledTokenInputWrapper>
-          <StyledTokenInputWrapper>
-            <TokenCollect
-              isSingleToken={typeof availableToCollect !== 'undefined'}
-              deposit={typeof availableToCollect !== 'undefined' ? availableToCollect : deposit}
-              projectedReward={projectedReward}
-              stakeToken={stakeToken}
-              rewardToken={rewardToken}
-              onCollect={onCollect}
-              tokenMode={tokenMode}
-            />
-          </StyledTokenInputWrapper>
-        </StyledInputsWrapper>
-      </StyledExtendableContent>
+              </StyledTokenInputWrapper>
+              <StyledTokenInputWrapper>
+                <TokenCollect
+                  isSingleToken={typeof availableToCollect !== 'undefined'}
+                  deposit={typeof availableToCollect !== 'undefined' ? availableToCollect : deposit}
+                  projectedReward={projectedReward}
+                  stakeToken={stakeToken}
+                  rewardToken={rewardToken}
+                  onCollect={onCollect}
+                  tokenMode={tokenMode}
+                />
+              </StyledTokenInputWrapper>
+            </StyledInputsWrapper>
+          </StyledExtendableContent>
+        </>
+      )}
       <StyledExtendButtonMobile onClick={handleExtendClick} isRowExtended={isRowExtended}>
         <StyledMobileChevron>
-          {isRowExtended ? <ChevronUp size={24}/> : <ChevronDown size={24}/>}
+          {isRowExtended ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
         </StyledMobileChevron>
         Show all
       </StyledExtendButtonMobile>

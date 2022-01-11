@@ -11,7 +11,7 @@ import { useIsEthActive } from '../hooks/Coins';
 
 export const HeadersPlusBodyWrapper = styled.div<{ isLarge?: boolean }>`
   position: relative;
-  max-width: ${({ isLarge }) => isLarge ? '1200px' : '440px'};
+  max-width: ${({ isLarge }) => (isLarge ? '1200px' : '440px')};
   width: 100%;
   text-align: center;
 `;
@@ -87,7 +87,7 @@ export default function AppBody({
   disabled?: boolean;
   className?: string;
 }) {
-  const match = useRouteMatch('/farm');
+  const match = useRouteMatch(['/farm', '/farm-365']);
 
   // const { chainId } = useActiveWeb3React();
   const isEthActive = useIsEthActive();
@@ -96,19 +96,15 @@ export default function AppBody({
     <ThemeProvider theme={theme}>
       <HeadersPlusBodyWrapper isLarge={!!match}>
         <div className="onlyDesktop">
-          <Wordmark/>
+          <Wordmark />
         </div>
-        <YMInitializer accounts={[78893968]} options={{ webvisor: true }}/>
+        <YMInitializer accounts={[78893968]} options={{ webvisor: true }} />
         <BodyWrapper className={className} data="test" disabled={disabled}>
           {children}
         </BodyWrapper>
-        <BonusProgram/>
+        <BonusProgram />
       </HeadersPlusBodyWrapper>
-      <FAQWrapper>
-        {isEthActive && (
-          <FAQInfo/>
-        )}
-      </FAQWrapper>
+      <FAQWrapper>{isEthActive && <FAQInfo />}</FAQWrapper>
     </ThemeProvider>
   );
 }

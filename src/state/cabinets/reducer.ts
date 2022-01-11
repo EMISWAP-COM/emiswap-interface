@@ -5,6 +5,7 @@ import {
   loadDepositsEswHistory,
   loadDepositsEswHistoryRewards,
   loadPerformance,
+  loadTotalBalance,
 } from './actions';
 
 export interface DepositsEswHistoryRewards {
@@ -28,11 +29,11 @@ interface ChangeLevel {
 
 //TODO: вывести в единый тип лейблов токенов.
 type TokenKey = 'ESW' | 'DAI';
-type PaymentOperationTokens = {
+export type PaymentOperationTokens = {
   [token in TokenKey]?: string;
 };
 
-interface Balance {
+export interface Balance {
   histories: {
     deposits: Deposit[];
     referral_bonus: Deposit[];
@@ -90,6 +91,17 @@ interface CabinetState {
   referralHistory: ReferralPurchaseHistory[];
   depositsEswHistory: DepositsEswHistory[];
   depositsEswHistoryRewards: DepositsEswHistoryRewards;
+  totalBalance: any;
+}
+
+interface TotalBalance {
+  available: { ESW: string };
+  wallet: { ESW: string };
+  total: {
+    locked: { ESW: string };
+    unlocked: { ESW: string };
+    withdrawn: {};
+  };
 }
 
 interface PerformanceLevel {
@@ -111,13 +123,14 @@ interface Reward {
   };
 }
 
-interface Deposit {
+export interface Deposit {
   transaction_hash: string;
   token: TokenKey;
   created_at: string;
   available_at: string;
   amount: string;
   amount_dai: string | null;
+  unlock_at: string;
 }
 
 interface PoolBonus {
@@ -129,7 +142,7 @@ interface PoolBonus {
   swap_turnover: string;
 }
 
-type LockedDeposit = {
+export type LockedDeposit = {
   [tokenKey in TokenKey]: Deposit[];
 };
 
@@ -223,6 +236,15 @@ const initialState: CabinetState = {
   referralHistory: [] as ReferralPurchaseHistory[],
   depositsEswHistory: new Array<DepositsEswHistory>(),
   depositsEswHistoryRewards: {} as DepositsEswHistoryRewards,
+  totalBalance: {
+    available: { ESW: '0' },
+    wallet: { ESW: '0' },
+    total: {
+      locked: { ESW: '0' },
+      unlocked: { ESW: '0' },
+      withdrawn: {},
+    },
+  },
 };
 
 export default createReducer(initialState, builder =>
@@ -238,6 +260,9 @@ export default createReducer(initialState, builder =>
     })
     .addCase(loadDepositsEswHistory.fulfilled, (state, action) => {
       state.depositsEswHistory = action.payload;
+    })
+    .addCase(loadTotalBalance.fulfilled, (state, action) => {
+      state.totalBalance = action.payload;
     })
     .addCase(loadDepositsEswHistoryRewards.fulfilled, (state, action) => {
       state.depositsEswHistoryRewards = action.payload;

@@ -53,6 +53,15 @@ export const WMATIC = new Token(
   'WMATIC',
 );
 
+export const MUMBAI_WMATIC = new Token(
+  // @ts-ignore
+  chainIds.MUMBAI,
+  '0xbd15365b5883382A3ebFfDB0C8780F9881eff71e',
+  18,
+  'WMATIC',
+  'WMATIC',
+);
+
 export const WAVAX = new Token(
   // @ts-ignore
   chainIds.AVALANCHE,
@@ -208,6 +217,11 @@ export const ESW: ChainTokenList = {
     // @ts-ignore
     new Token(chainIds.POLYGON, esw_addresses[chainIds.POLYGON], 18, 'ESW', 'EmiDAO Token'),
   ],
+  // @ts-ignore
+  [chainIds.MUMBAI]: [
+    // @ts-ignore
+    new Token(chainIds.MUMBAI, esw_addresses[chainIds.MUMBAI], 18, 'ESW', 'EmiDAO Token'),
+  ],
   [chainIds.AVALANCHE]: [
     // @ts-ignore
     new Token(chainIds.AVALANCHE, esw_addresses[chainIds.AVALANCHE], 18, 'ESW', 'EmiDAO Token'),
@@ -227,6 +241,7 @@ const ETH_ONLY: ChainTokenList = {
   // @ts-ignore
   [chainIds.KUCOIN]: [ETHER],
   [chainIds.POLYGON]: [ETHER],
+  [chainIds.MUMBAI]: [ETHER],
   [chainIds.AVALANCHE]: [ETHER],
   [chainIds.AURORA]: [ETHER],
 };
@@ -239,6 +254,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   // @ts-ignore
   [chainIds.KUCOIN]: [WKCS],
   [chainIds.POLYGON]: [WMATIC],
+  [chainIds.MUMBAI]: [MUMBAI_WMATIC],
   [chainIds.AVALANCHE]: [WAVAX],
   [chainIds.AURORA]: [AURORA_DAI, AURORA_USDT, AURORA_WETH],
 };
@@ -252,6 +268,8 @@ export const SUGGESTED_BASES: ChainTokenList = {
   [chainIds.KUCOIN]: [ESW[chainIds.KUCOIN][0]],
   // @ts-ignore
   [chainIds.POLYGON]: [ESW[chainIds.POLYGON][0]],
+  // @ts-ignore
+  [chainIds.MUMBAI]: [ESW[chainIds.MUMBAI][0]],
   // @ts-ignore
   [chainIds.AVALANCHE]: [ESW[chainIds.AVALANCHE][0]],
   // @ts-ignore
@@ -267,6 +285,8 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   [chainIds.KUCOIN]: [ESW[chainIds.KUCOIN][0]],
   // @ts-ignore
   [chainIds.POLYGON]: [ESW[chainIds.POLYGON][0]],
+  // @ts-ignore
+  [chainIds.MUMBAI]: [ESW[chainIds.MUMBAI][0]],
   // @ts-ignore
   [chainIds.AVALANCHE]: [ESW[chainIds.AVALANCHE][0]],
   // @ts-ignore
@@ -360,7 +380,7 @@ export const SUPPORTED_WALLETS = {
       iconName: 'fortmaticIcon.png',
       description: 'Login using Fortmatic hosted wallet',
       href: null,
-      unavailableNetworksIds: [chainIds.KUCOIN, chainIds.POLYGON],
+      unavailableNetworksIds: [chainIds.KUCOIN, chainIds.POLYGON, chainIds.MUMBAI],
       color: '#6748FF',
       mobile: true,
     },
@@ -486,10 +506,8 @@ export const networksItems: INetworkItem[] = [
     chainId: chainIds.POLYGON,
     token: MATIC,
     icon: PolygonNetworkIcon,
-    name: 'Polygon', // 'Polygon (Matic)',
-    rpcUrls: [
-      'https://rpc-mumbai.matic.today',
-    ],
+    name: 'Polygon',
+    rpcUrls: ['https://polygon-rpc.com/'],
     currencySymbol: 'MATIC',
     currencySymbolWrap: 'WMATIC',
     currencySymbolWeth: 'WMATIC',
@@ -508,9 +526,7 @@ export const networksItems: INetworkItem[] = [
     token: AVAX,
     icon: AvalancheNetworkIcon,
     name: 'Avalanche',
-    rpcUrls: [
-      'https://api.avax.network/ext/bc/C/rpc',
-    ],
+    rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
     currencySymbol: 'AVAX',
     currencySymbolWrap: 'WAVAX',
     currencySymbolWeth: 'WAVAX',
@@ -522,15 +538,33 @@ export const networksItems: INetworkItem[] = [
     active: false,
   },
   {
+    alias: 'mumbai',
+    value: 'mumbai',
+    chainId: chainIds.MUMBAI,
+    token: MUMBAI_WMATIC,
+    icon: PolygonNetworkIcon,
+    name: 'Mumbai',
+    rpcUrls: ['https://rpc-mumbai.matic.today'],
+    currencySymbol: 'MATIC',
+    currencySymbolWrap: 'WMATIC',
+    currencySymbolWeth: 'WMATIC',
+    blockExplorerUrl: 'https://mumbai.polygonscan.com/',
+    blockExplorerName: 'Polygonscan',
+    analyticsUrl: 'https://emiswap.com/analytics?network=polygon',
+    eswExplorerUrl:
+      'https://mumbai.polygonscan.com/token/0xd2A2a353D28e4833FAFfC882f6649c9c884a7D8f',
+    eswExplorerName: 'ESW Polygonscan',
+    active: false,
+    bridgeUrl: 'https://wallet.matic.network/bridge',
+  },
+  {
     alias: 'aurora',
     value: 'aurora',
     chainId: chainIds.AURORA,
     token: ETHER,
     icon: AuroraNetworkIcon,
     name: 'Aurora',
-    rpcUrls: [
-      'https://mainnet.aurora.dev',
-    ],
+    rpcUrls: ['https://mainnet.aurora.dev'],
     currencySymbol: 'ETH',
     currencySymbolWrap: 'WETH',
     currencySymbolWeth: 'WETH',
@@ -540,5 +574,5 @@ export const networksItems: INetworkItem[] = [
     eswExplorerUrl: 'https://etherscan.io/token/0x5a75A093747b72a0e14056352751eDF03518031d',
     eswExplorerName: 'ESW Etherscan',
     active: true,
-  }
+  },
 ];

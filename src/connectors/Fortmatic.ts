@@ -19,6 +19,7 @@ const CHAIN_ID_NETWORK_ARGUMENT: {
   // @ts-ignore
   [chainIds.KUCOIN]: 'kucoin',
   [chainIds.POLYGON]: 'polygon',
+  [chainIds.MUMBAI]: 'mumbai',
   [chainIds.AVALANCHE]: 'avalanche',
   [chainIds.AURORA]: 'aurora',
 };

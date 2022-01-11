@@ -9,7 +9,7 @@ inject_vars:
       - name: "{{ lookup('env', 'CI_PROJECT_PATH_SLUG') }}"
     env_js: |
       window.env = {
-        REACT_APP_CHAIN_ID: '42',
+        REACT_APP_CHAIN_ID: '137',
         REACT_APP_NETWORK_URL: 'https://kovan.infura.io/v3/2b7c5bba80094418abf5e746ba10dac0',
         REACT_APP_PORTIS_ID: '9db2fb8f-577f-4af1-8a50-20ebb262b115',
         REACT_APP_FORTMATIC_KEY: 'pk_test_503A6AA72877C8DE',
@@ -105,30 +105,7 @@ inject_vars:
         resources:
           requests: { cpu: 0.05, memory: '256Mi' }
           limits: { cpu: 0.5, memory: '768Mi' }
-    seed:
-      blockchains.yaml: |
-        - name: Infura Emirex
-          state: disabled
-          priority: 3
-          client: infura
-          meta:
-            project_id: b7c5bba80094418abf5e746ba10dac0
-            token: 0dd7f7f3408c4e1896ef403f01871880
-            network: kovan
-        - name: Infura Alexander
-          state: active
-          priority: 2
-          client: infura
-          meta:
-            project_id: 69f702a1b8434172badf1e984fe499c8
-            token: f7f14520aaf8473597b92b127ecc1679
-            network: kovan
-        - name: Emirex eth-kovan staging node
-          state: active
-          priority: 1
-          client: default
-          meta:
-            base_uri: http://eth1.staging.emirex.co:8545
+    seed: {}
 
   postgresql:
     image:

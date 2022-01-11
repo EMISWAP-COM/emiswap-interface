@@ -25,32 +25,29 @@ const getEswPriceInDai = (library: Web3Provider, account: string, chainId: numbe
   const usdсCoin = defaultCoins.tokens.find(
     token => token.chainId === chainId && token.symbol === 'USDС',
   );
-  const stableTokens = [usdtCoin?.address, daiCoin?.address, usdсCoin?.address, kuCoin?.address].filter(
-    value => value !== undefined,
-  );
+  const stableTokens = [
+    usdtCoin?.address,
+    daiCoin?.address,
+    usdсCoin?.address,
+    kuCoin?.address,
+  ].filter(value => value !== undefined);
 
   let mainCoinPrice = emiPrice2.getCoinPrices([eswCoin.address], stableTokens, 0);
   if (chainId === chainIds.KUCOIN) {
     mainCoinPrice = emiPrice2.getCoinPrices([koffeeCoin.address], stableTokens, 0);
-  } else if (chainId === chainIds.POLYGON) {
-    mainCoinPrice = emiPrice2.getCoinPrices([koffeeCoin.address], stableTokens, 0);
+  } else if (chainId === chainIds.POLYGON || chainId === chainIds.MUMBAI) {
+    mainCoinPrice = emiPrice2.getCoinPrices([eswCoin.address], stableTokens, 0);
   }
 
   return mainCoinPrice.then((value: BigInt[]) => {
     let coin = daiCoin;
     if (chainId === chainIds.KUCOIN) {
       coin = koffeeCoin;
-    } else if (chainId === chainIds.POLYGON) {
-      coin = koffeeCoin;
+    } else if (chainId === chainIds.POLYGON || chainId === chainIds.MUMBAI) {
+      coin = daiCoin;
     }
 
-    const token = new Token(
-      chainId,
-      coin.address,
-      coin.decimals,
-      coin.symbol,
-      coin.name,
-    );
+    const token = new Token(chainId, coin.address, coin.decimals, coin.symbol, coin.name);
 
     const tokenAmount = new TokenAmount(token, JSBI.BigInt(value.toString()));
 

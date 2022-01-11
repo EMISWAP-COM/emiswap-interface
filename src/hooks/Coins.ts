@@ -140,7 +140,7 @@ export function useIsKuCoinActive(): boolean {
 export function useIsPolygonActive(): boolean {
   const { chainId } = useActiveWeb3React();
 
-  return (chainId as any) === chainIds.POLYGON;
+  return [chainIds.POLYGON, chainIds.MUMBAI].includes(chainId as any);
 }
 
 export function useIsMetaMask(): boolean {

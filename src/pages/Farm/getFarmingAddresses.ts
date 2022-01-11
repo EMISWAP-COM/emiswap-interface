@@ -23,24 +23,23 @@ const addressesByNetworkId = {
     '0x14C22660fD7CB44843bC3158fce58951AcABb7B1',
     '0x24e7eB9874922726A8d8f277EF1c3Ad4a3Ab4eD1',
   ],
-  [chainIds.KUCOIN]: [
-    '0x8667dcf5498bEFBBFd7faEA7FD70F704f5A75685',
-  ],
+  [chainIds.KUCOIN]: ['0x8667dcf5498bEFBBFd7faEA7FD70F704f5A75685'],
   // TODO
   [chainIds.POLYGON]: [
-    '',
+    '0x18f38359551258C35e8593d775cb6Fe8D27fd89b', // RewardPoolMulti PROXY
+    '0xd2Fa7C9386040f260e3Ec934601982aD4Cd7902B', // RewardPoolMulti PROXY
+  ],
+  [chainIds.MUMBAI]: [
+    '0xeB274bcD6CA905b7dB5F65b8C2a126fb3fF39bc3', // RewardPoolMulti PROXY
+    '0xb7Ff11b03DD28cDea45D65E274381a4E3D90778D', // RewardPoolMulti PROXY
   ],
   // TODO
-  [chainIds.AVALANCHE]: [
-    '',
-  ],
+  [chainIds.AVALANCHE]: [''],
   // TODO
-  [chainIds.AURORA]: [
-    '',
-  ],
+  [chainIds.AURORA]: [''],
 };
 
-const getFarmingAddresses = (chainId: ChainId) => {
+const getFarmingAddresses = (chainId: ChainId): string[] => {
   return addressesByNetworkId[chainId] || [];
 };
 

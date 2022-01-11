@@ -283,4 +283,17 @@ body {
       theme.primary1,
     )} 0%, ${transparentize(1, theme.bg1)} 100%)`};
 }
+
+  .landing_modal {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    flex-direction: column;
+    max-height: 80vh !important;
+    border-radius: 0 !important;
+  }
+
+  [data-reach-dialog-overlay]::after {
+    opacity: 0.8 !important;
+    filter: blur(11px);
+  }
 `;
