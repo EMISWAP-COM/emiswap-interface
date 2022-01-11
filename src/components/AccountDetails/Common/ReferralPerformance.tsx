@@ -208,7 +208,12 @@ const useDownloadCSV = () => {
       const rowContent = rows.join('\n');
       const content = 'data:text/csv;charset=utf-8,' + rowContent;
       const encodedUri = encodeURI(content);
-      window.open(encodedUri);
+      const link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', 'Referrals.csv');
+      document.body.appendChild(link);
+
+      link.click();
     });
   }, [userId]);
   return callback;
