@@ -260,13 +260,7 @@ const Balance = ({
         {isPolygon ? (
           <RemainderButton handleClaim={handleClaim} handleRequest={handleRequest} />
         ) : (
-          <CollectBtn
-            onClick={() => {
-              switchNetwork(networksItems.find(item => item.alias === 'polygon'));
-            }}
-          >
-            To collect your ESW tokens switch to Polygon
-          </CollectBtn>
+          <CollectBtn inactive>To collect your ESW tokens switch to Polygon</CollectBtn>
         )}
       </Options>
     </>
