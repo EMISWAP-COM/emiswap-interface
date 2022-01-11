@@ -173,6 +173,16 @@ const ReferalElement = ({
   </Referrals>
 );
 
+const formatNetwork = (network: string): string => {
+  if (network.includes('polygon')) {
+    return 'Polygon';
+  }
+  if (network.includes('eth')) {
+    return 'Ethereum';
+  }
+  return network;
+};
+
 const useDownloadCSV = () => {
   const { id: userId } = useSelector((state: AppState) => state.user.info);
   const callback = useCallback(() => {
@@ -180,7 +190,7 @@ const useDownloadCSV = () => {
       const rows = data.map(item =>
         [
           item.date,
-          item.network,
+          formatNetwork(item.network),
           item.referral_lvl_master,
           item.user_address,
           item.referral_lvl1,
