@@ -4369,7 +4369,7 @@ const defaultCoins: DefaultCoins = {
       symbol: 'WSDN',
     },
     {
-      address: '0xaD6b9b31832A88Bb59dB4ACD820F8df2CfA84f0f',
+      address: '0xb4BcA5955F26d2fA6B57842655d7aCf2380Ac854',
       chainId: 336,
       name: 'EmiSwap - EmiDao Token',
       symbol: 'ESW',
