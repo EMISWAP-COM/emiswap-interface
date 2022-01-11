@@ -2,7 +2,7 @@ import React from 'react';
 import { convertBigDecimal, formatConnectorName } from '../uitls';
 import { WalletAction } from '../styleds';
 import styled from 'styled-components/macro';
-import { useActiveWeb3React, useSwitchNetwork } from '../../../hooks';
+import { useActiveWeb3React } from '../../../hooks';
 import { StatusIcon } from '../StatusIcon';
 import { getExplorerLink, shortenAddress } from '../../../utils';
 import { useHistory } from 'react-router';
@@ -18,7 +18,6 @@ import { useIsKuCoinActive, useIsPolygonActive, useNetworkData } from '../../../
 import { MessageTooltip } from '../../../base/ui';
 import { css } from 'styled-components';
 import { Balance as BalanceType } from '../../../state/cabinets/reducer';
-import { networksItems } from '../../../constants';
 
 const Container = styled.div`
   font-size: 13px;
@@ -242,7 +241,6 @@ const Balance = ({
   handleRequest,
 }: BalanceInterface) => {
   const isPolygon = useIsPolygonActive();
-  const { switchNetwork } = useSwitchNetwork();
   return (
     <>
       <BalanceWrapper>
