@@ -1,6 +1,5 @@
 import React, { useCallback, useRef, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import Slider from 'react-slick';
 import Switch from 'react-switch';
 import { isMobile } from 'react-device-detect';
 import { LandingModal } from './Modal';
@@ -33,15 +32,9 @@ import Step1Png from '../../assets/landing/steps/step1.png';
 import Step2Png from '../../assets/landing/steps/step2.png';
 import Step3Png from '../../assets/landing/steps/step3.png';
 import Step4Png from '../../assets/landing/steps/step4.png';
-import AndrePng from '../../assets/landing/team/andre.png';
-import GregPng from '../../assets/landing/team/greg.png';
-import IsmailPng from '../../assets/landing/team/ismail.png';
-import JuliaPng from '../../assets/landing/team/julia.png';
-import MarinaPng from '../../assets/landing/team/marina.png';
 // import RuslanPng from '../../assets/landing/team/ruslan.png';
 import PolygonCardPng from '../../assets/landing/polygon-card.png';
 import SocialsCardPng from '../../assets/landing/socials-card.png';
-import SlideArrowSvg from '../../assets/landing/slide-arrow.svg';
 import rangesSvg from '../../assets/landing/ranges.svg';
 import linesSvg from '../../assets/landing/lines.svg';
 
@@ -117,7 +110,6 @@ export default function Landing({ history }: any) {
   const aboutSectionRef = useRef<any>();
   const communitySectionRef = useRef<any>();
   const teamSectionRef = useRef<any>();
-  const sliderRef = useRef<any>();
   const { t, i18n } = useTranslation();
   const { account } = useActiveWeb3React();
   const toggleWalletModal = useWalletModalToggle();
@@ -147,14 +139,6 @@ export default function Landing({ history }: any) {
     toggleModal(!modalOpened);
   };
 
-  const handleClickTeamNext = () => {
-    sliderRef.current.slickNext();
-  };
-
-  const handleClickTeamPrev = () => {
-    sliderRef.current.slickPrev();
-  };
-
   const changeChainToPolygon = async () => {
     const polygonNetworkItem = networksItems
       .find(item => item.chainId === chainIds.POLYGON);
@@ -173,26 +157,6 @@ export default function Landing({ history }: any) {
   const changeLanguage = (lng) => {
     // @ts-ignore
     i18n.changeLanguage(lng);
-  };
-
-  const sliderSettings = {
-    arrows: false,
-    dots: false,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    // initialSlide: 0,
-    responsive: [
-      {
-        breakpoint: 769,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          initialSlide: 2,
-        },
-      },
-    ],
   };
 
   // @ts-ignore
@@ -645,88 +609,6 @@ export default function Landing({ history }: any) {
                 <img src={yieldLogo} alt="Yield"/>
                 <img src={polygonLogo} alt="Polygon"/>
               </div>
-            </div>
-          </section>
-          <section id="team" className="team" ref={teamSectionRef}>
-            <div className="section__header">
-              <div className="section__title">{t('landing.team.title')}</div>
-              <div className="team__slider-buttons team__slider-buttons--top">
-                <button className="team__slider-btn" onClick={handleClickTeamPrev}>
-                  <img
-                    className="team__slider-btn-icon team__slider-btn-icon--left"
-                    src={SlideArrowSvg}
-                    alt=""
-                  />
-                </button>
-                <button className="team__slider-btn" onClick={handleClickTeamNext}>
-                  <img className="team__slider-btn-icon" src={SlideArrowSvg} alt=""/>
-                </button>
-              </div>
-            </div>
-            <div className="team__slider">
-              <Slider ref={sliderRef} {...sliderSettings}>
-                <div className="team__person-card">
-                  <img className="team__person-img" src={GregPng} alt=""/>
-                  <div className="team__person-info">
-                    <div className="team__person-name">{t('landing.team.1.name')}</div>
-                    <hr/>
-                    <div className="team__person-desc">{t('landing.team.1.position')}</div>
-                  </div>
-                </div>
-                <div className="team__person-card">
-                  <img className="team__person-img" src={MarinaPng} alt=""/>
-                  <div className="team__person-info">
-                    <div className="team__person-name">{t('landing.team.2.name')}</div>
-                    <hr/>
-                    <div className="team__person-desc">{t('landing.team.2.position')}</div>
-                  </div>
-                </div>
-                <div className="team__person-card">
-                  <img className="team__person-img" src={AndrePng} alt=""/>
-                  <div className="team__person-info">
-                    <div className="team__person-name">{t('landing.team.3.name')}</div>
-                    <hr/>
-                    <div className="team__person-desc">{t('landing.team.3.position')}</div>
-                  </div>
-                </div>
-                <div className="team__person-card">
-                  <img className="team__person-img" src={JuliaPng} alt=""/>
-                  <div className="team__person-info">
-                    <div className="team__person-name">{t('landing.team.4.name')}</div>
-                    <hr/>
-                    <div className="team__person-desc">{t('landing.team.4.position')}</div>
-                  </div>
-                </div>
-                {/* <div className="team__person-card">
-                <img className="team__person-img" src={RuslanPng} alt=""/>
-                <div className="team__person-info">
-                  <div className="team__person-name">Ruslan Dimitrov</div>
-                  <hr/>
-                  <div className="team__person-desc">IT Product Owner</div>
-                </div>
-              </div> */}
-                <div className="team__person-card">
-                  <img className="team__person-img" src={IsmailPng} alt=""/>
-                  <div className="team__person-info">
-                    <div className="team__person-name">Ismail Bagosher</div>
-                    <hr/>
-                    <div className="team__person-desc">Business Development Officer</div>
-                  </div>
-                </div>
-                <div className="team__person-card"></div>
-              </Slider>
-            </div>
-            <div className="team__slider-buttons team__slider-buttons--bottom">
-              <button className="team__slider-btn" onClick={handleClickTeamPrev}>
-                <img
-                  className="team__slider-btn-icon team__slider-btn-icon--left"
-                  src={SlideArrowSvg}
-                  alt=""
-                />
-              </button>
-              <button className="team__slider-btn" onClick={handleClickTeamNext}>
-                <img className="team__slider-btn-icon" src={SlideArrowSvg} alt=""/>
-              </button>
             </div>
           </section>
           <section className="polygon">
