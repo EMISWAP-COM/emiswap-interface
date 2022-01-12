@@ -115,9 +115,8 @@
       "title": "Sobre EmiSwap",
       "subtitle": "EmiSwap es un AMM de cadena cruzada auditado con recompensas más altas para LP que en cualquier otro DEX.",
       "list": {
-        "1": "Reembolso del 100% de las tarifas de gas",
-        "2": "Disponible en Polygon, Ethereum y KuCoin Blockchain",
-        "3": "Auditado por Hacken y BluSwarm"
+        "1": "Disponible en Polygon, Ethereum y KuCoin Blockchain",
+        "2": "Auditado por Hacken y BluSwarm"
       },
       "swapping": "Tarifa de intercambio para todas los pools",
       "reward": "Tasa de recompensa LP",
