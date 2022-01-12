@@ -193,13 +193,13 @@ const useDownloadCSV = () => {
           formatNetwork(item.network),
           item.referral_lvl_master,
           item.user_address,
-          item.user_level,
+          item.user_lvl,
           item.referral_lvl1,
           item.referral_lvl2,
           item.referral_lvl3,
           item.pair_address,
-          parseFloat(item.liquidity_staked),
-          parseFloat(item.liquidity_withdrawn),
+          parseFloat(item.liqudity_staked),
+          parseFloat(item.liqudity_withdrawn),
         ].join(','),
       );
       const title = [
