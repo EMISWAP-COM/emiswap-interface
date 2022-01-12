@@ -7,7 +7,12 @@ import { Link as HistoryLink, NavLink } from 'react-router-dom';
 import { ArrowLeft } from 'react-feather';
 import { RowBetween } from '../Row';
 import QuestionHelper from '../QuestionHelper';
-import { useIsEthActive, useIsPolygonActive, useNetworkData } from '../../hooks/Coins';
+import {
+  useIsEthActive,
+  useIsKuCoinActive,
+  useIsPolygonActive,
+  useNetworkData,
+} from '../../hooks/Coins';
 import { isMobile } from 'react-device-detect';
 import { useBridgeModalToggle } from '../../state/application/hooks';
 
@@ -100,8 +105,8 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
 
   const networkItem = useNetworkData();
 
-  // const isKuCoinActive = useIsKuCoinActive();
   const isEthereumActive = useIsEthActive();
+  const isKuCoinActive = useIsKuCoinActive();
   const isPolygonActive = useIsPolygonActive();
 
   const toggleBridgeModal = useBridgeModalToggle();
@@ -122,13 +127,15 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
       <StyledNavLink id={`pool-nav-link`} to={'/pool'} isActive={() => active === TabNames.POOL}>
         {t('pool')}
       </StyledNavLink>
-      <StyledNavLink
-        id={`migrate-nav-link`}
-        to={'/migrate'}
-        isActive={() => active === TabNames.MIGRATE}
-      >
-        {t('migrate')}
-      </StyledNavLink>
+      {(isEthereumActive || isPolygonActive || isKuCoinActive) && (
+        <StyledNavLink
+          id={`migrate-nav-link`}
+          to={'/migrate'}
+          isActive={() => active === TabNames.MIGRATE}
+        >
+          {t('migrate')}
+        </StyledNavLink>
+      )}
       {/*<StyledNavLink
         id={`pool-nav-link`}
         to={'/invest'}

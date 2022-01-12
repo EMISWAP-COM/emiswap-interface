@@ -30,6 +30,7 @@ export const injected = new InjectedConnector({
     chainIds.KUCOIN,
     chainIds.POLYGON,
     chainIds.MUMBAI,
+    chainIds.SHIDEN,
     chainIds.AVALANCHE,
     chainIds.AURORA,
   ],
@@ -44,6 +45,7 @@ export const walletconnect = new WalletConnectConnector({
     chainIds.KOVAN,
     chainIds.POLYGON,
     chainIds.MUMBAI,
+    chainIds.SHIDEN,
     chainIds.AVALANCHE,
   ],
   rpc: {

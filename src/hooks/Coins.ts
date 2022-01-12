@@ -143,6 +143,12 @@ export function useIsPolygonActive(): boolean {
   return [chainIds.POLYGON, chainIds.MUMBAI].includes(chainId as any);
 }
 
+export function useIsShidenActive(): boolean {
+  const { chainId } = useActiveWeb3React();
+
+  return [chainIds.SHIDEN].includes(chainId as any);
+}
+
 export function useIsMetaMask(): boolean {
   const { connector } = useActiveWeb3React();
 

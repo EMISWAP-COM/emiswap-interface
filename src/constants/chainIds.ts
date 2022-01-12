@@ -7,6 +7,7 @@ enum chainIds {
   KUCOIN = 321,
   POLYGON = 137,
   MUMBAI = 80001,
+  SHIDEN = 336,
   AVALANCHE = 43114,
   AURORA = 1313161554,
 }
