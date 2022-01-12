@@ -107,8 +107,6 @@ export function useCurrencyWrapped(currency: Token | null | undefined) {
   const { chainId } = useActiveWeb3React();
   const eth = useCurrency(ZERO_ADDRESS);
 
-  // console.log(currency?.address);
-
   if (currency?.address === eth?.address) {
     switch (chainId as any) {
       case ChainId.MAINNET:

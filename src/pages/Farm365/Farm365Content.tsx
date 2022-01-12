@@ -444,8 +444,6 @@ export default function Farm365Content({ farming365, eswRate }: Farm365ContentPr
   };
 
   const handleClickStakeBtn = async () => {
-    console.log(approvalEsw);
-    console.log(approvalLp);
     if (isStakeAllowed) {
       farming365
         .stake(lpCurrency, lpValue, eswValue)

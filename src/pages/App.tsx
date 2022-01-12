@@ -75,9 +75,7 @@ export default function App() {
             referral_address: referralAddress,
           }),
         })
-        .then(data => {
-          console.log(data);
-        })
+        .then(data => {})
         .catch(e => {
           console.log(e);
         });

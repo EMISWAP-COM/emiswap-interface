@@ -15,7 +15,9 @@ export function useLpTokens(): {
   const { chainId } = useActiveWeb3React();
   const contract = useVampContract(chainId);
   const [lpTokensInfo, setLpTokensInfo] = useState<any[]>([]);
-  const [lpTokensDetailedInfo, setLpTokensDetailedInfot] = useState<{ addresses: string[]; base: string }[]>([]);
+  const [lpTokensDetailedInfo, setLpTokensDetailedInfot] = useState<
+    { addresses: string[]; base: string }[]
+  >([]);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const formattedAddresses = lpTokensDetailedInfo
@@ -41,7 +43,6 @@ export function useLpTokens(): {
           listPair.map((el, idx) => ({ addresses: el, base: lpTokensInfo[idx].lpToken })),
         );
         setIsLoading(false);
-        console.log(tokens, balances);
       } catch (e) {
         console.log(contract);
         console.log(e);

@@ -292,7 +292,7 @@ export const SUGGESTED_BASES: ChainTokenList = {
   // @ts-ignore
   [chainIds.AVALANCHE]: [ESW[chainIds.AVALANCHE][0]],
   // @ts-ignore
-  [chainIds.AURORA]: [AURORA_DAI, AURORA_USDT /*AURORA_WETH*/ /*ESW[chainIds.AURORA][0]*/, ,],
+  [chainIds.AURORA]: [AURORA_DAI, AURORA_USDT /*AURORA_WETH*/ /*ESW[chainIds.AURORA][0]*/],
 };
 
 // used to construct the list of all pairs we consider by default in the frontend
@@ -311,7 +311,7 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   // @ts-ignore
   [chainIds.AVALANCHE]: [ESW[chainIds.AVALANCHE][0]],
   // @ts-ignore
-  [chainIds.AURORA]: [AURORA_DAI, AURORA_USDT /*AURORA_WETH*/ /*ESW[chainIds.AURORA][0]*/, ,],
+  [chainIds.AURORA]: [AURORA_DAI, AURORA_USDT /*AURORA_WETH*/ /*ESW[chainIds.AURORA][0]*/],
 };
 
 // @ts-ignore

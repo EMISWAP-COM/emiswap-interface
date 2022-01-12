@@ -41,8 +41,6 @@ export default function Farm365Item({ contract, selectedFilterTab }: Farm365Item
     }
   }, [eswRate, farming365.blockReward, farming365.liquidity]);
 
-  // console.log('farming', farming365);
-
   const dateNow = dayjs();
   const endDate = dayjs(farming365.endDate, 'DD.MM.YYYY HH:mm:ss');
 

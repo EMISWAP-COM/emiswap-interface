@@ -46,8 +46,8 @@ const MessageBlock = styled.div`
   }
 `;
 
-const MessageText = styled.span<{whiteSpace?: string}>`
-  white-space: ${({ whiteSpace }) => whiteSpace ? whiteSpace : 'nowrap'};
+const MessageText = styled.span<{ whiteSpace?: string }>`
+  white-space: ${({ whiteSpace }) => (whiteSpace ? whiteSpace : 'nowrap')};
   color: white;
 
   @media screen and (max-width: 600px) {
@@ -138,8 +138,6 @@ export const MessageTooltip: React.FC<MessageTooltipProps> = ({
       clearTimeout(tooltipTimeout);
     }
     setActive(false);
-
-    console.log(active);
 
     onClose();
   };
