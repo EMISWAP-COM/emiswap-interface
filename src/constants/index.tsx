@@ -167,16 +167,16 @@ export const KOVAN_CHI = new Token(
 export const AURORA_WETH = new Token(
   // @ts-ignore
   chainIds.AURORA,
-  '0x5B2227A3c3F2E2A3e5d4E62a3F9Ed989c4a4b17A',
+  '0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB',
   18,
   'WETH',
-  'Dai Stablecoin',
+  'WrappedEther',
 );
 
 export const AURORA_DAI = new Token(
   // @ts-ignore
   chainIds.AURORA,
-  '0x79252BF36E3b6b83B5885C28Ed88BCEdFea672bB',
+  '0xe3520349F477A5F6EB06107066048508498A291b',
   18,
   'DAI',
   'WrappedEther',
@@ -185,7 +185,7 @@ export const AURORA_DAI = new Token(
 export const AURORA_USDT = new Token(
   // @ts-ignore
   chainIds.AURORA,
-  '0x86112534878341cc42695C7171f2eeB94c02B01E',
+  '0x4988a896b1227218e4A686fdE5EabdcAbd91571f',
   18,
   'USDT',
   'Tether USD',
@@ -226,10 +226,10 @@ export const ESW: ChainTokenList = {
     // @ts-ignore
     new Token(chainIds.AVALANCHE, esw_addresses[chainIds.AVALANCHE], 18, 'ESW', 'EmiDAO Token'),
   ],
-  [chainIds.AURORA]: [
+  /*[chainIds.AURORA]: [
     // @ts-ignore
     new Token(chainIds.AURORA, esw_addresses[chainIds.AURORA], 18, 'ESW', 'EmiDAO Token'),
-  ],
+  ],*/
 };
 
 const ETH_ONLY: ChainTokenList = {
@@ -256,7 +256,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   [chainIds.POLYGON]: [WMATIC],
   [chainIds.MUMBAI]: [MUMBAI_WMATIC],
   [chainIds.AVALANCHE]: [WAVAX],
-  [chainIds.AURORA]: [AURORA_DAI, AURORA_USDT, AURORA_WETH],
+  [chainIds.AURORA]: [AURORA_DAI, AURORA_USDT /*AURORA_WETH*/],
 };
 
 // used for display in the default list when adding liquidity
@@ -273,7 +273,7 @@ export const SUGGESTED_BASES: ChainTokenList = {
   // @ts-ignore
   [chainIds.AVALANCHE]: [ESW[chainIds.AVALANCHE][0]],
   // @ts-ignore
-  [chainIds.AURORA]: [AURORA_DAI, AURORA_USDT, AURORA_WETH, ESW[chainIds.AURORA][0]],
+  [chainIds.AURORA]: [AURORA_DAI, AURORA_USDT /*AURORA_WETH*/ /*ESW[chainIds.AURORA][0]*/, ,],
 };
 
 // used to construct the list of all pairs we consider by default in the frontend
@@ -290,7 +290,7 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   // @ts-ignore
   [chainIds.AVALANCHE]: [ESW[chainIds.AVALANCHE][0]],
   // @ts-ignore
-  [chainIds.AURORA]: [AURORA_DAI, AURORA_USDT, AURORA_WETH, ESW[chainIds.AURORA][0]],
+  [chainIds.AURORA]: [AURORA_DAI, AURORA_USDT /*AURORA_WETH*/ /*ESW[chainIds.AURORA][0]*/, ,],
 };
 
 // @ts-ignore

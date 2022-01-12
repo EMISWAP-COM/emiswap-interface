@@ -1,3 +1,5 @@
+import chainIds from './chainIds';
+
 type DefaultCoinsToken = {
   address: string;
   chainId: number;
@@ -4048,6 +4050,8 @@ const defaultCoins: DefaultCoins = {
       name: 'LP ESW',
       symbol: 'ESW',
     },
+
+    // KuCoin
     {
       address: '0x4446fc4eb47f2f6586f9faab68b3498f86c07521',
       chainId: 321,
@@ -4119,6 +4123,8 @@ const defaultCoins: DefaultCoins = {
       logoURI:
         'https://raw.githubusercontent.com/KoffeeSwap/kcc-assets/main/mainnet/tokens/0xfC56A7E70F6c970538020cc39939929b4d393F1F/logo.png',
     },
+
+    // Polygon
     {
       address: '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
       chainId: 137,
@@ -4226,6 +4232,8 @@ const defaultCoins: DefaultCoins = {
       symbol: 'WETHUSDT',
       decimals: 18,
     },
+
+    // Polygon Mumbai
     {
       address: '0xbd15365b5883382A3ebFfDB0C8780F9881eff71e',
       chainId: 80001,
@@ -4326,6 +4334,7 @@ const defaultCoins: DefaultCoins = {
       symbol: 'WMATICUSDC',
       decimals: 18,
     },
+
     /*{
       address: '0x853ee4b2a13f8a742d64c8f088be7ba2131f670d',
       chainId: 137,
@@ -4361,6 +4370,8 @@ const defaultCoins: DefaultCoins = {
       symbol: 'WMATIC-USDT',
       decimals: 18,
     },*/
+
+    // Avalanche
     {
       address: '0xc7198437980c041c805A1EDcbA50c1Ce5db95118',
       chainId: 43114,
@@ -4371,6 +4382,29 @@ const defaultCoins: DefaultCoins = {
     {
       address: '0xd586E7F844cEa2F87f50152665BCbc2C279D8d70',
       chainId: 43114,
+      name: 'DAI',
+      decimals: 18,
+      symbol: 'DAI',
+    },
+
+    // Aurora
+    /*{
+      address: '0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB',
+      chainId: chainIds.AURORA,
+      name: 'WETH',
+      decimals: 18,
+      symbol: 'WETH',
+    },*/
+    {
+      address: '0x4988a896b1227218e4A686fdE5EabdcAbd91571f',
+      chainId: chainIds.AURORA,
+      name: 'USDT',
+      decimals: 6,
+      symbol: 'USDT',
+    },
+    {
+      address: '0xe3520349F477A5F6EB06107066048508498A291b',
+      chainId: chainIds.AURORA,
       name: 'DAI',
       decimals: 18,
       symbol: 'DAI',

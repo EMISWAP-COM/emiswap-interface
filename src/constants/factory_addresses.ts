@@ -10,7 +10,7 @@ const factory_addresses: any = {
   [chainIds.POLYGON]: '0x23c1b313152e276e0CF61665dc3AC160b3c5aB19',
   [chainIds.MUMBAI]: '0x86112534878341cc42695C7171f2eeB94c02B01E',
   [chainIds.AVALANCHE]: '0xaD6b9b31832A88Bb59dB4ACD820F8df2CfA84f0f',
-  [chainIds.AURORA]: '0xADf0f1937ca030e13255cBD8d59b0B5BEcDDf31f',
+  [chainIds.AURORA]: '0x979e5d41595263f6Dfec4F4D48419C555B80D95c',
 };
 
 export default factory_addresses;
