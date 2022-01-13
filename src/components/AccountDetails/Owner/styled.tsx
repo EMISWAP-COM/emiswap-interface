@@ -135,11 +135,20 @@ export const FrameRow = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
 `;
+interface StatusProps {
+  readonly isError?: boolean;
+}
 
-export const Status = styled.div`
-  color: #e85e59;
+export const Status = styled.div<StatusProps>`
+  color: #37ffdb;
   padding: 0.3rem;
   font-size: 14px;
+
+  ${({ isError }) =>
+    isError &&
+    css`
+      color: ##37ffdb;
+    `}
 `;
 
 export const ButtonGroup = styled.div`

@@ -1,5 +1,5 @@
 import { Token } from '@uniswap/sdk';
-import React from 'react';
+import React, { useState } from 'react';
 import Countdown from 'react-countdown';
 import CurrencyLogo from '../../CurrencyLogo';
 import { useCollectData, useGetRemainder } from './hooks';
@@ -15,6 +15,7 @@ import {
   ButtonGroup,
   CollectBtn,
   ButtonText,
+  Status,
 } from './styled';
 
 const Item = ({
@@ -51,6 +52,7 @@ const CollectToMyWallet = ({
   closeWindow: () => void;
   openRequestCollect: () => void;
 }): React.ReactElement => {
+  const [isStatusVisiblable, changeStatusVisibility] = useState(false);
   const {
     requested,
     unlocked,
@@ -61,11 +63,17 @@ const CollectToMyWallet = ({
     nextDay,
     nextValue,
     handler: changeCollect,
-  } = useCollectData(() => closeWindow());
+  } = useCollectData(() => {
+    setTimeout(() => {
+      closeWindow();
+    }, 5000);
+    changeStatusVisibility(true);
+  });
 
   const avalibleCollect = unlocked === '0' ? '0' : avalible;
   const remainderValue = useGetRemainder();
   const isCollectDisabled = remainderValue.status !== 'enable';
+
   return (
     <WalletWrapper>
       <Title>Collect to my Wallet</Title>
@@ -81,6 +89,12 @@ const CollectToMyWallet = ({
           />
           <Item label="Available ESW to collect in the current Epoch" value={avalibleCollect} />
         </FrameRow>
+        {isStatusVisiblable && (
+          <Status>
+            You will receive ${avalibleCollect} or less depending on the daily limit at the moment
+            of the transaction on the blockchain
+          </Status>
+        )}
         <ButtonGroup>
           <CollectBtn onClick={openRequestCollect}>Request collect</CollectBtn>
 
