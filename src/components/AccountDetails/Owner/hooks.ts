@@ -44,7 +44,9 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
         handleAuth().then(token => {
           changeStatus('');
           if (parseFloat(userInput) <= 0 || Number.isNaN(parseFloat(userInput))) {
-            changeStatus('Error input. The Request amount is not valid');
+            changeStatus(
+              'An application error has occurred. Notify our support team. Error code 011',
+            );
             changeTitle('Request');
             return Promise.resolve();
           }
