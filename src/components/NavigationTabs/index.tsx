@@ -7,7 +7,12 @@ import { Link as HistoryLink, NavLink } from 'react-router-dom';
 import { ArrowLeft } from 'react-feather';
 import { RowBetween } from '../Row';
 import QuestionHelper from '../QuestionHelper';
-import { useIsEthActive, useIsPolygonActive, useNetworkData } from '../../hooks/Coins';
+import {
+  useIsEthActive,
+  useIsKuCoinActive,
+  useIsPolygonActive,
+  useNetworkData,
+} from '../../hooks/Coins';
 import { isMobile } from 'react-device-detect';
 import { useBridgeModalToggle } from '../../state/application/hooks';
 
@@ -68,7 +73,7 @@ const ExternalNavLink = styled.div`
   text-decoration: none;
   color: ${({ theme }) => theme.lightGrey};
   font-size: 16px;
-  
+
   :hover,
   :focus {
     color: ${({ theme }) => lighten(0.3, theme.lightGrey)};
@@ -100,8 +105,8 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
 
   const networkItem = useNetworkData();
 
-  // const isKuCoinActive = useIsKuCoinActive();
   const isEthereumActive = useIsEthActive();
+  const isKuCoinActive = useIsKuCoinActive();
   const isPolygonActive = useIsPolygonActive();
 
   const toggleBridgeModal = useBridgeModalToggle();
@@ -122,13 +127,15 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
       <StyledNavLink id={`pool-nav-link`} to={'/pool'} isActive={() => active === TabNames.POOL}>
         {t('pool')}
       </StyledNavLink>
-      <StyledNavLink
-        id={`migrate-nav-link`}
-        to={'/migrate'}
-        isActive={() => active === TabNames.MIGRATE}
-      >
-        {t('migrate')}
-      </StyledNavLink>
+      {(isEthereumActive || isPolygonActive || isKuCoinActive) && (
+        <StyledNavLink
+          id={`migrate-nav-link`}
+          to={'/migrate'}
+          isActive={() => active === TabNames.MIGRATE}
+        >
+          {t('migrate')}
+        </StyledNavLink>
+      )}
       {/*<StyledNavLink
         id={`pool-nav-link`}
         to={'/invest'}
@@ -137,11 +144,7 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
         {t('invest')}
       </StyledNavLink>*/}
       {isEthereumActive && (
-        <StyledNavLink
-          id={`farm-nav-link`}
-          to={'/farm'}
-          isActive={() => active === TabNames.FARM}
-        >
+        <StyledNavLink id={`farm-nav-link`} to={'/farm'} isActive={() => active === TabNames.FARM}>
           {t('Stake & Farm')}
         </StyledNavLink>
       )}
@@ -156,11 +159,7 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
       )}
       {isMobile && !isEthereumActive && (
         <>
-          <ExternalNavLink
-            onClick={handleClickBridge}
-          >
-            {t('Bridge')}
-          </ExternalNavLink>
+          <ExternalNavLink onClick={handleClickBridge}>{t('Bridge')}</ExternalNavLink>
           {/*<BridgeModal/>*/}
         </>
       )}
@@ -173,11 +172,11 @@ export function FindPoolTabs() {
     <Tabs>
       <RowBetween style={{ padding: '1rem' }}>
         <HistoryLink to="/pool">
-          <StyledArrowLeft/>
+          <StyledArrowLeft />
         </HistoryLink>
         <ActiveText>Import Pool</ActiveText>
         <QuestionHelper
-          text={'Use this tool to find pairs that don\'t automatically appear in the interface.'}
+          text={"Use this tool to find pairs that don't automatically appear in the interface."}
         />
       </RowBetween>
     </Tabs>
@@ -189,7 +188,7 @@ export function AddRemoveTabs({ adding }: { adding: boolean }) {
     <Tabs>
       <RowBetween style={{ padding: '1rem' }}>
         <HistoryLink to="/pool">
-          <StyledArrowLeft/>
+          <StyledArrowLeft />
         </HistoryLink>
         <ActiveText>{adding ? 'Add' : 'Remove'} Liquidity</ActiveText>
         <QuestionHelper
