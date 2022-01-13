@@ -16,7 +16,7 @@ import { ESWLocked } from '../Common/ESWLocked';
 import { ReferralPerformance } from '../Common/ReferralPerformance';
 import { PurchaseHistory } from '../Common/PurchaseHistory';
 import FarmingRewards from '../Common/FarmingRewards';
-import { useIsEthActive, useIsKuCoinActive, useIsShidenActive } from '../../../hooks/Coins';
+import { useIsEthActive, useIsKuCoinActive, useIsShidenActive, useIsAvalancheActive } from '../../../hooks/Coins';
 import RequestCollect from './RequestCollect';
 import CollectToMyWallet from './CollectToMyWallet';
 
@@ -67,6 +67,7 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
 
   const isEthActive = useIsEthActive();
   const isKuCoinActive = useIsKuCoinActive();
+  const isAvalancheActive = useIsAvalancheActive();
   const isShidenActive = useIsShidenActive();
 
   useEffect(() => {
@@ -104,7 +105,7 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
           <ExternalLink href={'https://crowdsale.emidao.org/magic-nft'}>Magic Cards!</ExternalLink> */}
           </OptionsPromo>
         </Connection>
-        {isKuCoinActive || isShidenActive ? null : (
+        {isKuCoinActive || isShidenActive || isAvalancheActive ? null : (
           <>
             <ESWRewards />
             {isEthActive && <ESWHoldingRewards />}

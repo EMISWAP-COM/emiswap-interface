@@ -32,6 +32,7 @@ export function useAllTokens(isLpTokens?: boolean): [{ [address: string]: Token 
   const isKuCoinActive = useIsKuCoinActive();
   const isPolygonActive = useIsPolygonActive();
   const isShidenActive = useIsShidenActive();
+  const isAvalancheActive = useIsAvalancheActive();
 
   return [
     useMemo(() => {

@@ -18,6 +18,7 @@ import {
   useIsKuCoinActive,
   useIsPolygonActive,
   useIsShidenActive,
+  useIsAvalancheActive,
   useNetworkData,
 } from '../../../hooks/Coins';
 import { MessageTooltip } from '../../../base/ui';
@@ -319,8 +320,9 @@ export const Connection: React.FC<Props> = ({
 
   const isKuCoinActive = useIsKuCoinActive();
   const isShidenActive = useIsShidenActive();
+  const isAvalancheActive = useIsAvalancheActive();
 
-  const isEnableChangeWallet = !isKuCoinActive;
+  const isEnableChangeWallet = !isKuCoinActive || !isAvalancheActive;
   const isCollectDisabled = true || !Number(balance?.available.ESW);
 
   return (
@@ -354,11 +356,11 @@ export const Connection: React.FC<Props> = ({
               <StatusIcon connectorName={connector} />
               <Account>{ENSName || shortenAddress(account)}</Account>
               <AccountNetwork>
-                {isKuCoinActive || isShidenActive ? '' : 'Ethereum & Polygon'}
+                {isKuCoinActive || isShidenActive || isAvalancheActive ? '' : 'Ethereum & Polygon'}
               </AccountNetwork>
             </Wallet>
           </WalletInfo>
-          {isKuCoinActive || isShidenActive ? null : (
+          {isKuCoinActive || isShidenActive || isAvalancheActive ? null : (
             <Balance
               total={sumESW('ESW', balance)}
               wallet={convertBigDecimal(balance?.wallet.ESW)}
