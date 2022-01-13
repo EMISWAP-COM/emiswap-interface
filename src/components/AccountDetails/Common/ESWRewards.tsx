@@ -121,7 +121,7 @@ export const ESWRewards = () => {
           <Item text="Providing Liquidity" count={sumPoolBonuses()} />
           <Item text="Swapping" count={sumSwapBonuses()} />
           <Item text=" Referral Reward" count={sumRewardsESW()} />
-          <Item text="Fee Compensation" count={balance?.total.grouped.compensation?.ESW} />
+          <Item text="Fee Compensation" count={balance?.total.grouped.compensation?.ESW!} />
         </RewardsWrapper>
       )}
       {(network === 'polygon' || network === 'mumbai') && (

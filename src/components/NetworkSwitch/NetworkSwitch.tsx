@@ -45,7 +45,6 @@ const NetworkIcon = styled.div`
   background: white;
 `;
 
-
 const NETWORK_LABELS: { [chainId in chainIds]: string | null } = {
   [ChainId.MAINNET]: 'Ethereum',
   [ChainId.RINKEBY]: 'Rinkeby',
@@ -55,6 +54,7 @@ const NETWORK_LABELS: { [chainId in chainIds]: string | null } = {
   [chainIds.KUCOIN]: 'KuCoin',
   [chainIds.POLYGON]: 'Polygon',
   [chainIds.MUMBAI]: 'Mumbai',
+  [chainIds.SHIDEN]: 'Shiden',
   [chainIds.AVALANCHE]: 'Avalanche',
 };
 
@@ -65,9 +65,7 @@ const NetworkSwitch = () => {
 
   return (
     <>
-      <NetworkButtonSwitch
-        onClick={toggleNetworkSwitchModal}
-      >
+      <NetworkButtonSwitch onClick={toggleNetworkSwitchModal}>
         {networkItem && (
           <NetworkIcon>
             <img
@@ -82,9 +80,9 @@ const NetworkSwitch = () => {
           <NetworkLabel>Beta Version</NetworkLabel>
         )}*/}
       </NetworkButtonSwitch>
-      <NetworkSwitchModal/>
+      <NetworkSwitchModal />
     </>
-  )
-}
+  );
+};
 
 export { NetworkSwitch };

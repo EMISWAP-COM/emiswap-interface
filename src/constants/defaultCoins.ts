@@ -4362,6 +4362,22 @@ const defaultCoins: DefaultCoins = {
       decimals: 18,
     },*/
     {
+      address: '0x0f933Dc137D21cA519ae4C7E93f87a4C8EF365Ef',
+      chainId: 336,
+      name: 'WSDN',
+      decimals: 18,
+      symbol: 'WSDN',
+    },
+    {
+      address: '0xb4BcA5955F26d2fA6B57842655d7aCf2380Ac854',
+      chainId: 336,
+      name: 'EmiSwap - EmiDao Token',
+      symbol: 'ESW',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
       address: '0xc7198437980c041c805A1EDcbA50c1Ce5db95118',
       chainId: 43114,
       name: 'USDT',
