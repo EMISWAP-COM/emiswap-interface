@@ -16,7 +16,7 @@ import { ESWLocked } from '../Common/ESWLocked';
 import { ReferralPerformance } from '../Common/ReferralPerformance';
 import { PurchaseHistory } from '../Common/PurchaseHistory';
 import FarmingRewards from '../Common/FarmingRewards';
-import { useIsAvalancheActive, useIsEthActive, useIsKuCoinActive } from '../../../hooks/Coins';
+import { useIsEthActive, useIsKuCoinActive, useIsShidenActive } from '../../../hooks/Coins';
 import RequestCollect from './RequestCollect';
 import CollectToMyWallet from './CollectToMyWallet';
 
@@ -58,16 +58,16 @@ interface Props {
 }
 
 const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
-  const isEthActive = useIsEthActive();
-  const isKuCoinActive = useIsKuCoinActive();
-  const isAvalancheActive = useIsAvalancheActive();
-
-  const dispatch = useDispatch<AppDispatch>();
-  const [collectButtonState, changeCollectButtonState] = useState<string | null>(null);
-
   const { chainId } = useActiveWeb3React();
 
+  const dispatch = useDispatch<AppDispatch>();
   const { id: userId } = useSelector((state: AppState) => state.user.info);
+
+  const [collectButtonState, changeCollectButtonState] = useState<string | null>(null);
+
+  const isEthActive = useIsEthActive();
+  const isKuCoinActive = useIsKuCoinActive();
+  const isShidenActive = useIsShidenActive();
 
   useEffect(() => {
     if (isEthActive) {
@@ -104,7 +104,7 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
           <ExternalLink href={'https://crowdsale.emidao.org/magic-nft'}>Magic Cards!</ExternalLink> */}
           </OptionsPromo>
         </Connection>
-        {isKuCoinActive || isAvalancheActive ? null : (
+        {isKuCoinActive || isShidenActive ? null : (
           <>
             <ESWRewards />
             {isEthActive && <ESWHoldingRewards />}

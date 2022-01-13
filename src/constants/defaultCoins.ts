@@ -4362,18 +4362,20 @@ const defaultCoins: DefaultCoins = {
       decimals: 18,
     },*/
     {
-      address: '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7',
-      chainId: 43114,
-      name: 'WAVAX',
-      decimals: 6,
-      symbol: 'WAVAX',
+      address: '0x0f933Dc137D21cA519ae4C7E93f87a4C8EF365Ef',
+      chainId: 336,
+      name: 'WSDN',
+      decimals: 18,
+      symbol: 'WSDN',
     },
     {
-      address: '0x60781c2586d68229fde47564546784ab3faca982',
-      chainId: 43114,
-      name: 'PNG',
+      address: '0xb4BcA5955F26d2fA6B57842655d7aCf2380Ac854',
+      chainId: 336,
+      name: 'EmiSwap - EmiDao Token',
+      symbol: 'ESW',
       decimals: 18,
-      symbol: 'PNG',
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
     },
     {
       address: '0xc7198437980c041c805A1EDcbA50c1Ce5db95118',

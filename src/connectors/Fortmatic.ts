@@ -20,6 +20,7 @@ const CHAIN_ID_NETWORK_ARGUMENT: {
   [chainIds.KUCOIN]: 'kucoin',
   [chainIds.POLYGON]: 'polygon',
   [chainIds.MUMBAI]: 'mumbai',
+  [chainIds.SHIDEN]: 'shiden',
   [chainIds.AVALANCHE]: 'avalanche',
 };
 

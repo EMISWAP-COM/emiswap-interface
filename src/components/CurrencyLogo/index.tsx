@@ -6,6 +6,7 @@ import EswLogo from '../../assets/currencies/ESW.png';
 import EthereumLogo from '../../assets/images/ethereum-logo.png';
 import KucoinLogo from '../../assets/currencies/KCS.png';
 import MaticLogo from '../../assets/currencies/MATIC.png';
+import SdnLogo from '../../assets/currencies/SDN.png';
 import AvaxLogo from '../../assets/currencies/AVAX.png';
 import defaultCoins from '../../constants/defaultCoins';
 import { useActiveWeb3React } from '../../hooks';
@@ -30,8 +31,7 @@ const getTokenLogoURL = async (urls: string[]): Promise<string> => {
         const responseBlob = await response.blob();
         return URL.createObjectURL(responseBlob);
       }
-    } catch {
-    }
+    } catch {}
   }
 
   return '';
@@ -93,6 +93,10 @@ export default function CurrencyLogo({
     return <StyledEthereumLogo src={MaticLogo} size={size} {...rest} />;
   }
 
+  if (currency?.symbol === 'SDN' || currency?.symbol === 'WSDN') {
+    return <StyledEthereumLogo src={SdnLogo} size={size} {...rest} />;
+  }
+
   if (currency?.symbol === 'AVAX' || currency?.symbol === 'WAVAX') {
     return <StyledEthereumLogo src={AvaxLogo} size={size} {...rest} />;
   }
@@ -104,7 +108,7 @@ export default function CurrencyLogo({
   if (currency?.name?.includes('LP ')) {
     return (
       <div {...rest}>
-        <LpTokenSymbol size={18} fontSize={10}/>
+        <LpTokenSymbol size={18} fontSize={10} />
       </div>
     );
   }
@@ -147,5 +151,5 @@ export default function CurrencyLogo({
     }
   }
 
-  return <span style={{ width: '20px', height: '20px' }}/>;
+  return <span style={{ width: '20px', height: '20px' }} />;
 }
