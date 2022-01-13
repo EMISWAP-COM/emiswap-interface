@@ -34,6 +34,19 @@ const NetworkButtonSwitch = styled(ButtonGray)`
   }
 `;
 
+const NetworkLabel = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 18px;
+  margin-left: 16px;
+  padding: 0 8px;
+  border-radius: 50px;
+  font-size: 8px;
+  background: #e478ff;
+  color: ${({ theme }) => theme.dark2};
+`;
+
 const NetworkIcon = styled.div`
   display: flex;
   justify-content: center;
@@ -76,9 +89,7 @@ const NetworkSwitch = () => {
           </NetworkIcon>
         )}
         <span>{NETWORK_LABELS[chainId] || 'Change Network'}</span>
-        {/*{![chainIds.MAINNET, chainIds.KUCOIN].includes(chainId as any) && (
-          <NetworkLabel>Beta Version</NetworkLabel>
-        )}*/}
+        {[chainIds.SHIDEN].includes(chainId as any) && <NetworkLabel>Beta Version</NetworkLabel>}
       </NetworkButtonSwitch>
       <NetworkSwitchModal />
     </>
