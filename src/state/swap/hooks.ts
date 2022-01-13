@@ -12,12 +12,19 @@ import useParsedQueryString from '../../hooks/useParsedQueryString';
 import { isAddress } from '../../utils';
 import { AppDispatch, AppState } from '../index';
 import { useCurrencyBalances } from '../wallet/hooks';
-import { Field, receiveOutput, replaceSwapState, selectCurrency, switchCurrencies, typeInput } from './actions';
+import {
+  Field,
+  receiveOutput,
+  replaceSwapState,
+  selectCurrency,
+  switchCurrencies,
+  typeInput,
+} from './actions';
 import { SwapState } from './reducer';
 import { useUserSlippageTolerance } from '../user/hooks';
 import { computeSlippageAdjustedAmounts } from '../../utils/prices';
 import { BigNumber } from '@ethersproject/bignumber';
-import { KOVAN_WETH, MUMBAI_WMATIC, WETH, WKCS, WMATIC } from '../../constants';
+import { KOVAN_WETH, MUMBAI_WMATIC, WETH, WKCS, WMATIC, WSDN } from '../../constants';
 import chainIds from '../../constants/chainIds';
 
 export function useSwapState(): AppState['swap'] {
@@ -112,6 +119,8 @@ export function useCurrencyWrapped(currency: Token | null | undefined) {
         return WMATIC;
       case chainIds.MUMBAI:
         return MUMBAI_WMATIC;
+      case chainIds.SHIDEN:
+        return WSDN;
       default:
         return KOVAN_WETH;
     }
@@ -226,8 +235,8 @@ export function useDerivedSwapInfo(): {
     currencyBalances[Field.INPUT],
     toggledVersion === Version.v1
       ? slippageAdjustedAmountsV1
-      ? slippageAdjustedAmountsV1[Field.INPUT]
-      : null
+        ? slippageAdjustedAmountsV1[Field.INPUT]
+        : null
       : slippageAdjustedAmounts
       ? slippageAdjustedAmounts[Field.INPUT]
       : null,

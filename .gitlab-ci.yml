@@ -1,10 +1,10 @@
 stages:
-- compile
-- build
-- registry
-- deploy:review
-- deploy:uat
-- deploy:prod
+  - compile
+  - build
+  - registry
+  - deploy:review
+  - deploy:uat
+  - deploy:prod
 
 variables:
   _img_repo: $CI_REGISTRY_IMAGE
@@ -15,9 +15,9 @@ variables:
   _node_image: node:12
 
 include:
-- project: emirex-exchange/devops/pipelines
-  file: emiswap.yaml
-  ref: dev
+  - project: emirex-exchange/devops/pipelines
+    file: emiswap.yaml
+    ref: dev
 
 compile:
   stage: compile
@@ -25,31 +25,31 @@ compile:
   artifacts:
     name: $_img_short_name-$CI_COMMIT_REF_SLUG
     paths:
-    - build/
+      - build/
   script:
-  - yarn install --frozen-lockfile
-  - yarn build
+    - yarn install --frozen-lockfile
+    - yarn build
   tags:
-  - hetzner
-  - docker
+    - hetzner
+    - docker
 
 build:
   extends: .build:react
   stage: build
   script:
-  - docker build -t $_img_repo/$_img_name:$_img_tag .
+    - docker build -t $_img_repo/$_img_name:$_img_tag .
 
 push:
   extends: .push
   stage: registry
   only:
-  - branches
+    - branches
 
 push:tagged:
   extends: .push:tagged
   stage: registry
   only:
-  - tags
+    - tags
 
 deploy:review:
   extends: .deploy:review
@@ -57,8 +57,8 @@ deploy:review:
   when: manual
   except:
     refs:
-    - production
-    - /^release-.*$/
+      - production
+      - /^release-.*$/
 
 deploy:release:
   extends: .deploy:review
@@ -66,7 +66,7 @@ deploy:release:
   when: manual
   only:
     refs:
-    - /^release-.*$/
+      - /^release-.*$/
 
 deploy:uat:
   extends: .deploy:uat
@@ -74,8 +74,8 @@ deploy:uat:
   when: manual
   only:
     refs:
-    - production
-    - /^release-.*$/
+      - production
+      - /^release-.*$/
 
 deploy:prod:
   extends: .deploy:prod

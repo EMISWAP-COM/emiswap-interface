@@ -14,7 +14,12 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { darken } from 'polished';
 import { ChangeAddress } from './ChangeAddress';
-import { useIsKuCoinActive, useIsPolygonActive, useNetworkData } from '../../../hooks/Coins';
+import {
+  useIsKuCoinActive,
+  useIsPolygonActive,
+  useIsShidenActive,
+  useNetworkData,
+} from '../../../hooks/Coins';
 import { MessageTooltip } from '../../../base/ui';
 import { css } from 'styled-components';
 import { Balance as BalanceType } from '../../../state/cabinets/reducer';
@@ -209,10 +214,12 @@ const ButtonText = styled.span`
   white-space: nowrap;
   padding-right: 0.2rem;
 `;
+
 interface BalanceItemInterface {
   label: string;
   value: string;
 }
+
 const Item = ({ label, value }: BalanceItemInterface) => (
   <BalanceItem>
     <span>{label}</span>
@@ -221,6 +228,7 @@ const Item = ({ label, value }: BalanceItemInterface) => (
     </div>
   </BalanceItem>
 );
+
 interface BalanceInterface {
   total: string;
   wallet: string;
@@ -231,6 +239,7 @@ interface BalanceInterface {
   isPolygon?: boolean;
   handleRequest: () => void;
 }
+
 const Balance = ({
   total,
   wallet,
@@ -288,6 +297,7 @@ const sumESW = (currency: string, balance: BalanceType) => {
 
   return convertBigDecimal(sum.toString());
 };
+
 interface Props {
   ENSName?: string;
   openOptions: () => void;
@@ -302,10 +312,14 @@ export const Connection: React.FC<Props> = ({
 }) => {
   const { chainId, account, connector } = useActiveWeb3React();
   const { blockExplorerName, value: network } = useNetworkData();
+
   const history = useHistory();
   const toggle = useWalletModalToggle();
   const balance = useSelector((state: AppState) => state.cabinets.totalBalance);
+
   const isKuCoinActive = useIsKuCoinActive();
+  const isShidenActive = useIsShidenActive();
+
   const isEnableChangeWallet = !isKuCoinActive;
   const isCollectDisabled = true || !Number(balance?.available.ESW);
 
@@ -339,10 +353,12 @@ export const Connection: React.FC<Props> = ({
             <Wallet>
               <StatusIcon connectorName={connector} />
               <Account>{ENSName || shortenAddress(account)}</Account>
-              <AccountNetwork>{isKuCoinActive ? '' : 'Ethereum & Polygon'}</AccountNetwork>
+              <AccountNetwork>
+                {isKuCoinActive || isShidenActive ? '' : 'Ethereum & Polygon'}
+              </AccountNetwork>
             </Wallet>
           </WalletInfo>
-          {isKuCoinActive ? null : (
+          {isKuCoinActive || isShidenActive ? null : (
             <Balance
               total={sumESW('ESW', balance)}
               wallet={convertBigDecimal(balance?.wallet.ESW)}

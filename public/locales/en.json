@@ -6,6 +6,7 @@
   "installMetamask": "Please visit us after installing Metamask on Chrome or Brave.",
   "disconnected": "Disconnected",
   "swap": "Swap",
+  "Farm": "Farm",
   "swapAnyway": "Swap Anyway",
   "send": "Send",
   "sendAnyway": "Send Anyway",
@@ -181,10 +182,10 @@
       }
     },
     "join": "Join EmiSwap Community",
-    "partners" : {
+    "partners": {
       "title": "EmiSwap Partners & Investors"
     },
-    "team" : {
+    "team": {
       "title": "EmiSwap Team",
       "1": {
         "name": "Greg Mars",

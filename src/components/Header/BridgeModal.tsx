@@ -41,14 +41,13 @@ const NetworkIcon = styled.div`
 `;
 
 const NetworkName = styled(Text)`
-  font-size: 16px; 
-  font-weight: 500; 
+  font-size: 16px;
+  font-weight: 500;
   text-align: center;
   color: white;
 `;
 
 export default function BridgeModal() {
-
   const bridgeModalOpen = useBridgeModalOpen();
   const toggleBridgeModal = useBridgeModalToggle();
 
@@ -67,24 +66,23 @@ export default function BridgeModal() {
       >
         <NetworkSwitchWrapped>
           <div>
-            <Text textAlign="center" fontWeight={500} fontSize={20} color="white">Links</Text>
+            <Text textAlign="center" fontWeight={500} fontSize={20} color="white">
+              Links
+            </Text>
           </div>
 
           <NetworkItemsRow>
-            {networksItems.filter(item => item.bridgeUrl).map(item => (
-              <NetworkItem key={item.chainId} onClick={() => handleClickItem(item)}>
-                <NetworkIcon>
-                  <img
-                    style={{ maxWidth: '100%' }}
-                    src={item.icon}
-                    alt={item.name}
-                  />
-                </NetworkIcon>
-                <NetworkName>{item.name} Bridge</NetworkName>
-              </NetworkItem>
-            ))}
+            {networksItems
+              .filter(item => item.active && item.bridgeUrl)
+              .map(item => (
+                <NetworkItem key={item.chainId} onClick={() => handleClickItem(item)}>
+                  <NetworkIcon>
+                    <img style={{ maxWidth: '100%' }} src={item.icon} alt={item.name} />
+                  </NetworkIcon>
+                  <NetworkName>{item.name} Bridge</NetworkName>
+                </NetworkItem>
+              ))}
           </NetworkItemsRow>
-
         </NetworkSwitchWrapped>
       </Modal>
     </div>
