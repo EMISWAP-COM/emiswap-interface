@@ -488,9 +488,7 @@ export const networksItems: INetworkItem[] = [
     token: AVAX,
     icon: AvalancheNetworkIcon,
     name: 'Avalanche',
-    rpcUrls: [
-      'https://api.avax.network/ext/bc/C/rpc',
-    ],
+    rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
     currencySymbol: 'AVAX',
     currencySymbolWrap: 'WAVAX',
     currencySymbolWeth: 'WAVAX',
@@ -508,18 +506,16 @@ export const networksItems: INetworkItem[] = [
     token: MUMBAI_WMATIC,
     icon: PolygonNetworkIcon,
     name: 'Mumbai',
-    rpcUrls: [
-      'https://rpc-mumbai.matic.today',
-    ],
+    rpcUrls: ['https://rpc-mumbai.matic.today'],
     currencySymbol: 'MATIC',
     currencySymbolWrap: 'WMATIC',
     currencySymbolWeth: 'WMATIC',
     blockExplorerUrl: 'https://mumbai.polygonscan.com/',
     blockExplorerName: 'Polygonscan',
     analyticsUrl: 'https://emiswap.com/analytics?network=polygon',
-    eswExplorerUrl: 'https://mumbai.polygonscan.com/token/0xd2A2a353D28e4833FAFfC882f6649c9c884a7D8f',
+    eswExplorerUrl:
+      'https://mumbai.polygonscan.com/token/0xd2A2a353D28e4833FAFfC882f6649c9c884a7D8f',
     eswExplorerName: 'ESW Polygonscan',
     active: false,
-    bridgeUrl: 'https://wallet.matic.network/bridge',
   },
 ];
