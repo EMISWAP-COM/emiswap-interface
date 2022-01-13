@@ -137,6 +137,12 @@ export function useIsKuCoinActive(): boolean {
   return (chainId as any) === chainIds.KUCOIN;
 }
 
+export function useIsAvalancheActive(): boolean {
+  const { chainId } = useActiveWeb3React();
+
+  return (chainId as any) === chainIds.AVALANCHE;
+}
+
 export function useIsPolygonActive(): boolean {
   const { chainId } = useActiveWeb3React();
 

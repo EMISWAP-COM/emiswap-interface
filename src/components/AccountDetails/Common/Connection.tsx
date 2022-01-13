@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { darken } from 'polished';
 import { ChangeAddress } from './ChangeAddress';
-import { useIsKuCoinActive, useIsPolygonActive, useNetworkData } from '../../../hooks/Coins';
+import { useIsAvalancheActive, useIsKuCoinActive, useIsPolygonActive, useNetworkData } from '../../../hooks/Coins';
 import { MessageTooltip } from '../../../base/ui';
 import { css } from 'styled-components';
 import { Balance as BalanceType } from '../../../state/cabinets/reducer';
@@ -306,7 +306,8 @@ export const Connection: React.FC<Props> = ({
   const toggle = useWalletModalToggle();
   const balance = useSelector((state: AppState) => state.cabinets.totalBalance);
   const isKuCoinActive = useIsKuCoinActive();
-  const isEnableChangeWallet = !isKuCoinActive;
+  const isAvalancheActive = useIsAvalancheActive();
+  const isEnableChangeWallet = !isKuCoinActive || !isAvalancheActive;
   const isCollectDisabled = true || !Number(balance?.available.ESW);
 
   return (
@@ -339,10 +340,10 @@ export const Connection: React.FC<Props> = ({
             <Wallet>
               <StatusIcon connectorName={connector} />
               <Account>{ENSName || shortenAddress(account)}</Account>
-              <AccountNetwork>{isKuCoinActive ? '' : 'Ethereum & Polygon'}</AccountNetwork>
+              <AccountNetwork>{isKuCoinActive || isAvalancheActive ? '' : 'Ethereum & Polygon'}</AccountNetwork>
             </Wallet>
           </WalletInfo>
-          {isKuCoinActive ? null : (
+          {isKuCoinActive || isAvalancheActive ? null : (
             <Balance
               total={sumESW('ESW', balance)}
               wallet={convertBigDecimal(balance?.wallet.ESW)}

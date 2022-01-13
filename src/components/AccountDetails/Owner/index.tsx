@@ -16,7 +16,7 @@ import { ESWLocked } from '../Common/ESWLocked';
 import { ReferralPerformance } from '../Common/ReferralPerformance';
 import { PurchaseHistory } from '../Common/PurchaseHistory';
 import FarmingRewards from '../Common/FarmingRewards';
-import { useIsEthActive, useIsKuCoinActive } from '../../../hooks/Coins';
+import { useIsAvalancheActive, useIsEthActive, useIsKuCoinActive } from '../../../hooks/Coins';
 import RequestCollect from './RequestCollect';
 import CollectToMyWallet from './CollectToMyWallet';
 
@@ -60,6 +60,8 @@ interface Props {
 const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
   const isEthActive = useIsEthActive();
   const isKuCoinActive = useIsKuCoinActive();
+  const isAvalancheActive = useIsAvalancheActive();
+
   const dispatch = useDispatch<AppDispatch>();
   const [collectButtonState, changeCollectButtonState] = useState<string | null>(null);
 
@@ -102,7 +104,7 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
           <ExternalLink href={'https://crowdsale.emidao.org/magic-nft'}>Magic Cards!</ExternalLink> */}
           </OptionsPromo>
         </Connection>
-        {isKuCoinActive ? null : (
+        {isKuCoinActive || isAvalancheActive ? null : (
           <>
             <ESWRewards />
             {isEthActive && <ESWHoldingRewards />}
