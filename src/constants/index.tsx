@@ -539,7 +539,7 @@ export const networksItems: INetworkItem[] = [
     eswExplorerUrl: 'https://etherscan.io/token/0x5a75A093747b72a0e14056352751eDF03518031d',
     eswExplorerName: 'ESW KCC Explorer',
     bridgeUrl: 'https://bridge.avax.network',
-    active: false,
+    active: true,
   },
   {
     alias: 'mumbai',

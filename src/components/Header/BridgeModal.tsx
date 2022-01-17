@@ -8,13 +8,28 @@ import { isMobile } from 'react-device-detect';
 
 const NetworkSwitchWrapped = styled.div`
   width: 100%;
-  padding: 32px 24px 32px 28px;
+  overflow-y: scroll;
+  max-height: 600px;
+  padding: 32px 24px 24px 32px;
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    // background: #7d979433;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background: #11b382;
+  }
 `;
 
 const NetworkItemsRow = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   width: 100%;
   margin: 24px auto 0 auto;
 `;
@@ -22,9 +37,8 @@ const NetworkItemsRow = styled.div`
 const NetworkItem = styled.div`
   display: flex;
   align-items: center;
-  position: relative;
   min-width: 90px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   cursor: pointer;
 `;
 
@@ -32,17 +46,17 @@ const NetworkIcon = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 42px;
-  height: 42px;
-  margin-right: 10px;
+  width: 48px;
+  height: 48px;
   border: 3px solid white;
   border-radius: 4px;
   background: white;
+  margin-right: 15px;
 `;
 
 const NetworkName = styled(Text)`
-  font-size: 16px;
-  font-weight: 500;
+  font-size: 16px; 
+  font-weight: 700; 
   text-align: center;
   color: white;
 `;
@@ -62,11 +76,11 @@ export default function BridgeModal() {
         onDismiss={toggleBridgeModal}
         minHeight={null}
         maxHeight={320}
-        maxWidth={isMobile ? 480 : 320}
+        maxWidth={320}
       >
         <NetworkSwitchWrapped>
           <div>
-            <Text textAlign="center" fontWeight={500} fontSize={20} color="white">
+            <Text textAlign="center" marginBottom={40} fontWeight={500} fontSize={20} color="white">
               Links
             </Text>
           </div>
