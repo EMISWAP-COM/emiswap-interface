@@ -4378,11 +4378,39 @@ const defaultCoins: DefaultCoins = {
         'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
     },
     {
+      address: '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7',
+      chainId: 43114,
+      name: 'WAVAX',
+      decimals: 6,
+      symbol: 'WAVAX',
+    },
+    {
+      address: '0x60781c2586d68229fde47564546784ab3faca982',
+      chainId: 43114,
+      name: 'PNG',
+      decimals: 18,
+      symbol: 'PNG',
+    },
+    {
       address: '0xc7198437980c041c805A1EDcbA50c1Ce5db95118',
       chainId: 43114,
       name: 'USDT',
       decimals: 6,
       symbol: 'USDT',
+    },
+    {
+      address: '0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664',
+      chainId: 43114,
+      name: 'USDC',
+      decimals: 18,
+      symbol: 'USDC',
+    },
+    {
+      address: '0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab',
+      chainId: 43114,
+      name: 'WETH',
+      decimals: 18,
+      symbol: 'WETH',
     },
     {
       address: '0xd586E7F844cEa2F87f50152665BCbc2C279D8d70',
@@ -4408,4 +4436,12 @@ export const mustVisibleAddresses = {
     '0x1b465775469c71b898bb51b53b2d4464b7cd3448',
   ],
   polygon: [''],
+  avalanche: [
+    '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7',
+    '0x60781c2586d68229fde47564546784ab3faca982',
+    '0xc7198437980c041c805A1EDcbA50c1Ce5db95118',
+    '0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664',
+    '0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab',
+    '0xd586E7F844cEa2F87f50152665BCbc2C279D8d70',
+  ]
 };
