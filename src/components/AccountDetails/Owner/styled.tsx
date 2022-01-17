@@ -1,5 +1,7 @@
+import React from 'react';
 import styled from 'styled-components/macro';
 import { css } from 'styled-components';
+import ContentLoader from 'react-content-loader';
 import { WalletAction } from '../styleds';
 
 export const Wrapper = styled.div`
@@ -188,3 +190,14 @@ export const ButtonText = styled.span`
   white-space: nowrap;
   padding-right: 0.2rem;
 `;
+
+export const Loader = (
+  <ContentLoader
+    height={24}
+    viewBox="0 0 340 84"
+    backgroundColor="#393946"
+    foregroundColor="#7A2DF4"
+  >
+    <rect x="9" y="4" rx="0" ry="0" width="320" height="82" />
+  </ContentLoader>
+);

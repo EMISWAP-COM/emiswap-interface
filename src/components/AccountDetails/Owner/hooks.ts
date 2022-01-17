@@ -175,6 +175,8 @@ const formatTime = bigNumber => timeFormating(toDate(bigNumber));
 const formatDate = bigNumber => formatDateing(toDate(bigNumber));
 
 export const useCollectData = closeWindow => {
+  const [isDelayLoadingContract, changeDelayLoadingContract] = useState(false);
+  const [isLoaded, changeLoadingState] = useState(false);
   const [state, changeState] = useState({
     requested: '',
     unlocked: '',
@@ -194,6 +196,9 @@ export const useCollectData = closeWindow => {
   ]);
 
   useEffect(() => {
+    if (isDelayLoadingContract) {
+      return;
+    }
     Promise.all([
       contract.getRemainderOfRequests(),
       contract.getAvailableToClaim(),
@@ -217,13 +222,18 @@ export const useCollectData = closeWindow => {
           nextValue: formatUnits(claimLimit, 18),
           handler: () => {
             contract.claim().then(() => {
-              closeWindow();
+              changeLoadingState(false);
+              changeDelayLoadingContract(true);
+              setTimeout(() => {
+                changeDelayLoadingContract(false);
+              }, 5000);
             });
           },
         });
+        changeLoadingState(true);
       },
     );
-  }, [contract, closeWindow]);
+  }, [contract, closeWindow, isDelayLoadingContract]);
 
-  return state;
+  return { ...state, isLoaded };
 };

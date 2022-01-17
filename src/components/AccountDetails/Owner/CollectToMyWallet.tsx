@@ -15,6 +15,7 @@ import {
   ButtonGroup,
   CollectBtn,
   ButtonText,
+  Loader,
 } from './styled';
 
 const Item = ({
@@ -22,25 +23,31 @@ const Item = ({
   value,
   hideLogo,
   secondValue,
+  isLoaded,
 }: {
   label: string;
   value: string;
   secondValue?: string;
   hideLogo?: boolean;
+  isLoaded?: boolean;
 }): React.ReactElement => (
   <Field>
     <Label>{label} </Label>
-    <Value>
-      {!hideLogo && (
-        <span style={{ marginRight: '10px', display: 'flex' }}>
-          <CurrencyLogo currency={{ symbol: 'ESW' } as Token} size={'24px'} />
+    {isLoaded ? (
+      <Value>
+        {!hideLogo && (
+          <span style={{ marginRight: '10px', display: 'flex' }}>
+            <CurrencyLogo currency={{ symbol: 'ESW' } as Token} size={'24px'} />
+          </span>
+        )}
+        <span>
+          <div>{value}</div>
+          {secondValue && <div>{secondValue}</div>}
         </span>
-      )}
-      <span>
-        <div>{value}</div>
-        {secondValue && <div>{secondValue}</div>}
-      </span>
-    </Value>
+      </Value>
+    ) : (
+      Loader
+    )}
   </Field>
 );
 
@@ -61,7 +68,8 @@ const CollectToMyWallet = ({
     nextDay,
     nextValue,
     handler: changeCollect,
-  } = useCollectData(() => closeWindow());
+    isLoaded,
+  } = useCollectData(closeWindow);
 
   const avalibleCollect = unlocked === '0' ? '0' : avalible;
   const remainderValue = useGetRemainder();
@@ -71,15 +79,20 @@ const CollectToMyWallet = ({
       <Title>Collect to my Wallet</Title>
       <Frame>
         <FrameRow>
-          <Item label="Requested & uncollected ESW" value={requested} />
-          <Item label="Unlocked ESW to collect" value={unlocked} />
+          <Item label="Requested & uncollected ESW" value={requested} isLoaded={isLoaded} />
+          <Item label="Unlocked ESW to collect" value={unlocked} isLoaded={isLoaded} />
           <Item
             label="Current Epoch started at: "
             value={currentTime}
             secondValue={`on ${currentDay}`}
             hideLogo
+            isLoaded={isLoaded}
           />
-          <Item label="Available ESW to collect in the current Epoch" value={avalibleCollect} />
+          <Item
+            label="Available ESW to collect in the current Epoch"
+            value={avalibleCollect}
+            isLoaded={isLoaded}
+          />
         </FrameRow>
         <ButtonGroup>
           <CollectBtn onClick={openRequestCollect}>Request collect</CollectBtn>
@@ -106,8 +119,9 @@ const CollectToMyWallet = ({
             value={nextTime}
             secondValue={`on ${nextDay}`}
             hideLogo
+            isLoaded={isLoaded}
           />
-          <Item label="Next Epoch daily limit" value={nextValue} />
+          <Item label="Next Epoch daily limit" value={nextValue} isLoaded={isLoaded} />
         </FrameRow>
       </Frame>
       <CancelButton onClick={closeWindow}>Cancel</CancelButton>
