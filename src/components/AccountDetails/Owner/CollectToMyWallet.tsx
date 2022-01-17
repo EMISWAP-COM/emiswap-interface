@@ -1,6 +1,8 @@
 import { Token } from '@uniswap/sdk';
 import React from 'react';
 import Countdown from 'react-countdown';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../../state';
 import CurrencyLogo from '../../CurrencyLogo';
 import { useCollectData, useGetRemainder } from './hooks';
 import {
@@ -70,6 +72,9 @@ const CollectToMyWallet = ({
     handler: changeCollect,
     isLoaded,
   } = useCollectData(closeWindow);
+  const balance = useSelector((state: AppState) => state.cabinets.totalBalance);
+  const available = balance?.available.ESW;
+  const requestInactive = !available || !(parseFloat(available) > 0);
 
   const avalibleCollect = unlocked === '0' ? '0' : avalible;
   const remainderValue = useGetRemainder();
@@ -95,7 +100,12 @@ const CollectToMyWallet = ({
           />
         </FrameRow>
         <ButtonGroup>
-          <CollectBtn onClick={openRequestCollect}>Request collect</CollectBtn>
+          <CollectBtn
+            inactive={requestInactive}
+            onClick={requestInactive ? undefined : openRequestCollect}
+          >
+            Request collect
+          </CollectBtn>
 
           <CollectBtn
             inactive={isCollectDisabled}
