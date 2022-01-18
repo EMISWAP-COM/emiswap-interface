@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { MutableRefObject, useEffect, useState } from 'react';
 
-export default function useIntersection(ref, rootMargin = '0px') {
+export default function useIntersection(ref: MutableRefObject<HTMLElement>, rootMargin = '0px') {
   // State and setter for storing whether element is visible
   const [isIntersecting, setIntersecting] = useState(false);
 
@@ -20,7 +20,9 @@ export default function useIntersection(ref, rootMargin = '0px') {
       observer.observe(el);
     }
     return () => {
-      observer.unobserve(el);
+      if (el) {
+        observer.unobserve(el);
+      }
     };
   }, [ref, rootMargin]); // Empty array ensures that effect is only run on mount and unmount
 

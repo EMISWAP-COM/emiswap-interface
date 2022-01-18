@@ -3,7 +3,7 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
 import { ArrowDown, ArrowUp } from 'react-feather';
 import { Text } from 'rebass';
-import styled, { ThemeContext } from 'styled-components';
+import { ThemeContext } from 'styled-components';
 import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button';
 import Card, { GreyCard } from '../../components/Card';
 import { AutoColumn } from '../../components/Column';
@@ -58,12 +58,7 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { AdvancedSwapDetails } from '../../components/swap/AdvancedSwapDetails';
 import { useTransactionPrice } from '../../hooks/useTransactionPrice';
 import ReferralLink from '../../components/RefferalLink';
-import { useIsEthActive, useNetworkData } from '../../hooks/Coins';
-
-const GasFeeText = styled.div`
-  margin-top: 8px;
-  color: ${({ theme }) => theme.darkText};
-`;
+import { useNetworkData } from '../../hooks/Coins';
 
 export default function Swap() {
   useDefaultsFromURLSearch();
@@ -104,8 +99,6 @@ export default function Swap() {
       distribution.push(BigNumber.from(i === 11 ? '100000000000000' : '000000000000000'));
     }
   }
-
-  const isEthActive = useIsEthActive();
 
   const { wrapType, execute: onWrap, error: wrapError } = useWrapCallback();
   // typedValue
@@ -540,8 +533,6 @@ export default function Swap() {
               </ErrorText>
             )}
           </BottomGrouping>
-          {isEthActive && <GasFeeText>100% gas fee refund</GasFeeText>}
-
           <TYPE.black fontSize={14} fontWeight={400} color={theme.text2} marginTop={'24px'}>
             <ExternalGreenLink href="https://wiki.emiswap.com/user-guide/how-to-make-swaps">
               Wiki How to make swaps?

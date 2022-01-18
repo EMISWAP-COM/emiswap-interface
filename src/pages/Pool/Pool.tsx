@@ -22,7 +22,6 @@ import { Dots } from '../../components/swap/styleds';
 import ReferralLink from '../../components/RefferalLink';
 
 import * as Styled from './styleds';
-import { useIsEthActive } from '../../hooks/Coins';
 
 // const MEDIUM_LINK =
 // 'https://emiswap.medium.com/pay-0-for-gas-and-get-x10-reward-the-two-big-reasons-to-join-emiswap-today-8af2e68d0aaa';
@@ -46,8 +45,6 @@ const Pool = () => {
     () => tokenPairsWithLiquidityTokens.map(tpwlt => tpwlt?.liquidityToken),
     [tokenPairsWithLiquidityTokens],
   );
-
-  const isEthActive = useIsEthActive();
 
   const [v2PairsBalances, fetchingV2PairBalances] = useTokenBalancesWithLoadingIndicator(
     account ?? undefined,
@@ -143,7 +140,6 @@ const Pool = () => {
                   Add Liquidity
                 </Text>
               </ButtonPrimary>
-              {isEthActive && <Styled.GasFeeText>100% gas fee refund</Styled.GasFeeText>}
               <Styled.StyledHr />
               <div>
                 <Text

@@ -4371,7 +4371,7 @@ const defaultCoins: DefaultCoins = {
       decimals: 18,
     },*/
 
-    // Avalanche
+    // Shiden
     {
       address: '0x0f933Dc137D21cA519ae4C7E93f87a4C8EF365Ef',
       chainId: 336,
@@ -4388,6 +4388,8 @@ const defaultCoins: DefaultCoins = {
       logoURI:
         'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
     },
+
+    // Avalanche
     {
       address: '0xc7198437980c041c805A1EDcbA50c1Ce5db95118',
       chainId: 43114,
@@ -4404,13 +4406,13 @@ const defaultCoins: DefaultCoins = {
     },
 
     // Aurora
-    /*{
+    {
       address: '0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB',
       chainId: chainIds.AURORA,
       name: 'WETH',
       decimals: 18,
       symbol: 'WETH',
-    },*/
+    },
     {
       address: '0x4988a896b1227218e4A686fdE5EabdcAbd91571f',
       chainId: chainIds.AURORA,

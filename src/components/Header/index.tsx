@@ -253,19 +253,6 @@ const NetworkWrapper = styled.div`
   pointer-events: auto;
 `;
 
-/*const NetworkLabel = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 18px;
-  margin-left: 16px;
-  padding: 0 8px;
-  border-radius: 50px;
-  font-size: 8px;
-  background: #e478ff;
-  color: ${({ theme }) => theme.dark2};
-`;*/
-
 const UniIcon = styled.div`
   width: 175px;
   height: 47px;

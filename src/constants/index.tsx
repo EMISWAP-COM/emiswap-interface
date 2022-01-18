@@ -596,7 +596,6 @@ export const networksItems: INetworkItem[] = [
       'https://mumbai.polygonscan.com/token/0xd2A2a353D28e4833FAFfC882f6649c9c884a7D8f',
     eswExplorerName: 'ESW Polygonscan',
     active: false,
-    bridgeUrl: 'https://wallet.matic.network/bridge',
   },
   {
     alias: 'aurora',
