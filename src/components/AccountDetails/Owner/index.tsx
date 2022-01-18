@@ -16,7 +16,12 @@ import { ESWLocked } from '../Common/ESWLocked';
 import { ReferralPerformance } from '../Common/ReferralPerformance';
 import { PurchaseHistory } from '../Common/PurchaseHistory';
 import FarmingRewards from '../Common/FarmingRewards';
-import { useIsAvalancheActive, useIsEthActive, useIsKuCoinActive, useIsShidenActive } from '../../../hooks/Coins';
+import {
+  useIsAvalancheActive,
+  useIsEthActive,
+  useIsKuCoinActive,
+  useIsShidenActive,
+} from '../../../hooks/Coins';
 import RequestCollect from './RequestCollect';
 import CollectToMyWallet from './CollectToMyWallet';
 

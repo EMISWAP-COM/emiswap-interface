@@ -4443,5 +4443,5 @@ export const mustVisibleAddresses = {
     '0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664',
     '0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab',
     '0xd586E7F844cEa2F87f50152665BCbc2C279D8d70',
-  ]
+  ],
 };
