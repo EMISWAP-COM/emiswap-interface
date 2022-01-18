@@ -58,7 +58,7 @@ const NetworkIcon = styled.div<{ active: boolean }>`
   align-items: center;
   width: 48px;
   height: 48px;
-  border: 3px solid ${({ theme, active }) => active ? theme.green5 : 'white'};
+  border: 3px solid ${({ theme, active }) => (active ? theme.green5 : 'white')};
   border-radius: 4px;
   background: white;
   margin-right: 15px;
@@ -71,14 +71,13 @@ const CircleCheckImg = styled.img`
 `;
 
 const NetworkName = styled(Text)<{ active: boolean }>`
-  font-size: 16px; 
-  font-weight: 700; 
+  font-size: 16px;
+  font-weight: 700;
   text-align: center;
-  color: ${({ theme, active }) => active ? theme.green5 : 'white'};
+  color: ${({ theme, active }) => (active ? theme.green5 : 'white')};
 `;
 
 export default function NetworkSwitchModal() {
-
   const { chainId } = useActiveWeb3React();
 
   const isMetaMask = useIsMetaMask();
@@ -144,27 +143,28 @@ export default function NetworkSwitchModal() {
       >
         <NetworkSwitchWrapped>
           <div>
-            <Text textAlign="center" marginBottom={40} fontWeight={500} fontSize={20} color="white">Choose Network</Text>
+            <Text textAlign="center" marginBottom={40} fontWeight={500} fontSize={20} color="white">
+              Choose Network
+            </Text>
           </div>
 
           <NetworkItemsRow>
-            {networksItems.filter(item => item.active).map(item => (
-              <NetworkItem key={item.chainId} onClick={() => onClickItem(item)}>
-                <NetworkIcon active={item.chainId === chainId}>
-                  {item.chainId === chainId && (
-                    <CircleCheckImg src={CircleCheckIcon}/>
-                  )}
-                  <img
-                    style={{ maxWidth: logosMaxWidths[item.chainId] || '100%' }}
-                    src={item.icon}
-                    alt={item.name}
-                  />
-                </NetworkIcon>
-                <NetworkName active={item.chainId === chainId}>{item.name}</NetworkName>
-              </NetworkItem>
-            ))}
+            {networksItems
+              .filter(item => item.active)
+              .map(item => (
+                <NetworkItem key={item.chainId} onClick={() => onClickItem(item)}>
+                  <NetworkIcon active={item.chainId === chainId}>
+                    {item.chainId === chainId && <CircleCheckImg src={CircleCheckIcon} />}
+                    <img
+                      style={{ maxWidth: logosMaxWidths[item.chainId] || '100%' }}
+                      src={item.icon}
+                      alt={item.name}
+                    />
+                  </NetworkIcon>
+                  <NetworkName active={item.chainId === chainId}>{item.name}</NetworkName>
+                </NetworkItem>
+              ))}
           </NetworkItemsRow>
-
         </NetworkSwitchWrapped>
       </Modal>
       {selectedItem && (
@@ -174,9 +174,7 @@ export default function NetworkSwitchModal() {
           onCancel={onClickCancel}
         />
       )}
-      {isVisibleNeedSwitchModal && (
-        <NetworkNeedSwitchModal onClose={onCloseNeedSwitch}/>
-      )}
+      {isVisibleNeedSwitchModal && <NetworkNeedSwitchModal onClose={onCloseNeedSwitch} />}
     </div>
   );
 }

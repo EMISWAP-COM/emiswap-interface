@@ -55,8 +55,8 @@ const NetworkIcon = styled.div`
 `;
 
 const NetworkName = styled(Text)`
-  font-size: 16px; 
-  font-weight: 700; 
+  font-size: 16px;
+  font-weight: 700;
   text-align: center;
   color: white;
 `;
