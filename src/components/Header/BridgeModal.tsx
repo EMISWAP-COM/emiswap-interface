@@ -4,7 +4,6 @@ import { useBridgeModalOpen, useBridgeModalToggle } from '../../state/applicatio
 import { Text } from 'rebass';
 import styled from 'styled-components/macro';
 import { INetworkItem, networksItems } from '../../constants';
-import { isMobile } from 'react-device-detect';
 
 const NetworkSwitchWrapped = styled.div`
   width: 100%;
