@@ -8,6 +8,7 @@ import { ArrowLeft } from 'react-feather';
 import { RowBetween } from '../Row';
 import QuestionHelper from '../QuestionHelper';
 import {
+  useIsAvalancheActive,
   useIsEthActive,
   useIsKuCoinActive,
   useIsPolygonActive,
@@ -108,6 +109,7 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
   const isEthereumActive = useIsEthActive();
   const isKuCoinActive = useIsKuCoinActive();
   const isPolygonActive = useIsPolygonActive();
+  const isAvalancheActive = useIsAvalancheActive();
 
   const toggleBridgeModal = useBridgeModalToggle();
 
@@ -127,7 +129,7 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
       <StyledNavLink id={`pool-nav-link`} to={'/pool'} isActive={() => active === TabNames.POOL}>
         {t('pool')}
       </StyledNavLink>
-      {(isEthereumActive || isPolygonActive || isKuCoinActive) && (
+      {(isEthereumActive || isPolygonActive || isKuCoinActive || isAvalancheActive) && (
         <StyledNavLink
           id={`migrate-nav-link`}
           to={'/migrate'}
