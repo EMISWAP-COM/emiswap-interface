@@ -20,7 +20,6 @@ import dayjs from 'dayjs';
 import { calcFarming365Apr } from './helpers';
 import { isMobile } from 'react-device-detect';
 import Tooltip from '../Farm/Tooltip';
-import { useWalletModalToggle } from '../../state/application/hooks';
 import { toggleWalletModal } from '../../state/application/actions';
 
 const Content = styled.div`
