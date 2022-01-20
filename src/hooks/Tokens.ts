@@ -9,6 +9,7 @@ import { useActiveWeb3React } from './index';
 import { useBytes32TokenContract, useTokenContract } from './useContract';
 import {
   useDefaultCoin,
+  useIsAvalancheActive,
   useIsEthActive,
   useIsKuCoinActive,
   useIsPolygonActive,
@@ -31,6 +32,7 @@ export function useAllTokens(isLpTokens?: boolean): [{ [address: string]: Token 
   const isKuCoinActive = useIsKuCoinActive();
   const isPolygonActive = useIsPolygonActive();
   const isShidenActive = useIsShidenActive();
+  const isAvalancheActive = useIsAvalancheActive();
 
   return [
     useMemo(() => {
@@ -45,6 +47,37 @@ export function useAllTokens(isLpTokens?: boolean): [{ [address: string]: Token 
                 ct.chainId === chainId &&
                 el.address.toLowerCase() === ct.address.toLowerCase() &&
                 mustVisibleAddresses.kucoin.includes(el.address.toLowerCase()),
+            );
+
+            // @ts-ignore
+            return (
+              Boolean(exists) ||
+              el.address === window['env'].REACT_APP_ESW_ID ||
+              el.symbol === 'ESW'
+            );
+          } else if (isPolygonActive) {
+            const exists = defaultCoins.tokens.find(
+              ct =>
+                ct.chainId === chainId &&
+                el.address.toLowerCase() === ct.address.toLowerCase() &&
+                ct.symbol !== 'WMATIC',
+              // && mustVisibleAddresses.polygon.includes(el.address.toLowerCase())
+            );
+
+            // @ts-ignore
+            return (
+              Boolean(exists) ||
+              el.address === window['env'].REACT_APP_ESW_ID ||
+              el.symbol === 'ESW'
+            );
+          } else if (isAvalancheActive) {
+            const exists = defaultCoins.tokens.find(
+              ct =>
+                (ct.chainId === chainId &&
+                  el.address.toLowerCase() === ct.address.toLowerCase() &&
+                  mustVisibleAddresses.avalanche.includes(el.address.toLowerCase())) ||
+                enableTokensList.includes(el.address) ||
+                el.address === window['env'].REACT_APP_ESW_ID,
             );
 
             // @ts-ignore
