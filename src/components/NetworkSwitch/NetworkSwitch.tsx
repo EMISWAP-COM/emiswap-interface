@@ -90,6 +90,7 @@ const NetworkSwitch = () => {
         )}
         <span>{NETWORK_LABELS[chainId] || 'Change Network'}</span>
         {[chainIds.SHIDEN].includes(chainId as any) && <NetworkLabel>Beta Version</NetworkLabel>}
+        {[chainIds.AVALANCHE].includes(chainId as any) && <NetworkLabel>Beta Version</NetworkLabel>}
       </NetworkButtonSwitch>
       <NetworkSwitchModal />
     </>

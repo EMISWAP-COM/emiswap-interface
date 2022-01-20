@@ -18,23 +18,37 @@ import { isMobile } from 'react-device-detect';
 
 const NetworkSwitchWrapped = styled.div`
   width: 100%;
-  padding: 32px 24px 32px 28px;
+  overflow-y: scroll;
+  max-height: 600px;
+  padding: 32px 24px 24px 32px;
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    // background: #7d979433;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background: #11b382;
+  }
 `;
 
 const NetworkItemsRow = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  // justify-content: space-between;
-  justify-content: space-around;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   width: 100%;
   margin: 24px auto 0 auto;
 `;
 
 const NetworkItem = styled.div`
-  position: relative;
+  display: flex;
+  align-items: center;
   min-width: 90px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   cursor: pointer;
 `;
 
@@ -44,26 +58,26 @@ const NetworkIcon = styled.div<{ active: boolean }>`
   align-items: center;
   width: 48px;
   height: 48px;
-  margin: 0 auto 12px auto;
-  border: 3px solid ${({ theme, active }) => active ? theme.green5 : 'white'};
+  border: 3px solid ${({ theme, active }) => (active ? theme.green5 : 'white')};
   border-radius: 4px;
   background: white;
+  margin-right: 15px;
+  position: relative;
 `;
 const CircleCheckImg = styled.img`
   position: absolute;
-  top: -12px;
-  right: 2px;
+  top: -15px;
+  right: -10px;
 `;
 
 const NetworkName = styled(Text)<{ active: boolean }>`
-  font-size: 16px; 
-  font-weight: 500; 
+  font-size: 16px;
+  font-weight: 700;
   text-align: center;
-  color: ${({ theme, active }) => active ? theme.green5 : 'white'};
+  color: ${({ theme, active }) => (active ? theme.green5 : 'white')};
 `;
 
 export default function NetworkSwitchModal() {
-
   const { chainId } = useActiveWeb3React();
 
   const isMetaMask = useIsMetaMask();
@@ -125,31 +139,32 @@ export default function NetworkSwitchModal() {
         onDismiss={toggleNetworkSwitchModal}
         minHeight={null}
         maxHeight={320}
-        maxWidth={480}
+        maxWidth={320}
       >
         <NetworkSwitchWrapped>
           <div>
-            <Text textAlign="center" fontWeight={500} fontSize={20} color="white">Choose Network</Text>
+            <Text textAlign="center" marginBottom={40} fontWeight={500} fontSize={20} color="white">
+              Choose Network
+            </Text>
           </div>
 
           <NetworkItemsRow>
-            {networksItems.filter(item => item.active).map(item => (
-              <NetworkItem key={item.chainId} onClick={() => onClickItem(item)}>
-                <NetworkIcon active={item.chainId === chainId}>
-                  {item.chainId === chainId && (
-                    <CircleCheckImg src={CircleCheckIcon}/>
-                  )}
-                  <img
-                    style={{ maxWidth: logosMaxWidths[item.chainId] || '100%' }}
-                    src={item.icon}
-                    alt={item.name}
-                  />
-                </NetworkIcon>
-                <NetworkName active={item.chainId === chainId}>{item.name}</NetworkName>
-              </NetworkItem>
-            ))}
+            {networksItems
+              .filter(item => item.active)
+              .map(item => (
+                <NetworkItem key={item.chainId} onClick={() => onClickItem(item)}>
+                  <NetworkIcon active={item.chainId === chainId}>
+                    {item.chainId === chainId && <CircleCheckImg src={CircleCheckIcon} />}
+                    <img
+                      style={{ maxWidth: logosMaxWidths[item.chainId] || '100%' }}
+                      src={item.icon}
+                      alt={item.name}
+                    />
+                  </NetworkIcon>
+                  <NetworkName active={item.chainId === chainId}>{item.name}</NetworkName>
+                </NetworkItem>
+              ))}
           </NetworkItemsRow>
-
         </NetworkSwitchWrapped>
       </Modal>
       {selectedItem && (
@@ -159,9 +174,7 @@ export default function NetworkSwitchModal() {
           onCancel={onClickCancel}
         />
       )}
-      {isVisibleNeedSwitchModal && (
-        <NetworkNeedSwitchModal onClose={onCloseNeedSwitch}/>
-      )}
+      {isVisibleNeedSwitchModal && <NetworkNeedSwitchModal onClose={onCloseNeedSwitch} />}
     </div>
   );
 }
