@@ -149,6 +149,12 @@ export function useIsShidenActive(): boolean {
   return [chainIds.SHIDEN].includes(chainId as any);
 }
 
+export function useIsAvalancheActive(): boolean {
+  const { chainId } = useActiveWeb3React();
+
+  return (chainId as any) === chainIds.AVALANCHE;
+}
+
 export function useIsMetaMask(): boolean {
   const { connector } = useActiveWeb3React();
 
