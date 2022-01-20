@@ -150,6 +150,7 @@ export function useAllTokens(isLpTokens?: boolean): [{ [address: string]: Token 
       isKuCoinActive,
       isPolygonActive,
       isShidenActive,
+      isAvalancheActive,
     ]),
     isLoading,
   ];
