@@ -520,7 +520,7 @@ export const networksItems: INetworkItem[] = [
       'https://blockscout.com/shiden/token/0xb4BcA5955F26d2fA6B57842655d7aCf2380Ac854',
     eswExplorerName: 'ESW Shiden Blockscout',
     active: true,
-    bridgeUrl: '',
+    bridgeUrl: 'https://app.relaychain.com/#/cross-chain-bridge-transfer',
   },
   {
     alias: 'avalanche',
