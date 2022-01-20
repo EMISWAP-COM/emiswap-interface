@@ -15,7 +15,6 @@ const NetworkSwitchWrapped = styled.div`
   }
 
   ::-webkit-scrollbar-track {
-    // background: #7d979433;
     border-radius: 3px;
   }
 
