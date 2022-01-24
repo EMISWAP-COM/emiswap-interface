@@ -110,7 +110,6 @@ export function useInactiveListener(suppress = false) {
 }
 
 export function useSwitchNetwork() {
-
   const { connector } = useActiveWeb3React();
   const { deactivate } = useWeb3React();
 
@@ -118,8 +117,6 @@ export function useSwitchNetwork() {
 
   const switchNetwork = async (item: INetworkItem) => {
     const { ethereum } = window as any;
-
-    console.log(item);
 
     try {
       ethereum.removeAllListeners(['networkChanged']);

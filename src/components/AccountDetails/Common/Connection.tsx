@@ -1,9 +1,8 @@
 import React from 'react';
-import { convertBigDecimal, formatConnectorName } from '../uitls';
-import { WalletAction } from '../styleds';
+import { convertBigDecimal, getWalletByConnector } from '../uitls';
+import { Header, WalletAction } from '../styleds';
 import styled from 'styled-components/macro';
 import { useActiveWeb3React } from '../../../hooks';
-import { StatusIcon } from '../StatusIcon';
 import { getExplorerLink, shortenAddress } from '../../../utils';
 import { useHistory } from 'react-router';
 import { useWalletModalToggle } from '../../../state/application/hooks';
@@ -14,16 +13,11 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { darken } from 'polished';
 import { ChangeAddress } from './ChangeAddress';
-import {
-  useIsAvalancheActive,
-  useIsKuCoinActive,
-  useIsPolygonActive,
-  useIsShidenActive,
-  useNetworkData,
-} from '../../../hooks/Coins';
+import { useIsKuCoinActive, useIsPolygonActive, useNetworkData } from '../../../hooks/Coins';
 import { MessageTooltip } from '../../../base/ui';
 import { css } from 'styled-components';
 import { Balance as BalanceType } from '../../../state/cabinets/reducer';
+import { ReactComponent as DropDown } from '../../../assets/images/dropdown.svg';
 
 const Container = styled.div`
   font-size: 13px;
@@ -49,15 +43,7 @@ const DarkText = styled.span`
 `;
 
 const Account = styled(DarkText)`
-  font-size: 22px;
-`;
-
-const WalletInfo = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  color: ${({ theme }) => theme.white};
+  font-size: 18px;
 `;
 
 const Wallet = styled.div`
@@ -80,6 +66,7 @@ const BalanceItem = styled.div`
   padding: 14px;
   background: ${({ theme }) => theme.darkGrey};
 `;
+
 const BalanceValue = styled(DarkText)`
   font-size: 16px;
   font-weight: 600;
@@ -101,49 +88,11 @@ const ActionBtn = styled(WalletAction)`
   height: 32px;
 `;
 
-const ChangeActionsBlock = styled.div`
-  display: flex;
-
-  @media screen and (max-width: 800px) {
-    order: 2;
-    width: 100%;
-    margin: 8px 0 16px 0;
-  }
-`;
-
 const ChangeWalletMessageTooltip = styled(MessageTooltip)`
   max-width: 400px !important;
 
   &:before {
     display: none;
-  }
-`;
-
-const ChangeWalletBtn = styled(ActionBtn)<{ inactive: boolean }>`
-  margin-left: 8px !important;
-  background-color: ${({ theme }) => theme.purple} !important;
-  border: 1px solid ${({ theme }) => theme.purple} !important;
-  color: ${({ inactive }) => (inactive ? '#615C69' : '#FFFFFF')};
-
-  &:hover,
-  &:focus,
-  &:active {
-    background: ${({ theme, inactive }) => (inactive ? 'transparent' : theme.purple)} !important;
-    box-shadow: none;
-  }
-
-  ${({ inactive }) =>
-    inactive &&
-    css`
-      background-color: transparent !important;
-      color: #615c69;
-      cursor: auto;
-      border: 1px solid rgb(97, 92, 105) !important;
-      opacity: 1 !important;
-      text-decoration: none !important;
-    `} @media screen and(max-width: 800 px) {
-    width: calc(50% - 5px);
-    margin-left: auto;
   }
 `;
 
@@ -172,6 +121,8 @@ const CollectBtn = styled(ActionBtn)<{ inactive?: boolean }>`
 
 const AccountControl = styled.div`
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   height: 53px;
   font-weight: 400;
   font-size: 1.25rem;
@@ -207,13 +158,36 @@ const AddressLink = styled(ExternalLink)`
   }
 `;
 
-const AccountNetwork = styled.span`
-  align-self: center;
-  margin-left: 1rem;
-`;
 const ButtonText = styled.span`
   white-space: nowrap;
   padding-right: 0.2rem;
+`;
+
+const WalletImg = styled.img`
+  display: block;
+  height: 24px;
+`;
+
+const DropdownBlock = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 16px;
+  cursor: pointer;
+
+  :hover {
+    background: #272530;
+  }
+`;
+
+export const StyledDropDown = styled(DropDown)`
+  margin: 0 0.25rem 0 0.5rem;
+  height: 35%;
+
+  path {
+    stroke: ${({ theme }) => theme.white};
+    stroke-width: 1.5px;
+  }
 `;
 
 interface BalanceItemInterface {
@@ -319,18 +293,58 @@ export const Connection: React.FC<Props> = ({
   const balance = useSelector((state: AppState) => state.cabinets.totalBalance);
 
   const isKuCoinActive = useIsKuCoinActive();
-  const isShidenActive = useIsShidenActive();
-  const isAvalanceActive = useIsAvalancheActive();
+  /*const isShidenActive = useIsShidenActive();
+  const isAvalanceActive = useIsAvalancheActive();*/
 
   const isEnableChangeWallet = !isKuCoinActive;
   const isCollectDisabled = true || !Number(balance?.available.ESW);
 
+  const wallet = getWalletByConnector(connector);
+
   return (
     <>
       <Container>
+        <AccountControl>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            {wallet ? (
+              <ChangeWalletMessageTooltip
+                disableTooltip={isEnableChangeWallet}
+                whiteSpace={'normal'}
+                position={{ top: '4px', left: '20px' }}
+                text="Only Metamask wallet is supported. You need to change the address inside the Metamask wallet."
+              >
+                <DropdownBlock
+                  onClick={() => {
+                    if (!isEnableChangeWallet) {
+                      return;
+                    }
+                    openOptions();
+                  }}
+                >
+                  <WalletImg src={require('../../../assets/images/' + wallet.iconName)} />
+                  <StyledDropDown />
+                </DropdownBlock>
+              </ChangeWalletMessageTooltip>
+            ) : null}
+            <Wallet>
+              <ChangeAddress openOptions={openOptions}>
+                <DropdownBlock>
+                  <Account>{ENSName || shortenAddress(account)}</Account>
+                  <StyledDropDown />
+                </DropdownBlock>
+              </ChangeAddress>
+            </Wallet>
+            <div style={{ marginLeft: '8px' }}>
+              <Copy toCopy={account} />
+            </div>
+          </div>
+          <AddressLink href={getExplorerLink(chainId, ENSName || account, 'address')}>
+            <LinkIcon size={16} />
+            <span style={{ marginLeft: '4px' }}>View on {blockExplorerName}</span>
+          </AddressLink>
+        </AccountControl>
         <Main>
-          <WalletInfo>
-            <span>Connected with {formatConnectorName(connector)}</span>
+          {/*<WalletInfo>
             <ChangeActionsBlock>
               <ChangeAddress openOptions={openOptions} />
               <ChangeWalletMessageTooltip
@@ -352,45 +366,28 @@ export const Connection: React.FC<Props> = ({
                 </ChangeWalletBtn>
               </ChangeWalletMessageTooltip>
             </ChangeActionsBlock>
-            <Wallet>
-              <StatusIcon connectorName={connector} />
-              <Account>{ENSName || shortenAddress(account)}</Account>
-              <AccountNetwork>
-                {isKuCoinActive || isShidenActive || isAvalanceActive ? '' : 'Ethereum & Polygon'}
-              </AccountNetwork>
-            </Wallet>
-          </WalletInfo>
-          {isKuCoinActive || isShidenActive ? null : (
-            <Balance
-              total={sumESW('ESW', balance)}
-              wallet={convertBigDecimal(balance?.wallet.ESW)}
-              locked={convertBigDecimal(balance?.total.locked.ESW)}
-              avalible={convertBigDecimal(balance?.available.ESW)}
-              handleRequest={() => changeCollectButtonState('request')}
-              handleClaim={() => {
-                changeCollectButtonState('wallet');
+          </WalletInfo>*/}
+          <Header style={{ marginTop: 4 }}>Your rewards from all networks</Header>
+          <Balance
+            total={sumESW('ESW', balance)}
+            wallet={convertBigDecimal(balance?.wallet.ESW)}
+            locked={convertBigDecimal(balance?.total.locked.ESW)}
+            avalible={convertBigDecimal(balance?.available.ESW)}
+            handleRequest={() => changeCollectButtonState('request')}
+            handleClaim={() => {
+              changeCollectButtonState('wallet');
 
-                if (isCollectDisabled) {
-                  return;
-                }
+              if (isCollectDisabled) {
+                return;
+              }
 
-                toggle();
-                history.push(`/claim/${network}`);
-              }}
-            >
-              {children}
-            </Balance>
-          )}
+              toggle();
+              history.push(`/claim/${network}`);
+            }}
+          >
+            {children}
+          </Balance>
         </Main>
-        <AccountControl>
-          <Copy toCopy={account}>
-            <span style={{ marginLeft: '4px' }}>Copy Address</span>
-          </Copy>
-          <AddressLink href={getExplorerLink(chainId, ENSName || account, 'address')}>
-            <LinkIcon size={16} />
-            <span style={{ marginLeft: '4px' }}>View on {blockExplorerName}</span>
-          </AddressLink>
-        </AccountControl>
       </Container>
     </>
   );
