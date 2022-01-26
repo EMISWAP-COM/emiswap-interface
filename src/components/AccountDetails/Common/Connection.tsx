@@ -15,6 +15,7 @@ import { AppState } from '../../../state';
 import { darken } from 'polished';
 import { ChangeAddress } from './ChangeAddress';
 import {
+  useIsAvalancheActive,
   useIsKuCoinActive,
   useIsPolygonActive,
   useIsShidenActive,
@@ -319,6 +320,7 @@ export const Connection: React.FC<Props> = ({
 
   const isKuCoinActive = useIsKuCoinActive();
   const isShidenActive = useIsShidenActive();
+  const isAvalanceActive = useIsAvalancheActive();
 
   const isEnableChangeWallet = !isKuCoinActive;
   const isCollectDisabled = true || !Number(balance?.available.ESW);
@@ -354,7 +356,7 @@ export const Connection: React.FC<Props> = ({
               <StatusIcon connectorName={connector} />
               <Account>{ENSName || shortenAddress(account)}</Account>
               <AccountNetwork>
-                {isKuCoinActive || isShidenActive ? '' : 'Ethereum & Polygon'}
+                {isKuCoinActive || isShidenActive || isAvalanceActive ? '' : 'Ethereum & Polygon'}
               </AccountNetwork>
             </Wallet>
           </WalletInfo>

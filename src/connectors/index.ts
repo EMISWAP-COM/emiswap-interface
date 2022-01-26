@@ -51,6 +51,7 @@ export const walletconnect = new WalletConnectConnector({
   rpc: {
     [CHAIN_ID]: NETWORK_URL,
     137: 'https://matic-mainnet.chainstacklabs.com',
+    43114: 'https://api.avax.network/ext/bc/C/rpc',
   },
   bridge: 'https://bridge.walletconnect.org',
   qrcode: true,
