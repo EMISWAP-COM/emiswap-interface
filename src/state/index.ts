@@ -15,7 +15,7 @@ import stats from './stats/reducer';
 import launchpad from './launchpad/reducer';
 import farming from './farming/reducer';
 import polygonCabinet from './cabinets/polygon-cabinet';
-import bridge from '../pages/Bridge/bridgeSlice';
+import bridge from '../pages/Bridge/slice';
 
 import { updateVersion } from './user/actions';
 
