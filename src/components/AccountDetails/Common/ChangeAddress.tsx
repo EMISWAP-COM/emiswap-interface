@@ -19,7 +19,7 @@ const ActionBtn = styled(WalletAction)`
   height: 32px;
 `;
 
-const ChangeAddressBtn = styled(ActionBtn)<{ inactive: boolean }>`
+/*const ChangeAddressBtn = styled(ActionBtn)<{ inactive: boolean }>`
   height: 32px;
   margin-left: 0;
   border: 1px solid rgb(97, 92, 105) !important;
@@ -39,7 +39,7 @@ const ChangeAddressBtn = styled(ActionBtn)<{ inactive: boolean }>`
     margin-left: 0;
     padding: 4px 2px;
   }
-`;
+`;*/
 
 const ModalContent = styled.div`
   display: flex;
@@ -81,7 +81,7 @@ interface Props {
   openOptions: () => void;
 }
 
-export const ChangeAddress: React.FC<Props> = ({ openOptions }) => {
+export const ChangeAddress: React.FC<Props> = ({ openOptions, children }) => {
   const { connector } = useActiveWeb3React();
   const { deactivate } = useWeb3React();
 
@@ -144,12 +144,13 @@ export const ChangeAddress: React.FC<Props> = ({ openOptions }) => {
       {confirmChangeModal()}
       <MessageTooltip
         disableTooltip={!isMetamask}
-        position={{ top: '20px', right: '40px' }}
+        position={{ top: '12px', left: '20px' }}
         text="You need to change the address inside the Metamask wallet"
       >
-        <ChangeAddressBtn inactive={isMetamask} onClick={handleClick}>
+        {/*<ChangeAddressBtn inactive={isMetamask} onClick={handleClick}>
           Change address
-        </ChangeAddressBtn>
+        </ChangeAddressBtn>*/}
+        <div onClick={handleClick}>{children}</div>
       </MessageTooltip>
     </Container>
   );

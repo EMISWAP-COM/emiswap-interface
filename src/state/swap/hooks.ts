@@ -90,7 +90,6 @@ export function tryParseAmount(value?: string, currency?: Token): TokenAmount | 
   }
   try {
     // const typedValueParsed = parseUnits(value, currency.decimals).toString().substr(0, 22);
-    console.log(value, currency.decimals);
     const typedValueParsed = parseUnits(value, currency.decimals).toString();
     if (typedValueParsed !== '0') {
       return new TokenAmount(currency, JSBI.BigInt(typedValueParsed));
@@ -106,8 +105,6 @@ export function tryParseAmount(value?: string, currency?: Token): TokenAmount | 
 export function useCurrencyWrapped(currency: Token | null | undefined) {
   const { chainId } = useActiveWeb3React();
   const eth = useCurrency(ZERO_ADDRESS);
-
-  // console.log(currency?.address);
 
   if (currency?.address === eth?.address) {
     switch (chainId as any) {
