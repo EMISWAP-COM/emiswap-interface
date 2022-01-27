@@ -4,7 +4,6 @@ import Column from '../../components/Column';
 import CurrencyLogo from '../../components/CurrencyLogo';
 import { RowFixed } from '../../components/Row';
 import { StyledFixedSizeList, StyledMenuItem } from '../../components/SearchModal/styleds';
-import { currencyKey } from '../../utils/currencyId';
 
 export default function TokensList({ items = [], onSelect = (s: any) => {}, selectedItem = null }) {
   const Row = useMemo(() => {
@@ -37,7 +36,7 @@ export default function TokensList({ items = [], onSelect = (s: any) => {}, sele
       itemCount={items.length}
       itemSize={50}
       style={{ flex: '1', margin: '0 30px' }}
-      itemKey={index => currencyKey(items[index])}
+      itemKey={index => index}
     >
       {Row}
     </StyledFixedSizeList>
