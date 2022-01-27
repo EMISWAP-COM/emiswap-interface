@@ -32,6 +32,16 @@ export const fetchSupportedChains = createAsyncThunk('bridge/fetchSupportedChain
   return response as Chain[];
 });
 
+export const fetchFromTokenList = createAsyncThunk('bridge/fetchFromTokenList', async () => {
+  const response = await custMovr.fetchSupportedTokensByChain();
+  return response as Chain[];
+});
+
+export const fetchToTokenList = createAsyncThunk('bridge/fetchToTokenList', async () => {
+  const response = await custMovr.fetchSupportedTokensToChain();
+  return response as Chain[];
+});
+
 export const bridgeSlice = createSlice({
   name: 'bridge',
   initialState,

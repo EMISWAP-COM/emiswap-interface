@@ -20,7 +20,7 @@ import useTokenChainQuote from './hooks/useTokenChainQuote';
 import useBuildTx from './hooks/useBuildTx';
 
 import * as S from './styled';
-import { selectFromToChains } from './bridgeSlice';
+import { selectFromToChains } from './slice';
 import { useAppSelector } from 'state/hooks';
 
 async function sendTransaction(txData, signer) {
@@ -41,8 +41,6 @@ const Bridge = () => {
     name: 'form' | 'confirm' | 'status' | 'complete';
     params?: any;
   }>({ name: 'form' });
-
-  // const { allChains } = useDefaultChains();
 
   const { fromChain, toChain } = useAppSelector(selectFromToChains);
 
@@ -131,9 +129,6 @@ const Bridge = () => {
       </AppBody>
     );
 
-  console.log('toAmount :' + toAmount);
-  console.log('decimals :' + toToken?.decimals);
-  console.log(formatUnits(111000000, 1));
   return (
     <AppBody>
       <SwapPoolTabs active={TabNames.BRIDGE} />

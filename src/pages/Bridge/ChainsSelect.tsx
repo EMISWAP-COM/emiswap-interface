@@ -14,7 +14,7 @@ import {
   selectFromToChains,
   setFromChain as setFromChainAction,
   setToChain as setToChainAction,
-} from './bridgeSlice';
+} from './slice';
 import { useAppSelector } from 'state/hooks';
 
 import * as Styled from '../../components/CurrencyInputPanel/styled';
