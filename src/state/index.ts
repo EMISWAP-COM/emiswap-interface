@@ -15,6 +15,7 @@ import stats from './stats/reducer';
 import launchpad from './launchpad/reducer';
 import farming from './farming/reducer';
 import polygonCabinet from './cabinets/polygon-cabinet';
+import bridge from '../pages/Bridge/bridgeSlice';
 
 import { updateVersion } from './user/actions';
 
@@ -36,6 +37,7 @@ const store = configureStore({
     launchpad,
     farming,
     polygonCabinet,
+    bridge,
   },
   middleware: [
     ...getDefaultMiddleware({ serializableCheck: false }),

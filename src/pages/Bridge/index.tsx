@@ -14,19 +14,20 @@ import { Complete } from './Complete';
 import { useWalletModalToggle } from '../../state/application/hooks';
 import { useActiveWeb3React } from '../../hooks';
 import useFeesByRoute from './hooks/useFeesByRoute';
-import useDefaultChains from './hooks/useDefaultChains';
 import useTokensByChain from './hooks/useTokensByChain';
 import useTokensToChain from './hooks/useTokensToChain';
 import useTokenChainQuote from './hooks/useTokenChainQuote';
 import useBuildTx from './hooks/useBuildTx';
 
 import * as S from './styled';
+import { selectFromToChains } from './bridgeSlice';
+import { useAppSelector } from 'state/hooks';
 
 async function sendTransaction(txData, signer) {
-  console.log(txData);
-  txData.forEach(async txItem => {
+  txData.map(async txItem => {
     const tx = await signer.sendTransaction(txItem);
     const receipt = await tx.wait();
+    console.log('receipt');
     console.log(receipt);
   });
 }
@@ -41,9 +42,10 @@ const Bridge = () => {
     params?: any;
   }>({ name: 'form' });
 
-  const { allChains } = useDefaultChains();
-  const [fromChain, setFromChain] = useState<any | null>(null);
-  const [toChain, setToChain] = useState<any | null>(null);
+  // const { allChains } = useDefaultChains();
+
+  const { fromChain, toChain } = useAppSelector(selectFromToChains);
+
   const tokens = useTokensByChain(fromChain?.chainId, toChain?.chainId);
   const [token, setToken] = useState<UniSwapToken | null>(null);
   const [toToken, setToToken] = useState<UniSwapToken | null>(null);
@@ -58,9 +60,10 @@ const Bridge = () => {
     token?.decimals,
   );
   const { fees } = useFeesByRoute(quotes?.result?.routes?.[0]);
-  const toAmount = quotes?.result?.routes?.[0].bridgeRoute?.outputAmount;
+  const toAmount = quotes?.result?.routes?.[0]?.bridgeRoute?.outputAmount;
   const isApprovalRequired = quotes?.result?.routes?.[0]?.isApprovalRequired;
   const signer = library.getSigner();
+  console.log(toTokens);
 
   useEffect(() => {
     if (
@@ -88,7 +91,7 @@ const Bridge = () => {
     toChain?.chainId,
     amount,
     token?.decimals,
-    quotes?.result?.routes?.[0].routePath,
+    quotes?.result?.routes?.[0]?.routePath,
     toAmount,
     account,
     isApprovalRequired,
@@ -103,22 +106,12 @@ const Bridge = () => {
   }, [tx, signer]);
 
   useEffect(() => {
-    setFromChain(allChains[4] || null);
-    setToChain(allChains[3] || null);
-  }, [allChains]);
-
-  useEffect(() => {
     setToken(tokens[0] || null);
     setToToken(toTokens[0] || null);
   }, [tokens, toTokens]);
 
-  const onSwitchChains = () => {
-    setToChain(fromChain);
-    setFromChain(toChain);
-    setToken(null);
-  };
-
   const match = (value, obj) => obj[value] || null;
+  console.log(quotes);
 
   if (step.name !== 'form')
     return (
@@ -138,20 +131,15 @@ const Bridge = () => {
       </AppBody>
     );
 
+  console.log('toAmount :' + toAmount);
+  console.log('decimals :' + toToken?.decimals);
+  console.log(formatUnits(111000000, 1));
   return (
     <AppBody>
       <SwapPoolTabs active={TabNames.BRIDGE} />
       <Wrapper>
         <AutoColumn gap={'md'}>
-          <ChainsSelect
-            allChains={allChains}
-            fromChain={fromChain}
-            toChain={toChain}
-            setFromChain={setFromChain}
-            setToChain={setToChain}
-            setToken={setToken}
-            onSwitchChains={onSwitchChains}
-          />
+          <ChainsSelect setToken={setToken} />
           <TokenInput
             tokens={tokens}
             token={token}

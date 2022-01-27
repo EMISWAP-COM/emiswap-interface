@@ -38,7 +38,8 @@ const useBuildTx = (
       !amount ||
       !routePath ||
       !output ||
-      !address
+      !address ||
+      !allowanceTarget
     ) {
       return;
     }
