@@ -241,10 +241,10 @@ export const ESW: ChainTokenList = {
     // @ts-ignore
     new Token(chainIds.AVALANCHE, esw_addresses[chainIds.AVALANCHE], 18, 'ESW', 'EmiDAO Token'),
   ],
-  /*[chainIds.AURORA]: [
+  [chainIds.AURORA]: [
     // @ts-ignore
     new Token(chainIds.AURORA, esw_addresses[chainIds.AURORA], 18, 'ESW', 'EmiDAO Token'),
-  ],*/
+  ],
 };
 
 const ETH_ONLY: ChainTokenList = {
