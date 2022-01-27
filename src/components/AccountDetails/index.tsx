@@ -242,6 +242,49 @@ export default function AccountDetails({
           <YourAccount>
             <InfoCard>
               <AccountGroupingRow>
+                {ENSName ? (
+                  <>
+                    <AccountControl>
+                      <div>
+                        <Copy toCopy={account}>
+                          <span style={{ marginLeft: '4px' }}>Copy Address</span>
+                        </Copy>
+                        <AddressLink
+                          hasENS={!!ENSName}
+                          isENS={true}
+                          href={getExplorerLink(chainId, ENSName, 'address')}
+                        >
+                          <LinkIcon size={16} />
+                          <span style={{ marginLeft: '4px' }}>View on {blockExplorerName}</span>
+                        </AddressLink>
+                      </div>
+                    </AccountControl>
+                  </>
+                ) : (
+                  <>
+                    <AccountControl>
+                      <div>
+                        <Copy toCopy={account}>
+                          <span style={{ marginLeft: '4px' }}>Copy Address</span>
+                        </Copy>
+                        <AddressLink
+                          hasENS={!!ENSName}
+                          isENS={false}
+                          href={getExplorerLink(chainId, account, 'address')}
+                        >
+                          <LinkIcon size={16} />
+                          <span style={{ marginLeft: '4px' }}>
+                            {/*// @ts-ignore*/}
+                            View on {blockExplorerName}
+                          </span>
+                        </AddressLink>
+                      </div>
+                    </AccountControl>
+                  </>
+                )}
+                {/* {formatConnectorName()} */}
+              </AccountGroupingRow>
+              <AccountGroupingRow>
                 <WalletName>Connected with {formatConnectorName(connector)}</WalletName>
                 <div>
                   {connector !== injected && connector !== walletlink && (
@@ -282,51 +325,6 @@ export default function AccountDetails({
                     </>
                   )}
                 </AccountControl>
-              </AccountGroupingRow>
-              <AccountGroupingRow>
-                {ENSName ? (
-                  <>
-                    <AccountControl>
-                      <div>
-                        <Copy toCopy={account}>
-                          <span style={{ marginLeft: '4px' }}>Copy Address</span>
-                        </Copy>
-                        <AddressLink
-                          hasENS={!!ENSName}
-                          isENS={true}
-                          href={getExplorerLink(chainId, ENSName, 'address')}
-                        >
-                          <LinkIcon size={16} />
-                          <span style={{ marginLeft: '4px' }}>
-                            View on {blockExplorerName}
-                          </span>
-                        </AddressLink>
-                      </div>
-                    </AccountControl>
-                  </>
-                ) : (
-                  <>
-                    <AccountControl>
-                      <div>
-                        <Copy toCopy={account}>
-                          <span style={{ marginLeft: '4px' }}>Copy Address</span>
-                        </Copy>
-                        <AddressLink
-                          hasENS={!!ENSName}
-                          isENS={false}
-                          href={getExplorerLink(chainId, account, 'address')}
-                        >
-                          <LinkIcon size={16} />
-                          <span style={{ marginLeft: '4px' }}>
-                            {/*// @ts-ignore*/}
-                            View on {blockExplorerName}
-                          </span>
-                        </AddressLink>
-                      </div>
-                    </AccountControl>
-                  </>
-                )}
-                {/* {formatConnectorName()} */}
               </AccountGroupingRow>
             </InfoCard>
             <SourcesList

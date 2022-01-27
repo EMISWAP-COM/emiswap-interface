@@ -16,12 +16,7 @@ import { ESWLocked } from '../Common/ESWLocked';
 import { ReferralPerformance } from '../Common/ReferralPerformance';
 import { PurchaseHistory } from '../Common/PurchaseHistory';
 import FarmingRewards from '../Common/FarmingRewards';
-import {
-  useIsAvalancheActive,
-  useIsEthActive,
-  useIsKuCoinActive,
-  useIsShidenActive,
-} from '../../../hooks/Coins';
+import { useIsEthActive, useIsPolygonActive } from '../../../hooks/Coins';
 import RequestCollect from './RequestCollect';
 import CollectToMyWallet from './CollectToMyWallet';
 
@@ -38,6 +33,7 @@ const ProfileStatus = styled.div`
   padding: 0 1rem 1rem 1rem;
   flex-wrap: wrap;
   gap: 12px;
+  font-size: 16px;
   color: ${({ theme }) => theme.darkText};
 
   @media screen and (max-width: 1200px) {
@@ -47,7 +43,7 @@ const ProfileStatus = styled.div`
   span {
     color: ${({ theme }) => theme.white};
     font-weight: 700;
-    text-transform: uppercase;
+    // text-transform: uppercase;
   }
 `;
 
@@ -71,9 +67,10 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
   const [collectButtonState, changeCollectButtonState] = useState<string | null>(null);
 
   const isEthActive = useIsEthActive();
-  const isKuCoinActive = useIsKuCoinActive();
+  const isPolygonActive = useIsPolygonActive();
+  /*const isKuCoinActive = useIsKuCoinActive();
   const isShidenActive = useIsShidenActive();
-  const isAvalanceActive = useIsAvalancheActive();
+  const isAvalanceActive = useIsAvalancheActive();*/
 
   useEffect(() => {
     if (isEthActive) {
@@ -88,7 +85,7 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
       <Wrapper>
         <ProfileStatus>
           <div>
-            Status: <span>ESW OWNER</span>
+            Status: <span>ESW Owner</span>
           </div>
         </ProfileStatus>
 
@@ -102,23 +99,17 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
             >
               Referral Program.
             </ExternalLink>
-            {/* become an&nbsp;
-          <ExternalLink href={'https://crowdsale.emidao.org/en#rec240950289'}>
-            Ambassador
-          </ExternalLink>
-          &nbsp;or farm your&nbsp;
-          <ExternalLink href={'https://crowdsale.emidao.org/magic-nft'}>Magic Cards!</ExternalLink> */}
           </OptionsPromo>
         </Connection>
-        {isKuCoinActive || isShidenActive || isAvalanceActive ? null : (
-          <>
+        {(isEthActive || isPolygonActive) && (
+          <div style={{ padding: '0 16px' }}>
             <ESWRewards />
             {isEthActive && <ESWHoldingRewards />}
             <ESWLocked />
             {isEthActive && <FarmingRewards />}
             <ReferralPerformance />
             <PurchaseHistory />
-          </>
+          </div>
         )}
       </Wrapper>
       {collectButtonState === 'request' && (

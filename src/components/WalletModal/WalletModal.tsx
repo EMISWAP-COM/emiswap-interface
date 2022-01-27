@@ -505,9 +505,10 @@ const WalletModal: React.FC<WalletModalProps> = ({ ENSName }) => {
     <WalletCustomModal
       isOpen={walletModalOpen}
       onDismiss={toggleWalletModal}
+      width={'70vw'}
       minHeight={null}
       maxHeight={90}
-      maxWidth={720}
+      maxWidth={900}
     >
       <Styled.Wrapper tabIndex={0}>
         <Styled.UpperSection>
