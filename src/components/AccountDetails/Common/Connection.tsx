@@ -18,6 +18,7 @@ import { MessageTooltip } from '../../../base/ui';
 import { css } from 'styled-components';
 import { Balance as BalanceType } from '../../../state/cabinets/reducer';
 import { ReactComponent as DropDown } from '../../../assets/images/dropdown.svg';
+import { isMobile } from 'react-device-detect';
 
 const Container = styled.div`
   font-size: 13px;
@@ -335,12 +336,12 @@ export const Connection: React.FC<Props> = ({
               </ChangeAddress>
             </Wallet>
             <div style={{ marginLeft: '8px' }}>
-              <Copy toCopy={account} />
+              <Copy toCopy={account} size={isMobile ? 24 : 16} />
             </div>
           </div>
           <AddressLink href={getExplorerLink(chainId, ENSName || account, 'address')}>
-            <LinkIcon size={16} />
-            <span style={{ marginLeft: '4px' }}>View on {blockExplorerName}</span>
+            <LinkIcon size={isMobile ? 24 : 16} />
+            {!isMobile && <span style={{ marginLeft: '4px' }}>View on {blockExplorerName}</span>}
           </AddressLink>
         </AccountControl>
         <Main>
