@@ -33,14 +33,12 @@ const FarmComponent: React.FC<FarmComponentProps> = ({
       const liq = parseFloat(farming.liquidity);
 
       if (isKuCoinToken) {
-        setApr(block * 28800 * 365 * 100 * dai / liq);
+        setApr((block * 28800 * 365 * 100 * dai) / liq);
       } else {
         setApr((block * 6400 * 365 * 100 * dai) / liq);
       }
     }
   }, [eswPriceInDai, farming.blockReward, farming.liquidity, selectedTab, isKuCoinToken]);
-
-  // console.log(farming);
 
   return isVisibleFarm ? (
     <ExtendableRow

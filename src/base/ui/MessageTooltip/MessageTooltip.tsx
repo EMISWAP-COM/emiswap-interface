@@ -46,7 +46,9 @@ const MessageBlock = styled.div`
   }
 `;
 
-const MessageText = styled.span<{ whiteSpace?: string }>`
+const MessageText = styled.div<{ whiteSpace?: string }>`
+  font-size: 14px;
+  line-height: 20px !important;
   white-space: ${({ whiteSpace }) => (whiteSpace ? whiteSpace : 'nowrap')};
   color: white;
 

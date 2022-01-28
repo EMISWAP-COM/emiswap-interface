@@ -112,6 +112,9 @@ inject_vars:
       tag: 13.1.0
     global:
       storageClass: csi-krbd-sc
+    persistence:
+      size: 70Gi
+
 
   emiswap-nft:
     image:

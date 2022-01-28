@@ -44,7 +44,9 @@ const StyledDialogOverlay = styled(({ mobile, ...rest }) => <AnimatedDialogOverl
 // destructure to not pass custom props to Dialog DOM element
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const StyledDialogContent = styled(
-  ({ minHeight, maxHeight, maxWidth, mobile, isOpen, ...rest }) => <DialogContent {...rest} />,
+  ({ width, minHeight, maxHeight, maxWidth, mobile, isOpen, ...rest }) => (
+    <DialogContent {...rest} />
+  ),
 ).attrs({
   'aria-label': 'dialog',
 })`
@@ -55,7 +57,7 @@ const StyledDialogContent = styled(
     background-color: ${({ theme }) => theme.dark1};
     box-shadow: ${({ theme }) => theme.modalBoxShadow};
     padding: 0;
-    width: 54vw;
+    width: ${({ width }) => width};
     overflow-x: scroll;
     overflow-y: visible;
 
@@ -100,6 +102,7 @@ const StyledDialogContent = styled(
 interface ModalProps {
   isOpen: boolean;
   onDismiss: () => void;
+  width?: string;
   minHeight?: number | false;
   maxHeight?: number;
   maxWidth?: number;
@@ -111,6 +114,7 @@ interface ModalProps {
 export default function Modal({
   isOpen,
   onDismiss,
+  width = '54wv',
   minHeight = false,
   maxHeight = 50,
   maxWidth = 440,
@@ -172,6 +176,7 @@ export default function Modal({
                         className={className}
                         style={props}
                         hidden={true}
+                        width={width}
                         minHeight={minHeight}
                         maxHeight={maxHeight}
                         maxWidth={maxWidth}
@@ -202,6 +207,7 @@ export default function Modal({
                 <StyledDialogContent
                   aria-label="dialog content"
                   hidden={true}
+                  width={width}
                   minHeight={minHeight}
                   maxHeight={maxHeight}
                   maxWidth={maxWidth}

@@ -118,8 +118,6 @@ export function useSwitchNetwork() {
   const switchNetwork = async (item: INetworkItem) => {
     const { ethereum } = window as any;
 
-    console.log(item);
-
     try {
       ethereum.removeAllListeners(['networkChanged']);
 

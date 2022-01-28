@@ -1,5 +1,6 @@
 import { SUPPORTED_WALLETS } from '../../constants';
 import { injected } from '../../connectors';
+import { AbstractConnector } from '@web3-react/abstract-connector';
 
 export enum DateFormat {
   short = 'Month, D, YYYY',
@@ -20,6 +21,18 @@ export function formatConnectorName(connectorName) {
     )
     .map(k => SUPPORTED_WALLETS[k].name)[0];
   return name;
+}
+
+export function getWalletByConnector(connector: AbstractConnector) {
+  let value = null;
+
+  Object.keys(SUPPORTED_WALLETS).forEach(key => {
+    if (SUPPORTED_WALLETS[key].connector === connector) {
+      value = SUPPORTED_WALLETS[key];
+    }
+  });
+
+  return value;
 }
 
 /*export async function metaMaskChangeAccount() {
@@ -102,7 +115,9 @@ export const convertToISOSafari = (dateString: string) => {
 };
 
 export const convertDate = (dateSourceString: string, format: string) => {
-  if (!dateSourceString) return '-';
+  if (!dateSourceString) {
+    return '-';
+  }
 
   const date = convertToISOSafari(dateSourceString);
 
