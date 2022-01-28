@@ -19,7 +19,7 @@ import { currencyKey } from '../../utils/currencyId';
 import { tokenAmountToString } from '../../utils/formats';
 import defaultCoins from '../../constants/defaultCoins';
 import { KOVAN_WETH } from '../../constants';
-import { useNetworkData } from '../../hooks/Coins';
+import { useIsAuroraActive, useNetworkData } from '../../hooks/Coins';
 
 export default function CurrencyList({
   currencies,
@@ -51,6 +51,7 @@ export default function CurrencyList({
   const addToken = useAddUserToken();
   const removeToken = useRemoveUserAddedToken();
   const ETHBalance = useETHBalances([account])[account];
+  const isAuroraActive = useIsAuroraActive()
 
   const CurrencyRow = useMemo(() => {
     return memo(function CurrencyRow({ index, style }: { index: number; style: CSSProperties }) {
@@ -91,9 +92,9 @@ export default function CurrencyList({
         (selectedCurrency && currencyEquals(currency, selectedCurrency)) ||
           (isMatchEth &&
             ((otherCurrency &&
-              (otherCurrency.isEther || otherCurrency.equals(WETH)) &&
+              (otherCurrency.isEther || (!isAuroraActive && otherCurrency.equals(WETH))) &&
               currency.isEther) ||
-              currency.equals(WETH))),
+              (!isAuroraActive && currency.equals(WETH)))),
       );
       const otherSelected = Boolean(otherCurrency && currencyEquals(otherCurrency, currency));
 
