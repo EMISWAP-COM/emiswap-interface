@@ -51,7 +51,7 @@ export default function CurrencyList({
   const addToken = useAddUserToken();
   const removeToken = useRemoveUserAddedToken();
   const ETHBalance = useETHBalances([account])[account];
-  const isAuroraActive = useIsAuroraActive()
+  const isAuroraActive = useIsAuroraActive();
 
   const CurrencyRow = useMemo(() => {
     return memo(function CurrencyRow({ index, style }: { index: number; style: CSSProperties }) {
@@ -183,6 +183,7 @@ export default function CurrencyList({
     networkData,
     showName,
     isLpTokens,
+    isAuroraActive,
   ]);
 
   return (
