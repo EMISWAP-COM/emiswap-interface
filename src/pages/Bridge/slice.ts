@@ -171,10 +171,10 @@ export const bridgeSlice = createSlice({
 
     builder
       .addCase(fetchQuote.fulfilled, (state, action) => {
-        if (action.payload.routes.length === 0) {
-          state.quote = 'no-route';
-        } else {
+        if (action.payload.routes?.length) {
           state.quote = action.payload;
+        } else {
+          state.quote = 'no-route';
         }
       })
       .addCase(fetchQuote.pending, (state, action) => {

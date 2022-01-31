@@ -34,7 +34,7 @@ export interface Quote {
   fromChainId: Chain['chainId'];
   toAsset: Token;
   toChainId: Chain['chainId'];
-  routes: {
+  routes?: {
     allowanceTarget: string;
     isApprovalRequired: boolean;
     routePath: string;
