@@ -172,7 +172,7 @@ export const fetchQuote = createAsyncThunk(
       toChainId,
       parseUnits(amount, decimals),
     );
-    return quotes.result;
+    return quotes.result as Quote;
   },
 );
 
@@ -192,12 +192,15 @@ export const bridgeSlice = createSlice({
     },
     setFromToken: (state, action: PayloadAction<Token>) => {
       state.fromToken = action.payload;
+      state.quote = 'loading';
     },
     setAmountFromToken: (state, action: PayloadAction<string>) => {
       state.amountFromToken = action.payload;
+      state.quote = 'loading';
     },
     setToToken: (state, action: PayloadAction<Token>) => {
       state.toToken = action.payload;
+      state.quote = 'loading';
     },
   },
   extraReducers(builder) {
@@ -244,7 +247,11 @@ export const bridgeSlice = createSlice({
 
     builder
       .addCase(fetchQuote.fulfilled, (state, action) => {
-        state.quote = action.payload;
+        if (action.payload.routes.length === 0) {
+          state.quote = 'no-route';
+        } else {
+          state.quote = action.payload;
+        }
       })
       .addCase(fetchQuote.pending, (state, action) => {
         // TODO set to loading state

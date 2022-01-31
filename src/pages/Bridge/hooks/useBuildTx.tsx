@@ -43,6 +43,7 @@ const useBuildTx = (
     ) {
       return;
     }
+    setTxData([]);
     const txs = [];
     if (isApprovalRequired) {
       // TODO  I do it, but for what?
