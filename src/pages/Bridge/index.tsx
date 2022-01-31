@@ -41,9 +41,11 @@ async function sendTransaction(txData, signer) {
 
 const getButtonTitle = (quote: BridgeState['quote']): string => {
   if (quote === 'loading') {
-    return 'Fill the form';
+    return 'Loading quote...';
   } else if (quote === 'no-route') {
     return 'No routes available';
+  } else if (quote === 'waiting') {
+    return 'Please fill all fields';
   } else {
     return 'Send Transaction';
   }
@@ -71,10 +73,10 @@ const Bridge = () => {
   const toAmount = typeof quotes !== 'string' ? quotes.routes[0]?.bridgeRoute?.outputAmount : null;
   const isApprovalRequired =
     typeof quotes !== 'string' ? quotes.routes[0]?.isApprovalRequired : false;
-  const signer = library.getSigner();
+  const signer = library?.getSigner();
 
   useEffect(() => {
-    if (fromToken && toToken && fromChain && toChain) {
+    if (fromToken && toToken && fromChain && toChain && amount) {
       dispatch(
         fetchQuote({
           fromAsset: fromToken.address,
@@ -164,7 +166,6 @@ const Bridge = () => {
           disabled={!tx || typeof quotes === 'string'}
         >
           {getButtonTitle(quotes)}
-          {/* {quotes ? 'Send Transaction' : 'No routes available'} */}
         </ButtonLight>
       ) : (
         <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
