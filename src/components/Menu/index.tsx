@@ -4,6 +4,7 @@ import { BookOpen, Code, MessageCircle, PieChart } from 'react-feather';
 import WikiIcon from '../../assets/images/wiki.svg';
 import styled from 'styled-components';
 import { ReactComponent as MenuIcon } from '../../assets/images/menu.svg';
+import WhitePaper from '../../assets/whitePaper.pdf';
 import useToggle from '../../hooks/useToggle';
 import { ExternalLink } from '../../theme';
 import { useNetworkData } from '../../hooks/Coins';
@@ -115,7 +116,7 @@ export default function Menu() {
   return (
     <StyledMenu ref={node}>
       <StyledMenuButton onClick={toggle}>
-        <StyledMenuIcon/>
+        <StyledMenuIcon />
       </StyledMenuButton>
       {open && (
         <MenuFlyout>
@@ -125,11 +126,11 @@ export default function Menu() {
           </MenuItem> */}
           <MenuItem id="link" href="https://wiki.emiswap.com/">
             {/* TODO иконка не из react-feather нарушает единообразие*/}
-            <img src={WikiIcon} width={14} height={14} alt=""/>
+            <img src={WikiIcon} width={14} height={14} alt="" />
             Wiki
           </MenuItem>
           <MenuItem id="link" href={analyticsUrl}>
-            <PieChart size={14}/>
+            <PieChart size={14} />
             Analytics
           </MenuItem>
           <MenuItem
@@ -137,11 +138,11 @@ export default function Menu() {
             href="https://emiswap.medium.com/all-you-need-to-know-about-nft-magic-cards-7c0ec9875800"
             target="_blank"
           >
-            <MessageCircle size={14}/>
+            <MessageCircle size={14} />
             NFT Magic Cards
           </MenuItem>
-          <MenuItem id="link" href="https://about.emiswap.com/whitepaper" target="_blank">
-            <BookOpen size={14}/>
+          <MenuItem id="link" href={WhitePaper} target="_blank">
+            <BookOpen size={14} />
             Whitepaper
           </MenuItem>
           {/* <MenuItem
@@ -158,7 +159,7 @@ export default function Menu() {
             href="/docs/06042021_Emiswap_SC_Audit_Report.pdf"
             target="_blank"
           >
-            <BookOpen size={14}/>
+            <BookOpen size={14} />
             Smart Contract Audit
           </MenuItem>
           <MenuItem
@@ -167,15 +168,15 @@ export default function Menu() {
             href="/docs/12072021_Emiswap_SC_Audit_Report_V2.pdf"
             target="_blank"
           >
-            <BookOpen size={14}/>
+            <BookOpen size={14} />
             Smart Contract Audit 2
           </MenuItem>
           <MenuItem id="link" href={window['env'].REACT_APP_CODE_LINK} target="_blank">
-            <Code size={14}/>
+            <Code size={14} />
             Code
           </MenuItem>
           <MenuItem id="link" href="https://about.emiswap.com/farming" target="_blank">
-            <BookOpen size={14}/>
+            <BookOpen size={14} />
             Earn with EmiSwap
           </MenuItem>
         </MenuFlyout>
