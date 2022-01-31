@@ -25,7 +25,7 @@ const initialState: BridgeState = {
   amountFromToken: null,
   toTokenList: 'loading',
   toToken: null,
-  quote: 'loading',
+  quote: 'waiting',
 };
 
 export const fetchSupportedChains = createAsyncThunk('bridge/fetchSupportedChains', async () => {
@@ -116,15 +116,15 @@ export const bridgeSlice = createSlice({
     },
     setFromToken: (state, action: PayloadAction<Token>) => {
       state.fromToken = action.payload;
-      state.quote = 'loading';
+      state.quote = 'waiting';
     },
     setAmountFromToken: (state, action: PayloadAction<string>) => {
       state.amountFromToken = action.payload;
-      state.quote = 'loading';
+      state.quote = 'waiting';
     },
     setToToken: (state, action: PayloadAction<Token>) => {
       state.toToken = action.payload;
-      state.quote = 'loading';
+      state.quote = 'waiting';
     },
   },
   extraReducers(builder) {
@@ -178,7 +178,7 @@ export const bridgeSlice = createSlice({
         }
       })
       .addCase(fetchQuote.pending, (state, action) => {
-        // TODO set to loading state
+        state.quote = 'loading';
       })
       .addCase(fetchQuote.rejected, (state, action) => {
         // TODO handle error
