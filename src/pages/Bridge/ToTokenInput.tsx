@@ -17,7 +17,7 @@ const ToTokenInput = () => {
       tokens={toTokenList}
       token={toToken}
       amount={formatUnits(toAmount || 0, toToken?.decimals || 1)}
-      onAmountInput={() => {}}
+      onAmountInput={null}
       setToken={value => dispatch(setToToken(value))}
     />
   );
