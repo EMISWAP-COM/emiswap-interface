@@ -9,6 +9,7 @@ import {
   setFromToken,
 } from './slice';
 import TokenInput from './TokenInput';
+import { Token } from './types';
 
 const FromTokenInput = () => {
   const fromTokenList = useAppSelector(selectFromTokenList);
@@ -20,8 +21,8 @@ const FromTokenInput = () => {
       tokens={fromTokenList}
       token={fromToken}
       amount={amount}
-      onAmountInput={value => dispatch(setAmountFromToken(value))}
-      setToken={value => dispatch(setFromToken(value))}
+      onAmountInput={(value: string) => dispatch(setAmountFromToken(value))}
+      setToken={(value: Token) => dispatch(setFromToken(value))}
     />
   );
 };
