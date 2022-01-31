@@ -45,6 +45,7 @@ const useBuildTx = (
     }
     const txs = [];
     if (isApprovalRequired) {
+      // TODO  I do it, but for what?
       await customMovr.fetchCheckAllowance({
         chainID: fromChainId,
         owner: address,

@@ -1,11 +1,11 @@
 import React, { useContext, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import BridgeSearchModal from './BridgeSearchModal';
 import { ArrowDown, ArrowUp } from 'react-feather';
-import { AutoRow } from '../../components/Row';
-import { ArrowWrapper } from '../../components/swap/styleds';
+import BridgeSearchModal from './BridgeSearchModal';
+import { AutoRow } from 'components/Row';
+import { ArrowWrapper } from 'components/swap/styleds';
 import { CursorPointer, StyledButtonNavigation } from '../../theme';
-import { AutoColumn } from '../../components/Column';
+import { AutoColumn } from 'components/Column';
 import { ThemeContext } from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import {
@@ -16,19 +16,11 @@ import {
   setToChain as setToChainAction,
 } from './slice';
 import { useAppSelector } from 'state/hooks';
+import Loader from 'components/Loader';
 
 import * as Styled from '../../components/CurrencyInputPanel/styled';
 
-const ChainInput = ({
-  chain,
-  chainList,
-  onClick,
-  closeModal,
-  setChain,
-  setToken,
-  legendText,
-  isOpen,
-}) => {
+const ChainInput = ({ chain, chainList, onClick, closeModal, setChain, legendText, isOpen }) => {
   const { t } = useTranslation();
   const selectTokenText = t('selectToken');
   return (
@@ -50,7 +42,7 @@ const ChainInput = ({
                   className="token-symbol-container"
                   active={Boolean(chain && chain.name)}
                 >
-                  {chain ? chain.name : selectTokenText}
+                  {chainList === 'loading' ? <Loader /> : chain ? chain.name : selectTokenText}
                 </Styled.StyledTokenName>
                 <Styled.StyledDropDown selected={true} />
               </Styled.Aligner>
@@ -64,7 +56,6 @@ const ChainInput = ({
         onDismiss={closeModal}
         onSelect={chain => {
           setChain(chain);
-          setToken(null);
           closeModal();
         }}
       />
@@ -92,7 +83,7 @@ const ChainSwitcher = ({ onSwitchChains }) => {
   );
 };
 
-const ChainsSelect = ({ setToken }) => {
+const ChainsSelect = () => {
   const [modalOpened, setModalOpened] = React.useState<'from' | 'to' | null>(null);
   const dispatch = useDispatch();
   const chainList = useAppSelector(selectChainList);
@@ -107,7 +98,6 @@ const ChainsSelect = ({ setToken }) => {
   const onSwitchChains = () => {
     setToChain(fromChain);
     setFromChain(toChain);
-    setToken(null);
   };
 
   return (
@@ -120,7 +110,6 @@ const ChainsSelect = ({ setToken }) => {
         }}
         isOpen={modalOpened === 'from'}
         setChain={setFromChain}
-        setToken={setToken}
         legendText={'FROM'}
         closeModal={() => setModalOpened(null)}
       />
@@ -135,7 +124,6 @@ const ChainsSelect = ({ setToken }) => {
         }}
         isOpen={modalOpened === 'to'}
         setChain={setToChain}
-        setToken={setToken}
         legendText={'TO'}
         closeModal={() => setModalOpened(null)}
       />
