@@ -15,6 +15,7 @@ import useBuildTx from './hooks/useBuildTx';
 
 import * as S from './styled';
 import {
+  BridgeState,
   selectFromToChains,
   fetchFromTokenList,
   fetchToTokenList,
@@ -37,6 +38,16 @@ async function sendTransaction(txData, signer) {
     console.log(receipt);
   });
 }
+
+const getButtonTitle = (quote: BridgeState['quote']): string => {
+  if (quote === 'loading') {
+    return 'Fill the form';
+  } else if (quote === 'no-route') {
+    return 'No routes available';
+  } else {
+    return 'Send Transaction';
+  }
+};
 
 const Bridge = () => {
   const { account, library } = useActiveWeb3React();
@@ -150,9 +161,10 @@ const Bridge = () => {
           onClick={() => {
             send();
           }}
-          disabled={!tx}
+          disabled={!tx || typeof quotes === 'string'}
         >
-          {quotes ? 'Send Transaction' : 'No routes available'}
+          {getButtonTitle(quotes)}
+          {/* {quotes ? 'Send Transaction' : 'No routes available'} */}
         </ButtonLight>
       ) : (
         <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>

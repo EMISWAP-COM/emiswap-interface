@@ -7,6 +7,7 @@ const useFeesByRoute = route => {
   const [fees, setFees] = useState<{ [key: string]: any }>({});
 
   useEffect(() => {
+    setFees({});
     if (!route) return;
 
     library.getGasPrice().then(gasPrice => {
