@@ -1,5 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import { Chain, Token } from './slice';
+import { Chain, Token } from './types';
 
 const MOVR_API = 'https://backend.movr.network/';
 
