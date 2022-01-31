@@ -5,6 +5,7 @@ import useCopyClipboard from '../../hooks/useCopyClipboard';
 
 import { LinkStyledButton } from '../../theme';
 import { CheckCircle, Copy } from 'react-feather';
+import { isMobile } from 'react-device-detect';
 
 const CopyIcon = styled(LinkStyledButton)`
   color: ${({ theme }) => theme.blue};
@@ -30,6 +31,7 @@ const TransactionStatusText = styled.span`
 export default function CopyHelper(props: {
   toCopy: string;
   className?: string;
+  size?: number;
   children?: React.ReactNode;
   onClick?: () => void;
 }) {
@@ -44,12 +46,12 @@ export default function CopyHelper(props: {
     >
       {isCopied ? (
         <TransactionStatusText>
-          <CheckCircle size={'16'} />
+          {!isMobile && <CheckCircle size={props.size || 16} />}
           <TransactionStatusText>Copied</TransactionStatusText>
         </TransactionStatusText>
       ) : (
         <TransactionStatusText>
-          <Copy size={'16'} />
+          <Copy size={props.size || 16} />
         </TransactionStatusText>
       )}
       {isCopied ? '' : props.children}

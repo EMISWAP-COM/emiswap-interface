@@ -7,6 +7,7 @@ import { ButtonSecondary } from '../Button';
 export const Header = styled.div`
   margin-top: 36px;
   margin-bottom: 12px;
+  font-size: 16px;
   color: ${({ theme }) => theme.white};
 
   @media screen and (max-width: 1200px) {

@@ -76,9 +76,7 @@ export default function App() {
             referral_address: referralAddress,
           }),
         })
-        .then(data => {
-          console.log(data);
-        });
+        .then(data => {});
     }
   }, [account, referralAddress]);
 

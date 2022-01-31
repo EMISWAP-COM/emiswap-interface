@@ -296,8 +296,6 @@ export async function getLpTokenByAddress(
   const symbol = 'LP ' + (await token0Contract.symbol()) + '-' + (await token1Contract.symbol());
   const name = 'LP ' + (await token0Contract.symbol()) + '-' + (await token1Contract.symbol());
 
-  console.log(decimals, symbol, name);
-
   const token = new Token(chainId, tokenAddress, decimals, symbol, name);
 
   return token;

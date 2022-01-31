@@ -22,8 +22,8 @@ const StyledDialogOverlay = styled(({ mobile, ...rest }) => <AnimatedDialogOverl
     overflow: hidden;
 
     ${({ mobile }) =>
-  mobile &&
-  css`
+      mobile &&
+      css`
         align-items: flex-end;
       `}
 
@@ -44,7 +44,9 @@ const StyledDialogOverlay = styled(({ mobile, ...rest }) => <AnimatedDialogOverl
 // destructure to not pass custom props to Dialog DOM element
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const StyledDialogContent = styled(
-  ({ minHeight, maxHeight, maxWidth, mobile, isOpen, ...rest }) => <DialogContent {...rest} />,
+  ({ width, minHeight, maxHeight, maxWidth, mobile, isOpen, ...rest }) => (
+    <DialogContent {...rest} />
+  ),
 ).attrs({
   'aria-label': 'dialog',
 })`
@@ -55,7 +57,7 @@ const StyledDialogContent = styled(
     background-color: ${({ theme }) => theme.dark1};
     box-shadow: ${({ theme }) => theme.modalBoxShadow};
     padding: 0;
-    width: 54vw;
+    width: ${({ width }) => width};
     overflow-x: scroll;
     overflow-y: visible;
 
@@ -64,18 +66,18 @@ const StyledDialogContent = styled(
     }
 
     ${({ maxWidth }) =>
-  maxWidth &&
-  css`
+      maxWidth &&
+      css`
         max-width: ${maxWidth}px;
       `}
     ${({ maxHeight }) =>
-  maxHeight &&
-  css`
+      maxHeight &&
+      css`
         max-height: ${maxHeight}vh;
       `}
     ${({ minHeight }) =>
-  minHeight &&
-  css`
+      minHeight &&
+      css`
         min-height: ${minHeight}vh;
       `}
     display: flex;
@@ -87,7 +89,7 @@ const StyledDialogContent = styled(
     ${({ theme, mobile }) => theme.mediaWidth.upToSmall`
       width:  85vw;
       ${mobile &&
-css`
+        css`
           width: 100vw;
           border-radius: 20px;
           border-bottom-left-radius: 0;
@@ -100,6 +102,7 @@ css`
 interface ModalProps {
   isOpen: boolean;
   onDismiss: () => void;
+  width?: string;
   minHeight?: number | false;
   maxHeight?: number;
   maxWidth?: number;
@@ -111,6 +114,7 @@ interface ModalProps {
 export default function Modal({
   isOpen,
   onDismiss,
+  width = '54wv',
   minHeight = false,
   maxHeight = 50,
   maxWidth = 440,
@@ -151,7 +155,7 @@ export default function Modal({
                 mobile={true}
               >
                 {/* prevents the automatic focusing of inputs on mobile by the reach dialog */}
-                {initialFocusRef ? null : <div tabIndex={1}/>}
+                {initialFocusRef ? null : <div tabIndex={1} />}
                 <Spring // animation for entrance and exit
                   from={{
                     transform: isOpen ? 'translateY(200px)' : 'translateY(100px)',
@@ -172,6 +176,7 @@ export default function Modal({
                         className={className}
                         style={props}
                         hidden={true}
+                        width={width}
                         minHeight={minHeight}
                         maxHeight={maxHeight}
                         maxWidth={maxWidth}
@@ -202,6 +207,7 @@ export default function Modal({
                 <StyledDialogContent
                   aria-label="dialog content"
                   hidden={true}
+                  width={width}
                   minHeight={minHeight}
                   maxHeight={maxHeight}
                   maxWidth={maxWidth}
