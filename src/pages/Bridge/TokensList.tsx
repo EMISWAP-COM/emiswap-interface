@@ -2,12 +2,13 @@ import { currencyEquals } from '@uniswap/sdk';
 import { useWeb3React } from '@web3-react/core';
 import React, { CSSProperties, memo, useMemo } from 'react';
 import { Text } from 'rebass';
-import Column, { AutoColumn } from '../../components/Column';
+import { AutoColumn } from '../../components/Column';
 import { RowFixed } from '../../components/Row';
 import { StyledFixedSizeList, StyledMenuItem } from '../../components/SearchModal/styleds';
 import { useTokenBalances } from '../../state/wallet/hooks';
 import { currencyKey } from '../../utils/currencyId';
 import { tokenAmountToString } from '../../utils/formats';
+import { Icon } from './styled';
 
 export default function TokensList({ items = [], onSelect = (s: any) => {}, selectedItem = null }) {
   const { account } = useWeb3React();
@@ -27,10 +28,8 @@ export default function TokensList({ items = [], onSelect = (s: any) => {}, sele
           disabled={isSelected}
         >
           <RowFixed>
-            {item.icon && <img src={item.icon} alt="icon" width="16px" height="16px" />}
-            <Column>
-              <Text fontWeight={500}>{item.symbol}</Text>
-            </Column>
+            {item.icon && <Icon src={item.icon} alt="icon" width="16px" height="16px" />}
+            <Text fontWeight={500}>{item.symbol}</Text>
           </RowFixed>
           <AutoColumn>{tokenAmountToString(balances[item.address])}</AutoColumn>
         </StyledMenuItem>

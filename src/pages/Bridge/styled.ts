@@ -21,3 +21,7 @@ export const FeeRowValue = styled.span`
   letter-spacing: 0.01em;
   color: #ffffff;
 `;
+
+export const Icon = styled.img`
+  margin-right: 1rem;
+`;
