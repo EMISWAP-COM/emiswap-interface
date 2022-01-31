@@ -13,7 +13,6 @@ import { useActiveWeb3React } from '../../hooks';
 import useFeesByRoute from './hooks/useFeesByRoute';
 import useBuildTx from './hooks/useBuildTx';
 
-import * as S from './styled';
 import {
   BridgeState,
   selectFromToChains,
@@ -29,6 +28,7 @@ import { useAppSelector } from 'state/hooks';
 import { useDispatch } from 'react-redux';
 import FromTokenInput from './FromTokenInput';
 import ToTokenInput from './ToTokenInput';
+import Fee from './Fee';
 
 async function sendTransaction(txData, signer) {
   txData.map(async txItem => {
@@ -144,16 +144,7 @@ const Bridge = () => {
           <ChainsSelect />
           <FromTokenInput />
           <ToTokenInput />
-          <S.Fee>
-            <S.FeeRow>
-              <S.FeeRowLabel>Transaction Fee</S.FeeRowLabel>
-              <S.FeeRowValue>{fees.transactionFee || 'Unknown'}</S.FeeRowValue>
-            </S.FeeRow>
-            <S.FeeRow>
-              <S.FeeRowLabel>Bridge Fee</S.FeeRowLabel>
-              <S.FeeRowValue>{fees.bridgeFee || 'Unknown'}</S.FeeRowValue>
-            </S.FeeRow>
-          </S.Fee>
+          <Fee />
           {/* // TODO: remove this or refactor */}
           {/* <Flow fromChain={fromChain} toChain={toChain} token={token} /> */}
         </AutoColumn>
