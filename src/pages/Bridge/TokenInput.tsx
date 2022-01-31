@@ -42,10 +42,13 @@ const TokenInput = ({ tokens, token, amount, onAmountInput, setToken }) => {
           <Styled.InputRow selected={false}>
             {token ? (
               <NumericalInput
+                disabled={!onAmountInput}
                 className="token-amount-input"
                 value={amount || ''}
                 onUserInput={val => {
-                  onAmountInput(val);
+                  if (onAmountInput) {
+                    onAmountInput(val);
+                  }
                 }}
               />
             ) : (
