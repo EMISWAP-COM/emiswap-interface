@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { RowBetween } from '../../components/Row';
 import { CursorPointer, TextWrapper } from '../../theme';
 import { tokenAmountToString } from '../../utils/formats';
@@ -15,7 +15,7 @@ const TokenInput = ({ tokens, token, amount, onAmountInput, setToken }) => {
   const { t } = useTranslation();
   const { account } = useActiveWeb3React();
   const balances = useTokenBalances(account, [token]); // TODO: use for single token!
-  const [modalOpened, setModalOpened] = React.useState(false);
+  const [modalOpened, setModalOpened] = useState(false);
 
   return (
     <>
@@ -76,7 +76,7 @@ const TokenInput = ({ tokens, token, amount, onAmountInput, setToken }) => {
       </Styled.InputPanel>
 
       <TokensSearchModal
-        tokens={tokens}
+        tokens={Array.isArray(tokens) ? tokens : []}
         isOpen={modalOpened}
         onDismiss={() => setModalOpened(false)}
         onSelect={token => {
