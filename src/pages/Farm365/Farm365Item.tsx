@@ -44,6 +44,9 @@ export default function Farm365Item({ contract, selectedFilterTab }: Farm365Item
   const dateNow = dayjs();
   const endDate = dayjs(farming365.endDate, 'DD.MM.YYYY HH:mm:ss');
 
+  const dateNow = dayjs();
+  const endDate = dayjs(farming365.endDate, 'DD.MM.YYYY HH:mm:ss');
+
   const isVisibleFarm = selectedFilterTab === 'active' ? endDate > dateNow : endDate < dateNow;
 
   return isVisibleFarm ? (
