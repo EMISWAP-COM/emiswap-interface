@@ -4,6 +4,7 @@ enum chainIds {
   RINKEBY = 4,
   GÖRLI = 5,
   KOVAN = 42,
+  BSC = 56,
   KUCOIN = 321,
   POLYGON = 137,
   MUMBAI = 80001,

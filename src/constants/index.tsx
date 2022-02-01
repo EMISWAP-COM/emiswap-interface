@@ -566,4 +566,36 @@ export const networksItems: INetworkItem[] = [
     eswExplorerName: 'ESW Polygonscan',
     active: false,
   },
+  {
+    alias: 'BSC',
+    value: 'BSC',
+    chainId: 56,
+    token: MUMBAI_WMATIC, // TODO: FAKE
+    icon: 'https://movricons.s3.ap-south-1.amazonaws.com/BSC.svg',
+    name: 'BSC',
+    rpcUrls: [
+      'https://bsc-dataseed1.binance.org',
+      'https://bsc-dataseed2.binance.org',
+      'https://bsc-dataseed3.binance.org',
+      'https://bsc-dataseed4.binance.org',
+      'https://bsc-dataseed1.defibit.io',
+      'https://bsc-dataseed2.defibit.io',
+      'https://bsc-dataseed3.defibit.io',
+      'https://bsc-dataseed4.defibit.io',
+      'https://bsc-dataseed1.ninicoin.io',
+      'https://bsc-dataseed2.ninicoin.io',
+      'https://bsc-dataseed3.ninicoin.io',
+      'https://bsc-dataseed4.ninicoin.io',
+      'wss://bsc-ws-node.nariox.org',
+    ],
+    eswExplorerUrl: 'https://bscscan.com/',
+    currencySymbol: 'MATIC', // TODO: FAKE
+    currencySymbolWrap: 'WMATIC', // TODO: FAKE
+    currencySymbolWeth: 'WMATIC', // TODO: FAKE
+    blockExplorerUrl: 'https://mumbai.polygonscan.com/', // TODO: FAKE
+    blockExplorerName: 'Polygonscan', // TODO: FAKE
+    analyticsUrl: 'https://emiswap.com/analytics?network=polygon', // TODO: FAKE
+    eswExplorerName: 'ESW Polygonscan', // TODO: FAKE
+    active: false,
+  },
 ];

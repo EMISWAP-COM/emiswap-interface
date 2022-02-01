@@ -26,6 +26,7 @@ export const injected = new InjectedConnector({
     3,
     4,
     5,
+    chainIds.BSC,
     chainIds.KOVAN,
     chainIds.KUCOIN,
     chainIds.POLYGON,
@@ -42,6 +43,7 @@ export const walletconnect = new WalletConnectConnector({
   supportedChainIds: [
     chainIds.MAINNET,
     chainIds.KOVAN,
+    56,
     chainIds.POLYGON,
     chainIds.MUMBAI,
     chainIds.SHIDEN,
