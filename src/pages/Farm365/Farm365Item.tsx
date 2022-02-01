@@ -40,13 +40,8 @@ export default function Farm365Item({ contract, selectedFilterTab }: Farm365Item
       setApr(calcFarming365Apr(farming365.liquidity, farming365.blockReward, eswRate));
     }
   }, [eswRate, farming365.blockReward, farming365.liquidity]);
-  // @ts-ignore
+
   const dateNow = dayjs();
-  // @ts-ignore
-  const endDate = dayjs(farming365.endDate, 'DD.MM.YYYY HH:mm:ss');
-  // @ts-ignore
-  const dateNow = dayjs();
-  // @ts-ignore
   const endDate = dayjs(farming365.endDate, 'DD.MM.YYYY HH:mm:ss');
 
   const isVisibleFarm = selectedFilterTab === 'active' ? endDate > dateNow : endDate < dateNow;
