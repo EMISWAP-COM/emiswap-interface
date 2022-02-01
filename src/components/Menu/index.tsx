@@ -4,6 +4,7 @@ import { BookOpen, Code, MessageCircle, PieChart } from 'react-feather';
 import WikiIcon from '../../assets/images/wiki.svg';
 import styled from 'styled-components';
 import { ReactComponent as MenuIcon } from '../../assets/images/menu.svg';
+import WhitePaper from '../../assets/whitePaper.pdf';
 import useToggle from '../../hooks/useToggle';
 import { ExternalLink } from '../../theme';
 import { useNetworkData } from '../../hooks/Coins';
@@ -140,7 +141,7 @@ export default function Menu() {
             <MessageCircle size={14} />
             NFT Magic Cards
           </MenuItem>
-          <MenuItem id="link" href="https://about.emiswap.com/whitepaper" target="_blank">
+          <MenuItem id="link" href={WhitePaper} target="_blank">
             <BookOpen size={14} />
             Whitepaper
           </MenuItem>

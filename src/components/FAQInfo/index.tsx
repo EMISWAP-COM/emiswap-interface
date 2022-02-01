@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Accordion, { AccordionButton, AccordionButtonsWrapper } from '../Accordion';
 import YellowCircle from '../../assets/svg/FAQIcon/yellowCircle.svg';
+import WhitePaper from '../../assets/whitePaper.pdf';
 
 const Body = styled.div`
   .title {
@@ -32,7 +33,7 @@ const Body = styled.div`
       font-size: 16px;
     }
   }
-  
+
   .f16 {
     line-height: 21px;
     font-size: 16px;
@@ -60,7 +61,7 @@ const Body = styled.div`
     justify-content: center;
     width: 100%;
     margin-bottom: 40px;
-    
+
     &__block {
       width: 50%;
       display: flex;
@@ -290,48 +291,47 @@ const Body = styled.div`
       width: 32px;
       height: 32px;
     }
-    
-          
-      /*color 5
+
+    /*color 5
       color 6
       color 7
       color 3
       color 8
       color 4*/
-      
+
     &__color5 {
-      background: #5D09E1;
+      background: #5d09e1;
     }
-    
+
     &__color6 {
-      background: #8479FF;
+      background: #8479ff;
     }
-    
+
     &__color7 {
-      background: #E478FF;
+      background: #e478ff;
     }
-    
+
     &__color3 {
-      background: #57D7FF;
+      background: #57d7ff;
     }
-    
+
     &__color8 {
-      background: #A973FF;
+      background: #a973ff;
     }
-    
+
     &__color4 {
-      background: #37FFDB;
+      background: #37ffdb;
     }
 
     &__color0 {
-      background: #D4D3FF;
+      background: #d4d3ff;
     }
 
     &__color1 {
-      background: #47FF37;
+      background: #47ff37;
     }
     &__color2 {
-      background: #37FFDB;
+      background: #37ffdb;
     }
 
     &__text-line {
@@ -457,7 +457,7 @@ const Body = styled.div`
           @media screen and (max-width: 1000px) {
             font-size: 14px;
           }
-          
+
           b {
             color: white;
           }
@@ -496,7 +496,7 @@ const Body = styled.div`
     letter-spacing: 0.01em;
     margin-bottom: 20px;
     margin-top: 50px;
-    color: #B7B7CA;
+    color: #b7b7ca;
 
     @media screen and (max-width: 1000px) {
       font-size: 16px;
@@ -506,83 +506,81 @@ const Body = styled.div`
       font-size: 14px;
       margin-top: 20px;
     }
-    
+
     b {
       color: white;
     }
   }
-  
+
   .list-wrapper {
     display: flex;
     justify-content: space-between;
-    
+
     @media screen and (max-width: 500px) {
       display: block;
     }
-    
+
     ul {
       list-style: none;
     }
-    
+
     li {
       margin-bottom: 16px;
       color: white;
       font-weight: 300;
       font-family: Roboto;
       font-style: normal;
-      
+
       &::before {
-        content: "\\2022";
-        color: #E478FF;
+        content: '\\2022';
+        color: #e478ff;
         font-weight: bold;
         display: inline-block;
         width: 1em;
         margin-left: -1em;
       }
     }
-    
   }
 `;
 
 const Tabs = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 24px;
-    
-    @media screen and (max-width: 500px) {
-      margin: 0 -10px 24px -10px;
-    }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 24px;
+
+  @media screen and (max-width: 500px) {
+    margin: 0 -10px 24px -10px;
+  }
 `;
 
-const Tab = styled.div<{active?: boolean}>`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 34px;
-    margin: 0 5px;
-    padding: 0 16px;
-    border: 1px solid #4A4757;
-    border-radius: 8px;
-    font-size: 14px;
-    text-transform: uppercase;
-    background: ${({active}) => active ? '#7A2DF4' : '#272530'};
-    color: white;
-    cursor: pointer;
-    
-    @media screen and (max-width: 500px) {
-      margin: 0 3px;
-      padding: 0 7px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      font-size: 10px;
-    }
+const Tab = styled.div<{ active?: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+  margin: 0 5px;
+  padding: 0 16px;
+  border: 1px solid #4a4757;
+  border-radius: 8px;
+  font-size: 14px;
+  text-transform: uppercase;
+  background: ${({ active }) => (active ? '#7A2DF4' : '#272530')};
+  color: white;
+  cursor: pointer;
+
+  @media screen and (max-width: 500px) {
+    margin: 0 3px;
+    padding: 0 7px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 10px;
+  }
 `;
 
 export default () => {
-
   const btnClickIntro = () => {
-    const win = window.open('https://about.emiswap.com/whitepaper', '_blank');
+    const win = window.open(WhitePaper, '_blank');
     win.focus();
   };
 
@@ -609,7 +607,9 @@ export default () => {
   return (
     <div className="for-scroll-faq">
       <Tabs>
-        <Tab onClick={btnClickIntro} active={true}>White Paper</Tab>
+        <Tab onClick={btnClickIntro} active={true}>
+          White Paper
+        </Tab>
         <Tab onClick={btnClickPresentation}>Presentation</Tab>
         <Tab onClick={btnClickVesting}>Check Vesting Schedule</Tab>
       </Tabs>
@@ -620,24 +620,24 @@ export default () => {
       >
         <Body>
           <div className="title">
-            EmiSwap is an audited, high APR, and cross-chain AMM DEX that offers users a secure environment to extract
-            daily high yields from liquidity mining and farming.
+            EmiSwap is an audited, high APR, and cross-chain AMM DEX that offers users a secure
+            environment to extract daily high yields from liquidity mining and farming.
           </div>
           <div className="title">
-            EmiSwap is the first project in the EmiDAO ecosystem, the world's first truly autonomous DAO with ESW native
-            token.
+            EmiSwap is the first project in the EmiDAO ecosystem, the world's first truly autonomous
+            DAO with ESW native token.
           </div>
           <div className="title">
-            ESW is a governance token that gives holders a right to receive a share of distributing fees proportionate
-            to the share of token ownership and gives a right to participate in voting on the development of the
-            project.
+            ESW is a governance token that gives holders a right to receive a share of distributing
+            fees proportionate to the share of token ownership and gives a right to participate in
+            voting on the development of the project.
           </div>
           <div className="card-blocks">
             <div className="card width1_3">
               <div className="h4 mb16">
                 <span>
                   0.3%
-                  <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle"/>
+                  <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle" />
                 </span>
               </div>
               <div className="card__description-text">Trading commission in any pool is 0.3%</div>
@@ -646,7 +646,7 @@ export default () => {
               <div className="h4 mb16">
                 <span>
                   0.25%
-                  <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle"/>
+                  <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle" />
                 </span>
               </div>
               <div className="card__description-text">
@@ -657,7 +657,7 @@ export default () => {
               <div className="h4 mb16">
                 <span>
                   0.05%
-                  <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle"/>
+                  <img className="card__YellowCircle" src={YellowCircle} alt="YellowCircle" />
                 </span>
               </div>
               <div className="card__description-text">
@@ -668,16 +668,12 @@ export default () => {
         </Body>
       </Accordion>
 
-      <Accordion
-        header="Farming & Staking"
-        btnText="Guide to Farming"
-        btnClick={btnClickFarming}
-      >
+      <Accordion header="Farming & Staking" btnText="Guide to Farming" btnClick={btnClickFarming}>
         <Body>
           <div className="title">
-            Staking allows users to deposit their tokens for any period of time into a smart contract (liquidity pool)
-            to receive extra rewards. The longer the user keeps their tokens in a staking smart contract, the larger
-            reward they receive.
+            Staking allows users to deposit their tokens for any period of time into a smart
+            contract (liquidity pool) to receive extra rewards. The longer the user keeps their
+            tokens in a staking smart contract, the larger reward they receive.
           </div>
           <div style={{ marginBottom: '32px', marginTop: '-16px' }}>
             <AccordionButtonsWrapper>
@@ -685,26 +681,25 @@ export default () => {
             </AccordionButtonsWrapper>
           </div>
           <div className="title">
-            In some sense, farming can be paralleled with staking. Users deposit their LP tokens, which they received
-            for providing liquidity on EmiSwap, into a smart contract and receive higher rewards. Thus, users first need
-            to provide liquidity with a token which increases projects liquidity and boosts trading volumes.
+            In some sense, farming can be paralleled with staking. Users deposit their LP tokens,
+            which they received for providing liquidity on EmiSwap, into a smart contract and
+            receive higher rewards. Thus, users first need to provide liquidity with a token which
+            increases projects liquidity and boosts trading volumes.
           </div>
         </Body>
       </Accordion>
 
-      <Accordion
-        header="Ethereum gas fee compensations"
-      >
+      <Accordion header="Ethereum gas fee compensations">
         <Body>
           <div className="title">
-            EmiSwap understands that operations on the Ethereum blockchain have become a nightmare for swappers and
-            liquidity providers due to high gas prices. Making a single operation on a decentralized exchange can cost
-            dozens of dollars in Ethereum equivalent.
+            EmiSwap understands that operations on the Ethereum blockchain have become a nightmare
+            for swappers and liquidity providers due to high gas prices. Making a single operation
+            on a decentralized exchange can cost dozens of dollars in Ethereum equivalent.
           </div>
           <div className="title">
-            Thus, EmiSwap compensates the gas price for all users who make Swaps or Provide Liquidity on EmiSwap DEX. As
-            compensation, users receive an equal amount of ESW tokens that play an increasingly important role in the
-            EmiDAO ecosystem.
+            Thus, EmiSwap compensates the gas price for all users who make Swaps or Provide
+            Liquidity on EmiSwap DEX. As compensation, users receive an equal amount of ESW tokens
+            that play an increasingly important role in the EmiDAO ecosystem.
           </div>
         </Body>
       </Accordion>
@@ -716,21 +711,23 @@ export default () => {
       >
         <Body>
           <div className="title">
-            EmiSwap plans to reach a $100 million TVL and gives away 1001 yield boosting and rare NFT Magic Cards to
-            Liquidity Providers.
+            EmiSwap plans to reach a $100 million TVL and gives away 1001 yield boosting and rare
+            NFT Magic Cards to Liquidity Providers.
           </div>
           <div className="title">
-            Each time the Total Value Locked on EmiSwap DEX is increased by $10 million, the EmiSwap team will
-            distribute 100 NFT Magic Cards to users who provided liquidity and crossed the milestones.
+            Each time the Total Value Locked on EmiSwap DEX is increased by $10 million, the EmiSwap
+            team will distribute 100 NFT Magic Cards to users who provided liquidity and crossed the
+            milestones.
           </div>
           <div className="title">
-            Every $100,000 of Total Value Locked on EmiSwap marks a milestone. The further the user is from the
-            milestone as he crosses it, the better NFT Magic Card he will receive. In a nutshell, the user which adds
-            the most liquidity will get the highest tier.
+            Every $100,000 of Total Value Locked on EmiSwap marks a milestone. The further the user
+            is from the milestone as he crosses it, the better NFT Magic Card he will receive. In a
+            nutshell, the user which adds the most liquidity will get the highest tier.
           </div>
           <div className="title">
-            One powerful user who added the most liquidity will get a legendary card. The top 2 to 6 users get 5 Epic
-            Cards and so on. In total, EmiSwap will issue 1001 limited edition NFTs for this campaign divided into:
+            One powerful user who added the most liquidity will get a legendary card. The top 2 to 6
+            users get 5 Epic Cards and so on. In total, EmiSwap will issue 1001 limited edition NFTs
+            for this campaign divided into:
           </div>
           <div className="list-wrapper" style={{ maxWidth: 700 }}>
             <ul>
@@ -749,23 +746,17 @@ export default () => {
         </Body>
       </Accordion>
 
-      <Accordion
-        header="NFT Magic Cards"
-        btnText="Guide to Staking"
-        btnClick={btnClickStaking}
-      >
+      <Accordion header="NFT Magic Cards" btnText="Guide to Staking" btnClick={btnClickStaking}>
         <Body>
           <div className="title">
-            NFT Magic Cards are cutting-edge loyalty items that increase users' benefits on the EmiSwap DEX. Offering
-            much more than usual NFT units, they are playable, tradable, and yield-boosting NFT collectibles that are
-            available for EmiSwap users only.
+            NFT Magic Cards are cutting-edge loyalty items that increase users' benefits on the
+            EmiSwap DEX. Offering much more than usual NFT units, they are playable, tradable, and
+            yield-boosting NFT collectibles that are available for EmiSwap users only.
           </div>
+          <div className="title">There are 6 tiers of NFT Magic Cards.</div>
           <div className="title">
-            There are 6 tiers of NFT Magic Cards.
-          </div>
-          <div className="title">
-            The higher the tier, the larger the bonus they contain. Though, the higher the tier of NFT Magic Card, the
-            better the bonus users receive. The list includes:
+            The higher the tier, the larger the bonus they contain. Though, the higher the tier of
+            NFT Magic Card, the better the bonus users receive. The list includes:
           </div>
           <div className="list-wrapper">
             <ul>
@@ -784,11 +775,11 @@ export default () => {
             </ul>
           </div>
           <div className="title">
-            The bonus users get is determined randomly, but all of them increase their yield on the platform.
+            The bonus users get is determined randomly, but all of them increase their yield on the
+            platform.
           </div>
         </Body>
       </Accordion>
-
     </div>
   );
 };
