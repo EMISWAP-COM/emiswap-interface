@@ -12,7 +12,12 @@ import isLpToken from '../isLpToken';
 import { ExternalLink } from '../../../theme';
 import { FarmingTimeType } from '../constants';
 import KucoinLogo from '../../../assets/currencies/KCS.png';
-import { useIsEthActive, useIsPolygonActive, useNetworkData } from '../../../hooks/Coins';
+import {
+  useIsEthActive,
+  useIsPolygonActive,
+  useIsShidenActive,
+  useNetworkData,
+} from '../../../hooks/Coins';
 import Farm365Content from '../../Farm365/Farm365Content';
 import useFarming365 from '../../../hooks/useFarming365';
 
@@ -254,6 +259,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
   const { alias } = useNetworkData();
   const isEthereumActive = useIsEthActive();
   const isPolygonActive = useIsPolygonActive();
+  const isShidenActive = useIsShidenActive();
 
   const [isRowExtended, setIsRowExtended] = useState(false);
 
@@ -279,7 +285,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
                   <CurrencyLogo currency={stakeToken} size={'24px'} />
                 )}
               </StyledCurrencyLogo>
-              {isPolygonActive ? (
+              {isPolygonActive || isShidenActive ? (
                 <StyledTruncatedText>LP - ESW</StyledTruncatedText>
               ) : (
                 <StyledTruncatedText>
