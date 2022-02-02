@@ -4506,6 +4506,27 @@ const defaultCoins: DefaultCoins = {
       decimals: 18,
       symbol: 'DAI',
     },
+    {
+      address: '0xB12BFcA5A55806AaF64E99521918A4bf0fC40802',
+      chainId: chainIds.AURORA,
+      name: 'USDC',
+      decimals: 18,
+      symbol: 'USDC',
+    },
+    {
+      address: '0x8BEc47865aDe3B172A928df8f990Bc7f2A3b9f79',
+      chainId: chainIds.AURORA,
+      name: 'AURORA',
+      decimals: 18,
+      symbol: 'AURORA',
+    },
+    {
+      address: '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d',
+      chainId: chainIds.AURORA,
+      name: 'NEAR',
+      decimals: 18,
+      symbol: 'NEAR',
+    },
   ],
   logoURI: 'https://1inch.exchange/assets/images/logo.png',
 };
