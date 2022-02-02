@@ -15,7 +15,7 @@ import { parseUnits } from '@ethersproject/units';
 import { tokenAmountToString } from '../../utils/formats';
 import { useAllTransactions } from '../../state/transactions/hooks';
 import { useCurrencyBalance } from '../../state/wallet/hooks';
-import { useNetworkData } from '../../hooks/Coins';
+import { useIsPolygonActive, useIsShidenActive, useNetworkData } from '../../hooks/Coins';
 import dayjs from 'dayjs';
 import { calcFarming365Apr } from './helpers';
 import { isMobile } from 'react-device-detect';
@@ -204,6 +204,9 @@ type Farm365ContentProps = {
 export default function Farm365Content({ farming365, eswRate }: Farm365ContentProps) {
   const { chainId, account } = useActiveWeb3React();
   const { value: network } = useNetworkData();
+
+  const isPolygonActive = useIsPolygonActive();
+  const isShidenActive = useIsShidenActive();
 
   const farmingAddresses = farming365.contract.address;
 
@@ -486,7 +489,13 @@ export default function Farm365Content({ farming365, eswRate }: Farm365ContentPr
     farming365.update();
   };
 
-  const apr = calcFarming365Apr(farming365.liquidity, farming365.blockReward, eswRate).toFixed(2);
+  const apr = calcFarming365Apr(
+    chainId,
+    farming365.liquidity,
+    farming365.blockReward,
+    eswRate,
+  ).toFixed(2);
+
   const headerMarginBottom = lpStakedTokens?.length > 1 ? (isMobile ? 12 : 24) : isMobile ? 12 : 0;
 
   return (
@@ -572,7 +581,10 @@ export default function Farm365Content({ farming365, eswRate }: Farm365ContentPr
                 </StakeTokenLine>
               </StakeToken>
               <StakeApr>365%</StakeApr>
-              <StakeRewardWallet onClick={toggleWalletModal}>See details</StakeRewardWallet>
+              {isPolygonActive && (
+                <StakeRewardWallet onClick={toggleWalletModal}>See details</StakeRewardWallet>
+              )}
+              {isShidenActive && <StakeReward>Coming soon</StakeReward>}
             </StakeItem>
           ))}
         </StakeList>
