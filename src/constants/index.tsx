@@ -621,5 +621,6 @@ export const networksItems: INetworkItem[] = [
     eswExplorerUrl: 'https://etherscan.io/token/0x5a75A093747b72a0e14056352751eDF03518031d',
     eswExplorerName: 'ESW Etherscan',
     active: true,
+    bridgeUrl: 'https://rainbowbridge.app/transfer'
   },
 ];
