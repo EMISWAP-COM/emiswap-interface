@@ -15,6 +15,7 @@ import { KCS } from './tokens/KCS';
 import { MATIC } from './tokens/MATIC';
 import { AVAX } from './tokens/AVAX';
 import { SDN } from './tokens/SDN';
+import { AURORA_ETHER } from './tokens/AURORA_ETHER';
 
 export const MAX_NUM_DECIMALS = 18;
 export const ROUTER_ADDRESS = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D';
@@ -608,7 +609,7 @@ export const networksItems: INetworkItem[] = [
     alias: 'aurora',
     value: 'aurora',
     chainId: chainIds.AURORA,
-    token: ETHER,
+    token: AURORA_ETHER,
     icon: AuroraNetworkIcon,
     name: 'Aurora',
     rpcUrls: ['https://mainnet.aurora.dev'],
