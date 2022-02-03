@@ -89,6 +89,7 @@ interface FetchQuoteInterface {
 export const fetchQuote = createAsyncThunk(
   'bridge/fetchQuote',
   async ({ fromAsset, fromChainId, toAsset, toChainId, amount, decimals }: FetchQuoteInterface) => {
+    const timestamp = Date.now();
     const quotes = await custMovr.fetchQuoteByChains(
       fromAsset,
       fromChainId,
@@ -96,7 +97,7 @@ export const fetchQuote = createAsyncThunk(
       toChainId,
       parseUnits(amount, decimals),
     );
-    return quotes.result as Quote;
+    return { ...quotes.result, timestamp } as Quote;
   },
 );
 
@@ -171,6 +172,10 @@ export const bridgeSlice = createSlice({
 
     builder
       .addCase(fetchQuote.fulfilled, (state, action) => {
+        // fix race condition
+        if (typeof state.quote !== 'string' && state.quote.timestamp > action.payload.timestamp) {
+          return;
+        }
         if (action.payload.routes?.length) {
           state.quote = action.payload;
         } else {
