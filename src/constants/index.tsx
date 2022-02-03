@@ -616,7 +616,7 @@ export const networksItems: INetworkItem[] = [
     currencySymbol: 'ETH',
     currencySymbolWrap: 'WETH',
     currencySymbolWeth: 'WETH',
-    blockExplorerUrl: 'https://browser.aurorachain.io/',
+    blockExplorerUrl: 'https://explorer.mainnet.aurora.dev',
     blockExplorerName: 'Aurora Block Explorer',
     analyticsUrl: 'https://emiswap.com/analytics?network=aurora',
     eswExplorerUrl: 'https://etherscan.io/token/0x5a75A093747b72a0e14056352751eDF03518031d',
