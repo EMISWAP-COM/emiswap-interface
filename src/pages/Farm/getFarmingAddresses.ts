@@ -33,6 +33,9 @@ const addressesByNetworkId = {
     '0xeB274bcD6CA905b7dB5F65b8C2a126fb3fF39bc3', // RewardPoolMulti PROXY
     '0xb7Ff11b03DD28cDea45D65E274381a4E3D90778D', // RewardPoolMulti PROXY
   ],
+  [chainIds.SHIDEN]: [
+    '0x831b25EB4073d92E4766411f0DbDd0b549753179', // RewardPoolMulti PROXY
+  ],
   // TODO
   [chainIds.AVALANCHE]: [''],
   // TODO
