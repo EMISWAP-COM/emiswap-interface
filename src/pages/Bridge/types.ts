@@ -29,12 +29,12 @@ export interface Token {
   icon: string;
 }
 
-export interface Quote {
+export interface QuoteRaw {
   fromAsset: Token;
   fromChainId: Chain['chainId'];
   toAsset: Token;
   toChainId: Chain['chainId'];
-  routes?: {
+  routes: {
     allowanceTarget: string;
     isApprovalRequired: boolean;
     routePath: string;
@@ -73,4 +73,8 @@ export interface Quote {
     };
   }[];
   amount: string;
+}
+
+export interface Quote extends QuoteRaw {
+  timestamp: number;
 }
