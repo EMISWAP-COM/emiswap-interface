@@ -26,6 +26,7 @@ import { computeSlippageAdjustedAmounts } from '../../utils/prices';
 import { BigNumber } from '@ethersproject/bignumber';
 import { KOVAN_WETH, MUMBAI_WMATIC, WETH, WKCS, WMATIC, WSDN } from '../../constants';
 import chainIds from '../../constants/chainIds';
+import { AURORA_ETHER } from '../../constants/tokens/AURORA_ETHER';
 
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>(state => state.swap);
@@ -118,6 +119,8 @@ export function useCurrencyWrapped(currency: Token | null | undefined) {
         return MUMBAI_WMATIC;
       case chainIds.SHIDEN:
         return WSDN;
+      case chainIds.AURORA:
+        return AURORA_ETHER;
       default:
         return KOVAN_WETH;
     }
