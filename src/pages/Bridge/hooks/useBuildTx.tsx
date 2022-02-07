@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { parseUnits } from '@ethersproject/units';
+import { formatUnits, parseUnits } from '@ethersproject/units';
 import customMovr from '../movr';
 
 const useBuildTx = (
@@ -14,8 +14,10 @@ const useBuildTx = (
   address,
   isApprovalRequired,
   allowanceTarget,
+  nonce,
 ) => {
   const [tx, setTxData] = useState<any[]>([]);
+  const [status, setStatus] = useState<'none' | 'approve' | 'move'>('none');
 
   async function getDefaults(
     fromAsset,
@@ -29,6 +31,7 @@ const useBuildTx = (
     address,
     isApprovalRequired,
     allowanceTarget,
+    nonce,
   ) {
     if (
       fromAsset === undefined ||
@@ -39,31 +42,37 @@ const useBuildTx = (
       !routePath ||
       !output ||
       !address ||
-      !allowanceTarget
+      !allowanceTarget ||
+      !nonce
     ) {
       return;
     }
     setTxData([]);
-    const txs = [];
+    setStatus('none');
     if (isApprovalRequired) {
-      // TODO  I do it, but for what?
-      await customMovr.fetchCheckAllowance({
+      const { value } = await customMovr.fetchCheckAllowance({
         chainID: fromChainId,
         owner: address,
         allowanceTarget,
         tokenAddress: fromAsset,
       });
-      const approvalTx = await customMovr.getApprovalBuildTx(
-        fromChainId,
-        address,
-        allowanceTarget,
-        fromAsset,
-        parseUnits(amount, decimals),
-      );
-      txs.push({
-        to: approvalTx.to,
-        data: approvalTx.data,
-      });
+      if (formatUnits(value, decimals) < amount) {
+        const approvalTx = await customMovr.getApprovalBuildTx(
+          fromChainId,
+          address,
+          allowanceTarget,
+          fromAsset,
+          parseUnits(amount, decimals),
+        );
+        setTxData([
+          {
+            to: approvalTx.to,
+            data: approvalTx.data,
+          },
+        ]);
+        setStatus('approve');
+        return;
+      }
     }
     const currentTX = await customMovr.getBuildTx(
       address,
@@ -80,8 +89,8 @@ const useBuildTx = (
       to: currentTX.tx.to,
       data: currentTX.tx.data,
     };
-    txs.push(allowanceTxData);
-    setTxData(txs);
+    setTxData([allowanceTxData]);
+    setStatus('move');
   }
 
   useEffect(() => {
@@ -97,6 +106,7 @@ const useBuildTx = (
       address,
       isApprovalRequired,
       allowanceTarget,
+      nonce,
     );
   }, [
     fromAsset,
@@ -110,9 +120,10 @@ const useBuildTx = (
     address,
     isApprovalRequired,
     allowanceTarget,
+    nonce,
   ]);
 
-  return { tx };
+  return { tx, status };
 };
 
 export default useBuildTx;

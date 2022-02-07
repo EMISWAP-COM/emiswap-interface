@@ -30,16 +30,24 @@ import FromTokenInput from './FromTokenInput';
 import ToTokenInput from './ToTokenInput';
 import Fee from './Fee';
 
-async function sendTransaction(txData, signer) {
+async function sendTransaction(txData, signer, fromChainId, toChainId, bridgeName, updateNonce) {
   txData.map(async txItem => {
     const tx = await signer.sendTransaction(txItem);
     const receipt = await tx.wait();
-    console.log('receipt');
-    console.log(receipt);
+    await fetch(
+      `https://watcherapi.fund.movr.network/api/v1/transaction-status?` +
+        new URLSearchParams({
+          transactionHash: receipt.transactionHash,
+          fromChainId,
+          toChainId,
+          bridgeName,
+        }).toString(),
+    );
+    updateNonce(x => x + 1);
   });
 }
 
-const getButtonTitle = (quote: BridgeState['quote']): string => {
+const getButtonTitle = (quote: BridgeState['quote'], status: string): string => {
   if (quote === 'loading') {
     return 'Loading quote...';
   } else if (quote === 'no-route') {
@@ -47,11 +55,18 @@ const getButtonTitle = (quote: BridgeState['quote']): string => {
   } else if (quote === 'waiting') {
     return 'Please fill all fields';
   } else {
-    return 'Send Transaction';
+    if (status === 'approve') {
+      return 'Approve transaction';
+    }
+    if (status === 'move') {
+      return 'Send Transaction';
+    }
+    return 'Wait transaction data';
   }
 };
 
 const Bridge = () => {
+  const [nonce, updateNonce] = useState(1);
   const { account, library } = useActiveWeb3React();
 
   const toggleWalletModal = useWalletModalToggle();
@@ -95,7 +110,7 @@ const Bridge = () => {
     dispatch(fetchToTokenList({ fromChain, toChain }));
   }, [dispatch, fromChain, toChain]);
 
-  const { tx } = useBuildTx(
+  const { tx, status } = useBuildTx(
     fromToken?.address,
     fromChain?.chainId,
     toToken?.address,
@@ -107,14 +122,22 @@ const Bridge = () => {
     account,
     isApprovalRequired,
     typeof quotes !== 'string' ? quotes.routes[0]?.allowanceTarget : null,
+    nonce,
   );
 
   const send = useCallback(() => {
     if (tx.length === 0) {
       return;
     }
-    sendTransaction(tx, signer);
-  }, [tx, signer]);
+    sendTransaction(
+      tx,
+      signer,
+      fromChain,
+      toChain,
+      typeof quotes !== 'string' ? quotes.routes[0].bridgeRoute.bridgeName : null,
+      updateNonce,
+    );
+  }, [tx, signer, fromChain, toChain, quotes]);
 
   const match = (value, obj) => obj[value] || null;
 
@@ -156,7 +179,7 @@ const Bridge = () => {
           }}
           disabled={!tx || typeof quotes === 'string'}
         >
-          {getButtonTitle(quotes)}
+          {getButtonTitle(quotes, status)}
         </ButtonLight>
       ) : (
         <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
