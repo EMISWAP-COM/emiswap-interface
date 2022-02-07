@@ -4456,6 +4456,14 @@ const defaultCoins: DefaultCoins = {
       logoURI: 'https://tokens.1inch.exchange/0x4fabb145d64652a948d72533023f6e7a623c7c53.png',
     },
     {
+      address: '0x735abe48e8782948a37c7765ecb76b98cde97b0f',
+      chainId: 336,
+      name: 'JPYC',
+      decimals: 18,
+      symbol: 'JPYC',
+      logoURI: 'https://s2.coinmarketcap.com/static/img/coins/64x64/9045.png',
+    },
+    {
       address: '0xd7f302E123a4b1DaA593DF763B9aAdbfc53b212B',
       chainId: 336,
       name: 'LP ESW-SDN',
