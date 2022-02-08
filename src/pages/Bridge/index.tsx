@@ -3,7 +3,7 @@ import AppBody from '../AppBody';
 import { AutoColumn } from '../../components/Column';
 import { ButtonLight } from '../../components/Button';
 import { Wrapper } from '../../components/swap/styleds';
-import ChainsSelect from './ChainsSelect';
+import ChainsSelect from './ChainSelect';
 import { SwapPoolTabs, TabNames } from '../../components/NavigationTabs';
 import { Confirmation } from './Confirmation';
 import { Status } from './Status';
