@@ -1,8 +1,6 @@
 import React, { CSSProperties, memo, useMemo } from 'react';
 import { Text } from 'rebass';
-import Column from '../../components/Column';
-import CurrencyLogo from '../../components/CurrencyLogo';
-import { RowFixed } from '../../components/Row';
+import { Column, CurrencyLogo, Row as RowFixed } from '../../components';
 import { StyledFixedSizeList, StyledMenuItem } from '../../components/SearchModal/styleds';
 
 export default function TokensList({ items = [], onSelect = (s: any) => {}, selectedItem = null }) {
