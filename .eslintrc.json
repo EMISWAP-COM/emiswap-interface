@@ -8,27 +8,19 @@
       "jsx": true
     }
   },
-  "ignorePatterns": [
-    "node_modules/**/*"
-  ],
+  "ignorePatterns": ["node_modules/**/*"],
   "settings": {
     "react": {
       "version": "detect"
     }
   },
-  "extends": [
-    "prettier"
-  ],
-  "plugins": [
-    "prettier",
-    "react-hooks",
-    "@typescript-eslint"
-  ],
+  "extends": ["prettier"],
+  "plugins": ["prettier", "react-hooks", "@typescript-eslint"],
   "rules": {
     "@typescript-eslint/explicit-function-return-type": "off",
-    "prettier/prettier": "error",
+    "prettier/prettier": "off",
     "@typescript-eslint/no-explicit-any": "off",
-    "semi": ["error", "always"],
+    "semi": "off",
     "semi-spacing": ["error", { "before": false, "after": true }]
   }
 }
