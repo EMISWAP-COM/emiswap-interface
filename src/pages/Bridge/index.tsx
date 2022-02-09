@@ -29,20 +29,57 @@ import { useDispatch } from 'react-redux';
 import FromTokenInput from './FromTokenInput';
 import ToTokenInput from './ToTokenInput';
 import Fee from './Fee';
+import { fetchWrapper } from 'api/fetchWrapper';
 
-async function sendTransaction(txData, signer, fromChainId, toChainId, bridgeName, updateNonce) {
+async function sendTransaction(
+  txData,
+  signer,
+  fromChainId,
+  toChainId,
+  bridgeName,
+  updateNonce,
+  status,
+  setStep,
+) {
   txData.map(async txItem => {
     const tx = await signer.sendTransaction(txItem);
+    if (status === 'approve') {
+      setStep({ name: 'confirm' });
+    }
+    if (status === 'move') {
+      setStep({ name: 'status', params: { step: 0 } });
+    }
     const receipt = await tx.wait();
-    await fetch(
-      `https://watcherapi.fund.movr.network/api/v1/transaction-status?` +
-        new URLSearchParams({
-          transactionHash: receipt.transactionHash,
-          fromChainId,
-          toChainId,
-          bridgeName,
-        }).toString(),
-    );
+    if (status === 'approve') {
+      setStep({ name: 'form' });
+    }
+    if (status === 'move') {
+      setStep({ name: 'status', params: { step: 1 } });
+      const interval = setInterval(async () => {
+        const { sourceTxStatus, destinationTxStatus } = await fetchWrapper.get(
+          `https://watcherapi.fund.movr.network/api/v1/transaction-status?` +
+            new URLSearchParams({
+              transactionHash: receipt.transactionHash,
+              fromChainId,
+              toChainId,
+              bridgeName,
+            }),
+        );
+        console.log(sourceTxStatus, destinationTxStatus);
+        setStep({
+          name: 'status',
+          params: {
+            step: sourceTxStatus === 'PENDING' ? 2 : destinationTxStatus === 'PENDING' ? 3 : 4,
+          },
+        });
+        if (destinationTxStatus === 'COMPLETED') {
+          clearInterval(interval);
+          setTimeout(() => {
+            setStep({ name: 'complete' });
+          }, 5000);
+        }
+      }, 2000);
+    }
     updateNonce(x => x + 1);
   });
 }
@@ -71,7 +108,7 @@ const Bridge = () => {
 
   const toggleWalletModal = useWalletModalToggle();
 
-  const [step] = useState<{
+  const [step, setStep] = useState<{
     name: 'form' | 'confirm' | 'status' | 'complete';
     params?: any;
   }>({ name: 'form' });
@@ -132,10 +169,12 @@ const Bridge = () => {
     sendTransaction(
       tx,
       signer,
-      fromChain,
-      toChain,
+      fromChain.chainId,
+      toChain.chainId,
       typeof quotes !== 'string' ? quotes.routes[0].bridgeRoute.bridgeName : null,
       updateNonce,
+      status,
+      setStep,
     );
   }, [tx, signer, fromChain, toChain, quotes]);
 
