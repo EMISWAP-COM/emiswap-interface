@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components/macro';
 import { Level } from '../styleds';
 import { useSelector } from 'react-redux';
@@ -106,10 +106,24 @@ const DownloadRefferalsMenuWrapper = styled.div`
   right: 0;
   width: 125px;
   height: 184px;
+  display: grid;
+  grid-template-columns: auto;
   background: #27272e;
   border: 1px solid #615c69;
   box-sizing: border-box;
   border-radius: 6px;
+`;
+
+const DownloadRefferalsItem = styled.a`
+  padding-left: 6px;
+  color: white;
+  font-size: 12px;
+  font-weight: normal;
+  display: flex;
+  align-items: center;
+  font-family: Roboto;
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
 `;
 
 const Referrals = styled(Table)``;
@@ -145,61 +159,92 @@ const ReferalElement = ({
   </Referrals>
 );
 
-const useDownloadRefferals = () => {
-  const { id: userId } = useSelector((state: AppState) => state.user.info);
-  const callback = useCallback(() => {
-    fetch(`/v1/public/users/${userId}/referrals/report/all`)
-      .then(response => {
-        const reader = response.body.getReader();
-        return new ReadableStream({
-          start(controller) {
-            return pump();
-            function pump() {
-              return reader.read().then(({ done, value }) => {
-                // When no more data needs to be consumed, close the stream
-                if (done) {
-                  controller.close();
-                  return;
-                }
-                // Enqueue the next data chunk into our target stream
-                controller.enqueue(value);
-                return pump();
-              });
-            }
-          },
-        });
-      })
-      .then(stream => new Response(stream))
-      .then(response => response.blob())
-      .then(blob => URL.createObjectURL(blob))
-      .then(url => {
-        console.log('here');
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', `${Date.now()}.xlsx`);
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-      })
-      .catch(err => console.error(err));
-  }, [userId]);
-  return callback;
+const DownloadRefferals = (userId: string, value: string) => {
+  return fetch(`/v1/public/users/${userId}/referrals/report/${value}`)
+    .then(response => {
+      const reader = response.body.getReader();
+      return new ReadableStream({
+        start(controller) {
+          return pump();
+          function pump() {
+            return reader.read().then(({ done, value }) => {
+              // When no more data needs to be consumed, close the stream
+              if (done) {
+                controller.close();
+                return;
+              }
+              // Enqueue the next data chunk into our target stream
+              controller.enqueue(value);
+              return pump();
+            });
+          }
+        },
+      });
+    })
+    .then(stream => new Response(stream))
+    .then(response => response.blob())
+    .then(blob => URL.createObjectURL(blob))
+    .then(url => {
+      console.log('here');
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `${Date.now()}.xlsx`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    })
+    .catch(err => console.error(err));
 };
 
 export const ReferralPerformance = () => {
   const { total, referrals } = useSelector((state: AppState) => state.cabinets.performance);
   const { level1, level2, level3 } = total;
   const isEthActive = useIsEthActive();
-  const callback = useDownloadRefferals();
+  const [openMenu, setOpenMenu] = useState(false);
+  const { id: userId } = useSelector((state: AppState) => state.user.info);
+  const menuItems = [
+    {
+      value: 'day',
+      title: 'Last 24h',
+    },
+    {
+      value: 'week',
+      title: 'Last week',
+    },
+    {
+      value: 'month',
+      title: 'Last month',
+    },
+    {
+      value: 'year',
+      title: 'Last year',
+    },
+    {
+      value: 'all',
+      title: 'All time',
+    },
+  ];
 
   return (
     <div>
       <HeaderContainer>
         <Header>Total Referral Performance</Header>
-        <DownloadRefferalsWrapper>
-          <DownloadRefferalsButton> Download report </DownloadRefferalsButton>
-          {false ? <ChevronUp size={12} color="white" /> : <ChevronDown size={12} color="white" />}
-          <DownloadRefferalsMenuWrapper></DownloadRefferalsMenuWrapper>
+        <DownloadRefferalsWrapper onClick={() => setOpenMenu(!openMenu)}>
+          <DownloadRefferalsButton>Download report</DownloadRefferalsButton>
+          {openMenu ? (
+            <>
+              <DownloadRefferalsMenuWrapper>
+                {menuItems.map(item => (
+                  <DownloadRefferalsItem onClick={() => DownloadRefferals(userId, item.value)}>
+                    {item.title}
+                  </DownloadRefferalsItem>
+                ))}
+              </DownloadRefferalsMenuWrapper>
+              <ChevronUp size={12} color="white" />
+            </>
+          ) : (
+            <ChevronDown size={12} color="white" />
+          )}
         </DownloadRefferalsWrapper>
       </HeaderContainer>
 
