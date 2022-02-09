@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components/macro';
 import { Level } from '../styleds';
 import { useSelector } from 'react-redux';
