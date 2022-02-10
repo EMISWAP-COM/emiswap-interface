@@ -15,6 +15,7 @@ import AboutSvg from '../../assets/landing/header/about.svg';
 import CommunitySvg from '../../assets/landing/header/community.svg';
 // import FarmsSvg from '../../assets/landing/header/farms.svg';
 import TeamSvg from '../../assets/landing/header/team.svg';
+import WhitePaper from '../../assets/whitePaper.pdf';
 
 import PieEn from '../../assets/landing/PieEn.png';
 import PieEs from '../../assets/landing/PieEs.png';
@@ -446,7 +447,7 @@ export default function Landing({ history }: any) {
 
               <button
                 className="btn-primary apr__button-paper"
-                onClick={() => window.open('https://about.emiswap.com/whitepaper')}
+                onClick={() => window.open(WhitePaper)}
               >
                 <img className="btn-icon" src={AboutSvg} alt="" />
                 {t('landing.button.paper')}

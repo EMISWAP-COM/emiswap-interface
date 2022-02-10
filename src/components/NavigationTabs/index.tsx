@@ -12,6 +12,7 @@ import {
   useIsEthActive,
   useIsKuCoinActive,
   useIsPolygonActive,
+  useIsShidenActive,
   useNetworkData,
 } from '../../hooks/Coins';
 import { isMobile } from 'react-device-detect';
@@ -110,6 +111,7 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
   const isEthereumActive = useIsEthActive();
   const isKuCoinActive = useIsKuCoinActive();
   const isPolygonActive = useIsPolygonActive();
+  const isShidenActive = useIsShidenActive();
   const isAvalancheActive = useIsAvalancheActive();
 
   const toggleBridgeModal = useBridgeModalToggle();
@@ -159,7 +161,7 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
           {t('Stake & Farm')}
         </StyledNavLink>
       )}
-      {isPolygonActive && (
+      {(isPolygonActive || isShidenActive) && (
         <StyledNavLink
           id={`farm-365-nav-link`}
           to={'/farm-365'}

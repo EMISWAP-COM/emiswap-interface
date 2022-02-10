@@ -13,6 +13,7 @@ import getFarmingCoinNameAndSymbol from '../pages/Farm/getFarmingCoinNameAndSymb
 import getFarmingLiquidityTokenAddress from '../pages/Farm/getFarmingLiquidityTokenAddress';
 import dayjs from 'dayjs';
 import { convertTokenAmount, getLpTokenByAddress } from '../utils';
+import { useIsPolygonActive, useIsShidenActive } from './Coins';
 
 const logContractError = (
   methodName: string,
@@ -41,6 +42,9 @@ export default function useFarming365(contract: Contract) {
   const { chainId, account, library } = useActiveWeb3React();
   const addTransaction = useTransactionAdder();
   const addEthErrorPopup = useEthErrorPopup();
+
+  const isPolygonActive = useIsPolygonActive();
+  const isShidenActive = useIsShidenActive();
 
   // This counter is used to update data whenever transaction finishes
   const completedTransactionsCount = useCompletedTransactionsCount();
@@ -197,15 +201,13 @@ export default function useFarming365(contract: Contract) {
       .rewardRate()
       .then((value: BigNumber) => {
         if (chainId && rewardToken) {
-          const tokenAmount = new TokenAmount(
-            rewardToken,
-            JSBI.BigInt(
-              value
-                .mul(BigNumber.from(24))
-                .div(BigNumber.from(10))
-                .toString(),
-            ),
-          );
+          let calcValue = value;
+          if (isPolygonActive) {
+            calcValue = value.mul(BigNumber.from(24)).div(BigNumber.from(10));
+          } else if (isShidenActive) {
+            calcValue = value.mul(BigNumber.from(12));
+          }
+          const tokenAmount = new TokenAmount(rewardToken, JSBI.BigInt(calcValue.toString()));
           return tokenAmountToString(tokenAmount, rewardToken.decimals);
         } else {
           return '0';
@@ -215,7 +217,7 @@ export default function useFarming365(contract: Contract) {
       .catch((error: RequestError) => {
         showError('rewardRate', '', error);
       });
-  }, [chainId, contract, rewardToken, showError, account]);
+  }, [chainId, isPolygonActive, isShidenActive, contract, rewardToken, showError, account]);
 
   const [totalSupply, setTotalSupply] = useState<string | undefined>(undefined);
   useEffect(() => {

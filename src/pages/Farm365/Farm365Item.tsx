@@ -37,11 +37,9 @@ export default function Farm365Item({ contract, selectedFilterTab }: Farm365Item
 
   useEffect(() => {
     if (farming365.liquidity) {
-      setApr(calcFarming365Apr(farming365.liquidity, farming365.blockReward, eswRate));
+      setApr(calcFarming365Apr(chainId, farming365.liquidity, farming365.blockReward, eswRate));
     }
-  }, [eswRate, farming365.blockReward, farming365.liquidity]);
-
-  // console.log('farming', farming365);
+  }, [chainId, farming365.blockReward, farming365.liquidity, eswRate]);
 
   const dateNow = dayjs();
   const endDate = dayjs(farming365.endDate, 'DD.MM.YYYY HH:mm:ss');
