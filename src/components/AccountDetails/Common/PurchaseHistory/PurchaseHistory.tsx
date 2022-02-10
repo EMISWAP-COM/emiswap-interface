@@ -29,11 +29,11 @@ const tabs: Record<string, TabProps> = {
 };
 const tabsValues = Object.values(tabs);
 
-const getTableItem = (forWhat) => (item: { available_at: string, amount: string })=> ({
-    unlockDate: item.available_at,
-    amount: item.amount,
-    forWhat,
-})
+const getTableItem = forWhat => (item: { available_at: string; amount: string }) => ({
+  unlockDate: item.available_at,
+  amount: item.amount,
+  forWhat,
+});
 
 export const PurchaseHistory = () => {
   const isEthActive = useIsEthActive();
@@ -259,9 +259,9 @@ export const PurchaseHistory = () => {
   );
 
   const myRewardHistory = [
-    ...polygonDetails.pool_bonus.map(getTableItem("Providing liquidity")),
-    ...polygonDetails.farming_bonus.map(getTableItem("Farming 365+")),
-    ...polygonDetails.pool_referral_bonus.map(getTableItem("Total Referral Reward")),
+    ...polygonDetails.pool_bonus.map(getTableItem('Providing liquidity')),
+    ...polygonDetails.farming_bonus.map(getTableItem('Farming 365+')),
+    ...polygonDetails.pool_referral_bonus.map(getTableItem('Total Referral Reward')),
   ];
 
   return (

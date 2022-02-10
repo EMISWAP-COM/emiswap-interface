@@ -96,9 +96,10 @@ const CurrencyInputPanel = (props: CurrencyInputPanelProps) => {
     );
   };
 
-  const balance = !!currency && selectedCurrencyBalance
-    ? tokenAmountToString(selectedCurrencyBalance, balanceDecimals)
-    : '';
+  const balance =
+    !!currency && selectedCurrencyBalance
+      ? tokenAmountToString(selectedCurrencyBalance, balanceDecimals)
+      : '';
 
   const currencyDisplayName = useMemo(() => {
     if (!currency) {
@@ -109,7 +110,7 @@ const CurrencyInputPanel = (props: CurrencyInputPanelProps) => {
 
     return name?.length > 20
       ? name.slice(0, 4) + '...' + name.slice(name.length - 5, name.length)
-      : name
+      : name;
   }, [currency, isLpTokens, t]);
 
   return (
@@ -131,10 +132,7 @@ const CurrencyInputPanel = (props: CurrencyInputPanelProps) => {
                       fontSize={14}
                       style={{ display: 'inline' }}
                     >
-                      {!hideBalance && balance
-                        ? 'Balance: ' + balance
-                        : ' '
-                      }
+                      {!hideBalance && balance ? 'Balance: ' + balance : ' '}
                     </TYPE.body>
                   </CursorPointer>
                 )}

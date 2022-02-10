@@ -25,9 +25,12 @@ const getEswPriceInDai = (library: Web3Provider, account: string, chainId: numbe
   const usdсCoin = defaultCoins.tokens.find(
     token => token.chainId === chainId && token.symbol === 'USDС',
   );
-  const stableTokens = [usdtCoin?.address, daiCoin?.address, usdсCoin?.address, kuCoin?.address].filter(
-    value => value !== undefined,
-  );
+  const stableTokens = [
+    usdtCoin?.address,
+    daiCoin?.address,
+    usdсCoin?.address,
+    kuCoin?.address,
+  ].filter(value => value !== undefined);
 
   let mainCoinPrice = emiPrice2.getCoinPrices([eswCoin.address], stableTokens, 0);
   if (chainId === chainIds.KUCOIN) {
@@ -44,13 +47,7 @@ const getEswPriceInDai = (library: Web3Provider, account: string, chainId: numbe
       coin = daiCoin;
     }
 
-    const token = new Token(
-      chainId,
-      coin.address,
-      coin.decimals,
-      coin.symbol,
-      coin.name,
-    );
+    const token = new Token(chainId, coin.address, coin.decimals, coin.symbol, coin.name);
 
     const tokenAmount = new TokenAmount(token, JSBI.BigInt(value.toString()));
 

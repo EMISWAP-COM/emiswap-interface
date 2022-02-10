@@ -105,21 +105,25 @@ const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
     `}
 `;
 
-const Web3StatusConnected = styled(Web3StatusGeneric)<{ pending?: boolean, disableClickOnConnected?: boolean }>`
+const Web3StatusConnected = styled(Web3StatusGeneric)<{
+  pending?: boolean;
+  disableClickOnConnected?: boolean;
+}>`
   background-color: ${({ pending, theme }) => (pending ? theme.green5 : theme.purple)};
   border: 0 !important;
   color: ${({ theme }) => theme.white};
   font-weight: 500;
   ${({ disableClickOnConnected }) => disableClickOnConnected && `cursor: default`};
-  ${({ disableClickOnConnected }) => disableClickOnConnected
-    ? `
+  ${({ disableClickOnConnected }) =>
+    disableClickOnConnected
+      ? `
       :hover,
       :focus {
         background-color: ${({ pending, theme }) => (pending ? theme.green5 : theme.purple)};
         box-shadow: none;
       }
     `
-    : `
+      : `
       :hover,
       :focus {
         background-color: ${({ pending, theme }) => (pending ? theme.green5 : theme.purple)};
@@ -155,7 +159,7 @@ function recentTransactionsOnly(a: TransactionDetails) {
 }
 
 export default function Web3Status({
-  disableClickOnConnected = false // used on the landing page
+  disableClickOnConnected = false, // used on the landing page
 }) {
   const { t } = useTranslation();
 

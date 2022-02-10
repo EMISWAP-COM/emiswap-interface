@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 
-const StyledSymbol = styled.div<{ size: number, fontSize: number }>`
+const StyledSymbol = styled.div<{ size: number; fontSize: number }>`
   font-size: ${({ fontSize }) => fontSize}px;
   color: ${({ theme }) => theme.purple};
   width: ${({ size }) => size}px;
@@ -14,7 +14,11 @@ const StyledSymbol = styled.div<{ size: number, fontSize: number }>`
 `;
 
 const LpTokenSymbol = ({ size = 24, fontSize = 12 }) => {
-  return <StyledSymbol size={size} fontSize={fontSize}>LP</StyledSymbol>;
+  return (
+    <StyledSymbol size={size} fontSize={fontSize}>
+      LP
+    </StyledSymbol>
+  );
 };
 
 export default LpTokenSymbol;

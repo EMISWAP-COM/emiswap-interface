@@ -91,19 +91,18 @@ interface CabinetState {
   referralHistory: ReferralPurchaseHistory[];
   depositsEswHistory: DepositsEswHistory[];
   depositsEswHistoryRewards: DepositsEswHistoryRewards;
-  totalBalance: any
+  totalBalance: any;
 }
 
 interface TotalBalance {
-  available: { ESW: string },
-  wallet: { ESW: string },
+  available: { ESW: string };
+  wallet: { ESW: string };
   total: {
-    locked: { ESW: string },
-    unlocked: { ESW: string },
-    withdrawn: {},
-  },
-};
-
+    locked: { ESW: string };
+    unlocked: { ESW: string };
+    withdrawn: {};
+  };
+}
 
 interface PerformanceLevel {
   total_count: number;
@@ -131,7 +130,7 @@ export interface Deposit {
   available_at: string;
   amount: string;
   amount_dai: string | null;
-  unlock_at: string
+  unlock_at: string;
 }
 
 interface PoolBonus {
@@ -237,15 +236,15 @@ const initialState: CabinetState = {
   referralHistory: [] as ReferralPurchaseHistory[],
   depositsEswHistory: new Array<DepositsEswHistory>(),
   depositsEswHistoryRewards: {} as DepositsEswHistoryRewards,
-  totalBalance:{
-    available: { ESW: "0"},
-    wallet: { ESW: "0"},
+  totalBalance: {
+    available: { ESW: '0' },
+    wallet: { ESW: '0' },
     total: {
-      locked: { ESW: "0"},
-      unlocked: { ESW: "0"},
+      locked: { ESW: '0' },
+      unlocked: { ESW: '0' },
       withdrawn: {},
     },
-  }
+  },
 };
 
 export default createReducer(initialState, builder =>
@@ -262,10 +261,10 @@ export default createReducer(initialState, builder =>
     .addCase(loadDepositsEswHistory.fulfilled, (state, action) => {
       state.depositsEswHistory = action.payload;
     })
-    .addCase(loadTotalBalance.fulfilled, (state, action)=> {
-      state.totalBalance = action.payload
+    .addCase(loadTotalBalance.fulfilled, (state, action) => {
+      state.totalBalance = action.payload;
     })
     .addCase(loadDepositsEswHistoryRewards.fulfilled, (state, action) => {
       state.depositsEswHistoryRewards = action.payload;
-    })
+    }),
 );
