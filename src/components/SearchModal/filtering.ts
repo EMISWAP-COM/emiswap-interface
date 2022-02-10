@@ -1,13 +1,17 @@
 import { isAddress } from '../../utils';
 import { Token } from '@uniswap/sdk';
 
-export function filterTokens(tokens: Token[], search: string, isLpTokens: boolean = false): Token[] {
+export function filterTokens(
+  tokens: Token[],
+  search: string,
+  isLpTokens: boolean = false,
+): Token[] {
   let visibleTokens = tokens;
 
   if (isLpTokens) {
-    visibleTokens = visibleTokens.filter(token => token.name.includes('LP '))
+    visibleTokens = visibleTokens.filter(token => token.name.includes('LP '));
   } else {
-    visibleTokens = visibleTokens.filter(token => !token.name.includes('LP '))
+    visibleTokens = visibleTokens.filter(token => !token.name.includes('LP '));
   }
 
   if (search.length === 0) return visibleTokens;

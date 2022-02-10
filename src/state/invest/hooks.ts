@@ -50,6 +50,7 @@ const EMPTY_LIST: TokenAddressMap = {
   [chainIds.MUMBAI]: {},
   [chainIds.SHIDEN]: {},
   [chainIds.AVALANCHE]: {},
+  [chainIds.AURORA]: {},
 };
 
 export function useInvestState(): AppState['invest'] {
@@ -356,7 +357,9 @@ export function listToTokenMap(list: Token[]): TokenAddressMap {
         return { ...tokenMap };
       }
       const token = new WrappedTokenInfo(tokenInfo);
-      if (tokenMap[token.chainId][token.address] !== undefined) throw Error('Duplicate tokens.');
+      if (tokenMap[token.chainId][token.address] !== undefined) {
+        throw Error(`Duplicate token: chainId - ${token.chainId}, address - ${token.address}`);
+      }
       if (token.address === '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE') {
         return { ...tokenMap };
       }

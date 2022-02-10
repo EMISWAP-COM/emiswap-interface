@@ -21,4 +21,5 @@ export const EMI_ROUTER_ADRESSES: { [chainId in ChainId]: string } = {
   [chainIds.MUMBAI]: '0x0916C07AC981febB849e100631adFA38fBC33343',
   [chainIds.SHIDEN]: '0x6Edc79BCc58EB06E3F663F192A04B69CcCbCF247',
   [chainIds.AVALANCHE]: '0x7B4b70c61a8fDE4E8c03f99adC567C1762d9d247',
+  [chainIds.AURORA]: '0xa139eAE059aEacf15375dd258dddeBFbF2928f5b',
 };

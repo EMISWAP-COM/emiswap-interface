@@ -31,15 +31,17 @@ export default createReducer<FarmState>(initialState, builder =>
     .addCase(loadFarms.fulfilled, (state, action) => {
       const farms: IFarm[] = action.payload.data.map((farm: any) => {
         const contractDataId = farm.relationships.contract.data.id;
-        const contractAddress = action.payload.included.find((inc: any) => inc.id === contractDataId).attributes.address;
+        const contractAddress = action.payload.included.find(
+          (inc: any) => inc.id === contractDataId,
+        ).attributes.address;
 
-        return ({
+        return {
           id: farm.id,
           farmingPeriod: farm.attributes.farmingPeriod,
           farmingFrequency: farm.attributes.farmingFrequency,
           percentageRate: farm.attributes.percentageRate,
           contractAddress: contractAddress,
-        });
+        };
       });
 
       return {
@@ -52,11 +54,11 @@ export default createReducer<FarmState>(initialState, builder =>
       const tmpFarms = [...state.farms];
 
       action.payload.data.forEach((item: any) => {
-        const farmIndex = tmpFarms.findIndex((farm) => farm.id === item.id);
+        const farmIndex = tmpFarms.findIndex(farm => farm.id === item.id);
         tmpFarms[farmIndex] = {
           ...tmpFarms[farmIndex],
           reward: item.meta.rewardSum,
-        }
+        };
       });
 
       return {
@@ -66,17 +68,19 @@ export default createReducer<FarmState>(initialState, builder =>
       };
     })
     .addCase(loadUserFarmsForLK.fulfilled, (state, action) => {
-      const includedStakes = [...action.payload.included || []];
+      const includedStakes = [...(action.payload.included || [])];
 
       return {
         ...state,
         loaded: true,
-        stakes: includedStakes.map((stake) => {
+        stakes: includedStakes.map(stake => {
           const farm = action.payload.data.find((item: any) => {
-            return item.relationships.stakingUserFarms.data.some((farm: any) => farm.id === stake.id);
+            return item.relationships.stakingUserFarms.data.some(
+              (farm: any) => farm.id === stake.id,
+            );
           });
 
-          const farmFromStore = state.farms.find((searchedFarm) => searchedFarm.id === farm.id);
+          const farmFromStore = state.farms.find(searchedFarm => searchedFarm.id === farm.id);
 
           return {
             id: stake.id,
@@ -86,8 +90,8 @@ export default createReducer<FarmState>(initialState, builder =>
             reward: stake.attributes.reward,
             startDate: stake.attributes.startedAt,
             endDate: stake.attributes.finishedAt,
-          }
+          };
         }),
       };
-    })
+    }),
 );
