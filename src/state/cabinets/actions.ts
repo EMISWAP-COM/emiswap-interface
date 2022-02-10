@@ -83,7 +83,6 @@ export const loadTotalBalance = createAsyncThunk(
   },
 );
 
-
 export const loadBonus = createAsyncThunk(
   'cabinets/loadBonus',
   async (userId: string, { dispatch }) => {

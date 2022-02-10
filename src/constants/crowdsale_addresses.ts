@@ -8,6 +8,7 @@ const crowdSales_addresses: any = {
   [chainIds.MUMBAI]: '0x57C8844fBDb197Ad9C80cB5bCCC36ec43EE392EF',
   [chainIds.SHIDEN]: '0x57C8844fBDb197Ad9C80cB5bCCC36ec43EE392EF',
   [chainIds.AVALANCHE]: '0x57C8844fBDb197Ad9C80cB5bCCC36ec43EE392EF',
+  [chainIds.AURORA]: '0x57C8844fBDb197Ad9C80cB5bCCC36ec43EE392EF',
 };
 
 export default crowdSales_addresses;

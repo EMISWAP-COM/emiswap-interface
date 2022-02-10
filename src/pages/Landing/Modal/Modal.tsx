@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Modal from "../../../components/Modal";
+import Modal from '../../../components/Modal';
 import { useTranslation } from 'react-i18next';
 
 const ModalContent = styled.div`
@@ -10,7 +10,6 @@ const ModalContent = styled.div`
   width: 100%;
   padding: 24px;
   color: ${({ theme }) => theme.white};
-
 
   > p {
     line-height: 24px;
@@ -26,7 +25,7 @@ const Header = styled.div`
   font-weight: normal;
   font-size: 32px;
 
-  color: #FFFFFF;
+  color: #ffffff;
 `;
 
 const CloseWrapper = styled.div`
@@ -40,7 +39,7 @@ const Close = styled.div`
   height: 48px;
   width: 48px;
   border-radius: 24px;
-  background: #27272E;
+  background: #27272e;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -60,7 +59,12 @@ const LandingModal = ({ isOpen, onDissmiss }) => {
       className="landing_modal"
     >
       <ModalContent>
-        <Header>{t('landing.popup.title')}<CloseWrapper onClick={onDissmiss} >{t('landing.button.close')}  <Close>X</Close></CloseWrapper></Header>
+        <Header>
+          {t('landing.popup.title')}
+          <CloseWrapper onClick={onDissmiss}>
+            {t('landing.button.close')} <Close>X</Close>
+          </CloseWrapper>
+        </Header>
         <p>{t('landing.popup.p.1')}</p>
         <p>{t('landing.popup.p.2')}</p>
 
@@ -75,7 +79,7 @@ const LandingModal = ({ isOpen, onDissmiss }) => {
         <p>{t('landing.popup.p.4')}</p>
       </ModalContent>
     </Modal>
-  )
-}
+  );
+};
 
 export { LandingModal };

@@ -137,9 +137,7 @@ export function useSwapCallback(
         .div(String(10000));
 
       const WETH = defaultCoins.tokens.find(
-        token =>
-          token.symbol === networkData.currencySymbolWeth &&
-          token.chainId === chainId,
+        token => token.symbol === networkData.currencySymbolWeth && token.chainId === chainId,
       );
 
       let args: any[] = [];
@@ -209,27 +207,27 @@ export function useSwapCallback(
         obj = {};
       }
 
-        return contract.estimateGas[method](...args, obj)
-          .then(result => {
-            // if (BigNumber.isBigNumber(safeGasEstimate) && !BigNumber.isBigNumber(safeGasEstimate)) {
-            //   throw new Error(
-            //     'An error occurred. Please try raising your slippage. If that does not work, contact support.'
-            //   )
-            // }
-            const gasLimit = calculateGasMargin(BigNumber.from(result));
-            return contract[method](...args, {
-              gasLimit,
-              ...obj,
-            })
-              .then(onSuccess)
-              .catch(onError);
+      return contract.estimateGas[method](...args, obj)
+        .then(result => {
+          // if (BigNumber.isBigNumber(safeGasEstimate) && !BigNumber.isBigNumber(safeGasEstimate)) {
+          //   throw new Error(
+          //     'An error occurred. Please try raising your slippage. If that does not work, contact support.'
+          //   )
+          // }
+          const gasLimit = calculateGasMargin(BigNumber.from(result), chainId);
+          return contract[method](...args, {
+            gasLimit,
+            ...obj,
           })
-          .catch(onError);
-          // .catch(error => {
-          //   console.error(`estimateGas failed for ${'swap'}`, error);
-          //   return undefined;
-          // });
-      }
+            .then(onSuccess)
+            .catch(onError);
+        })
+        .catch(onError);
+      // .catch(error => {
+      //   console.error(`estimateGas failed for ${'swap'}`, error);
+      //   return undefined;
+      // });
+    };
   }, [
     trade,
     recipient,

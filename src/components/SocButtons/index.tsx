@@ -7,7 +7,7 @@ import { ReactComponent as TelegramIcon } from '../../assets/svg/SocIcons/telegr
 import { ReactComponent as CoingeckoIcon } from '../../assets/svg/SocIcons/coingecko.svg';
 import { ReactComponent as CoinmarketIcon } from '../../assets/svg/SocIcons/coinmarket.svg';
 import { ReactComponent as WikiIcon } from '../../assets/svg/SocIcons/wiki.svg';
-import { useRouteMatch } from "react-router-dom";
+import { useRouteMatch } from 'react-router-dom';
 
 // import { ReactComponent as DiscordIcon } from '../../assets/svg/SocIcons/discord.svg';
 
@@ -55,8 +55,7 @@ const ImgLink = styled.a`
 const Link = props => <ImgLink rel="noopener noreferrer" target="_blank" {...props} />;
 
 export default () => {
-
-  const isLandingPage = useRouteMatch("/main");
+  const isLandingPage = useRouteMatch('/main');
 
   if (isLandingPage) return null;
 
@@ -87,5 +86,5 @@ export default () => {
         <WikiIcon />
       </Link>
     </Wrapper>
-  );  
-}
+  );
+};

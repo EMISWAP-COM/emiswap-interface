@@ -12,7 +12,7 @@ export const Control = styled.div`
   justify-content: space-evenly;
   width: 100%;
   height: 55px;
-  border: 1px solid #615C69;
+  border: 1px solid #615c69;
   border-radius: 8px;
   background-color: #18181c;
   padding: 4px 16px;
@@ -22,7 +22,7 @@ export const Label = styled.div`
   display: flex;
   align-items: center;
   font-size: 12px;
-  color: #B7B7CA;
+  color: #b7b7ca;
 `;
 
 export const Details = styled.div`
@@ -34,7 +34,7 @@ export const Details = styled.div`
 
 export const Address = styled.div`
   font-size: 12px;
-  color: #FFFFFF;
+  color: #ffffff;
 `;
 
 export const Controls = styled.div`
@@ -100,14 +100,13 @@ export const Arrow = styled.img`
 export const ChainName = styled.div`
   min-width: 60px;
   font-size: 12px;
-  color: #FFFFFF;
+  color: #ffffff;
 `;
-
 
 export const Options = styled.div`
   position: absolute;
   margin-top: 8px;
-  border: 1px solid #615C69;
+  border: 1px solid #615c69;
   box-sizing: border-box;
   border-radius: 8px;
   width: 100%;

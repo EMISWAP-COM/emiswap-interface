@@ -20,7 +20,11 @@ import { useCurrency } from '../../hooks/Tokens';
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback';
 import { useWalletModalToggle } from '../../state/application/hooks';
 import { Field } from '../../state/mint/actions';
-import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint-mooniswap/hooks';
+import {
+  useDerivedMintInfo,
+  useMintActionHandlers,
+  useMintState,
+} from '../../state/mint-mooniswap/hooks';
 import { useTransactionAdder } from '../../state/transactions/hooks';
 import { useIsExpertMode, useUserSlippageTolerance } from '../../state/user/hooks';
 import { StyledButtonNavigation, TYPE } from '../../theme';
@@ -182,7 +186,7 @@ export default function AddLiquidity({
     await estimate(...args, optionalArgs)
       .then(estimatedGasLimit => {
         method(...args, {
-          gasLimit: calculateGasMargin(estimatedGasLimit),
+          gasLimit: calculateGasMargin(estimatedGasLimit, chainId),
           ...optionalArgs,
         })
           .then((response: any) => {
@@ -209,7 +213,7 @@ export default function AddLiquidity({
                 category: 'Transaction',
                 action: 'new',
                 label: 'pool',
-                value:  Math.round(parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || ''))
+                value: Math.round(parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || '')),
               });
 
               setShowConfirm(true);
@@ -238,7 +242,7 @@ export default function AddLiquidity({
               category: 'Transaction',
               action: 'cancel',
               label: 'pool',
-              value:  Math.round(parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || ''))
+              value: Math.round(parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || '')),
             });
 
             setShowConfirm(false);
@@ -272,8 +276,8 @@ export default function AddLiquidity({
         ReactGA.event({
           category: 'Transaction',
           action: 'cancel',
-          label: 'pool', 
-          value:  Math.round(parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || ''))
+          label: 'pool',
+          value: Math.round(parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || '')),
         });
 
         setShowConfirm(false);
@@ -341,7 +345,7 @@ export default function AddLiquidity({
       .then(estimatedGasLimit => {
         method(...args, {
           ...optionalArgs,
-          gasLimit: calculateGasMargin(estimatedGasLimit),
+          gasLimit: calculateGasMargin(estimatedGasLimit, chainId),
         })
           .then((response: any) => {
             try {
@@ -374,7 +378,7 @@ export default function AddLiquidity({
                 category: 'Transaction',
                 action: 'new',
                 label: 'pool',
-                value:  Math.round(parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || ''))
+                value: Math.round(parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || '')),
               });
             } catch (error) {
               ReactGA.set({
@@ -390,7 +394,7 @@ export default function AddLiquidity({
                 category: 'Transaction',
                 action: 'cancel',
                 label: 'pool',
-                value:  Math.round(parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || ''))
+                value: Math.round(parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || '')),
               });
               throw new Error(`
               Account: ${account}\n
@@ -416,7 +420,7 @@ export default function AddLiquidity({
               category: 'Transaction',
               action: 'cancel',
               label: 'pool',
-              value:  Math.round(parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || ''))
+              value: Math.round(parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || '')),
             });
             throw new Error(`
             Account: ${account}\n
@@ -447,7 +451,7 @@ export default function AddLiquidity({
           category: 'Transaction',
           action: 'cancel',
           label: 'pool',
-          value:  Math.round(parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || ''))
+          value: Math.round(parseFloat(parsedAmounts[Field.CURRENCY_A]?.toFixed() || '')),
         });
         throw new Error(`
             Account: ${account}\n
