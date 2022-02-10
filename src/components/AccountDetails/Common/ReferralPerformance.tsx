@@ -112,6 +112,7 @@ const DownloadRefferalsMenuWrapper = styled.div`
   border: 1px solid #615c69;
   box-sizing: border-box;
   border-radius: 6px;
+  z-index: 200;
 `;
 
 const DownloadRefferalsItem = styled.a`
@@ -185,10 +186,13 @@ const DownloadRefferals = (userId: string, value: string) => {
     .then(response => response.blob())
     .then(blob => URL.createObjectURL(blob))
     .then(url => {
-      console.log('here');
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', `${Date.now()}.xlsx`);
+      const d = new Date();
+      link.setAttribute(
+        'download',
+        `Report ${d.getDate()}.${d.getMonth()}.${d.getFullYear()}  ${d.getHours()}.${d.getMinutes()}.xlsx`,
+      );
       document.body.appendChild(link);
       link.click();
       link.remove();
