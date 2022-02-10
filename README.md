@@ -20,6 +20,39 @@ yarn
 yarn start
 ```
 
+### Configuring the oracle environment(optional)
+
+1. install kubectl — https://kubernetes.io/ru/docs/tasks/tools/install-kubectl/
+2. get to choose namespaces
+
+```bash
+kubectl get ns
+```
+
+3. get to choose service
+
+```bash
+kubectl -n {namespace} get svc
+```
+
+example
+
+```bash
+kubectl -n emiswap-oracle-feature-es-412-api-report-export-app get svc /// emiswap-oracle    10.233.23.164   <none>  3000/TCP   4d18h
+```
+
+3. proxy service
+
+```bash
+kubectl port-forward -n {namesspace} svc/{service} 9002:{service_port}
+```
+
+example
+
+```bash
+kubectl port-forward -n emiswap-oracle-feature-es-412-api-report-export-app svc/emiswap-oracle 9002:3000
+```
+
 ### Configuring the environment (optional)
 
 To have the interface default to a different network when a wallet is not connected:
@@ -34,7 +67,8 @@ not work on other networks.
 
 #### Contributions
 
-**Please open all pull requests against the `production` branch.** CI checks will run against all PRs.
+**Please open all pull requests against the `production` branch.** CI checks will run against all
+PRs.
 
 #### License
 
@@ -55,4 +89,3 @@ see <https://www.gnu.org/licenses/>.
 Copyright © 2021, [EmiSwap](https://emiswap.com/).
 
 Released under GNU General Public License v3.0
- 
