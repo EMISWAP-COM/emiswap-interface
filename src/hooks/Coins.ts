@@ -158,7 +158,7 @@ export function useIsAvalancheActive(): boolean {
 export function useIsAuroraActive(): boolean {
   const { chainId } = useActiveWeb3React();
 
-  return (chainId as any) === chainIds.AURORA;
+  return [chainIds.AURORA].includes(chainId as any);
 }
 
 export function useIsMetaMask(): boolean {

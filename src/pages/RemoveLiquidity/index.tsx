@@ -270,7 +270,7 @@ export default function RemoveLiquidity({
     const safeGasEstimates = await Promise.all(
       methodNames.map(methodName =>
         emiRouter?.estimateGas[methodName](...args)
-          .then(calculateGasMargin)
+          .then((value: BigNumber) => calculateGasMargin(value, chainId))
           .catch((error: any) => {
             console.error(`estimateGas failed for ${methodName}`, error);
           }),

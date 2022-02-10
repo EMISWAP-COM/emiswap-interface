@@ -110,8 +110,12 @@ export function shortenAddressHeadTail(address: string, headchars = 4, tailChars
   return `${parsed.substring(0, headchars + 2)}...${parsed.substring(42 - tailChars)}`;
 }
 
-// add 10%
-export function calculateGasMargin(value: BigNumber): BigNumber {
+export function calculateGasMargin(value: BigNumber, chainId: number): BigNumber {
+  if (chainId === chainIds.AURORA) {
+    return BigNumber.from(400000);
+  }
+
+  // add 10%
   return value.mul(BigNumber.from(10000).add(BigNumber.from(1000))).div(BigNumber.from(10000));
 }
 
@@ -183,7 +187,14 @@ export function escapeRegExp(string: string): string {
 }
 
 export function isDefaultToken(defaultTokens: TokenAddressMap, currency?: Token): boolean {
-  const defaultAddresses = [ETHER.address, KCS.address, MATIC.address, SDN.address, AVAX.address, AURORA_ETHER.address];
+  const defaultAddresses = [
+    ETHER.address,
+    KCS.address,
+    MATIC.address,
+    SDN.address,
+    AVAX.address,
+    AURORA_ETHER.address,
+  ];
 
   if (currency && defaultAddresses.includes(currency.address)) {
     return true;

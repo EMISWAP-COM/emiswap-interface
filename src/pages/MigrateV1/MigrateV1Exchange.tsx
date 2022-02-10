@@ -220,7 +220,7 @@ export default function MigrateV1Exchange({
       contract.estimateGas
         .deposit(...args)
         .then(data => {
-          const gasLimit = calculateGasMargin(data);
+          const gasLimit = calculateGasMargin(data, chainId);
           return contract
             .deposit(...args, { gasLimit })
             .then(response => {
