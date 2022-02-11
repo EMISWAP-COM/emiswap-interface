@@ -1,23 +1,57 @@
 import { useState, useEffect } from 'react';
 import { useActiveWeb3React } from '../../../hooks';
-import Web3 from 'web3';
+import { fetchWrapper } from 'api/fetchWrapper';
+import { useAppSelector } from 'state/hooks';
+import { selectFromToChains } from '../slice';
 
 const useFeesByRoute = route => {
   const { library } = useActiveWeb3React();
   const [fees, setFees] = useState<{ [key: string]: any }>({});
+  const { fromChain } = useAppSelector(selectFromToChains);
 
   useEffect(() => {
-    setFees({});
-    if (!route) return;
+    const main = async () => {
+      setFees({});
+      if (!route) return;
+      const {
+        result: {
+          tokenPrice: gasUSDPrice,
+          tokenInfo: { decimals: gasDecimals },
+        },
+      } = await fetchWrapper.get(
+        `https://backend.movr.network/v1/token-price?` +
+          new URLSearchParams({
+            tokenAddress: route.fees.gasLimit[0].assetAddress,
+            chainId: route.fees.gasLimit[0].chainId,
+          }),
+      );
+      const gasPrice = await library.getGasPrice();
 
-    library.getGasPrice().then(gasPrice => {
-      const gas = Web3.utils.fromWei(gasPrice.toString());
+      const {
+        result: {
+          tokenPrice: bridgePrice,
+          tokenInfo: { decimals: bridgeDecimals },
+        },
+      } = await fetchWrapper.get(
+        `https://backend.movr.network/v1/token-price?` +
+          new URLSearchParams({
+            tokenAddress: route.fees.bridgeFee.assetAddress,
+            chainId: fromChain.chainId.toString(),
+          }),
+      );
 
       setFees({
-        transactionFee: route.fees.gasLimit[0].amount * Number(gas.toString()),
-        bridgeFee: Web3.utils.fromWei(route.fees.bridgeFee.amount),
+        transactionFee:
+          (
+            (route.fees.gasLimit[0].amount * gasUSDPrice * gasPrice.toNumber()) /
+            Math.pow(10, gasDecimals)
+          ).toFixed(5) + '$',
+        bridgeFee:
+          ((route.fees.bridgeFee.amount * bridgePrice) / Math.pow(10, bridgeDecimals)).toFixed(5) +
+          '$',
       });
-    });
+    };
+    main();
   }, [route, library]);
 
   return { fees };
