@@ -85,21 +85,24 @@ async function sendTransaction(
   });
 }
 
-const getButtonTitle = (quote: BridgeState['quote'], status: string): string => {
+const getButtonTitle = (
+  quote: BridgeState['quote'],
+  status: string,
+): { buttonTitle: string; buttonActive: boolean } => {
   if (quote === 'loading') {
-    return 'Loading quote...';
+    return { buttonTitle: 'Loading quote...', buttonActive: false };
   } else if (quote === 'no-route') {
-    return 'No routes available';
+    return { buttonTitle: 'No routes available', buttonActive: false };
   } else if (quote === 'waiting') {
-    return 'Please fill all fields';
+    return { buttonTitle: 'Please fill all fields', buttonActive: false };
   } else {
     if (status === 'approve') {
-      return 'Approve transaction';
+      return { buttonTitle: 'Approve transaction', buttonActive: true };
     }
     if (status === 'move') {
-      return 'Send Transaction';
+      return { buttonTitle: 'Send Transaction', buttonActive: true };
     }
-    return 'Wait transaction data';
+    return { buttonTitle: 'Wait transaction data', buttonActive: false };
   }
 };
 
@@ -203,6 +206,7 @@ const Bridge = () => {
       </AppBody>
     );
 
+  const { buttonTitle, buttonActive } = getButtonTitle(quotes, status);
   return (
     <AppBody>
       <SwapPoolTabs active={TabNames.BRIDGE} />
@@ -221,9 +225,9 @@ const Bridge = () => {
           onClick={() => {
             send();
           }}
-          disabled={!tx || typeof quotes === 'string'}
+          disabled={!buttonActive}
         >
-          {getButtonTitle(quotes, status)}
+          {buttonTitle}
         </ButtonLight>
       ) : (
         <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
