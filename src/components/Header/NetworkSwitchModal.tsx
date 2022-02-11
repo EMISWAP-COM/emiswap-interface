@@ -130,6 +130,7 @@ export default function NetworkSwitchModal() {
 
   const logosMaxWidths = {
     [chainIds.AVALANCHE]: '80%',
+    [chainIds.AURORA]: '80%',
   };
 
   return (

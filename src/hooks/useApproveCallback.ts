@@ -6,7 +6,11 @@ import { ETHER, TokenAmount, Trade, ZERO_ADDRESS } from '@uniswap/sdk';
 import { BigNumber } from '@ethersproject/bignumber';
 import { useTokenAllowance } from '../data/Allowances';
 import { Field } from '../state/swap/actions';
-import { useAllTransactions, useHasPendingApproval, useTransactionAdder } from '../state/transactions/hooks';
+import {
+  useAllTransactions,
+  useHasPendingApproval,
+  useTransactionAdder,
+} from '../state/transactions/hooks';
 import { computeSlippageAdjustedAmounts } from '../utils/prices';
 import { calculateGasMargin } from '../utils';
 import { useTokenContract } from './useContract';
@@ -27,7 +31,7 @@ export function useApproveCallback(
   spender?: string,
   isNotSwap?: boolean,
 ): [ApprovalState, () => Promise<void>] {
-  const { account } = useActiveWeb3React();
+  const { account, chainId } = useActiveWeb3React();
   const token = amountToApprove instanceof TokenAmount ? amountToApprove.token : undefined;
   const allTransactions = useAllTransactions();
   const currentAllowance = useTokenAllowance(
@@ -76,6 +80,11 @@ export function useApproveCallback(
       return;
     }
 
+    if (!chainId) {
+      console.error('no chainId');
+      return;
+    }
+
     if (!token) {
       console.error('no token');
       return;
@@ -105,7 +114,7 @@ export function useApproveCallback(
 
     return tokenContract
       .approve(spender, useExact ? amountToApprove.raw.toString() : MaxUint256, {
-        gasLimit: calculateGasMargin(estimatedGas),
+        gasLimit: calculateGasMargin(estimatedGas, chainId),
       })
       .then((response: TransactionResponse) => {
         addTransaction(response, {
@@ -117,7 +126,7 @@ export function useApproveCallback(
         console.debug('Failed to approve token', error);
         throw error;
       });
-  }, [approvalState, token, tokenContract, amountToApprove, spender, addTransaction]);
+  }, [approvalState, chainId, token, tokenContract, amountToApprove, spender, addTransaction]);
 
   return [approvalState, approve];
 }

@@ -29,14 +29,14 @@ const CopyIcon = styled(LinkStyledButton)`
   align-items: center;
   width: 100%;
   height: 56px;
-  border: 1px solid #4A4757;
+  border: 1px solid #4a4757;
   border-radius: 8px;
   font-size: 16px;
   font-weight: 400;
   text-decoration: none;
   color: white;
   transition: all 0.3s ease-in-out;
-  
+
   :hover,
   :active,
   :focus {
@@ -49,7 +49,7 @@ export default function ReferralLink({
   showIcon = true,
   text = 'Copy Referral Link',
   onCopyText = 'Copied',
-  className = ''
+  className = '',
 }) {
   const theme = useContext(ThemeContext);
   const { account } = useActiveWeb3React();
@@ -97,12 +97,12 @@ export default function ReferralLink({
               >
                 {isCopied ? (
                   <>
-                    {showIcon && <CheckCircle size={'16'} color={theme.blue}/>}
+                    {showIcon && <CheckCircle size={'16'} color={theme.blue} />}
                     <span style={{ marginLeft: '4px' }}>{onCopyText}</span>
                   </>
                 ) : (
                   <>
-                    {showIcon && <Copy size={'16'} color={theme.blue}/>}
+                    {showIcon && <Copy size={'16'} color={theme.blue} />}
                     <span style={{ marginLeft: '4px' }}>{text}</span>
                   </>
                 )}
@@ -110,7 +110,6 @@ export default function ReferralLink({
             </RowFixed>
           </>
         )}
-
       </ReferralLinkBox>
     </div>
   );

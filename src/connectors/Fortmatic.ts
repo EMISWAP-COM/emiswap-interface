@@ -22,6 +22,7 @@ const CHAIN_ID_NETWORK_ARGUMENT: {
   [chainIds.MUMBAI]: 'mumbai',
   [chainIds.SHIDEN]: 'shiden',
   [chainIds.AVALANCHE]: 'avalanche',
+  [chainIds.AURORA]: 'aurora',
 };
 
 export class FortmaticConnector extends FortmaticConnectorCore {

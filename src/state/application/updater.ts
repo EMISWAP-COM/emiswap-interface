@@ -30,7 +30,7 @@ export default function Updater() {
     }
 
     function handleEthereum() {
-      const { ethereum } = (window as any);
+      const { ethereum } = window as any;
       if (ethereum && ethereum.isMetaMask) {
         console.log('Ethereum successfully detected!');
         // Access the decentralized web!
