@@ -23,6 +23,7 @@ import {
   selectToToken,
   selectQuote,
   selectAmountFromToken,
+  fetchSupportedChains,
 } from './slice';
 import { useAppSelector } from 'state/hooks';
 import { useDispatch } from 'react-redux';
@@ -146,6 +147,10 @@ const Bridge = () => {
     dispatch(fetchFromTokenList({ fromChain, toChain }));
     dispatch(fetchToTokenList({ fromChain, toChain }));
   }, [dispatch, fromChain, toChain]);
+
+  useEffect(() => {
+    dispatch(fetchSupportedChains());
+  }, [dispatch]);
 
   const { tx, status } = useBuildTx(
     fromToken?.address,
