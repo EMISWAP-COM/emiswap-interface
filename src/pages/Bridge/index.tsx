@@ -57,7 +57,9 @@ async function sendTransaction(
     if (status === 'move') {
       setStep({ name: 'status', params: { step: 1 } });
       const interval = setInterval(async () => {
-        const { sourceTxStatus, destinationTxStatus } = await fetchWrapper.get(
+        const {
+          result: { sourceTxStatus, destinationTxStatus },
+        } = await fetchWrapper.get(
           `https://watcherapi.fund.movr.network/api/v1/transaction-status?` +
             new URLSearchParams({
               transactionHash: receipt.transactionHash,
@@ -66,7 +68,6 @@ async function sendTransaction(
               bridgeName,
             }),
         );
-        console.log(sourceTxStatus, destinationTxStatus);
         setStep({
           name: 'status',
           params: {
@@ -77,6 +78,9 @@ async function sendTransaction(
           clearInterval(interval);
           setTimeout(() => {
             setStep({ name: 'complete' });
+            setTimeout(() => {
+              setStep({ name: 'form' });
+            }, 10000);
           }, 5000);
         }
       }, 2000);
@@ -197,9 +201,7 @@ const Bridge = () => {
             {match(step.name, {
               confirm: <Confirmation {...step.params} />,
               status: <Status {...step.params} />,
-              complete: (
-                <Complete fromChain={fromChain} toChain={toChain} token={fromToken} fees={fees} />
-              ),
+              complete: <Complete fees={fees} />,
             })}
           </AutoColumn>
         </Wrapper>
@@ -216,8 +218,6 @@ const Bridge = () => {
           <FromTokenInput />
           <ToTokenInput />
           <Fee />
-          {/* // TODO: remove this or refactor */}
-          {/* <Flow fromChain={fromChain} toChain={toChain} token={token} /> */}
         </AutoColumn>
       </Wrapper>
       {account ? (
