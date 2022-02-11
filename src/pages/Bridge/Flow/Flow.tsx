@@ -1,16 +1,18 @@
 import React from 'react';
 import * as S from './styleds';
 
-const Flow = ({ fromChain, toChain, token }) => {
-  if (!fromChain || !toChain || !token) return null;
-
+const Flow = ({ fromChain, toChain, fromToken, toToken }) => {
   return (
     <S.Root>
       <Container text={fromChain.name} icon={fromChain.icon} />
 
       <S.Delimiter />
 
-      <Container text={token.symbol} icon={token.icon} />
+      <Container text={fromToken.symbol} icon={fromToken.icon} />
+
+      <S.Delimiter />
+
+      <Container text={toToken.symbol} icon={toToken.icon} />
 
       <S.Delimiter />
 

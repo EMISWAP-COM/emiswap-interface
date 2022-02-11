@@ -1,13 +1,17 @@
 import React from 'react';
 import { Flow } from '../Flow';
 import { ArrowDown } from 'react-feather';
+import { useAppSelector } from 'state/hooks';
+import { selectFromToChains, selectFromToken, selectToToken } from '../slice';
 
 import * as SC from '../Confirmation/styleds';
 import * as S from './styleds';
 import * as SB from '../styled';
 
-const Complete = ({ fromChain, toChain, token, fees }) => {
-  if (!fromChain || !toChain || !token) return null;
+const Complete = ({ fees }) => {
+  const { fromChain, toChain } = useAppSelector(selectFromToChains);
+  const fromToken = useAppSelector(selectFromToken);
+  const toToken = useAppSelector(selectToToken);
 
   return (
     <SC.Root>
@@ -40,7 +44,7 @@ const Complete = ({ fromChain, toChain, token, fees }) => {
         </SB.FeeRow>
       </SB.Fee>
 
-      <Flow fromChain={fromChain} toChain={toChain} token={token} />
+      <Flow fromChain={fromChain} toChain={toChain} fromToken={fromToken} toToken={toToken} />
     </SC.Root>
   );
 };
