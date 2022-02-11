@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import {
-  fetchSupportedChains,
   selectChainList,
   selectFromToChains,
   setFromChain as setFromChainAction,
@@ -18,10 +17,6 @@ const ChainsSelect = () => {
   const { fromChain, toChain } = useAppSelector(selectFromToChains);
   const setFromChain = value => dispatch(setFromChainAction(value));
   const setToChain = value => dispatch(setToChainAction(value));
-
-  useEffect(() => {
-    dispatch(fetchSupportedChains());
-  }, [dispatch]);
 
   const onSwitchChains = () => {
     setToChain(fromChain);
