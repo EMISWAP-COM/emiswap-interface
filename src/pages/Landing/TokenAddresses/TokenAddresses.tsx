@@ -11,7 +11,6 @@ import arrowSvg from '../../../assets/svg/arrow.svg';
 import { shortenAddressHeadTail } from '../../../utils';
 import { useTranslation } from 'react-i18next';
 
-
 const TokenAddresses = () => {
   const { t } = useTranslation();
   const { ethereum } = window as any;
@@ -27,21 +26,24 @@ const TokenAddresses = () => {
   // @ts-ignore
   const connectedNetworkId = ethereum?.networkVersion;
 
-  const addTokenToMetamsak = useCallback(async (token) => {
-    if (!ethereum) return;
+  const addTokenToMetamsak = useCallback(
+    async token => {
+      if (!ethereum) return;
 
-    await ethereum.request({
-      method: 'wallet_watchAsset',
-      params: {
-        type: 'ERC20',
-        options: {
-          address: token.address,
-          symbol: token.symbol,
-          decimals: token.decimals,
+      await ethereum.request({
+        method: 'wallet_watchAsset',
+        params: {
+          type: 'ERC20',
+          options: {
+            address: token.address,
+            symbol: token.symbol,
+            decimals: token.decimals,
+          },
         },
-      },
-    })
-  }, [ethereum]);
+      });
+    },
+    [ethereum],
+  );
 
   const tokens = [
     {
@@ -58,7 +60,7 @@ const TokenAddresses = () => {
       chainId: '1',
       icon: ethereumSvg,
       symbol: 'ESW',
-      decimals: 18
+      decimals: 18,
     },
     {
       chainName: 'Kucoin',
@@ -66,11 +68,12 @@ const TokenAddresses = () => {
       chainId: '321',
       icon: kucoinSvg,
       symbol: 'ESW',
-      decimals: 18
-    }
-  ]
+      decimals: 18,
+    },
+  ];
 
-  const enableAddToken = ethereum && isMetamask && connectedNetworkId === tokens[activeIndex].chainId;
+  const enableAddToken =
+    ethereum && isMetamask && connectedNetworkId === tokens[activeIndex].chainId;
 
   return (
     <S.Root>
@@ -79,7 +82,10 @@ const TokenAddresses = () => {
         <S.Details>
           <S.Address>{shortenAddressHeadTail(tokens[activeIndex].address, 4, 20)}</S.Address>
           <S.Controls>
-            <S.Metamask onClick={() => enableAddToken && addTokenToMetamsak(tokens[activeIndex])} disabled={!enableAddToken}>
+            <S.Metamask
+              onClick={() => enableAddToken && addTokenToMetamsak(tokens[activeIndex])}
+              disabled={!enableAddToken}
+            >
               <img src={mmPng} alt="" />
             </S.Metamask>
             <S.Copy onClick={() => copy(tokens[activeIndex].address)}>
@@ -95,40 +101,49 @@ const TokenAddresses = () => {
       {optionsOpened && (
         <S.Options ref={optionsRef}>
           {tokens.map((token, i) => (
-            <S.Option onClick={() => {setActiveIndex(i); setOptionsOpened(false);}}>
+            <S.Option
+              onClick={() => {
+                setActiveIndex(i);
+                setOptionsOpened(false);
+              }}
+            >
               <S.Details>
                 <S.Address>{shortenAddressHeadTail(token.address)}</S.Address>
                 <S.Controls>
-                  <S.Chain><img src={token.icon} alt="" /><S.ChainName>{token.chainName}</S.ChainName></S.Chain>
+                  <S.Chain>
+                    <img src={token.icon} alt="" />
+                    <S.ChainName>{token.chainName}</S.ChainName>
+                  </S.Chain>
                 </S.Controls>
               </S.Details>
             </S.Option>
-          ))}  
+          ))}
         </S.Options>
       )}
     </S.Root>
-  )
-}
+  );
+};
 
 // Hook
 function useOnClickOutside(ref, excludeRef, handler) {
-  useEffect(
-    () => {
-      const listener = (event) => {
-        if (!ref.current || ref.current.contains(event.target) || excludeRef.current.contains(event.target)) {
-          return;
-        }
-        handler(event);
-      };
-      document.addEventListener("mousedown", listener);
-      document.addEventListener("touchstart", listener);
-      return () => {
-        document.removeEventListener("mousedown", listener);
-        document.removeEventListener("touchstart", listener);
-      };
-    },
-    [ref, excludeRef, handler]
-  );
+  useEffect(() => {
+    const listener = event => {
+      if (
+        !ref.current ||
+        ref.current.contains(event.target) ||
+        excludeRef.current.contains(event.target)
+      ) {
+        return;
+      }
+      handler(event);
+    };
+    document.addEventListener('mousedown', listener);
+    document.addEventListener('touchstart', listener);
+    return () => {
+      document.removeEventListener('mousedown', listener);
+      document.removeEventListener('touchstart', listener);
+    };
+  }, [ref, excludeRef, handler]);
 }
 
 export { TokenAddresses };

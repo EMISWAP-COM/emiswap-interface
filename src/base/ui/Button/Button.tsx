@@ -3,14 +3,14 @@ import styled from 'styled-components/macro';
 
 const StyledButton = styled.button<{ isDisabled: boolean }>`
   display: block;
-  background-color: ${({ theme, isDisabled }) => isDisabled ? 'transparent' : theme.purple};
-  border: 1px solid ${({ theme, isDisabled }) => isDisabled ? theme.white : theme.purple};
+  background-color: ${({ theme, isDisabled }) => (isDisabled ? 'transparent' : theme.purple)};
+  border: 1px solid ${({ theme, isDisabled }) => (isDisabled ? theme.white : theme.purple)};
   border-radius: 8px;
   font-size: 16px;
   height: 54px;
   color: ${({ theme }) => theme.white};
   width: 100%;
-  cursor: ${({ isDisabled }) => isDisabled ? 'default' : 'pointer'};
+  cursor: ${({ isDisabled }) => (isDisabled ? 'default' : 'pointer')};
   transition: box-shadow 0.3s;
   outline: none;
 
@@ -24,23 +24,18 @@ type ButtonProps = {
   onClick?: () => void;
   isDisabled?: boolean;
   className?: string;
-}
+};
 
-const Button: React.FC<ButtonProps> = (
-  {
-    children,
-    onClick,
-    isDisabled,
-    className = '',
-  },
-) => {
-  return <StyledButton
-    className={className}
-    isDisabled={isDisabled}
-    onClick={isDisabled ? undefined : onClick}
-  >
-    {children}
-  </StyledButton>;
+const Button: React.FC<ButtonProps> = ({ children, onClick, isDisabled, className = '' }) => {
+  return (
+    <StyledButton
+      className={className}
+      isDisabled={isDisabled}
+      onClick={isDisabled ? undefined : onClick}
+    >
+      {children}
+    </StyledButton>
+  );
 };
 
 export default Button;

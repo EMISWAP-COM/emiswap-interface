@@ -9,11 +9,13 @@ import esw_addresses from './esw_addresses';
 import PolygonNetworkIcon from '../assets/svg/polygon-network.svg';
 import ShidenNetworkIcon from '../assets/images/shiden-network.png';
 import AvalancheNetworkIcon from '../assets/svg/avalanche-network.svg';
+import AuroraNetworkIcon from '../assets/svg/aurora-network.svg';
 
 import { KCS } from './tokens/KCS';
 import { MATIC } from './tokens/MATIC';
 import { AVAX } from './tokens/AVAX';
 import { SDN } from './tokens/SDN';
+import { AURORA_ETHER } from './tokens/AURORA_ETHER';
 
 export const MAX_NUM_DECIMALS = 18;
 export const ROUTER_ADDRESS = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D';
@@ -174,6 +176,33 @@ export const KOVAN_CHI = new Token(
   'Chi Gastoken by 1inch',
 );
 
+export const AURORA_WETH = new Token(
+  // @ts-ignore
+  chainIds.AURORA,
+  '0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB',
+  18,
+  'WETH',
+  'WrappedEther',
+);
+
+export const AURORA_DAI = new Token(
+  // @ts-ignore
+  chainIds.AURORA,
+  '0xe3520349F477A5F6EB06107066048508498A291b',
+  18,
+  'DAI',
+  'WrappedEther',
+);
+
+export const AURORA_USDT = new Token(
+  // @ts-ignore
+  chainIds.AURORA,
+  '0x4988a896b1227218e4A686fdE5EabdcAbd91571f',
+  18,
+  'USDT',
+  'Tether USD',
+);
+
 export const ESW: ChainTokenList = {
   [ChainId.MAINNET]: [
     new Token(ChainId.MAINNET, esw_addresses[chainIds.MAINNET], 18, 'ESW', 'EmiDAO Token'),
@@ -213,6 +242,10 @@ export const ESW: ChainTokenList = {
     // @ts-ignore
     new Token(chainIds.AVALANCHE, esw_addresses[chainIds.AVALANCHE], 18, 'ESW', 'EmiDAO Token'),
   ],
+  [chainIds.AURORA]: [
+    // @ts-ignore
+    new Token(chainIds.AURORA, esw_addresses[chainIds.AURORA], 18, 'ESW', 'EmiDAO Token'),
+  ],
 };
 
 const ETH_ONLY: ChainTokenList = {
@@ -227,6 +260,7 @@ const ETH_ONLY: ChainTokenList = {
   [chainIds.MUMBAI]: [ETHER],
   [chainIds.SHIDEN]: [ETHER],
   [chainIds.AVALANCHE]: [ETHER],
+  [chainIds.AURORA]: [ETHER],
 };
 
 // used to construct intermediary pairs for trading
@@ -240,6 +274,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   [chainIds.MUMBAI]: [MUMBAI_WMATIC],
   [chainIds.SHIDEN]: [WSDN],
   [chainIds.AVALANCHE]: [WAVAX],
+  [chainIds.AURORA]: [AURORA_DAI, AURORA_USDT /*AURORA_WETH*/],
 };
 
 // used for display in the default list when adding liquidity
@@ -257,6 +292,8 @@ export const SUGGESTED_BASES: ChainTokenList = {
   [chainIds.SHIDEN]: [ESW[chainIds.SHIDEN][0]],
   // @ts-ignore
   [chainIds.AVALANCHE]: [ESW[chainIds.AVALANCHE][0]],
+  // @ts-ignore
+  [chainIds.AURORA]: [AURORA_DAI, AURORA_USDT /*AURORA_WETH*/ /*ESW[chainIds.AURORA][0]*/],
 };
 
 // used to construct the list of all pairs we consider by default in the frontend
@@ -274,6 +311,8 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   [chainIds.SHIDEN]: [ESW[chainIds.SHIDEN][0]],
   // @ts-ignore
   [chainIds.AVALANCHE]: [ESW[chainIds.AVALANCHE][0]],
+  // @ts-ignore
+  [chainIds.AURORA]: [AURORA_DAI, AURORA_USDT /*AURORA_WETH*/ /*ESW[chainIds.AURORA][0]*/],
 };
 
 // @ts-ignore
@@ -597,5 +636,24 @@ export const networksItems: INetworkItem[] = [
     analyticsUrl: 'https://emiswap.com/analytics?network=polygon', // TODO: FAKE
     eswExplorerName: 'ESW Polygonscan', // TODO: FAKE
     active: false,
+  },
+  {
+    alias: 'aurora',
+    value: 'aurora',
+    chainId: chainIds.AURORA,
+    token: AURORA_ETHER,
+    icon: AuroraNetworkIcon,
+    name: 'Aurora',
+    rpcUrls: ['https://mainnet.aurora.dev'],
+    currencySymbol: 'ETH',
+    currencySymbolWrap: 'WETH',
+    currencySymbolWeth: 'WETH',
+    blockExplorerUrl: 'https://explorer.mainnet.aurora.dev',
+    blockExplorerName: 'Aurora Block Explorer',
+    analyticsUrl: 'https://emiswap.com/analytics?network=aurora',
+    eswExplorerUrl: 'https://etherscan.io/token/0x5a75A093747b72a0e14056352751eDF03518031d',
+    eswExplorerName: 'ESW Etherscan',
+    active: true,
+    bridgeUrl: 'https://rainbowbridge.app/transfer',
   },
 ];

@@ -9,6 +9,7 @@ import { useActiveWeb3React } from './index';
 import { useBytes32TokenContract, useTokenContract } from './useContract';
 import {
   useDefaultCoin,
+  useIsAuroraActive,
   useIsAvalancheActive,
   useIsEthActive,
   useIsKuCoinActive,
@@ -33,6 +34,7 @@ export function useAllTokens(isLpTokens?: boolean): [{ [address: string]: Token 
   const isPolygonActive = useIsPolygonActive();
   const isShidenActive = useIsShidenActive();
   const isAvalancheActive = useIsAvalancheActive();
+  const isAuroraActive = useIsAuroraActive();
 
   return [
     useMemo(() => {
@@ -78,6 +80,17 @@ export function useAllTokens(isLpTokens?: boolean): [{ [address: string]: Token 
                   mustVisibleAddresses.avalanche.includes(el.address.toLowerCase())) ||
                 enableTokensList.includes(el.address) ||
                 el.address === window['env'].REACT_APP_ESW_ID,
+            );
+
+            // @ts-ignore
+            return (
+              Boolean(exists) ||
+              el.address === window['env'].REACT_APP_ESW_ID ||
+              el.symbol === 'ESW'
+            );
+          } else if (isAuroraActive) {
+            const exists = defaultCoins.tokens.find(
+              ct => ct.chainId === chainId && el.address.toLowerCase() === ct.address.toLowerCase(),
             );
 
             // @ts-ignore
@@ -151,6 +164,7 @@ export function useAllTokens(isLpTokens?: boolean): [{ [address: string]: Token 
       isPolygonActive,
       isShidenActive,
       isAvalancheActive,
+      isAuroraActive,
     ]),
     isLoading,
   ];

@@ -106,7 +106,6 @@ inject_vars:
           requests: { cpu: 0.05, memory: '256Mi' }
           limits: { cpu: 0.5, memory: '768Mi' }
     seed: {}
- 
 
   postgresql:
     image:
