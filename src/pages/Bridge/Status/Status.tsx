@@ -3,34 +3,42 @@ import useTimer from '../hooks/useTimer';
 
 import * as SC from '../Confirmation/styleds';
 import * as S from './styleds';
+import { useAppSelector } from 'state/hooks';
+import { selectFromToChains, selectFromToken, selectToToken } from '../slice';
 
-const Status = ({ fromChain, toChain, step }) => {
+const Status = ({ step }) => {
+  const { fromChain, toChain } = useAppSelector(selectFromToChains);
+  const fromToken = useAppSelector(selectFromToken);
+  const toToken = useAppSelector(selectToToken);
   const seconds = useTimer(fromChain && toChain);
-
-  if (!fromChain || !toChain) return null;
 
   return (
     <SC.Root>
       <SC.Title>Transaction Status</SC.Title>
       <S.Grid>
         <S.Column>
-          <span>Token</span>
           <S.Token>
             <S.Icon src={fromChain.icon} />
             {fromChain.name}
           </S.Token>
+          <S.Token>
+            <S.Icon src={fromToken.icon} />
+            {fromToken.name}
+          </S.Token>
         </S.Column>
         <S.Column>
-          <span>Timer</span>
           <S.Timer>{seconds}</S.Timer>
         </S.Column>
-        <S.Column>
-          <span>Token</span>
+        <S.LastColumn>
           <S.Token>
             <S.Icon src={toChain.icon} />
             {toChain.name}
           </S.Token>
-        </S.Column>
+          <S.Token>
+            <S.Icon src={toToken.icon} />
+            {toToken.name}
+          </S.Token>
+        </S.LastColumn>
       </S.Grid>
 
       <SC.Process>

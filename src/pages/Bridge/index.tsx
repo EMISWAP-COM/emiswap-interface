@@ -196,7 +196,7 @@ const Bridge = () => {
           <AutoColumn gap={'md'}>
             {match(step.name, {
               confirm: <Confirmation {...step.params} />,
-              status: <Status fromChain={fromChain} toChain={toChain} {...step.params} />,
+              status: <Status {...step.params} />,
               complete: (
                 <Complete fromChain={fromChain} toChain={toChain} token={fromToken} fees={fees} />
               ),

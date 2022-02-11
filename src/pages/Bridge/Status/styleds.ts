@@ -7,7 +7,7 @@ export const Text = styled.div`
   display: flex;
   letter-spacing: 0.02em;
   justify-content: space-between;
-  color: #FFFFFF;
+  color: #ffffff;
 `;
 
 export const Grid = styled.div`
@@ -17,15 +17,15 @@ export const Grid = styled.div`
   justify-content: space-between;
   justify-items: stretch;
   align-items: center;
-  grid-template-columns: 2.5fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 0px 0px;
 
   > div:first-of-type {
-    text-align: left;
+    justify-self: start;
   }
 
   > div:last-of-type {
-    text-align: right;
+    justify-self: end;
   }
 `;
 
@@ -40,9 +40,22 @@ export const Column = styled.div`
   font-weight: normal;
   font-size: 16px;
   letter-spacing: -0.01em;
-  color: #FFFFFF;
+  color: #ffffff;
 `;
 
+export const LastColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-content: flex-end;
+  align-items: stretch;
+  justify-content: space-between;
+  height: 62px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+`;
 
 export const Token = styled.div`
   display: flex;
@@ -74,6 +87,6 @@ export const Cost = styled.div`
 
 export const HR = styled.div`
   width: 100%;
-  border-bottom: 1px solid #615C69;
+  border-bottom: 1px solid #615c69;
   margin: 32px 0;
 `;
