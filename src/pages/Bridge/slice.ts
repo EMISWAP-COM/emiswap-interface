@@ -4,6 +4,17 @@ import { AppState } from '../../state';
 import { Chain, Token, Quote } from './types';
 import custMovr from './movr';
 
+const getUniqueTokens = (payload: { token: Token; chainId: number }[]): Token[] => {
+  const tokenMap = new Map();
+  payload.forEach(({ token }) => {
+    if (tokenMap.has(token.address)) {
+      return;
+    }
+    tokenMap.set(token.address, token);
+  });
+  return Array.from(tokenMap, ([_, token]) => token);
+};
+
 export interface BridgeState {
   chainList: 'loading' | 'error' | Chain[];
   fromChain: null | Chain;
@@ -144,7 +155,7 @@ export const bridgeSlice = createSlice({
 
     builder
       .addCase(fetchFromTokenList.fulfilled, (state, action) => {
-        state.fromTokenList = action.payload.map(x => x.token);
+        state.fromTokenList = getUniqueTokens(action.payload);
         state.fromToken = state.fromTokenList[0];
       })
       .addCase(fetchFromTokenList.pending, (state, action) => {
