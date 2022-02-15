@@ -155,10 +155,6 @@ const Bridge = () => {
     dispatch(fetchToTokenList({ fromChain, toChain }));
   }, [dispatch, fromChain, toChain]);
 
-  useEffect(() => {
-    dispatch(fetchSupportedChains());
-  }, [dispatch]);
-
   const { tx, status } = useBuildTx(
     fromToken?.address,
     fromChain?.chainId,
