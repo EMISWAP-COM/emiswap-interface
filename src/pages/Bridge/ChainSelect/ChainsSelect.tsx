@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import {
-  selectChainList,
   selectFromToChains,
   setFromChain as setFromChainAction,
   setToChain as setToChainAction,
@@ -9,24 +8,32 @@ import {
 import { useAppSelector } from 'state/hooks';
 import ChainInput from './ChainInput';
 import ChainSwitcher from './ChainSwitcher';
+import { useGetSupportChainQuery } from '../api';
 
 const ChainsSelect = () => {
   const [modalOpened, setModalOpened] = React.useState<'from' | 'to' | null>(null);
   const dispatch = useDispatch();
-  const chainList = useAppSelector(selectChainList);
   const { fromChain, toChain } = useAppSelector(selectFromToChains);
   const setFromChain = value => dispatch(setFromChainAction(value));
   const setToChain = value => dispatch(setToChainAction(value));
+  const { data: chainList, isSuccess } = useGetSupportChainQuery();
 
   const onSwitchChains = () => {
     setToChain(fromChain);
     setFromChain(toChain);
   };
 
+  useEffect(() => {
+    if (isSuccess) {
+      setFromChain(chainList.result[4]);
+      setToChain(chainList.result[2]);
+    }
+  }, [chainList]);
+
   return (
     <>
       <ChainInput
-        chainList={chainList}
+        chainList={isSuccess ? chainList.result : 'loading'}
         chain={fromChain}
         onClick={() => {
           setModalOpened('from');
@@ -40,7 +47,7 @@ const ChainsSelect = () => {
       <ChainSwitcher onSwitchChains={onSwitchChains} />
 
       <ChainInput
-        chainList={chainList}
+        chainList={isSuccess ? chainList.result : 'loading'}
         chain={toChain}
         onClick={() => {
           setModalOpened('to');

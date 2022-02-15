@@ -16,7 +16,6 @@ const getUniqueTokens = (payload: { token: Token; chainId: number }[]): Token[] 
 };
 
 export interface BridgeState {
-  chainList: 'loading' | 'error' | Chain[];
   fromChain: null | Chain;
   toChain: null | Chain;
   fromTokenList: 'loading' | Token[];
@@ -28,7 +27,6 @@ export interface BridgeState {
 }
 
 const initialState: BridgeState = {
-  chainList: 'loading',
   fromChain: null,
   toChain: null,
   fromTokenList: 'loading',
@@ -141,19 +139,6 @@ export const bridgeSlice = createSlice({
   },
   extraReducers(builder) {
     builder
-      .addCase(fetchSupportedChains.fulfilled, (state, action) => {
-        state.chainList = action.payload;
-        state.fromChain = state.chainList[4];
-        state.toChain = state.chainList[2];
-      })
-      .addCase(fetchSupportedChains.pending, (state, action) => {
-        state.chainList = 'loading';
-      })
-      .addCase(fetchSupportedChains.rejected, (state, action) => {
-        state.chainList = 'error';
-      });
-
-    builder
       .addCase(fetchFromTokenList.fulfilled, (state, action) => {
         state.fromTokenList = getUniqueTokens(action.payload);
         state.fromToken = state.fromTokenList[0];
@@ -210,7 +195,6 @@ export const {
   setAmountFromToken,
 } = bridgeSlice.actions;
 
-export const selectChainList = (state: AppState) => state.bridge.chainList;
 export const selectFromTokenList = (state: AppState) => state.bridge.fromTokenList;
 export const selectToTokenList = (state: AppState) => state.bridge.toTokenList;
 export const selectFromToken = (state: AppState) => state.bridge.fromToken;
