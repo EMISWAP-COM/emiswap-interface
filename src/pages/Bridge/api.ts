@@ -9,14 +9,20 @@ export const apiSlice = createApi({
     getSupportChain: builder.query<{ result: Chain[] }, void>({
       query: () => 'supported/chains',
     }),
-    getSupportTokenFrom: builder.query<{ result: Token[] }, { fromChain: Chain; toChain: Chain }>({
+    getSupportTokenFrom: builder.query<
+      { result: { token: Token; chainId: number }[] },
+      { fromChain: Chain; toChain: Chain }
+    >({
       query: ({ fromChain, toChain }) =>
         `supported/from-token-list?${new URLSearchParams({
           fromChainId: fromChain.chainId.toString(),
           toChainId: toChain.chainId.toString(),
         }).toString()}`,
     }),
-    getSupportTokenTo: builder.query<{ result: Token[] }, { fromChain: Chain; toChain: Chain }>({
+    getSupportTokenTo: builder.query<
+      { result: { token: Token; chainId: number }[] },
+      { fromChain: Chain; toChain: Chain }
+    >({
       query: ({ fromChain, toChain }) =>
         `supported/to-token-list?${new URLSearchParams({
           fromChainId: fromChain.chainId.toString(),

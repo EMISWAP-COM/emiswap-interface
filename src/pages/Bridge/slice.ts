@@ -4,24 +4,11 @@ import { AppState } from '../../state';
 import { Chain, Token, Quote } from './types';
 import custMovr from './movr';
 
-const getUniqueTokens = (payload: { token: Token; chainId: number }[]): Token[] => {
-  const tokenMap = new Map();
-  payload.forEach(({ token }) => {
-    if (tokenMap.has(token.address)) {
-      return;
-    }
-    tokenMap.set(token.address, token);
-  });
-  return Array.from(tokenMap, ([_, token]) => token);
-};
-
 export interface BridgeState {
   fromChain: null | Chain;
   toChain: null | Chain;
-  fromTokenList: 'loading' | Token[];
   fromToken: null | Token;
   amountFromToken: null | string;
-  toTokenList: 'loading' | Token[];
   toToken: null | Token;
   quote: 'no-route' | 'waiting' | 'error' | 'loading' | Quote;
 }
@@ -29,63 +16,11 @@ export interface BridgeState {
 const initialState: BridgeState = {
   fromChain: null,
   toChain: null,
-  fromTokenList: 'loading',
   fromToken: null,
   amountFromToken: null,
-  toTokenList: 'loading',
   toToken: null,
   quote: 'waiting',
 };
-
-export const fetchSupportedChains = createAsyncThunk('bridge/fetchSupportedChains', async () => {
-  const response = await custMovr.fetchSupportedChains();
-  return response as Chain[];
-});
-
-export const fetchFromTokenList = createAsyncThunk(
-  'bridge/fetchFromTokenList',
-  async ({
-    fromChain,
-    toChain,
-  }: {
-    fromChain: BridgeState['fromChain'];
-    toChain: BridgeState['toChain'];
-  }) => {
-    if (fromChain && toChain) {
-      const response = await custMovr.fetchSupportedTokensByChain(
-        fromChain.chainId,
-        toChain.chainId,
-      );
-      return response as { token: Token; chainId: number }[];
-    } else {
-      // TODO handle this
-      throw new Error('waiting chain');
-    }
-  },
-);
-
-export const fetchToTokenList = createAsyncThunk(
-  'bridge/fetchToTokenList',
-  async ({
-    fromChain,
-    toChain,
-  }: {
-    fromChain: BridgeState['fromChain'];
-    toChain: BridgeState['toChain'];
-  }) => {
-    if (fromChain && toChain) {
-      const response = await custMovr.fetchSupportedTokensToChain(
-        fromChain.chainId,
-        toChain.chainId,
-      );
-      return response as { token: Token; chainId: number }[];
-    } else {
-      // TODO handle this
-      throw new Error('waiting chain');
-    }
-  },
-);
-
 interface FetchQuoteInterface {
   fromAsset: Token['address'];
   fromChainId: Chain['chainId'];
@@ -139,34 +74,6 @@ export const bridgeSlice = createSlice({
   },
   extraReducers(builder) {
     builder
-      .addCase(fetchFromTokenList.fulfilled, (state, action) => {
-        state.fromTokenList = getUniqueTokens(action.payload);
-        state.fromToken = state.fromTokenList[0];
-      })
-      .addCase(fetchFromTokenList.pending, (state, action) => {
-        // TODO
-      })
-      .addCase(fetchFromTokenList.rejected, (state, action) => {
-        // TODO handle error two case
-        // 1. waiting chain
-        // 2. error handling
-      });
-
-    builder
-      .addCase(fetchToTokenList.fulfilled, (state, action) => {
-        state.toTokenList = action.payload.map(x => x.token);
-        state.toToken = state.toTokenList[0];
-      })
-      .addCase(fetchToTokenList.pending, (state, action) => {
-        // TODO set to loading state
-      })
-      .addCase(fetchToTokenList.rejected, (state, action) => {
-        // TODO handle error two case
-        // 1. waiting chain
-        // 2. error handling
-      });
-
-    builder
       .addCase(fetchQuote.fulfilled, (state, action) => {
         // fix race condition
         if (typeof state.quote !== 'string' && state.quote.timestamp > action.payload.timestamp) {
@@ -195,8 +102,6 @@ export const {
   setAmountFromToken,
 } = bridgeSlice.actions;
 
-export const selectFromTokenList = (state: AppState) => state.bridge.fromTokenList;
-export const selectToTokenList = (state: AppState) => state.bridge.toTokenList;
 export const selectFromToken = (state: AppState) => state.bridge.fromToken;
 export const selectToToken = (state: AppState) => state.bridge.toToken;
 export const selectQuote = (state: AppState) => state.bridge.quote;
