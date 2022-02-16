@@ -8,6 +8,11 @@ import { useGetSupportTokenToQuery } from './api';
 import { getUniqueTokens } from './utils';
 import { useQuoteData } from './hooks/useQuoteData';
 
+const formatTokenAmount = (amount: string, dicimals?: number): string => {
+  const stringOfNumber = parseFloat(amount).toLocaleString('fullwide', { useGrouping: false });
+  return formatUnits(stringOfNumber, dicimals || 1);
+};
+
 const ToTokenInput = () => {
   const { fromChain, toChain } = useAppSelector(selectFromToChains);
   const { data, isSuccess } = useGetSupportTokenToQuery({ fromChain, toChain });
@@ -35,7 +40,7 @@ const ToTokenInput = () => {
     <TokenInput
       tokens={isSuccess ? tokenList : 'loading'}
       token={toToken}
-      amount={formatUnits(toAmount || 0, toToken?.decimals || 1)}
+      amount={formatTokenAmount(toAmount || '0', toToken?.decimals)}
       onAmountInput={null}
       setToken={setToken}
     />
