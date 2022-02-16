@@ -67,14 +67,16 @@ async function sendTransaction(
 }
 
 const getButtonTitle = (
-  quote: Quote | 'loading' | 'no-route' | 'waiting',
+  isFetching: boolean,
+  isError: boolean,
+  quote: Quote,
   status: string,
 ): { buttonTitle: string; buttonActive: boolean } => {
-  if (quote === 'loading') {
+  if (isFetching) {
     return { buttonTitle: 'Loading quote...', buttonActive: false };
-  } else if (quote === 'no-route') {
+  } else if (quote?.routes.length === 0) {
     return { buttonTitle: 'No routes available', buttonActive: false };
-  } else if (quote === 'waiting') {
+  } else if (isError) {
     return { buttonTitle: 'Please fill all fields', buttonActive: false };
   } else {
     if (status === 'approve') {
@@ -83,7 +85,7 @@ const getButtonTitle = (
     if (status === 'move') {
       return { buttonTitle: 'Send Transaction', buttonActive: true };
     }
-    return { buttonTitle: 'Wait transaction data', buttonActive: false };
+    return { buttonTitle: 'Wait transaction data...', buttonActive: false };
   }
 };
 
@@ -96,7 +98,7 @@ const Button = ({ setStep }) => {
   const toToken = useAppSelector(selectToToken);
 
   const amount = useAppSelector(selectAmountFromToken);
-  const { isSuccess, quotes } = useQuoteData();
+  const { isSuccess, isFetching, isError, quotes } = useQuoteData();
   const toAmount = isSuccess ? quotes.routes[0]?.bridgeRoute?.outputAmount : null;
   const isApprovalRequired = isSuccess ? quotes.routes[0]?.isApprovalRequired : false;
   const signer = library?.getSigner();
@@ -132,7 +134,7 @@ const Button = ({ setStep }) => {
     );
   }, [tx, signer, fromChain, toChain, quotes]);
 
-  const { buttonTitle, buttonActive } = getButtonTitle(quotes, status);
+  const { buttonTitle, buttonActive } = getButtonTitle(isFetching, isError, quotes, status);
   return account ? (
     <ButtonLight
       onClick={() => {

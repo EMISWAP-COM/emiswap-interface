@@ -8,12 +8,14 @@ import {
 } from '../slice';
 import { Quote } from '../types';
 
-export const useQuoteData = (): { isSuccess: boolean; quotes?: Quote } => {
+type QuoteData = ReturnType<typeof useGetQuoteQuery> & { quotes?: Quote };
+
+export const useQuoteData = (): QuoteData => {
   const { fromChain, toChain } = useAppSelector(selectFromToChains);
   const fromToken = useAppSelector(selectFromToken);
   const amount = useAppSelector(selectAmountFromToken);
   const toToken = useAppSelector(selectToToken);
-  const { isSuccess, data } = useGetQuoteQuery({
+  const { data, ...restProps } = useGetQuoteQuery({
     fromAsset: fromToken,
     toAsset: toToken,
     fromChain,
@@ -21,5 +23,5 @@ export const useQuoteData = (): { isSuccess: boolean; quotes?: Quote } => {
     amount,
   });
   const quotes = data?.result;
-  return { isSuccess, quotes };
+  return { ...restProps, data, quotes };
 };
