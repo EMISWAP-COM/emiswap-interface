@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BigNumber } from '@ethersproject/bignumber';
 import { Chain, Quote, Token } from './types';
+import { parseUnits } from '@ethersproject/units';
 
 export const apiSlice = createApi({
   reducerPath: 'api',
@@ -30,23 +31,23 @@ export const apiSlice = createApi({
         }).toString()}`,
     }),
     getQuote: builder.query<
-      Quote,
+      { result?: Quote },
       {
         fromAsset: Token;
         fromChain: Chain;
         toAsset: Token;
         toChain: Chain;
-        amount: BigNumber;
-        sort: string;
+        amount: string;
+        sort?: string;
       }
     >({
-      query: ({ fromAsset, fromChain, toAsset, toChain, amount, sort }) =>
+      query: ({ fromAsset, fromChain, toAsset, toChain, amount, sort = 'cheapestRoute' }) =>
         `quote?${new URLSearchParams({
           fromAsset: fromAsset.address,
           fromChainId: fromChain.chainId.toString(),
           toAsset: toAsset.address,
           toChainId: toChain.chainId.toString(),
-          amount: amount.toString(),
+          amount: parseUnits(amount, fromAsset.decimals).toString(),
           sort,
         }).toString()}`,
     }),
