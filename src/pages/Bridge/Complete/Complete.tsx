@@ -7,11 +7,15 @@ import { selectFromToChains, selectFromToken, selectToToken } from '../slice';
 import * as SC from '../Confirmation/styleds';
 import * as S from './styleds';
 import * as SB from '../styled';
+import { useQuoteData } from '../hooks/useQuoteData';
+import useFeesByRoute from '../hooks/useFeesByRoute';
 
-const Complete = ({ fees }) => {
+const Complete = () => {
   const { fromChain, toChain } = useAppSelector(selectFromToChains);
   const fromToken = useAppSelector(selectFromToken);
   const toToken = useAppSelector(selectToToken);
+  const { isSuccess, quotes } = useQuoteData();
+  const { fees } = useFeesByRoute(isSuccess ? quotes.routes[0] : null);
 
   return (
     <SC.Root>
