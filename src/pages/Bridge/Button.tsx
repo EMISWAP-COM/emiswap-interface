@@ -91,7 +91,7 @@ const getButtonTitle = (
 
 const Button = ({ setStep }) => {
   const [nonce, updateNonce] = useState(1);
-  const { account, library } = useActiveWeb3React();
+  const { account, library, chainId } = useActiveWeb3React();
   const toggleWalletModal = useWalletModalToggle();
   const { fromChain, toChain } = useAppSelector(selectFromToChains);
   const fromToken = useAppSelector(selectFromToken);
@@ -135,6 +135,11 @@ const Button = ({ setStep }) => {
   }, [tx, signer, fromChain, toChain, quotes]);
 
   const { buttonTitle, buttonActive } = getButtonTitle(isFetching, isError, quotes, status);
+  const isActualChain = fromChain?.chainId === chainId;
+
+  if (!isActualChain) {
+    return <ButtonLight disabled>Switch to {fromChain?.name} chain</ButtonLight>;
+  }
   return account ? (
     <ButtonLight
       onClick={() => {
