@@ -28,7 +28,7 @@ const Fee = () => {
         <S.FeeRowLabel>Transaction Fee</S.FeeRowLabel>
         <S.FeeRowValue>
           {fromChain?.chainId !== chainId
-            ? `Switch to ${fromChain.name}`
+            ? `Switch to ${fromChain?.name}`
             : getFeeText(isFetching, fees.transactionFee)}
         </S.FeeRowValue>
       </S.FeeRow>
