@@ -1,8 +1,6 @@
-import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { parseUnits } from '@ethersproject/units';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppState } from '../../state';
-import { Chain, Token, Quote } from './types';
-import custMovr from './movr';
+import { Chain, Token } from './types';
 
 export interface BridgeState {
   fromChain: null | Chain;
