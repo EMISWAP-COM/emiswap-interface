@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { BigNumber } from '@ethersproject/bignumber';
 import { Chain, Quote, Token } from './types';
 import { parseUnits } from '@ethersproject/units';
 
