@@ -1,12 +1,12 @@
 import React from 'react';
-import { useAppSelector } from 'state/hooks';
 import useFeesByRoute from './hooks/useFeesByRoute';
-import { selectQuote } from './slice';
+import { useQuoteData } from './hooks/useQuoteData';
 import * as S from './styled';
 
 const Fee = () => {
-  const quotes = useAppSelector(selectQuote);
-  const { fees } = useFeesByRoute(typeof quotes !== 'string' ? quotes?.routes?.[0] : null);
+  const { isSuccess, quotes } = useQuoteData();
+
+  const { fees } = useFeesByRoute(isSuccess ? quotes?.routes?.[0] : null);
   return (
     <S.Fee>
       <S.FeeRow>

@@ -2,18 +2,19 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { formatUnits } from '@ethersproject/units';
 import { useAppSelector } from 'state/hooks';
-import { selectFromToChains, selectQuote, selectToToken, setToToken } from './slice';
+import { selectFromToChains, selectToToken, setToToken } from './slice';
 import TokenInput from './TokenInput';
 import { useGetSupportTokenToQuery } from './api';
 import { getUniqueTokens } from './utils';
+import { useQuoteData } from './hooks/useQuoteData';
 
 const ToTokenInput = () => {
   const { fromChain, toChain } = useAppSelector(selectFromToChains);
   const { data, isSuccess } = useGetSupportTokenToQuery({ fromChain, toChain });
   const toToken = useAppSelector(selectToToken);
-  const quotes = useAppSelector(selectQuote);
+  const { quotes, isSuccess: quoteIsSuccess } = useQuoteData();
 
-  const toAmount = typeof quotes !== 'string' ? quotes.routes[0]?.bridgeRoute?.outputAmount : null;
+  const toAmount = quoteIsSuccess ? quotes.routes[0]?.bridgeRoute?.outputAmount : null;
   const dispatch = useDispatch();
 
   const tokenList = useMemo(() => {

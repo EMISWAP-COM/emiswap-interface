@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import AppBody from '../AppBody';
 import { AutoColumn } from '../../components/Column';
 import { ButtonLight } from '../../components/Button';
@@ -13,21 +13,16 @@ import { useActiveWeb3React } from '../../hooks';
 import useFeesByRoute from './hooks/useFeesByRoute';
 import useBuildTx from './hooks/useBuildTx';
 
-import {
-  BridgeState,
-  selectFromToChains,
-  fetchQuote,
-  selectFromToken,
-  selectToToken,
-  selectQuote,
-  selectAmountFromToken,
-} from './slice';
+import { selectFromToChains, selectFromToken, selectToToken, selectAmountFromToken } from './slice';
 import { useAppSelector } from 'state/hooks';
-import { useDispatch } from 'react-redux';
 import FromTokenInput from './FromTokenInput';
 import ToTokenInput from './ToTokenInput';
 import Fee from './Fee';
 import { fetchWrapper } from 'api/fetchWrapper';
+import { useGetQuoteQuery } from './api';
+import { BigNumber } from '@ethersproject/bignumber';
+import { Quote } from './types';
+import { useQuoteData } from './hooks/useQuoteData';
 
 async function sendTransaction(
   txData,
@@ -87,7 +82,7 @@ async function sendTransaction(
 }
 
 const getButtonTitle = (
-  quote: BridgeState['quote'],
+  quote: Quote | 'loading' | 'no-route' | 'waiting',
   status: string,
 ): { buttonTitle: string; buttonActive: boolean } => {
   if (quote === 'loading') {
@@ -121,31 +116,15 @@ const Bridge = () => {
   const { fromChain, toChain } = useAppSelector(selectFromToChains);
   const fromToken = useAppSelector(selectFromToken);
   const toToken = useAppSelector(selectToToken);
-  const quotes = useAppSelector(selectQuote);
+
   const amount = useAppSelector(selectAmountFromToken);
 
-  const dispatch = useDispatch();
+  const { isSuccess, quotes } = useQuoteData();
 
-  const { fees } = useFeesByRoute(typeof quotes !== 'string' ? quotes.routes[0] : null);
-  const toAmount = typeof quotes !== 'string' ? quotes.routes[0]?.bridgeRoute?.outputAmount : null;
-  const isApprovalRequired =
-    typeof quotes !== 'string' ? quotes.routes[0]?.isApprovalRequired : false;
+  const { fees } = useFeesByRoute(isSuccess ? quotes.routes[0] : null);
+  const toAmount = isSuccess ? quotes.routes[0]?.bridgeRoute?.outputAmount : null;
+  const isApprovalRequired = isSuccess ? quotes.routes[0]?.isApprovalRequired : false;
   const signer = library?.getSigner();
-
-  useEffect(() => {
-    if (fromToken && toToken && fromChain && toChain && amount) {
-      dispatch(
-        fetchQuote({
-          fromAsset: fromToken.address,
-          fromChainId: fromChain.chainId,
-          toAsset: toToken.address,
-          toChainId: toChain.chainId,
-          amount,
-          decimals: fromToken.decimals,
-        }),
-      );
-    }
-  }, [dispatch, fromToken, fromChain, toToken, toChain, amount]);
 
   const { tx, status } = useBuildTx(
     fromToken?.address,
@@ -154,11 +133,11 @@ const Bridge = () => {
     toChain?.chainId,
     amount,
     fromToken?.decimals,
-    typeof quotes !== 'string' ? quotes.routes[0]?.routePath : null,
+    isSuccess ? quotes.routes[0]?.routePath : null,
     toAmount,
     account,
     isApprovalRequired,
-    typeof quotes !== 'string' ? quotes.routes[0]?.allowanceTarget : null,
+    isSuccess ? quotes.routes[0]?.allowanceTarget : null,
     nonce,
   );
 
@@ -171,7 +150,7 @@ const Bridge = () => {
       signer,
       fromChain.chainId,
       toChain.chainId,
-      typeof quotes !== 'string' ? quotes.routes[0].bridgeRoute.bridgeName : null,
+      isSuccess ? quotes.routes[0].bridgeRoute.bridgeName : null,
       updateNonce,
       status,
       setStep,
