@@ -56,7 +56,7 @@ const useBuildTx = (
         allowanceTarget,
         tokenAddress: fromAsset,
       });
-      if (formatUnits(value, decimals) < amount) {
+      if (parseFloat(formatUnits(value, decimals)) < parseFloat(amount)) {
         const approvalTx = await customMovr.getApprovalBuildTx(
           fromChainId,
           address,
