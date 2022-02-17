@@ -304,7 +304,7 @@ const WalletModal: React.FC<WalletModalProps> = ({ ENSName }) => {
               link={option.href}
               header={option.name}
               subheader={null}
-              icon={require('../../assets/images/' + option.iconName)}
+              icon={option.iconName}
             />
           );
         }
@@ -363,7 +363,7 @@ const WalletModal: React.FC<WalletModalProps> = ({ ENSName }) => {
             link={option.href}
             header={option.name}
             subheader={null} //use option.descriptio to bring back multi-line
-            icon={require('../../assets/images/' + option.iconName)}
+            icon={option.iconName}
           />
         )
       );
