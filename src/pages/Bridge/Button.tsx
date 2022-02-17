@@ -1,8 +1,9 @@
 import React, { useCallback, useState } from 'react';
 import { ButtonLight } from 'components/Button';
 import { useWalletModalToggle } from '../../state/application/hooks';
-import { useActiveWeb3React } from '../../hooks';
+import { useActiveWeb3React, useSwitchNetwork } from '../../hooks';
 import { fetchWrapper } from 'api/fetchWrapper';
+import { INetworkItem, networksItems } from '../../constants';
 import useBuildTx from './hooks/useBuildTx';
 import { selectFromToChains, selectFromToken, selectToToken, selectAmountFromToken } from './slice';
 import { useAppSelector } from 'state/hooks';
@@ -96,6 +97,7 @@ const Button = ({ setStep }) => {
   const { fromChain, toChain } = useAppSelector(selectFromToChains);
   const fromToken = useAppSelector(selectFromToken);
   const toToken = useAppSelector(selectToToken);
+  const { switchNetwork } = useSwitchNetwork();
 
   const amount = useAppSelector(selectAmountFromToken);
   const { isSuccess, isFetching, isError, quotes } = useQuoteData();
@@ -118,6 +120,14 @@ const Button = ({ setStep }) => {
     nonce,
   );
 
+  const switchChain = async () => {
+    if (fromChain?.chainId === chainId) {
+      return;
+    }
+    const targetChain = networksItems.filter(network => network.chainId === fromChain?.chainId)
+    await switchNetwork(targetChain[0]);
+  }
+
   const send = useCallback(() => {
     if (tx.length === 0) {
       return;
@@ -138,7 +148,7 @@ const Button = ({ setStep }) => {
   const isActualChain = fromChain?.chainId === chainId;
 
   if (!isActualChain) {
-    return <ButtonLight disabled>Switch to {fromChain?.name} chain</ButtonLight>;
+    return <ButtonLight onClick={switchChain}>Switch to {fromChain?.name} chain</ButtonLight>;
   }
   return account ? (
     <ButtonLight
