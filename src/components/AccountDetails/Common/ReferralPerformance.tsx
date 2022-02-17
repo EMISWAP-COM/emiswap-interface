@@ -1,44 +1,11 @@
-import React, { useCallback } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components/macro';
 import { Level } from '../styleds';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { convertBigDecimal, normalizeNumber } from '../uitls';
 import { useIsEthActive } from '../../../hooks/Coins';
-import { fetchWrapper } from '../../../api/fetchWrapper';
-
-// const DarkText = styled.span`
-//   color: ${({ theme }) => theme.grey3};
-// `;
-//
-// const RewardsWrapper = styled.div`
-//   font-size: 13px;
-//   color: ${({ theme }) => theme.grey6};
-//
-//   margin-top: 12px;
-//   margin-bottom: 16px;
-//   display: grid;
-//   grid-template-columns: 3fr 4fr;
-//   grid-gap: 12px;
-//
-//   @media screen and (max-width: 1200px) {
-//     margin-top: 16px;
-//     margin-bottom: 12px;
-//     grid-template-columns: repeat(1, 1fr);
-//     grid-gap: 8px;
-//   }
-// `;
-
-// const RewardsItem = styled.div`
-//   display: flex;
-//   justify-content: space-between;
-//   padding: 14px;
-//   background: #f7f8fa;
-// `;
-// const RewardsValue = styled(DarkText)`
-//   font-size: 16px;
-//   font-weight: 600;
-// `;
+import { ChevronDown, ChevronUp } from 'react-feather';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -105,42 +72,62 @@ export const Header = styled.div`
   }
 `;
 
-const DownloadLink = styled.a`
-  cursor: pointer;
-  color: inherit;
-  font-weight: 500;
-  align-self: end;
-  text-decoration: underline;
-  color: #b7b7ca;
-
-  :hover {
-    text-decoration: none;
-  }
-
-  :focus {
-    outline: none;
-    text-decoration: none;
-  }
-
-  :active {
-    text-decoration: none;
-  }
-`;
-
 const HeaderContainer = styled.div`
   margin-top: 36px;
   margin-bottom: 12px;
   display: flex;
-  flex-direction: row;
-  width: 100%;
   justify-content: space-between;
+  align-items: center;
+`;
+
+const DownloadRefferalsWrapper = styled.div`
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  position relative;
+  @media screen and (max-width: 1200px) {
+    margin-top: 24px;
+  }
+`;
+
+const DownloadRefferalsButton = styled.a`
+  font-family: Roboto;
+  font-weight: 400;
+  font-size: 12px;
+  align-self: end;
+  text-decoration: none;
+  color: white;
+  margin-right: 8px;
+`;
+
+const DownloadRefferalsMenuWrapper = styled.div`
+  position: absolute;
+  top: 28px;
+  right: 0;
+  width: 125px;
+  height: 184px;
+  display: grid;
+  grid-template-columns: auto;
+  background: #27272e;
+  border: 1px solid #615c69;
+  box-sizing: border-box;
+  border-radius: 6px;
+  z-index: 200;
+`;
+
+const DownloadRefferalsItem = styled.a`
+  padding-left: 6px;
+  color: white;
+  font-size: 12px;
+  font-weight: normal;
+  display: flex;
+  align-items: center;
+  font-family: Roboto;
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
 `;
 
 const Referrals = styled(Table)``;
-
-// const CollectBtn = styled(WalletAction)`
-//   max-width: 160px;
-// `;
 
 const ReferalElement = ({
   title,
@@ -173,99 +160,97 @@ const ReferalElement = ({
   </Referrals>
 );
 
-const formatNetwork = (network: string): string => {
-  if (network.includes('polygon')) {
-    return 'Polygon';
-  }
-  if (network.includes('eth')) {
-    return 'Ethereum';
-  }
-  return network;
-};
-
-const useDownloadCSV = () => {
-  const { id: userId } = useSelector((state: AppState) => state.user.info);
-  const callback = useCallback(() => {
-    fetchWrapper.get(`/v1/public/users/${userId}/referrals/liquidity`).then(({ data }) => {
-      const rows = data.map(item =>
-        [
-          item.date,
-          formatNetwork(item.network),
-          item.referral_lvl_master,
-          item.user_address,
-          item.user_lvl,
-          item.referral_lvl1,
-          item.referral_lvl2,
-          item.referral_lvl3,
-          item.pair_address,
-          parseFloat(item.liqudity_staked),
-          parseFloat(item.liqudity_withdrawn),
-        ].join(','),
-      );
-      const title = [
-        'date',
-        'network',
-        'parent of master level',
-        'child',
-        'level',
-        '1lvl parent',
-        '2lvl parent',
-        '3lvl parent',
-        'pair',
-        'liquidity staked',
-        'liquidity withdrawn',
-      ].join(',');
-
-      rows.unshift(title);
-      const rowContent = rows.join('\n');
-      const content = 'data:text/csv;charset=utf-8,' + rowContent;
-      const encodedUri = encodeURI(content);
+const DownloadRefferals = (userId: string, value: string) => {
+  return fetch(`/v1/public/users/${userId}/referrals/report/${value}`)
+    .then(response => {
+      const reader = response.body.getReader();
+      return new ReadableStream({
+        start(controller) {
+          return pump();
+          function pump() {
+            return reader.read().then(({ done, value }) => {
+              // When no more data needs to be consumed, close the stream
+              if (done) {
+                controller.close();
+                return;
+              }
+              // Enqueue the next data chunk into our target stream
+              controller.enqueue(value);
+              return pump();
+            });
+          }
+        },
+      });
+    })
+    .then(stream => new Response(stream))
+    .then(response => response.blob())
+    .then(blob => URL.createObjectURL(blob))
+    .then(url => {
       const link = document.createElement('a');
-      link.setAttribute('href', encodedUri);
-      link.setAttribute('download', 'Referrals.csv');
+      link.href = url;
+      const d = new Date();
+      link.setAttribute(
+        'download',
+        `Report ${d.getDate()}.${d.getMonth()}.${d.getFullYear()}  ${d.getHours()}.${d.getMinutes()}.xlsx`,
+      );
       document.body.appendChild(link);
-
       link.click();
-    });
-  }, [userId]);
-  return callback;
+      link.remove();
+    })
+    .catch(err => console.error(err));
 };
 
 export const ReferralPerformance = () => {
   const { total, referrals } = useSelector((state: AppState) => state.cabinets.performance);
   const { level1, level2, level3 } = total;
   const isEthActive = useIsEthActive();
-  const callback = useDownloadCSV();
+  const [openMenu, setOpenMenu] = useState(false);
+  const { id: userId } = useSelector((state: AppState) => state.user.info);
+  const menuItems = [
+    {
+      value: 'day',
+      title: 'Last 24h',
+    },
+    {
+      value: 'week',
+      title: 'Last week',
+    },
+    {
+      value: 'month',
+      title: 'Last month',
+    },
+    {
+      value: 'year',
+      title: 'Last year',
+    },
+    {
+      value: 'all',
+      title: 'All time',
+    },
+  ];
 
   return (
     <div>
       <HeaderContainer>
         <Header>Total Referral Performance</Header>
-        <DownloadLink onClick={callback}>Download csv</DownloadLink>
+        <DownloadRefferalsWrapper onClick={() => setOpenMenu(!openMenu)}>
+          <DownloadRefferalsButton>Download report</DownloadRefferalsButton>
+          {openMenu ? (
+            <>
+              <DownloadRefferalsMenuWrapper>
+                {menuItems.map(item => (
+                  <DownloadRefferalsItem onClick={() => DownloadRefferals(userId, item.value)}>
+                    {item.title}
+                  </DownloadRefferalsItem>
+                ))}
+              </DownloadRefferalsMenuWrapper>
+              <ChevronUp size={12} color="white" />
+            </>
+          ) : (
+            <ChevronDown size={12} color="white" />
+          )}
+        </DownloadRefferalsWrapper>
       </HeaderContainer>
-      {/*<RewardsWrapper>*/}
-      {/*  <RewardsItem>*/}
-      {/*    <div>*/}
-      {/*      <span>Referral Reward, ESW</span>*/}
-      {/*      <div>*/}
-      {/*        <RewardsValue>{convertBigDecimal(total?.reward.ESW)}</RewardsValue>&nbsp;ESW*/}
-      {/*      </div>*/}
-      {/*    </div>*/}
-      {/*  </RewardsItem>*/}
-      {/*  <RewardsItem>*/}
-      {/*    <div>*/}
-      {/*      <span>Referral Reward, DAI</span>*/}
-      {/*      <div>*/}
-      {/*        <RewardsValue>{convertBigDecimal(total?.reward.DAI)}</RewardsValue>&nbsp;DAI*/}
-      {/*      </div>*/}
-      {/*    </div>*/}
-      {/*    <div>*/}
-      {/*      <CollectBtn onClick={() => console.log('no collect handler')}>*/}
-      {/*        Collect to my wallet*/}
-      {/*      </CollectBtn>*/}
-      {/*    </div>*/}
-      {/*  </RewardsItem>*/}
-      {/*</RewardsWrapper>*/}
 
       <Wrapper>
         <ReferalElement
@@ -292,22 +277,6 @@ export const ReferralPerformance = () => {
             thirdLevel={'—'}
           />
         )}
-        {/*<ReferralPurchases>*/}
-        {/*  <Title>Total Ref. Purchases, DAI</Title>*/}
-        {/*  <Cell>{convertBigDecimal(total.bought.DAI)}</Cell>*/}
-        {/*  <Cell>*/}
-        {/*    {convertBigDecimal(level1?.bought.DAI)}*/}
-        {/*    <Level>1lvl</Level>*/}
-        {/*  </Cell>*/}
-        {/*  <Cell>*/}
-        {/*    {convertBigDecimal(level2?.bought.DAI)}*/}
-        {/*    <Level>2lvl</Level>*/}
-        {/*  </Cell>*/}
-        {/*  <Cell>*/}
-        {/*    {convertBigDecimal(level3?.bought.DAI)}*/}
-        {/*    <Level>3lvl</Level>*/}
-        {/*  </Cell>*/}
-        {/*</ReferralPurchases>*/}
       </Wrapper>
     </div>
   );
