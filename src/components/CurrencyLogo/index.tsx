@@ -15,9 +15,10 @@ import LpTokenSymbol from '../../pages/Farm/LpTokenSymbol';
 const getTokenLogoInRaw = address =>
   `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`;
 
-const getTokenLogoLocal = ({ symbol, address }) => {
+const getTokenLogoLocal = async ({ symbol, address }) => {
   try {
-    return require(`../../assets/currencies/${symbol}.png`);
+    const response = await import(`../../assets/currencies/${symbol}.png`);
+    return response.default;
   } catch (e) {
     return '';
   }
@@ -38,7 +39,7 @@ const getTokenLogoURL = async (urls: string[]): Promise<string> => {
 };
 
 const getTokenLogo = async ({ symbol, address }) => {
-  let url: string = getTokenLogoLocal({ symbol, address });
+  let url: string = await getTokenLogoLocal({ symbol, address });
 
   if (!url) {
     url = await getTokenLogoURL([
