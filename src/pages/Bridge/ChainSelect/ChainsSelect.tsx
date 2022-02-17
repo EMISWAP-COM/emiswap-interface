@@ -8,7 +8,7 @@ import {
 import { useAppSelector } from 'state/hooks';
 import ChainInput from './ChainInput';
 import ChainSwitcher from './ChainSwitcher';
-import { useGetSupportChainQuery } from '../api';
+import useSupportChain from '../hooks/useSupportChain';
 
 const ChainsSelect = () => {
   const [modalOpened, setModalOpened] = React.useState<'from' | 'to' | null>(null);
@@ -16,7 +16,7 @@ const ChainsSelect = () => {
   const { fromChain, toChain } = useAppSelector(selectFromToChains);
   const setFromChain = value => dispatch(setFromChainAction(value));
   const setToChain = value => dispatch(setToChainAction(value));
-  const { data: chainList, isSuccess } = useGetSupportChainQuery();
+  const { data: chainList, isSuccess } = useSupportChain();
 
   const onSwitchChains = () => {
     setToChain(fromChain);
@@ -25,8 +25,8 @@ const ChainsSelect = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      setFromChain(chainList.result[4]);
-      setToChain(chainList.result[2]);
+      setFromChain(chainList.result[0]);
+      setToChain(chainList.result[1]);
     }
   }, [chainList]);
 
