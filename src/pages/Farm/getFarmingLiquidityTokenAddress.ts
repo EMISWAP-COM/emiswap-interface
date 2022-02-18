@@ -26,6 +26,7 @@ const liquidityTokensMap = {
   // Polygon RewardPoolMulti PROXY
   '0x18f38359551258C35e8593d775cb6Fe8D27fd89b': '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
   '0xd2Fa7C9386040f260e3Ec934601982aD4Cd7902B': '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
+  '0xC4e9030aC8274331506910676076eA5239d6c03D': '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
 
   // Mumbai RewardPoolMulti PROXY
   '0xeB274bcD6CA905b7dB5F65b8C2a126fb3fF39bc3': '0x37e103a3BFabC8Fb542BA24C7e4594E5534806A3',
@@ -33,7 +34,6 @@ const liquidityTokensMap = {
 
   // Shiden RewardPoolMulti PROXY
   '0x831b25EB4073d92E4766411f0DbDd0b549753179': '0x818ec0a7fe18ff94269904fced6ae3dae6d6dc0b',
-  '0xC4e9030aC8274331506910676076eA5239d6c03D': '0x818ec0a7fe18ff94269904fced6ae3dae6d6dc0b',
 };
 
 const getFarmingLiquidityTokenAddress = (farmContractAddress: string): string => {
