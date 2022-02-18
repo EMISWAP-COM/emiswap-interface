@@ -14,6 +14,8 @@ export interface Balance {
   wallet: PaymentOperationTokens;
   total: {
     grouped: {
+      referral_bonus_180?: PaymentOperationTokens;
+      referral_bonus_365?: PaymentOperationTokens;
       bonus_180?: PaymentOperationTokens;
       bonus_365?: PaymentOperationTokens;
       pool_bonus?: PaymentOperationTokens;
@@ -66,6 +68,8 @@ export const initialState: InitialState = {
     wallet: {},
     total: {
       grouped: {
+        referral_bonus_180: {},
+        referral_bonus_365: {},
         bonus_180: {},
         bonus_365: {},
         pool_bonus: {},

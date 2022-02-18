@@ -114,8 +114,8 @@ export const ESWRewards = () => {
   };
 
   const referalRevards =
-    parseFloat((grouped as any).bonus_180?.ESW ?? '0') +
-    parseFloat((grouped as any).bonus_365?.ESW ?? '0');
+    parseFloat((grouped as any).referral_bonus_180?.ESW ?? '0') +
+    parseFloat((grouped as any).referral_bonus_365?.ESW ?? '0');
 
   return (
     <div>
