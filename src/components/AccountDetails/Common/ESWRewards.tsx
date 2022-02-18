@@ -113,6 +113,10 @@ export const ESWRewards = () => {
     return convertBigDecimal(sum.toString());
   };
 
+  const referalRevards =
+    parseFloat((grouped as any).bonus_180?.ESW ?? '0') +
+    parseFloat((grouped as any).bonus_365?.ESW ?? '0');
+
   return (
     <div>
       <Header>My ESW Rewards</Header>
@@ -126,15 +130,15 @@ export const ESWRewards = () => {
       )}
       {(network === 'polygon' || network === 'mumbai') && (
         <RewardsWrapperPolygon>
-          <Item text="180% APR campain" count={convertBigDecimal(grouped.pool_bonus?.ESW ?? '0')} />
+          <Item
+            text="180% APR campain"
+            count={convertBigDecimal((grouped as any).bonus_180?.ESW ?? '0')}
+          />
           <Item
             text="365+% APR campain"
-            count={convertBigDecimal((grouped as any).farming_bonus?.ESW ?? '0')}
+            count={convertBigDecimal((grouped as any).bonus_365?.ESW ?? '0')}
           />
-          <Item
-            text="Referral Reward"
-            count={convertBigDecimal(grouped.pool_referral_bonus?.ESW ?? '0')}
-          />
+          <Item text="Referral Reward" count={convertBigDecimal(referalRevards.toString())} />
         </RewardsWrapperPolygon>
       )}
     </div>
