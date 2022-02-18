@@ -154,6 +154,7 @@ interface Referral {
 interface ReferralLevel {
   referrals_count: number;
   bought: PaymentOperationTokens;
+  reward: string;
 }
 
 export interface ReferralPerformance {
