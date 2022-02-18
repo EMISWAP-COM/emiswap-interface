@@ -33,6 +33,7 @@ const liquidityTokensMap = {
 
   // Shiden RewardPoolMulti PROXY
   '0x831b25EB4073d92E4766411f0DbDd0b549753179': '0x818ec0a7fe18ff94269904fced6ae3dae6d6dc0b',
+  '0xC4e9030aC8274331506910676076eA5239d6c03D': '0x818ec0a7fe18ff94269904fced6ae3dae6d6dc0b',
 };
 
 const getFarmingLiquidityTokenAddress = (farmContractAddress: string): string => {
