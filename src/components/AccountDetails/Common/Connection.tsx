@@ -322,7 +322,7 @@ export const Connection: React.FC<Props> = ({
                     openOptions();
                   }}
                 >
-                  <WalletImg src={require('../../../assets/images/' + wallet.iconName)} />
+                  <WalletImg src={wallet.iconName} />
                   <StyledDropDown />
                 </DropdownBlock>
               </ChangeWalletMessageTooltip>
