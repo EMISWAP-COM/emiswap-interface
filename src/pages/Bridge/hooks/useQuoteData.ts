@@ -15,13 +15,16 @@ export const useQuoteData = (): QuoteData => {
   const fromToken = useAppSelector(selectFromToken);
   const amount = useAppSelector(selectAmountFromToken);
   const toToken = useAppSelector(selectToToken);
-  const { data, ...restProps } = useGetQuoteQuery({
-    fromAsset: fromToken,
-    toAsset: toToken,
-    fromChain,
-    toChain,
-    amount,
-  });
+  const { data, ...restProps } = useGetQuoteQuery(
+    {
+      fromAsset: fromToken,
+      toAsset: toToken,
+      fromChain,
+      toChain,
+      amount,
+    },
+    { skip: !fromToken || !toToken || !fromChain || !toChain || !amount },
+  );
   const quotes = data?.result;
   return { ...restProps, data, quotes };
 };

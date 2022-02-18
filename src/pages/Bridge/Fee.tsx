@@ -2,7 +2,7 @@ import React from 'react';
 import { useAppSelector } from 'state/hooks';
 import { useActiveWeb3React } from '../../hooks';
 import useFeesByRoute from './hooks/useFeesByRoute';
-import { useQuoteData } from './hooks/useQuoteData';
+import { useQuoteData } from './hooks';
 import { selectFromToChains } from './slice';
 import * as S from './styled';
 

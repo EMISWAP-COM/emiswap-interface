@@ -7,7 +7,7 @@ import { selectFromToChains, selectFromToken, selectToToken } from '../slice';
 import * as SC from '../Confirmation/styleds';
 import * as S from './styleds';
 import * as SB from '../styled';
-import { useQuoteData } from '../hooks/useQuoteData';
+import { useQuoteData } from '../hooks';
 import useFeesByRoute from '../hooks/useFeesByRoute';
 
 const Complete = () => {
