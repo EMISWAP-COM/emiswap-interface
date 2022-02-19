@@ -272,9 +272,9 @@ export const ReferralPerformance = () => {
           <ReferalElement
             title={'Ref. Rewards by lvl., ESW'}
             referals={convertBigDecimal(total.reward.ESW)}
-            firstLevel={'—'}
-            secondLevel={'—'}
-            thirdLevel={'—'}
+            firstLevel={convertBigDecimal(total.level1?.reward)}
+            secondLevel={convertBigDecimal(total.level2?.reward)}
+            thirdLevel={convertBigDecimal(total.level3?.reward)}
           />
         )}
       </Wrapper>
