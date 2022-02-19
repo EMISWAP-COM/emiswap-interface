@@ -43,6 +43,8 @@ export interface Balance {
     swap_bonus: Deposit[];
     swap_bonus_10x: Deposit[];
     farming_bonus: Deposit[];
+    bonus_180: Deposit[];
+    bonus_365: Deposit[];
   };
   total_fee_compensation: string;
   available: PaymentOperationTokens;
@@ -96,6 +98,8 @@ export const initialState: InitialState = {
       swap_bonus: [],
       swap_bonus_10x: [],
       farming_bonus: [],
+      bonus_180: [],
+      bonus_365: [],
     },
     total_fee_compensation: '',
     available: {},
