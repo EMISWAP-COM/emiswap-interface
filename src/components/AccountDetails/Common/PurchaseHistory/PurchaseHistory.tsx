@@ -261,6 +261,8 @@ export const PurchaseHistory = () => {
   const myRewardHistory = [
     ...polygonDetails.pool_bonus.map(getTableItem('Providing liquidity')),
     ...polygonDetails.farming_bonus.map(getTableItem('Farming 365+')),
+    ...polygonDetails.bonus_180.map(getTableItem('180% APR Compain')),
+    ...polygonDetails.bonus_365.map(getTableItem('365+% APR Compain')),
     ...polygonDetails.pool_referral_bonus.map(getTableItem('Total Referral Reward')),
   ];
 
