@@ -88,6 +88,7 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
             Status: <span>ESW Owner</span>
           </div>
         </ProfileStatus>
+
         <Connection openOptions={openOptions} changeCollectButtonState={changeCollectButtonState}>
           <OptionsPromo>
             To boost your ESW Profit use our&nbsp;
@@ -100,8 +101,7 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
             </ExternalLink>
           </OptionsPromo>
         </Connection>
-        {/* TODO: REMOVE*/}
-        {false && (isEthActive || isPolygonActive) && (
+        {(isEthActive || isPolygonActive) && (
           <div style={{ padding: '0 16px' }}>
             <ESWRewards />
             {isEthActive && <ESWHoldingRewards />}
