@@ -368,34 +368,26 @@ export const Connection: React.FC<Props> = ({
               </ChangeWalletMessageTooltip>
             </ChangeActionsBlock>
           </WalletInfo>*/}
-          {/* TODO: REMOVE*/}
-          {false && (
-            <>
-              <Header style={{ marginTop: 4 }}>Your rewards from all networks</Header>
-              <Balance
-                total={sumESW('ESW', balance)}
-                wallet={convertBigDecimal(balance?.wallet.ESW)}
-                locked={convertBigDecimal(balance?.total.locked.ESW)}
-                avalible={convertBigDecimal(balance?.available.ESW)}
-                handleRequest={() => changeCollectButtonState('request')}
-                handleClaim={() => {
-                  changeCollectButtonState('wallet');
+          <Header style={{ marginTop: 4 }}>Your rewards from all networks</Header>
+          <Balance
+            total={sumESW('ESW', balance)}
+            wallet={convertBigDecimal(balance?.wallet.ESW)}
+            locked={convertBigDecimal(balance?.total.locked.ESW)}
+            avalible={convertBigDecimal(balance?.available.ESW)}
+            handleRequest={() => changeCollectButtonState('request')}
+            handleClaim={() => {
+              changeCollectButtonState('wallet');
 
-                  if (isCollectDisabled) {
-                    return;
-                  }
+              if (isCollectDisabled) {
+                return;
+              }
 
-                  toggle();
-                  history.push(`/claim/${network}`);
-                }}
-              >
-                {children}
-              </Balance>
-            </>
-          )}
-          <Header style={{ marginTop: 4 }}>
-            Back-office is under maintenance. Within next 5 hours the work will be restored.
-          </Header>
+              toggle();
+              history.push(`/claim/${network}`);
+            }}
+          >
+            {children}
+          </Balance>
         </Main>
       </Container>
     </>
