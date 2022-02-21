@@ -2,11 +2,11 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { formatUnits } from '@ethersproject/units';
 import { useAppSelector } from 'state/hooks';
-import { selectFromToChains, selectToToken, setToToken } from './slice';
+import { selectToToken, setToToken } from './slice';
 import TokenInput from './TokenInput';
-import { useGetSupportTokenToQuery } from './api';
 import { getUniqueTokens } from './utils';
-import { useQuoteData } from './hooks/useQuoteData';
+import { useQuoteData } from './hooks';
+import { useTokenListTo } from './hooks';
 
 const formatTokenAmount = (amount: string, dicimals?: number): string => {
   const stringOfNumber = parseFloat(amount).toLocaleString('fullwide', { useGrouping: false });
@@ -14,8 +14,7 @@ const formatTokenAmount = (amount: string, dicimals?: number): string => {
 };
 
 const ToTokenInput = () => {
-  const { fromChain, toChain } = useAppSelector(selectFromToChains);
-  const { data, isSuccess } = useGetSupportTokenToQuery({ fromChain, toChain });
+  const { data, isSuccess } = useTokenListTo();
   const toToken = useAppSelector(selectToToken);
   const { quotes, isSuccess: quoteIsSuccess } = useQuoteData();
 

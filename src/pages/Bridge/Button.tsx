@@ -3,12 +3,12 @@ import { ButtonLight } from 'components/Button';
 import { useWalletModalToggle } from '../../state/application/hooks';
 import { useActiveWeb3React, useSwitchNetwork } from '../../hooks';
 import { fetchWrapper } from 'api/fetchWrapper';
-import { INetworkItem, networksItems } from '../../constants';
+import { networksItems } from '../../constants';
 import useBuildTx from './hooks/useBuildTx';
 import { selectFromToChains, selectFromToken, selectToToken, selectAmountFromToken } from './slice';
 import { useAppSelector } from 'state/hooks';
 import { Quote } from './types';
-import { useQuoteData } from './hooks/useQuoteData';
+import { useQuoteData } from './hooks';
 
 async function sendTransaction(
   txData,
@@ -124,9 +124,9 @@ const Button = ({ setStep }) => {
     if (fromChain?.chainId === chainId) {
       return;
     }
-    const targetChain = networksItems.filter(network => network.chainId === fromChain?.chainId)
+    const targetChain = networksItems.filter(network => network.chainId === fromChain?.chainId);
     await switchNetwork(targetChain[0]);
-  }
+  };
 
   const send = useCallback(() => {
     if (tx.length === 0) {
