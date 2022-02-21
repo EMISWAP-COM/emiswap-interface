@@ -82,10 +82,16 @@ const TokenInput = ({ tokens, token, amount, onAmountInput, setToken }) => {
         tokens={Array.isArray(tokens) ? tokens : []}
         isOpen={modalOpened}
         onDismiss={() => setModalOpened(false)}
-        onSelect={token => {
+        onCurrencySelect={token => {
           setToken(token);
           setModalOpened(false);
         }}
+        hiddenCurrency={null}
+        showSendWithSwap={false}
+        otherSelectedCurrency={null}
+        showCommonBases={false}
+        isMatchEth={false} 
+        isLpTokens={false} 
       />
     </>
   );
