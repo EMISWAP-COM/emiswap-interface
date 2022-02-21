@@ -14,6 +14,10 @@ export interface Balance {
   wallet: PaymentOperationTokens;
   total: {
     grouped: {
+      referral_bonus_180?: PaymentOperationTokens;
+      referral_bonus_365?: PaymentOperationTokens;
+      bonus_180?: PaymentOperationTokens;
+      bonus_365?: PaymentOperationTokens;
       pool_bonus?: PaymentOperationTokens;
       pool_bonus_10x?: PaymentOperationTokens;
       pool_swap_bonus?: PaymentOperationTokens;
@@ -39,6 +43,8 @@ export interface Balance {
     swap_bonus: Deposit[];
     swap_bonus_10x: Deposit[];
     farming_bonus: Deposit[];
+    bonus_180: Deposit[];
+    bonus_365: Deposit[];
   };
   total_fee_compensation: string;
   available: PaymentOperationTokens;
@@ -64,6 +70,10 @@ export const initialState: InitialState = {
     wallet: {},
     total: {
       grouped: {
+        referral_bonus_180: {},
+        referral_bonus_365: {},
+        bonus_180: {},
+        bonus_365: {},
         pool_bonus: {},
         pool_bonus_10x: {},
         pool_swap_bonus: {},
@@ -88,6 +98,8 @@ export const initialState: InitialState = {
       swap_bonus: [],
       swap_bonus_10x: [],
       farming_bonus: [],
+      bonus_180: [],
+      bonus_365: [],
     },
     total_fee_compensation: '',
     available: {},
@@ -101,6 +113,7 @@ export const initialState: InitialState = {
 export default createReducer(initialState, builder =>
   builder.addCase(loadPolygonBalance.fulfilled, (state, action) => {
     state.balance = action.payload;
+    console.log(action.payload);
     // FIX_ME
     state.balance.farming365 = {};
   }),
