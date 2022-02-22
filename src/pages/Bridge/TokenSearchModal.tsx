@@ -44,9 +44,6 @@ export default function SearchModal({
   isOpen,
   onDismiss,
   onCurrencySelect,
-  hiddenCurrency,
-  otherSelectedCurrency,
-  showCommonBases = false,
   isLpTokens = false,
 }) {
   const { t } = useTranslation();
@@ -193,14 +190,6 @@ export default function SearchModal({
               onKeyDown={handleEnter}
             />
           </Tooltip>
-          {showCommonBases && (
-            <CommonBases
-              chainId={chainId}
-              onSelect={handleCurrencySelect}
-              selectedCurrency={hiddenCurrency}
-              otherSelectedCurrency={otherSelectedCurrency}
-            />
-          )}
           <RowBetween>
             <Text fontSize={14} fontWeight={500}>
               Token Name

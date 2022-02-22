@@ -86,11 +86,6 @@ const TokenInput = ({ tokens, token, amount, onAmountInput, setToken }) => {
           setToken(token);
           setModalOpened(false);
         }}
-        hiddenCurrency={null}
-        showSendWithSwap={false}
-        otherSelectedCurrency={null}
-        showCommonBases={false}
-        isMatchEth={false} 
         isLpTokens={false} 
       />
     </>
