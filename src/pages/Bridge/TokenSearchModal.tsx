@@ -21,7 +21,6 @@ import React, {
 } from 'react';
 import { isMobile } from 'react-device-detect';
 import { useTranslation } from 'react-i18next';
-import { useAllTokenBalances, useTokenBalance } from 'state/wallet/hooks';
 import styled, { ThemeContext } from 'styled-components';
 import { CloseIcon, LinkStyledButton } from 'theme';
 import Column from '../../components/Column';
@@ -30,7 +29,6 @@ import { PaddedColumn, SearchInput } from '../../components/SearchModal/styleds'
 import Tooltip from '../../components/Tooltip';
 import { isAddress } from '../../utils';
 import CommonBases from 'components/SearchModal/CommonBases';
-import CurrencyList from 'components/SearchModal/CurrencyList';
 import Loader from 'components/Loader';
 
 const LoaderBox = styled.div`
@@ -47,10 +45,8 @@ export default function SearchModal({
   onDismiss,
   onCurrencySelect,
   hiddenCurrency,
-  showSendWithSwap,
   otherSelectedCurrency,
   showCommonBases = false,
-  isMatchEth = false,
   isLpTokens = false,
 }) {
   const { t } = useTranslation();
@@ -64,34 +60,50 @@ export default function SearchModal({
 
   // if the current input is an address, and we don't have the token in context, try to fetch it and import
   const searchToken = useToken(searchQuery);
-  const searchTokenBalance = useTokenBalance(account, searchToken);
-  const allTokenBalances = useAllTokenBalances();
 
-  const availableToken = tokens.filter(t => t.symbol);
+  const availableTokens = tokens.filter(t => t.symbol);
+
+  const sortedTokens = Object.keys(allTokens).reduce((acc, address) => {
+    if (
+      availableTokens.find(({ address: movrAddress }) => {
+        return movrAddress.toLowerCase() === address.toLowerCase();
+      })
+    ) {
+      acc[address] === allTokens[address];
+    }
+    return acc;
+  }, {});
+
+  const tokenComparator = useTokenComparator(invertSearchOrder);
 
   const filteredTokens: Token[] = useMemo(() => {
     if (searchToken) {
       return [searchToken];
     }
-    return filterTokens(Object.values(availableToken), searchQuery);
-  }, [availableToken, searchQuery, searchToken]);
+    return filterTokens(Object.values(allTokens), searchQuery, isLpTokens);
+    // return filterTokens(Object.values(availableTokens), searchQuery, isLpTokens);
+  }, [searchToken, allTokens, searchQuery, isLpTokens]);
 
-  const filteredSortedTokens = useMemo(() => {
-    const sorted = filteredTokens.sort((a, b) =>
-      a.symbol.localeCompare(b.symbol, 'es', { sensitivity: 'base' }),
-    );
+  const filteredSortedTokens: Token[] = useMemo(() => {
+    if (searchToken) {
+      return [searchToken];
+    }
+    const sorted = filteredTokens.sort(tokenComparator);
     const symbolMatch = searchQuery
       .toLowerCase()
       .split(/\s+/)
       .filter(s => s.length > 0);
-    if (symbolMatch.length > 1) return sorted;
+    if (symbolMatch.length > 1) {
+      return sorted;
+    }
 
     return [
+      ...(searchToken ? [searchToken] : []),
       // sort any exact symbol matches first
       ...sorted.filter(token => token.symbol.toLowerCase() === symbolMatch[0]),
       ...sorted.filter(token => token.symbol.toLowerCase() !== symbolMatch[0]),
     ];
-  }, [filteredTokens, searchQuery, searchToken]);
+  }, [filteredTokens, searchQuery, searchToken, tokenComparator]);
 
   const handleCurrencySelect = useCallback(
     (currency: Token) => {
@@ -199,23 +211,7 @@ export default function SearchModal({
             />
           </RowBetween>
         </PaddedColumn>
-        {/* {isLoading ? (
-          <LoaderBox>
-            <Loader size="100px" />
-          </LoaderBox>
-        ) : (
-          <CurrencyList
-            currencies={filteredSortedTokens}
-            allBalances={visibleTokenBalances}
-            onCurrencySelect={handleCurrencySelect}
-            otherCurrency={otherSelectedCurrency}
-            selectedCurrency={hiddenCurrency}
-            showSendWithSwap={showSendWithSwap}
-            showName={isLpTokens}
-            isMatchEth={isMatchEth}
-            isLpTokens={isLpTokens}
-          />
-        )} */}
+
         {isLoading ? (
           <LoaderBox>
             <Loader size="100px" />
