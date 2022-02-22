@@ -7,6 +7,7 @@ import SortButton from 'components/SearchModal/SortButton';
 import { useTokenComparator } from 'components/SearchModal/sorting';
 import { useActiveWeb3React } from 'hooks';
 import { useAllTokens, useToken } from 'hooks/Tokens';
+import List from './TokensList';
 import { Text } from 'rebass';
 import useInterval from 'hooks/useInterval';
 import React, {
@@ -66,47 +67,31 @@ export default function SearchModal({
   const searchTokenBalance = useTokenBalance(account, searchToken);
   const allTokenBalances = useAllTokenBalances();
 
-  const getVisibleTokenBalances = (): { [token: string]: TokenAmount } => {
-    let balances = allTokenBalances || {};
-    if (searchToken) {
-      balances = {
-        [searchToken.address]: searchTokenBalance,
-      };
-    }
-    return balances;
-  };
-
-  const visibleTokenBalances = getVisibleTokenBalances();
-
-  const tokenComparator = useTokenComparator(invertSearchOrder);
+  const availableToken = tokens.filter(t => t.symbol);
 
   const filteredTokens: Token[] = useMemo(() => {
     if (searchToken) {
       return [searchToken];
     }
-    return filterTokens(Object.values(allTokens), searchQuery, isLpTokens);
-  }, [searchToken, allTokens, searchQuery, isLpTokens]);
+    return filterTokens(Object.values(availableToken), searchQuery);
+  }, [availableToken, searchQuery, searchToken]);
 
-  const filteredSortedTokens: Token[] = useMemo(() => {
-    if (searchToken) {
-      return [searchToken];
-    }
-    const sorted = filteredTokens.sort(tokenComparator);
+  const filteredSortedTokens = useMemo(() => {
+    const sorted = filteredTokens.sort((a, b) =>
+      a.symbol.localeCompare(b.symbol, 'es', { sensitivity: 'base' }),
+    );
     const symbolMatch = searchQuery
       .toLowerCase()
       .split(/\s+/)
       .filter(s => s.length > 0);
-    if (symbolMatch.length > 1) {
-      return sorted;
-    }
+    if (symbolMatch.length > 1) return sorted;
 
     return [
-      ...(searchToken ? [searchToken] : []),
       // sort any exact symbol matches first
       ...sorted.filter(token => token.symbol.toLowerCase() === symbolMatch[0]),
       ...sorted.filter(token => token.symbol.toLowerCase() !== symbolMatch[0]),
     ];
-  }, [filteredTokens, searchQuery, searchToken, tokenComparator]);
+  }, [filteredTokens, searchQuery, searchToken]);
 
   const handleCurrencySelect = useCallback(
     (currency: Token) => {
@@ -214,7 +199,7 @@ export default function SearchModal({
             />
           </RowBetween>
         </PaddedColumn>
-        {isLoading ? (
+        {/* {isLoading ? (
           <LoaderBox>
             <Loader size="100px" />
           </LoaderBox>
@@ -230,6 +215,13 @@ export default function SearchModal({
             isMatchEth={isMatchEth}
             isLpTokens={isLpTokens}
           />
+        )} */}
+        {isLoading ? (
+          <LoaderBox>
+            <Loader size="100px" />
+          </LoaderBox>
+        ) : (
+          <List items={filteredSortedTokens} onSelect={handleCurrencySelect} />
         )}
         <div style={{ height: '1px', backgroundColor: theme.bg2, margin: '0 30px' }} />
         <Card>
