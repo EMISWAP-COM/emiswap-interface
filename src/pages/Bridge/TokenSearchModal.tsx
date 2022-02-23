@@ -66,10 +66,12 @@ export default function SearchModal({
         return movrAddress.toLowerCase() === address.toLowerCase();
       })
     ) {
-      acc[address] === allTokens[address];
+      acc[address] = allTokens[address];
     }
     return acc;
   }, {});
+
+  console.log(11, sortedTokens);
 
   const tokenComparator = useTokenComparator(invertSearchOrder);
 
@@ -77,7 +79,7 @@ export default function SearchModal({
     if (searchToken) {
       return [searchToken];
     }
-    return filterTokens(Object.values(allTokens), searchQuery, isLpTokens);
+    return filterTokens(Object.values(sortedTokens), searchQuery, isLpTokens);
     // return filterTokens(Object.values(availableTokens), searchQuery, isLpTokens);
   }, [searchToken, allTokens, searchQuery, isLpTokens]);
 
