@@ -1,4 +1,4 @@
-import { Token, TokenAmount } from '@uniswap/sdk';
+import { Token } from '@uniswap/sdk';
 import Card from 'components/Card';
 import QuestionHelper from 'components/QuestionHelper';
 import { AutoRow, RowBetween } from 'components/Row';
@@ -28,7 +28,6 @@ import Modal from '../../components/Modal';
 import { PaddedColumn, SearchInput } from '../../components/SearchModal/styleds';
 import Tooltip from '../../components/Tooltip';
 import { isAddress } from '../../utils';
-import CommonBases from 'components/SearchModal/CommonBases';
 import Loader from 'components/Loader';
 
 const LoaderBox = styled.div`
@@ -47,12 +46,11 @@ export default function SearchModal({
   isLpTokens = false,
 }) {
   const { t } = useTranslation();
-  const { account, chainId } = useActiveWeb3React();
   const theme = useContext(ThemeContext);
 
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [tooltipOpen, setTooltipOpen] = useState<boolean>(false);
-  const [invertSearchOrder, setInvertSearchOrder] = useState<boolean>(false);
+  const [invertSearchOrder, setInvertSearchOrder] = useState<boolean>(true);
   const [allTokens, isLoading] = useAllTokens(isLpTokens);
 
   // if the current input is an address, and we don't have the token in context, try to fetch it and import
@@ -60,7 +58,7 @@ export default function SearchModal({
 
   const availableTokens = tokens.filter(t => t.symbol);
 
-  const sortedTokens = Object.keys(allTokens).reduce((acc, address) => {
+  const filteredAllTokens = Object.keys(allTokens).reduce((acc, address) => {
     if (
       availableTokens.find(({ address: movrAddress }) => {
         return movrAddress.toLowerCase() === address.toLowerCase();
@@ -71,16 +69,13 @@ export default function SearchModal({
     return acc;
   }, {});
 
-  console.log(11, sortedTokens);
-
   const tokenComparator = useTokenComparator(invertSearchOrder);
 
   const filteredTokens: Token[] = useMemo(() => {
     if (searchToken) {
       return [searchToken];
     }
-    return filterTokens(Object.values(sortedTokens), searchQuery, isLpTokens);
-    // return filterTokens(Object.values(availableTokens), searchQuery, isLpTokens);
+    return filterTokens(Object.values(filteredAllTokens), searchQuery, isLpTokens);
   }, [searchToken, allTokens, searchQuery, isLpTokens]);
 
   const filteredSortedTokens: Token[] = useMemo(() => {
