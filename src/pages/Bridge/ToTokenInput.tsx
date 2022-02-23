@@ -7,6 +7,9 @@ import TokenInput from './TokenInput';
 import { getUniqueTokens } from './utils';
 import { useQuoteData } from './hooks';
 import { useTokenListTo } from './hooks';
+import {
+  selectFromToChains,
+} from './slice';
 
 const formatTokenAmount = (amount: string, dicimals?: number): string => {
   const stringOfNumber = parseFloat(amount).toLocaleString('fullwide', { useGrouping: false });
@@ -14,6 +17,7 @@ const formatTokenAmount = (amount: string, dicimals?: number): string => {
 };
 
 const ToTokenInput = () => {
+  const { toChain } = useAppSelector(selectFromToChains);
   const { data, isSuccess } = useTokenListTo();
   const toToken = useAppSelector(selectToToken);
   const { quotes, isSuccess: quoteIsSuccess } = useQuoteData();
@@ -42,6 +46,7 @@ const ToTokenInput = () => {
       amount={formatTokenAmount(toAmount || '0', toToken?.decimals)}
       onAmountInput={null}
       setToken={setToken}
+      chainId={toChain?.chainId}
     />
   );
 };

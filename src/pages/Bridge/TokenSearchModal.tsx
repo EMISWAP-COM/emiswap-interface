@@ -6,7 +6,8 @@ import { filterTokens } from 'components/SearchModal/filtering';
 import SortButton from 'components/SearchModal/SortButton';
 import { useTokenComparator } from 'components/SearchModal/sorting';
 import { useActiveWeb3React } from 'hooks';
-import { useAllTokens, useToken } from 'hooks/Tokens';
+import { useToken } from 'hooks/Tokens';
+import { useAllTokens } from './hooks/useAllTokens';
 import List from './TokensList';
 import { Text } from 'rebass';
 import useInterval from 'hooks/useInterval';
@@ -44,6 +45,7 @@ export default function SearchModal({
   onDismiss,
   onCurrencySelect,
   isLpTokens = false,
+  chainId,
 }) {
   const { t } = useTranslation();
   const theme = useContext(ThemeContext);
@@ -51,7 +53,7 @@ export default function SearchModal({
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [tooltipOpen, setTooltipOpen] = useState<boolean>(false);
   const [invertSearchOrder, setInvertSearchOrder] = useState<boolean>(true);
-  const [allTokens, isLoading] = useAllTokens(isLpTokens);
+  const [allTokens, isLoading] = useAllTokens({ chainId });
 
   // if the current input is an address, and we don't have the token in context, try to fetch it and import
   const searchToken = useToken(searchQuery);
