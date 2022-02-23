@@ -1,5 +1,6 @@
 import { currencyEquals } from '@uniswap/sdk';
 import { useWeb3React } from '@web3-react/core';
+import CurrencyLogo from 'components/CurrencyLogo';
 import React, { CSSProperties, memo, useMemo } from 'react';
 import { Text } from 'rebass';
 import { AutoColumn } from '../../components/Column';
@@ -17,7 +18,6 @@ export default function TokensList({ items = [], onSelect = (s: any) => {}, sele
   const Row = useMemo(() => {
     return memo(function CurrencyRow({ index, style }: { index: number; style: CSSProperties }) {
       const item = items[index];
-
       const isSelected = selectedItem && currencyEquals(item, selectedItem);
 
       return (
@@ -28,6 +28,7 @@ export default function TokensList({ items = [], onSelect = (s: any) => {}, sele
           disabled={isSelected}
         >
           <RowFixed>
+            <CurrencyLogo currency={item} size={'18px'} style={{ marginRight: '16px' }} />
             {item.icon && <Icon src={item.icon} alt="icon" width="16px" height="16px" />}
             <Text fontWeight={500}>{item.symbol}</Text>
           </RowFixed>

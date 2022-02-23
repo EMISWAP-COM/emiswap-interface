@@ -7,8 +7,8 @@ export default function TokensList({ items = [], onSelect = (s: any) => {}, sele
   const Row = useMemo(() => {
     return memo(function CurrencyRow({ index, style }: { index: number; style: CSSProperties }) {
       const item = items[index];
-
       const isSelected = selectedItem && item.name === selectedItem.name;
+      
       return (
         <StyledMenuItem
           style={style}
@@ -17,7 +17,7 @@ export default function TokensList({ items = [], onSelect = (s: any) => {}, sele
           disabled={isSelected}
         >
           <RowFixed>
-            <CurrencyLogo currency={item} size={'18px'} style={{ marginRight: '16px' }} />
+            <CurrencyLogo currency={item.currency} size={'18px'} style={{ marginRight: '16px' }} />
             <Column>
               <Text fontWeight={500}>{item.name}</Text>
             </Column>
