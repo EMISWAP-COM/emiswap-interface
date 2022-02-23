@@ -90,6 +90,10 @@ export default function CurrencyLogo({
     return <StyledEthereumLogo src={KucoinLogo} size={size} {...rest} />;
   }
 
+  if (currency?.symbol === 'ETH' || currency?.symbol === 'WETH') {
+    return <StyledEthereumLogo src={EthereumLogo} size={size} {...rest} />;
+  }
+
   if (currency?.symbol === 'MATIC' || currency?.symbol === 'WMATIC') {
     return <StyledEthereumLogo src={MaticLogo} size={size} {...rest} />;
   }
