@@ -52,7 +52,7 @@ export default function SearchModal({
 
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [tooltipOpen, setTooltipOpen] = useState<boolean>(false);
-  const [invertSearchOrder, setInvertSearchOrder] = useState<boolean>(true);
+  const [invertSearchOrder, setInvertSearchOrder] = useState<boolean>(false);
   const [allTokens, isLoading] = useAllTokens({ chainId });
 
   // if the current input is an address, and we don't have the token in context, try to fetch it and import
@@ -70,6 +70,10 @@ export default function SearchModal({
     }
     return acc;
   }, {});
+
+  console.log(1, allTokens)
+  console.log(2, availableTokens)
+  console.log(3, filteredAllTokens)
 
   const tokenComparator = useTokenComparator(invertSearchOrder);
 
