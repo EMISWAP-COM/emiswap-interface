@@ -8,12 +8,6 @@ import BridgeSearchModal from '../BridgeSearchModal';
 const ChainInput = ({ chain, chainList, onClick, closeModal, setChain, legendText, isOpen }) => {
   const { t } = useTranslation();
   const selectTokenText = t('selectToken');
-  let filteredChainList = [];
-  if (chain && chainList) {
-    filteredChainList = chainList.filter(c => {
-      return c.chainId !== chain.chainId;
-    });
-  }
   return (
     <>
       <Styled.InputPanel id="from-chain">
@@ -42,7 +36,7 @@ const ChainInput = ({ chain, chainList, onClick, closeModal, setChain, legendTex
         </Styled.Container>
       </Styled.InputPanel>
       <BridgeSearchModal
-        items={filteredChainList}
+        items={chainList}
         isOpen={isOpen}
         onDismiss={closeModal}
         onSelect={chain => {
