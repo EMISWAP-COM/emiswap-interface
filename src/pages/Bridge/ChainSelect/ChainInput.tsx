@@ -6,6 +6,7 @@ import * as Styled from 'components/CurrencyInputPanel/styled';
 import BridgeSearchModal from '../BridgeSearchModal';
 
 const ChainInput = ({ chain, chainList, onClick, closeModal, setChain, legendText, isOpen }) => {
+  const filteredChainList = chainList.filter(c => c.chainId !== chain.chainId);
   const { t } = useTranslation();
   const selectTokenText = t('selectToken');
   return (
@@ -36,7 +37,7 @@ const ChainInput = ({ chain, chainList, onClick, closeModal, setChain, legendTex
         </Styled.Container>
       </Styled.InputPanel>
       <BridgeSearchModal
-        items={chainList}
+        items={filteredChainList}
         isOpen={isOpen}
         onDismiss={closeModal}
         onSelect={chain => {
