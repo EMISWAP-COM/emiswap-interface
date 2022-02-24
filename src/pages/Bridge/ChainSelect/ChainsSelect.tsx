@@ -9,6 +9,8 @@ import { useAppSelector } from 'state/hooks';
 import ChainInput from './ChainInput';
 import ChainSwitcher from './ChainSwitcher';
 import useSupportChain from '../hooks/useSupportChain';
+import { getNetworkData } from 'utils';
+import { useActiveWeb3React } from 'hooks';
 
 const ChainsSelect = () => {
   const [modalOpened, setModalOpened] = React.useState<'from' | 'to' | null>(null);
@@ -17,11 +19,23 @@ const ChainsSelect = () => {
   const setFromChain = value => dispatch(setFromChainAction(value));
   const setToChain = value => dispatch(setToChainAction(value));
   const { data: chainList, isSuccess } = useSupportChain();
+  const { chainId } = useActiveWeb3React();
+  const networkData = getNetworkData(chainId);
 
   const onSwitchChains = () => {
     setToChain(fromChain);
     setFromChain(toChain);
   };
+
+  const filteredChainList = () => {
+    return chainList.result.filter(
+      c => c.chainId !== fromChain.chainId && c.chainId !== toChain.chainId,
+    );
+  };
+
+  useEffect(() => {
+    console.log(11, networkData);
+  }, [networkData]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -33,7 +47,7 @@ const ChainsSelect = () => {
   return (
     <>
       <ChainInput
-        chainList={isSuccess ? chainList.result : 'loading'}
+        chainList={isSuccess ? filteredChainList() : 'loading'}
         chain={fromChain}
         onClick={() => {
           setModalOpened('from');
@@ -47,7 +61,7 @@ const ChainsSelect = () => {
       <ChainSwitcher onSwitchChains={onSwitchChains} />
 
       <ChainInput
-        chainList={isSuccess ? chainList.result : 'loading'}
+        chainList={isSuccess ? filteredChainList() : 'loading'}
         chain={toChain}
         onClick={() => {
           setModalOpened('to');
