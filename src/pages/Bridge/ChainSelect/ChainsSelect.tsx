@@ -27,14 +27,18 @@ const ChainsSelect = () => {
     setFromChain(toChain);
   };
 
-  const filteredChainList = () => {
-    return chainList.result.filter(
-      c => c.chainId !== fromChain.chainId && c.chainId !== toChain.chainId,
+  const filteredChainList = () =>
+    chainList.result.filter(
+      c => c.chainId !== fromChain?.chainId && c.chainId !== toChain?.chainId,
     );
-  };
 
   useEffect(() => {
-    console.log(11, networkData);
+    if (toChain?.chainId === chainId) {
+      setToChain(fromChain)
+    }
+    if (chainList.result.find(c => c.chainId === chainId)) {
+      setFromChain(networkData);
+    }
   }, [networkData]);
 
   useEffect(() => {
