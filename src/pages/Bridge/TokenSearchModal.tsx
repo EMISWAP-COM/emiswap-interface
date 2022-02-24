@@ -71,10 +71,6 @@ export default function SearchModal({
     return acc;
   }, {});
 
-  console.log(1, allTokens)
-  console.log(2, availableTokens)
-  console.log(3, filteredAllTokens)
-
   const tokenComparator = useTokenComparator(invertSearchOrder);
 
   const filteredTokens: Token[] = useMemo(() => {
