@@ -6,9 +6,14 @@ import * as Styled from 'components/CurrencyInputPanel/styled';
 import BridgeSearchModal from '../BridgeSearchModal';
 
 const ChainInput = ({ chain, chainList, onClick, closeModal, setChain, legendText, isOpen }) => {
-  const filteredChainList = chainList.filter(c => c.chainId !== chain.chainId);
   const { t } = useTranslation();
   const selectTokenText = t('selectToken');
+  let filteredChainList = [];
+  if (chain && chainList) {
+    filteredChainList = chainList.filter(c => {
+      return c.chainId !== chain.chainId;
+    });
+  }
   return (
     <>
       <Styled.InputPanel id="from-chain">
