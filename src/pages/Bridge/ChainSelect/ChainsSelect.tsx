@@ -36,9 +36,7 @@ const ChainsSelect = () => {
     if (toChain?.chainId === chainId) {
       setToChain(fromChain)
     }
-    if (chainList.result.find(c => c.chainId === chainId)) {
       setFromChain(networkData);
-    }
   }, [networkData]);
 
   useEffect(() => {
