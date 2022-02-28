@@ -1,23 +1,7 @@
-import { parseBytes32String } from '@ethersproject/strings';
-import { ETHER, Token, ZERO_ADDRESS, ChainId } from '@uniswap/sdk';
-import { useEffect, useMemo, useState } from 'react';
+import { Token, ChainId } from '@uniswap/sdk';
+import { useMemo } from 'react';
 import { useDefaultTokenList, WrappedTokenInfo } from 'state/lists/hooks';
-import { NEVER_RELOAD, useSingleCallResult } from 'state/multicall/hooks';
 import { useUserAddedTokens } from 'state/user/hooks';
-import { getLpTokenByAddress, isAddress } from '../../../utils';
-import { useActiveWeb3React } from '../../../hooks/index';
-import { useBytes32TokenContract, useTokenContract } from '../../../hooks/useContract';
-import chainIds from '../../../constants/chainIds';
-import {
-  useDefaultCoin,
-  useIsAuroraActive,
-  useIsAvalancheActive,
-  useIsEthActive,
-  useIsKuCoinActive,
-  useIsPolygonActive,
-  useIsShidenActive,
-  useNetworkData,
-} from '../../../hooks/Coins';
 import { useTokenListWithPair } from '../../../hooks/useTokenListWithPair';
 import defaultCoins, { mustVisibleAddresses } from '../../../constants/defaultCoins';
 
@@ -61,21 +45,6 @@ export function useAllTokens({
                   mustVisibleAddresses.avalanche.includes(el.address.toLowerCase())) ||
                 enableTokensList.includes(el.address) ||
                 el.address === window['env'].REACT_APP_ESW_ID,
-            );
-
-            // @ts-ignore
-            return (
-              Boolean(exists) ||
-              el.address === window['env'].REACT_APP_ESW_ID ||
-              el.symbol === 'ESW'
-            );
-          } else if (isPolygonActive) {
-            const exists = defaultCoins.tokens.find(
-              ct =>
-                ct.chainId === chainId &&
-                el.address.toLowerCase() === ct.address.toLowerCase() &&
-                ct.symbol !== 'WMATIC',
-              // && mustVisibleAddresses.polygon.includes(el.address.toLowerCase())
             );
 
             // @ts-ignore
