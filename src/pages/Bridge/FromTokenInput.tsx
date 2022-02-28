@@ -11,7 +11,7 @@ const FromTokenInput = () => {
   const fromToken = useAppSelector(selectFromToken);
   const amount = useAppSelector(selectAmountFromToken);
   const dispatch = useDispatch();
-  const { fromChain, toChain } = useAppSelector(selectFromToChains);
+  const { fromChain } = useAppSelector(selectFromToChains);
   const { data, isSuccess } = useTokenListFrom();
 
   const setToken = useCallback((value: Token) => dispatch(setFromToken(value)), [

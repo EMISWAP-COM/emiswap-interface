@@ -8,6 +8,12 @@ import Tooltip from '../../components/Tooltip';
 import { isAddress } from '../../utils';
 import ChainsList from './ChainsList';
 
+const useCleareInputOnOpen = (isOpen, setSearchQuery) => {
+  useEffect(() => {
+    if (isOpen) setSearchQuery('');
+  }, [isOpen, setSearchQuery]);
+}
+
 export default function SearchModal({
   items = [],
   handleSelect = (some: any) => {},
@@ -21,10 +27,6 @@ export default function SearchModal({
 
   const [tooltipOpen, setTooltipOpen] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>('');
-
-  // const openTooltip = useCallback(() => {
-  //   setTooltipOpen(true);
-  // }, [setTooltipOpen]);
 
   const closeTooltip = useCallback(() => setTooltipOpen(false), [setTooltipOpen]);
 
@@ -53,10 +55,7 @@ export default function SearchModal({
     setTooltipOpen(false);
   }, []);
 
-  // clear the input on open
-  useEffect(() => {
-    if (isOpen) setSearchQuery('');
-  }, [isOpen, setSearchQuery]);
+  useCleareInputOnOpen(isOpen, setSearchQuery);
 
   return (
     <Modal
