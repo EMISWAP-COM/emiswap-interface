@@ -9,6 +9,7 @@ import esw_addresses from './esw_addresses';
 import PolygonNetworkIcon from '../assets/svg/polygon-network.svg';
 import ShidenNetworkIcon from '../assets/images/shiden-network.png';
 import AvalancheNetworkIcon from '../assets/svg/avalanche-network.svg';
+import AstarNetworkIcon from '../assets/svg/avalanche-network.svg';
 import AuroraNetworkIcon from '../assets/svg/aurora-network.svg';
 import WalletConnectIcon from '../assets/images/walletConnectIcon.svg';
 import CoinbaseWalletIcon from '../assets/images/coinbaseWalletIcon.svg';
@@ -22,6 +23,7 @@ import { MATIC } from './tokens/MATIC';
 import { AVAX } from './tokens/AVAX';
 import { SDN } from './tokens/SDN';
 import { AURORA_ETHER } from './tokens/AURORA_ETHER';
+import { ASTR } from './tokens/ASTR';
 
 export const MAX_NUM_DECIMALS = 18;
 export const ROUTER_ADDRESS = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D';
@@ -87,6 +89,15 @@ export const WAVAX = new Token(
   18,
   'WAVAX',
   'WAVAX',
+);
+
+export const WASTR = new Token(
+  // @ts-ignore
+  chainIds.ASTAR,
+  '0xAeaaf0e2c81Af264101B9129C00F4440cCF0F720',
+  18,
+  'WASTR',
+  'WASTR',
 );
 
 export const DAI = new Token(
@@ -248,6 +259,10 @@ export const ESW: ChainTokenList = {
     // @ts-ignore
     new Token(chainIds.AVALANCHE, esw_addresses[chainIds.AVALANCHE], 18, 'ESW', 'EmiDAO Token'),
   ],
+  [chainIds.ASTAR]: [
+    // @ts-ignore
+    new Token(chainIds.ASTAR, esw_addresses[chainIds.ASTAR], 18, 'ESW', 'EmiDAO Token'),
+  ],
   [chainIds.AURORA]: [
     // @ts-ignore
     new Token(chainIds.AURORA, esw_addresses[chainIds.AURORA], 18, 'ESW', 'EmiDAO Token'),
@@ -266,6 +281,7 @@ const ETH_ONLY: ChainTokenList = {
   [chainIds.MUMBAI]: [ETHER],
   [chainIds.SHIDEN]: [ETHER],
   [chainIds.AVALANCHE]: [ETHER],
+  [chainIds.ASTAR]: [ETHER],
   [chainIds.AURORA]: [ETHER],
 };
 
@@ -280,6 +296,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   [chainIds.MUMBAI]: [MUMBAI_WMATIC],
   [chainIds.SHIDEN]: [WSDN],
   [chainIds.AVALANCHE]: [WAVAX],
+  [chainIds.ASTAR]: [WASTR],
   [chainIds.AURORA]: [AURORA_DAI, AURORA_USDT /*AURORA_WETH*/],
 };
 
@@ -297,7 +314,7 @@ export const SUGGESTED_BASES: ChainTokenList = {
   // @ts-ignore
   [chainIds.SHIDEN]: [ESW[chainIds.SHIDEN][0]],
   // @ts-ignore
-  [chainIds.AVALANCHE]: [ESW[chainIds.AVALANCHE][0]],
+  [chainIds.ASTAR]: [ESW[chainIds.ASTAR][0]],
   // @ts-ignore
   [chainIds.AURORA]: [AURORA_DAI, AURORA_USDT /*AURORA_WETH*/ /*ESW[chainIds.AURORA][0]*/],
 };
@@ -414,6 +431,7 @@ export const SUPPORTED_WALLETS = {
         chainIds.MUMBAI,
         chainIds.SHIDEN,
         chainIds.AVALANCHE,
+        chainIds.ASTAR,
       ],
       color: '#6748FF',
       mobile: true,
@@ -424,7 +442,12 @@ export const SUPPORTED_WALLETS = {
       iconName: PortisIcon,
       description: 'Login using Portis hosted wallet',
       href: null,
-      unavailableNetworksIds: [chainIds.KUCOIN, chainIds.SHIDEN, chainIds.AVALANCHE],
+      unavailableNetworksIds: [
+        chainIds.KUCOIN,
+        chainIds.SHIDEN,
+        chainIds.AVALANCHE,
+        chainIds.ASTAR,
+      ],
       color: '#4A6C9B',
       mobile: true,
     },
@@ -590,6 +613,25 @@ export const networksItems: INetworkItem[] = [
     eswExplorerUrl: 'https://etherscan.io/token/0x5a75A093747b72a0e14056352751eDF03518031d',
     eswExplorerName: 'ESW KCC Explorer',
     bridgeUrl: 'https://bridge.avax.network',
+    active: true,
+  },
+  {
+    alias: 'astar',
+    value: 'astar',
+    chainId: chainIds.ASTAR,
+    token: ASTR,
+    icon: AvalancheNetworkIcon,
+    name: 'Astar',
+    rpcUrls: ['https://rpc.astar.network:8545'],
+    currencySymbol: 'ASTR',
+    currencySymbolWrap: 'WASTR',
+    currencySymbolWeth: 'WASTR',
+    blockExplorerUrl: 'https://blockscout.com/astar/',
+    blockExplorerName: 'Astar Explorer',
+    analyticsUrl: 'https://emiswap.com/analytics?network=avalanche',
+    eswExplorerUrl: 'https://etherscan.io/token/0x5a75A093747b72a0e14056352751eDF03518031d',
+    eswExplorerName: 'ESW KCC Explorer',
+    bridgeUrl: 'https://app.multichain.org/#/router',
     active: true,
   },
   {

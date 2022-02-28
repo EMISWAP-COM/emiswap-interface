@@ -10,6 +10,7 @@ enum chainIds {
   MUMBAI = 80001,
   SHIDEN = 336,
   AVALANCHE = 43114,
+  ASTAR = 592,
   AURORA = 1313161554,
 }
 

@@ -69,6 +69,7 @@ const NETWORK_LABELS: { [chainId in chainIds]: string | null } = {
   [chainIds.MUMBAI]: 'Mumbai',
   [chainIds.SHIDEN]: 'Shiden',
   [chainIds.AVALANCHE]: 'Avalanche',
+  [chainIds.ASTAR]: 'Astar',
   [chainIds.BSC]: 'BSC',
   [chainIds.AURORA]: 'Aurora',
 };
@@ -93,6 +94,7 @@ const NetworkSwitch = () => {
         <span>{NETWORK_LABELS[chainId] || 'Change Network'}</span>
         {[chainIds.SHIDEN].includes(chainId as any) && <NetworkLabel>Beta Version</NetworkLabel>}
         {[chainIds.AVALANCHE].includes(chainId as any) && <NetworkLabel>Beta Version</NetworkLabel>}
+        {[chainIds.ASTAR].includes(chainId as any) && <NetworkLabel>Beta Version</NetworkLabel>}
         {[chainIds.AURORA].includes(chainId as any) && <NetworkLabel>Beta Version</NetworkLabel>}
       </NetworkButtonSwitch>
       <NetworkSwitchModal />

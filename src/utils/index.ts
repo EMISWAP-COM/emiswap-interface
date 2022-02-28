@@ -29,6 +29,7 @@ import { ERC20_ABI } from '../constants/abis/erc20';
 import { SDN } from '../constants/tokens/SDN';
 import { EMI_DELIVERY } from '../constants/emi/addresses';
 import { AURORA_ETHER } from '../constants/tokens/AURORA_ETHER';
+import { ASTR } from 'constants/tokens/ASTR';
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
@@ -51,6 +52,7 @@ const ETHERSCAN_PREFIXES: { [chainId in chainIds]: string } = {
   80001: 'mumbai.',
   336: 'shiden',
   43114: 'avalanche.',
+  592: 'astar.',
   1313161554: 'aurora.',
 };
 
@@ -194,6 +196,7 @@ export function isDefaultToken(defaultTokens: TokenAddressMap, currency?: Token)
     MATIC.address,
     SDN.address,
     AVAX.address,
+    ASTR.address,
     AURORA_ETHER.address,
   ];
 

@@ -11,6 +11,7 @@ import {
   useDefaultCoin,
   useIsAuroraActive,
   useIsAvalancheActive,
+  useIsAstarActive,
   useIsEthActive,
   useIsKuCoinActive,
   useIsPolygonActive,
@@ -34,6 +35,7 @@ export function useAllTokens(isLpTokens?: boolean): [{ [address: string]: Token 
   const isPolygonActive = useIsPolygonActive();
   const isShidenActive = useIsShidenActive();
   const isAvalancheActive = useIsAvalancheActive();
+  const isAstarActive = useIsAstarActive();
   const isAuroraActive = useIsAuroraActive();
 
   return [
@@ -78,6 +80,22 @@ export function useAllTokens(isLpTokens?: boolean): [{ [address: string]: Token 
                 (ct.chainId === chainId &&
                   el.address.toLowerCase() === ct.address.toLowerCase() &&
                   mustVisibleAddresses.avalanche.includes(el.address.toLowerCase())) ||
+                enableTokensList.includes(el.address) ||
+                el.address === window['env'].REACT_APP_ESW_ID,
+            );
+
+            // @ts-ignore
+            return (
+              Boolean(exists) ||
+              el.address === window['env'].REACT_APP_ESW_ID ||
+              el.symbol === 'ESW'
+            );
+          } else if (isAstarActive) {
+            const exists = defaultCoins.tokens.find(
+              ct =>
+                (ct.chainId === chainId &&
+                  el.address.toLowerCase() === ct.address.toLowerCase() &&
+                  mustVisibleAddresses.astar.includes(el.address.toLowerCase())) ||
                 enableTokensList.includes(el.address) ||
                 el.address === window['env'].REACT_APP_ESW_ID,
             );

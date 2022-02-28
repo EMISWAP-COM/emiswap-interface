@@ -41,6 +41,8 @@ const addressesByNetworkId = {
   // TODO
   [chainIds.AVALANCHE]: [''],
   // TODO
+  [chainIds.ASTAR]: [''],
+  // TODO
   [chainIds.AURORA]: [''],
 };
 
