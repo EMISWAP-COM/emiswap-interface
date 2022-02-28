@@ -4,12 +4,9 @@ import { formatUnits } from '@ethersproject/units';
 import { useAppSelector } from 'state/hooks';
 import { selectToToken, setToToken } from './slice';
 import TokenInput from './TokenInput';
-import { getUniqueTokens } from './utils';
 import { useQuoteData } from './hooks';
 import { useTokenListTo } from './hooks';
-import {
-  selectFromToChains,
-} from './slice';
+import { selectFromToChains } from './slice';
 
 const formatTokenAmount = (amount: string, dicimals?: number): string => {
   const stringOfNumber = parseFloat(amount).toLocaleString('fullwide', { useGrouping: false });
@@ -18,18 +15,12 @@ const formatTokenAmount = (amount: string, dicimals?: number): string => {
 
 const ToTokenInput = () => {
   const { toChain } = useAppSelector(selectFromToChains);
-  const { data, isSuccess } = useTokenListTo();
+  const { data: tokenList, isSuccess } = useTokenListTo();
   const toToken = useAppSelector(selectToToken);
   const { quotes, isSuccess: quoteIsSuccess } = useQuoteData();
 
   const toAmount = quoteIsSuccess ? quotes.routes[0]?.bridgeRoute?.outputAmount : null;
   const dispatch = useDispatch();
-
-  const tokenList = useMemo(() => {
-    if (isSuccess) {
-      return getUniqueTokens(data.result);
-    }
-  }, [data]);
 
   const setToken = useCallback(value => dispatch(setToToken(value)), [dispatch, setToToken]);
 
