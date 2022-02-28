@@ -29,7 +29,7 @@ import { ERC20_ABI } from '../constants/abis/erc20';
 import { SDN } from '../constants/tokens/SDN';
 import { EMI_DELIVERY } from '../constants/emi/addresses';
 import { AURORA_ETHER } from '../constants/tokens/AURORA_ETHER';
-import { ASTR } from 'constants/tokens/ASTR';
+import { ASTR } from '../constants/tokens/ASTR';
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {

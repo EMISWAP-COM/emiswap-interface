@@ -9,7 +9,7 @@ import esw_addresses from './esw_addresses';
 import PolygonNetworkIcon from '../assets/svg/polygon-network.svg';
 import ShidenNetworkIcon from '../assets/images/shiden-network.png';
 import AvalancheNetworkIcon from '../assets/svg/avalanche-network.svg';
-import AstarNetworkIcon from '../assets/svg/avalanche-network.svg';
+import AstarNetworkIcon from '../assets/images/astar-network.png';
 import AuroraNetworkIcon from '../assets/svg/aurora-network.svg';
 import WalletConnectIcon from '../assets/images/walletConnectIcon.svg';
 import CoinbaseWalletIcon from '../assets/images/coinbaseWalletIcon.svg';
