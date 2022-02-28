@@ -620,7 +620,7 @@ export const networksItems: INetworkItem[] = [
     value: 'astar',
     chainId: chainIds.ASTAR,
     token: ASTR,
-    icon: AvalancheNetworkIcon,
+    icon: AstarNetworkIcon,
     name: 'Astar',
     rpcUrls: ['https://rpc.astar.network:8545'],
     currencySymbol: 'ASTR',

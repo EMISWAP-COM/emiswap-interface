@@ -90,22 +90,6 @@ export function useAllTokens(isLpTokens?: boolean): [{ [address: string]: Token 
               el.address === window['env'].REACT_APP_ESW_ID ||
               el.symbol === 'ESW'
             );
-          } else if (isAstarActive) {
-            const exists = defaultCoins.tokens.find(
-              ct =>
-                (ct.chainId === chainId &&
-                  el.address.toLowerCase() === ct.address.toLowerCase() &&
-                  mustVisibleAddresses.astar.includes(el.address.toLowerCase())) ||
-                enableTokensList.includes(el.address) ||
-                el.address === window['env'].REACT_APP_ESW_ID,
-            );
-
-            // @ts-ignore
-            return (
-              Boolean(exists) ||
-              el.address === window['env'].REACT_APP_ESW_ID ||
-              el.symbol === 'ESW'
-            );
           } else if (isAuroraActive) {
             const exists = defaultCoins.tokens.find(
               ct => ct.chainId === chainId && el.address.toLowerCase() === ct.address.toLowerCase(),
@@ -138,6 +122,19 @@ export function useAllTokens(isLpTokens?: boolean): [{ [address: string]: Token 
                 ct.chainId === chainId &&
                 el.address.toLowerCase() === ct.address.toLowerCase() &&
                 ct.symbol !== 'WSDN',
+            );
+
+            return (
+              Boolean(exists) ||
+              el.address === window['env'].REACT_APP_ESW_ID ||
+              el.symbol === 'ESW'
+            );
+          } else if (isAstarActive) {
+            const exists = defaultCoins.tokens.find(
+              ct =>
+                ct.chainId === chainId &&
+                el.address.toLowerCase() === ct.address.toLowerCase() &&
+                ct.symbol !== 'WASTR',
             );
 
             return (
