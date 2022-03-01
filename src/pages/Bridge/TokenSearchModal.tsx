@@ -77,7 +77,7 @@ export default function SearchModal({
       return [searchToken];
     }
     return filterTokens(Object.values(filteredAllTokens), searchQuery, isLpTokens);
-  }, [searchToken, allTokens, searchQuery, isLpTokens, filteredAllTokens]);
+  }, [searchToken, searchQuery, isLpTokens, filteredAllTokens]);
 
   const filteredSortedTokens: Token[] = useMemo(() => {
     if (searchToken) {
