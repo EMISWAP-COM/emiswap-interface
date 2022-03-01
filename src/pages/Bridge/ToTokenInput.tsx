@@ -26,7 +26,7 @@ const ToTokenInput = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      setToken(tokenList.find(({ name }) => name === toToken?.name) || tokenList[0]);
+      setToken(tokenList.find(({ symbol }) => symbol === toToken?.symbol) || tokenList[0]);
     }
   }, [tokenList]);
 
