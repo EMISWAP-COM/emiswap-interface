@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'state/hooks';
-import { useTokenListFrom } from './hooks';
+import { useFirstToken, useTokenListFrom } from './hooks';
 import {
   selectAmountFromToken,
   selectFromToChains,
@@ -18,6 +18,7 @@ const FromTokenInput = () => {
   const dispatch = useDispatch();
   const { fromChain } = useAppSelector(selectFromToChains);
   const { data: tokenList, isSuccess } = useTokenListFrom();
+  const firstToken = useFirstToken(tokenList, fromChain?.chainId);
 
   const setToken = useCallback((value: Token) => dispatch(setFromToken(value)), [
     dispatch,
@@ -26,7 +27,7 @@ const FromTokenInput = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      setToken(tokenList.find(({ name }) => name === fromToken?.name) || tokenList[0]);
+      setToken(tokenList.find(({ name }) => name === fromToken?.name) || firstToken);
     }
   }, [tokenList]);
 
