@@ -4,7 +4,7 @@ import { formatUnits } from '@ethersproject/units';
 import { useAppSelector } from 'state/hooks';
 import { selectToToken, setToToken } from './slice';
 import TokenInput from './TokenInput';
-import { useQuoteData } from './hooks';
+import { useFirstToken, useQuoteData } from './hooks';
 import { useTokenListTo } from './hooks';
 import { selectFromToChains } from './slice';
 
@@ -18,6 +18,7 @@ const ToTokenInput = () => {
   const { data: tokenList, isSuccess } = useTokenListTo();
   const toToken = useAppSelector(selectToToken);
   const { quotes, isSuccess: quoteIsSuccess } = useQuoteData();
+  const firstToken = useFirstToken(tokenList, toChain?.chainId);
 
   const toAmount = quoteIsSuccess ? quotes.routes[0]?.bridgeRoute?.outputAmount : null;
   const dispatch = useDispatch();
@@ -26,7 +27,7 @@ const ToTokenInput = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      setToken(tokenList.find(({ symbol }) => symbol === toToken?.symbol) || tokenList[0]);
+      setToken(tokenList.find(({ symbol }) => symbol === toToken?.symbol) || firstToken);
     }
   }, [tokenList]);
 
