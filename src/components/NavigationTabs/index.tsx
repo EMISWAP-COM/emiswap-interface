@@ -160,7 +160,7 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
           {t('migrate')}
         </StyledNavLink>
       )}
-      <StyledNavLinkWrapper>
+      {/* <StyledNavLinkWrapper>
         <StyledNavLink
           id={`pool-nav-link`}
           to={'/bridge'}
@@ -169,7 +169,7 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
           {t('bridge')}
         </StyledNavLink>
         <NetworkLabel>Beta</NetworkLabel>
-      </StyledNavLinkWrapper>
+      </StyledNavLinkWrapper> */}
       {/*<StyledNavLink
         id={`pool-nav-link`}
         to={'/invest'}
