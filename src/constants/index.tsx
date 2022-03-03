@@ -335,6 +335,8 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   // @ts-ignore
   [chainIds.AVALANCHE]: [ESW[chainIds.AVALANCHE][0]],
   // @ts-ignore
+  [chainIds.ASTAR]: [ESW[chainIds.ASTAR][0]],
+  // @ts-ignore
   [chainIds.AURORA]: [AURORA_DAI, AURORA_USDT /*AURORA_WETH*/ /*ESW[chainIds.AURORA][0]*/],
 };
 
@@ -628,7 +630,7 @@ export const networksItems: INetworkItem[] = [
     currencySymbolWeth: 'WASTR',
     blockExplorerUrl: 'https://blockscout.com/astar/',
     blockExplorerName: 'Astar Explorer',
-    analyticsUrl: 'https://emiswap.com/analytics?network=avalanche',
+    analyticsUrl: '',
     eswExplorerUrl: 'https://etherscan.io/token/0x5a75A093747b72a0e14056352751eDF03518031d',
     eswExplorerName: 'ESW KCC Explorer',
     bridgeUrl: 'https://app.multichain.org/#/router',
