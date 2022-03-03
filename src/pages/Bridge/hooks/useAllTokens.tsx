@@ -2,8 +2,8 @@ import { Token, ChainId } from '@uniswap/sdk';
 import { useMemo } from 'react';
 import { useDefaultTokenList, WrappedTokenInfo } from 'state/lists/hooks';
 import { useUserAddedTokens } from 'state/user/hooks';
-import { useTokenListWithPair } from '../../../hooks/useTokenListWithPair';
 import defaultCoins, { mustVisibleAddresses } from '../../../constants/defaultCoins';
+import { enableTokenChainList } from './constants';
 
 export function useAllTokens({
   chainId,
@@ -14,7 +14,8 @@ export function useAllTokens({
   const isAvalancheActive = chainId == (43114 as ChainId);
   const userAddedTokens = useUserAddedTokens();
   const allTokens = useDefaultTokenList();
-  const [enableTokensList, isLoading] = useTokenListWithPair();
+  const enableTokensList = enableTokenChainList[chainId];
+
   return [
     useMemo(() => {
       if (!chainId) {
@@ -80,7 +81,7 @@ export function useAllTokens({
             { ...filteredTokens },
           )
       );
-    }, [chainId, userAddedTokens, allTokens, enableTokensList, isPolygonActive, isAvalancheActive]),
-    isLoading,
+    }, [chainId, userAddedTokens, allTokens, isPolygonActive, isAvalancheActive]),
+    false,
   ];
 }
