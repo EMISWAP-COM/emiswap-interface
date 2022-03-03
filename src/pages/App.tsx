@@ -35,7 +35,6 @@ import SocButtons from '../components/SocButtons';
 import Landing from './Landing/Landing';
 import { useActiveWeb3React } from '../hooks';
 import Farm365 from './Farm365/Farm365';
-import Bridge from './Bridge';
 import { useReferralUrlParser } from '../referral-url-parser';
 import { fetchWrapper } from '../api/fetchWrapper';
 
@@ -163,7 +162,6 @@ export default function App() {
                   <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
                   <Route exact strict path="/find" component={PoolFinder} />
                   <Route exact strict path="/pool" component={Pool} />
-                  <Route exact strict path="/bridge" component={Bridge} />
                   <Route exact strict path="/create" component={RedirectToAddLiquidity} />
                   <Route exact path="/add" component={AddLiquidity} />
                   <Route

@@ -205,9 +205,6 @@ export default function Farm365Content({ farming365, eswRate }: Farm365ContentPr
   const { chainId, account } = useActiveWeb3React();
   const { value: network } = useNetworkData();
 
-  const isPolygonActive = useIsPolygonActive();
-  const isShidenActive = useIsShidenActive();
-
   const farmingAddresses = farming365.contract.address;
 
   const allTransactions = useAllTransactions();
