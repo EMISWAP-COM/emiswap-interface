@@ -4461,6 +4461,15 @@ const defaultCoins: DefaultCoins = {
       decimals: 8,
       symbol: 'WBTC',
     },
+    {
+      address: '0xb361DAD0Cc1a03404b650A69d9a5ADB5aF8A531F',
+      chainId: chainIds.ASTAR,
+      name: 'EmiSwap - EmiDao Token',
+      symbol: 'ESW',
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
     //
     {
       address: '0xfa9343c3897324496a05fc75abed6bac29f8a40f',
