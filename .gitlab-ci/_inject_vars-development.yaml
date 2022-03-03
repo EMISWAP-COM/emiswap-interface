@@ -29,6 +29,7 @@ inject_vars:
         REACT_APP_KOVAN_USDC_ADDRESS: '0x1c879c2681Cb1c63F6CEBc11A5F2B65Fc8AD23ba',
         REACT_APP_KOVAN_DAI_ADDRESS: '0x7b5f80e135296144837d5427D562797f72F66754',
         REACT_APP_KOVAN_EMRX_ADDRESS: '0x67059251E818Ae5aBeCF365d6e847a006bf6201e',
+        REACT_APP_DISABLE_BRIDGE: false,
       };
 
   emiswap-oracle:
@@ -114,7 +115,6 @@ inject_vars:
       storageClass: csi-krbd-sc
     persistence:
       size: 70Gi
-
 
   emiswap-nft:
     image:

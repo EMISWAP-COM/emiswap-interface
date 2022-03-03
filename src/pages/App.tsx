@@ -163,7 +163,9 @@ export default function App() {
                   <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
                   <Route exact strict path="/find" component={PoolFinder} />
                   <Route exact strict path="/pool" component={Pool} />
-                  <Route exact strict path="/bridge" component={Bridge} />
+                  {process.env.REACT_APP_DISABLE_BRIDGE ? null : (
+                    <Route exact strict path="/bridge" component={Bridge} />
+                  )}
                   <Route exact strict path="/create" component={RedirectToAddLiquidity} />
                   <Route exact path="/add" component={AddLiquidity} />
                   <Route
