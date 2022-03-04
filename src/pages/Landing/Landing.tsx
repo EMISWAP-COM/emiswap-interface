@@ -88,8 +88,12 @@ const useLiquidityAndVolume = () => {
         'https://api.thegraph.com/subgraphs/name/lombardi22/polygon',
       );
       const polygonData = await polygonRes.json();
+      const shidenRes = await getLiquidityAndValue(
+        'https://shiden-graph.emiswap.com/subgraphs/name/shiden',
+      );
+      const shidenData = await shidenRes.json();
 
-      const data = [ethData, kccData, polygonData].reduce(
+      const data = [ethData, kccData, polygonData, shidenData].reduce(
         (acc, item) => [
           acc[0] + parseInt(item.data.emiswapFactories[0].totalLiquidityUSD),
           acc[1] + parseInt(item.data.emiswapFactories[0].totalVolumeUSD),
