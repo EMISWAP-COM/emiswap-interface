@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 
 import * as Styled from '../../components/CurrencyInputPanel/styled';
 
-const TokenInput = ({ tokens, token, amount, onAmountInput, setToken, chainId }) => {
+const TokenInput = ({ tokens, token, amount, onAmountInput, setToken, chainId, disableFilter }) => {
   const { t } = useTranslation();
   const { account } = useActiveWeb3React();
   const balances = useTokenBalances(account, [token]); // TODO: use for single token!
@@ -79,6 +79,7 @@ const TokenInput = ({ tokens, token, amount, onAmountInput, setToken, chainId })
       </Styled.InputPanel>
 
       <TokensSearchModal
+        disableFilter={disableFilter}
         tokens={Array.isArray(tokens) ? tokens : []}
         isOpen={modalOpened}
         onDismiss={() => setModalOpened(false)}
