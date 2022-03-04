@@ -348,7 +348,7 @@ export default function Landing({ history }: any) {
                 </div>
                 <div className="numbers__card">
                   <div className="numbers__desc">{t('landing.numbers.users')}</div>
-                  <div className="numbers__value">84K</div>
+                  <div className="numbers__value">86K</div>
                 </div>
                 <div className="numbers__card">
                   <div className="numbers__desc">{t('landing.numbers.trades')}</div>
