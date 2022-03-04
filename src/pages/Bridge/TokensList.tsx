@@ -28,11 +28,8 @@ export default function TokensList({ items = [], onSelect = (s: any) => {}, sele
           disabled={isSelected}
         >
           <RowFixed>
-            {item.icon ? (
-              <Icon src={item.icon} alt="icon" width="16px" height="16px" />
-            ) : (
-              <CurrencyLogo currency={item} size={'18px'} style={{ marginRight: '16px' }} />
-            )}
+            <CurrencyLogo currency={item} size={'18px'} style={{ marginRight: '16px' }} />
+            {item.icon && <Icon src={item.icon} alt="icon" width="16px" height="16px" />}
             <Text fontWeight={500}>{item.symbol}</Text>
           </RowFixed>
           <AutoColumn>{tokenAmountToString(balances[item.address])}</AutoColumn>
