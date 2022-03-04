@@ -39,6 +39,7 @@ const FromTokenInput = () => {
       onAmountInput={(value: string) => dispatch(setAmountFromToken(value))}
       setToken={setToken}
       chainId={fromChain?.chainId}
+      disableFilter={false}
     />
   );
 };

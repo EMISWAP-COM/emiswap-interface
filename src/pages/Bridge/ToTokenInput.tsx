@@ -39,6 +39,7 @@ const ToTokenInput = () => {
       onAmountInput={null}
       setToken={setToken}
       chainId={toChain?.chainId}
+      disableFilter
     />
   );
 };

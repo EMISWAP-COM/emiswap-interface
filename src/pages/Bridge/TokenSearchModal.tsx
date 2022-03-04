@@ -45,6 +45,7 @@ export default function SearchModal({
   onCurrencySelect,
   isLpTokens = false,
   chainId,
+  disableFilter,
 }) {
   const { t } = useTranslation();
   const theme = useContext(ThemeContext);
@@ -204,7 +205,10 @@ export default function SearchModal({
             <Loader size="100px" />
           </LoaderBox>
         ) : (
-          <List items={filteredSortedTokens} onSelect={handleCurrencySelect} />
+          <List
+            items={disableFilter ? tokens : filteredSortedTokens}
+            onSelect={handleCurrencySelect}
+          />
         )}
         <div style={{ height: '1px', backgroundColor: theme.bg2, margin: '0 30px' }} />
         <Card>
