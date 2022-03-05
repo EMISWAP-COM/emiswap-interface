@@ -14,7 +14,6 @@ import LogoSvg from '../../assets/svg/logo.svg';
 import AboutSvg from '../../assets/landing/header/about.svg';
 import CommunitySvg from '../../assets/landing/header/community.svg';
 // import FarmsSvg from '../../assets/landing/header/farms.svg';
-import TeamSvg from '../../assets/landing/header/team.svg';
 import WhitePaper from '../../assets/whitePaper.pdf';
 
 import PieEn from '../../assets/landing/PieEn.png';
