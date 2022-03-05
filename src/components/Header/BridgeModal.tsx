@@ -62,8 +62,18 @@ const NetworkName = styled(Text)`
 export default function BridgeModal() {
   const bridgeModalOpen = useBridgeModalOpen();
   const toggleBridgeModal = useBridgeModalToggle();
+  interface IMultiChainNetwork {
+    name: string;
+    icon: string;
+    bridgeUrl: string,
+  }
+  const multiChainNetwork = {
+    name: 'Multichain',
+    icon: 'https://anyswap.net/img/logo_color.b22f3181.png',
+    bridgeUrl: 'https://app.multichain.org/#/router'
+  };
 
-  const handleClickItem = (networkItem: INetworkItem) => {
+  const handleClickItem = (networkItem: INetworkItem | IMultiChainNetwork) => {
     window.open(networkItem.bridgeUrl);
   };
 
@@ -94,6 +104,16 @@ export default function BridgeModal() {
                   <NetworkName>{item.name} Bridge</NetworkName>
                 </NetworkItem>
               ))}
+            <NetworkItem onClick={() => handleClickItem(multiChainNetwork)}>
+              <NetworkIcon>
+                <img
+                  style={{ maxWidth: '100%' }}
+                  src={multiChainNetwork.icon}
+                  alt={multiChainNetwork.name}
+                />
+              </NetworkIcon>
+              <NetworkName>{multiChainNetwork.name} Bridge</NetworkName>
+            </NetworkItem>
           </NetworkItemsRow>
         </NetworkSwitchWrapped>
       </Modal>

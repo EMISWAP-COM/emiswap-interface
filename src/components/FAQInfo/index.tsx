@@ -595,12 +595,10 @@ export default () => {
   };
 
   const btnClickPresentation = () => {
-    const win = window.open('https://about.emiswap.com/presentation', '_blank');
-    win.focus();
-  };
-
-  const btnClickVesting = () => {
-    const win = window.open('https://about.emiswap.com/onepage', '_blank');
+    const win = window.open(
+      'https://drive.google.com/file/d/1Vs5ooHUPruMBSSFb9pDQLGBYP9Qz9cvH/view?usp=sharing',
+      '_blank',
+    );
     win.focus();
   };
 
@@ -611,7 +609,6 @@ export default () => {
           White Paper
         </Tab>
         <Tab onClick={btnClickPresentation}>Presentation</Tab>
-        <Tab onClick={btnClickVesting}>Check Vesting Schedule</Tab>
       </Tabs>
       <Accordion
         header="Introduction to EmiSwap"
