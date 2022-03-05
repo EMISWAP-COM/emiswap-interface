@@ -194,13 +194,6 @@ export default function Landing({ history }: any) {
                 <img className="nav__img" src={CommunitySvg} alt="" />
                 <div className="nav__name">{t('landing.menu.community')}</div>
               </a>
-              <a
-                className={`nav__link ${sectionInViewPort('team') ? 'nav__link--active' : ''}`}
-                href="#team"
-              >
-                <img className="nav__img" src={TeamSvg} alt="" />
-                <div className="nav__name">{t('landing.menu.team')}</div>
-              </a>
             </div>
             <div className="language-switch" style={{ marginLeft: 'auto' }}>
               <Switch
