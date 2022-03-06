@@ -175,7 +175,7 @@ export default function Menu() {
             <Code size={14} />
             Code
           </MenuItem>
-          <MenuItem id="link" href="https://about.emiswap.com/farming" target="_blank">
+          <MenuItem id="link" href="https://wiki.emiswap.com/user-guide/how-to-farm-usdesw" target="_blank">
             <BookOpen size={14} />
             Earn with EmiSwap
           </MenuItem>
