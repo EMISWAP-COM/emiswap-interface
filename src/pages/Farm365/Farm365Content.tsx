@@ -20,7 +20,7 @@ import dayjs from 'dayjs';
 import { calcFarming365Apr } from './helpers';
 import { isMobile } from 'react-device-detect';
 import Tooltip from '../Farm/Tooltip';
-import { toggleWalletModal } from '../../state/application/actions';
+import { useWalletModalToggle } from '../../state/application/hooks';
 
 const Content = styled.div`
   display: flex;
@@ -204,6 +204,8 @@ type Farm365ContentProps = {
 export default function Farm365Content({ farming365, eswRate }: Farm365ContentProps) {
   const { chainId, account } = useActiveWeb3React();
   const { value: network } = useNetworkData();
+
+  const toggleWalletModal = useWalletModalToggle();
 
   const isPolygonActive = useIsPolygonActive();
   const isShidenActive = useIsShidenActive();
