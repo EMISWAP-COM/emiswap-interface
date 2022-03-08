@@ -14,7 +14,6 @@ import LogoSvg from '../../assets/svg/logo.svg';
 import AboutSvg from '../../assets/landing/header/about.svg';
 import CommunitySvg from '../../assets/landing/header/community.svg';
 // import FarmsSvg from '../../assets/landing/header/farms.svg';
-import TeamSvg from '../../assets/landing/header/team.svg';
 import WhitePaper from '../../assets/whitePaper.pdf';
 
 import PieEn from '../../assets/landing/PieEn.png';
@@ -194,13 +193,6 @@ export default function Landing({ history }: any) {
                 <img className="nav__img" src={CommunitySvg} alt="" />
                 <div className="nav__name">{t('landing.menu.community')}</div>
               </a>
-              <a
-                className={`nav__link ${sectionInViewPort('team') ? 'nav__link--active' : ''}`}
-                href="#team"
-              >
-                <img className="nav__img" src={TeamSvg} alt="" />
-                <div className="nav__name">{t('landing.menu.team')}</div>
-              </a>
             </div>
             <div className="language-switch" style={{ marginLeft: 'auto' }}>
               <Switch
@@ -348,11 +340,11 @@ export default function Landing({ history }: any) {
                 </div>
                 <div className="numbers__card">
                   <div className="numbers__desc">{t('landing.numbers.users')}</div>
-                  <div className="numbers__value">84K</div>
+                  <div className="numbers__value">86K</div>
                 </div>
                 <div className="numbers__card">
                   <div className="numbers__desc">{t('landing.numbers.trades')}</div>
-                  <div className="numbers__value">3.8K</div>
+                  <div className="numbers__value">7.2K</div>
                 </div>
               </div>
               <button
