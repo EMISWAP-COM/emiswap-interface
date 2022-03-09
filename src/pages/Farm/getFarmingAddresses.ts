@@ -36,6 +36,7 @@ const addressesByNetworkId = {
   ],
   [chainIds.SHIDEN]: [
     '0x831b25EB4073d92E4766411f0DbDd0b549753179', // RewardPoolMulti PROXY
+    '0x94a12b208Ddbddd35bd6a6Bd9e1C0dA70B18E5bd', // RewardPoolMulti PROXY
   ],
   // TODO
   [chainIds.AVALANCHE]: [''],
