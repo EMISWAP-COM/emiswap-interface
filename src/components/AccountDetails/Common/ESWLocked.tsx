@@ -70,7 +70,7 @@ const Item = ({ alt, src, label, value, isUnlockDate }: LockedItemInterface) => 
 );
 
 const getValues = (network, total, polygonTotal, nextUnlock, nextPolygonUnlock) => {
-  if (network === 'polygon' || network === 'mumbai') {
+  if (network === 'polygon' || network === 'mumbai' || network === 'shiden') {
     const nextUnlockAmount = nextPolygonUnlock?.amount;
     const lockedAtEmiswap = polygonTotal?.locked?.ESW;
     const nextUnlockDate = nextPolygonUnlock?.available_at;

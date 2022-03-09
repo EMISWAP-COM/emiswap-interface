@@ -3,7 +3,7 @@ import React, { useMemo, useState } from 'react';
 
 import { AppState } from '../../../../state';
 import { useActiveWeb3React } from '../../../../hooks';
-import { useIsEthActive, useIsPolygonActive } from '../../../../hooks/Coins';
+import { useIsEthActive, useIsPolygonActive, useIsShidenActive } from '../../../../hooks/Coins';
 import {
   CellProps,
   cellRenders,
@@ -38,6 +38,7 @@ const getTableItem = forWhat => (item: { available_at: string; amount: string })
 export const PurchaseHistory = () => {
   const isEthActive = useIsEthActive();
   const isPolygonActive = useIsPolygonActive();
+  const isShidenActive = useIsShidenActive();
   const { chainId } = useActiveWeb3React();
   const { referrals } = useSelector((state: AppState) => state.cabinets.performance);
   const { histories, details } = useSelector((state: AppState) => state.cabinets.balance);
@@ -304,7 +305,7 @@ export const PurchaseHistory = () => {
           />
         </>
       )}
-      {isPolygonActive && (
+      {(isPolygonActive || isShidenActive) && (
         <Table title="My Reward History" fields={myRewardHistoryFields} data={myRewardHistory} />
       )}
     </>

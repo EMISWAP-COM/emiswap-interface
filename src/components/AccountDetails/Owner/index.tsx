@@ -16,7 +16,7 @@ import { ESWLocked } from '../Common/ESWLocked';
 import { ReferralPerformance } from '../Common/ReferralPerformance';
 import { PurchaseHistory } from '../Common/PurchaseHistory';
 import FarmingRewards from '../Common/FarmingRewards';
-import { useIsEthActive, useIsPolygonActive } from '../../../hooks/Coins';
+import { useIsEthActive, useIsPolygonActive, useIsShidenActive } from '../../../hooks/Coins';
 import RequestCollect from './RequestCollect';
 import CollectToMyWallet from './CollectToMyWallet';
 
@@ -68,8 +68,8 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
 
   const isEthActive = useIsEthActive();
   const isPolygonActive = useIsPolygonActive();
-  /*const isKuCoinActive = useIsKuCoinActive();
   const isShidenActive = useIsShidenActive();
+  /*const isKuCoinActive = useIsKuCoinActive();
   const isAvalanceActive = useIsAvalancheActive();*/
 
   useEffect(() => {
@@ -101,7 +101,7 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
             </ExternalLink>
           </OptionsPromo>
         </Connection>
-        {(isEthActive || isPolygonActive) && (
+        {(isEthActive || isPolygonActive || isShidenActive) && (
           <div style={{ padding: '0 16px' }}>
             <ESWRewards />
             {isEthActive && <ESWHoldingRewards />}

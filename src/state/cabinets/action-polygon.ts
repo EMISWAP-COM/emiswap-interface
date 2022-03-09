@@ -10,6 +10,9 @@ export const getNetworkUrl = (network: string): string => {
   switch (network) {
     case 'polygon':
       return 'polygon_main';
+    case 'shiden':
+      // return 'polygon_main';
+      return 'shiden_main';
     case 'mumbai':
       return 'polygon_test';
     default:
