@@ -193,12 +193,6 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
           {t('Farm')}
         </StyledNavLink>
       )}
-      {isMobile && isEthereumActive && (
-        <>
-          <ExternalNavLink onClick={handleClickBridge}>{t('Bridge')}</ExternalNavLink>
-          {/*<BridgeModal/>*/}
-        </>
-      )}
     </Tabs>
   );
 }
