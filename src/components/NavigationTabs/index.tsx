@@ -181,7 +181,7 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
       </StyledNavLink>*/}
       {isEthereumActive && (
         <StyledNavLink id={`farm-nav-link`} to={'/farm'} isActive={() => active === TabNames.FARM}>
-          {t('Stake & Farm')}
+          {isMobile ? t('Farm') : t('Stake & Farm')}
         </StyledNavLink>
       )}
       {(isPolygonActive || isShidenActive) && (
@@ -193,7 +193,7 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
           {t('Farm')}
         </StyledNavLink>
       )}
-      {isMobile && !isEthereumActive && (
+      {isMobile && isEthereumActive && (
         <>
           <ExternalNavLink onClick={handleClickBridge}>{t('Bridge')}</ExternalNavLink>
           {/*<BridgeModal/>*/}
