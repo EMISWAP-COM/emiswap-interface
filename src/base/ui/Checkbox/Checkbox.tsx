@@ -2,9 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { useToggle } from '../../../hooks';
 
-export type CheckboxProps = Omit<
-  React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
-  'type'
+export type CheckboxProps = React.DetailedHTMLProps<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  HTMLInputElement
 >;
 
 const StyledCheckbox = styled.input.attrs({ type: 'checkbox' })`
