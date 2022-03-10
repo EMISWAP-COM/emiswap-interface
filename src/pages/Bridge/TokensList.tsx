@@ -1,19 +1,22 @@
 import { currencyEquals } from '@uniswap/sdk';
-import { useWeb3React } from '@web3-react/core';
 import CurrencyLogo from 'components/CurrencyLogo';
 import React, { CSSProperties, memo, useMemo } from 'react';
 import { Text } from 'rebass';
 import { AutoColumn } from '../../components/Column';
 import { RowFixed } from '../../components/Row';
 import { StyledFixedSizeList, StyledMenuItem } from '../../components/SearchModal/styleds';
-import { useTokenBalances } from '../../state/wallet/hooks';
 import { currencyKey } from '../../utils/currencyId';
 import { tokenAmountToString } from '../../utils/formats';
+import { useGetBalance } from './hooks/useGetBalance';
 import { Icon } from './styled';
 
-export default function TokensList({ items = [], onSelect = (s: any) => {}, selectedItem = null }) {
-  const { account } = useWeb3React();
-  const balances = useTokenBalances(account, items);
+export default function TokensList({
+  items = [],
+  onSelect = (s: any) => {},
+  selectedItem = null,
+  chainId,
+}) {
+  const balances = useGetBalance(items, chainId);
 
   const Row = useMemo(() => {
     return memo(function CurrencyRow({ index, style }: { index: number; style: CSSProperties }) {
