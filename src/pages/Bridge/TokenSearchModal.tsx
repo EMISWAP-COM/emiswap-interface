@@ -204,7 +204,7 @@ export default function SearchModal({
             <Loader size="100px" />
           </LoaderBox>
         ) : (
-          <List items={filteredSortedTokens} onSelect={handleCurrencySelect} />
+          <List items={filteredSortedTokens} onSelect={handleCurrencySelect} chainId={chainId} />
         )}
         <div style={{ height: '1px', backgroundColor: theme.bg2, margin: '0 30px' }} />
         <Card>

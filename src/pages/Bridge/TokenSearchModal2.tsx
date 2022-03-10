@@ -16,6 +16,7 @@ export default function SearchModal({
   isOpen = false,
   onDismiss,
   onSelect,
+  chainId,
 }) {
   const { t } = useTranslation();
   const inputRef = useRef<HTMLInputElement>();
@@ -105,7 +106,11 @@ export default function SearchModal({
             />
           </Tooltip>
         </PaddedColumn>
-        {isLoading ? 'LOADING' : <List items={filteredSortedTokens} onSelect={onSelect} />}
+        {isLoading ? (
+          'LOADING'
+        ) : (
+          <List items={filteredSortedTokens} onSelect={onSelect} chainId={chainId} />
+        )}
       </Column>
     </Modal>
   );
