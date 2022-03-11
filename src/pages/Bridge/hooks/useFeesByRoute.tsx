@@ -11,6 +11,8 @@ const useFeesByRoute = route => {
 
   useEffect(() => {
     const main = async () => {
+      let bridgePrice;
+      let bridgeDecimals;
       setFees({});
       if (!route) return;
       const {
@@ -27,18 +29,24 @@ const useFeesByRoute = route => {
       );
       const gasPrice = await library.getGasPrice();
 
-      const {
-        result: {
-          tokenPrice: bridgePrice,
-          tokenInfo: { decimals: bridgeDecimals },
-        },
-      } = await fetchWrapper.get(
-        `https://backend.movr.network/v1/token-price?` +
-          new URLSearchParams({
-            tokenAddress: route.fees.bridgeFee.assetAddress,
-            chainId: fromChain.chainId.toString(),
-          }),
-      );
+      try {
+        const {
+          result: {
+            tokenPrice,
+            tokenInfo: { decimals },
+          },
+        } = await fetchWrapper.get(
+          `https://backend.movr.network/v1/token-price?` +
+            new URLSearchParams({
+              tokenAddress: route.fees.bridgeFee.assetAddress,
+              chainId: fromChain.chainId.toString(),
+            }),
+        );
+        bridgePrice = tokenPrice;
+        bridgeDecimals = decimals;
+      } catch (e) {
+        console.log(e);
+      }
 
       setFees({
         transactionFee:
@@ -46,9 +54,11 @@ const useFeesByRoute = route => {
             (route.fees.gasLimit[0].amount * gasUSDPrice * gasPrice.toNumber()) /
             Math.pow(10, gasDecimals)
           ).toFixed(5) + '$',
-        bridgeFee:
-          ((route.fees.bridgeFee.amount * bridgePrice) / Math.pow(10, bridgeDecimals)).toFixed(5) +
-          '$',
+        bridgeFee: isFinite(bridgePrice)
+          ? ((route.fees.bridgeFee.amount * bridgePrice) / Math.pow(10, bridgeDecimals)).toFixed(
+              5,
+            ) + '$'
+          : '—',
       });
     };
     main();

@@ -5,7 +5,6 @@ import { AutoRow, RowBetween } from 'components/Row';
 import { filterTokens } from 'components/SearchModal/filtering';
 import SortButton from 'components/SearchModal/SortButton';
 import { useTokenComparator } from 'components/SearchModal/sorting';
-import { useActiveWeb3React } from 'hooks';
 import { useToken } from 'hooks/Tokens';
 import { useAllTokens } from './hooks/useAllTokens';
 import List from './TokensList';
@@ -78,7 +77,7 @@ export default function SearchModal({
       return [searchToken];
     }
     return filterTokens(Object.values(filteredAllTokens), searchQuery, isLpTokens);
-  }, [searchToken, allTokens, searchQuery, isLpTokens]);
+  }, [searchToken, searchQuery, isLpTokens, filteredAllTokens]);
 
   const filteredSortedTokens: Token[] = useMemo(() => {
     if (searchToken) {
@@ -205,7 +204,7 @@ export default function SearchModal({
             <Loader size="100px" />
           </LoaderBox>
         ) : (
-          <List items={filteredSortedTokens} onSelect={handleCurrencySelect} />
+          <List items={filteredSortedTokens} onSelect={handleCurrencySelect} chainId={chainId} />
         )}
         <div style={{ height: '1px', backgroundColor: theme.bg2, margin: '0 30px' }} />
         <Card>

@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Chain, Quote, Token } from './types';
 import { parseUnits } from '@ethersproject/units';
+import { getUniqueTokens } from './utils';
 
 export const apiSlice = createApi({
   reducerPath: 'api',
@@ -9,25 +10,23 @@ export const apiSlice = createApi({
     getSupportChain: builder.query<{ result: Chain[] }, void>({
       query: () => 'supported/chains',
     }),
-    getSupportTokenFrom: builder.query<
-      { result: { token: Token; chainId: number }[] },
-      { fromChain: Chain; toChain: Chain }
-    >({
+    getSupportTokenFrom: builder.query<Token[], { fromChain: Chain; toChain: Chain }>({
       query: ({ fromChain, toChain }) =>
         `supported/from-token-list?${new URLSearchParams({
           fromChainId: fromChain.chainId.toString(),
           toChainId: toChain.chainId.toString(),
         }).toString()}`,
+      transformResponse: (response: { result: { token: Token; chainId: number }[] }) =>
+        getUniqueTokens(response.result),
     }),
-    getSupportTokenTo: builder.query<
-      { result: { token: Token; chainId: number }[] },
-      { fromChain: Chain; toChain: Chain }
-    >({
+    getSupportTokenTo: builder.query<Token[], { fromChain: Chain; toChain: Chain }>({
       query: ({ fromChain, toChain }) =>
         `supported/to-token-list?${new URLSearchParams({
           fromChainId: fromChain.chainId.toString(),
           toChainId: toChain.chainId.toString(),
         }).toString()}`,
+      transformResponse: (response: { result: { token: Token; chainId: number }[] }) =>
+        getUniqueTokens(response.result),
     }),
     getQuote: builder.query<
       { result?: Quote },

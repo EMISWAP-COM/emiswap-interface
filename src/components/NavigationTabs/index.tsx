@@ -86,7 +86,7 @@ const StyledNavLinkWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-`
+`;
 
 const NetworkLabel = styled.div`
   display: flex;
@@ -160,16 +160,18 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
           {t('migrate')}
         </StyledNavLink>
       )}
-      {/* <StyledNavLinkWrapper>
-        <StyledNavLink
-          id={`pool-nav-link`}
-          to={'/bridge'}
-          isActive={() => active === TabNames.BRIDGE}
-        >
-          {t('bridge')}
-        </StyledNavLink>
-        <NetworkLabel>Beta</NetworkLabel>
-      </StyledNavLinkWrapper> */}
+      {process.env.REACT_APP_DISABLE_BRIDGE ? null : (
+        <StyledNavLinkWrapper>
+          <StyledNavLink
+            id={`pool-nav-link`}
+            to={'/bridge'}
+            isActive={() => active === TabNames.BRIDGE}
+          >
+            {t('bridge')}
+          </StyledNavLink>
+          <NetworkLabel>Beta</NetworkLabel>
+        </StyledNavLinkWrapper>
+      )}
       {/*<StyledNavLink
         id={`pool-nav-link`}
         to={'/invest'}
@@ -179,7 +181,7 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
       </StyledNavLink>*/}
       {isEthereumActive && (
         <StyledNavLink id={`farm-nav-link`} to={'/farm'} isActive={() => active === TabNames.FARM}>
-          {t('Stake & Farm')}
+          {isMobile ? t('Farm') : t('Stake & Farm')}
         </StyledNavLink>
       )}
       {(isPolygonActive || isShidenActive) && (
@@ -190,12 +192,6 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
         >
           {t('Farm')}
         </StyledNavLink>
-      )}
-      {isMobile && !isEthereumActive && (
-        <>
-          <ExternalNavLink onClick={handleClickBridge}>{t('Bridge')}</ExternalNavLink>
-          {/*<BridgeModal/>*/}
-        </>
       )}
     </Tabs>
   );

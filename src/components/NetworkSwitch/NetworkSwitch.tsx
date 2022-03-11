@@ -72,6 +72,7 @@ const NETWORK_LABELS: { [chainId in chainIds]: string | null } = {
   [chainIds.ASTAR]: 'Astar',
   [chainIds.BSC]: 'BSC',
   [chainIds.AURORA]: 'Aurora',
+  [chainIds.BSC]: 'BSC',
 };
 
 const NetworkSwitch = () => {
