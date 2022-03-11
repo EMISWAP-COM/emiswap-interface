@@ -19,6 +19,7 @@ import { css } from 'styled-components';
 import { Balance as BalanceType } from '../../../state/cabinets/reducer';
 import { ReactComponent as DropDown } from '../../../assets/images/dropdown.svg';
 import { isMobile } from 'react-device-detect';
+import { useCollectData } from '../Owner/hooks';
 
 const Container = styled.div`
   font-size: 13px;
@@ -210,6 +211,8 @@ interface BalanceInterface {
   wallet: string;
   locked: string;
   avalible: string;
+  requested: string;
+  veryFirstRequestDate: string;
   children?: React.ReactNode;
   handleClaim: () => void;
   isPolygon?: boolean;
@@ -224,6 +227,8 @@ const Balance = ({
   children,
   handleClaim,
   handleRequest,
+  requested,
+  veryFirstRequestDate,
 }: BalanceInterface) => {
   const isPolygon = useIsPolygonActive();
   return (
@@ -236,6 +241,7 @@ const Balance = ({
         <BalanceWrapper>
           <Item label="Locked at Emiswap" value={locked} />
           <Item label="Available to collect" value={avalible} />
+          <Item label={`Request ${requested === "0.0" ? '' : `on ${veryFirstRequestDate}`}`} value={requested} />
         </BalanceWrapper>
       </BalanceWrapper>
       <Options>
@@ -292,6 +298,7 @@ export const Connection: React.FC<Props> = ({
   const history = useHistory();
   const toggle = useWalletModalToggle();
   const balance = useSelector((state: AppState) => state.cabinets.totalBalance);
+  const collectData = useCollectData(false);
 
   const isKuCoinActive = useIsKuCoinActive();
   /*const isShidenActive = useIsShidenActive();
@@ -374,6 +381,8 @@ export const Connection: React.FC<Props> = ({
             wallet={convertBigDecimal(balance?.wallet.ESW)}
             locked={convertBigDecimal(balance?.total.locked.ESW)}
             avalible={convertBigDecimal(balance?.available.ESW)}
+            requested={collectData?.requested}
+            veryFirstRequestDate={collectData?.veryFirstRequestDate}
             handleRequest={() => changeCollectButtonState('request')}
             handleClaim={() => {
               changeCollectButtonState('wallet');
