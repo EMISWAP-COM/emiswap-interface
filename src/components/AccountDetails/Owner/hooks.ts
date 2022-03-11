@@ -170,6 +170,7 @@ export const useGetRemainder = () => {
 
 const timeFormating = format('k:mm:ss');
 const formatDateing = format("do 'of' MMMM");
+const formatDateShortMonth = format("do 'of' MMM");
 
 const formatTime = bigNumber => timeFormating(toDate(bigNumber));
 const formatDate = bigNumber => formatDateing(toDate(bigNumber));
@@ -215,7 +216,7 @@ export const useCollectData = closeWindow => {
           currentDay: formatDate(todayStart),
           nextTime: formatTime(tomorrowStart),
           nextDay: formatDate(tomorrowStart),
-          veryFirstRequestDate: formatDate(veryFirstRequestDate),
+          veryFirstRequestDate: formatDateShortMonth(toDate(veryFirstRequestDate)),
           nextValue: formatUnits(claimLimit, 18),
           handler: () => {
             contract.claim().then(() => {

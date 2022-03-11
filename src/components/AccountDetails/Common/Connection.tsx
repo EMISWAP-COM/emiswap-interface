@@ -20,6 +20,8 @@ import { Balance as BalanceType } from '../../../state/cabinets/reducer';
 import { ReactComponent as DropDown } from '../../../assets/images/dropdown.svg';
 import { isMobile } from 'react-device-detect';
 import { useCollectData } from '../Owner/hooks';
+import QuestionHelper from '../../QuestionHelper';
+import { RowBetween } from '../../Row';
 
 const Container = styled.div`
   font-size: 13px;
@@ -231,6 +233,7 @@ const Balance = ({
   veryFirstRequestDate,
 }: BalanceInterface) => {
   const isPolygon = useIsPolygonActive();
+  const isRequested = requested !== '0.0';
   return (
     <>
       <BalanceWrapper>
@@ -241,7 +244,25 @@ const Balance = ({
         <BalanceWrapper>
           <Item label="Locked at Emiswap" value={locked} />
           <Item label="Available to collect" value={avalible} />
-          <Item label={`Request ${requested === "0.0" ? '' : `on ${veryFirstRequestDate}`}`} value={requested} />
+        </BalanceWrapper>
+        <BalanceWrapper>
+          <BalanceItem>
+            <RowBetween>
+              <span>
+                Request
+                {isRequested && (
+                  <>
+                    <span>&nbsp;on&nbsp;</span>
+                    <DarkText>{veryFirstRequestDate}</DarkText>
+                  </>
+                )}
+              </span>
+              <QuestionHelper text="Click the Collect to my wallet button to see more details" />
+            </RowBetween>
+            <div>
+              <BalanceValue>{requested}</BalanceValue>&nbsp;ESW
+            </div>
+          </BalanceItem>
         </BalanceWrapper>
       </BalanceWrapper>
       <Options>
