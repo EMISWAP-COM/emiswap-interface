@@ -195,7 +195,6 @@ export const useCollectData = closeWindow => {
     chainId,
   ]);
 
-
   useEffect(() => {
     Promise.all([
       contract.getRemainderOfRequests(),
