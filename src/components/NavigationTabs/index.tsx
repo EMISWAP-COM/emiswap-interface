@@ -82,6 +82,25 @@ const ExternalNavLink = styled.div`
   }
 `;
 
+const StyledNavLinkWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const NetworkLabel = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 18px;
+  padding: 0 8px;
+  margin-left: 6px;
+  border-radius: 50px;
+  font-size: 8px;
+  background: #e478ff;
+  color: ${({ theme }) => theme.dark2};
+`;
+
 const ActiveText = styled.div`
   font-weight: 500;
   font-size: 20px;
@@ -98,6 +117,7 @@ export enum TabNames {
   INVEST,
   FARM,
   FARM_365,
+  BRIDGE,
 }
 
 //TODO refactor. Component index.tsx must return single component
@@ -140,6 +160,18 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
           {t('migrate')}
         </StyledNavLink>
       )}
+      {process.env.REACT_APP_DISABLE_BRIDGE ? null : (
+        <StyledNavLinkWrapper>
+          <StyledNavLink
+            id={`pool-nav-link`}
+            to={'/bridge'}
+            isActive={() => active === TabNames.BRIDGE}
+          >
+            {t('bridge')}
+          </StyledNavLink>
+          <NetworkLabel>Beta</NetworkLabel>
+        </StyledNavLinkWrapper>
+      )}
       {/*<StyledNavLink
         id={`pool-nav-link`}
         to={'/invest'}
@@ -149,7 +181,7 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
       </StyledNavLink>*/}
       {isEthereumActive && (
         <StyledNavLink id={`farm-nav-link`} to={'/farm'} isActive={() => active === TabNames.FARM}>
-          {t('Stake & Farm')}
+          {isMobile ? t('Farm') : t('Stake & Farm')}
         </StyledNavLink>
       )}
       {(isPolygonActive || isShidenActive) && (
@@ -160,12 +192,6 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
         >
           {t('Farm')}
         </StyledNavLink>
-      )}
-      {isMobile && !isEthereumActive && (
-        <>
-          <ExternalNavLink onClick={handleClickBridge}>{t('Bridge')}</ExternalNavLink>
-          {/*<BridgeModal/>*/}
-        </>
       )}
     </Tabs>
   );
