@@ -240,12 +240,8 @@ const Balance = ({
         <BalanceWrapper>
           <Item label="Total" value={total} />
           <Item label="Wallet" value={wallet} />
-        </BalanceWrapper>
-        <BalanceWrapper>
           <Item label="Locked at Emiswap" value={locked} />
           <Item label="Available to collect" value={avalible} />
-        </BalanceWrapper>
-        <BalanceWrapper>
           <BalanceItem>
             <RowBetween>
               <span>
