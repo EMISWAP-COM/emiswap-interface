@@ -58,17 +58,30 @@ const Wallet = styled.div`
 `;
 
 const BalanceWrapper = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
   gap: 12px;
   flex-wrap: wrap;
   flex: 1;
+  @media screen and (max-width: 1080px) {
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto auto;
+  }
 `;
 
 const BalanceItem = styled.div`
-  flex: 1;
-  flex-basis: 25%;
+  width: 100%;
   padding: 14px;
   background: ${({ theme }) => theme.darkGrey};
+`;
+
+const BalanceRequestItem = styled(BalanceItem)`
+  @media screen and (max-width: 1080px) {
+    grid-row-start: 3;
+    grid-row-end: 4;
+    grid-column-start: 1;
+    grid-column-end: 3;
+  }
 `;
 
 const BalanceValue = styled(DarkText)`
@@ -237,13 +250,12 @@ const Balance = ({
   return (
     <>
       <BalanceWrapper>
-        <BalanceWrapper>
-          <Item label="Total" value={total} />
-          <Item label="Wallet" value={wallet} />
-          <Item label="Locked at Emiswap" value={locked} />
-          <Item label="Available to collect" value={avalible} />
-          <BalanceItem>
-            <RowBetween>
+        <Item label="Total" value={total} />
+        <Item label="Wallet" value={wallet} />
+        <Item label="Locked at Emiswap" value={locked} />
+        <Item label="Available to collect" value={avalible} />
+        <BalanceRequestItem className={"balance-item-request"}>
+          <RowBetween>
               <span>
                 Request
                 {isRequested && (
@@ -253,13 +265,12 @@ const Balance = ({
                   </>
                 )}
               </span>
-              <QuestionHelper text="Click the Collect to my wallet button to see more details" />
-            </RowBetween>
-            <div>
-              <BalanceValue>{requested}</BalanceValue>&nbsp;ESW
-            </div>
-          </BalanceItem>
-        </BalanceWrapper>
+            <QuestionHelper text="Click the Collect to my wallet button to see more details" />
+          </RowBetween>
+          <div>
+            <BalanceValue>{requested}</BalanceValue>&nbsp;ESW
+          </div>
+        </BalanceRequestItem>
       </BalanceWrapper>
       <Options>
         {children}
