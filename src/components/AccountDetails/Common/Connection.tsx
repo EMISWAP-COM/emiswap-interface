@@ -61,16 +61,21 @@ const BalanceWrapper = styled.div`
   display: grid;
   grid-template-columns: auto auto auto auto auto;
   gap: 12px;
-  flex-wrap: wrap;
-  flex: 1;
   @media screen and (max-width: 1080px) {
     grid-template-columns: auto auto;
     grid-template-rows: auto auto auto;
   }
 `;
 
+const BalanceFlexWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1;
+  gap: 12px;
+`;
+
 const BalanceItem = styled.div`
-  width: 100%;
+  flex: 1;
   padding: 14px;
   background: ${({ theme }) => theme.darkGrey};
 `;
@@ -247,15 +252,21 @@ const Balance = ({
 }: BalanceInterface) => {
   const isPolygon = useIsPolygonActive();
   const isRequested = requested !== '0.0';
+  const CommonInfo = (
+    <>
+      <Item label="Total" value={total} />
+      <Item label="Wallet" value={wallet} />
+      <Item label="Locked at Emiswap" value={locked} />
+      <Item label="Available to collect" value={avalible} />
+    </>
+  );
   return (
     <>
-      <BalanceWrapper>
-        <Item label="Total" value={total} />
-        <Item label="Wallet" value={wallet} />
-        <Item label="Locked at Emiswap" value={locked} />
-        <Item label="Available to collect" value={avalible} />
-        <BalanceRequestItem className={"balance-item-request"}>
-          <RowBetween>
+      {isPolygon ? (
+        <BalanceWrapper>
+          {CommonInfo}
+          <BalanceRequestItem className={'balance-item-request'}>
+            <RowBetween>
               <span>
                 Request
                 {isRequested && (
@@ -265,13 +276,16 @@ const Balance = ({
                   </>
                 )}
               </span>
-            <QuestionHelper text="Click the Collect to my wallet button to see more details" />
-          </RowBetween>
-          <div>
-            <BalanceValue>{requested}</BalanceValue>&nbsp;ESW
-          </div>
-        </BalanceRequestItem>
-      </BalanceWrapper>
+              <QuestionHelper text="Click the Collect to my wallet button to see more details" />
+            </RowBetween>
+            <div>
+              <BalanceValue>{requested}</BalanceValue>&nbsp;ESW
+            </div>
+          </BalanceRequestItem>
+        </BalanceWrapper>
+      ) : (
+        <BalanceFlexWrapper>{CommonInfo}</BalanceFlexWrapper>
+      )}
       <Options>
         {children}
         {isPolygon ? (
