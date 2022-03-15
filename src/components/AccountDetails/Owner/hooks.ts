@@ -54,6 +54,7 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
             return Promise.resolve();
           }
           const amount = parseUnits(userInput, 18).toString();
+          let transactionHash = '';
           fetchWrapper
             .post(ESW_CLAIM_API, {
               body: JSON.stringify({
@@ -88,21 +89,27 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
               changeTitle('Request');
             })
             .then(([transactionResult, id]) => {
+              transactionHash = transactionResult.hash;
               const transactionStateEndPoint = `/v1/private/users/${userID}/transactions/${id}`;
-              fetchWrapper.put(transactionStateEndPoint, {
+              return fetchWrapper.put(transactionStateEndPoint, {
                 headers: {
                   authorization: token,
                 },
                 body: JSON.stringify({
                   state: 'sent',
-                  transaction_hash: transactionResult.hash,
+                  transaction_hash: transactionHash,
                 }),
               });
+            })
+            .catch(() => {
+              const transactionLink = `https://polygonscan.com/tx/${transactionHash}`;
+              changeStatus(`
+                <a href=${transactionLink} style="color: inherit !important;"><b>Transaction</b></a> has failed
+              `);
+            })
+            .finally(() => {
               closeWindow();
               changeTitle('Request');
-            })
-            .catch(e => {
-              // TODO error handling
             });
         }),
       );
