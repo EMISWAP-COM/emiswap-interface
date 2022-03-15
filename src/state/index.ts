@@ -15,6 +15,8 @@ import stats from './stats/reducer';
 import launchpad from './launchpad/reducer';
 import farming from './farming/reducer';
 import polygonCabinet from './cabinets/polygon-cabinet';
+import bridge from '../pages/Bridge/slice';
+import { apiSlice } from '../pages/Bridge/api';
 
 import { updateVersion } from './user/actions';
 
@@ -36,9 +38,11 @@ const store = configureStore({
     launchpad,
     farming,
     polygonCabinet,
+    bridge,
+    [apiSlice.reducerPath]: apiSlice.reducer,
   },
   middleware: [
-    ...getDefaultMiddleware({ serializableCheck: false }),
+    ...getDefaultMiddleware({ serializableCheck: false }).concat(apiSlice.middleware),
     save({ states: PERSISTED_KEYS }),
   ],
   preloadedState: load({ states: PERSISTED_KEYS }),

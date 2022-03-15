@@ -10,6 +10,12 @@ import PolygonNetworkIcon from '../assets/svg/polygon-network.svg';
 import ShidenNetworkIcon from '../assets/images/shiden-network.png';
 import AvalancheNetworkIcon from '../assets/svg/avalanche-network.svg';
 import AuroraNetworkIcon from '../assets/svg/aurora-network.svg';
+import WalletConnectIcon from '../assets/images/walletConnectIcon.svg';
+import CoinbaseWalletIcon from '../assets/images/coinbaseWalletIcon.svg';
+import FortmaticIcon from '../assets/images/fortmaticIcon.png';
+import PortisIcon from '../assets/images/portisIcon.png';
+import MetamaskIcon from '../assets/images/metamask.png';
+import ArrowRight from '../assets/images/arrow-right.svg';
 
 import { KCS } from './tokens/KCS';
 import { MATIC } from './tokens/MATIC';
@@ -346,7 +352,7 @@ const TESTNET_CAPABLE_WALLETS = {
   INJECTED: {
     connector: injected,
     name: 'Injected',
-    iconName: 'arrow-right.svg',
+    iconName: ArrowRight,
     description: 'Injected web3 provider.',
     href: null,
     unavailableNetworksIds: [],
@@ -356,7 +362,7 @@ const TESTNET_CAPABLE_WALLETS = {
   METAMASK: {
     connector: injected,
     name: 'MetaMask',
-    iconName: 'metamask.png',
+    iconName: MetamaskIcon,
     description: 'Easy-to-use browser extension.',
     href: null,
     unavailableNetworksIds: [],
@@ -370,7 +376,7 @@ export const SUPPORTED_WALLETS = {
     WALLET_CONNECT: {
       connector: walletconnect,
       name: 'WalletConnect',
-      iconName: 'walletConnectIcon.svg',
+      iconName: WalletConnectIcon,
       description: 'Connect to Trust Wallet, Rainbow Wallet and more...',
       href: null,
       unavailableNetworksIds: [],
@@ -380,7 +386,7 @@ export const SUPPORTED_WALLETS = {
     WALLET_LINK: {
       connector: walletlink,
       name: 'Coinbase Wallet',
-      iconName: 'coinbaseWalletIcon.svg',
+      iconName: CoinbaseWalletIcon,
       description: 'Use Coinbase Wallet app on mobile device',
       href: null,
       unavailableNetworksIds: [chainIds.KUCOIN, chainIds.SHIDEN],
@@ -388,7 +394,7 @@ export const SUPPORTED_WALLETS = {
     },
     COINBASE_LINK: {
       name: 'Open in Coinbase Wallet',
-      iconName: 'coinbaseWalletIcon.svg',
+      iconName: CoinbaseWalletIcon,
       description: 'Open in Coinbase Wallet app.',
       href: 'https://go.cb-w.com/fWpxXDRLvhb',
       unavailableNetworksIds: [chainIds.KUCOIN, chainIds.SHIDEN],
@@ -399,7 +405,7 @@ export const SUPPORTED_WALLETS = {
     FORTMATIC: {
       connector: fortmatic,
       name: 'Fortmatic',
-      iconName: 'fortmaticIcon.png',
+      iconName: FortmaticIcon,
       description: 'Login using Fortmatic hosted wallet',
       href: null,
       unavailableNetworksIds: [
@@ -415,7 +421,7 @@ export const SUPPORTED_WALLETS = {
     Portis: {
       connector: portis,
       name: 'Portis',
-      iconName: 'portisIcon.png',
+      iconName: PortisIcon,
       description: 'Login using Portis hosted wallet',
       href: null,
       unavailableNetworksIds: [chainIds.KUCOIN, chainIds.SHIDEN, chainIds.AVALANCHE],
@@ -622,6 +628,38 @@ export const networksItems: INetworkItem[] = [
     eswExplorerUrl: 'https://etherscan.io/token/0x5a75A093747b72a0e14056352751eDF03518031d',
     eswExplorerName: 'ESW Etherscan',
     active: true,
-    bridgeUrl: 'https://rainbowbridge.app/transfer'
+    bridgeUrl: 'https://rainbowbridge.app/transfer',
+  },
+  {
+    alias: 'BSC',
+    value: 'BSC',
+    chainId: 56,
+    token: MUMBAI_WMATIC, // TODO: FAKE
+    icon: 'https://movricons.s3.ap-south-1.amazonaws.com/BSC.svg',
+    name: 'BSC',
+    rpcUrls: [
+      'https://bsc-dataseed1.binance.org',
+      'https://bsc-dataseed2.binance.org',
+      'https://bsc-dataseed3.binance.org',
+      'https://bsc-dataseed4.binance.org',
+      'https://bsc-dataseed1.defibit.io',
+      'https://bsc-dataseed2.defibit.io',
+      'https://bsc-dataseed3.defibit.io',
+      'https://bsc-dataseed4.defibit.io',
+      'https://bsc-dataseed1.ninicoin.io',
+      'https://bsc-dataseed2.ninicoin.io',
+      'https://bsc-dataseed3.ninicoin.io',
+      'https://bsc-dataseed4.ninicoin.io',
+      'wss://bsc-ws-node.nariox.org',
+    ],
+    eswExplorerUrl: 'https://bscscan.com/',
+    currencySymbol: 'MATIC', // TODO: FAKE
+    currencySymbolWrap: 'WMATIC', // TODO: FAKE
+    currencySymbolWeth: 'WMATIC', // TODO: FAKE
+    blockExplorerUrl: 'https://mumbai.polygonscan.com/', // TODO: FAKE
+    blockExplorerName: 'Polygonscan', // TODO: FAKE
+    analyticsUrl: 'https://emiswap.com/analytics?network=polygon', // TODO: FAKE
+    eswExplorerName: 'ESW Polygonscan', // TODO: FAKE
+    active: false,
   },
 ];
