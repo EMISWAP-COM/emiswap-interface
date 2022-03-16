@@ -12,7 +12,7 @@ const useCleareInputOnOpen = (isOpen, setSearchQuery) => {
   useEffect(() => {
     if (isOpen) setSearchQuery('');
   }, [isOpen, setSearchQuery]);
-}
+};
 
 export default function SearchModal({
   items = [],
@@ -67,23 +67,17 @@ export default function SearchModal({
     >
       <Column style={{ width: '100%' }}>
         <PaddedColumn gap="16px">
-          <Tooltip
-            text="Import any token into your list by pasting the token address into the search field."
-            show={tooltipOpen}
-            placement="bottom"
-          >
-            <SearchInput
-              type="text"
-              id="token-search-input"
-              placeholder={t('tokenSearchPlaceholder')}
-              value={searchQuery}
-              ref={inputRef}
-              onChange={handleInput}
-              onFocus={closeTooltip}
-              onBlur={closeTooltip}
-              onKeyDown={handleEnter}
-            />
-          </Tooltip>
+          <SearchInput
+            type="text"
+            id="token-search-input"
+            placeholder={t('tokenSearchPlaceholder')}
+            value={searchQuery}
+            ref={inputRef}
+            onChange={handleInput}
+            onFocus={closeTooltip}
+            onBlur={closeTooltip}
+            onKeyDown={handleEnter}
+          />
         </PaddedColumn>
         {isLoading ? 'LOADING' : <ChainsList items={filteredItems} onSelect={onSelect} />}
       </Column>

@@ -2,6 +2,7 @@ import { keccak256 } from '@ethersproject/solidity';
 import { ChainId, ETHER, JSBI, Percent, Token } from '@uniswap/sdk';
 import EthereumNetworkIcon from '../assets/svg/ethereum-network.svg';
 import KuCoinNetworkIcon from '../assets/svg/kucoin-network.svg';
+import Logo from '../assets/svg/emiswap.svg';
 import { fortmatic, injected, portis, walletconnect, walletlink } from '../connectors';
 import { bytecode } from './abis/Emiswap.json';
 import chainIds from './chainIds';
@@ -549,6 +550,8 @@ export interface INetworkItem {
   bridgeUrl?: string;
 }
 
+export type IBridgeItem = Pick<INetworkItem, 'icon' | 'name' | 'bridgeUrl'>;
+
 export const networksItems: INetworkItem[] = [
   {
     alias: 'main',
@@ -767,3 +770,25 @@ export const networksItems: INetworkItem[] = [
     active: false,
   },
 ];
+
+export const bridgeItems: IBridgeItem[] = [
+  {
+    icon: Logo,
+    name: 'Emi',
+    bridgeUrl: 'https://emiswap.com/bridge',
+  },
+]
+  .concat(
+    networksItems
+      .filter(({ active }) => active)
+      .map(({ icon, name, bridgeUrl }) => ({
+        icon,
+        name,
+        bridgeUrl,
+      })),
+  )
+  .concat({
+    name: 'Multichain',
+    icon: 'https://anyswap.net/img/logo_color.b22f3181.png',
+    bridgeUrl: 'https://app.multichain.org/#/router',
+  });

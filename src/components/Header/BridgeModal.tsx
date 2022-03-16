@@ -3,7 +3,7 @@ import Modal from '../Modal';
 import { useBridgeModalOpen, useBridgeModalToggle } from '../../state/application/hooks';
 import { Text } from 'rebass';
 import styled from 'styled-components/macro';
-import { INetworkItem, networksItems } from '../../constants';
+import { bridgeItems, IBridgeItem } from '../../constants';
 
 const NetworkSwitchWrapped = styled.div`
   width: 100%;
@@ -62,18 +62,8 @@ const NetworkName = styled(Text)`
 export default function BridgeModal() {
   const bridgeModalOpen = useBridgeModalOpen();
   const toggleBridgeModal = useBridgeModalToggle();
-  interface IMultiChainNetwork {
-    name: string;
-    icon: string;
-    bridgeUrl: string,
-  }
-  const multiChainNetwork = {
-    name: 'Multichain',
-    icon: 'https://anyswap.net/img/logo_color.b22f3181.png',
-    bridgeUrl: 'https://app.multichain.org/#/router'
-  };
 
-  const handleClickItem = (networkItem: INetworkItem | IMultiChainNetwork) => {
+  const handleClickItem = (networkItem: IBridgeItem) => {
     window.open(networkItem.bridgeUrl);
   };
 
@@ -94,26 +84,14 @@ export default function BridgeModal() {
           </div>
 
           <NetworkItemsRow>
-            {networksItems
-              .filter(item => item.active && item.bridgeUrl)
-              .map(item => (
-                <NetworkItem key={item.chainId} onClick={() => handleClickItem(item)}>
-                  <NetworkIcon>
-                    <img style={{ maxWidth: '100%' }} src={item.icon} alt={item.name} />
-                  </NetworkIcon>
-                  <NetworkName>{item.name} Bridge</NetworkName>
-                </NetworkItem>
-              ))}
-            <NetworkItem onClick={() => handleClickItem(multiChainNetwork)}>
-              <NetworkIcon>
-                <img
-                  style={{ maxWidth: '100%' }}
-                  src={multiChainNetwork.icon}
-                  alt={multiChainNetwork.name}
-                />
-              </NetworkIcon>
-              <NetworkName>{multiChainNetwork.name} Bridge</NetworkName>
-            </NetworkItem>
+            {bridgeItems.map(item => (
+              <NetworkItem key={item.name} onClick={() => handleClickItem(item)}>
+                <NetworkIcon>
+                  <img style={{ maxWidth: '100%' }} src={item.icon} alt={item.name} />
+                </NetworkIcon>
+                <NetworkName>{item.name} Bridge</NetworkName>
+              </NetworkItem>
+            ))}
           </NetworkItemsRow>
         </NetworkSwitchWrapped>
       </Modal>
