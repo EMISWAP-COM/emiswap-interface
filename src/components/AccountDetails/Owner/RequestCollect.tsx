@@ -116,7 +116,7 @@ const RequestCollect = ({ closeWindow }: { closeWindow: () => void }): React.Rea
           }
         }}
       />
-      {status && <Status>{status}</Status>}
+      {status && <Status dangerouslySetInnerHTML={{ __html: status }} />}
       <Buttons>
         <CancelButton onClick={closeWindow}>Cancel</CancelButton>
         <RequestButton onClick={requestHandler}>{title}</RequestButton>
