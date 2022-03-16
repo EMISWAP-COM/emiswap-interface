@@ -100,6 +100,33 @@ export const WASTR = new Token(
   'WASTR',
 );
 
+export const ASTAR_USDT = new Token(
+  // @ts-ignore
+  chainIds.ASTAR,
+  '0x3795C36e7D12A8c252A20C5a7B455f7c57b60283',
+  6,
+  'USDT',
+  'USDT',
+);
+
+export const ASTAR_USDC = new Token(
+  // @ts-ignore
+  chainIds.ASTAR,
+  '0x6a2d262D56735DbA19Dd70682B39F6bE9a931D98',
+  6,
+  'USDC',
+  'USDC',
+);
+
+export const ASTAR_DAI = new Token(
+  // @ts-ignore
+  chainIds.ASTAR,
+  '0x6De33698e9e9b787e09d3Bd7771ef63557E148bb',
+  6,
+  'DAI',
+  'DAI',
+);
+
 export const DAI = new Token(
   ChainId.MAINNET,
   '0x6B175474E89094C44Da98b954EedeAC495271d0F',
@@ -286,6 +313,7 @@ const ETH_ONLY: ChainTokenList = {
 };
 
 // used to construct intermediary pairs for trading
+// Кросс курсы, для расчета указать желаемую последовательность стейбл токенов (cross)
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ...ETH_ONLY,
   [ChainId.KOVAN]: [KOVAN_DAI, KOVAN_USDC, KOVAN_WETH],
@@ -296,7 +324,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   [chainIds.MUMBAI]: [MUMBAI_WMATIC],
   [chainIds.SHIDEN]: [WSDN],
   [chainIds.AVALANCHE]: [WAVAX],
-  [chainIds.ASTAR]: [WASTR],
+  [chainIds.ASTAR]: [ASTAR_DAI, ASTAR_USDC, ASTAR_USDT, WASTR],
   [chainIds.AURORA]: [AURORA_DAI, AURORA_USDT /*AURORA_WETH*/],
 };
 
