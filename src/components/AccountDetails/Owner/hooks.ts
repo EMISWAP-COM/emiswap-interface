@@ -11,6 +11,7 @@ import { EMI_DELIVERY } from '../../../constants/emi/addresses';
 import { format } from 'date-fns/fp';
 import { useNetworkData } from '../../../hooks/Coins';
 import { getNetworkUrl } from '../../../state/cabinets/action-polygon';
+
 const ESW_CLAIM_API = window['env'].REACT_APP_ESW_CLAIM_API;
 const ESW_CLAIM_CHAIN_ID = window['env'].REACT_APP_ESW_CLAIM_CHAIN_ID;
 
