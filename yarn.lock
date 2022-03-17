@@ -3391,9 +3391,9 @@
   resolved "https://registry.npmjs.org/@uniswap/lib/-/lib-1.1.1.tgz"
   integrity sha512-2yK7sLpKIT91TiS5sewHtOa7YuM8IuBXVl4GZv2jZFys4D2sY7K5vZh6MqD25TPA95Od+0YzCVq6cTF2IKrOmg==
 
-"@uniswap/sdk@CryptoManiacsZone/mooniswap-sdk.git#v2":
+"@uniswap/sdk@ https://github.com/CryptoManiacsZone/mooniswap-sdk.git":
   version "3.0.4"
-  resolved "git+ssh://git@github.com/CryptoManiacsZone/mooniswap-sdk.git#3de26bbb6cdf89e1b1dfb679aa371e3d0b22ce87"
+  resolved " https://github.com/CryptoManiacsZone/mooniswap-sdk.git#3de26bbb6cdf89e1b1dfb679aa371e3d0b22ce87"
   dependencies:
     "@ethersproject/address" "^5.0.1"
     "@ethersproject/contracts" "^5.0.1"
