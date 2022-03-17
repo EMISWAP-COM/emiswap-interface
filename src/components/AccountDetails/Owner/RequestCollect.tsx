@@ -95,11 +95,14 @@ const RequestCollect = ({ closeWindow }: { closeWindow: () => void }): React.Rea
     availableReqestCollect,
     title,
     status,
-    isSuccess,
+    progress,
     txHash,
     requestedAmount,
     maxAvailableForRequests,
   } = useRequestCollect(userInputValue, closeWindow);
+
+  const isPending = progress === 'pending';
+  const isSuccess = progress === 'success';
 
   return (
     <Wrapper>
@@ -121,7 +124,8 @@ const RequestCollect = ({ closeWindow }: { closeWindow: () => void }): React.Rea
         }}
       />
       {status && <Status>{status}</Status>}
-      { isSuccess && <TxnPopup hash={txHash} success={true} summary={`Request ${requestedAmount} ESW`} /> }
+      { isPending && <TxnPopup hash={txHash} success={true} summary={`Request ${requestedAmount} ESW`} /> }
+      { isSuccess && <TxnPopup hash={txHash} success={true} summary={`Transfer ${requestedAmount} ESW to the wallet`} /> }
       <Buttons>
         <CancelButton onClick={closeWindow}>Cancel</CancelButton>
         <RequestButton onClick={requestHandler}>{title}</RequestButton>
