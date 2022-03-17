@@ -115,9 +115,10 @@ const toDate = bigNumberTimestamp => new Date(Number(bigNumberTimestamp) * 1000)
 const formatTomorrow = format('RRRR-MM-dd');
 
 export type RemainderStatus =
-  | { status: 'remaindTime'; value: string }
-  | { status: 'disable'; value: string }
-  | { status: 'enable'; value: string };
+  | { status: 'remaindTime'; value: string; }
+  | { status: 'disable'; value: string; }
+  | { status: 'enable'; value: string; }
+  | { status: 'progress'; value: string; };
 
 export const useGetRemainder = () => {
   const [state, changeState] = useState<RemainderStatus>({
@@ -133,6 +134,7 @@ export const useGetRemainder = () => {
 
   useEffect(() => {
     contract.getAvailableToClaim().then(result => {
+      changeState({ status: 'progress', value: 'Collect' });
       if (result.available > 0) {
         changeState({ status: 'enable', value: 'Collect' });
       } else {
@@ -150,10 +152,6 @@ export const useGetRemainder = () => {
                 changeState({ status: 'remaindTime', value: tomorrow });
               });
             } else {
-              changeState({
-                value: stringDate,
-                status: 'remaindTime',
-              });
             }
           } else {
             changeState({
@@ -161,6 +159,11 @@ export const useGetRemainder = () => {
               status: 'disable',
             });
           }
+        }).catch(() => {
+          changeState({
+            value: 'Collect to my wallet',
+            status: 'disable',
+          });
         });
       }
     });

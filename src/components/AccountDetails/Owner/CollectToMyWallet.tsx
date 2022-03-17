@@ -66,6 +66,7 @@ const CollectToMyWallet = ({
   const avalibleCollect = unlocked === '0' ? '0' : avalible;
   const remainderValue = useGetRemainder();
   const isCollectDisabled = remainderValue.status !== 'enable';
+  const isInProgress = remainderValue.status === 'progress';
   return (
     <WalletWrapper>
       <Title>Collect to my Wallet</Title>
@@ -82,7 +83,11 @@ const CollectToMyWallet = ({
           <Item label="Available ESW to collect in the current Epoch" value={avalibleCollect} />
         </FrameRow>
         <ButtonGroup>
-          <CollectBtn onClick={openRequestCollect}>Request collect</CollectBtn>
+          <CollectBtn
+            onClick={openRequestCollect}
+          >
+            {isInProgress ? 'Pending' : 'Request collect'}
+          </CollectBtn>
 
           <CollectBtn
             inactive={isCollectDisabled}
