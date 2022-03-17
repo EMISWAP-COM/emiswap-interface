@@ -7,13 +7,13 @@ import { formatUnits, parseUnits } from '@ethersproject/units';
 import { useAuth } from '../../../hooks/useAuth';
 import { useSelector } from 'react-redux';
 import { fetchWrapper } from '../../../api/fetchWrapper';
-import { EMI_DELIVERY } from '../../../constants/emi/addresses';
 import { format } from 'date-fns/fp';
 import { useNetworkData } from '../../../hooks/Coins';
 import { getNetworkUrl } from '../../../state/cabinets/action-polygon';
 
 const ESW_CLAIM_API = window['env'].REACT_APP_ESW_CLAIM_API;
 const ESW_CLAIM_CHAIN_ID = window['env'].REACT_APP_ESW_CLAIM_CHAIN_ID;
+const EMI_DELIVERY = window['env'].REACT_APP_EMI_DELIVERY;
 
 export const useRequestCollect = (userInput: string, closeWindow: () => void) => {
   const { library, account, chainId } = useActiveWeb3React();
