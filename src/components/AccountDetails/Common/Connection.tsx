@@ -251,7 +251,7 @@ const Balance = ({
   veryFirstRequestDate,
 }: BalanceInterface) => {
   const isPolygon = useIsPolygonActive();
-  const isRequested = requested !== '0.0';
+  const isRequested = Number(requested) !== 0;
   const CommonInfo = (
     <>
       <Item label="Total" value={total} />
