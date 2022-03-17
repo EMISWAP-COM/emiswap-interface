@@ -19,6 +19,9 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
   const { library, account, chainId } = useActiveWeb3React();
   const [title, changeTitle] = useState('Request');
   const [status, changeStatus] = useState('');
+  const [isSuccess, changeIsSuccess] = useState(false);
+  const [txHash, changeTxHash] = useState('');
+  const [requestedAmount, changeRequestedAmount] = useState('');
   const { value: network } = useNetworkData();
   const {
     available: { ESW: availableESW },
@@ -97,6 +100,10 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
                   state: 'sent',
                   transaction_hash: transactionResult.hash,
                 }),
+              }).then(() => {
+                changeRequestedAmount(userInput);
+                changeIsSuccess(true);
+                changeTxHash(transactionResult.hash)
               });
               closeWindow();
               changeTitle('Request');
@@ -108,7 +115,7 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
       );
   };
 
-  return { handler, availableReqestCollect: availableESW, title, status, maxAvailableForRequests };
+  return { handler, availableReqestCollect: availableESW, title, status, maxAvailableForRequests, isSuccess, txHash, requestedAmount };
 };
 
 const toDate = bigNumberTimestamp => new Date(Number(bigNumberTimestamp) * 1000);

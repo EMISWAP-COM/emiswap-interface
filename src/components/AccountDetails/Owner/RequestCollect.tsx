@@ -8,6 +8,7 @@ import NumericalInput from '../../NumericalInput';
 import CurrencyLogo from '../../CurrencyLogo';
 import { Token } from '@uniswap/sdk';
 import { useRequestCollect } from './hooks';
+import TxnPopup from '../../Popups/TxnPopup';
 interface CurrencyInputInterface {
   id?: string;
   label: string;
@@ -94,6 +95,9 @@ const RequestCollect = ({ closeWindow }: { closeWindow: () => void }): React.Rea
     availableReqestCollect,
     title,
     status,
+    isSuccess,
+    txHash,
+    requestedAmount,
     maxAvailableForRequests,
   } = useRequestCollect(userInputValue, closeWindow);
 
@@ -117,6 +121,7 @@ const RequestCollect = ({ closeWindow }: { closeWindow: () => void }): React.Rea
         }}
       />
       {status && <Status>{status}</Status>}
+      { isSuccess && <TxnPopup hash={txHash} success={true} summary={`Request ${requestedAmount} ESW`} /> }
       <Buttons>
         <CancelButton onClick={closeWindow}>Cancel</CancelButton>
         <RequestButton onClick={requestHandler}>{title}</RequestButton>
