@@ -50,6 +50,7 @@ const EMPTY_LIST: TokenAddressMap = {
   [chainIds.MUMBAI]: {},
   [chainIds.SHIDEN]: {},
   [chainIds.AVALANCHE]: {},
+  [chainIds.ASTAR]: {},
   [chainIds.AURORA]: {},
 };
 

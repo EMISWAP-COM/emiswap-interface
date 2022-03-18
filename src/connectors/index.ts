@@ -33,6 +33,7 @@ export const injected = new InjectedConnector({
     chainIds.MUMBAI,
     chainIds.SHIDEN,
     chainIds.AVALANCHE,
+    chainIds.ASTAR,
     chainIds.AURORA,
   ],
 });
@@ -49,6 +50,7 @@ export const walletconnect = new WalletConnectConnector({
     chainIds.MUMBAI,
     chainIds.SHIDEN,
     chainIds.AVALANCHE,
+    chainIds.ASTAR,
     chainIds.AURORA,
   ],
   rpc: {

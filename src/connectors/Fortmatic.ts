@@ -22,6 +22,7 @@ const CHAIN_ID_NETWORK_ARGUMENT: {
   [chainIds.MUMBAI]: 'mumbai',
   [chainIds.SHIDEN]: 'shiden',
   [chainIds.AVALANCHE]: 'avalanche',
+  [chainIds.ASTAR]: 'astar',
   [chainIds.AURORA]: 'aurora',
 };
 
