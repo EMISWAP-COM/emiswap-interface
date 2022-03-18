@@ -447,6 +447,7 @@ export const Body = styled.div`
      
      &__card {
         flex: 1;
+        height: 100%;
         margin: 16px 14px;
         border: 1px solid rgba(255, 255, 255, 0.24);
         border-radius: 16px;
@@ -469,7 +470,6 @@ export const Body = styled.div`
         color: #FFFFFF;
         text-align: center;
         
-        height: 78px;
      }
 
      &__value {
