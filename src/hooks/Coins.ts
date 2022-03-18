@@ -155,6 +155,12 @@ export function useIsAvalancheActive(): boolean {
   return (chainId as any) === chainIds.AVALANCHE;
 }
 
+export function useIsAstarActive(): boolean {
+  const { chainId } = useActiveWeb3React();
+
+  return (chainId as any) === chainIds.ASTAR;
+}
+
 export function useIsAuroraActive(): boolean {
   const { chainId } = useActiveWeb3React();
 

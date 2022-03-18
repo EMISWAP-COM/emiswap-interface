@@ -8,6 +8,7 @@ import KucoinLogo from '../../assets/currencies/KCS.png';
 import MaticLogo from '../../assets/currencies/MATIC.png';
 import SdnLogo from '../../assets/currencies/SDN.png';
 import AvaxLogo from '../../assets/currencies/AVAX.png';
+import AstarLogo from '../../assets/currencies/ASTR.png';
 import defaultCoins from '../../constants/defaultCoins';
 import { useActiveWeb3React } from '../../hooks';
 import LpTokenSymbol from '../../pages/Farm/LpTokenSymbol';
@@ -104,6 +105,10 @@ export default function CurrencyLogo({
 
   if (currency?.symbol === 'AVAX' || currency?.symbol === 'WAVAX') {
     return <StyledEthereumLogo src={AvaxLogo} size={size} {...rest} />;
+  }
+
+  if (currency?.symbol === 'ASTR' || currency?.symbol === 'WASTR') {
+    return <StyledEthereumLogo src={AstarLogo} size={size} {...rest} />;
   }
 
   if (currency?.symbol === 'ESW') {

@@ -1,0 +1,9 @@
+export { default as Header } from './Header';
+export { default as Banner } from './Banner';
+export { default as Numbers } from './Numbers';
+export { default as Apr } from './Apr';
+export { default as About } from './About';
+export { default as Steps } from './Steps';
+export { default as Community } from './Community';
+export { default as Partners } from './Partners';
+export { default as Polygon } from './Polygon';
