@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { formatUnits, parseUnits } from '@ethersproject/units';
-import customMovr from '../movr';
 import { useGetApprovalBuildTxQuery, useGetBuildTxQuery, useGetCheckAllowanceQuery } from '../api';
 
 const useBuildTx = (
