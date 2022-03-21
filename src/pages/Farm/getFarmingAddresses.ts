@@ -28,11 +28,11 @@ const addressesByNetworkId = {
   [chainIds.POLYGON]: [
     '0x18f38359551258C35e8593d775cb6Fe8D27fd89b', // RewardPoolMulti PROXY
     '0xd2Fa7C9386040f260e3Ec934601982aD4Cd7902B', // RewardPoolMulti PROXY
+    '0xC4e9030aC8274331506910676076eA5239d6c03D', // RewardPoolMulti PROXY
   ],
   [chainIds.MUMBAI]: [
     '0xeB274bcD6CA905b7dB5F65b8C2a126fb3fF39bc3', // RewardPoolMulti PROXY
     '0xb7Ff11b03DD28cDea45D65E274381a4E3D90778D', // RewardPoolMulti PROXY
-    '0xC4e9030aC8274331506910676076eA5239d6c03D', // RewardPoolMulti PROXY
   ],
   [chainIds.SHIDEN]: [
     '0x831b25EB4073d92E4766411f0DbDd0b549753179', // RewardPoolMulti PROXY
