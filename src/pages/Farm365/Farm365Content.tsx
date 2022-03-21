@@ -583,6 +583,7 @@ export default function Farm365Content({ farming365, eswRate }: Farm365ContentPr
                 </StakeTokenLine>
               </StakeToken>
               <StakeApr>365%</StakeApr>
+              <StakeRewardWallet />
               {/* {isPolygonActive && (
                 <StakeRewardWallet onClick={toggleWalletModal}>See details</StakeRewardWallet>
               )}
