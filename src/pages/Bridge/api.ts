@@ -10,6 +10,7 @@ export const apiSlice = createApi({
     getSupportChain: builder.query<{ result: Chain[] }, void>({
       query: () => 'supported/chains',
     }),
+
     getSupportTokenFrom: builder.query<Token[], { fromChain: Chain; toChain: Chain }>({
       query: ({ fromChain, toChain }) =>
         `supported/from-token-list?${new URLSearchParams({
@@ -19,6 +20,7 @@ export const apiSlice = createApi({
       transformResponse: (response: { result: { token: Token; chainId: number }[] }) =>
         getUniqueTokens(response.result),
     }),
+
     getSupportTokenTo: builder.query<Token[], { fromChain: Chain; toChain: Chain }>({
       query: ({ fromChain, toChain }) =>
         `supported/to-token-list?${new URLSearchParams({
@@ -28,6 +30,7 @@ export const apiSlice = createApi({
       transformResponse: (response: { result: { token: Token; chainId: number }[] }) =>
         getUniqueTokens(response.result),
     }),
+
     getCheckAllowance: builder.query<
       { value: string },
       { chainID; owner; allowanceTarget; tokenAddress }
@@ -42,7 +45,10 @@ export const apiSlice = createApi({
       transformResponse: (response: { result: { value: string } }) => response.result,
     }),
 
-    getBuildTx: builder.query<any, { chainId; owner; allowanceTarget; tokenAdress; amount }>({
+    getApprovalBuildTx: builder.query<
+      { data: string; to: string; from: string },
+      { chainId; owner; allowanceTarget; tokenAdress; amount }
+    >({
       query: ({ chainId, owner, allowanceTarget, tokenAdress, amount }) =>
         `approval/build-tx?${new URLSearchParams({
           chainId,
@@ -52,7 +58,8 @@ export const apiSlice = createApi({
           amount,
         }).toString()}`,
     }),
-    getApprovalBuildTx: builder.query<
+
+    getBuildTx: builder.query<
       any,
       {
         recipient;

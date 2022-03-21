@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { formatUnits, parseUnits } from '@ethersproject/units';
 import customMovr from '../movr';
-import { useGetCheckAllowanceQuery } from '../api';
+import { useGetApprovalBuildTxQuery, useGetBuildTxQuery, useGetCheckAllowanceQuery } from '../api';
 
 const useBuildTx = (
   fromAsset,
@@ -58,38 +58,40 @@ const useBuildTx = (
         tokenAddress: fromAsset,
       });
       if (parseFloat(formatUnits(Number(value), decimals)) < parseFloat(amount)) {
-        const approvalTx = await customMovr.getApprovalBuildTx(
-          fromChainId,
-          address,
+        const approvalTx = useGetApprovalBuildTxQuery({
+          chainId: fromChainId,
+          owner: address,
           allowanceTarget,
-          fromAsset,
-          parseUnits(amount, decimals),
-        );
+          tokenAdress: fromAsset,
+          amount: parseUnits(amount, decimals),
+        });
         setTxData([
           {
-            to: approvalTx.to,
-            data: approvalTx.data,
+            to: approvalTx.data.to,
+            data: approvalTx.data.data,
           },
         ]);
         setStatus('approve');
         return;
       }
     }
-    const currentTX = await customMovr.getBuildTx(
-      address,
+    const currentTX = useGetBuildTxQuery({
+      recipient: address,
       fromAsset,
       fromChainId,
       toAsset,
       toChainId,
-      parseUnits(amount, decimals),
+      amount: parseUnits(amount, decimals),
       output,
-      address,
+      fromAddress: address,
       routePath,
-    );
+    });
+
     const allowanceTxData = {
-      to: currentTX.tx.to,
-      data: currentTX.tx.data,
+      to: currentTX.data.to,
+      data: currentTX.data.data,
     };
+
     setTxData([allowanceTxData]);
     setStatus('move');
   }
