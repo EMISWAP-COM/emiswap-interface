@@ -28,33 +28,31 @@ export const apiSlice = createApi({
       transformResponse: (response: { result: { token: Token; chainId: number }[] }) =>
         getUniqueTokens(response.result),
     }),
-    getBuildTx: builder.query<any, { chainID; owner; allowanceTarget; tokenAddress }>({
+    getCheckAllowance: builder.query<
+      { value: string },
+      { chainID; owner; allowanceTarget; tokenAddress }
+    >({
       query: ({ chainID, owner, allowanceTarget, tokenAddress }) =>
-        `v1/approval/check-allowance?${new URLSearchParams({
+        `approval/check-allowance?${new URLSearchParams({
           chainID,
           owner,
           allowanceTarget,
           tokenAddress,
         }).toString()}`,
-      transformResponse: (response: { result: { token: Token; chainId: number }[] }) =>
-        getUniqueTokens(response.result),
+      transformResponse: (response: { result: { value: string } }) => response.result,
     }),
-    getApprovalBuildTx: builder.query<
-      any,
-      { chainId; owner; allowanceTarget; tokenAdress; amount }
-    >({
+
+    getBuildTx: builder.query<any, { chainId; owner; allowanceTarget; tokenAdress; amount }>({
       query: ({ chainId, owner, allowanceTarget, tokenAdress, amount }) =>
-        `v1/approval/build-tx?${new URLSearchParams({
+        `approval/build-tx?${new URLSearchParams({
           chainId,
           owner,
           allowanceTarget,
           tokenAdress,
           amount,
         }).toString()}`,
-      transformResponse: (response: { result: { token: Token; chainId: number }[] }) =>
-        getUniqueTokens(response.result),
     }),
-    getCheckAllowance: builder.query<
+    getApprovalBuildTx: builder.query<
       any,
       {
         recipient;
@@ -79,7 +77,7 @@ export const apiSlice = createApi({
         fromAddress,
         routePath,
       }) =>
-        `v1/send/build-tx?${new URLSearchParams({
+        `send/build-tx?${new URLSearchParams({
           recipient,
           fromAsset,
           fromChainId,
@@ -90,11 +88,9 @@ export const apiSlice = createApi({
           fromAddress,
           routePath,
         }).toString()}`,
-      transformResponse: (response: { result: { token: Token; chainId: number }[] }) =>
-        getUniqueTokens(response.result),
     }),
     getRoutes: builder.query<{ result: Chain[] }, void>({
-      query: () => 'v1/supported/bridges',
+      query: () => 'supported/bridges',
     }),
     getQuote: builder.query<
       { result?: Quote },

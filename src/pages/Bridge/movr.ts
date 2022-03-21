@@ -23,20 +23,6 @@ const movr = {
     )
       .then(res => res.json())
       .then(res => res.result),
-  fetchCheckAllowance: ({ chainID, owner, allowanceTarget, tokenAddress }) => {
-    return fetch(
-      MOVR_API +
-        `v1/approval/check-allowance?` +
-        new URLSearchParams({
-          chainID,
-          owner,
-          allowanceTarget,
-          tokenAddress,
-        }).toString(),
-    )
-      .then(res => res.json())
-      .then(res => res.result);
-  },
   fetchApprovalBuildTx: (chainId, owner, allowanceTarget, tokenAdress, amount) =>
     fetch(
       MOVR_API +
@@ -80,10 +66,6 @@ const movr = {
       .then(res => res.json())
       .then(res => res.result),
 
-  getRoutes: () =>
-    fetch(MOVR_API + `v1/supported/bridges`)
-      .then(res => res.json())
-      .then(res => res.result),
   getSupportedTokensByChain: async (fromChainId, toChainId) => {
     const tokens = await movr.fetchSupportedTokensByChain(fromChainId, toChainId);
     return tokens.map(t => t.token);

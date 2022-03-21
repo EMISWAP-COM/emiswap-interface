@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { formatUnits, parseUnits } from '@ethersproject/units';
 import customMovr from '../movr';
+import { useGetCheckAllowanceQuery } from '../api';
 
 const useBuildTx = (
   fromAsset,
@@ -50,13 +51,13 @@ const useBuildTx = (
     setTxData([]);
     setStatus('none');
     if (isApprovalRequired) {
-      const { value } = await customMovr.fetchCheckAllowance({
+      const { data: value } = useGetCheckAllowanceQuery({
         chainID: fromChainId,
         owner: address,
         allowanceTarget,
         tokenAddress: fromAsset,
       });
-      if (parseFloat(formatUnits(value, decimals)) < parseFloat(amount)) {
+      if (parseFloat(formatUnits(Number(value), decimals)) < parseFloat(amount)) {
         const approvalTx = await customMovr.getApprovalBuildTx(
           fromChainId,
           address,
