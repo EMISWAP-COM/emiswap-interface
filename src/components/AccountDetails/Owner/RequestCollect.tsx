@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
-import { Wrapper, Buttons, CancelButton, RequestButton, Title, LogoStyle, Status } from './styled';
+import {
+  Wrapper,
+  Buttons,
+  CancelButton,
+  RequestButton,
+  Title,
+  LogoStyle,
+  Status,
+  LinkNoColor,
+} from './styled';
 import * as Styled from '../../CurrencyInputPanel/styled';
 import { RowBetween } from '../../Row';
 import { TYPE, CursorPointer } from '../../../theme';
@@ -94,6 +103,7 @@ const RequestCollect = ({ closeWindow }: { closeWindow: () => void }): React.Rea
     availableReqestCollect,
     title,
     status,
+    hash,
     maxAvailableForRequests,
   } = useRequestCollect(userInputValue, closeWindow);
 
@@ -116,7 +126,13 @@ const RequestCollect = ({ closeWindow }: { closeWindow: () => void }): React.Rea
           }
         }}
       />
-      {status && <Status dangerouslySetInnerHTML={{ __html: status }} />}
+      {status && <Status>
+        {status === 'fail' ? (<>
+          <LinkNoColor href={`https://polygonscan.com/tx/${hash}`}>
+            <b>Transaction</b>
+          </LinkNoColor> has failed
+        </>) : status }
+      </Status>}
       <Buttons>
         <CancelButton onClick={closeWindow}>Cancel</CancelButton>
         <RequestButton onClick={requestHandler}>{title}</RequestButton>
