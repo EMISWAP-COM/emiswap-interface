@@ -18,6 +18,7 @@ const EMI_DELIVERY = window['env'].REACT_APP_EMI_DELIVERY;
 export const useRequestCollect = (userInput: string, closeWindow: () => void) => {
   const { library, account, chainId } = useActiveWeb3React();
   const [title, changeTitle] = useState('Request');
+  const [hash, changeHash] = useState('');
   const [status, changeStatus] = useState('');
   const { value: network } = useNetworkData();
   const {
@@ -54,7 +55,6 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
             return Promise.resolve();
           }
           const amount = parseUnits(userInput, 18).toString();
-          let transactionHash = '';
           fetchWrapper
             .post(ESW_CLAIM_API, {
               body: JSON.stringify({
@@ -89,7 +89,7 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
               changeTitle('Request');
             })
             .then(([transactionResult, id]) => {
-              transactionHash = transactionResult.hash;
+              changeHash(transactionResult.hash);
               const transactionStateEndPoint = `/v1/private/users/${userID}/transactions/${id}`;
               return fetchWrapper.put(transactionStateEndPoint, {
                 headers: {
@@ -97,15 +97,12 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
                 },
                 body: JSON.stringify({
                   state: 'sent',
-                  transaction_hash: transactionHash,
+                  transaction_hash: transactionResult.hash,
                 }),
               });
             })
             .catch(() => {
-              const transactionLink = `https://polygonscan.com/tx/${transactionHash}`;
-              changeStatus(`
-                <a href=${transactionLink} style="color: inherit !important;"><b>Transaction</b></a> has failed
-              `);
+              changeStatus('fail');
             })
             .finally(() => {
               closeWindow();
@@ -115,7 +112,7 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
       );
   };
 
-  return { handler, availableReqestCollect: availableESW, title, status, maxAvailableForRequests };
+  return { handler, availableReqestCollect: availableESW, title, status, hash, maxAvailableForRequests };
 };
 
 const toDate = bigNumberTimestamp => new Date(Number(bigNumberTimestamp) * 1000);

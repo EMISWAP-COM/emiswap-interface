@@ -89,7 +89,7 @@ export const WalletWrapper = styled.div`
   width: 96vw;
   padding: 10px;
   margin-top: 20px;
-  
+
 `}
 `;
 
@@ -140,6 +140,10 @@ export const Status = styled.div`
   color: #e85e59;
   padding: 0.3rem;
   font-size: 14px;
+`;
+
+export const LinkNoColor = styled.a`
+  color: inherit !important;
 `;
 
 export const ButtonGroup = styled.div`
