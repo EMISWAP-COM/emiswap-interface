@@ -170,6 +170,7 @@ export const useGetRemainder = () => {
 
 const timeFormating = format('k:mm:ss');
 const formatDateing = format("do 'of' MMMM");
+const formatDateShortMonth = format("do 'of' MMM");
 
 const formatTime = bigNumber => timeFormating(toDate(bigNumber));
 const formatDate = bigNumber => formatDateing(toDate(bigNumber));
@@ -184,6 +185,7 @@ export const useCollectData = closeWindow => {
     nextTime: '',
     nextDay: '',
     nextValue: '',
+    veryFirstRequestDate: '',
     handler: () => {},
   });
   const { library, account, chainId } = useActiveWeb3React();
@@ -201,7 +203,7 @@ export const useCollectData = closeWindow => {
       contract.claimDailyLimit(),
     ]).then(
       ([
-        { remainderTotal, remainderPreparedForClaim },
+        { remainderTotal, remainderPreparedForClaim, veryFirstRequestDate },
         { available },
         { todayStart, tomorrowStart },
         claimLimit,
@@ -214,6 +216,7 @@ export const useCollectData = closeWindow => {
           currentDay: formatDate(todayStart),
           nextTime: formatTime(tomorrowStart),
           nextDay: formatDate(tomorrowStart),
+          veryFirstRequestDate: formatDateShortMonth(toDate(veryFirstRequestDate)),
           nextValue: formatUnits(claimLimit, 18),
           handler: () => {
             contract.claim().then(() => {
