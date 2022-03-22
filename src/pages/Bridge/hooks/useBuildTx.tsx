@@ -49,31 +49,36 @@ const useBuildTx = (
     }
     setTxData([]);
     setStatus('none');
-    if (isApprovalRequired) {
-      const { data: value } = useGetCheckAllowanceQuery({
+    const { data: value } = useGetCheckAllowanceQuery(
+      {
         chainID: fromChainId,
         owner: address,
         allowanceTarget,
         tokenAddress: fromAsset,
-      });
-      if (parseFloat(formatUnits(Number(value), decimals)) < parseFloat(amount)) {
-        const approvalTx = useGetApprovalBuildTxQuery({
-          chainId: fromChainId,
-          owner: address,
-          allowanceTarget,
-          tokenAdress: fromAsset,
-          amount: parseUnits(amount, decimals),
-        });
-        setTxData([
-          {
-            to: approvalTx.data.to,
-            data: approvalTx.data.data,
-          },
-        ]);
-        setStatus('approve');
-        return;
-      }
-    }
+      },
+      { skip: !isApprovalRequired },
+    );
+    const approvalTx = useGetApprovalBuildTxQuery(
+      {
+        chainId: fromChainId,
+        owner: address,
+        allowanceTarget,
+        tokenAdress: fromAsset,
+        amount: parseUnits(amount, decimals),
+      },
+      {
+        skip:
+          !isApprovalRequired ||
+          !(parseFloat(formatUnits(Number(value), decimals)) < parseFloat(amount)),
+      },
+    );
+    setTxData([
+      {
+        to: approvalTx.data.to,
+        data: approvalTx.data.data,
+      },
+    ]);
+    setStatus('approve');
     const currentTX = useGetBuildTxQuery({
       recipient: address,
       fromAsset,
