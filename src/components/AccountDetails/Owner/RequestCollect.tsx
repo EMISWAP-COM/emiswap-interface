@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Wrapper,
   Buttons,
@@ -17,7 +17,7 @@ import NumericalInput from '../../NumericalInput';
 import CurrencyLogo from '../../CurrencyLogo';
 import { Token } from '@uniswap/sdk';
 import { useRequestCollect } from './hooks';
-import TxnPopup from '../../Popups/TxnPopup';
+import { useActivePopups, useAddPopup } from '../../../state/application/hooks';
 
 interface CurrencyInputInterface {
   id?: string;
@@ -114,11 +114,29 @@ const RequestCollect = ({ closeWindow }: { closeWindow: () => void }): React.Rea
   const isPending = progress === 'pending';
   const isSuccess = progress === 'success';
 
+  const addPopup = useAddPopup();
+  const popups = useActivePopups();
+
   const FailMessage = txHash ? <>
     <LinkNoColor href={`https://polygonscan.com/tx/${txHash}`}>
       <b>Transaction</b>
     </LinkNoColor> has failed
   </> : <span>Something has failed</span>;
+
+  useEffect(() => {
+    const isStatusForPopUp = isSuccess || isPending;
+    const key = isSuccess ? `${txHash}Success` : `${txHash}Pending`;
+    const isPopUpAlreadyShown = popups.find(item => item.key === key);
+    if (isStatusForPopUp && !isPopUpAlreadyShown) {
+      addPopup({
+        txn: {
+          hash: txHash,
+          success: true,
+          summary: isPending ? `Request ${requestedAmount} ESW` : `Transfer ${requestedAmount} ESW to the wallet`,
+        },
+      }, key);
+    }
+  });
 
   return (
     <Wrapper>
@@ -142,8 +160,6 @@ const RequestCollect = ({ closeWindow }: { closeWindow: () => void }): React.Rea
       {status && <Status>
         {status === 'fail' ? FailMessage : status }
       </Status>}
-      { isPending && <TxnPopup hash={txHash} success={true} summary={`Request ${requestedAmount} ESW`} /> }
-      { isSuccess && <TxnPopup hash={txHash} success={true} summary={`Transfer ${requestedAmount} ESW to the wallet`} /> }
       <Buttons>
         <CancelButton onClick={closeWindow}>Cancel</CancelButton>
         <RequestButton onClick={requestHandler}>{title}</RequestButton>
