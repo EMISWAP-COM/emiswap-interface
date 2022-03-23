@@ -70,7 +70,7 @@ const CollectToMyWallet = ({
     <WalletWrapper>
       <Title style={{ paddingBottom: '8px' }}>Collect to my Wallet</Title>
       <Label>
-        To obtain a reward, you must first click the request collect button, then return to the same page in 10 days and click collect to my wallet.
+        Note: To obtain a reward, you must first click the request collect button, then return to the same page in 10 days and click collect to my wallet.
       </Label>
       <Frame>
         <FrameRow>
