@@ -103,16 +103,17 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
                   state: 'sent',
                   transaction_hash: transactionResult.hash,
                 }),
-              }).then(() => {
-                changeProgress('success');
-                changeTxHash(transactionResult.hash);
               });
+            })
+            .then(() => {
+              changeProgress('success');
+              changeTxHash(txHash);
+              closeWindow();
             })
             .catch(() => {
               changeStatus('fail');
             })
             .finally(() => {
-              closeWindow();
               changeTitle('Request');
             });
         }),

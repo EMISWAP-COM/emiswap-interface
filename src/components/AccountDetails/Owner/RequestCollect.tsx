@@ -114,6 +114,12 @@ const RequestCollect = ({ closeWindow }: { closeWindow: () => void }): React.Rea
   const isPending = progress === 'pending';
   const isSuccess = progress === 'success';
 
+  const FailMessage = txHash ? <>
+    <LinkNoColor href={`https://polygonscan.com/tx/${txHash}`}>
+      <b>Transaction</b>
+    </LinkNoColor> has failed
+  </> : <span>Something has failed</span>;
+
   return (
     <Wrapper>
       <Title>Request collect</Title>
@@ -134,11 +140,7 @@ const RequestCollect = ({ closeWindow }: { closeWindow: () => void }): React.Rea
         }}
       />
       {status && <Status>
-        {status === 'fail' ? (<>
-          <LinkNoColor href={`https://polygonscan.com/tx/${txHash}`}>
-            <b>Transaction</b>
-          </LinkNoColor> has failed
-        </>) : status }
+        {status === 'fail' ? FailMessage : status }
       </Status>}
       { isPending && <TxnPopup hash={txHash} success={true} summary={`Request ${requestedAmount} ESW`} /> }
       { isSuccess && <TxnPopup hash={txHash} success={true} summary={`Transfer ${requestedAmount} ESW to the wallet`} /> }

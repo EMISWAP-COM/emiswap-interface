@@ -251,7 +251,7 @@ const Balance = ({
   veryFirstRequestDate,
 }: BalanceInterface) => {
   const isPolygon = useIsPolygonActive();
-  const isRequested = requested !== '0.0';
+  const isRequested = Number(requested) !== 0;
   const CommonInfo = (
     <>
       <Item label="Total" value={total} />
@@ -279,7 +279,7 @@ const Balance = ({
               <QuestionHelper text="Click the Collect to my wallet button to see more details" />
             </RowBetween>
             <div>
-              <BalanceValue>{requested}</BalanceValue>&nbsp;ESW
+              <BalanceValue>{requested || "0.0"}</BalanceValue>&nbsp;ESW
             </div>
           </BalanceRequestItem>
         </BalanceWrapper>
