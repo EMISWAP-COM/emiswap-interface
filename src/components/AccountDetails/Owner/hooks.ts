@@ -115,6 +115,7 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
             })
             .finally(() => {
               changeTitle('Request');
+              changeProgress('init');
             });
         }),
       );
