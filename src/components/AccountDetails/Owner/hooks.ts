@@ -176,6 +176,14 @@ const timeFormating = format('k:mm:ss');
 const formatDateing = format("do 'of' MMMM");
 const formatDateShortMonth = format("do 'of' MMM");
 
+const toDateFromContract = str => {
+  const stringStr = String(str);
+  const year = stringStr.substring(0, 4);
+  const month = stringStr.substring(4, 6);
+  const day = stringStr.slice(6);
+  return new Date(`${year}.${month}.${day}`);
+};
+
 const formatTime = bigNumber => timeFormating(toDate(bigNumber));
 const formatDate = bigNumber => formatDateing(toDate(bigNumber));
 
@@ -220,7 +228,7 @@ export const useCollectData = closeWindow => {
           currentDay: formatDate(todayStart),
           nextTime: formatTime(tomorrowStart),
           nextDay: formatDate(tomorrowStart),
-          veryFirstRequestDate: formatDateShortMonth(toDate(veryFirstRequestDate)),
+          veryFirstRequestDate: formatDateShortMonth(toDateFromContract(veryFirstRequestDate)),
           nextValue: formatUnits(claimLimit, 18),
           handler: () => {
             contract.claim().then(() => {
