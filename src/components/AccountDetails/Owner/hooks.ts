@@ -18,8 +18,10 @@ const EMI_DELIVERY = window['env'].REACT_APP_EMI_DELIVERY;
 export const useRequestCollect = (userInput: string, closeWindow: () => void) => {
   const { library, account, chainId } = useActiveWeb3React();
   const [title, changeTitle] = useState('Request');
-  const [hash, changeHash] = useState('');
   const [status, changeStatus] = useState('');
+  const [progress, changeProgress] = useState('init');
+  const [txHash, changeTxHash] = useState('');
+  const [requestedAmount, changeRequestedAmount] = useState('');
   const { value: network } = useNetworkData();
   const {
     available: { ESW: availableESW },
@@ -80,6 +82,8 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
               changeTitle('Request');
             })
             .then(({ signature, id }) => {
+              changeRequestedAmount(userInput);
+              changeProgress('pending');
               return contract
                 .request(account, amount, nonce, `0x${signature}`)
                 .then(transactionResult => [transactionResult, id]);
@@ -89,7 +93,7 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
               changeTitle('Request');
             })
             .then(([transactionResult, id]) => {
-              changeHash(transactionResult.hash);
+              changeTxHash(transactionResult.hash);
               const transactionStateEndPoint = `/v1/private/users/${userID}/transactions/${id}`;
               return fetchWrapper.put(transactionStateEndPoint, {
                 headers: {
@@ -99,6 +103,9 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
                   state: 'sent',
                   transaction_hash: transactionResult.hash,
                 }),
+              }).then(() => {
+                changeProgress('success');
+                changeTxHash(transactionResult.hash);
               });
             })
             .catch(() => {
@@ -112,16 +119,17 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
       );
   };
 
-  return { handler, availableReqestCollect: availableESW, title, status, hash, maxAvailableForRequests };
+  return { handler, availableReqestCollect: availableESW, title, status, progress, maxAvailableForRequests, txHash, requestedAmount };
 };
 
 const toDate = bigNumberTimestamp => new Date(Number(bigNumberTimestamp) * 1000);
 const formatTomorrow = format('RRRR-MM-dd');
 
 export type RemainderStatus =
-  | { status: 'remaindTime'; value: string }
-  | { status: 'disable'; value: string }
-  | { status: 'enable'; value: string };
+  | { status: 'remaindTime'; value: string; }
+  | { status: 'disable'; value: string; }
+  | { status: 'enable'; value: string; }
+  | { status: 'progress'; value: string; };
 
 export const useGetRemainder = () => {
   const [state, changeState] = useState<RemainderStatus>({
@@ -137,6 +145,7 @@ export const useGetRemainder = () => {
 
   useEffect(() => {
     contract.getAvailableToClaim().then(result => {
+      changeState({ status: 'progress', value: 'Collect' });
       if (result.available > 0) {
         changeState({ status: 'enable', value: 'Collect' });
       } else {
@@ -154,10 +163,6 @@ export const useGetRemainder = () => {
                 changeState({ status: 'remaindTime', value: tomorrow });
               });
             } else {
-              changeState({
-                value: stringDate,
-                status: 'remaindTime',
-              });
             }
           } else {
             changeState({
@@ -165,6 +170,11 @@ export const useGetRemainder = () => {
               status: 'disable',
             });
           }
+        }).catch(() => {
+          changeState({
+            value: 'Collect to my wallet',
+            status: 'disable',
+          });
         });
       }
     });
