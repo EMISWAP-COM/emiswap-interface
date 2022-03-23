@@ -59,11 +59,11 @@ const Wallet = styled.div`
 
 const BalanceWrapper = styled.div`
   display: grid;
-  grid-template-columns: auto auto auto auto auto;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   gap: 12px;
   @media screen and (max-width: 1080px) {
-    grid-template-columns: auto auto;
-    grid-template-rows: auto auto auto;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
   }
 `;
 
