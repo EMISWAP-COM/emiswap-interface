@@ -136,7 +136,7 @@ const RequestCollect = ({ closeWindow }: { closeWindow: () => void }): React.Rea
         },
       }, key);
     }
-  });
+  }, [isSuccess, isPending]);
 
   return (
     <Wrapper>
