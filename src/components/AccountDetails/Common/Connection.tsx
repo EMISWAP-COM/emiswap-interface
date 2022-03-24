@@ -75,6 +75,9 @@ const BalanceFlexWrapper = styled.div`
 `;
 
 const BalanceItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   flex: 1;
   padding: 14px;
   background: ${({ theme }) => theme.darkGrey};
@@ -276,7 +279,11 @@ const Balance = ({
                   </>
                 )}
               </span>
-              <QuestionHelper text="Click the Collect to my wallet button to see more details" />
+              <span className={"align-self-start"}>
+                <QuestionHelper
+                  text="Click the Collect to my wallet button to see more details"
+                />
+              </span>
             </RowBetween>
             <div>
               <BalanceValue>{requested || "0.0"}</BalanceValue>&nbsp;ESW

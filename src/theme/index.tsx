@@ -215,6 +215,10 @@ export const FixedGlobalStyle = createGlobalStyle`
   display: block;
 }
 
+.align-self-start {
+  align-self: flex-start;
+}
+
 .onlyMobile {
   display: none;
 }
