@@ -7,6 +7,7 @@ const SidebarWrapper = styled.div<Props>`
   ${color}
   ${layout}
   ${width}
+  background: #ccc;
 `;
 
 const Sidebar = () => <SidebarWrapper minWidth={230}>Sidebar</SidebarWrapper>;
