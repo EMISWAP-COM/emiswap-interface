@@ -130,6 +130,6 @@ const Root = Sentry.withProfiler(() => (
   </HttpsRedirect>
 ));
 
-const isAPPV2 = process.env.REACT_APP_V2;
+const isAPPV2 = Boolean(process.env.REACT_APP_V2);
 
-ReactDOM.render(isAPPV2 ? <Root /> : <RootV2 />, document.getElementById('root'));
+ReactDOM.render(isAPPV2 ? <RootV2 /> : <Root />, document.getElementById('root'));
