@@ -1,10 +1,7 @@
-import React from 'react';
+import React  from 'react';
+import { Props } from '../ThemeProvider'
 import styled from 'styled-components';
-import { color, layout, width, ColorProps, LayoutProps, WidthProps } from 'styled-system';
-
-interface Props extends ColorProps, LayoutProps, WidthProps {
-  children: React.ReactNode;
-}
+import { color, layout, width } from 'styled-system';
 
 const SidebarWrapper = styled.div<Props>`
   ${color}
@@ -12,6 +9,6 @@ const SidebarWrapper = styled.div<Props>`
   ${width}
 `;
 
-const Sidebar = () => <SidebarWrapper width={1 / 2}>Sidebar</SidebarWrapper>;
+const Sidebar = () => <SidebarWrapper minWidth={230}>Sidebar</SidebarWrapper>;
 
 export default Sidebar;

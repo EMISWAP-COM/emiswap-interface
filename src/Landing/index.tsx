@@ -1,3 +1,4 @@
+import Header from './Header';
 import React from 'react';
 import ActivePoolsBlock from './ActivePoolsBlock';
 import BlockChainsBlock from './BlockChainsBlock';
@@ -11,15 +12,16 @@ import StandoutBlock from './StandoutBlock';
 
 const Landing = () => (
   <>
-    <MainBlock></MainBlock>
-    <InfoBlock></InfoBlock>
-    <StandoutBlock></StandoutBlock>
-    <PartnersBlock></PartnersBlock>
-    <InvestorsBlock></InvestorsBlock>
-    <BlockChainsBlock></BlockChainsBlock>
-    <RoadmapBlock></RoadmapBlock>
-    <ActivePoolsBlock></ActivePoolsBlock>
-    <Footer></Footer>
+    <Header />
+    <MainBlock />
+    <InfoBlock />
+    <StandoutBlock />
+    <PartnersBlock />
+    <InvestorsBlock />
+    <BlockChainsBlock />
+    <RoadmapBlock />
+    <ActivePoolsBlock />
+    <Footer />
   </>
 );
 
