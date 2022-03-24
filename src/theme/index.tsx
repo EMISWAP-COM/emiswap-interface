@@ -269,8 +269,8 @@ html {
 
 export const ThemedGlobalStyle = createGlobalStyle`
 html {
-  color: ${({ theme }) => theme.text1};
-  background-color: ${({ theme }) => theme.bg2};
+  color: ${({ theme }: any) => theme.text1};
+  background-color: ${({ theme }: any) => theme.bg2};
 }
 
 body {

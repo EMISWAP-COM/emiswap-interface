@@ -84,25 +84,3 @@ export interface Grids {
   lg: number;
 }
 
-declare module 'styled-components' {
-  export interface DefaultTheme extends Colors {
-    grids: Grids;
-
-    // shadows
-    shadow1: string;
-
-    // media queries
-    mediaWidth: {
-      upToTheSmallest: ThemedCssFunction<DefaultTheme>;
-      upToExtraSmall: ThemedCssFunction<DefaultTheme>;
-      upToSmall: ThemedCssFunction<DefaultTheme>;
-      upToTabletop: ThemedCssFunction<DefaultTheme>;
-      upToMedium: ThemedCssFunction<DefaultTheme>;
-      upToLarge: ThemedCssFunction<DefaultTheme>;
-    };
-
-    // css snippets
-    flexColumnNoWrap: FlattenSimpleInterpolation;
-    flexRowNoWrap: FlattenSimpleInterpolation;
-  }
-}
