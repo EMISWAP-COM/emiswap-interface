@@ -29,7 +29,6 @@ export const Title = styled.div`
   color: #ffffff;
   padding-bottom: 25px;
 `;
-
 export const Buttons = styled.div`
   display: flex;
   justify-content: space-between;
