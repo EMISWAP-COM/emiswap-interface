@@ -83,7 +83,6 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
             })
             .then(({ signature, id }) => {
               changeRequestedAmount(userInput);
-              changeProgress('pending');
               return contract
                 .request(account, amount, nonce, `0x${signature}`)
                 .then(transactionResult => [transactionResult, id]);
@@ -94,6 +93,7 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
             })
             .then(([transactionResult, id]) => {
               changeTxHash(transactionResult.hash);
+              changeProgress('pending');
               const transactionStateEndPoint = `/v1/private/users/${userID}/transactions/${id}`;
               return fetchWrapper.put(transactionStateEndPoint, {
                 headers: {
