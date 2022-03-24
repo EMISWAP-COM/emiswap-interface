@@ -3405,6 +3405,13 @@
   dependencies:
     csstype "^2.6.9"
 
+"@types/styled-system@^5.1.15":
+  version "5.1.15"
+  resolved "https://registry.yarnpkg.com/@types/styled-system/-/styled-system-5.1.15.tgz#075f969cc028a895dba916c07708e2fe828d7077"
+  integrity sha512-1uls4wipZn8FtYFZ7upRVFDoEeOXTQTs2zuyOZPn02T6rjIxtvj2P2lG5qsxXHhKuKsu3thveCZrtaeLE/ibLg==
+  dependencies:
+    csstype "^3.0.2"
+
 "@types/styled-system__css@*":
   version "5.0.12"
   resolved "https://registry.yarnpkg.com/@types/styled-system__css/-/styled-system__css-5.0.12.tgz#1de408f0db86b46018cf67bce2c50444237c523c"
