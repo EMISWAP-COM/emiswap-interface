@@ -44,7 +44,7 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
       .getWalletNonce()
       .then(nonce => Number(nonce) + 1)
       .then(nonce =>
-        handleAuth().then(token => {
+        handleAuth().then(async (token) => {
           changeStatus('');
           if (parseFloat(userInput) <= 0 || Number.isNaN(parseFloat(userInput))) {
             changeStatus('Error input. The Request amount is not valid');
@@ -57,36 +57,37 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
             return Promise.resolve();
           }
           const amount = parseUnits(userInput, 18).toString();
-          fetchWrapper
-            .post(ESW_CLAIM_API, {
-              body: JSON.stringify({
-                token_name: 'ESW',
-                amount,
-                contract_address: EMI_DELIVERY,
-                nonce,
-                // TODO: use from env
-                blockchain_network: getNetworkUrl(network),
-                chainID: ESW_CLAIM_CHAIN_ID,
-                userID,
-              }),
-              headers: { Authorization: token },
-            })
-            .catch(e => {
-              if (e?.payload?.error_message === 'withdrawal_amount_is_more_than_available') {
-                changeStatus('Withdrawal amount is more than available');
-              } else {
-                changeStatus(
-                  'Please wait for the previous request being processed. It usually takes less than two minutes',
-                );
-              }
-              changeTitle('Request');
-            })
-            .then(({ signature, id }) => {
-              changeRequestedAmount(userInput);
-              return contract
-                .request(account, amount, nonce, `0x${signature}`)
-                .then(transactionResult => [transactionResult, id]);
-            })
+          let res;
+          try {
+            res = await fetchWrapper
+              .post(ESW_CLAIM_API, {
+                body: JSON.stringify({
+                  token_name: 'ESW',
+                  amount,
+                  contract_address: EMI_DELIVERY,
+                  nonce,
+                  // TODO: use from env
+                  blockchain_network: getNetworkUrl(network),
+                  chainID: ESW_CLAIM_CHAIN_ID,
+                  userID,
+                }),
+                headers: { Authorization: token },
+              });
+          } catch (e) {
+            if (e?.payload?.error_message === "withdrawal_amount_is_more_than_available") {
+              changeStatus('Withdrawal amount is more than available');
+            } else {
+              changeStatus(
+                'Please wait for the previous request being processed. It usually takes less than two minutes',
+              );
+            }
+            changeTitle('Request');
+            return;
+          }
+          changeRequestedAmount(userInput);
+          contract
+            .request(account, amount, nonce, `0x${res.signature}`)
+            .then(transactionResult => [transactionResult, res.id])
             .catch(_ => {
               // TODO handle errors
               changeTitle('Request');
