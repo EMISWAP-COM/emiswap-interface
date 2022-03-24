@@ -58,7 +58,7 @@ export default {
     },
   },
   headerStyles: {
-    small: {
+    smallRubic: {
       fontFamily: 'Sora',
       fontSize: '24px',
       fontStyle: 'normal',
@@ -66,7 +66,7 @@ export default {
       fontWeight: '700',
       color: '#333333',
     },
-    default: {
+    defaultRubic: {
       fontFamily: 'Rubik',
       fontSize: '32px',
       fontStyle: 'normal',
@@ -74,7 +74,31 @@ export default {
       fontWeight: '700',
       color: '#333333',
     },
-    large: {
+    largeRubic: {
+      fontFamily: 'Rubik',
+      fontSize: '60px',
+      fontStyle: 'normal',
+      lineHeight: '75px',
+      fontWeight: '700',
+      color: '#333333',
+    },
+    smallSora: {
+      fontFamily: 'Sora',
+      fontSize: '24px',
+      fontStyle: 'normal',
+      lineHeight: '30px',
+      fontWeight: '700',
+      color: '#333333',
+    },
+    defaultSora: {
+      fontFamily: 'Rubik',
+      fontSize: '32px',
+      fontStyle: 'normal',
+      lineHeight: '32px',
+      fontWeight: '700',
+      color: '#333333',
+    },
+    largeSora: {
       fontFamily: 'Rubik',
       fontSize: '60px',
       fontStyle: 'normal',

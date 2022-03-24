@@ -6,7 +6,6 @@ import Sidebar from 'Sidebar';
 import { Grid } from 'ThemeProvider/components';
 
 const LayoutWrapper = styled(Grid)<Props>`
-  ${color}
   ${layout}
   ${grid}
 `;
