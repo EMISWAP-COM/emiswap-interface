@@ -5,4 +5,5 @@ declare module global {
 
   declare var window: AppWindow;
 }
+
 declare module '*.pdf';
