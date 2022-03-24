@@ -1,5 +1,6 @@
 import React from 'react';
-
-const ThemeProvider = ({ children }) => <>{children}</>;
+import { ThemeProvider as BaseThemeProvider } from 'styled-components';
+import theme from './theme'
+const ThemeProvider = ({ children }) => <BaseThemeProvider theme={theme}>{children}</BaseThemeProvider>;
 
 export default ThemeProvider;
