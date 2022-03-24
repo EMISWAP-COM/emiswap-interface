@@ -20,6 +20,7 @@ import ThemeProvider, { FixedGlobalStyle, ThemedGlobalStyle } from './theme';
 import HttpsRedirect from './https-redirect';
 import { ErrorBoundary } from './components/ErrorBoundary/ErrorBoundary';
 import ReactPixel from 'react-facebook-pixel';
+import RootV2 from './App';
 
 import * as Sentry from '@sentry/react';
 import { Integrations } from '@sentry/tracing';
@@ -28,7 +29,7 @@ import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import duration from 'dayjs/plugin/duration';
 
-dayjs.extend(customParseFormat)
+dayjs.extend(customParseFormat);
 dayjs.extend(duration);
 
 const { REACT_APP_SENTRY_DSN, REACT_APP_SENTRY_PROJECT, REACT_APP_SENTRY_RELEASE } = window['env'];
@@ -86,7 +87,6 @@ window.addEventListener('error', error => {
   });
 });
 
-
 // eslint-disable-next-line no-extend-native
 Object.defineProperty(Array.prototype, 'flat', {
   value: function(depth = 1) {
@@ -130,4 +130,6 @@ const Root = Sentry.withProfiler(() => (
   </HttpsRedirect>
 ));
 
-ReactDOM.render(<Root />, document.getElementById('root'));
+const isAPPV2 = process.env.REACT_APP_V2;
+
+ReactDOM.render(isAPPV2 ? <Root /> : <RootV2 />, document.getElementById('root'));
