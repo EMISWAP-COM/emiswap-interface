@@ -85,8 +85,10 @@
   },
   "scripts": {
     "start": "cross-env PORT=4202 react-scripts start",
+    "start:v2": "cross-env REACT_APP_V2=true yarn start",
     "build": "react-scripts build && REACTBUILDVERSION=$(date +%Y-%m-%d)-$(date +%T) && sed -i -- 's/%REACTBUILDVERSION%/'$REACTBUILDVERSION'/g' build/docs/version.txt && echo React Build Version = $REACTBUILDVERSION",
     "build:stage": "rm -R -f ./build && env-cmd -f .env.staging react-scripts build && REACTBUILDVERSION=Stage_$(date +%Y-%m-%d)-$(date +%T) && sed -i -- 's/%REACTBUILDVERSION%/'$REACTBUILDVERSION'/g' build/docs/version.txt && echo React Build Version = $REACTBUILDVERSION",
+    "build:v2": "cross-env REACT_APP_V2=true yarn build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "lint": "eslint '{cypress,src}/**/*.{ts,tsx}'",
