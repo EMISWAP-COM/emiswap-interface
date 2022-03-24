@@ -1,12 +1,13 @@
 import React from 'react';
+import Layout from 'Layout'
 import Landing from './Landing';
-import Sidebar from './Sidebar';
 import ThemeProvider from './ThemeProvider';
 
 const App = () => (
   <ThemeProvider>
-    <Landing />
-    <Sidebar />
+    <Layout>
+        <Landing />
+    </Layout>
   </ThemeProvider>
 );
 
