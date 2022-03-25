@@ -219,6 +219,10 @@ export const FixedGlobalStyle = createGlobalStyle`
   align-self: flex-start;
 }
 
+.align-self-baseline {
+  align-self: baseline;
+}
+
 .onlyMobile {
   display: none;
 }

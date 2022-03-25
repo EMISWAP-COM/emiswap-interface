@@ -270,7 +270,7 @@ const Balance = ({
           {CommonInfo}
           <BalanceRequestItem className={'balance-item-request'}>
             <RowBetween>
-              <span>
+              <span className={"align-self-baseline"}>
                 Request
                 {isRequested && (
                   <>
