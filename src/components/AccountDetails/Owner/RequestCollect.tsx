@@ -111,9 +111,6 @@ const RequestCollect = ({ closeWindow }: { closeWindow: () => void }): React.Rea
     maxAvailableForRequests,
   } = useRequestCollect(userInputValue, closeWindow);
 
-  const isPending = progress === 'pending';
-  const isSuccess = progress === 'success';
-
   const addPopup = useAddPopup();
   const popups = useActivePopups();
 
@@ -124,6 +121,8 @@ const RequestCollect = ({ closeWindow }: { closeWindow: () => void }): React.Rea
   </> : <span>Something has failed</span>;
 
   useEffect(() => {
+    const isPending = progress === 'pending';
+    const isSuccess = progress === 'success';
     const isStatusForPopUp = isSuccess || isPending;
     const key = isSuccess ? `${txHash}Success` : `${txHash}Pending`;
     const isPopUpAlreadyShown = popups.find(item => item.key === key);
@@ -136,7 +135,7 @@ const RequestCollect = ({ closeWindow }: { closeWindow: () => void }): React.Rea
         },
       }, key);
     }
-  }, [isSuccess, isPending]);
+  }, [progress]);
 
   return (
     <Wrapper>
