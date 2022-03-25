@@ -23,7 +23,6 @@ const getTokenLogoLocal = async ({ symbol, address }) => {
     return '';
   }
 };
-
 const getTokenLogoURL = async (urls: string[]): Promise<string> => {
   for (const url of urls) {
     try {
