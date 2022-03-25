@@ -61,13 +61,7 @@ export function getExplorerLink(
   data: string,
   type: 'transaction' | 'token' | 'address' | 'block',
 ): string {
-  const { blockExplorerUrl } = getNetworkData(chainId);
-  const isEthActive = isEthereumActive(chainId);
-
-  let path = blockExplorerUrl;
-  if (isEthActive) {
-    path = `https://${ETHERSCAN_PREFIXES[chainId] || ETHERSCAN_PREFIXES[1]}${blockExplorerUrl}`;
-  }
+  const { blockExplorerUrl: path } = getNetworkData(chainId);
 
   switch (type) {
     case 'transaction': {
