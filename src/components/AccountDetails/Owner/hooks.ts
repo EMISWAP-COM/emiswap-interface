@@ -214,6 +214,7 @@ export const useCollectData = closeWindow => {
     handler: () => {},
   });
   const { library, account, chainId } = useActiveWeb3React();
+  const [progress, changeProgress] = useState('init');
   const contract: Contract | null = useMemo(() => getCollectContract(library, account, chainId), [
     library,
     account,
@@ -244,7 +245,9 @@ export const useCollectData = closeWindow => {
           veryFirstRequestDate: formatDateShortMonth(toDateFromContract(veryFirstRequestDate)),
           nextValue: formatUnits(claimLimit, 18),
           handler: () => {
-            contract.claim().then(() => {
+            changeProgress('pending');
+            contract.claim().finally(() => {
+              changeProgress('init');
               closeWindow();
             });
           },
@@ -253,5 +256,5 @@ export const useCollectData = closeWindow => {
     );
   }, [contract, closeWindow]);
 
-  return state;
+  return Object.assign({ progress }, state);
 };

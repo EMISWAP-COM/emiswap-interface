@@ -60,6 +60,7 @@ const CollectToMyWallet = ({
     nextTime,
     nextDay,
     nextValue,
+    progress,
     handler: changeCollect,
   } = useCollectData(() => closeWindow());
 
@@ -67,6 +68,7 @@ const CollectToMyWallet = ({
   const remainderValue = useGetRemainder();
   const isCollectDisabled = remainderValue.status !== 'enable';
   const isInProgress = remainderValue.status === 'progress';
+  const isCollectInProgress = progress === 'pending';
   return (
     <WalletWrapper>
       <Title style={{ paddingBottom: '8px' }}>Collect to my Wallet</Title>
@@ -102,7 +104,7 @@ const CollectToMyWallet = ({
                 <Countdown date={new Date(remainderValue.value)}></Countdown>
               </>
             ) : (
-              remainderValue.value
+              isCollectInProgress ? 'Pending' : remainderValue.value
             )}
           </CollectBtn>
         </ButtonGroup>
