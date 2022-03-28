@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Flex } from '../ThemeProvider/components';
+import { Flex, Paragraph } from '../ThemeProvider/components';
 import { Props } from '../ThemeProvider';
-import { flex, color, layout, space, typography } from 'styled-system';
+import { flex, color, layout, space } from 'styled-system';
 import EmiswapLogo from '../assets/svg/logo.svg';
 import TelegramOutlinedLogo from '../assets/svg/SocIcons/telegramOutlined.svg';
 import TwitterLogo from '../assets/svg/SocIcons/twitter.svg';
@@ -82,6 +82,17 @@ const SocialMediaButton = styled.button`
 
 const UnorderedListWrapper = styled.ul`
   padding: 0;
+`;
+
+const ReceivedGrantsParagraph = styled.p`
+  ${color};
+  margin-top: 1rem;
+  margin-bottom: 0.25rem;
+`;
+
+const HighlightedLink = styled.a`
+  color: white;
+  text-decoration-color: white;
 `;
 
 const FOOTER_MIN_HEIGHT = 279;
@@ -186,6 +197,14 @@ const SocialsPart = () => (
         <img src={DiscordLogo} alt="Reddit" />
       </SocialMediaButton>
     </Flex>
+    <div>
+      <ReceivedGrantsParagraph color="fadedLink">Received grants from:</ReceivedGrantsParagraph>
+      <Paragraph color="text">
+        <HighlightedLink href="#">Near Protocol</HighlightedLink>
+        <span>&nbsp;&&nbsp;</span>
+        <HighlightedLink href="#">Gate Chain</HighlightedLink>
+      </Paragraph>
+    </div>
   </SocialsPartWrapper>
 );
 
