@@ -55,6 +55,7 @@ const ListsHeader = styled.header`
 const ListLink = styled.a`
   ${color};
   text-decoration: none;
+  white-space: pre-line;
 `;
 
 const LinkListItem = styled.li`
@@ -119,8 +120,8 @@ const links = {
     ['Wiki']: '#',
   },
   ['Security']: {
-    ['Smart Contract \n audit By Hacken']: '#',
-    ['Smart contract \n audit by BlueSwarm']: '#',
+    ['Smart Contract \n Audit By Hacken']: '#',
+    ['Smart contract \n Audit by BlueSwarm']: '#',
     ['Code']: '#',
   }
 };
