@@ -4,6 +4,11 @@ import { Flex } from '../ThemeProvider/components';
 import { Props } from '../ThemeProvider';
 import { flex, color, layout, space, typography } from 'styled-system';
 import EmiswapLogo from '../assets/svg/logo.svg';
+import TelegramOutlinedLogo from '../assets/svg/SocIcons/telegramOutlined.svg';
+import TwitterLogo from '../assets/svg/SocIcons/twitter.svg';
+import MediumLogo from '../assets/svg/SocIcons/medium.svg';
+import FacebookLogo from '../assets/svg/SocIcons/facebook.svg';
+import DiscordLogo from '../assets/svg/SocIcons/discord.svg';
 
 const FooterWrapper = styled(Flex)<Props>`
   ${flex}
@@ -11,15 +16,13 @@ const FooterWrapper = styled(Flex)<Props>`
   ${layout}
   ${space}
   padding: 2rem;
-  & > div {
-    width: 33%;
-  }
 `;
 
 const LogoWrapper = styled.div`
   display: flex;
   align-items: baseline;
   justify-content: flex-end;
+  width: 25%;
   & > img {
     margin-right: 4rem;
   }
@@ -29,6 +32,15 @@ const ListWrapper = styled.div`
   &:nth-of-type(n + 2) {
     margin-left: 3.75rem;
   }
+`;
+
+const LinksPartWrapper = styled.div`
+  display: flex;
+  width: 50%;
+`;
+
+const SocialsPartWrapper = styled.div`
+  width: 25%;
 `;
 
 const ListsHeader = styled.header`
@@ -48,6 +60,24 @@ const ListLink = styled.a`
 const LinkListItem = styled.li`
   list-style-type: none;
   margin-bottom: 0.5rem;
+`;
+
+const SocialMediaButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  cursor: pointer;
+  border-radius: 0.625rem;
+  background: rgba(255, 255, 255, 0.15);
+  & > img {
+    width: 20px;
+  }
+  &:nth-child(n + 2) {
+    margin-left: 0.75rem;
+  }
 `;
 
 const UnorderedListWrapper = styled.ul`
@@ -95,7 +125,7 @@ const LogoPart = () => (
 );
 
 const LinksPart = () => (
-  <Flex>
+  <LinksPartWrapper>
     {Object.keys(links).map((headerLink) => {
       const listLinks = Object.keys(links[headerLink]).map((listLink) => (
         <LinkListItem>
@@ -125,11 +155,38 @@ const LinksPart = () => (
         </ListWrapper>
       );
     })}
-  </Flex>
+  </LinksPartWrapper>
 );
 
 const SocialsPart = () => (
-  <span>Socials will be here</span>
+  <SocialsPartWrapper>
+    <ListsHeader
+      color="text"
+    >
+      <ListLink
+        color="text"
+      >
+        Socials
+      </ListLink>
+    </ListsHeader>
+    <Flex>
+      <SocialMediaButton>
+        <img src={TelegramOutlinedLogo} alt="Telegram" />
+      </SocialMediaButton>
+      <SocialMediaButton>
+        <img src={TwitterLogo} alt="Twitter" />
+      </SocialMediaButton>
+      <SocialMediaButton>
+        <img src={MediumLogo} alt="Medium" />
+      </SocialMediaButton>
+      <SocialMediaButton>
+        <img src={FacebookLogo} alt="Facebook" />
+      </SocialMediaButton>
+      <SocialMediaButton>
+        <img src={DiscordLogo} alt="Reddit" />
+      </SocialMediaButton>
+    </Flex>
+  </SocialsPartWrapper>
 );
 
 const Footer = () => {
