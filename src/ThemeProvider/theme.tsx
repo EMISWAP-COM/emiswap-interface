@@ -21,6 +21,7 @@ export default {
     statusYellow: '#FFBF51',
     buttonActive: '#7A2DF4',
     buttonInactive: '#7A2DF426',
+    fadedLink: '#AAAAAA',
     drop: '#1B1B1F',
   },
   textStyles: {
