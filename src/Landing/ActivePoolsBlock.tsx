@@ -1,15 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
-import { color } from 'styled-system';
+import { color, position } from 'styled-system';
 import PolygonLogo from '../assets/svg/ChainsLogos/polygon.svg';
 import ShidenLogo from '../assets/svg/ChainsLogos/shiden.svg';
 import Timer from '../assets/svg/timer.svg';
+import FloatingBlurredCircle from '../assets/svg/floatingBlurredCircle.svg';
 
 interface INetworkInformation {
   name: string;
   logo?: string;
   description: string;
   link?: string;
+  zIndex?: number;
 }
 
 interface INetworkType {
@@ -44,12 +46,13 @@ const NETWORKS: INetworkType = {
   'Solana': {
     name: 'Solana',
     description: '365% APR \n Farming opportunity',
+    zIndex: 11,
   }
 }
 
 const ACTIVE_BLOCK_SIZE = '16rem';
 
-const ActiveBlockWrapper = styled.div`
+const ActiveBlockWrapper = styled.div<{zIndex: number}>`
   display: flex;
   flex-direction: column;
   width: ${ACTIVE_BLOCK_SIZE};
@@ -62,6 +65,7 @@ const ActiveBlockWrapper = styled.div`
   border: 1px solid;
   border-image-source: radial-gradient(184.37% 184.37% at -60.94% -46.88%, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 61%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
   ${color};
+  ${position};
 `;
 
 const ActiveBlocksWrapper = styled.div`
@@ -73,6 +77,9 @@ const ActiveBlocksWrapper = styled.div`
 `;
 
 const ActivePoolsBlockWrapper = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
   background: black;
 `;
 
@@ -115,9 +122,43 @@ const GoButton = styled.div<{isActive: boolean}>`
     : 'transparent'};
 `;
 
+const FloatingCircle = styled.img`
+  position: absolute;
+  border-radius: 50%;
+`;
+
+const TopLeftFloatingCircle = styled(FloatingCircle)`
+  left: calc(50% - ${ACTIVE_BLOCK_SIZE} - ${ACTIVE_BLOCK_SIZE});
+  top: -2rem;
+`;
+
+const BottomLeftFloatingCircle = styled(FloatingCircle)`
+  left: calc(50% - ${ACTIVE_BLOCK_SIZE});
+  transform: translate(50%, -15%);
+  top: 50%;
+  z-index: 10;
+  width: 6.25rem;
+`;
+
+const RightMiddleFloatingCircle = styled(FloatingCircle)`
+  left: calc(50% + ${ACTIVE_BLOCK_SIZE});
+  top: 50%;
+  transform: translate(50%, -50%);
+  z-index: 10;
+  width: 8.5rem;
+`;
+
+const RightBottomFloatingCircle = styled(FloatingCircle)`
+  left: calc(55% + ${ACTIVE_BLOCK_SIZE});
+  top: 55%;
+  transform: translateX(80%);
+  z-index: 12;
+  width: 5.5rem;
+`;
+
 const ActiveBlock = ({network} : {network: INetworkInformation}) => {
   return (
-    <ActiveBlockWrapper color="text">
+    <ActiveBlockWrapper color="text" zIndex={network.zIndex}>
       <header>
         { network.name }
       </header>
@@ -146,6 +187,10 @@ const ActiveBlocks = () => (
 
 const ActivePoolsBlock = () => (
   <ActivePoolsBlockWrapper>
+    <TopLeftFloatingCircle src={FloatingBlurredCircle} alt="" />
+    <BottomLeftFloatingCircle src={FloatingBlurredCircle} alt="" />
+    <RightMiddleFloatingCircle src={FloatingBlurredCircle} alt="" />
+    <RightBottomFloatingCircle src={FloatingBlurredCircle} alt="" />
     <ActiveBlocks />
   </ActivePoolsBlockWrapper>
 );
