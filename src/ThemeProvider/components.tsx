@@ -21,28 +21,43 @@ export const Text = styled.div<TextProps>`
     variants: {
       smallSora: {
         fontSize: 12,
-        lineHeigh: 75,
+        lineHeight: '18px',
+        fontFamily: 'Sora',
       },
       mediumSora: {
         fontSize: 14,
+        lineHeight: '20px',
+        fontFamily: 'Sora',
       },
       defaultSora: {
         fontSize: 16,
+        lineHeight: '24px',
+        fontFamily: 'Sora',
       },
       largeSora: {
         fontSize: 18,
+        lineHeight: '24px',
+        fontFamily: 'Sora',
       },
       smallRubik: {
         fontSize: 12,
+        lineHeight: '18px',
+        fontFamily: 'Rubik',
       },
       mediumRubik: {
         fontSize: 14,
+        lineHeight: '20px',
+        fontFamily: 'Rubik',
       },
       defaultRubik: {
         fontSize: 16,
+        lineHeight: '24px',
+        fontFamily: 'Rubik',
       },
       largeRubik: {
         fontSize: 18,
+        lineHeight: '24px',
+        fontFamily: 'Rubik',
       },
     },
   })}
@@ -56,27 +71,43 @@ export const Head = styled.div`
     variants: {
       smallSora: {
         fontSize: 24,
+        lineHeight: '30px',
+        fontFamily: 'Sora',
       },
       mediumSora: {
         fontSize: 32,
+        lineHeight: '32px',
+        fontFamily: 'Sora',
       },
       defaultSora: {
         fontSize: 40,
+        lineHeight: '55px',
+        fontFamily: 'Sora',
       },
       largeSora: {
         fontSize: 60,
+        lineHeight: '75x',
+        fontFamily: 'Sora',
       },
       smallRubik: {
         fontSize: 24,
+        lineHeight: '30px',
+        fontFamily: 'Rubik',
       },
       mediumRubik: {
         fontSize: 32,
+        lineHeight: '32px',
+        fontFamily: 'Rubik',
       },
       defaultRubik: {
         fontSize: 40,
+        lineHeight: '55px',
+        fontFamily: 'Rubik',
       },
       largeRubik: {
         fontSize: 60,
+        lineHeight: '75px',
+        fontFamily: 'Rubik',
       },
     },
   })}
