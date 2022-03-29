@@ -69,6 +69,7 @@ const ActiveBlockWrapper = styled.div<{zIndex: number}>`
 `;
 
 const ActiveBlocksWrapper = styled.div`
+  position: relative;
   display: grid;
   grid-template-columns: ${ACTIVE_BLOCK_SIZE} ${ACTIVE_BLOCK_SIZE} ${ACTIVE_BLOCK_SIZE};
   grid-template-rows: 1fr 1fr;
@@ -79,6 +80,8 @@ const ActiveBlocksWrapper = styled.div`
 const ActivePoolsBlockWrapper = styled.div`
   position: relative;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
   background: black;
 `;
@@ -156,6 +159,13 @@ const RightBottomFloatingCircle = styled(FloatingCircle)`
   width: 5.5rem;
 `;
 
+const HeaderText = styled['h2']`
+  background: radial-gradient(575.57% 4609.05% at 2.78% -76.56%, #B7E1FF 0%, #8128CC 25%), #FFFFFF;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 40px;
+`;
+
 const ActiveBlock = ({network} : {network: INetworkInformation}) => {
   return (
     <ActiveBlockWrapper color="text" zIndex={network.zIndex}>
@@ -179,6 +189,10 @@ const ActiveBlock = ({network} : {network: INetworkInformation}) => {
 
 const ActiveBlocks = () => (
   <ActiveBlocksWrapper>
+    <TopLeftFloatingCircle src={FloatingBlurredCircle} alt="" />
+    <BottomLeftFloatingCircle src={FloatingBlurredCircle} alt="" />
+    <RightMiddleFloatingCircle src={FloatingBlurredCircle} alt="" />
+    <RightBottomFloatingCircle src={FloatingBlurredCircle} alt="" />
     {Object.keys(NETWORKS).map(NetworkInfo => {
       return <ActiveBlock network={NETWORKS[NetworkInfo]} />;
     })}
@@ -187,10 +201,7 @@ const ActiveBlocks = () => (
 
 const ActivePoolsBlock = () => (
   <ActivePoolsBlockWrapper>
-    <TopLeftFloatingCircle src={FloatingBlurredCircle} alt="" />
-    <BottomLeftFloatingCircle src={FloatingBlurredCircle} alt="" />
-    <RightMiddleFloatingCircle src={FloatingBlurredCircle} alt="" />
-    <RightBottomFloatingCircle src={FloatingBlurredCircle} alt="" />
+    <HeaderText>Active Farming pools</HeaderText>
     <ActiveBlocks />
   </ActivePoolsBlockWrapper>
 );
