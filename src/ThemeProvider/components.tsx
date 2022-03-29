@@ -1,26 +1,22 @@
 import styled from 'styled-components';
-import {
-  color,
-  layout,
-  grid,
-  variant,
-  ColorProps,
-  LayoutProps,
-  GridProps,
-  lineHeight,
-  typography,
-} from 'styled-system';
+import { color, layout, grid, variant, ColorProps, LayoutProps, GridProps } from 'styled-system';
 
 export interface Props extends ColorProps, LayoutProps, GridProps {
   children: React.ReactNode;
 }
 
+interface VariantProps {
+  variant?: string;
+}
+
+interface TextProps extends ColorProps, VariantProps {
+  children?: React.ReactNode;
+}
+
 // Typography
-export const Text = styled.div`
+export const Text = styled.div<TextProps>`
   color: #333;
   ${color}
-  ${lineHeight}
-  ${typography}
   ${variant({
     variants: {
       smallSora: {
