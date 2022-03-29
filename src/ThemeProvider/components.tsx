@@ -8,10 +8,10 @@ import {
   LayoutProps,
   GridProps,
   lineHeight,
-  typography 
+  typography,
 } from 'styled-system';
 
-interface Props extends ColorProps, LayoutProps, GridProps {
+export interface Props extends ColorProps, LayoutProps, GridProps {
   children: React.ReactNode;
 }
 
