@@ -1,11 +1,13 @@
 import React from 'react';
-import Flex from 'ThemeProvider';
 import styled from 'styled-components';
 import { color } from 'styled-system';
+import PolygonLogo from '../assets/svg/ChainsLogos/polygon.svg';
+import ShidenLogo from '../assets/svg/ChainsLogos/shiden.svg';
+import Timer from '../assets/svg/timer.svg';
 
 interface INetworkInformation {
   name: string;
-  logo: string;
+  logo?: string;
   description: string;
   link?: string;
 }
@@ -17,35 +19,31 @@ interface INetworkType {
 const NETWORKS: INetworkType = {
   'Polygon': {
     name: 'Polygon',
-    logo: '#',
-    description: '#',
+    logo: PolygonLogo,
+    description: '365% APR \n Farming opportunity',
     link: '#',
   },
   'Shiden': {
     name: 'Shiden',
-    logo: '#',
-    description: '#',
+    logo: ShidenLogo,
+    description: '365% APR \n Farming opportunity',
     link: '#',
   },
   'Avalanche': {
     name: 'Avalanche',
-    logo: '#',
-    description: '#',
+    description: '365% APR \n Farming opportunity',
   },
   'Aurora': {
     name: 'Aurora',
-    logo: '#',
-    description: '#',
+    description: '365% APR \n Farming opportunity',
   },
   'Gate Chain': {
     name: 'Gate Chain',
-    logo: '#',
-    description: '#',
+    description: '365% APR \n Farming opportunity',
   },
   'Solana': {
     name: 'Solana',
-    logo: '#',
-    description: '#',
+    description: '365% APR \n Farming opportunity',
   }
 }
 
@@ -53,6 +51,7 @@ const ACTIVE_BLOCK_SIZE = '16rem';
 
 const ActiveBlockWrapper = styled.div`
   display: flex;
+  flex-direction: column;
   width: ${ACTIVE_BLOCK_SIZE};
   height: ${ACTIVE_BLOCK_SIZE};
   padding: 1.5rem;
@@ -60,6 +59,8 @@ const ActiveBlockWrapper = styled.div`
   box-shadow: inset 18px 20px 78px rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(3.5rem);
   border-radius: 1.25rem;
+  border: 1px solid;
+  border-image-source: radial-gradient(184.37% 184.37% at -60.94% -46.88%, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 61%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
   ${color};
 `;
 
@@ -75,24 +76,59 @@ const ActivePoolsBlockWrapper = styled.div`
   background: black;
 `;
 
+const DescriptionWrapper = styled.div`
+  display: flex;
+  margin-top: 1.25rem;
+`;
+
+const NetworkImageWrapper = styled.div<{isLogo: boolean}>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 1.25rem;
+  background: ${props => props.isLogo
+    ? `radial-gradient(107.5% 107.5% at 104.37% 101.87%, #7B3FE4 14.55%, #B185FF 83.34%)`
+    : `rgba(255, 255, 255, 0.05)`};
+`;
+
+const DescriptionText = styled.p`
+  ${color};
+  flex: 1;
+  margin-top: 0;
+  margin-left: 1rem;
+  white-space: pre-line;
+`;
+
 const GoButton = styled.div<{isActive: boolean}>`
+  margin-top: 1.25rem;
+  border-radius: 0.6875rem;
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+  text-align: center;
+  cursor: pointer;
+  border: ${props => props.isActive ? '1px solid #9C69F4' : '1px solid rgba(255, 255, 255, 0.4)'};
+  color: ${props => props.isActive ? 'white' : 'rgba(255, 255, 255, 0.4)'};
   background: ${props => props.isActive
-    ? `background: radial-gradient(175.28% 356.67% at 86.32% 100%, rgba(123, 63, 228, 0) 14.55%, #B185FF 83.34%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;`
-    : 'red'};
+    ? `radial-gradient(175.28% 356.67% at 86.32% 100%, rgba(123, 63, 228, 0) 14.55%, #B185FF 83.34%)`
+    : 'transparent'};
 `;
 
 const ActiveBlock = ({network} : {network: INetworkInformation}) => {
   return (
-    <ActiveBlockWrapper>
-      <header color="text">
+    <ActiveBlockWrapper color="text">
+      <header>
         { network.name }
       </header>
-      <Flex>
-        <img src={network.logo} alt={network.name} />
-        <p>
+      <DescriptionWrapper>
+        <NetworkImageWrapper isLogo={Boolean(network.logo)}>
+          <img src={network.logo || Timer} alt={network.name} />
+        </NetworkImageWrapper>
+        <DescriptionText>
           {network.description}
-        </p>
-      </Flex>
+        </DescriptionText>
+      </DescriptionWrapper>
       <GoButton isActive={Boolean(network.link)}>
         {network.link ? 'Farm Now' : 'Coming soon'}
       </GoButton>
