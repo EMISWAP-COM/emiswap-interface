@@ -1,22 +1,44 @@
 import styled from 'styled-components';
-import { color, layout, grid, variant, ColorProps, LayoutProps, GridProps } from 'styled-system';
+import {
+  color,
+  layout,
+  grid,
+  variant,
+  ColorProps,
+  LayoutProps,
+  GridProps,
+  SpaceProps,
+  space,
+  background,
+  BackgroundProps,
+  flexbox,
+  FlexboxProps,
+} from 'styled-system';
 
-export interface Props extends ColorProps, LayoutProps, GridProps {
-  children: React.ReactNode;
+export interface Props
+  extends ColorProps,
+    LayoutProps,
+    GridProps,
+    BackgroundProps,
+    SpaceProps,
+    FlexboxProps {
+  children?: React.ReactNode;
 }
 
 interface VariantProps {
   variant?: string;
 }
 
-interface TextProps extends ColorProps, VariantProps {
+interface TextProps extends ColorProps, VariantProps, LayoutProps, SpaceProps {
   children?: React.ReactNode;
 }
 
 // Typography
 export const Text = styled.div<TextProps>`
   color: #333;
-  ${color}
+  ${color};
+  ${space};
+  ${layout};
   ${variant({
     variants: {
       smallSora: {
@@ -63,10 +85,10 @@ export const Text = styled.div<TextProps>`
   })}
 `;
 
-export const Head = styled.div`
+export const Head = styled.div<TextProps>`
   color: #333;
   font-weight: 700;
-  ${color}
+  ${color};
   ${variant({
     variants: {
       smallSora: {
@@ -112,16 +134,23 @@ export const Head = styled.div`
     },
   })}
 `;
-
 // Layout
 export const Grid = styled.div<Props>`
   display: grid;
-  ${grid}
-  ${layout}
+  ${grid};
+  ${layout};
+  ${color};
+`;
+export const Flex = styled.div<Props>`
+  display: flex;
+  ${color};
+  ${space}
+  ${flexbox};
 `;
 
-export const Flex = styled.div`
-  display: flex;
+export const Image = styled.div<Props>`
+  ${background};
+  ${layout}
 `;
 
 // Buttons
