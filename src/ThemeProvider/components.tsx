@@ -85,6 +85,19 @@ export const Text = styled.div<TextProps>`
   })}
 `;
 
+export const StyledHead = styled.div`
+  font-weight: bold;
+  font-size: 40px
+  line-height: 50px
+  background-color: #f3ec78;
+  background-image: linear-gradient(45deg, #B7E1FF, #8128CC);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent; 
+  -moz-text-fill-color: transparent;
+`;
+
 export const Head = styled.div<TextProps>`
   color: #333;
   font-weight: 700;
@@ -137,6 +150,7 @@ export const Head = styled.div<TextProps>`
 // Layout
 export const Grid = styled.div<Props>`
   display: grid;
+  ${space};
   ${grid};
   ${layout};
   ${color};
