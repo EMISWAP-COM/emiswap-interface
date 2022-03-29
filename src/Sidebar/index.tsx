@@ -1,5 +1,5 @@
-import React  from 'react';
-import { Props } from '../ThemeProvider/components'
+import React from 'react';
+import { Props } from '../ThemeProvider/components';
 import styled from 'styled-components';
 import { color, layout, width } from 'styled-system';
 
