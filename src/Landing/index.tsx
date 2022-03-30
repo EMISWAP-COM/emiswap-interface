@@ -12,12 +12,12 @@ import StandoutBlock from './StandoutBlock';
 import { Grid } from 'ThemeProvider/components';
 
 const Landing = () => (
-  <Grid bg="bg" pl="12.5rem">
+  <Grid bg="bg">
     {/* <Header /> */}
     <MainBlock />
     <InfoBlock />
     {/* <StandoutBlock /> */}
-    {/* <PartnersBlock /> */}
+    <PartnersBlock />
     {/* <InvestorsBlock /> */}
     {/* <BlockChainsBlock /> */}
     {/* <RoadmapBlock /> */}

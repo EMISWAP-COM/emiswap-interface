@@ -96,14 +96,15 @@ export const Text = styled.div<TextProps>`
 
 export const StyledHead = styled.div`
   font-weight: bold;
-  font-size: 40px
-  line-height: 50px
+  font-size: 40px;
+  font-family: 'Sora';
+  line-height: 50px;
   background-color: #f3ec78;
-  background-image: linear-gradient(45deg, #B7E1FF, #8128CC);
+  background-image: linear-gradient(45deg, #b7e1ff, #8128cc);
   background-size: 100%;
   -webkit-background-clip: text;
   -moz-background-clip: text;
-  -webkit-text-fill-color: transparent; 
+  -webkit-text-fill-color: transparent;
   -moz-text-fill-color: transparent;
 `;
 
@@ -167,7 +168,7 @@ export const Grid = styled.div<Props>`
 export const Flex = styled.div<Props>`
   display: flex;
   ${color};
-  ${space}
+  ${space};
   ${flexbox};
 `;
 
@@ -176,18 +177,20 @@ export const Box = styled.div<Props>`
   ${layout};
   ${color};
   ${background};
-  ${border}
-  ${position}
-  ${shadow}
+  ${border};
+  ${position};
+  ${shadow};
 `;
 
 export const Image = styled.div<Props>`
   ${background};
-  ${layout}
+  ${layout};
 `;
 
 export const SVG = styled.div<Props>`
-  ${layout}
+  ${background};
+  ${space};
+  ${layout};
 `;
 
 // Buttons
