@@ -186,4 +186,8 @@ export const Image = styled.div<Props>`
   ${layout}
 `;
 
+export const SVG = styled.div<Props>`
+  ${layout}
+`;
+
 // Buttons
