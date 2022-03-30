@@ -12,17 +12,17 @@ import StandoutBlock from './StandoutBlock';
 import { Grid } from 'ThemeProvider/components';
 
 const Landing = () => (
-  <Grid gridTemplateColumns="1fr">
-    <Header />
+  <Grid bg="bg" pl="12.5rem">
+    {/* <Header /> */}
     <MainBlock />
     <InfoBlock />
-    <StandoutBlock />
-    <PartnersBlock />
-    <InvestorsBlock />
-    <BlockChainsBlock />
-    <RoadmapBlock />
-    <ActivePoolsBlock />
-    <Footer />
+    {/* <StandoutBlock /> */}
+    {/* <PartnersBlock /> */}
+    {/* <InvestorsBlock /> */}
+    {/* <BlockChainsBlock /> */}
+    {/* <RoadmapBlock /> */}
+    {/* <ActivePoolsBlock /> */}
+    {/* <Footer /> */}
   </Grid>
 );
 
