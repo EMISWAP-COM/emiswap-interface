@@ -4,15 +4,21 @@ import {
   layout,
   grid,
   variant,
+  space,
+  flexbox,
+  shadow,
+  border,
+  position,
+  background,
   ColorProps,
   LayoutProps,
   GridProps,
   SpaceProps,
-  space,
-  background,
   BackgroundProps,
-  flexbox,
   FlexboxProps,
+  PositionProps,
+  ShadowProps,
+  BorderProps,
 } from 'styled-system';
 
 export interface Props
@@ -21,6 +27,9 @@ export interface Props
     GridProps,
     BackgroundProps,
     SpaceProps,
+    PositionProps,
+    ShadowProps,
+    BorderProps,
     FlexboxProps {
   children?: React.ReactNode;
 }
@@ -160,6 +169,16 @@ export const Flex = styled.div<Props>`
   ${color};
   ${space}
   ${flexbox};
+`;
+
+export const Box = styled.div<Props>`
+  ${space};
+  ${layout};
+  ${color};
+  ${background};
+  ${border}
+  ${position}
+  ${shadow}
 `;
 
 export const Image = styled.div<Props>`
