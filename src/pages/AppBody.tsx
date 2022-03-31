@@ -5,7 +5,7 @@ import BonusProgram from '../components/BonusProgram';
 import { ThemeProvider } from 'emotion-theming';
 import theme from '@rebass/preset';
 import FAQInfo from '../components/FAQInfo';
-import { useRouteMatch } from 'react-router';
+import { useRouteMatch } from 'react-router-dom';
 import { YMInitializer } from 'react-yandex-metrika';
 import { useIsEthActive } from '../hooks/Coins';
 

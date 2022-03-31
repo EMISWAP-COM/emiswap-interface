@@ -47,7 +47,8 @@ export const ButtonPrimary = styled(Base)`
     box-shadow: ${({ theme }) => theme.purpleBoxShadow};
   }
   &:disabled {
-    background-color: ${({ theme, altDisbaledStyle }) => altDisbaledStyle ? theme.primary1 : 'transparent'};
+    background-color: ${({ theme, altDisbaledStyle }) =>
+      altDisbaledStyle ? theme.primary1 : 'transparent'};
     color: ${({ theme, altDisbaledStyle }) => (altDisbaledStyle ? 'white' : theme.text3)};
     border: 1px solid ${({ theme }) => theme.text3}
     cursor: auto;
@@ -255,17 +256,17 @@ const ButtonErrorStyle = styled(Base)`
 
 export function ButtonConfirmed({ confirmed, ...rest }: { confirmed?: boolean } & ButtonProps) {
   if (confirmed) {
-    return <ButtonConfirmedStyle {...rest} />;
+    return <ButtonConfirmedStyle {...(rest as any)} />;
   } else {
-    return <ButtonPrimary {...rest} />;
+    return <ButtonPrimary {...(rest as any)} />;
   }
 }
 
 export function ButtonError({ error, ...rest }: { error?: boolean } & ButtonProps) {
   if (error) {
-    return <ButtonErrorStyle {...rest} />;
+    return <ButtonErrorStyle {...(rest as any)} />;
   } else {
-    return <ButtonPrimary {...rest} />;
+    return <ButtonPrimary {...(rest as any)} />;
   }
 }
 
@@ -275,7 +276,7 @@ export function ButtonDropdown({
   ...rest
 }: { disabled?: boolean } & ButtonProps) {
   return (
-    <ButtonPrimary {...rest} disabled={disabled}>
+    <ButtonPrimary {...(rest as any)} disabled={disabled}>
       <RowBetween>
         <div style={{ display: 'flex', alignItems: 'center' }}>{children}</div>
         <ChevronDown size={24} />
@@ -290,7 +291,7 @@ export function ButtonDropdownLight({
   ...rest
 }: { disabled?: boolean } & ButtonProps) {
   return (
-    <ButtonOutlined {...rest} disabled={disabled}>
+    <ButtonOutlined {...(rest as any)} disabled={disabled}>
       <RowBetween>
         <div style={{ display: 'flex', alignItems: 'center' }}>{children}</div>
         <ChevronDown size={24} />
@@ -301,8 +302,8 @@ export function ButtonDropdownLight({
 
 export function ButtonRadio({ active, ...rest }: { active?: boolean } & ButtonProps) {
   if (!active) {
-    return <ButtonWhite {...rest} />;
+    return <ButtonWhite {...(rest as any)} />;
   } else {
-    return <ButtonPrimary {...rest} />;
+    return <ButtonPrimary {...(rest as any)} />;
   }
 }

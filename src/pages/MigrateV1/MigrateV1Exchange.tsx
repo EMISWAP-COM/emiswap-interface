@@ -1,6 +1,6 @@
 import { Fraction, JSBI, Token, TokenAmount } from '@uniswap/sdk';
 import React, { useEffect, useState } from 'react';
-import { Redirect, RouteComponentProps } from 'react-router';
+import { Redirect, RouteComponentProps } from 'react-router-dom';
 import { Text } from 'rebass';
 import { ButtonLight, ButtonPrimary } from '../../components/Button';
 import CurrencyLogo from '../../components/CurrencyLogo';
@@ -220,7 +220,7 @@ export default function MigrateV1Exchange({
       contract.estimateGas
         .deposit(...args)
         .then(data => {
-          const gasLimit = calculateGasMargin(data, chainId);
+          const gasLimit = calculateGasMargin(data as any, chainId);
           return contract
             .deposit(...args, { gasLimit })
             .then(response => {

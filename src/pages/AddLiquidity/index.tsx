@@ -186,7 +186,7 @@ export default function AddLiquidity({
     await estimate(...args, optionalArgs)
       .then(estimatedGasLimit => {
         method(...args, {
-          gasLimit: calculateGasMargin(estimatedGasLimit, chainId),
+          gasLimit: calculateGasMargin(estimatedGasLimit as any, chainId),
           ...optionalArgs,
         })
           .then((response: any) => {
@@ -345,7 +345,7 @@ export default function AddLiquidity({
       .then(estimatedGasLimit => {
         method(...args, {
           ...optionalArgs,
-          gasLimit: calculateGasMargin(estimatedGasLimit, chainId),
+          gasLimit: calculateGasMargin(estimatedGasLimit as any, chainId),
         })
           .then((response: any) => {
             try {

@@ -4,7 +4,7 @@ import { Header, WalletAction } from '../styleds';
 import styled from 'styled-components/macro';
 import { useActiveWeb3React } from '../../../hooks';
 import { getExplorerLink, shortenAddress } from '../../../utils';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import { useWalletModalToggle } from '../../../state/application/hooks';
 import { ExternalLink as LinkIcon } from 'react-feather';
 import Copy from '../Copy';

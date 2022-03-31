@@ -3,7 +3,7 @@ import { currencyEquals, Percent, Token } from '@uniswap/sdk';
 import React, { useCallback, useContext, useMemo, useState } from 'react';
 import { ArrowDown, Plus } from 'react-feather';
 import ReactGA from 'react-ga';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps } from 'react-router-dom';
 import { Text } from 'rebass';
 import { ThemeContext } from 'styled-components';
 import { ButtonConfirmed, ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button';
@@ -270,7 +270,7 @@ export default function RemoveLiquidity({
     const safeGasEstimates = await Promise.all(
       methodNames.map(methodName =>
         emiRouter?.estimateGas[methodName](...args)
-          .then((value: BigNumber) => calculateGasMargin(value, chainId))
+          .then((value: any) => calculateGasMargin(value, chainId))
           .catch((error: any) => {
             console.error(`estimateGas failed for ${methodName}`, error);
           }),
