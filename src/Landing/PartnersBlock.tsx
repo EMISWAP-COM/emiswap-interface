@@ -26,7 +26,7 @@ const PartnersBlock = () => (
       <StyledHead>Partners</StyledHead>
     </Flex>
     <Flex flexDirection="column">
-      <Flex justifyContent="space-between" mt="2rem" alignItems="center">
+      <Flex justifyContent="space-between" mt="1rem" alignItems="center">
         <Image
           backgroundImage={`url(${bitmartLogo})`}
           backgroundSize="cover"

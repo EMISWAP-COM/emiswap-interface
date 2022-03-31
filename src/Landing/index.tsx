@@ -19,7 +19,7 @@ const Landing = () => (
     {/* <StandoutBlock /> */}
     <PartnersBlock />
     {/* <InvestorsBlock /> */}
-    {/* <BlockChainsBlock /> */}
+    <BlockChainsBlock />
     {/* <RoadmapBlock /> */}
     {/* <ActivePoolsBlock /> */}
     {/* <Footer /> */}
