@@ -136,6 +136,29 @@ const QuartalBlocksWrapper = styled(Flex)`
 
 const PROGRESS_BLOCK_WIDTH = '2rem';
 
+const StepBlock = ({ step }: {step: IStep}) => (
+  <Flex>
+    <Flex
+      width="2rem"
+      height="2rem"
+      justifyContent="center"
+      alignItems="center"
+      borderRadius="0.625rem"
+      backgroundColor="red"
+    >
+      <Image
+        backgroundImage={`url(${step.icon})`}
+        backgroundSize="cover"
+        width="1.25rem"
+        height="1.25rem"
+      />
+    </Flex>
+    <Text color="text">
+      { step.name }
+    </Text>
+  </Flex>
+);
+
 const ProgressBlock = ({ steps, roadmapStepsIcon }: { steps: Array<IStep>, roadmapStepsIcon: RoadmapStepsIconType }) => (
   <Flex>
     <Image
@@ -144,7 +167,11 @@ const ProgressBlock = ({ steps, roadmapStepsIcon }: { steps: Array<IStep>, roadm
       width={PROGRESS_BLOCK_WIDTH}
       height="10rem"
     />
-    <Text color="text">12312312</Text>
+    <Box>
+      {steps.map((step) => (
+        <StepBlock step={step} />
+      ))}
+    </Box>
   </Flex>
 );
 
