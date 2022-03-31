@@ -1,9 +1,14 @@
 import React from 'react';
-import { Flex, Image, StyledHead, Text } from '../ThemeProvider';
+import { Flex, Image, StyledHead, Text, Box } from '../ThemeProvider';
 import GreenToPurpleRectangle from '../assets/svg/Rectangles/GreenToPurple.svg';
 import PurpleToGreenRectangle from '../assets/svg/Rectangles/PurpleToGreen.svg';
 import RoadmapLineXL from '../assets/svg/Lines/RoadmapLineXL.svg';
+import RoadmapLineMedium from '../assets/svg/Lines/RoadmapLineMedium.svg';
+import RoadmapLineSmall from '../assets/svg/Lines/RoadmapLineSmall.svg';
+import RoadmapLineXS from '../assets/svg/Lines/RoadmapLineXS.svg';
 import styled from 'styled-components';
+
+type RoadmapStepsIconType = string;
 
 interface IStep {
   name: string;
@@ -14,9 +19,9 @@ interface IStep {
 interface IQuartal {
   name: string;
   progressIcon: string;
-  roadmapStepsIcon: string;
+  roadmapStepsIcon: RoadmapStepsIconType;
   steps: Array<IStep>;
-  isActive?: Boolean;
+  isActive?: boolean;
 }
 
 interface IQuartalsInfo {
@@ -26,7 +31,7 @@ interface IQuartalsInfo {
 const Q1 = {
   name: 'Q1',
   progressIcon: GreenToPurpleRectangle,
-  roadmapStepsIcon: '#',
+  roadmapStepsIcon: RoadmapLineXL,
   isActive: true,
   steps: [
     {
@@ -60,7 +65,7 @@ const Q1 = {
 const Q2 = {
   name: 'Q2',
   progressIcon: PurpleToGreenRectangle,
-  roadmapStepsIcon: '#',
+  roadmapStepsIcon: RoadmapLineMedium,
   steps: [
     {
       name: 'Binance Smart Chain',
@@ -83,7 +88,7 @@ const Q2 = {
 const Q3 = {
   name: 'Q3',
   progressIcon: GreenToPurpleRectangle,
-  roadmapStepsIcon: '#',
+  roadmapStepsIcon: RoadmapLineSmall,
   steps: [
     {
       name: 'OKEX',
@@ -103,7 +108,7 @@ const Q3 = {
 const Q4 = {
   name: 'Q4',
   progressIcon: PurpleToGreenRectangle,
-  roadmapStepsIcon: '#',
+  roadmapStepsIcon: RoadmapLineXS,
   steps: [
     {
       name: 'To be announced',
@@ -124,10 +129,35 @@ const QUARTALS_INFO: IQuartalsInfo = {
   'q4': Q4,
 };
 
-const QuartalBlock = ({ quartal } : {quartal: IQuartal}) => (
-  <div>
-    <Flex alignItems="center">
-      <Text>{quartal.name}</Text>
+const QuartalBlocksWrapper = styled(Flex)`
+  margin-top: 2.5rem;
+  gap: 0.75rem;
+`;
+
+const PROGRESS_BLOCK_WIDTH = '2rem';
+
+const ProgressBlock = ({ steps, roadmapStepsIcon }: { steps: Array<IStep>, roadmapStepsIcon: RoadmapStepsIconType }) => (
+  <Flex>
+    <Image
+      backgroundImage={`url(${roadmapStepsIcon})`}
+      backgroundSize="cover"
+      width={PROGRESS_BLOCK_WIDTH}
+      height="10rem"
+    />
+    <Text color="text">12312312</Text>
+  </Flex>
+);
+
+const QuartalBlockHeader = styled.header<{ isActive: boolean }>`
+  width: ${PROGRESS_BLOCK_WIDTH};
+  text-align: center;
+  color: ${props => props.isActive ? '#FFFFFF' : 'rgba(255,255,255,0.6)'};
+`;
+
+const QuartalBlock = ({ quartal } : {quartal: IQuartal }) => (
+  <Box>
+    <Flex alignItems="center" marginBottom="1rem">
+      <QuartalBlockHeader isActive={quartal.isActive}>{quartal.name}</QuartalBlockHeader>
       <Image
         backgroundImage={`url(${quartal.progressIcon})`}
         backgroundSize="cover"
@@ -135,7 +165,11 @@ const QuartalBlock = ({ quartal } : {quartal: IQuartal}) => (
         height="0.3125rem"
       />
     </Flex>
-  </div>
+    <ProgressBlock
+      steps={quartal.steps}
+      roadmapStepsIcon={quartal.roadmapStepsIcon}
+    />
+  </Box>
 );
 
 const RoadmapBlock = () => (
@@ -149,11 +183,11 @@ const RoadmapBlock = () => (
         by integrating various blockchains and NFT components
       </Text>
     </header>
-    <Flex marginTop="2.5rem">
+    <QuartalBlocksWrapper>
       {Object.keys(QUARTALS_INFO).map((QUARTAL_INFO_KEY) => (
         <QuartalBlock quartal={QUARTALS_INFO[QUARTAL_INFO_KEY]} />
       ))}
-    </Flex>
+    </QuartalBlocksWrapper>
   </Flex>
 );
 

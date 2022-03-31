@@ -18,7 +18,7 @@ import {
   FlexboxProps,
   PositionProps,
   ShadowProps,
-  BorderProps,
+  BorderProps, typography,
 } from 'styled-system';
 
 export interface Props
@@ -48,6 +48,7 @@ export const Text = styled.div<TextProps>`
   ${color};
   ${space};
   ${layout};
+  ${typography};
   ${variant({
     variants: {
       smallSora: {
@@ -103,7 +104,7 @@ export const StyledHead = styled.div`
   background-size: 100%;
   -webkit-background-clip: text;
   -moz-background-clip: text;
-  -webkit-text-fill-color: transparent; 
+  -webkit-text-fill-color: transparent;
   -moz-text-fill-color: transparent;
 `;
 
