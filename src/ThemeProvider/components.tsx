@@ -170,6 +170,8 @@ export const Flex = styled.div<Props>`
   ${color};
   ${space}
   ${flexbox};
+  ${border};
+  ${layout};
 `;
 
 export const Box = styled.div<Props>`

@@ -22,6 +22,7 @@ export default {
     buttonActive: '#7A2DF4',
     buttonInactive: '#7A2DF426',
     drop: '#1B1B1F',
+    inactive: 'rgba(255, 255, 255, 0.15)',
   },
   gradientStyles: {
     iconBg: {

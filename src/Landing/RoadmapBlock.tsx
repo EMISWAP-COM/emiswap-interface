@@ -6,6 +6,19 @@ import RoadmapLineXL from '../assets/svg/Lines/RoadmapLineXL.svg';
 import RoadmapLineMedium from '../assets/svg/Lines/RoadmapLineMedium.svg';
 import RoadmapLineSmall from '../assets/svg/Lines/RoadmapLineSmall.svg';
 import RoadmapLineXS from '../assets/svg/Lines/RoadmapLineXS.svg';
+import ShidenLogo from '../assets/svg/Networks/Shiden.svg';
+import NearAuroraLogo from '../assets/png/Networks/NearAurora.png';
+import GateChainLogo from '../assets/svg/Networks/GateChain.svg';
+import AvalancheLogo from '../assets/svg/Networks/Avalanche.svg';
+import ChainPart from '../assets/svg/chainPart.svg';
+import BinanceSmartChainLogo from '../assets/svg/Networks/BinanceSmartChain.svg';
+import SolanaLogo from '../assets/svg/Networks/Solana.svg';
+import HecoLogo from '../assets/svg/Networks/Heco.svg';
+import EditPencil from '../assets/svg/EditPencil.svg';
+import OKEXLogo from '../assets/svg/Networks/OKEX.svg';
+import TronLogo from '../assets/svg/Networks/TRON.svg';
+import ImageEmpty from '../assets/svg/image.svg';
+import VolumeFull from '../assets/svg/VolumeFull.svg';
 import styled from 'styled-components';
 
 type RoadmapStepsIconType = string;
@@ -14,6 +27,7 @@ interface IStep {
   name: string;
   icon: string;
   description?: string;
+  width?: string | number;
 }
 
 interface IQuartal {
@@ -36,29 +50,30 @@ const Q1 = {
   steps: [
     {
       name: 'Shiden',
-      icon: '#',
+      icon: ShidenLogo,
     },
     {
       name: 'Near/Aurora',
-      icon: '#',
+      icon: NearAuroraLogo,
+      width: '2.5rem',
     },
     {
       name: 'Avalanche',
-      icon: '#',
+      icon: AvalancheLogo,
     },
     {
       name: 'Gate Chain',
-      icon: '#',
+      icon: GateChainLogo,
     },
     {
       name: 'Cross-chain bridge',
       description: 'Stage 01',
-      icon: '#',
+      icon: ChainPart,
     },
     {
       name: 'Cross-chain bridge',
       description: 'Stage 02',
-      icon: '#',
+      icon: ChainPart,
     }
   ],
 };
@@ -69,19 +84,19 @@ const Q2 = {
   steps: [
     {
       name: 'Binance Smart Chain',
-      icon: '#',
+      icon: BinanceSmartChainLogo,
     },
     {
       name: 'Solana',
-      icon: '#',
+      icon: SolanaLogo,
     },
     {
       name: 'Heco',
-      icon: '#',
+      icon: HecoLogo,
     },
     {
       name: 'Platform Redesign',
-      icon: '#',
+      icon: EditPencil,
     }
   ]
 };
@@ -92,16 +107,16 @@ const Q3 = {
   steps: [
     {
       name: 'OKEX',
-      icon: '#',
+      icon: OKEXLogo,
     },
     {
       name: 'Tron',
-      icon: '#',
+      icon: TronLogo,
     },
     {
       name: 'NFT magic hall',
       description: 'Stage 01',
-      icon: '#',
+      icon: ImageEmpty,
     }
   ]
 };
@@ -112,12 +127,12 @@ const Q4 = {
   steps: [
     {
       name: 'To be announced',
-      icon: '#',
+      icon: VolumeFull,
     },
     {
       name: 'NFT magic hall',
       description: 'Stage 02',
-      icon: '#',
+      icon: ImageEmpty,
     }
   ]
 };
@@ -137,23 +152,23 @@ const QuartalBlocksWrapper = styled(Flex)`
 const PROGRESS_BLOCK_WIDTH = '2rem';
 
 const StepBlock = ({ step }: {step: IStep}) => (
-  <Flex>
+  <Flex alignItems="center" mt="1.5rem">
     <Flex
-      width="2rem"
+      width={step.width ? `calc(${step.width} + 0.5rem)` : "2rem"}
       height="2rem"
       justifyContent="center"
       alignItems="center"
       borderRadius="0.625rem"
-      backgroundColor="red"
+      backgroundColor="inactive"
     >
       <Image
         backgroundImage={`url(${step.icon})`}
         backgroundSize="cover"
-        width="1.25rem"
+        width={step.width || "1.25rem"}
         height="1.25rem"
       />
     </Flex>
-    <Text color="text">
+    <Text color="text" ml="0.5rem">
       { step.name }
     </Text>
   </Flex>
@@ -165,9 +180,9 @@ const ProgressBlock = ({ steps, roadmapStepsIcon }: { steps: Array<IStep>, roadm
       backgroundImage={`url(${roadmapStepsIcon})`}
       backgroundSize="cover"
       width={PROGRESS_BLOCK_WIDTH}
-      height="10rem"
+      height="20.5rem"
     />
-    <Box>
+    <Box mt="-1.5rem">
       {steps.map((step) => (
         <StepBlock step={step} />
       ))}
