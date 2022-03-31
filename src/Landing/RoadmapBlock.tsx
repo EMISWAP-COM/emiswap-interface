@@ -168,9 +168,14 @@ const StepBlock = ({ step }: {step: IStep}) => (
         height="1.25rem"
       />
     </Flex>
-    <Text color="text" ml="0.5rem">
-      { step.name }
-    </Text>
+    <Flex flexDirection="column" justifyContent="center" pl="0.5rem">
+      <Text color="text" variant="mediumRubik">
+        { step.name }
+      </Text>
+      <Text color="inactive" variant="mediumRubik">
+        { step.description }
+      </Text>
+    </Flex>
   </Flex>
 );
 
@@ -179,10 +184,11 @@ const ProgressBlock = ({ steps, roadmapStepsIcon }: { steps: Array<IStep>, roadm
     <Image
       backgroundImage={`url(${roadmapStepsIcon})`}
       backgroundSize="cover"
+      backgroundPosition="center"
       width={PROGRESS_BLOCK_WIDTH}
-      height="20.5rem"
+      height={`${steps.length * 2.5 + steps.length * 1.5}rem`}
     />
-    <Box mt="-1.5rem">
+    <Box>
       {steps.map((step) => (
         <StepBlock step={step} />
       ))}
