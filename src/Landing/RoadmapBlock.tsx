@@ -28,6 +28,7 @@ interface IStep {
   icon: string;
   description?: string;
   width?: string | number;
+  marginTop?: string | number;
 }
 
 interface IQuartal {
@@ -112,11 +113,13 @@ const Q3 = {
     {
       name: 'Tron',
       icon: TronLogo,
+      marginTop: '1.25rem',
     },
     {
       name: 'NFT magic hall',
       description: 'Stage 01',
       icon: ImageEmpty,
+      marginTop: '1.25rem',
     }
   ]
 };
@@ -128,11 +131,13 @@ const Q4 = {
     {
       name: 'To be announced',
       icon: VolumeFull,
+      marginTop: '1.25rem',
     },
     {
       name: 'NFT magic hall',
       description: 'Stage 02',
       icon: ImageEmpty,
+      marginTop: '1rem',
     }
   ]
 };
@@ -152,7 +157,7 @@ const QuartalBlocksWrapper = styled(Flex)`
 const PROGRESS_BLOCK_WIDTH = '2rem';
 
 const StepBlock = ({ step }: {step: IStep}) => (
-  <Flex alignItems="center" mt="1.5rem">
+  <Flex alignItems="center" mt={step.marginTop || '1.5rem'}>
     <Flex
       width={step.width ? `calc(${step.width} + 0.5rem)` : "2rem"}
       height="2rem"
@@ -186,9 +191,9 @@ const ProgressBlock = ({ steps, roadmapStepsIcon }: { steps: Array<IStep>, roadm
       backgroundSize="cover"
       backgroundPosition="center"
       width={PROGRESS_BLOCK_WIDTH}
-      height={`${steps.length * 2.5 + steps.length * 1.5}rem`}
+      height={`${steps.length * 2.5 + steps.length * 1.5 - 2}rem`}
     />
-    <Box>
+    <Box mt="-0.25rem">
       {steps.map((step) => (
         <StepBlock step={step} />
       ))}
