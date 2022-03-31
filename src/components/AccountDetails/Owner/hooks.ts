@@ -7,18 +7,21 @@ import { formatUnits, parseUnits } from '@ethersproject/units';
 import { useAuth } from '../../../hooks/useAuth';
 import { useSelector } from 'react-redux';
 import { fetchWrapper } from '../../../api/fetchWrapper';
-import { EMI_DELIVERY } from '../../../constants/emi/addresses';
 import { format } from 'date-fns/fp';
 import { useNetworkData } from '../../../hooks/Coins';
 import { getNetworkUrl } from '../../../state/cabinets/action-polygon';
 
 const ESW_CLAIM_API = window['env'].REACT_APP_ESW_CLAIM_API;
 const ESW_CLAIM_CHAIN_ID = window['env'].REACT_APP_ESW_CLAIM_CHAIN_ID;
+const EMI_DELIVERY = window['env'].REACT_APP_EMI_DELIVERY;
 
 export const useRequestCollect = (userInput: string, closeWindow: () => void) => {
   const { library, account, chainId } = useActiveWeb3React();
   const [title, changeTitle] = useState('Request');
   const [status, changeStatus] = useState('');
+  const [progress, changeProgress] = useState('init');
+  const [txHash, changeTxHash] = useState('');
+  const [requestedAmount, changeRequestedAmount] = useState('');
   const { value: network } = useNetworkData();
   const {
     available: { ESW: availableESW },
@@ -41,7 +44,7 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
       .getWalletNonce()
       .then(nonce => Number(nonce) + 1)
       .then(nonce =>
-        handleAuth().then(token => {
+        handleAuth().then(async (token) => {
           changeStatus('');
           if (parseFloat(userInput) <= 0 || Number.isNaN(parseFloat(userInput))) {
             changeStatus('Error input. The Request amount is not valid');
@@ -54,42 +57,46 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
             return Promise.resolve();
           }
           const amount = parseUnits(userInput, 18).toString();
-          fetchWrapper
-            .post(ESW_CLAIM_API, {
-              body: JSON.stringify({
-                token_name: 'ESW',
-                amount,
-                contract_address: EMI_DELIVERY,
-                nonce,
-                // TODO: use from env
-                blockchain_network: getNetworkUrl(network),
-                chainID: ESW_CLAIM_CHAIN_ID,
-                userID,
-              }),
-              headers: { Authorization: token },
-            })
-            .catch(e => {
-              if (e?.payload?.error_message === 'withdrawal_amount_is_more_than_available') {
-                changeStatus('Withdrawal amount is more than available');
-              } else {
-                changeStatus(
-                  'Please wait for the previous request being processed. It usually takes less than two minutes',
-                );
-              }
-              changeTitle('Request');
-            })
-            .then(({ signature, id }) => {
-              return contract
-                .request(account, amount, nonce, `0x${signature}`)
-                .then(transactionResult => [transactionResult, id]);
-            })
+          let res;
+          try {
+            res = await fetchWrapper
+              .post(ESW_CLAIM_API, {
+                body: JSON.stringify({
+                  token_name: 'ESW',
+                  amount,
+                  contract_address: EMI_DELIVERY,
+                  nonce,
+                  // TODO: use from env
+                  blockchain_network: getNetworkUrl(network),
+                  chainID: ESW_CLAIM_CHAIN_ID,
+                  userID,
+                }),
+                headers: { Authorization: token },
+              });
+          } catch (e) {
+            if (e?.payload?.error_message === "withdrawal_amount_is_more_than_available") {
+              changeStatus('Withdrawal amount is more than available');
+            } else {
+              changeStatus(
+                'Please wait for the previous request being processed. It usually takes less than two minutes',
+              );
+            }
+            changeTitle('Request');
+            return;
+          }
+          changeRequestedAmount(userInput);
+          contract
+            .request(account, amount, nonce, `0x${res.signature}`)
+            .then(transactionResult => [transactionResult, res.id])
             .catch(_ => {
               // TODO handle errors
               changeTitle('Request');
             })
             .then(([transactionResult, id]) => {
+              changeTxHash(transactionResult.hash);
+              changeProgress('pending');
               const transactionStateEndPoint = `/v1/private/users/${userID}/transactions/${id}`;
-              fetchWrapper.put(transactionStateEndPoint, {
+              return fetchWrapper.put(transactionStateEndPoint, {
                 headers: {
                   authorization: token,
                 },
@@ -98,26 +105,34 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
                   transaction_hash: transactionResult.hash,
                 }),
               });
-              closeWindow();
-              changeTitle('Request');
             })
-            .catch(e => {
-              // TODO error handling
+            .then(() => {
+              changeProgress('success');
+              changeTxHash(txHash);
+              closeWindow();
+            })
+            .catch(() => {
+              changeStatus('fail');
+            })
+            .finally(() => {
+              changeTitle('Request');
+              changeProgress('init');
             });
         }),
       );
   };
 
-  return { handler, availableReqestCollect: availableESW, title, status, maxAvailableForRequests };
+  return { handler, availableReqestCollect: availableESW, title, status, progress, maxAvailableForRequests, txHash, requestedAmount };
 };
 
 const toDate = bigNumberTimestamp => new Date(Number(bigNumberTimestamp) * 1000);
 const formatTomorrow = format('RRRR-MM-dd');
 
 export type RemainderStatus =
-  | { status: 'remaindTime'; value: string }
-  | { status: 'disable'; value: string }
-  | { status: 'enable'; value: string };
+  | { status: 'remaindTime'; value: string; }
+  | { status: 'disable'; value: string; }
+  | { status: 'enable'; value: string; }
+  | { status: 'progress'; value: string; };
 
 export const useGetRemainder = () => {
   const [state, changeState] = useState<RemainderStatus>({
@@ -133,6 +148,7 @@ export const useGetRemainder = () => {
 
   useEffect(() => {
     contract.getAvailableToClaim().then(result => {
+      changeState({ status: 'progress', value: 'Collect' });
       if (result.available > 0) {
         changeState({ status: 'enable', value: 'Collect' });
       } else {
@@ -150,10 +166,6 @@ export const useGetRemainder = () => {
                 changeState({ status: 'remaindTime', value: tomorrow });
               });
             } else {
-              changeState({
-                value: stringDate,
-                status: 'remaindTime',
-              });
             }
           } else {
             changeState({
@@ -161,6 +173,11 @@ export const useGetRemainder = () => {
               status: 'disable',
             });
           }
+        }).catch(() => {
+          changeState({
+            value: 'Collect to my wallet',
+            status: 'disable',
+          });
         });
       }
     });
@@ -170,6 +187,15 @@ export const useGetRemainder = () => {
 
 const timeFormating = format('k:mm:ss');
 const formatDateing = format("do 'of' MMMM");
+const formatDateShortMonth = format("do 'of' MMM");
+
+const toDateFromContract = str => {
+  const stringStr = String(str);
+  const year = stringStr.substring(0, 4);
+  const month = stringStr.substring(4, 6);
+  const day = stringStr.slice(6);
+  return new Date(`${year}.${month}.${day}`);
+};
 
 const formatTime = bigNumber => timeFormating(toDate(bigNumber));
 const formatDate = bigNumber => formatDateing(toDate(bigNumber));
@@ -184,9 +210,11 @@ export const useCollectData = closeWindow => {
     nextTime: '',
     nextDay: '',
     nextValue: '',
+    veryFirstRequestDate: '',
     handler: () => {},
   });
   const { library, account, chainId } = useActiveWeb3React();
+  const [progress, changeProgress] = useState('init');
   const contract: Contract | null = useMemo(() => getCollectContract(library, account, chainId), [
     library,
     account,
@@ -201,7 +229,7 @@ export const useCollectData = closeWindow => {
       contract.claimDailyLimit(),
     ]).then(
       ([
-        { remainderTotal, remainderPreparedForClaim },
+        { remainderTotal, remainderPreparedForClaim, veryFirstRequestDate },
         { available },
         { todayStart, tomorrowStart },
         claimLimit,
@@ -214,9 +242,12 @@ export const useCollectData = closeWindow => {
           currentDay: formatDate(todayStart),
           nextTime: formatTime(tomorrowStart),
           nextDay: formatDate(tomorrowStart),
+          veryFirstRequestDate: formatDateShortMonth(toDateFromContract(veryFirstRequestDate)),
           nextValue: formatUnits(claimLimit, 18),
           handler: () => {
-            contract.claim().then(() => {
+            changeProgress('pending');
+            contract.claim().finally(() => {
+              changeProgress('init');
               closeWindow();
             });
           },
@@ -225,5 +256,5 @@ export const useCollectData = closeWindow => {
     );
   }, [contract, closeWindow]);
 
-  return state;
+  return Object.assign({ progress }, state);
 };

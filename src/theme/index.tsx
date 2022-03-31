@@ -215,6 +215,14 @@ export const FixedGlobalStyle = createGlobalStyle`
   display: block;
 }
 
+.align-self-start {
+  align-self: flex-start;
+}
+
+.align-self-baseline {
+  align-self: baseline;
+}
+
 .onlyMobile {
   display: none;
 }

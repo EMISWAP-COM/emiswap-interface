@@ -48,13 +48,9 @@ const BodyWrapper = styled.div`
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  z-index: 10;
-
   ${({ theme }) => theme.mediaWidth.upToSmall`
       padding: 16px;
   `};
-
-  z-index: 1;
 `;
 
 export function RedirectPathToSwap({ location }: RouteComponentProps) {
