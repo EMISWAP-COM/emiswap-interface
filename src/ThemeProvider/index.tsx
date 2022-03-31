@@ -8,3 +8,4 @@ const ThemeProvider = ({ children }) => (
 
 export default ThemeProvider;
 export * from './components';
+export * from './theme';
