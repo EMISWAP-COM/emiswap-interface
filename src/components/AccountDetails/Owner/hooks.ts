@@ -87,16 +87,21 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
           changeRequestedAmount(userInput);
           contract
             .request(account, amount, nonce, `0x${res.signature}`)
-            .then(transactionResult => [transactionResult, res.id])
+            .then(transactionResult => {
+              changeTxHash(transactionResult.hash);
+              changeProgress('pending');
+              return transactionResult.wait();
+            })
             .catch(_ => {
               // TODO handle errors
               changeTitle('Request');
             })
-            .then(([transactionResult, id]) => {
-              changeTxHash(transactionResult.hash);
-              changeProgress('pending');
-              const transactionStateEndPoint = `/v1/private/users/${userID}/transactions/${id}`;
-              return fetchWrapper.put(transactionStateEndPoint, {
+            .then(transactionResult => {
+              if (!transactionResult) {
+                throw new Error('');
+              }
+              const transactionStateEndPoint = `/v1/private/users/${userID}/transactions/${res.id}`;
+              fetchWrapper.put(transactionStateEndPoint, {
                 headers: {
                   authorization: token,
                 },
@@ -105,10 +110,7 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
                   transaction_hash: transactionResult.hash,
                 }),
               });
-            })
-            .then(() => {
               changeProgress('success');
-              changeTxHash(txHash);
               closeWindow();
             })
             .catch(() => {
