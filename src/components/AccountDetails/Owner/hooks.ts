@@ -88,6 +88,9 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
           contract
             .request(account, amount, nonce, `0x${res.signature}`)
             .then(transactionResult => {
+              if (!transactionResult) {
+                throw new Error('');
+              }
               changeTxHash(transactionResult.hash);
               changeProgress('pending');
               return transactionResult.wait();
