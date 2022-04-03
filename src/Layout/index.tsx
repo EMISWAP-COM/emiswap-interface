@@ -1,21 +1,22 @@
 import React from 'react';
-import { Props } from '../ThemeProvider';
-import styled from 'styled-components';
-import { color, layout, grid } from 'styled-system';
+import { createGlobalStyle } from 'styled-components';
 import Sidebar from 'Sidebar';
-import { Grid } from 'ThemeProvider/components';
+import sanitizeStyle from './sanitize';
+import { Grid } from '../ThemeProvider/components';
 
-const LayoutWrapper = styled(Grid)<Props>`
-  ${layout}
-  ${grid}
+const GlobalStyle = createGlobalStyle`
+  ${sanitizeStyle}
 `;
 
 const Layout = ({ children }) => {
   return (
-    <LayoutWrapper height="100vh" gridTemplateColumns="230px auto">
-      <Sidebar />
-      <div>{children}</div>
-    </LayoutWrapper>
+    <>
+      <GlobalStyle />
+      <Grid height="100vh" gridTemplateColumns="230px auto">
+        <Sidebar />
+        <div>{children}</div>
+      </Grid>
+    </>
   );
 };
 
