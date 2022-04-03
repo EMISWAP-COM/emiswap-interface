@@ -5,6 +5,7 @@ import PolygonLogo from '../assets/svg/ChainsLogos/polygon.svg';
 import ShidenLogo from '../assets/svg/ChainsLogos/shiden.svg';
 import Timer from '../assets/svg/timer.svg';
 import FloatingBlurredCircle from '../assets/svg/floatingBlurredCircle.svg';
+import { Flex } from '../ThemeProvider';
 
 interface INetworkInformation {
   name: string;
@@ -77,14 +78,6 @@ const ActiveBlocksWrapper = styled.div`
   row-gap: 2rem;
 `;
 
-const ActivePoolsBlockWrapper = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: black;
-`;
 
 const DescriptionWrapper = styled.div`
   display: flex;
@@ -200,10 +193,16 @@ const ActiveBlocks = () => (
 );
 
 const ActivePoolsBlock = () => (
-  <ActivePoolsBlockWrapper>
+  <Flex
+    display="flex"
+    flexDirection="column"
+    alignItems="center"
+    justifyContent="center"
+    bg="black"
+  >
     <HeaderText>Active Farming pools</HeaderText>
     <ActiveBlocks />
-  </ActivePoolsBlockWrapper>
+  </Flex>
 );
 
 export default ActivePoolsBlock;

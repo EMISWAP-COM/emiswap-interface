@@ -103,7 +103,7 @@ export const StyledHead = styled.div`
   background-size: 100%;
   -webkit-background-clip: text;
   -moz-background-clip: text;
-  -webkit-text-fill-color: transparent; 
+  -webkit-text-fill-color: transparent;
   -moz-text-fill-color: transparent;
 `;
 
@@ -169,6 +169,7 @@ export const Flex = styled.div<Props>`
   ${color};
   ${space}
   ${flexbox};
+  ${layout};
 `;
 
 export const Box = styled.div<Props>`
