@@ -1,22 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Flex, Paragraph } from '../ThemeProvider/components';
-import { Props } from '../ThemeProvider';
-import { flex, color, layout, space } from 'styled-system';
+import { Flex, Text } from '../ThemeProvider/components';
+import { color } from 'styled-system';
 import EmiswapLogo from '../assets/svg/logo.svg';
 import TelegramOutlinedLogo from '../assets/svg/SocIcons/telegramOutlined.svg';
 import TwitterLogo from '../assets/svg/SocIcons/twitter.svg';
 import MediumLogo from '../assets/svg/SocIcons/medium.svg';
 import FacebookLogo from '../assets/svg/SocIcons/facebook.svg';
 import DiscordLogo from '../assets/svg/SocIcons/discord.svg';
-
-const FooterWrapper = styled(Flex)<Props>`
-  ${flex}
-  ${color}
-  ${layout}
-  ${space}
-  padding: 2rem;
-`;
 
 const LogoWrapper = styled.div`
   display: flex;
@@ -200,25 +191,22 @@ const SocialsPart = () => (
     </Flex>
     <div>
       <ReceivedGrantsParagraph color="fadedLink">Received grants from:</ReceivedGrantsParagraph>
-      <Paragraph color="text">
+      <Text color="text">
         <HighlightedLink href="#">Near Protocol</HighlightedLink>
         <span>&nbsp;&&nbsp;</span>
         <HighlightedLink href="#">Gate Chain</HighlightedLink>
-      </Paragraph>
+      </Text>
     </div>
   </SocialsPartWrapper>
 );
 
 const Footer = () => {
   return (
-    <FooterWrapper
-      bg="bg"
-      minHeight={FOOTER_MIN_HEIGHT}
-    >
+    <Flex backgroundColor="bg" minHeight={FOOTER_MIN_HEIGHT} padding="2rem">
       <LogoPart />
       <LinksPart />
       <SocialsPart />
-    </FooterWrapper>
+    </Flex>
   );
 };
 
