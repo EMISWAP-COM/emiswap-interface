@@ -1,4 +1,5 @@
 window['env'] = {
+  REACT_APP_V2: true,
   REACT_APP_CHAIN_ID: '137',
   REACT_APP_NETWORK_URL: 'https://kovan.infura.io/v3/2b7c5bba80094418abf5e746ba10dac0',
   REACT_APP_PORTIS_ID: '9db2fb8f-577f-4af1-8a50-20ebb262b115',

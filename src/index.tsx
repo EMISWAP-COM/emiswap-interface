@@ -132,4 +132,4 @@ const Root = Sentry.withProfiler(() => (
 
 const isAPPV2 = Boolean(process.env.REACT_APP_V2);
 
-ReactDOM.render(isAPPV2 ? <RootV2 /> : <Root />, document.getElementById('root'));
+ReactDOM.render(isAPPV2 ? <RootV2 /> : <RootV2 />, document.getElementById('root'));
