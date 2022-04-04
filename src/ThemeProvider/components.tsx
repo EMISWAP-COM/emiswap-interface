@@ -169,6 +169,7 @@ export const Flex = styled.div<Props>`
   ${color};
   ${space}
   ${flexbox};
+  ${layout}
 `;
 
 export const Box = styled.div<Props>`
