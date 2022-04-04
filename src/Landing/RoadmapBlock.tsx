@@ -202,15 +202,18 @@ const ProgressBlock = ({ steps, roadmapStepsIcon }: { steps: Array<IStep>, roadm
 );
 
 const QuartalBlockHeader = styled.header<{ isActive: boolean }>`
-  width: ${PROGRESS_BLOCK_WIDTH};
   text-align: center;
-  color: ${props => props.isActive ? '#FFFFFF' : 'rgba(255,255,255,0.6)'};
 `;
 
 const QuartalBlock = ({ quartal } : {quartal: IQuartal }) => (
   <Box>
-    <Flex alignItems="center" marginBottom="1rem">
-      <QuartalBlockHeader isActive={quartal.isActive}>{quartal.name}</QuartalBlockHeader>
+    <Flex alignItems="center" mb="1rem">
+      <Text
+        width={PROGRESS_BLOCK_WIDTH}
+        color={quartal.isActive ? '#FFFFFF' : 'rgba(255,255,255,0.6)'}
+      >
+        {quartal.name}
+      </Text>
       <Image
         backgroundImage={`url(${quartal.progressIcon})`}
         backgroundSize="cover"
@@ -227,7 +230,7 @@ const QuartalBlock = ({ quartal } : {quartal: IQuartal }) => (
 
 const RoadmapBlock = () => (
   <Flex flexDirection="column">
-    <header>
+    <Text>
       <StyledHead>
         Emiswap Roadmap
       </StyledHead>
@@ -235,7 +238,7 @@ const RoadmapBlock = () => (
         Emiswap is building cross-chain ecosystem <br />
         by integrating various blockchains and NFT components
       </Text>
-    </header>
+    </Text>
     <QuartalBlocksWrapper>
       {Object.keys(QUARTALS_INFO).map((QUARTAL_INFO_KEY) => (
         <QuartalBlock quartal={QUARTALS_INFO[QUARTAL_INFO_KEY]} />
