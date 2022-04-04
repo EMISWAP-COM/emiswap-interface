@@ -6,6 +6,10 @@ import { Grid } from '../ThemeProvider/components';
 
 const GlobalStyle = createGlobalStyle`
   ${sanitizeStyle}
+  
+  body {
+    background: #0F0F13;
+  }
 `;
 
 const Layout = ({ children }) => {
