@@ -18,7 +18,7 @@ import {
   FlexboxProps,
   PositionProps,
   ShadowProps,
-  BorderProps,
+  BorderProps, typography,
 } from 'styled-system';
 
 export interface Props
@@ -163,6 +163,7 @@ export const Grid = styled.div<Props>`
   ${grid};
   ${layout};
   ${color};
+  ${position};
 `;
 export const Flex = styled.div<Props>`
   display: flex;
@@ -192,3 +193,11 @@ export const SVG = styled.div<Props>`
 `;
 
 // Buttons
+
+export const Button = styled.button<Props>`
+  ${space};
+  ${border};
+  ${typography};
+  ${color};
+  ${background};
+`;
