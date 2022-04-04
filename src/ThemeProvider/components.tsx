@@ -108,6 +108,20 @@ export const StyledHead = styled.div`
   -moz-text-fill-color: transparent;
 `;
 
+export const StyledText = styled.div`
+  font-weight: 600;
+  font-size: 24px;
+  font-family: 'Rubik';
+  line-height: 34px;
+  background-color: #f3ec78;
+  background-image: linear-gradient(45deg, #b7e1ff, #8128cc);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+`;
+
 export const Head = styled.div<TextProps>`
   color: #333;
   font-weight: 700;
@@ -164,12 +178,15 @@ export const Grid = styled.div<Props>`
   ${grid};
   ${layout};
   ${color};
+  ${border};
 `;
 export const Flex = styled.div<Props>`
   display: flex;
   ${color};
   ${space};
+  ${layout};
   ${flexbox};
+  ${border};
 `;
 
 export const Box = styled.div<Props>`

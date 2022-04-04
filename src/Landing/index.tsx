@@ -16,7 +16,7 @@ const Landing = () => (
     {/* <Header /> */}
     <MainBlock />
     <InfoBlock />
-    {/* <StandoutBlock /> */}
+    <StandoutBlock />
     <PartnersBlock />
     {/* <InvestorsBlock /> */}
     <BlockChainsBlock />
