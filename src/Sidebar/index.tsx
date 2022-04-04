@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Props } from '../ThemeProvider';
+import { Props } from '../ThemeProvider/components';
 import styled, { css } from 'styled-components';
 import { color, layout, width } from 'styled-system';
 

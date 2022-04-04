@@ -9,28 +9,21 @@ import MainBlock from './MainBlock';
 import PartnersBlock from './PartnersBlock';
 import RoadmapBlock from './RoadmapBlock';
 import StandoutBlock from './StandoutBlock';
-import { grid } from 'styled-system';
 import { Grid } from 'ThemeProvider/components';
-import styled from 'styled-components';
-import { Props } from 'ThemeProvider';
-
-const LandingWrapper = styled(Grid)<Props>`
-  ${grid}
-`;
 
 const Landing = () => (
-  <LandingWrapper gridTemplateColumns="1fr">
-    <Header />
+  <Grid bg="bg" pl="12.5rem">
+    {/* <Header /> */}
     <MainBlock />
     <InfoBlock />
-    <StandoutBlock />
-    <PartnersBlock />
-    <InvestorsBlock />
-    <BlockChainsBlock />
-    <RoadmapBlock />
-    <ActivePoolsBlock />
-    <Footer />
-  </LandingWrapper>
+    {/* <StandoutBlock /> */}
+    {/* <PartnersBlock /> */}
+    {/* <InvestorsBlock /> */}
+    {/* <BlockChainsBlock /> */}
+    {/* <RoadmapBlock /> */}
+    {/* <ActivePoolsBlock /> */}
+    {/* <Footer /> */}
+  </Grid>
 );
 
 export default Landing;
