@@ -9,6 +9,8 @@ const InfoBlock = () => (
     gridColumnGap="3.75rem"
     gridTemplateColumns="35.2rem auto"
     mt="7.5rem"
+    ml="auto"
+    mr="auto"
   >
     <Flex>
       <Image
