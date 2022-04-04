@@ -19,6 +19,9 @@ import { css } from 'styled-components';
 import { Balance as BalanceType } from '../../../state/cabinets/reducer';
 import { ReactComponent as DropDown } from '../../../assets/images/dropdown.svg';
 import { isMobile } from 'react-device-detect';
+import { useCollectData } from '../Owner/hooks';
+import QuestionHelper from '../../QuestionHelper';
+import { RowBetween } from '../../Row';
 
 const Container = styled.div`
   font-size: 13px;
@@ -55,17 +58,38 @@ const Wallet = styled.div`
 `;
 
 const BalanceWrapper = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   gap: 12px;
+  @media screen and (max-width: 1080px) {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+  }
+`;
+
+const BalanceFlexWrapper = styled.div`
+  display: flex;
   flex-wrap: wrap;
   flex: 1;
+  gap: 12px;
 `;
 
 const BalanceItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   flex: 1;
-  flex-basis: 25%;
   padding: 14px;
   background: ${({ theme }) => theme.darkGrey};
+`;
+
+const BalanceRequestItem = styled(BalanceItem)`
+  @media screen and (max-width: 1080px) {
+    grid-row-start: 3;
+    grid-row-end: 4;
+    grid-column-start: 1;
+    grid-column-end: 3;
+  }
 `;
 
 const BalanceValue = styled(DarkText)`
@@ -210,6 +234,8 @@ interface BalanceInterface {
   wallet: string;
   locked: string;
   avalible: string;
+  requested: string;
+  veryFirstRequestDate: string;
   children?: React.ReactNode;
   handleClaim: () => void;
   isPolygon?: boolean;
@@ -224,20 +250,49 @@ const Balance = ({
   children,
   handleClaim,
   handleRequest,
+  requested,
+  veryFirstRequestDate,
 }: BalanceInterface) => {
   const isPolygon = useIsPolygonActive();
+  const isRequested = Number(requested) !== 0;
+  const CommonInfo = (
+    <>
+      <Item label="Total" value={total} />
+      <Item label="Wallet" value={wallet} />
+      <Item label="Locked at Emiswap" value={locked} />
+      <Item label="Available to collect" value={avalible} />
+    </>
+  );
   return (
     <>
-      <BalanceWrapper>
+      {isPolygon ? (
         <BalanceWrapper>
-          <Item label="Total" value={total} />
-          <Item label="Wallet" value={wallet} />
+          {CommonInfo}
+          <BalanceRequestItem className={'balance-item-request'}>
+            <RowBetween>
+              <span className={"align-self-baseline"}>
+                Request
+                {isRequested && (
+                  <>
+                    <span>&nbsp;on&nbsp;</span>
+                    <DarkText>{veryFirstRequestDate}</DarkText>
+                  </>
+                )}
+              </span>
+              <span className={"align-self-start"}>
+                <QuestionHelper
+                  text="Click the Collect to my wallet button to see more details"
+                />
+              </span>
+            </RowBetween>
+            <div>
+              <BalanceValue>{requested || "0.0"}</BalanceValue>&nbsp;ESW
+            </div>
+          </BalanceRequestItem>
         </BalanceWrapper>
-        <BalanceWrapper>
-          <Item label="Locked at Emiswap" value={locked} />
-          <Item label="Available to collect" value={avalible} />
-        </BalanceWrapper>
-      </BalanceWrapper>
+      ) : (
+        <BalanceFlexWrapper>{CommonInfo}</BalanceFlexWrapper>
+      )}
       <Options>
         {children}
         {isPolygon ? (
@@ -292,6 +347,7 @@ export const Connection: React.FC<Props> = ({
   const history = useHistory();
   const toggle = useWalletModalToggle();
   const balance = useSelector((state: AppState) => state.cabinets.totalBalance);
+  const collectData = useCollectData(false);
 
   const isKuCoinActive = useIsKuCoinActive();
   /*const isShidenActive = useIsShidenActive();
@@ -374,6 +430,8 @@ export const Connection: React.FC<Props> = ({
             wallet={convertBigDecimal(balance?.wallet.ESW)}
             locked={convertBigDecimal(balance?.total.locked.ESW)}
             avalible={convertBigDecimal(balance?.available.ESW)}
+            requested={collectData?.requested}
+            veryFirstRequestDate={collectData?.veryFirstRequestDate}
             handleRequest={() => changeCollectButtonState('request')}
             handleClaim={() => {
               changeCollectButtonState('wallet');
