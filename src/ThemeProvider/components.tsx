@@ -186,6 +186,7 @@ export const Flex = styled.div<Props>`
   ${space};
   ${layout};
   ${flexbox};
+  ${layout};
   ${border};
 `;
 
