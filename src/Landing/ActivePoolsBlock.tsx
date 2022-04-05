@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { color, position } from 'styled-system';
+import { color, position, system } from 'styled-system';
 import PolygonLogo from '../assets/svg/ChainsLogos/polygon.svg';
 import ShidenLogo from '../assets/svg/ChainsLogos/shiden.svg';
 import Timer from '../assets/svg/timer.svg';
 import FloatingBlurredCircle from '../assets/svg/floatingBlurredCircle.svg';
-import { Flex, Grid, Button } from '../ThemeProvider';
+import { Flex, Grid, Button, ButtonGradientType, BackdropFilterType } from '../ThemeProvider';
 
 interface INetworkInformation {
   name: string;
@@ -20,23 +20,23 @@ interface INetworkType {
 }
 
 const NETWORKS: INetworkType = {
-  'Polygon': {
+  Polygon: {
     name: 'Polygon',
     logo: PolygonLogo,
     description: '365% APR \n Farming opportunity',
     link: '#',
   },
-  'Shiden': {
+  Shiden: {
     name: 'Shiden',
     logo: ShidenLogo,
     description: '365% APR \n Farming opportunity',
     link: '#',
   },
-  'Avalanche': {
+  Avalanche: {
     name: 'Avalanche',
     description: '365% APR \n Farming opportunity',
   },
-  'Aurora': {
+  Aurora: {
     name: 'Aurora',
     description: '365% APR \n Farming opportunity',
   },
@@ -44,29 +44,29 @@ const NETWORKS: INetworkType = {
     name: 'Gate Chain',
     description: '365% APR \n Farming opportunity',
   },
-  'Solana': {
+  Solana: {
     name: 'Solana',
     description: '365% APR \n Farming opportunity',
     zIndex: 11,
-  }
-}
+  },
+};
 
 const ACTIVE_BLOCK_SIZE = '16rem';
 
-const ActiveBlockWrapper = styled.div<{zIndex: number}>`
-  display: flex;
-  flex-direction: column;
-  width: ${ACTIVE_BLOCK_SIZE};
-  height: ${ACTIVE_BLOCK_SIZE};
-  padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.05);
-  box-shadow: inset 1.125rem 1.25rem 4.875rem rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(3.5rem);
-  border-radius: 1.25rem;
-  border: 0.0625rem solid;
-  border-image-source: radial-gradient(184.37% 184.37% at -60.94% -46.88%, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 61%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
-  ${color};
-  ${position};
+const ActiveBlockWrapper = styled(Flex)<{
+  borderImageSource: ButtonGradientType;
+  backdropFilter: BackdropFilterType;
+}>`
+  ${system({
+    backdropFilter: {
+      property: 'backdropFilter',
+      scale: 'backdropFilter',
+    },
+    borderImageSource: {
+      property: 'borderImageSource',
+      scale: 'gradients',
+    },
+  })}
 `;
 
 const DescriptionText = styled.p`
@@ -112,48 +112,63 @@ const RightBottomFloatingCircle = styled(FloatingCircle)`
 `;
 
 const HeaderText = styled['h2']`
-  background: radial-gradient(575.57% 4609.05% at 2.78% -76.56%, #B7E1FF 0%, #8128CC 25%), #FFFFFF;
+  background: radial-gradient(575.57% 4609.05% at 2.78% -76.56%, #b7e1ff 0%, #8128cc 25%), #ffffff;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-size: 2.5rem;
 `;
 
-const ActiveBlock = ({network} : {network: INetworkInformation}) => {
-  return (
-    <ActiveBlockWrapper color="text" zIndex={network.zIndex}>
-      <header>
-        { network.name }
-      </header>
-      <Flex marginTop="1.25rem">
-        <Flex
-          justifyContent="center"
-          alignItems="center"
-          width="5rem"
-          height="5rem"
-          borderRadius="1.25rem"
-          bg={Boolean(network.logo) ? `radial-gradient(107.5% 107.5% at 104.37% 101.87%, #7B3FE4 14.55%, #B185FF 83.34%)`
-            : `rgba(255, 255, 255, 0.05)`}>
-          <img src={network.logo || Timer} alt={network.name} />
-        </Flex>
-        <DescriptionText>
-          {network.description}
-        </DescriptionText>
-      </Flex>
-      <Button
-        marginTop="1.25rem"
-        borderRadius="0.6875rem"
-        paddingTop="0.625rem"
-        paddingBottom="0.625rem"
-        border={network.link ? '0.0625rem solid #9C69F4' : '0.0625rem solid rgba(255, 255, 255, 0.4)'}
-        color={network.link ? 'white' : 'rgba(255, 255, 255, 0.4)'}
-        backgroundImage={network.link ? 'radial-gradient(175.28% 356.67% at 86.32% 100%, rgba(123, 63, 228, 0) 14.55%, #B185FF 83.34%)' : ''}
-        backgroundColor={network.link ? '' : 'transparent'}
+const ActiveBlock = ({ network }: { network: INetworkInformation }) => (
+  <ActiveBlockWrapper
+    flexDirection="column"
+    width={ACTIVE_BLOCK_SIZE}
+    height={ACTIVE_BLOCK_SIZE}
+    padding="1.5rem"
+    bg="rgba(255, 255, 255, 0.05)"
+    boxShadow="inset 1.125rem 1.25rem 4.875rem rgba(255, 255, 255, 0.1)"
+    borderRadius="1.25rem"
+    border="0.0625rem solid"
+    color="text"
+    zIndex={network.zIndex}
+    backdropFilter="default"
+    borderImageSource="border"
+  >
+    <header>{network.name}</header>
+    <Flex marginTop="1.25rem">
+      <Flex
+        justifyContent="center"
+        alignItems="center"
+        width="5rem"
+        height="5rem"
+        borderRadius="1.25rem"
+        bg={
+          Boolean(network.logo)
+            ? `radial-gradient(107.5% 107.5% at 104.37% 101.87%, #7B3FE4 14.55%, #B185FF 83.34%)`
+            : `rgba(255, 255, 255, 0.05)`
+        }
       >
-        {network.link ? 'Farm Now' : 'Coming soon'}
-      </Button>
-    </ActiveBlockWrapper>
-  );
-};
+        <img src={network.logo || Timer} alt={network.name} />
+      </Flex>
+      <DescriptionText>{network.description}</DescriptionText>
+    </Flex>
+    <Button
+      marginTop="1.25rem"
+      borderRadius="0.6875rem"
+      paddingTop="0.625rem"
+      paddingBottom="0.625rem"
+      border={network.link ? '0.0625rem solid #9C69F4' : '0.0625rem solid rgba(255, 255, 255, 0.4)'}
+      color={network.link ? 'white' : 'rgba(255, 255, 255, 0.4)'}
+      backgroundImage={
+        network.link
+          ? 'radial-gradient(175.28% 356.67% at 86.32% 100%, rgba(123, 63, 228, 0) 14.55%, #B185FF 83.34%)'
+          : ''
+      }
+      backgroundColor={network.link ? '' : 'transparent'}
+    >
+      {network.link ? 'Farm Now' : 'Coming soon'}
+    </Button>
+  </ActiveBlockWrapper>
+);
 
 const ActiveBlocks = () => (
   <Grid
@@ -175,11 +190,7 @@ const ActiveBlocks = () => (
 );
 
 const ActivePoolsBlock = () => (
-  <Flex
-    flexDirection="column"
-    alignItems="center"
-    justifyContent="center"
-  >
+  <Flex flexDirection="column" alignItems="center" justifyContent="center">
     <HeaderText>Active Farming pools</HeaderText>
     <ActiveBlocks />
   </Flex>

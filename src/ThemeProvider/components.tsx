@@ -190,6 +190,7 @@ export const Flex = styled.div<Props>`
   ${flexbox};
   ${layout};
   ${border};
+  ${position}
 `;
 
 export const Box = styled.div<Props>`
