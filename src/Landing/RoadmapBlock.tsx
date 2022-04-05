@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 import { Flex, Image, StyledHead, Text, Box } from '../ThemeProvider';
 import GreenToPurpleRectangle from '../assets/svg/Rectangles/GreenToPurple.svg';
 import PurpleToGreenRectangle from '../assets/svg/Rectangles/PurpleToGreen.svg';
@@ -17,15 +17,28 @@ import HecoLogo from '../assets/svg/Networks/Heco.svg';
 import EditPencil from '../assets/svg/EditPencil.svg';
 import OKEXLogo from '../assets/svg/Networks/OKEX.svg';
 import TronLogo from '../assets/svg/Networks/TRON.svg';
-import ImageEmpty from '../assets/svg/image.svg';
-import VolumeFull from '../assets/svg/VolumeFull.svg';
+import { ImageEmpty } from '../ui-kit/icons/imageEmpty';
+import { VolumeFull } from '../ui-kit/icons/volumeFull';
 import styled from 'styled-components';
+import { AvalancheIcon } from '../ui-kit/icons';
+import { ShidenIcon } from '../ui-kit/icons/networks/shiden';
+import { NearAuroraIcon } from '../ui-kit/icons/networks/nearAurora';
+import theme from 'ThemeProvider/theme';
+import { AvalancheTransparentIcon } from '../ui-kit/icons/networks/avalancheTransparent';
+import { GateChainIcon } from '../ui-kit/icons/networks/gateChain';
+import { ChainIcon } from '../ui-kit/icons/chain';
+import { BSCIcon } from '../ui-kit/icons/networks/bsc';
+import { SolanaICON } from '../ui-kit/icons/networks/solana';
+import { HecoICON } from '../ui-kit/icons/networks/heco';
+import { PencilWritingIcon } from '../ui-kit/icons/pencilWriting';
+import { OKEXIcon } from '../ui-kit/icons/networks/okex';
+import { TronIcon } from '../ui-kit/icons/networks/tron';
 
 type RoadmapStepsIconType = string;
 
 interface IStep {
   name: string;
-  icon: string;
+  icon: ReactNode;
   description?: string;
   width?: string | number;
   marginTop?: string | number;
@@ -43,6 +56,8 @@ interface IQuartalsInfo {
   [index: string]: IQuartal;
 }
 
+const SVG_ICONS_SIZE = theme.sizes[2];
+
 const Q1 = {
   name: 'Q1',
   progressIcon: GreenToPurpleRectangle,
@@ -51,30 +66,33 @@ const Q1 = {
   steps: [
     {
       name: 'Shiden',
-      icon: ShidenLogo,
+      icon: <ShidenIcon width={SVG_ICONS_SIZE} height={SVG_ICONS_SIZE} />,
     },
     {
       name: 'Near/Aurora',
-      icon: NearAuroraLogo,
+      icon: <NearAuroraIcon width="2.5rem" height={SVG_ICONS_SIZE} />,
       width: '2.5rem',
     },
     {
       name: 'Avalanche',
-      icon: AvalancheLogo,
+      icon: <AvalancheTransparentIcon
+        width={SVG_ICONS_SIZE}
+        height={SVG_ICONS_SIZE}
+      />,
     },
     {
       name: 'Gate Chain',
-      icon: GateChainLogo,
+      icon: <GateChainIcon width={SVG_ICONS_SIZE} height={SVG_ICONS_SIZE} />,
     },
     {
       name: 'Cross-chain bridge',
       description: 'Stage 01',
-      icon: ChainPart,
+      icon: <ChainIcon width={SVG_ICONS_SIZE} height={SVG_ICONS_SIZE} />,
     },
     {
       name: 'Cross-chain bridge',
       description: 'Stage 02',
-      icon: ChainPart,
+      icon: <ChainIcon width={SVG_ICONS_SIZE} height={SVG_ICONS_SIZE} />,
     }
   ],
 };
@@ -85,19 +103,19 @@ const Q2 = {
   steps: [
     {
       name: 'Binance Smart Chain',
-      icon: BinanceSmartChainLogo,
+      icon: <BSCIcon width={SVG_ICONS_SIZE} height={SVG_ICONS_SIZE} />,
     },
     {
       name: 'Solana',
-      icon: SolanaLogo,
+      icon: <SolanaICON width={SVG_ICONS_SIZE} height={SVG_ICONS_SIZE} />,
     },
     {
       name: 'Heco',
-      icon: HecoLogo,
+      icon: <HecoICON width={SVG_ICONS_SIZE} height={SVG_ICONS_SIZE} />,
     },
     {
       name: 'Platform Redesign',
-      icon: EditPencil,
+      icon: <PencilWritingIcon width={SVG_ICONS_SIZE} height={SVG_ICONS_SIZE} />,
     }
   ]
 };
@@ -108,17 +126,17 @@ const Q3 = {
   steps: [
     {
       name: 'OKEX',
-      icon: OKEXLogo,
+      icon: <OKEXIcon width={SVG_ICONS_SIZE} height={SVG_ICONS_SIZE} />,
     },
     {
       name: 'Tron',
-      icon: TronLogo,
+      icon: <TronIcon width={SVG_ICONS_SIZE} height={SVG_ICONS_SIZE} />,
       marginTop: '1.25rem',
     },
     {
       name: 'NFT magic hall',
       description: 'Stage 01',
-      icon: ImageEmpty,
+      icon: <ImageEmpty width={SVG_ICONS_SIZE} height={SVG_ICONS_SIZE} />,
       marginTop: '1.25rem',
     }
   ]
@@ -130,13 +148,13 @@ const Q4 = {
   steps: [
     {
       name: 'To be announced',
-      icon: VolumeFull,
+      icon: <VolumeFull width={SVG_ICONS_SIZE} height={SVG_ICONS_SIZE} />,
       marginTop: '1.25rem',
     },
     {
       name: 'NFT magic hall',
       description: 'Stage 02',
-      icon: ImageEmpty,
+      icon: <ImageEmpty width={SVG_ICONS_SIZE} height={SVG_ICONS_SIZE} />,
       marginTop: 2,
     }
   ]
@@ -168,12 +186,7 @@ const StepBlock = ({ step }: {step: IStep}) => (
       borderRadius="0.625rem"
       backgroundColor="inactive"
     >
-      <Image
-        backgroundImage={`url(${step.icon})`}
-        backgroundSize="cover"
-        width={step.width || 2}
-        height={2}
-      />
+      {step.icon}
     </Flex>
     <Flex flexDirection="column" justifyContent="center" pl={1}>
       <Text color="text" variant="mediumRubik">

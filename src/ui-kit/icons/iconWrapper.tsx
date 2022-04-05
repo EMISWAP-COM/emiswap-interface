@@ -6,8 +6,8 @@ export interface IconWrapperInterface {
   onClick?: () => void;
   ariaLabel?: string;
   color?: string;
-  width?: string;
-  height?: string;
+  width?: string | number;
+  height?: string | number;
   dot?: string;
 }
 

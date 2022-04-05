@@ -1,4 +1,12 @@
-<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+import React, { FC, ReactElement } from 'react';
+import IconWrapper, { IconWrapperInterface } from '../iconWrapper';
+
+export const BSCIcon: FC<IconWrapperInterface> = ({
+                                                    width = '32',
+                                                    height = '32',
+                                                    ...props
+                                                  }): ReactElement => (
+  <IconWrapper {...props} width={width} height={height} viewBoxSize={width}>
     <path d="M10 19.9995C15.5228 19.9995 20 15.5224 20 9.99951C20 4.47666 15.5228 -0.000488281 10 -0.000488281C4.47715 -0.000488281 0 4.47666 0 9.99951C0 15.5224 4.47715 19.9995 10 19.9995Z" fill="white"/>
     <path d="M6.93011 5.83755L10 3.99951L13.0699 5.83755L11.9412 6.51588L9.99952 5.35719L8.05875 6.51588L6.93011 5.83755Z" fill="#F0B90B"/>
     <path d="M11.941 7.47675L11.9408 7.47661H11.9412L11.941 7.47675L13.0699 8.15545V9.51362L11.1286 10.6728V12.9912L10 13.6701L8.87136 12.9912V10.6728L6.93011 9.51362V8.15545L8.05875 7.47661L9.99952 8.63581L11.941 7.47675Z" fill="#F0B90B"/>
@@ -10,4 +18,5 @@
     <path d="M8.87087 6.99675L9.99952 7.67508V7.67559L11.1282 6.99675L9.99952 6.31741L8.87087 6.99675Z" fill="#F0B90B"/>
     <path d="M6.12864 7.67559L7.25728 6.99675L6.12864 6.31741L5 6.99675V8.35493L6.12864 9.03376V7.67559Z" fill="#F0B90B"/>
     <path d="M5.00048 9.31494L5 9.31464H5.00048V9.31494L6.12864 9.99398V12.3119L8.0694 13.4711V14.8293L5.00048 12.9912V9.31494Z" fill="#F0B90B"/>
-</svg>
+  </IconWrapper>
+);
