@@ -5,7 +5,9 @@ import { color, layout, width } from 'styled-system';
 
 import switchHoriz from '../../assets/svg/switch_horiz.svg';
 import refreshValue from '../../assets/svg/refresh_value.svg';
+import copy from '../../assets/svg/copy.svg';
 import eswLogo from '../../assets/currencies/ESW.png';
+import shareAbs from '../../assets/images/share_abs.png';
 
 const PageContainer = styled.div<Props>`
   ${color}
@@ -72,6 +74,10 @@ const FormCard = styled.div<Props>`
 `;
 
 const ShareCard = styled.div<Props>`
+  display: flex;
+  flex-direction: column;
+  height: 256px;
+  min-width: 250px;
   margin-top: calc(40px + 18px);
   margin-left: 20px;
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -79,11 +85,27 @@ const ShareCard = styled.div<Props>`
 `;
 
 const ShareImage = styled.div<Props>`
+  position: relative;
   height: 210px;
+  width: 100%;
+  border-top-right-radius: 24px;
+  border-top-left-radius: 24px;
+  background: #d4e1fe;
+`;
+
+const ShareImg = styled.img`
+  display: block;
+  z-index: 5;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
 `;
 
 const ShareText = styled.p`
-  max-width: 174px;
+  z-index: 10;
+  position: relative;
+  margin: 24px;
   font-style: normal;
   font-weight: 600;
   font-size: 20px;
@@ -95,6 +117,13 @@ const ShareFooter = styled.div<Props>`
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 72px;
+`;
+
+const ShareCopyIcon = styled.img`
+  height: 16px;
+  width: 16px;
+  margin-right: 12px;
 `;
 
 const CurrencyGroup = styled.div<Props>`
@@ -336,9 +365,13 @@ const Swap = () => {
       </MainContainer>
       <ShareCard>
         <ShareImage>
+          <ShareImg src={shareAbs} />
           <ShareText>Share referral link to earn cryptocurrency</ShareText>
         </ShareImage>
-        <ShareFooter>Copy Referral Link</ShareFooter>
+        <ShareFooter>
+          <ShareCopyIcon src={copy} alt="" />
+          <span>Copy Referral Link</span>
+        </ShareFooter>
       </ShareCard>
     </SwapWrapper>
   );
