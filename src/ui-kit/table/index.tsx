@@ -1,18 +1,26 @@
 import React, { ReactElement, ReactNode } from 'react';
 import Header from './header';
+import { Box, Flex } from '../../ThemeProvider';
 
 interface TableInterface {
   children?: ReactNode;
   ariaLabel?: string;
-  columns?: Array<string>;
+  columns: Array<string>;
 }
 
 const Table = ({ children, ariaLabel, columns }: TableInterface): ReactElement => {
   return (
-    <table aria-label={ariaLabel}>
-      <Header columns={columns} />
-      {children}
-    </table>
+    <Flex
+      flexDirection="column"
+      aria-label={ariaLabel}
+    >
+      <Header
+        columns={columns}
+      />
+      <Box>
+        {children}
+      </Box>
+    </Flex>
   );
 };
 
