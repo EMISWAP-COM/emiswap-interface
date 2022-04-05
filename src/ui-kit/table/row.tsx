@@ -37,7 +37,7 @@ const Row = ({ children }: RowInterface): ReactElement => {
       borderRadius="0.875rem"
       bg="almostNoWhite"
       minHeight="3rem"
-      px="0.5rem"
+      px={1}
       color="text"
     >
       { children }

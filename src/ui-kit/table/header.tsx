@@ -26,8 +26,8 @@ const HeaderWrapper = styled(Flex)`
 `;
 
 HeaderWrapper.defaultProps = {
-  mb: '0.5rem',
-  px: '0.5rem',
+  mb: 1,
+  px: 1,
 }
 
 const Header = ({ columns }: HeaderInterface): ReactElement => {
