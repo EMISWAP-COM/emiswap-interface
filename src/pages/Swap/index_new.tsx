@@ -200,6 +200,12 @@ const PriceFieldGroup = styled(FieldGroup)`
   margin-right: 28px;
 `;
 
+const CurrencySwitch = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+`;
+
 const CurrencyWrap = styled.div<{ pair?: boolean }>`
   display: flex;
   justify-content: center;
@@ -221,6 +227,16 @@ const CurrencyWrap = styled.div<{ pair?: boolean }>`
 const CurrencyIcon = styled.img`
   height: 20px;
   width: 20px;
+`;
+
+const CurrencyName = styled.div`
+  box-sizing: content-box;
+  width: 48px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #ffffff;
+  text-align: center;
 `;
 
 const PriceField = styled(Field)`
@@ -304,9 +320,12 @@ const Swap = () => {
                   <InputBalance>Balance: 0.000</InputBalance>
                 </FieldTop>
                 <CurrencyField>
-                  <CurrencyWrap>
-                    <CurrencyIcon src={eswLogo} />
-                  </CurrencyWrap>
+                  <CurrencySwitch>
+                    <CurrencyWrap>
+                      <CurrencyIcon src={eswLogo} />
+                    </CurrencyWrap>
+                    <CurrencyName>ESW</CurrencyName>
+                  </CurrencySwitch>
                   <CurrencyInput placeholder="0.000" />
                   <ButtonMax>MAX</ButtonMax>
                 </CurrencyField>
@@ -318,9 +337,12 @@ const Swap = () => {
                   <InputBalance>Balance: 0.000</InputBalance>
                 </FieldTop>
                 <CurrencyField>
-                  <CurrencyWrap>
-                    <CurrencyIcon src={eswLogo} />
-                  </CurrencyWrap>
+                  <CurrencySwitch>
+                    <CurrencyWrap>
+                      <CurrencyIcon src={eswLogo} />
+                    </CurrencyWrap>
+                    <CurrencyName>ESW</CurrencyName>
+                  </CurrencySwitch>
                   <CurrencyInput placeholder="0.000" />
                 </CurrencyField>
               </FieldGroup>
