@@ -12,7 +12,7 @@ const Table = ({ children, ariaLabel, columns }: TableInterface): ReactElement =
   return (
     <Flex
       flexDirection="column"
-      aria-label={ariaLabel}
+      aria-Label={ariaLabel}
     >
       <Header
         columns={columns}

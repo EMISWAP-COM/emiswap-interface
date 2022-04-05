@@ -8,7 +8,7 @@ import {
   ColorProps,
   layout,
 } from 'styled-system';
-import { Flex, Text } from 'ThemeProvider';
+import { Flex } from 'ThemeProvider';
 
 interface RowInterface {
   children: ReactNode;
@@ -37,8 +37,7 @@ const Row = ({ children }: RowInterface): ReactElement => {
       borderRadius="0.875rem"
       bg="almostNoWhite"
       minHeight="3rem"
-      pl="0.5rem"
-      pr="0.5rem"
+      px="0.5rem"
       color="text"
     >
       { children }

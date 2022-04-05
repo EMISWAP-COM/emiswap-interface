@@ -13,9 +13,6 @@ const TableHeader = styled(Flex)<TypographyProps>`
 `;
 
 const HeaderWrapper = styled(Flex)`
-  margin-bottom: 0.5rem;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
   & > * {
     flex: 1;
     justify-content: center;
@@ -27,6 +24,11 @@ const HeaderWrapper = styled(Flex)`
     }
   }
 `;
+
+HeaderWrapper.defaultProps = {
+  mb: '0.5rem',
+  px: '0.5rem',
+}
 
 const Header = ({ columns }: HeaderInterface): ReactElement => {
   return (
