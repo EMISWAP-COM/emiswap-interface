@@ -137,7 +137,7 @@ const Q4 = {
       name: 'NFT magic hall',
       description: 'Stage 02',
       icon: ImageEmpty,
-      marginTop: '1rem',
+      marginTop: 2,
     }
   ]
 };
@@ -150,9 +150,11 @@ const QUARTALS_INFO: IQuartalsInfo = {
 };
 
 const QuartalBlocksWrapper = styled(Flex)`
-  margin-top: 2.5rem;
   gap: 0.75rem;
 `;
+QuartalBlocksWrapper.defaultProps = {
+  mt: 2,
+}
 
 const PROGRESS_BLOCK_WIDTH = '2rem';
 
@@ -207,7 +209,7 @@ const QuartalBlockHeader = styled.header<{ isActive: boolean }>`
 
 const QuartalBlock = ({ quartal } : {quartal: IQuartal }) => (
   <Box>
-    <Flex alignItems="center" mb="1rem">
+    <Flex alignItems="center" mb={2}>
       <Text
         width={PROGRESS_BLOCK_WIDTH}
         color={quartal.isActive ? '#FFFFFF' : 'rgba(255,255,255,0.6)'}
