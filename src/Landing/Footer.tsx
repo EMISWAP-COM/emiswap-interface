@@ -3,12 +3,13 @@ import styled from 'styled-components';
 import { Box, Button, Flex, Image, Text } from '../ThemeProvider/components';
 import { color, HeightProps, layout, LayoutProps, space, SpaceProps, system } from 'styled-system';
 import EmiswapLogo from '../assets/svg/logo.svg';
-import TelegramOutlinedLogo from '../assets/svg/SocIcons/telegramOutlined.svg';
-import TwitterLogo from '../assets/svg/SocIcons/twitter.svg';
-import MediumLogo from '../assets/svg/SocIcons/medium.svg';
-import FacebookLogo from '../assets/svg/SocIcons/facebook.svg';
-import DiscordLogo from '../assets/svg/SocIcons/discord.svg';
 import { CustomListProps, CustomTextProps } from '../ThemeProvider/customProps';
+import { DiscordIcon } from '../ui-kit/icons/socials/discord';
+import theme from '../ThemeProvider/theme';
+import { FacebookIcon } from '../ui-kit/icons/socials/facebook';
+import { MediumIcon } from '../ui-kit/icons/socials/medium';
+import { TwitterIcon } from '../ui-kit/icons/socials/twitter';
+import { TelegramIcon } from '../ui-kit/icons/socials/telegram';
 
 const ListWrapper = styled(Box)`
   &:nth-of-type(n + 2) {
@@ -63,9 +64,6 @@ const SocialMediaButton = styled(Button)`
   border: none;
   cursor: pointer;
   border-radius: 0.625rem;
-  & > img {
-    width: 20px;
-  }
   &:nth-child(n + 2) {
     margin-left: 0.75rem;
   }
@@ -73,6 +71,7 @@ const SocialMediaButton = styled(Button)`
 
 SocialMediaButton.defaultProps = {
   width: 3,
+  height: 3,
   py: '0.375rem',
   bg: 'fadedWhite',
 };
@@ -186,6 +185,8 @@ const LinksPart = () => (
   </Flex>
 );
 
+const SOCIALS_ICONS_WIDTH = theme.sizes[2];
+
 const SocialsPart = () => (
   <Box width={1/4}>
     <ListsHeader
@@ -204,19 +205,19 @@ const SocialsPart = () => (
     </ListsHeader>
     <Flex>
       <SocialMediaButton>
-        <img src={TelegramOutlinedLogo} alt="Telegram" />
+        <TelegramIcon width={SOCIALS_ICONS_WIDTH} height={SOCIALS_ICONS_WIDTH} />
       </SocialMediaButton>
       <SocialMediaButton>
-        <img src={TwitterLogo} alt="Twitter" />
+        <TwitterIcon width={SOCIALS_ICONS_WIDTH} height={SOCIALS_ICONS_WIDTH} />
       </SocialMediaButton>
       <SocialMediaButton>
-        <img src={MediumLogo} alt="Medium" />
+        <MediumIcon width={SOCIALS_ICONS_WIDTH} height={SOCIALS_ICONS_WIDTH} />
       </SocialMediaButton>
       <SocialMediaButton>
-        <img src={FacebookLogo} alt="Facebook" />
+        <FacebookIcon width={SOCIALS_ICONS_WIDTH} height={SOCIALS_ICONS_WIDTH} />
       </SocialMediaButton>
       <SocialMediaButton>
-        <img src={DiscordLogo} alt="Reddit" />
+        <DiscordIcon width={SOCIALS_ICONS_WIDTH} height={SOCIALS_ICONS_WIDTH} />
       </SocialMediaButton>
     </Flex>
     <Box>
