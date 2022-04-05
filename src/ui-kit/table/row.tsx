@@ -1,39 +1,17 @@
 import React, { ReactElement, ReactNode } from 'react';
-import styled from 'styled-components';
-import {
-  border,
-  color,
-  BordersProps,
-  MinHeightProps,
-  ColorProps,
-  layout,
-} from 'styled-system';
-import { Flex } from 'ThemeProvider';
+import { CellWrapper } from './cell';
 
 interface RowInterface {
   children: ReactNode;
 }
 
-const TableRow = styled(Flex)<BordersProps & ColorProps & MinHeightProps>`
-  ${border};
-  ${color};
-  ${layout};
-  & > * {
-    flex: 1;
-    align-items: center;
-    justify-content: center;
-    &:first-child {
-      justify-content: start;
-    }
-    &:last-child {
-      justify-content: end;
-    }
-  }
-`;
+CellWrapper.defaultProps = {
+  alignItems: 'center',
+}
 
 const Row = ({ children }: RowInterface): ReactElement => {
   return (
-    <TableRow
+    <CellWrapper
       borderRadius="0.875rem"
       bg="almostNoWhite"
       minHeight="3rem"
@@ -41,7 +19,7 @@ const Row = ({ children }: RowInterface): ReactElement => {
       color="text"
     >
       { children }
-    </TableRow>
+    </CellWrapper>
   );
 };
 
