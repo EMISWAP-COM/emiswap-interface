@@ -156,13 +156,13 @@ QuartalBlocksWrapper.defaultProps = {
   mt: 2,
 }
 
-const PROGRESS_BLOCK_WIDTH = '2rem';
+const PROGRESS_BLOCK_WIDTH = 3;
 
 const StepBlock = ({ step }: {step: IStep}) => (
-  <Flex alignItems="center" mt={step.marginTop || '1.5rem'}>
+  <Flex alignItems="center" mt={step.marginTop || 3}>
     <Flex
-      width={step.width ? `calc(${step.width} + 0.5rem)` : "2rem"}
-      height="2rem"
+      width={step.width ? `calc(${step.width} + 0.5rem)` : 3}
+      height={3}
       justifyContent="center"
       alignItems="center"
       borderRadius="0.625rem"
@@ -171,8 +171,8 @@ const StepBlock = ({ step }: {step: IStep}) => (
       <Image
         backgroundImage={`url(${step.icon})`}
         backgroundSize="cover"
-        width={step.width || "1.25rem"}
-        height="1.25rem"
+        width={step.width || 2}
+        height={2}
       />
     </Flex>
     <Flex flexDirection="column" justifyContent="center" pl={1}>
@@ -216,7 +216,7 @@ const QuartalBlock = ({ quartal } : {quartal: IQuartal }) => (
         backgroundImage={`url(${quartal.progressIcon})`}
         backgroundSize="cover"
         width="12.2rem"
-        height="0.3rem"
+        height={0}
       />
     </Flex>
     <ProgressBlock
