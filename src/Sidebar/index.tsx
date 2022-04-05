@@ -1,51 +1,37 @@
 import React, { useState } from 'react';
-import { Props } from '../ThemeProvider/components';
+import { Box, Flex, Img, Props } from '../ThemeProvider/components';
 import styled, { css } from 'styled-components';
-import { color, layout, width } from 'styled-system';
 
-import menuSvg from '../assets/sidebar/menu.svg';
-import chartSvg from '../assets/sidebar/chart.svg';
-import chatAddSvg from '../assets/sidebar/chat_add.svg';
-import circleSvg from '../assets/sidebar/circle.svg';
-import databaseSvg from '../assets/sidebar/database.svg';
-import deskSvg from '../assets/sidebar/desk.svg';
-import homeSvg from '../assets/sidebar/home.svg';
-import linkSvg from '../assets/sidebar/link.svg';
-import refreshSvg from '../assets/sidebar/refresh.svg';
-import userAddSvg from '../assets/sidebar/user_add.svg';
 import hackenSvg from '../assets/sidebar/hacken.svg';
 import blueSwarmSvg from '../assets/sidebar/blue_swarm.svg';
-import arrowDown from '../assets/sidebar/arrow_down.svg';
 
 import eswLogo from '../assets/currencies/ESW.png';
+import { MenuIcon } from '../ui-kit/icons/menu';
+import {
+  ArrowDownIcon,
+  ChartAddIcon,
+  ChartIcon,
+  CircleIcon,
+  DatabaseIcon,
+  DeskIcon,
+  HomeIcon,
+  LinkIcon,
+  RefreshIcon,
+  UserAddIcon,
+} from '../ui-kit/icons';
 
-const SidebarWrapper = styled.div<Props>`
-  ${color}
-  ${layout}
-  ${width}
-  padding: 24px 12px;
-  background: radial-gradient(237.61% 114.78% at 152.56% 43.16%, #2D2030 0%, #0F0F13 36.59%);
+const SidebarWrapper = styled(Box)`
+  background: radial-gradient(237.61% 114.78% at 152.56% 43.16%, #2d2030 0%, #0f0f13 36.59%);
   color: white;
 `;
 
-const SidebarMenuBtn = styled.div<Props>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 32px;
-  height: 32px;
-  margin-bottom: 34px;
-  border-radius: 10px;
+const SidebarMenuBtn = styled(Flex)`
   background: rgba(255, 255, 255, 0.15);
   cursor: pointer;
 `;
 
-const SidebarNavItem = styled.div<Props & { active?: boolean }>`
-  display: flex;
-  align-items: center;
-  padding: 8px 12px;
+const SidebarNavItem = styled(Flex)<{ active?: boolean }>`
   border-radius: 12px;
-  // font-family: 'Rubik';
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -62,22 +48,7 @@ const SidebarNavItem = styled.div<Props & { active?: boolean }>`
     `}
 `;
 
-const SidebarNavIcon = styled.img`
-  margin-bottom: 4px;
-  padding-right: 16px;
-`;
-
-const SidebarNavArrowIcon = styled.img`
-  margin-left: auto;
-`;
-
-const SidebarNavSub = styled.div<Props>`
-  z-index: 10;
-  position: relative;
-`;
-
-const SidebarNavSubBackground = styled.div`
-  display: block;
+const SidebarNavSubBackground = styled(Box)`
   z-index: -1;
   position: absolute;
   width: 100%;
@@ -102,28 +73,18 @@ const SidebarNavSubItem = styled(SidebarNavItem)<Props & { active?: boolean }>`
   }
 `;
 
-const SidebarAudited = styled.div<Props>`
-  padding: 0 12px;
-  margin-top: 48px;
-  margin-bottom: 24px;
-`;
-
-const SidebarEsw = styled.div<Props>`
-  display: flex;
-  align-items: center;
-  padding: 0 12px;
+const SidebarEsw = styled(Flex)`
   font-size: 14px;
   color: rgba(255, 255, 255, 0.7);
 `;
 
-const SidebarEswLogo = styled.img`
+const SidebarEswLogo = styled(Img)`
   width: 24px;
   height: 24px;
   margin-right: 8px;
 `;
 
-const SidebarEswPriceValue = styled.div<Props>`
-  margin-left: 8px;
+const SidebarEswPriceValue = styled(Box)`
   font-size: 16px;
   font-weight: 500;
   color: white;
@@ -131,47 +92,47 @@ const SidebarEswPriceValue = styled.div<Props>`
 
 const sidebarItems = [
   {
-    icon: homeSvg,
+    icon: <HomeIcon />,
     label: 'Home',
     url: '',
   },
   {
-    icon: refreshSvg,
+    icon: <RefreshIcon />,
     label: 'Swap',
     url: '',
   },
   {
-    icon: circleSvg,
+    icon: <CircleIcon />,
     label: 'Liquidity pools',
     url: '',
   },
   {
-    icon: databaseSvg,
+    icon: <DatabaseIcon />,
     label: 'Farm',
     url: '',
   },
   {
-    icon: deskSvg,
+    icon: <DeskIcon />,
     label: 'Dashboard',
     url: '',
   },
   {
-    icon: chartSvg,
+    icon: <ChartIcon />,
     label: 'Analytics',
     url: '',
   },
   {
-    icon: linkSvg,
+    icon: <LinkIcon />,
     label: 'Bridge Multichain',
     url: '',
   },
   {
-    icon: userAddSvg,
+    icon: <UserAddIcon width="24" height="18" />,
     label: 'Referral program',
     url: '',
   },
   {
-    icon: chatAddSvg,
+    icon: <ChartAddIcon />,
     label: 'More',
     items: [
       {
@@ -211,22 +172,39 @@ const Sidebar = () => {
   };
 
   return (
-    <SidebarWrapper minWidth={230}>
-      <SidebarMenuBtn>
-        <img src={menuSvg} alt="" />
+    <SidebarWrapper minWidth={230} px={1} py={3}>
+      <SidebarMenuBtn
+        justifyContent="center"
+        alignItems="center"
+        width={32}
+        height={32}
+        mb={5}
+        borderRadius={10}
+      >
+        <MenuIcon />
       </SidebarMenuBtn>
       {sidebarItems.map(item => (
         <>
           <SidebarNavItem
+            alignItems="center"
+            py="12px"
+            px="12px"
+            borderRadius={12}
             active={activeNav === item.label}
             onClick={() => handleClickNavItem(item)}
           >
-            <SidebarNavIcon src={item.icon} alt="" />
+            <Box mr={2} mb={0.5}>
+              {item.icon}
+            </Box>
             <span>{item.label}</span>
-            {item.items?.length > 0 && <SidebarNavArrowIcon src={arrowDown} alt="" />}
+            {item.items?.length > 0 && (
+              <Box ml="auto">
+                <ArrowDownIcon />
+              </Box>
+            )}
           </SidebarNavItem>
           {item.items?.length > 0 && openedGroup === item.label && (
-            <SidebarNavSub>
+            <Box zIndex={10} position="relative">
               {item.items.map(subItem => (
                 <SidebarNavSubItem
                   active={activeNav === subItem.label}
@@ -236,25 +214,25 @@ const Sidebar = () => {
                 </SidebarNavSubItem>
               ))}
               <SidebarNavSubBackground />
-            </SidebarNavSub>
+            </Box>
           )}
         </>
       ))}
-      <div>
-        <SidebarAudited>
-          <div>
+      <Box mt={5}>
+        <Box px={2} mb={3}>
+          <Box>
             <span>Audited by:</span>
             <img style={{ marginLeft: 8 }} src={hackenSvg} alt="" />
             <img style={{ marginLeft: -4 }} src={blueSwarmSvg} alt="" />
-          </div>
-          <div>Hacken & BlueSwarm</div>
-        </SidebarAudited>
-        <SidebarEsw>
+          </Box>
+          <Box mt={1}>Hacken & BlueSwarm</Box>
+        </Box>
+        <SidebarEsw alignItems="center" px={1}>
           <SidebarEswLogo src={eswLogo} />
           <span>ESW price: </span>
-          <SidebarEswPriceValue>$0.025</SidebarEswPriceValue>
+          <SidebarEswPriceValue ml={1}>$0.025</SidebarEswPriceValue>
         </SidebarEsw>
-      </div>
+      </Box>
     </SidebarWrapper>
   );
 };
