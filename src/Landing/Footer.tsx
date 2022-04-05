@@ -33,6 +33,10 @@ const ListsHeader = styled.header<HeightProps & SpaceProps & LayoutProps & Custo
   })};
 `;
 
+ListsHeader.defaultProps = {
+  height: 2,
+}
+
 const ListLink = styled.a<CustomTextProps>`
   ${color};
   ${system({
@@ -46,6 +50,10 @@ const ListLink = styled.a<CustomTextProps>`
     },
   })};
 `;
+
+ListLink.defaultProps = {
+  textDecoration: "none",
+}
 
 const LinkListItem = styled.li<CustomListProps>`
   ${layout};
@@ -71,7 +79,6 @@ const SocialMediaButton = styled(Button)`
 
 SocialMediaButton.defaultProps = {
   width: 3,
-  height: 3,
   py: '0.375rem',
   bg: 'fadedWhite',
 };
@@ -90,7 +97,7 @@ const HighlightedLink = styled.a<CustomTextProps>`
   })};
 `;
 
-const FOOTER_MIN_HEIGHT = 279;
+const FOOTER_MIN_HEIGHT = theme.sizes[10];
 
 const headerLinks = {
   ['EmiSwap DEX']: '#',
@@ -162,7 +169,6 @@ const LinksPart = () => (
       return (
         <ListWrapper>
           <ListsHeader
-            height={1}
             mb={2}
             overflow="hidden"
             color="text"
@@ -190,7 +196,6 @@ const SOCIALS_ICONS_WIDTH = theme.sizes[2];
 const SocialsPart = () => (
   <Box width={1/4}>
     <ListsHeader
-      height={1}
       mb={2}
       overflow="hidden"
       color="text"
