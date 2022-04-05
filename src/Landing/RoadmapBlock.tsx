@@ -175,7 +175,7 @@ const StepBlock = ({ step }: {step: IStep}) => (
         height="1.25rem"
       />
     </Flex>
-    <Flex flexDirection="column" justifyContent="center" pl="0.5rem">
+    <Flex flexDirection="column" justifyContent="center" pl={1}>
       <Text color="text" variant="mediumRubik">
         { step.name }
       </Text>
@@ -203,24 +203,20 @@ const ProgressBlock = ({ steps, roadmapStepsIcon }: { steps: Array<IStep>, roadm
   </Flex>
 );
 
-const QuartalBlockHeader = styled.header<{ isActive: boolean }>`
-  text-align: center;
-`;
-
 const QuartalBlock = ({ quartal } : {quartal: IQuartal }) => (
   <Box>
     <Flex alignItems="center" mb={2}>
       <Text
         width={PROGRESS_BLOCK_WIDTH}
-        color={quartal.isActive ? '#FFFFFF' : 'rgba(255,255,255,0.6)'}
+        color={quartal.isActive ? 'text' : 'almostDisabled'}
       >
         {quartal.name}
       </Text>
       <Image
         backgroundImage={`url(${quartal.progressIcon})`}
         backgroundSize="cover"
-        width="12.1875rem"
-        height="0.3125rem"
+        width="12.2rem"
+        height="0.3rem"
       />
     </Flex>
     <ProgressBlock
@@ -236,7 +232,7 @@ const RoadmapBlock = () => (
       <StyledHead>
         Emiswap Roadmap
       </StyledHead>
-      <Text variant="largeRubik" color="white" mt="1.86rem">
+      <Text variant="largeRubik" color="white" mt={4}>
         Emiswap is building cross-chain ecosystem <br />
         by integrating various blockchains and NFT components
       </Text>
