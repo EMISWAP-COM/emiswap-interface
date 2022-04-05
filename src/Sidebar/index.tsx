@@ -6,7 +6,6 @@ import hackenSvg from '../assets/sidebar/hacken.svg';
 import blueSwarmSvg from '../assets/sidebar/blue_swarm.svg';
 
 import eswLogo from '../assets/currencies/ESW.png';
-import { MenuIcon } from '../ui-kit/icons/menu';
 import {
   ArrowDownIcon,
   ChartAddIcon,
@@ -18,6 +17,7 @@ import {
   LinkIcon,
   RefreshIcon,
   UserAddIcon,
+  MenuIcon,
 } from '../ui-kit/icons';
 
 const SidebarWrapper = styled(Box)`

@@ -44,3 +44,4 @@ export * from './plus';
 export * from './minus';
 export * from './kucoin';
 export * from './settingsAlert';
+export * from './menu';
