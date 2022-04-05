@@ -12,9 +12,25 @@ const TableHeader = styled(Flex)<TypographyProps>`
   ${color};
 `;
 
+const HeaderWrapper = styled(Flex)`
+  margin-bottom: 0.5rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  & > * {
+    flex: 1;
+    justify-content: center;
+    &:first-child {
+      justify-content: start;
+    }
+    &:last-child {
+      justify-content: end;
+    }
+  }
+`;
+
 const Header = ({ columns }: HeaderInterface): ReactElement => {
   return (
-    <Flex mb="0.5rem">
+    <HeaderWrapper>
       {columns.map((column, index) => {
         const isLeftest = index === 0;
         const isRightest = index === columns.length - 1;
@@ -27,7 +43,7 @@ const Header = ({ columns }: HeaderInterface): ReactElement => {
           </TableHeader>
         );
       })}
-    </Flex>
+    </HeaderWrapper>
   );
 };
 
