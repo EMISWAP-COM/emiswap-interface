@@ -1,50 +1,68 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Box, Flex, Image, Text } from '../ThemeProvider/components';
-import { color, layout } from 'styled-system';
+import { Box, Button, Flex, Image, Text } from '../ThemeProvider/components';
+import { color, HeightProps, layout, LayoutProps, space, SpaceProps, system } from 'styled-system';
 import EmiswapLogo from '../assets/svg/logo.svg';
 import TelegramOutlinedLogo from '../assets/svg/SocIcons/telegramOutlined.svg';
 import TwitterLogo from '../assets/svg/SocIcons/twitter.svg';
 import MediumLogo from '../assets/svg/SocIcons/medium.svg';
 import FacebookLogo from '../assets/svg/SocIcons/facebook.svg';
 import DiscordLogo from '../assets/svg/SocIcons/discord.svg';
+import { CustomListProps, CustomTextProps } from '../ThemeProvider/customProps';
 
-const ListWrapper = styled.div`
+const ListWrapper = styled(Box)`
   &:nth-of-type(n + 2) {
     margin-left: 3.75rem;
   }
 `;
 
-const ListsHeader = styled.header`
+const ListsHeader = styled.header<HeightProps & SpaceProps & LayoutProps & CustomTextProps>`
   ${color};
-  height: 1rem;
-  margin-bottom: 1rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
-
-const ListLink = styled.a`
-  ${color};
-  text-decoration: none;
-  white-space: pre-line;
-`;
-
-const LinkListItem = styled.li`
-  list-style-type: none;
   ${layout};
+  ${space};
+  ${system({
+    textOverflow: {
+      property: 'textOverflow',
+      scale: 'textOverflow',
+    },
+    whiteSpace: {
+      property: 'whiteSpace',
+      scale: 'whiteSpace',
+    },
+  })};
 `;
 
-const SocialMediaButton = styled.button`
+const ListLink = styled.a<CustomTextProps>`
+  ${color};
+  ${system({
+    textDecoration: {
+      property: 'textDecoration',
+      scale: 'textDecoration',
+    },
+    whiteSpace: {
+      property: 'whiteSpace',
+      scale: 'whiteSpace',
+    },
+  })};
+`;
+
+const LinkListItem = styled.li<CustomListProps>`
+  ${layout};
+  ${system({
+    listStyleType: {
+      property: 'listStyleType',
+      scale: 'lists',
+    },
+  })};
+`;
+
+const SocialMediaButton = styled(Button)`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 2rem;
-  height: 2rem;
   border: none;
   cursor: pointer;
   border-radius: 0.625rem;
-  background: rgba(255, 255, 255, 0.15);
   & > img {
     width: 20px;
   }
@@ -53,13 +71,24 @@ const SocialMediaButton = styled.button`
   }
 `;
 
-const UnorderedListWrapper = styled.ul`
-  padding: 0;
+SocialMediaButton.defaultProps = {
+  width: 3,
+  py: '0.375rem',
+  bg: 'fadedWhite',
+};
+
+const UnorderedListWrapper = styled.ul<SpaceProps>`
+  ${space};
 `;
 
-const HighlightedLink = styled.a`
-  color: white;
-  text-decoration-color: white;
+const HighlightedLink = styled.a<CustomTextProps>`
+  ${color};
+  ${system({
+    textDecorationColor: {
+      property: 'textDecorationColor',
+      scale: 'colors',
+    },
+  })};
 `;
 
 const FOOTER_MIN_HEIGHT = 279;
@@ -93,12 +122,13 @@ const links = {
 };
 
 const LogoPart = () => (
-  <Flex
-    alignItems="baseline"
-    justifyContent="flex-end"
+  <Box
+    pr="4rem"
     width={1/4}
   >
-    <Box
+    <Flex
+      alignItems="baseline"
+      justifyContent="flex-end"
       mb="4rem"
       width="100%"
       height="100%"
@@ -109,16 +139,20 @@ const LogoPart = () => (
         backgroundImage={`url(${EmiswapLogo})`}
         backgroundSize="cover"
       />
-    </Box>
-  </Flex>
+    </Flex>
+  </Box>
 );
 
 const LinksPart = () => (
   <Flex width={1/2}>
     {Object.keys(links).map((headerLink) => {
       const listLinks = Object.keys(links[headerLink]).map((listLink) => (
-        <LinkListItem>
+        <LinkListItem
+          listStyleType="none"
+        >
           <ListLink
+            whiteSpace="preLine"
+            textDecoration="none"
             color="fadedLink"
             href={links[headerLink][listLink]}
           >
@@ -129,7 +163,12 @@ const LinksPart = () => (
       return (
         <ListWrapper>
           <ListsHeader
+            height={1}
+            mb={2}
+            overflow="hidden"
             color="text"
+            textOverflow="ellipsis"
+            whiteSpace="nowrap"
           >
             <ListLink
               color="text"
@@ -138,7 +177,7 @@ const LinksPart = () => (
               {headerLink}
             </ListLink>
           </ListsHeader>
-          <UnorderedListWrapper>
+          <UnorderedListWrapper p="0">
             {listLinks}
           </UnorderedListWrapper>
         </ListWrapper>
@@ -150,7 +189,12 @@ const LinksPart = () => (
 const SocialsPart = () => (
   <Box width={1/4}>
     <ListsHeader
+      height={1}
+      mb={2}
+      overflow="hidden"
       color="text"
+      textOverflow="ellipsis"
+      whiteSpace="nowrap"
     >
       <ListLink
         color="text"
@@ -184,9 +228,21 @@ const SocialsPart = () => (
         Received grants from:
       </Text>
       <Text color="text">
-        <HighlightedLink href="#">Near Protocol</HighlightedLink>
+        <HighlightedLink
+          href="#"
+          color="text"
+          textDecorationColor="text"
+        >
+          Near Protocol
+        </HighlightedLink>
         <span>&nbsp;&&nbsp;</span>
-        <HighlightedLink href="#">Gate Chain</HighlightedLink>
+        <HighlightedLink
+          href="#"
+          color="text"
+          textDecorationColor="text"
+        >
+          Gate Chain
+        </HighlightedLink>
       </Text>
     </Box>
   </Box>

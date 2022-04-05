@@ -28,6 +28,7 @@ const theme = {
     buttonInactive: '#7A2DF426',
     fadedLink: '#AAAAAA',
     drop: '#1B1B1F',
+    'fadedWhite': 'rgba(255, 255, 255, 0.15)',
     disabled: 'rgba(255, 255, 255, 0.7)',
   },
   gradients: {
@@ -43,6 +44,21 @@ const theme = {
   },
   backdropFilter: {
     default: 'blur(3.5rem)',
+  },
+  textOverflow: {
+    clip: 'clip',
+    ellipsis: 'ellipsis',
+  },
+  whiteSpace: {
+    nowrap: 'nowrap',
+    preLine: 'pre-line',
+  },
+  textDecoration: {
+    none: 'none',
+    underline: 'underline',
+  },
+  lists: {
+    none: 'none',
   },
   buttonSize: {
     default: '2.75rem',
