@@ -21,6 +21,8 @@ import { HecoICON } from '../ui-kit/icons/networks/heco';
 import { PencilWritingIcon } from '../ui-kit/icons/pencilWriting';
 import { OKEXIcon } from '../ui-kit/icons/networks/okex';
 import { TronIcon } from '../ui-kit/icons/networks/tron';
+import { system } from 'styled-system';
+import { FlexGapType } from '../ThemeProvider/customTypes';
 
 type RoadmapStepsIconType = string;
 
@@ -155,8 +157,13 @@ const QUARTALS_INFO: IQuartalsInfo = {
   'q4': Q4,
 };
 
-const QuartalBlocksWrapper = styled(Flex)`
-  gap: 0.75rem;
+const QuartalBlocksWrapper = styled(Flex)<FlexGapType>`
+  ${system({
+    gap: {
+      property: 'gap',
+      scale: 'space',
+    },
+  })}
 `;
 QuartalBlocksWrapper.defaultProps = {
   mt: 2,
@@ -238,7 +245,7 @@ const RoadmapBlock = () => (
         by integrating various blockchains and NFT components
       </Text>
     </Text>
-    <QuartalBlocksWrapper>
+    <QuartalBlocksWrapper gap="0.75rem">
       {Object.keys(QUARTALS_INFO).map((QUARTAL_INFO_KEY) => (
         <QuartalBlock quartal={QUARTALS_INFO[QUARTAL_INFO_KEY]} />
       ))}
