@@ -1,5 +1,6 @@
 export default {
   space: [4, 8, 16, 24, 32, 40, 80, 160],
+  sizes: [4, 16, 20, 32, 40, 64, 100, 128, 160],
   fonts: {
     sora: 'Sora',
     rubick: 'Rubik',

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Flex, Text } from '../ThemeProvider/components';
-import { color } from 'styled-system';
+import { Box, Flex, Image, Text } from '../ThemeProvider/components';
+import { color, layout } from 'styled-system';
 import EmiswapLogo from '../assets/svg/logo.svg';
 import TelegramOutlinedLogo from '../assets/svg/SocIcons/telegramOutlined.svg';
 import TwitterLogo from '../assets/svg/SocIcons/twitter.svg';
@@ -9,29 +9,10 @@ import MediumLogo from '../assets/svg/SocIcons/medium.svg';
 import FacebookLogo from '../assets/svg/SocIcons/facebook.svg';
 import DiscordLogo from '../assets/svg/SocIcons/discord.svg';
 
-const LogoWrapper = styled.div`
-  display: flex;
-  align-items: baseline;
-  justify-content: flex-end;
-  width: 25%;
-  & > img {
-    margin-right: 4rem;
-  }
-`;
-
 const ListWrapper = styled.div`
   &:nth-of-type(n + 2) {
     margin-left: 3.75rem;
   }
-`;
-
-const LinksPartWrapper = styled.div`
-  display: flex;
-  width: 50%;
-`;
-
-const SocialsPartWrapper = styled.div`
-  width: 25%;
 `;
 
 const ListsHeader = styled.header`
@@ -51,7 +32,7 @@ const ListLink = styled.a`
 
 const LinkListItem = styled.li`
   list-style-type: none;
-  margin-bottom: 0.5rem;
+  ${layout};
 `;
 
 const SocialMediaButton = styled.button`
@@ -74,12 +55,6 @@ const SocialMediaButton = styled.button`
 
 const UnorderedListWrapper = styled.ul`
   padding: 0;
-`;
-
-const ReceivedGrantsParagraph = styled.p`
-  ${color};
-  margin-top: 1rem;
-  margin-bottom: 0.25rem;
 `;
 
 const HighlightedLink = styled.a`
@@ -118,17 +93,28 @@ const links = {
 };
 
 const LogoPart = () => (
-  <LogoWrapper>
-    <img
-      width={142}
-      src={EmiswapLogo}
-      alt="Emiswap logo"
-    />
-  </LogoWrapper>
+  <Flex
+    alignItems="baseline"
+    justifyContent="flex-end"
+    width={1/4}
+  >
+    <Box
+      mb="4rem"
+      width="100%"
+      height="100%"
+    >
+      <Image
+        width="9rem"
+        height={3}
+        backgroundImage={`url(${EmiswapLogo})`}
+        backgroundSize="cover"
+      />
+    </Box>
+  </Flex>
 );
 
 const LinksPart = () => (
-  <LinksPartWrapper>
+  <Flex width={1/2}>
     {Object.keys(links).map((headerLink) => {
       const listLinks = Object.keys(links[headerLink]).map((listLink) => (
         <LinkListItem>
@@ -158,11 +144,11 @@ const LinksPart = () => (
         </ListWrapper>
       );
     })}
-  </LinksPartWrapper>
+  </Flex>
 );
 
 const SocialsPart = () => (
-  <SocialsPartWrapper>
+  <Box width={1/4}>
     <ListsHeader
       color="text"
     >
@@ -189,20 +175,31 @@ const SocialsPart = () => (
         <img src={DiscordLogo} alt="Reddit" />
       </SocialMediaButton>
     </Flex>
-    <div>
-      <ReceivedGrantsParagraph color="fadedLink">Received grants from:</ReceivedGrantsParagraph>
+    <Box>
+      <Text
+        color="fadedLink"
+        mt={2}
+        mb={0}
+      >
+        Received grants from:
+      </Text>
       <Text color="text">
         <HighlightedLink href="#">Near Protocol</HighlightedLink>
         <span>&nbsp;&&nbsp;</span>
         <HighlightedLink href="#">Gate Chain</HighlightedLink>
       </Text>
-    </div>
-  </SocialsPartWrapper>
+    </Box>
+  </Box>
 );
 
 const Footer = () => {
   return (
-    <Flex backgroundColor="bg" minHeight={FOOTER_MIN_HEIGHT} padding="2rem">
+    <Flex
+      justifyContent="space-between"
+      backgroundColor="bg"
+      minHeight={FOOTER_MIN_HEIGHT}
+      padding="2rem"
+    >
       <LogoPart />
       <LinksPart />
       <SocialsPart />
