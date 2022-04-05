@@ -7,7 +7,7 @@ interface CellInterface {
   children?: ReactNode;
 }
 
-const CellWrapper = styled(Flex)`
+export const CellWrapper = styled(Flex)`
   & > * {
     flex: 1;
     justify-content: center;

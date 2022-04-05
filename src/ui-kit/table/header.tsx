@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react';
 import styled from 'styled-components';
 import { color, typography, TypographyProps } from 'styled-system';
 import { Flex, Text } from 'ThemeProvider';
+import { CellWrapper } from './cell';
 
 interface HeaderInterface {
   columns?: Array<string>;
@@ -12,27 +13,14 @@ const TableHeader = styled(Flex)<TypographyProps>`
   ${color};
 `;
 
-const HeaderWrapper = styled(Flex)`
-  & > * {
-    flex: 1;
-    justify-content: center;
-    &:first-child {
-      justify-content: start;
-    }
-    &:last-child {
-      justify-content: end;
-    }
-  }
-`;
-
-HeaderWrapper.defaultProps = {
+CellWrapper.defaultProps = {
   mb: 1,
   px: 1,
 }
 
 const Header = ({ columns }: HeaderInterface): ReactElement => {
   return (
-    <HeaderWrapper>
+    <CellWrapper>
       {columns.map((column, index) => {
         const isLeftest = index === 0;
         const isRightest = index === columns.length - 1;
@@ -45,7 +33,7 @@ const Header = ({ columns }: HeaderInterface): ReactElement => {
           </TableHeader>
         );
       })}
-    </HeaderWrapper>
+    </CellWrapper>
   );
 };
 
