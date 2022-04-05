@@ -123,7 +123,7 @@ const ActiveBlock = ({ network }: { network: INetworkInformation }) => (
     flexDirection="column"
     width={ACTIVE_BLOCK_SIZE}
     height={ACTIVE_BLOCK_SIZE}
-    padding="1.5rem"
+    p="3"
     bg="rgba(255, 255, 255, 0.05)"
     boxShadow="inset 1.125rem 1.25rem 4.875rem rgba(255, 255, 255, 0.1)"
     borderRadius="1.25rem"
