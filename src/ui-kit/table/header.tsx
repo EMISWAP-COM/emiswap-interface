@@ -13,14 +13,9 @@ const TableHeader = styled(Flex)<TypographyProps>`
   ${color};
 `;
 
-CellWrapper.defaultProps = {
-  mb: 1,
-  px: 1,
-}
-
 const Header = ({ columns }: HeaderInterface): ReactElement => {
   return (
-    <CellWrapper>
+    <CellWrapper px={1} mb={1}>
       {columns.map((column, index) => {
         const isLeftest = index === 0;
         const isRightest = index === columns.length - 1;
