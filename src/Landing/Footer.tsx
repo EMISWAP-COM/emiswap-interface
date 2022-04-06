@@ -4,12 +4,12 @@ import { Box, Button, Flex, Image, Text } from '../ThemeProvider';
 import { color, HeightProps, layout, LayoutProps, space, SpaceProps, system } from 'styled-system';
 import EmiswapLogo from '../assets/svg/logo.svg';
 import { CustomListProps, CustomTextProps } from '../ThemeProvider/customProps';
-import { DiscordIcon } from '../ui-kit/icons/socials/discord';
+import { DiscordIcon } from '../ui-kit/icons';
 import theme from '../ThemeProvider/theme';
-import { FacebookIcon } from '../ui-kit/icons/socials/facebook';
-import { MediumIcon } from '../ui-kit/icons/socials/medium';
-import { TwitterIcon } from '../ui-kit/icons/socials/twitter';
-import { TelegramIcon } from '../ui-kit/icons/socials/telegram';
+import { FacebookIcon } from '../ui-kit/icons';
+import { MediumIcon } from '../ui-kit/icons';
+import { TwitterIcon } from '../ui-kit/icons';
+import { TelegramIcon } from '../ui-kit/icons';
 
 const ListWrapper = styled(Box)`
   &:nth-of-type(n + 2) {

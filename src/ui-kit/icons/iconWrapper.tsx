@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import styled from 'styled-components';
-import { color } from 'styled-system';
+import { color, layout } from 'styled-system';
 
 export interface IconWrapperInterface {
   onClick?: () => void;
@@ -17,7 +17,8 @@ interface IconWrapper extends IconWrapperInterface {
 }
 
 const Wrapper = styled.div`
-  ${color}
+  ${color};
+  ${layout};
 `;
 
 const SVG = styled.svg``;
