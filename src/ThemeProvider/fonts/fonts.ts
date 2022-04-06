@@ -1,41 +1,41 @@
 const textSizes = {
-    small: {
-      fontSize: '12px',
-      lineHeight: '16px',
-    },
-    normal: {
-      fontSize: '14px',
-      lineHeight: '20px',
-    },
-    medium: {
-      fontSize: '16px',
-      lineHeight: '24px',
-    },
-    large: {
-      fontSize: '18px',
-      lineHeight: '24px',
-    },
-  };
-  
+  small: {
+    fontSize: '.75rem',
+    lineHeight: '1rem',
+  },
+  normal: {
+    fontSize: '.875rem',
+    lineHeight: '1.25rem',
+  },
+  medium: {
+    fontSize: '1rem',
+    lineHeight: '1.5rem',
+  },
+  large: {
+    fontSize: '1.125rem',
+    lineHeight: '1.5rem',
+  },
+};
+
 const headerSizes = {
-    small: {
-      fontSize: '24px',
-      lineHeight: '30px',
-    },
-    normal: {
-      fontSize: '32px',
-      lineHeight: '32px',
-    },
-    medium: {
-      fontSize: '40px',
-      lineHeight: '55px',
-    },
-    large: {
-      fontSize: '60px',
-      lineHeight: '75px',
-    },
-  };
-  
+  small: {
+    fontSize: '1.5rem',
+    lineHeight: '1.875rem',
+  },
+  normal: {
+    fontSize: '2rem',
+    lineHeight: '2rem',
+  },
+  medium: {
+    fontSize: '2.5rem',
+    lineHeight: '3.438rem',
+  },
+  large: {
+    fontSize: '3.75rem',
+    lineHeight: '4.688rem',
+  },
+};
+
 const fontFamilys = {
     RubikRegular: {
       fontFamily: 'RubikRegular',
