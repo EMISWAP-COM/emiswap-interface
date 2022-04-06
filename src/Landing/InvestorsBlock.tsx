@@ -5,6 +5,7 @@ import exIcon from 'assets/landing/ex.png';
 import mantraIcon from 'assets/landing/mantra.png';
 import masterIcon from 'assets/landing/master.png';
 import rcIcon from 'assets/landing/rc.png';
+import theme from 'ThemeProvider/theme';
 
 export const IconWrapper = ({ iconUrl }) => (
   <Flex
@@ -25,9 +26,9 @@ const Card = ({ head, text, icon }: { head: string; text: string; icon: any }) =
     height="10rem"
     alignItems="center"
     bg="#2e3033"
-    borderRadius="1rem"
-    pr="2rem"
-    pl="1.5rem"
+    borderRadius={theme.space[4]}
+    pr={6}
+    pl={5}
   >
     <Flex>
       <IconWrapper iconUrl={icon}></IconWrapper>
@@ -49,7 +50,7 @@ const InvestorsBlock = () => (
     height="30rem"
     gridTemplateRows="20% auto auto"
     justifyContent="center"
-    mt="7.5rem"
+    mt={7}
     ml="auto"
     mr="auto"
   >
@@ -61,7 +62,7 @@ const InvestorsBlock = () => (
       <Card head="ExNetwork fund" text="Fund, idea lab & an incubator" icon={exIcon} />
       <Card head="MantraDAO" text="DeFi platform focused on Staking" icon={mantraIcon} />
     </Flex>
-    <Flex justifyContent="space-between" pl="10rem" pr="12rem" mt="1rem">
+    <Flex justifyContent="space-between" pl={8} pr={9} mt={2}>
       <Card
         head="MasterVentures"
         text="Blockchain focused Venture Studio building"

@@ -3,7 +3,7 @@ import { headerStyles, textStyles } from './fonts';
 const shadedColor = 'rgba(122, 45, 244, 0.7)';
 
 const theme = {
-  space: ['0rem', '.25rem', '.5rem', '1rem', '1.5rem', '2rem', '2.5rem', '5rem', '10rem'],
+  space: ['0rem', '.25rem', '.5rem', '1rem', '1.5rem', '2rem', '2.5rem', '5rem', '10rem', '12rem', '20rem' ],
   headerStyles,
   textStyles,
   borders: {
