@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Box, Button, Flex, Image, Text } from '../ThemeProvider/components';
+import { Box, Button, Flex, Image, Text } from '../ThemeProvider';
 import { color, HeightProps, layout, LayoutProps, space, SpaceProps, system } from 'styled-system';
 import EmiswapLogo from '../assets/svg/logo.svg';
 import { CustomListProps, CustomTextProps } from '../ThemeProvider/customProps';
@@ -35,7 +35,7 @@ const ListsHeader = styled.header<HeightProps & SpaceProps & LayoutProps & Custo
 
 ListsHeader.defaultProps = {
   height: 2,
-}
+};
 
 const ListLink = styled.a<CustomTextProps>`
   ${color};
@@ -52,8 +52,8 @@ const ListLink = styled.a<CustomTextProps>`
 `;
 
 ListLink.defaultProps = {
-  textDecoration: "none",
-}
+  textDecoration: 'none',
+};
 
 const LinkListItem = styled.li<CustomListProps>`
   ${layout};
@@ -124,21 +124,12 @@ const links = {
     ['Smart Contract \n Audit By Hacken']: '#',
     ['Smart contract \n Audit by BlueSwarm']: '#',
     ['Code']: '#',
-  }
+  },
 };
 
 const LogoPart = () => (
-  <Box
-    pr="4rem"
-    width={1/4}
-  >
-    <Flex
-      alignItems="baseline"
-      justifyContent="flex-end"
-      mb="4rem"
-      width="100%"
-      height="100%"
-    >
+  <Box pr="4rem" width={1 / 4}>
+    <Flex alignItems="baseline" justifyContent="flex-end" mb="4rem" width="100%" height="100%">
       <Image
         width="9rem"
         height={3}
@@ -150,12 +141,10 @@ const LogoPart = () => (
 );
 
 const LinksPart = () => (
-  <Flex width={1/2}>
-    {Object.keys(links).map((headerLink) => {
-      const listLinks = Object.keys(links[headerLink]).map((listLink) => (
-        <LinkListItem
-          listStyleType="none"
-        >
+  <Flex width={1 / 2}>
+    {Object.keys(links).map(headerLink => {
+      const listLinks = Object.keys(links[headerLink]).map(listLink => (
+        <LinkListItem listStyleType="none">
           <ListLink
             whiteSpace="preLine"
             textDecoration="none"
@@ -175,16 +164,11 @@ const LinksPart = () => (
             textOverflow="ellipsis"
             whiteSpace="nowrap"
           >
-            <ListLink
-              color="text"
-              href={headerLinks[headerLink]}
-            >
+            <ListLink color="text" href={headerLinks[headerLink]}>
               {headerLink}
             </ListLink>
           </ListsHeader>
-          <UnorderedListWrapper p="0">
-            {listLinks}
-          </UnorderedListWrapper>
+          <UnorderedListWrapper p="0">{listLinks}</UnorderedListWrapper>
         </ListWrapper>
       );
     })}
@@ -194,19 +178,9 @@ const LinksPart = () => (
 const SOCIALS_ICONS_WIDTH = theme.sizes[2];
 
 const SocialsPart = () => (
-  <Box width={1/4}>
-    <ListsHeader
-      mb={2}
-      overflow="hidden"
-      color="text"
-      textOverflow="ellipsis"
-      whiteSpace="nowrap"
-    >
-      <ListLink
-        color="text"
-      >
-        Socials
-      </ListLink>
+  <Box width={1 / 4}>
+    <ListsHeader mb={2} overflow="hidden" color="text" textOverflow="ellipsis" whiteSpace="nowrap">
+      <ListLink color="text">Socials</ListLink>
     </ListsHeader>
     <Flex>
       <SocialMediaButton>
@@ -226,27 +200,15 @@ const SocialsPart = () => (
       </SocialMediaButton>
     </Flex>
     <Box>
-      <Text
-        color="fadedLink"
-        mt={2}
-        mb={0}
-      >
+      <Text color="fadedLink" mt={2} mb={0}>
         Received grants from:
       </Text>
       <Text color="text">
-        <HighlightedLink
-          href="#"
-          color="text"
-          textDecorationColor="text"
-        >
+        <HighlightedLink href="#" color="text" textDecorationColor="text">
           Near Protocol
         </HighlightedLink>
         <span>&nbsp;&&nbsp;</span>
-        <HighlightedLink
-          href="#"
-          color="text"
-          textDecorationColor="text"
-        >
+        <HighlightedLink href="#" color="text" textDecorationColor="text">
           Gate Chain
         </HighlightedLink>
       </Text>
