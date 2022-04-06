@@ -60,15 +60,21 @@ const CollectToMyWallet = ({
     nextTime,
     nextDay,
     nextValue,
+    progress,
     handler: changeCollect,
   } = useCollectData(() => closeWindow());
 
   const avalibleCollect = unlocked === '0' ? '0' : avalible;
   const remainderValue = useGetRemainder();
   const isCollectDisabled = remainderValue.status !== 'enable';
+  const isInProgress = remainderValue.status === 'progress';
+  const isCollectInProgress = progress === 'pending';
   return (
     <WalletWrapper>
-      <Title>Collect to my Wallet</Title>
+      <Title style={{ paddingBottom: '8px' }}>Collect to my Wallet</Title>
+      <Label>
+        Note: To obtain a reward, you must first click the request collect button, then return to the same page in 10 days and click collect to my wallet.
+      </Label>
       <Frame>
         <FrameRow>
           <Item label="Requested & uncollected ESW" value={requested} />
@@ -82,7 +88,11 @@ const CollectToMyWallet = ({
           <Item label="Available ESW to collect in the current Epoch" value={avalibleCollect} />
         </FrameRow>
         <ButtonGroup>
-          <CollectBtn onClick={openRequestCollect}>Request collect</CollectBtn>
+          <CollectBtn
+            onClick={openRequestCollect}
+          >
+            {isInProgress ? 'Pending' : 'Request collect'}
+          </CollectBtn>
 
           <CollectBtn
             inactive={isCollectDisabled}
@@ -94,7 +104,7 @@ const CollectToMyWallet = ({
                 <Countdown date={new Date(remainderValue.value)}></Countdown>
               </>
             ) : (
-              remainderValue.value
+              isCollectInProgress ? 'Pending' : remainderValue.value
             )}
           </CollectBtn>
         </ButtonGroup>

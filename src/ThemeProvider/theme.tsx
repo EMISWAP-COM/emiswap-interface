@@ -37,6 +37,11 @@ const theme = {
     buttonFarm:
       'radial-gradient(175.28% 356.67% at 86.32% 100%, rgba(123, 63, 228, 0) 14.55%, #B185FF 83.34%)',
     empty: 'transparent !important',
+    border:
+      'radial-gradient( 184.37% 184.37% at -60.94% -46.88%, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 61%)',
+  },
+  backdropFilter: {
+    default: 'blur(3.5rem)',
   },
   buttonSize: {
     default: '2.75rem',
@@ -157,5 +162,6 @@ const theme = {
 export type ButtonThemeType = keyof typeof theme.buttons;
 export type ButtonSizeType = keyof typeof theme.buttonSize;
 export type ButtonGradientType = keyof typeof theme.gradients;
+export type BackdropFilterType = keyof typeof theme.backdropFilter;
 
 export default theme;
