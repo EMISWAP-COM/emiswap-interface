@@ -1,21 +1,23 @@
 import React from 'react';
-import { Flex, Grid, Head, Text, Image } from 'ThemeProvider';
+import { Flex, Grid, Image } from 'ThemeProvider';
+import Header from 'ui-kit/Header';
+import Text from 'ui-kit/Text';
 import mainLogo from 'assets/landing/main-block.png';
 
 const MainBlock = () => (
   <Grid
     height="30rem"
-    width="67.75rem"
-    gridColumnGap="3.75rem"
-    gridTemplateColumns="37.5rem auto"
+    width="65rem"
+    gridColumnGap={6}
+    gridTemplateColumns="37rem auto"
     ml="auto"
     mr="auto"
   >
     <Flex flexDirection="column" justifyContent="center">
-      <Head variant="largeSora" color="white">
+      <Header headerStyle="largeSoraBold" color="white">
         Next-Gen DeFi Matrix with 365% Cross-Chain APR & DAO Governance
-      </Head>
-      <Text color="white" variant="largeRubik" width="30.94rem">
+      </Header>
+      <Text color="white" textStyle="largeRubikRegular">
         Extract the highest daily yields from liquidity mining and farming
       </Text>
     </Flex>
