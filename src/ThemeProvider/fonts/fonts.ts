@@ -59,171 +59,174 @@ const fontFamilys = {
   },
 };
 
-export const textStyles = {
-  smallRubikRegular: {
+export const textStyles ={
+  smallRubikRegular : {
     ...textSizes.small,
-    ...fontFamilys.RubikRegular,
+    ...fontFamilys.RubikRegular
   },
-  smallRubikMedium: {
+  smallRubikMedium : {
     ...textSizes.small,
-    ...fontFamilys.RubikMedium,
+    ...fontFamilys.RubikMedium
   },
-  smallRubikBold: {
+  smallRubikBold : {
     ...textSizes.small,
-    ...fontFamilys.RubikBold,
+    ...fontFamilys.RubikBold
   },
-  smallSoraSemiBold: {
+  smallSoraSemiBold : {
     ...textSizes.small,
-    ...fontFamilys.SoraSemiBold,
+    ...fontFamilys.SoraSemiBold
   },
-  smallSoraBold: {
+  smallSoraBold : {
     ...textSizes.small,
-    ...fontFamilys.SoraBold,
+    ...fontFamilys.SoraBold
   },
-  normalRubikRegular: {
+  normalRubikRegular : {
     ...textSizes.normal,
-    ...fontFamilys.RubikRegular,
+    ...fontFamilys.RubikRegular
   },
-  normalRubikMedium: {
+  normalRubikMedium : {
     ...textSizes.normal,
-    ...fontFamilys.RubikMedium,
+    ...fontFamilys.RubikMedium
   },
-  normalRubikBold: {
+  normalRubikBold : {
     ...textSizes.normal,
-    ...fontFamilys.RubikBold,
+    ...fontFamilys.RubikBold
   },
-  normalSoraSemiBold: {
+  normalSoraSemiBold : {
     ...textSizes.normal,
-    ...fontFamilys.SoraSemiBold,
+    ...fontFamilys.SoraSemiBold
   },
-  normalSoraBold: {
+  normalSoraBold : {
     ...textSizes.normal,
-    ...fontFamilys.SoraBold,
+    ...fontFamilys.SoraBold
   },
-  mediumRubikRegular: {
+  mediumRubikRegular : {
     ...textSizes.medium,
-    ...fontFamilys.RubikRegular,
+    ...fontFamilys.RubikRegular
   },
-  mediumRubikMedium: {
+  mediumRubikMedium : {
     ...textSizes.medium,
-    ...fontFamilys.RubikMedium,
+    ...fontFamilys.RubikMedium
   },
-  mediumRubikBold: {
+  mediumRubikBold : {
     ...textSizes.medium,
-    ...fontFamilys.RubikBold,
+    ...fontFamilys.RubikBold
   },
-  mediumSoraSemiBold: {
+  mediumSoraSemiBold : {
     ...textSizes.medium,
-    ...fontFamilys.SoraSemiBold,
+    ...fontFamilys.SoraSemiBold
   },
-  mediumSoraBold: {
+  mediumSoraBold : {
     ...textSizes.medium,
-    ...fontFamilys.SoraBold,
+    ...fontFamilys.SoraBold
   },
-  largeRubikRegular: {
+  largeRubikRegular : {
     ...textSizes.large,
-    ...fontFamilys.RubikRegular,
+    ...fontFamilys.RubikRegular
   },
-  largeRubikMedium: {
+  largeRubikMedium : {
     ...textSizes.large,
-    ...fontFamilys.RubikMedium,
+    ...fontFamilys.RubikMedium
   },
-  largeRubikBold: {
+  largeRubikBold : {
     ...textSizes.large,
-    ...fontFamilys.RubikBold,
+    ...fontFamilys.RubikBold
   },
-  largeSoraSemiBold: {
+  largeSoraSemiBold : {
     ...textSizes.large,
-    ...fontFamilys.SoraSemiBold,
+    ...fontFamilys.SoraSemiBold
   },
-  largeSoraBold: {
+  largeSoraBold : {
     ...textSizes.large,
-    ...fontFamilys.SoraBold,
+    ...fontFamilys.SoraBold
   },
-};
+}
 
 export const headerStyles = {
-  smallRubikRegular: {
+  smallRubikRegular : {
     ...headerSizes.small,
-    ...fontFamilys.RubikRegular,
+    ...fontFamilys.RubikRegular
   },
-  smallRubikMedium: {
+  smallRubikMedium : {
     ...headerSizes.small,
-    ...fontFamilys.RubikMedium,
+    ...fontFamilys.RubikMedium
   },
-  smallRubikBold: {
+  smallRubikBold : {
     ...headerSizes.small,
-    ...fontFamilys.RubikBold,
+    ...fontFamilys.RubikBold
   },
-  smallSoraSemiBold: {
+  smallSoraSemiBold : {
     ...headerSizes.small,
-    ...fontFamilys.SoraSemiBold,
+    ...fontFamilys.SoraSemiBold
   },
-  smallSoraBold: {
+  smallSoraBold : {
     ...headerSizes.small,
-    ...fontFamilys.SoraBold,
+    ...fontFamilys.SoraBold
   },
-  normalRubikRegular: {
+  normalRubikRegular : {
     ...headerSizes.normal,
-    ...fontFamilys.RubikRegular,
+    ...fontFamilys.RubikRegular
   },
-  normalRubikMedium: {
+  normalRubikMedium : {
     ...headerSizes.normal,
-    ...fontFamilys.RubikMedium,
+    ...fontFamilys.RubikMedium
   },
-  normalRubikBold: {
+  normalRubikBold : {
     ...headerSizes.normal,
-    ...fontFamilys.RubikBold,
+    ...fontFamilys.RubikBold
   },
-  normalSoraSemiBold: {
+  normalSoraSemiBold : {
     ...headerSizes.normal,
-    ...fontFamilys.SoraSemiBold,
+    ...fontFamilys.SoraSemiBold
   },
-  normalSoraBold: {
+  normalSoraBold : {
     ...headerSizes.normal,
-    ...fontFamilys.SoraBold,
+    ...fontFamilys.SoraBold
   },
-  mediumRubikRegular: {
+  mediumRubikRegular : {
     ...headerSizes.medium,
-    ...fontFamilys.RubikRegular,
+    ...fontFamilys.RubikRegular
   },
-  mediumRubikMedium: {
+  mediumRubikMedium : {
     ...headerSizes.medium,
-    ...fontFamilys.RubikMedium,
+    ...fontFamilys.RubikMedium
   },
-  mediumRubikBold: {
+  mediumRubikBold : {
     ...headerSizes.medium,
-    ...fontFamilys.RubikBold,
+    ...fontFamilys.RubikBold
   },
-  mediumSoraSemiBold: {
+  mediumSoraSemiBold : {
     ...headerSizes.medium,
-    ...fontFamilys.SoraSemiBold,
+    ...fontFamilys.SoraSemiBold
   },
-  mediumSoraBold: {
+  mediumSoraBold : {
     ...headerSizes.medium,
-    ...fontFamilys.SoraBold,
+    ...fontFamilys.SoraBold
   },
-  largeRubikRegular: {
+  largeRubikRegular : {
     ...headerSizes.large,
-    ...fontFamilys.RubikRegular,
+    ...fontFamilys.RubikRegular
   },
-  largeRubikMedium: {
+  largeRubikMedium : {
     ...headerSizes.large,
-    ...fontFamilys.RubikMedium,
+    ...fontFamilys.RubikMedium
   },
-  largeRubikBold: {
+  largeRubikBold : {
     ...headerSizes.large,
-    ...fontFamilys.RubikBold,
+    ...fontFamilys.RubikBold
   },
-  largeSoraSemiBold: {
+  largeSoraSemiBold : {
     ...headerSizes.large,
-    ...fontFamilys.SoraSemiBold,
+    ...fontFamilys.SoraSemiBold
   },
-  largeSoraBold: {
+  largeSoraBold : {
     ...headerSizes.large,
-    ...fontFamilys.SoraBold,
+    ...fontFamilys.SoraBold
   },
-};
+}
 
 export type TextStyleTypes = keyof typeof textStyles;
 export type HeaderStyleTypes = keyof typeof headerStyles;
+
+
+
