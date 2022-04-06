@@ -18,7 +18,7 @@ const PartnersBlock = () => (
     height="20rem"
     gridTemplateRows="25% auto"
     justifyContent="center"
-    mt="7.5rem"
+    mt={8}
     ml="auto"
     mr="auto"
   >
@@ -26,7 +26,7 @@ const PartnersBlock = () => (
       <StyledHead>Partners</StyledHead>
     </Flex>
     <Flex flexDirection="column">
-      <Flex justifyContent="space-between" mt="1rem" alignItems="center">
+      <Flex justifyContent="space-between" mt={3} alignItems="center">
         <Image
           backgroundImage={`url(${bitmartLogo})`}
           backgroundSize="cover"
@@ -52,7 +52,7 @@ const PartnersBlock = () => (
           height="2.15rem"
         />
       </Flex>
-      <Flex justifyContent="space-between" pl="5.5rem" pr="5.5rem" alignItems="center" mt="2rem">
+      <Flex justifyContent="space-between" pl={7} pr={7} alignItems="center" mt={5}>
         <Image
           backgroundImage={`url(${bigbrainLogo})`}
           backgroundSize="cover"
@@ -72,7 +72,7 @@ const PartnersBlock = () => (
           height="1rem"
         />
       </Flex>
-      <Flex justifyContent="space-between" alignItems="center" mt="2rem">
+      <Flex justifyContent="space-between" alignItems="center" mt={5}>
         <Image
           backgroundImage={`url(${mahdaoLogo})`}
           backgroundSize="cover"
