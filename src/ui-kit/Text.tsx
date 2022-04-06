@@ -12,17 +12,17 @@ interface FontInterface {
   children: ReactNode;
   color?: string;
 }
-const Font = styled.div<TextStyleInterface>`
+const Font = styled.p<TextStyleInterface>`
   ${color}
   ${variant({
     scale: 'textStyles',
   })}
 `;
 
-const FontStyle = ({ textStyle, children, color = 'white' }: FontInterface) => (
+const Text = ({ textStyle, children, color = 'white' }: FontInterface) => (
   <Font variant={textStyle} color={color}>
     {children}
   </Font>
 );
 
-export default FontStyle;
+export default Text;
