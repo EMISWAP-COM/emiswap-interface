@@ -34,7 +34,7 @@ const ListsHeader = styled.header<HeightProps & SpaceProps & LayoutProps & Custo
 `;
 
 ListsHeader.defaultProps = {
-  height: 2,
+  height: 3,
 };
 
 const ListLink = styled.a<CustomTextProps>`
@@ -78,7 +78,7 @@ const SocialMediaButton = styled(Button)`
 `;
 
 SocialMediaButton.defaultProps = {
-  width: 3,
+  width: 4,
   py: '0.375rem',
   bg: 'fadedWhite',
 };
@@ -97,7 +97,7 @@ const HighlightedLink = styled.a<CustomTextProps>`
   })};
 `;
 
-const FOOTER_MIN_HEIGHT = theme.sizes[10];
+const FOOTER_MIN_HEIGHT = theme.sizes[11];
 
 const headerLinks = {
   ['EmiSwap DEX']: '#',
@@ -132,7 +132,7 @@ const LogoPart = () => (
     <Flex alignItems="baseline" justifyContent="flex-end" mb="4rem" width="100%" height="100%">
       <Image
         width="9rem"
-        height={3}
+        height={4}
         backgroundImage={`url(${EmiswapLogo})`}
         backgroundSize="cover"
       />
@@ -158,7 +158,7 @@ const LinksPart = () => (
       return (
         <ListWrapper>
           <ListsHeader
-            mb={2}
+            mb={3}
             overflow="hidden"
             color="text"
             textOverflow="ellipsis"
@@ -175,11 +175,11 @@ const LinksPart = () => (
   </Flex>
 );
 
-const SOCIALS_ICONS_WIDTH = theme.sizes[2];
+const SOCIALS_ICONS_WIDTH = theme.sizes[3];
 
 const SocialsPart = () => (
   <Box width={1 / 4}>
-    <ListsHeader mb={2} overflow="hidden" color="text" textOverflow="ellipsis" whiteSpace="nowrap">
+    <ListsHeader mb={3} overflow="hidden" color="text" textOverflow="ellipsis" whiteSpace="nowrap">
       <ListLink color="text">Socials</ListLink>
     </ListsHeader>
     <Flex>
@@ -200,7 +200,7 @@ const SocialsPart = () => (
       </SocialMediaButton>
     </Flex>
     <Box>
-      <Text color="fadedLink" mt={2} mb={0}>
+      <Text color="fadedLink" mt={3} mb={1}>
         Received grants from:
       </Text>
       <Text color="text">

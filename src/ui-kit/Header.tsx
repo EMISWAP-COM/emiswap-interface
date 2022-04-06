@@ -12,17 +12,17 @@ interface FontInterface {
   children: ReactNode;
   color?: string;
 }
-const Font = styled.div<HeaderStyleInterface>`
+const Font = styled.h1<HeaderStyleInterface>`
   ${color}
   ${variant({
     scale: 'headerStyles',
   })}
 `;
 
-const HeadeFontStyle = ({ headerStyle, children, color = 'white' }: FontInterface) => (
+const Header = ({ headerStyle, children, color = 'white' }: FontInterface) => (
   <Font variant={headerStyle} color={color}>
     {children}
   </Font>
 );
 
-export default HeadeFontStyle;
+export default Header;
