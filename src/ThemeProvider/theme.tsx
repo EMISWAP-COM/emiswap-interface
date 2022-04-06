@@ -27,6 +27,7 @@ const theme = {
     buttonInactive: '#7A2DF426',
     drop: '#1B1B1F',
     disabled: 'rgba(255, 255, 255, 0.7)',
+    almostNoWhite: 'rgba(255, 255, 255, 0.05)'
   },
   gradients: {
     buttonPrimary:
