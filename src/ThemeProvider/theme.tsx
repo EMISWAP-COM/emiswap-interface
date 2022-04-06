@@ -156,8 +156,11 @@ const theme = {
   },
 };
 
+type StringOrNumber = string | number;
+
 export type ButtonThemeType = keyof typeof theme.buttons;
 export type ButtonSizeType = keyof typeof theme.buttonSize;
 export type ButtonGradientType = keyof typeof theme.gradients;
+export type FlexGapType = StringOrNumber;
 
 export default theme;

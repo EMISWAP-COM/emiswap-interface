@@ -22,7 +22,7 @@ import { PencilWritingIcon } from '../ui-kit/icons/pencilWriting';
 import { OKEXIcon } from '../ui-kit/icons/networks/okex';
 import { TronIcon } from '../ui-kit/icons/networks/tron';
 import { system } from 'styled-system';
-import { FlexGapType } from '../ThemeProvider/customTypes';
+import { FlexGapType } from '../ThemeProvider';
 
 type RoadmapStepsIconType = string;
 
@@ -65,10 +65,7 @@ const Q1 = {
     },
     {
       name: 'Avalanche',
-      icon: <AvalancheTransparentIcon
-        width={SVG_ICONS_SIZE}
-        height={SVG_ICONS_SIZE}
-      />,
+      icon: <AvalancheTransparentIcon width={SVG_ICONS_SIZE} height={SVG_ICONS_SIZE} />,
     },
     {
       name: 'Gate Chain',
@@ -83,7 +80,7 @@ const Q1 = {
       name: 'Cross-chain bridge',
       description: 'Stage 02',
       icon: <ChainIcon width={SVG_ICONS_SIZE} height={SVG_ICONS_SIZE} />,
-    }
+    },
   ],
 };
 const Q2 = {
@@ -106,8 +103,8 @@ const Q2 = {
     {
       name: 'Platform Redesign',
       icon: <PencilWritingIcon width={SVG_ICONS_SIZE} height={SVG_ICONS_SIZE} />,
-    }
-  ]
+    },
+  ],
 };
 const Q3 = {
   name: 'Q3',
@@ -128,8 +125,8 @@ const Q3 = {
       description: 'Stage 01',
       icon: <ImageEmpty width={SVG_ICONS_SIZE} height={SVG_ICONS_SIZE} />,
       marginTop: '1.25rem',
-    }
-  ]
+    },
+  ],
 };
 const Q4 = {
   name: 'Q4',
@@ -146,18 +143,18 @@ const Q4 = {
       description: 'Stage 02',
       icon: <ImageEmpty width={SVG_ICONS_SIZE} height={SVG_ICONS_SIZE} />,
       marginTop: 2,
-    }
-  ]
+    },
+  ],
 };
 
 const QUARTALS_INFO: IQuartalsInfo = {
-  'q1': Q1,
-  'q2': Q2,
-  'q3': Q3,
-  'q4': Q4,
+  q1: Q1,
+  q2: Q2,
+  q3: Q3,
+  q4: Q4,
 };
 
-const QuartalBlocksWrapper = styled(Flex)<FlexGapType>`
+const QuartalBlocksWrapper = styled(Flex)<{ gap: FlexGapType }>`
   ${system({
     gap: {
       property: 'gap',
@@ -167,11 +164,11 @@ const QuartalBlocksWrapper = styled(Flex)<FlexGapType>`
 `;
 QuartalBlocksWrapper.defaultProps = {
   mt: 2,
-}
+};
 
 const PROGRESS_BLOCK_WIDTH = 3;
 
-const StepBlock = ({ step }: {step: IStep}) => (
+const StepBlock = ({ step }: { step: IStep }) => (
   <Flex alignItems="center" mt={step.marginTop || 3}>
     <Flex
       width={step.width ? `calc(${step.width} + 0.5rem)` : 3}
@@ -185,16 +182,22 @@ const StepBlock = ({ step }: {step: IStep}) => (
     </Flex>
     <Flex flexDirection="column" justifyContent="center" pl={1}>
       <Text color="text" variant="mediumRubik">
-        { step.name }
+        {step.name}
       </Text>
       <Text color="inactive" variant="mediumRubik">
-        { step.description }
+        {step.description}
       </Text>
     </Flex>
   </Flex>
 );
 
-const ProgressBlock = ({ steps, roadmapStepsIcon }: { steps: Array<IStep>, roadmapStepsIcon: RoadmapStepsIconType }) => (
+const ProgressBlock = ({
+  steps,
+  roadmapStepsIcon,
+}: {
+  steps: Array<IStep>;
+  roadmapStepsIcon: RoadmapStepsIconType;
+}) => (
   <Flex>
     <Image
       backgroundImage={`url(${roadmapStepsIcon})`}
@@ -204,20 +207,17 @@ const ProgressBlock = ({ steps, roadmapStepsIcon }: { steps: Array<IStep>, roadm
       height={`${steps.length * 2.5 + steps.length * 1.5 - 2}rem`}
     />
     <Box mt="-0.25rem">
-      {steps.map((step) => (
+      {steps.map(step => (
         <StepBlock step={step} />
       ))}
     </Box>
   </Flex>
 );
 
-const QuartalBlock = ({ quartal } : {quartal: IQuartal }) => (
+const QuartalBlock = ({ quartal }: { quartal: IQuartal }) => (
   <Box>
     <Flex alignItems="center" mb={2}>
-      <Text
-        width={PROGRESS_BLOCK_WIDTH}
-        color={quartal.isActive ? 'text' : 'almostDisabled'}
-      >
+      <Text width={PROGRESS_BLOCK_WIDTH} color={quartal.isActive ? 'text' : 'almostDisabled'}>
         {quartal.name}
       </Text>
       <Image
@@ -227,26 +227,21 @@ const QuartalBlock = ({ quartal } : {quartal: IQuartal }) => (
         height={0}
       />
     </Flex>
-    <ProgressBlock
-      steps={quartal.steps}
-      roadmapStepsIcon={quartal.roadmapStepsIcon}
-    />
+    <ProgressBlock steps={quartal.steps} roadmapStepsIcon={quartal.roadmapStepsIcon} />
   </Box>
 );
 
 const RoadmapBlock = () => (
   <Flex flexDirection="column">
     <Text>
-      <StyledHead>
-        Emiswap Roadmap
-      </StyledHead>
+      <StyledHead>Emiswap Roadmap</StyledHead>
       <Text variant="largeRubik" color="white" mt={4}>
         Emiswap is building cross-chain ecosystem <br />
         by integrating various blockchains and NFT components
       </Text>
     </Text>
     <QuartalBlocksWrapper gap="0.75rem">
-      {Object.keys(QUARTALS_INFO).map((QUARTAL_INFO_KEY) => (
+      {Object.keys(QUARTALS_INFO).map(QUARTAL_INFO_KEY => (
         <QuartalBlock quartal={QUARTALS_INFO[QUARTAL_INFO_KEY]} />
       ))}
     </QuartalBlocksWrapper>
