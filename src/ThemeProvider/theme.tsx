@@ -3,7 +3,19 @@ import { headerStyles, textStyles } from './fonts';
 const shadedColor = 'rgba(122, 45, 244, 0.7)';
 
 const theme = {
-  space: ['0rem', '.25rem', '.5rem', '1rem', '1.5rem', '2rem', '2.5rem', '5rem', '10rem', '12rem', '20rem' ],
+  space: [
+    '0rem',
+    '.25rem',
+    '.5rem',
+    '1rem',
+    '1.5rem',
+    '2rem',
+    '2.5rem',
+    '5rem',
+    '10rem',
+    '12rem',
+    '20rem',
+  ],
   headerStyles,
   textStyles,
   borders: {
@@ -27,7 +39,7 @@ const theme = {
     buttonInactive: '#7A2DF426',
     drop: '#1B1B1F',
     disabled: 'rgba(255, 255, 255, 0.7)',
-    almostNoWhite: 'rgba(255, 255, 255, 0.05)'
+    almostNoWhite: 'rgba(255, 255, 255, 0.05)',
   },
   gradients: {
     buttonPrimary:

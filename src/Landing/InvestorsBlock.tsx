@@ -1,5 +1,6 @@
 import React from 'react';
-import { Grid, Flex, StyledHead, Text, Image } from 'ThemeProvider';
+import { Grid, Flex, StyledHead, Image, Box } from 'ThemeProvider';
+import Text from 'ui-kit/Text';
 import holdIcon from 'assets/landing/hold.png';
 import exIcon from 'assets/landing/ex.png';
 import mantraIcon from 'assets/landing/mantra.png';
@@ -22,33 +23,29 @@ export const IconWrapper = ({ iconUrl }) => (
 
 const Card = ({ head, text, icon }: { head: string; text: string; icon: any }) => (
   <Flex
-    width="20rem"
+    width="21rem"
     height="10rem"
     alignItems="center"
     bg="#2e3033"
     borderRadius={theme.space[4]}
-    pr={6}
+    pr={4}
     pl={5}
   >
     <Flex>
       <IconWrapper iconUrl={icon}></IconWrapper>
     </Flex>
-    <Flex flexDirection="column" ml="1.25rem">
-      <Text variant="defaultRubik" color="white">
-        {head}
-      </Text>
-      <Text variant="defaultRubik" color="white" mt=".5rem">
-        {text}
-      </Text>
-    </Flex>
+    <Grid ml={4} mt={4} gridTemplateRows="25% auto">
+      <Text textStyle="mediumRubikBold">{head}</Text>
+      <Text textStyle="mediumRubikRegular">{text}</Text>
+    </Grid>
   </Flex>
 );
 
 const InvestorsBlock = () => (
   <Grid
-    width="64rem"
+    width="67rem"
     height="30rem"
-    gridTemplateRows="20% auto auto"
+    gridTemplateRows="21% auto auto"
     justifyContent="center"
     mt={7}
     ml="auto"
@@ -62,7 +59,7 @@ const InvestorsBlock = () => (
       <Card head="ExNetwork fund" text="Fund, idea lab & an incubator" icon={exIcon} />
       <Card head="MantraDAO" text="DeFi platform focused on Staking" icon={mantraIcon} />
     </Flex>
-    <Flex justifyContent="space-between" pl={8} pr={9} mt={2}>
+    <Flex justifyContent="space-between" pl={8} pr="13rem" mt={2}>
       <Card
         head="MasterVentures"
         text="Blockchain focused Venture Studio building"
