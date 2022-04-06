@@ -95,10 +95,10 @@ export const Text = styled.div<TextProps>`
   })}
 `;
 
-export const StyledHead = styled.div`
-  font-weight: bold;
+export const StyledHead = styled.div<Props>`
+  ${space}
   font-size: 40px;
-  font-family: 'Sora';
+  font-family: 'SoraBold';
   line-height: 50px;
   background-color: #f3ec78;
   background-image: linear-gradient(45deg, #b7e1ff, #8128cc);
@@ -112,7 +112,7 @@ export const StyledHead = styled.div`
 export const StyledText = styled.div`
   font-weight: 600;
   font-size: 24px;
-  font-family: 'Rubik';
+  font-family: 'RubikBold';
   line-height: 34px;
   background-color: #f3ec78;
   background-image: linear-gradient(45deg, #b7e1ff, #8128cc);

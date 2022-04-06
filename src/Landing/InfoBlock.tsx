@@ -22,8 +22,8 @@ const InfoBlock = () => (
       />
     </Flex>
     <Flex flexDirection="column" justifyContent="center">
-      <StyledHead>Meet the EmiDAO Ecosystem</StyledHead>
-      <Text textStyle="largeRubikRegular" color="white">
+      <StyledHead mb={2}>Meet the EmiDAO Ecosystem</StyledHead>
+      <Text textStyle="largeRubikRegular">
         EmiSwap is an AMM DEX and the first project in the EmiDAO ecosystem. 100% of the trading
         fees on the DEX are distributed between liquidity providers and ESW token holders.
       </Text>
