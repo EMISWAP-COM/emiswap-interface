@@ -121,7 +121,7 @@ const InfoBlock = ({ head, text, iconUrl }: { head: string; text: string; iconUr
         <IconWrapper iconUrl={iconUrl} />
       </Flex>
       <Flex flexDirection="column">
-        <Head variant="smallRubikMedium" color="buttonActive">
+        <Head variant="smallRubikMedium" color="buttonActive" mt={4}>
           {head}
         </Head>
         <Text variant="largeRubikRegular" mt="3" color="greyPaper" maxWidth="18rem">
