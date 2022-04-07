@@ -26,8 +26,10 @@ const Card = ({ head, text, icon }: { head: string; text: string; icon: any }) =
     width="21rem"
     height="10rem"
     alignItems="center"
-    bg="#2e3033"
     borderRadius={theme.space[4]}
+    bg="rgba(255, 255, 255, 0.05)"
+    boxShadow="inset 18px 20px 78px rgba(255, 255, 255, 0.1)"
+    backdropFilter="blur(53px)"
     pr={4}
     pl={5}
   >

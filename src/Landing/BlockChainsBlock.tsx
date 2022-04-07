@@ -14,7 +14,7 @@ const BlockChainsBlock = () => (
     height="20rem"
     gridTemplateRows="25% auto"
     justifyContent="center"
-    mt="7.5rem"
+    mt={7}
     ml="auto"
     mr="auto"
   >
@@ -22,7 +22,7 @@ const BlockChainsBlock = () => (
       <StyledHead>Blockchains</StyledHead>
     </Flex>
     <Flex flexDirection="column">
-      <Flex justifyContent="space-between" mt="1rem" pl="5.5rem" pr="5.5rem" alignItems="center">
+      <Flex justifyContent="space-between" mt={3} pl={7} pr={7} alignItems="center">
         <Image
           backgroundImage={`url(${gateLogo})`}
           backgroundSize="cover"
@@ -42,7 +42,7 @@ const BlockChainsBlock = () => (
           height="2.063rem"
         />
       </Flex>
-      <Flex justifyContent="space-between" alignItems="center" mt="2rem">
+      <Flex justifyContent="space-between" alignItems="center" mt={5}>
         <Image
           backgroundImage={`url(${shidenLogo})`}
           backgroundSize="cover"
