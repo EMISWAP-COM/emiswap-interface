@@ -1,10 +1,13 @@
 import React from 'react';
-import { Grid, Flex, StyledHead, Head, Text, StyledText, Image } from 'ThemeProvider';
+import { Grid, Flex, StyledHead, Head, StyledText, Box, Image } from 'ThemeProvider';
+import Text from 'ui-kit/Text';
+import Header from 'ui-kit/Header';
 import peopleIcon from 'assets/landing/people.png';
 import rocketIcon from 'assets/landing/rocket-sharp.png';
 import trailIcon from 'assets/landing/trail-sign.png';
 import beerIcon from 'assets/landing/beer.png';
 import gameIcon from 'assets/landing/game-controller.png';
+import theme from '../ThemeProvider/theme';
 
 const strings = {
   info: [
@@ -83,13 +86,18 @@ const IconWrapper = ({ iconUrl }) => (
 );
 const LevelBlock = ({ head, text }: { head: string; text: string }) => {
   return (
-    <Flex alignItems="center" bg="#2e3033" borderRadius="1rem" pl="1.5rem">
-      <Head variant="mediumSora" width="auto" ml="1.5rem" color="white">
-        {head}
-      </Head>
-      <Text variant="defaultRubik" ml="1.5rem" maxWidth="18rem" color="white">
-        {text}
-      </Text>
+    <Flex
+      alignItems="center"
+      borderRadius={theme.space[4]}
+      backdropFilter="blur(53px)"
+      bg="rgba(255, 255, 255, 0.05)"
+      boxShadow="inset 18px 20px 78px rgba(255, 255, 255, 0.1)"
+      pl={5}
+    >
+      <Header headerStyle="normalSoraBold">{head}</Header>
+      <Box mt={2} maxWidth="18rem" ml={4}>
+        <Text textStyle="mediumRubikRegular">{text}</Text>
+      </Box>
     </Flex>
   );
 };
@@ -116,15 +124,23 @@ const FeatureBlock = ({ head, text, iconUrl }: { head: string; text: string; ico
 };
 const InfoBlock = ({ head, text, iconUrl }: { head: string; text: string; iconUrl: any }) => {
   return (
-    <Grid gridTemplateColumns="10rem auto" pt="4.5rem" bg="#2e3033" borderRadius="1rem">
+    <Grid
+      gridTemplateColumns="11rem auto"
+      pt={7}
+      pr={6}
+      borderRadius={theme.space[4]}
+      backdropFilter="blur(53px)"
+      bg="rgba(255, 255, 255, 0.05)"
+      boxShadow="inset 18px 20px 78px rgba(255, 255, 255, 0.1)"
+    >
       <Flex justifyContent="center">
         <IconWrapper iconUrl={iconUrl} />
       </Flex>
       <Flex flexDirection="column">
         <StyledText>{head}</StyledText>
-        <Text variant="defaultRubik" mt="1rem" color="white" maxWidth="17.813rem">
-          {text}
-        </Text>
+        <Box mt={2}>
+          <Text textStyle="normalRubikRegular">{text}</Text>
+        </Box>
       </Flex>
     </Grid>
   );
@@ -145,7 +161,7 @@ const StandoutBlock = () => (
     <Grid gridTemplateRows="20rem 25.625rem 20rem" gridRowGap="2rem" mt="2rem">
       <Grid gridTemplateColumns="1fr 1fr" gridColumnGap="1rem">
         <InfoBlock head={strings.info[0].head} text={strings.info[0].text} iconUrl={beerIcon} />
-        <Grid gridRowGap="1rem">
+        <Grid gridRowGap="1rem" gridTemplateRows="1fr 1fr 1fr">
           <LevelBlock head={strings.level[0].head} text={strings.level[0].text} />
           <LevelBlock head={strings.level[1].head} text={strings.level[1].text} />
           <LevelBlock head={strings.level[2].head} text={strings.level[2].text} />

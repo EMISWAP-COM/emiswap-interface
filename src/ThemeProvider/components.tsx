@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import {
   color,
   layout,
@@ -20,8 +20,12 @@ import {
   ShadowProps,
   BorderProps,
   typography,
+  textShadow,
 } from 'styled-system';
 
+interface CustomProps {
+  backdropFilter?: string;
+}
 export interface Props
   extends ColorProps,
     LayoutProps,
@@ -31,6 +35,7 @@ export interface Props
     PositionProps,
     ShadowProps,
     BorderProps,
+    CustomProps,
     FlexboxProps {
   children?: React.ReactNode;
 }
@@ -180,7 +185,13 @@ export const Grid = styled.div<Props>`
   ${layout};
   ${color};
   ${position};
+  ${shadow};
   ${border};
+  ${({ backdropFilter }) =>
+    backdropFilter &&
+    css`
+      backdrop-filter: ${backdropFilter};
+    `}
 `;
 export const Flex = styled.div<Props>`
   display: flex;
@@ -188,9 +199,15 @@ export const Flex = styled.div<Props>`
   ${space};
   ${layout};
   ${flexbox};
+  ${shadow};
   ${layout};
   ${border};
   ${position};
+  ${({ backdropFilter }) =>
+    backdropFilter &&
+    css`
+      backdrop-filter: ${backdropFilter};
+    `}
 `;
 
 export const Box = styled.div<Props>`
