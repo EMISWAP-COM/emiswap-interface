@@ -73,8 +73,9 @@ const IconWrapper = ({ iconUrl }) => (
     alignItems="center"
     width="6.875rem"
     height="6.875rem"
-    bg="silver"
-    borderRadius="1rem"
+    borderRadius={theme.space[4]}
+    bg="rgba(255, 255, 255, 0.15)"
+    backdropFilter="blur(24px)"
   >
     <Image
       backgroundImage={`url(${iconUrl})`}
@@ -105,20 +106,21 @@ const LevelBlock = ({ head, text }: { head: string; text: string }) => {
 const FeatureBlock = ({ head, text, iconUrl }: { head: string; text: string; iconUrl: any }) => {
   return (
     <Flex
-      bg="#2e3033"
       alignItems="flex-start"
       flexDirection="column"
-      borderRadius="1rem"
-      p="1.5rem"
-      pr="2.75rem"
+      borderRadius={theme.space[4]}
+      backdropFilter="blur(53px)"
+      bg="rgba(255, 255, 255, 0.05)"
+      boxShadow="inset 18px 20px 78px rgba(255, 255, 255, 0.1)"
+      p={5}
     >
       <Flex mb="1.5rem">
         <IconWrapper iconUrl={iconUrl} />
       </Flex>
       <StyledText>{head}</StyledText>
-      <Text variant="defaultRubik" mt="1rem" color="white">
-        {text}
-      </Text>
+      <Box mt={2}>
+        <Text textStyle="mediumRubikRegular">{text}</Text>
+      </Box>
     </Flex>
   );
 };
@@ -151,23 +153,23 @@ const StandoutBlock = () => (
     width="64rem"
     gridTemplateRows="auto auto"
     justifyContent="center"
-    mt="7.5rem"
+    mt={7}
     ml="auto"
     mr="auto"
   >
     <Flex justifyContent="center">
       <StyledHead>What makes Emiswap standout?</StyledHead>
     </Flex>
-    <Grid gridTemplateRows="20rem 25.625rem 20rem" gridRowGap="2rem" mt="2rem">
-      <Grid gridTemplateColumns="1fr 1fr" gridColumnGap="1rem">
+    <Grid gridTemplateRows="20rem auto 20rem" gridRowGap={5} mt={5}>
+      <Grid gridTemplateColumns="1fr 1fr" gridColumnGap={3}>
         <InfoBlock head={strings.info[0].head} text={strings.info[0].text} iconUrl={beerIcon} />
-        <Grid gridRowGap="1rem" gridTemplateRows="1fr 1fr 1fr">
+        <Grid gridRowGap={3} gridTemplateRows="1fr 1fr 1fr">
           <LevelBlock head={strings.level[0].head} text={strings.level[0].text} />
           <LevelBlock head={strings.level[1].head} text={strings.level[1].text} />
           <LevelBlock head={strings.level[2].head} text={strings.level[2].text} />
         </Grid>
       </Grid>
-      <Grid gridTemplateColumns="1fr 1fr 1fr" gridColumnGap="2rem">
+      <Grid gridTemplateColumns="1fr 1fr 1fr" gridColumnGap={5}>
         <FeatureBlock
           head={strings.feature[0].head}
           text={strings.feature[0].text}
@@ -184,9 +186,9 @@ const StandoutBlock = () => (
           iconUrl={gameIcon}
         />
       </Grid>
-      <Grid gridTemplateColumns="1fr 1fr" gridColumnGap="1rem">
+      <Grid gridTemplateColumns="1fr 1fr" gridColumnGap={3}>
         <InfoBlock head={strings.info[1].head} text={strings.info[1].text} iconUrl={peopleIcon} />
-        <Grid gridRowGap="1rem">
+        <Grid gridRowGap={3}>
           <LevelBlock head={strings.level[3].head} text={strings.level[3].text} />
           <LevelBlock head={strings.level[4].head} text={strings.level[4].text} />
           <LevelBlock head={strings.level[5].head} text={strings.level[5].text} />
