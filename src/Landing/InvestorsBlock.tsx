@@ -33,10 +33,10 @@ const Card = ({ head, text, icon }: { head: string; text: string; icon: any }) =
       <IconWrapper iconUrl={icon}></IconWrapper>
     </Flex>
     <Flex flexDirection="column" ml="1.25rem">
-      <Text variant="defaultRubik" color="white">
+      <Text variant="largeRubikMedium" color="paper">
         {head}
       </Text>
-      <Text variant="defaultRubik" color="white" mt=".5rem">
+      <Text variant="largeRubikRegular" color="paper" mt="2">
         {text}
       </Text>
     </Flex>
