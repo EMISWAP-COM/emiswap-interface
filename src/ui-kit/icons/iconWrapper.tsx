@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react';
 import styled from 'styled-components';
-import { color } from 'styled-system';
+import { color, ColorProps, LayoutProps, space, SpaceProps } from 'styled-system';
 
-export interface IconWrapperInterface {
+export interface IconWrapperInterface extends SpaceProps, ColorProps {
   onClick?: () => void;
   ariaLabel?: string;
   color?: string;
@@ -16,8 +16,10 @@ interface IconWrapper extends IconWrapperInterface {
   viewBoxSize: string;
 }
 
-const Wrapper = styled.div`
+interface WrapperInterface extends ColorProps, SpaceProps {}
+const Wrapper = styled.div<WrapperInterface>`
   ${color}
+  ${space}
 `;
 
 const SVG = styled.svg``;
