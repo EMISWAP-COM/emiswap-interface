@@ -5,7 +5,7 @@ import PolygonLogo from '../assets/svg/ChainsLogos/polygon.svg';
 import ShidenLogo from '../assets/svg/ChainsLogos/shiden.svg';
 import Timer from '../assets/svg/timer.svg';
 import FloatingBlurredCircle from '../assets/svg/floatingBlurredCircle.svg';
-import { Flex, Grid, Button, ButtonGradientType, BackdropFilterType } from '../ThemeProvider';
+import { Flex, Grid, Button, ButtonGradientType, BackdropFilterType, Head } from 'ThemeProvider';
 
 interface INetworkInformation {
   name: string;
@@ -133,7 +133,9 @@ const ActiveBlock = ({ network }: { network: INetworkInformation }) => (
     backdropFilter="default"
     borderImageSource="border"
   >
-    <header>{network.name}</header>
+    <Head variant="smallRubikMedium" color="paper">
+      {network.name}
+    </Head>
     <Flex marginTop="1.25rem">
       <Flex
         justifyContent="center"
@@ -149,7 +151,7 @@ const ActiveBlock = ({ network }: { network: INetworkInformation }) => (
       >
         <img src={network.logo || Timer} alt={network.name} />
       </Flex>
-      <DescriptionText>{network.description}</DescriptionText>
+      <DescriptionText color="paper">{network.description}</DescriptionText>
     </Flex>
     <Button
       marginTop="1.25rem"
