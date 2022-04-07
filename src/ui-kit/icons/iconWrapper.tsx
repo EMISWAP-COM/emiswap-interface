@@ -1,13 +1,13 @@
 import React, { ReactElement } from 'react';
 import styled from 'styled-components';
-import { color, ColorProps, LayoutProps, space, SpaceProps } from 'styled-system';
+import { color, ColorProps, space, SpaceProps } from 'styled-system';
 
 export interface IconWrapperInterface extends SpaceProps, ColorProps {
   onClick?: () => void;
   ariaLabel?: string;
   color?: string;
-  width?: string;
-  height?: string;
+  width?: string | number;
+  height?: string | number;
   dot?: string;
 }
 
