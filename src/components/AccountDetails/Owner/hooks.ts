@@ -73,7 +73,7 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
               headers: { Authorization: token },
             });
           } catch (e) {
-            if (e?.payload?.error_message === "withdrawal_amount_is_more_than_available") {
+            if (e?.payload?.error_message === 'withdrawal_amount_is_more_than_available') {
               changeStatus('Withdrawal amount is more than available');
             } else {
               changeStatus(
@@ -94,12 +94,15 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
               return transactionResult.wait();
             })
             .catch(_ => {
-              // TODO handle errors
-              changeTitle('Request');
+              changeStatus('fail');
             })
             .then(transactionResult => {
               if (!transactionResult) {
                 throw new Error('');
+              }
+              if (transactionResult.status === 0) {
+                changeStatus('fail');
+                return;
               }
               const transactionStateEndPoint = `/v1/private/users/${userID}/transactions/${res.id}`;
               fetchWrapper.put(transactionStateEndPoint, {
