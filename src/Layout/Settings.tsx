@@ -1,7 +1,11 @@
 import React from 'react';
 
 const Layout = ({ children }) => {
-  return <>{children}</>;
+  return (
+    <>
+      <p>123</p>
+    </>
+  );
 };
 
 export default Layout;
