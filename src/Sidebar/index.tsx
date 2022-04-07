@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Box, Flex, Img, Props } from '../ThemeProvider/components';
 import styled, { css } from 'styled-components';
 
-import hackenSvg from '../assets/sidebar/hacken.svg';
-import blueSwarmSvg from '../assets/sidebar/blue_swarm.svg';
+import hackenSvg from 'assets/sidebar/hacken.svg';
+import blueSwarmSvg from 'assets/sidebar/blue_swarm.svg';
 
-import eswLogo from '../assets/currencies/ESW.png';
+import eswLogo from 'assets/currencies/ESW.png';
 import {
   ArrowDownIcon,
   ChartAddIcon,
@@ -18,7 +18,7 @@ import {
   RefreshIcon,
   UserAddIcon,
   MenuIcon,
-} from '../ui-kit/icons';
+} from 'ui-kit/icons';
 
 const SidebarWrapper = styled(Box)`
   background: radial-gradient(237.61% 114.78% at 152.56% 43.16%, #2d2030 0%, #0f0f13 36.59%);
