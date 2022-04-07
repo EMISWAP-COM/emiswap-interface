@@ -4,8 +4,8 @@ const shadedColor = 'rgba(122, 45, 244, 0.7)';
 
 const toggle = {
   ...textStyles.mediumRubikRegular,
-  padding: '10px',
-  borderRadius: '50px',
+  padding: '0.625rem',
+  borderRadius: '3.15rem',
   textAlign: 'center',
 };
 
@@ -167,8 +167,8 @@ const theme = {
   },
   InputStyles: {
     hiddenInput: {
-      width: '1px',
-      height: '1px',
+      width: '0.0625rem',
+      height: '0.0625rem',
       overflow: 'hidden',
       position: 'absolute',
       clip: 'rect(0 0 0 0)',

@@ -5,7 +5,7 @@ import PolygonLogo from '../assets/svg/ChainsLogos/polygon.svg';
 import ShidenLogo from '../assets/svg/ChainsLogos/shiden.svg';
 import Timer from '../assets/svg/timer.svg';
 import FloatingBlurredCircle from '../assets/svg/floatingBlurredCircle.svg';
-import { Flex, Grid, Button, ButtonGradientType, BackdropFilterType, Head } from '../ThemeProvider';
+import { Flex, Grid, Button, ButtonGradientType, BackdropFilterType, Head } from 'ThemeProvider';
 
 interface INetworkInformation {
   name: string;
