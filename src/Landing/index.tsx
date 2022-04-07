@@ -20,8 +20,8 @@ const Landing = () => (
     <PartnersBlock />
     <InvestorsBlock />
     <BlockChainsBlock />
-     <RoadmapBlock />
-    {/* <ActivePoolsBlock /> */}
+    <RoadmapBlock />
+    <ActivePoolsBlock />
     {/* <Footer /> */}
   </Grid>
 );

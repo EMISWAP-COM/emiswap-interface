@@ -18,7 +18,8 @@ import {
   FlexboxProps,
   PositionProps,
   ShadowProps,
-  BorderProps, typography,
+  BorderProps,
+  typography,
 } from 'styled-system';
 
 export interface Props
@@ -179,6 +180,7 @@ export const Grid = styled.div<Props>`
   ${grid};
   ${layout};
   ${color};
+  ${position};
   ${border};
 `;
 export const Flex = styled.div<Props>`
@@ -189,6 +191,7 @@ export const Flex = styled.div<Props>`
   ${flexbox};
   ${layout};
   ${border};
+  ${position};
 `;
 
 export const Box = styled.div<Props>`
@@ -213,3 +216,11 @@ export const SVG = styled.div<Props>`
 `;
 
 // Buttons
+
+export const Button = styled.button<Props>`
+  ${space};
+  ${border};
+  ${typography};
+  ${color};
+  ${background};
+`;

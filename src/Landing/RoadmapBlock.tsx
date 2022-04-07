@@ -46,7 +46,7 @@ interface IQuartalsInfo {
   [index: string]: IQuartal;
 }
 
-const SVG_ICONS_SIZE = theme.sizes[2];
+const SVG_ICONS_SIZE = theme.sizes[3];
 
 const Q1 = {
   name: 'Q1',
@@ -142,7 +142,7 @@ const Q4 = {
       name: 'NFT magic hall',
       description: 'Stage 02',
       icon: <ImageEmpty width={SVG_ICONS_SIZE} height={SVG_ICONS_SIZE} />,
-      marginTop: 2,
+      marginTop: 3,
     },
   ],
 };
@@ -163,16 +163,16 @@ const QuartalBlocksWrapper = styled(Flex)<{ gap: FlexGapType }>`
   })}
 `;
 QuartalBlocksWrapper.defaultProps = {
-  mt: 2,
+  mt: 3,
 };
 
-const PROGRESS_BLOCK_WIDTH = 3;
+const PROGRESS_BLOCK_WIDTH = 4;
 
 const StepBlock = ({ step }: { step: IStep }) => (
-  <Flex alignItems="center" mt={step.marginTop || 3}>
+  <Flex alignItems="center" mt={step.marginTop || 4}>
     <Flex
-      width={step.width ? `calc(${step.width} + 0.5rem)` : 3}
-      height={3}
+      width={step.width ? `calc(${step.width} + 0.5rem)` : 4}
+      height={4}
       justifyContent="center"
       alignItems="center"
       borderRadius="0.625rem"
@@ -180,7 +180,7 @@ const StepBlock = ({ step }: { step: IStep }) => (
     >
       {step.icon}
     </Flex>
-    <Flex flexDirection="column" justifyContent="center" pl={1}>
+    <Flex flexDirection="column" justifyContent="center" pl={2}>
       <Text color="text" variant="mediumRubik">
         {step.name}
       </Text>
@@ -216,7 +216,7 @@ const ProgressBlock = ({
 
 const QuartalBlock = ({ quartal }: { quartal: IQuartal }) => (
   <Box>
-    <Flex alignItems="center" mb={2}>
+    <Flex alignItems="center" mb={3}>
       <Text width={PROGRESS_BLOCK_WIDTH} color={quartal.isActive ? 'text' : 'almostDisabled'}>
         {quartal.name}
       </Text>
@@ -224,7 +224,7 @@ const QuartalBlock = ({ quartal }: { quartal: IQuartal }) => (
         backgroundImage={`url(${quartal.progressIcon})`}
         backgroundSize="cover"
         width="12.2rem"
-        height={0}
+        height={1}
       />
     </Flex>
     <ProgressBlock steps={quartal.steps} roadmapStepsIcon={quartal.roadmapStepsIcon} />
@@ -235,7 +235,7 @@ const RoadmapBlock = () => (
   <Flex flexDirection="column">
     <Text>
       <StyledHead>Emiswap Roadmap</StyledHead>
-      <Text variant="largeRubik" color="white" mt={4}>
+      <Text variant="largeRubik" color="white" mt={5}>
         Emiswap is building cross-chain ecosystem <br />
         by integrating various blockchains and NFT components
       </Text>
