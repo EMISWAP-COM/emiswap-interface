@@ -11,6 +11,20 @@ const toggle = {
 
 const theme = {
   space: ['0rem', '.25rem', '.5rem', '1rem', '1.5rem', '2rem', '2.5rem', '5rem', '10rem'],
+  sizes: [
+    '0rem',
+    '0.25rem',
+    '1rem',
+    '1.25rem',
+    '2rem',
+    '2.5rem',
+    '4rem',
+    '6.25rem',
+    '8rem',
+    '10rem',
+    '16rem',
+    '17.5rem',
+  ],
   headerStyles,
   textStyles,
   borders: {
@@ -33,7 +47,9 @@ const theme = {
     statusYellow: '#FFBF51',
     buttonActive: '#7A2DF4',
     buttonInactive: '#7A2DF426',
+    fadedLink: '#AAAAAA',
     drop: '#1B1B1F',
+    fadedWhite: 'rgba(255, 255, 255, 0.15)',
     disabled: 'rgba(255, 255, 255, 0.7)',
     almostNoWhite: 'rgba(255, 255, 255, 0.05)',
   },
@@ -50,6 +66,21 @@ const theme = {
   },
   backdropFilter: {
     default: 'blur(3.5rem)',
+  },
+  textOverflow: {
+    clip: 'clip',
+    ellipsis: 'ellipsis',
+  },
+  whiteSpace: {
+    nowrap: 'nowrap',
+    preLine: 'pre-line',
+  },
+  textDecoration: {
+    none: 'none',
+    underline: 'underline',
+  },
+  lists: {
+    none: 'none',
   },
   buttonSize: {
     default: '2.75rem',
