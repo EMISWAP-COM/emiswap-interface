@@ -3,14 +3,14 @@ import { headerStyles, textStyles } from './fonts';
 const shadedColor = 'rgba(122, 45, 244, 0.7)';
 
 const theme = {
-  space: [4, 8, 16, 24, 32, 40, 80, 160],
+  space: ['0rem', '.25rem', '.5rem', '1rem', '1.5rem', '2rem', '2.5rem', '5rem', '10rem'],
   headerStyles,
   textStyles,
   borders: {
     processing: ' 1px solid #FFBF51 !important',
     none: '',
   },
-  radii: [10, 12],
+  radii: ['.625rem', '.75rem'],
   colors: {
     bg: ' #0F0F13',
     bg1: ' #FFFFFF26',
@@ -27,6 +27,7 @@ const theme = {
     buttonInactive: '#7A2DF426',
     drop: '#1B1B1F',
     disabled: 'rgba(255, 255, 255, 0.7)',
+    almostNoWhite: 'rgba(255, 255, 255, 0.05)',
   },
   gradients: {
     buttonPrimary:
@@ -50,7 +51,7 @@ const theme = {
     gradient: {
       ...textStyles.mediumRubikRegular,
       minWidth: '9rem',
-      borderRadius: 12,
+      borderRadius: '.75rem',
       background:
         'linear-gradient(163deg, rgba(47,168,255,1) 0%, rgba(50,169,255,1) 0%, rgba(129,40,204,1) 100%);',
       border: 'none',
@@ -70,9 +71,9 @@ const theme = {
     },
     simple: {
       ...textStyles.mediumRubikRegular,
-      minWidth: 162,
-      padding: '0.5rem',
-      borderRadius: 12,
+      minWidth: '10.125rem',
+      padding: '.5rem',
+      borderRadius: '.75rem',
       background: '#7A2DF4',
       border: 'none',
       ':hover': {
@@ -89,9 +90,9 @@ const theme = {
     },
     icon: {
       ...textStyles.mediumRubikRegular,
-      minWidth: 109,
-      padding: 8,
-      borderRadius: 12,
+      minWidth: '6.813rem',
+      padding: '.5rem',
+      borderRadius: '.75rem',
       background: '#7A2DF4',
       border: 'none',
       ':hover': {
@@ -108,8 +109,8 @@ const theme = {
     },
     small: {
       ...textStyles.mediumRubikRegular,
-      minWidth: 48,
-      borderRadius: 10,
+      minWidth: '3rem',
+      borderRadius: '.625rem',
       background: '#7A2DF4',
       border: 'none',
       ':hover': {
@@ -121,8 +122,8 @@ const theme = {
     },
     alert: {
       ...textStyles.mediumRubikRegular,
-      minWidth: 212,
-      borderRadius: 12,
+      minWidth: '13.25rem',
+      borderRadius: '.75rem',
       background: '#F54E4E',
       border: 'none',
       ':hover': {
@@ -139,8 +140,8 @@ const theme = {
     },
     cancel: {
       ...textStyles.mediumRubikRegular,
-      minWidth: 212,
-      borderRadius: 12,
+      minWidth: '13.25rem',
+      borderRadius: '.75rem',
       background: 'none',
       border: '1px solid #FFFFFF',
       ':hover': {

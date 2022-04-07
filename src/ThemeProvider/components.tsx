@@ -190,7 +190,7 @@ export const Flex = styled.div<Props>`
   ${flexbox};
   ${layout};
   ${border};
-  ${position}
+  ${position};
 `;
 
 export const Box = styled.div<Props>`
