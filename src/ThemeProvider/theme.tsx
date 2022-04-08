@@ -2,6 +2,13 @@ import { headerStyles, textStyles } from './fonts';
 
 const shadedColor = 'rgba(122, 45, 244, 0.7)';
 
+const toggle = {
+  ...textStyles.mediumRubikRegular,
+  padding: '0.625rem',
+  borderRadius: '3.15rem',
+  textAlign: 'center',
+};
+
 const theme = {
   space: ['0rem', '.25rem', '.5rem', '1rem', '1.5rem', '2rem', '2.5rem', '5rem', '10rem'],
   sizes: [
@@ -31,7 +38,8 @@ const theme = {
     bg1: ' #FFFFFF26',
     bg3: '#FFFFFF0D',
     window: '#FFFFFF33',
-    text: '#FFFFFF',
+    paper: '#FFFFFF',
+    greyPaper: '#AAAAAA',
     textGray: ' #FFFFFFB2',
     textPink: '#E478FF',
     textOcean: '#8CF1FF',
@@ -40,6 +48,7 @@ const theme = {
     statusYellow: '#FFBF51',
     buttonActive: '#7A2DF4',
     buttonInactive: '#7A2DF426',
+    fadedLink: '#AAAAAA',
     drop: '#1B1B1F',
     inactive: 'rgba(255, 255, 255, 0.15)',
     inactiveDrop: 'rgba(255, 255, 255, 0.2)',
@@ -60,6 +69,21 @@ const theme = {
   },
   backdropFilter: {
     default: 'blur(3.5rem)',
+  },
+  textOverflow: {
+    clip: 'clip',
+    ellipsis: 'ellipsis',
+  },
+  whiteSpace: {
+    nowrap: 'nowrap',
+    preLine: 'pre-line',
+  },
+  textDecoration: {
+    none: 'none',
+    underline: 'underline',
+  },
+  lists: {
+    none: 'none',
   },
   buttonSize: {
     default: '2.75rem',
@@ -175,11 +199,34 @@ const theme = {
       },
     },
   },
+  InputStyles: {
+    hiddenInput: {
+      width: '0.0625rem',
+      height: '0.0625rem',
+      overflow: 'hidden',
+      position: 'absolute',
+      clip: 'rect(0 0 0 0)',
+    },
+  },
+  ToggleStyles: {
+    active: {
+      ...toggle,
+      color: '#FFFFFF',
+      backgroundColor: '#7A2DF4',
+    },
+    inactive: {
+      ...toggle,
+      color: 'rgba(255, 255, 255, 0.7)',
+      backgroundColor: 'none',
+    },
+  },
 };
 
 export type ButtonThemeType = keyof typeof theme.buttons;
 export type ButtonSizeType = keyof typeof theme.buttonSize;
 export type ButtonGradientType = keyof typeof theme.gradients;
 export type BackdropFilterType = keyof typeof theme.backdropFilter;
+export type InputStylesType = keyof typeof theme.InputStyles;
+export type ToggleStylesType = keyof typeof theme.ToggleStyles;
 
 export default theme;

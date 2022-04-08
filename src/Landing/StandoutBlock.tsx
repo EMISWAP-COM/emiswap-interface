@@ -84,10 +84,10 @@ const IconWrapper = ({ iconUrl }) => (
 const LevelBlock = ({ head, text }: { head: string; text: string }) => {
   return (
     <Flex alignItems="center" bg="#2e3033" borderRadius="1rem" pl="1.5rem">
-      <Head variant="mediumSora" width="auto" ml="1.5rem" color="white">
+      <Head variant="normalSoraBold" width="auto" ml="4" color="paper">
         {head}
       </Head>
-      <Text variant="defaultRubik" ml="1.5rem" maxWidth="18rem" color="white">
+      <Text variant="largeRubikRegular" ml="4" maxWidth="18rem" color="greyPaper">
         {text}
       </Text>
     </Flex>
@@ -108,7 +108,7 @@ const FeatureBlock = ({ head, text, iconUrl }: { head: string; text: string; ico
         <IconWrapper iconUrl={iconUrl} />
       </Flex>
       <StyledText>{head}</StyledText>
-      <Text variant="defaultRubik" mt="1rem" color="white">
+      <Text variant="largeRubikRegular" mt="3" color="greyPaper">
         {text}
       </Text>
     </Flex>
@@ -121,8 +121,10 @@ const InfoBlock = ({ head, text, iconUrl }: { head: string; text: string; iconUr
         <IconWrapper iconUrl={iconUrl} />
       </Flex>
       <Flex flexDirection="column">
-        <StyledText>{head}</StyledText>
-        <Text variant="defaultRubik" mt="1rem" color="white" maxWidth="17.813rem">
+        <Head variant="smallRubikMedium" color="buttonActive" mt={4}>
+          {head}
+        </Head>
+        <Text variant="largeRubikRegular" mt="3" color="greyPaper" maxWidth="18rem">
           {text}
         </Text>
       </Flex>

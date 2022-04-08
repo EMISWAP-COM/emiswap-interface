@@ -12,10 +12,10 @@ const MainBlock = () => (
     mr="auto"
   >
     <Flex flexDirection="column" justifyContent="center">
-      <Head variant="largeSora" color="white">
+      <Head variant="mediumSoraBold" color="paper">
         Next-Gen DeFi Matrix with 365% Cross-Chain APR & DAO Governance
       </Head>
-      <Text color="white" variant="largeRubik" width="30.94rem">
+      <Text variant="largeRubikRegular" color="paper">
         Extract the highest daily yields from liquidity mining and farming
       </Text>
     </Flex>

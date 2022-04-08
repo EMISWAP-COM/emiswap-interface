@@ -22,7 +22,7 @@ const Header = ({ columns }: HeaderInterface): ReactElement => {
         const textAlign = isLeftest ? 'left' : isRightest ? 'right' : 'center';
         return (
           <TableHeader textAlign={textAlign}>
-            <Text variant="smallRubik" color="disabled">
+            <Text variant="smallRubikRegular" color="disabled">
               {column}
             </Text>
           </TableHeader>
