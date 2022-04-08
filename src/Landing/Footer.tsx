@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Box, Button, Flex, Image, Text } from '../ThemeProvider';
+import { Box, Button, Flex, Image, Text } from 'ThemeProvider';
 import { color, HeightProps, layout, LayoutProps, space, SpaceProps, system } from 'styled-system';
 import EmiswapLogo from '../assets/svg/logo.svg';
 import { CustomListProps, CustomTextProps } from '../ThemeProvider/customProps';
@@ -200,15 +200,15 @@ const SocialsPart = () => (
       </SocialMediaButton>
     </Flex>
     <Box>
-      <Text color="fadedLink" mt={3} mb={1}>
+      <Text variant="mediumRubikMedium" color="fadedLink" mt={3} mb={1}>
         Received grants from:
       </Text>
-      <Text color="text">
-        <HighlightedLink href="#" color="text" textDecorationColor="text">
+      <Text variant="mediumRubikMedium" color="paper">
+        <HighlightedLink href="#" color="paper" textDecorationColor="paper">
           Near Protocol
         </HighlightedLink>
         <span>&nbsp;&&nbsp;</span>
-        <HighlightedLink href="#" color="text" textDecorationColor="text">
+        <HighlightedLink href="#" color="paper" textDecorationColor="paper">
           Gate Chain
         </HighlightedLink>
       </Text>
