@@ -9,6 +9,7 @@ import SwitchersExample from './swithers';
 import CheckBoxsExamples from './checkbox';
 import RefLinkExample from './refLink';
 import { Head } from '../../ThemeProvider/components';
+import InputsExample from './inputs';
 
 interface RootProp extends LayoutProps, ColorProps, SpaceProps {}
 const Root = styled.div<RootProp>`
@@ -41,6 +42,8 @@ export default () => (
       <RefLinkExample />
       <Header>Fonts</Header>
       <FontsExample />
+      <Header>Inputs</Header>
+      <InputsExample />
     </Root>
   </>
 );

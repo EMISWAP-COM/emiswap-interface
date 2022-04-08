@@ -20,6 +20,7 @@ import {
   ShadowProps,
   BorderProps,
   typography,
+  system,
 } from 'styled-system';
 import { HeaderStyleTypes, TextStyleTypes } from './fonts';
 
@@ -108,6 +109,7 @@ export const Grid = styled.div<Props>`
   ${position};
   ${border};
 `;
+
 export const Flex = styled.div<Props>`
   display: flex;
   ${color};
@@ -129,6 +131,14 @@ export const Box = styled.div<Props>`
   ${shadow};
 `;
 
+export const FlexItemBox = styled(Box)<Props & { flex: string }>`
+  ${system({
+    flex: {
+      property: 'flex',
+    },
+  })}
+`;
+
 export const Image = styled.div<Props>`
   ${background};
   ${layout};
@@ -140,12 +150,24 @@ export const SVG = styled.div<Props>`
   ${layout};
 `;
 
-// Buttons
-
 export const Button = styled.button<Props>`
   ${space};
   ${border};
   ${typography};
   ${color};
   ${background};
+`;
+
+export const Input = styled.input<Props & TextStyleInterface>`
+  outline: none;
+  border: none;
+  ${space};
+  ${layout};
+  ${border};
+  ${typography};
+  ${color};
+  ${background};
+  ${variant({
+    scale: 'textStyles',
+  })}
 `;
