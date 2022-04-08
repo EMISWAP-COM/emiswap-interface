@@ -4,6 +4,21 @@ const shadedColor = 'rgba(122, 45, 244, 0.7)';
 
 const theme = {
   space: ['0rem', '.25rem', '.5rem', '1rem', '1.5rem', '2rem', '2.5rem', '5rem', '10rem'],
+  sizes: [
+    '0rem',
+    '0.25rem',
+    '1rem',
+    '1.25rem',
+    '2rem',
+    '2.5rem',
+    '4rem',
+    '6.25rem',
+    '8rem',
+    '10rem',
+    '16rem',
+    '17.5rem',
+    '20rem',
+  ],
   headerStyles,
   textStyles,
   borders: {
@@ -26,8 +41,11 @@ const theme = {
     buttonActive: '#7A2DF4',
     buttonInactive: '#7A2DF426',
     drop: '#1B1B1F',
+    inactive: 'rgba(255, 255, 255, 0.15)',
+    inactiveDrop: 'rgba(255, 255, 255, 0.2)',
+    almostDisabled: 'rgba(255, 255, 255, 0.6)',
     disabled: 'rgba(255, 255, 255, 0.7)',
-    almostNoWhite: 'rgba(255, 255, 255, 0.05)'
+    almostNoWhite: 'rgba(255, 255, 255, 0.05)',
   },
   gradients: {
     buttonPrimary:
