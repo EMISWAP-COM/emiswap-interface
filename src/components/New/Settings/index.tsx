@@ -1,6 +1,10 @@
 import React from 'react';
 import Drop from '../../../ui-kit/drops';
 import { Box, Flex, Text } from '../../../ThemeProvider';
+import { Button, ButtonType } from '../../../ui-kit';
+import { CloseIcon } from '../../../ui-kit/icons';
+import CheckBox from '../../../ui-kit/checkBox';
+import { SmallSwitcher } from '../../../ui-kit/switchers';
 
 const SettingsDrop = () => {
   return (
@@ -16,9 +20,30 @@ const SettingsDrop = () => {
             Slippage Tolerance
           </Text>
         </Box>
-        <Flex></Flex>
+        <Flex mt={2}>
+          <Button buttonType={ButtonType.gradient}>
+            <Text variant="mediumRubikMedium" color="paper">
+              0.1%
+            </Text>
+          </Button>
+          <Button buttonType={ButtonType.cancel}>
+            <Text variant="mediumRubikMedium" color="paper">
+              0.1%
+            </Text>
+          </Button>
+          <Button buttonType={ButtonType.cancel}>
+            <Text variant="mediumRubikMedium" color="paper">
+              0.1%
+            </Text>
+          </Button>
+        </Flex>
       </Box>
-      <Box></Box>
+      <Flex p={4} justifyContent="space-between" alignItems="center">
+        <Text variant="smallRubikRegular" color="disabled">
+          Expert mode
+        </Text>
+        <SmallSwitcher highlighted={true} />
+      </Flex>
     </Drop>
   );
 };

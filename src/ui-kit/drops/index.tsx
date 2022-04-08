@@ -26,11 +26,12 @@ const Drop = ({ children, headerText, width }: DropInterface) => {
         borderBottomWidth={BORDER_WIDTH}
         p={4}
         justifyContent="space-between"
+        alignItems="center"
       >
-        <Text variant="normalRubikRegular" color="text">
+        <Text variant="xlRubikMedium" color="paper">
           {headerText}
         </Text>
-        <CloseIcon />
+        <CloseIcon width="1.125rem" height="1.125rem" />
       </Flex>
       {children}
     </Box>

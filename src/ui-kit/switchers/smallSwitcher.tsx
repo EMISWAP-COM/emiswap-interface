@@ -46,12 +46,21 @@ interface SwitchInterface {
   checked?: boolean;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   disabled?: boolean;
+  highlighted?: boolean;
 }
-const SmallSwitcher = ({ checked, onChange, disabled }: SwitchInterface): ReactElement => {
+const SmallSwitcher = ({
+  checked,
+  onChange,
+  disabled,
+  highlighted,
+}: SwitchInterface): ReactElement => {
   const disabledBC = disabled ? 'rgba(255, 255, 255, 0.5)' : 'paper';
 
   return (
-    <Label>
+    <Label
+      border={highlighted ? '0.0625rem solid white' : ''}
+      borderRadius={highlighted ? '1.8rem' : ''}
+    >
       <ToggleTrack
         role="checkbox"
         aria-checked={checked}
