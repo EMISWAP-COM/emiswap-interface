@@ -10,10 +10,12 @@ import PartnersBlock from './PartnersBlock';
 import RoadmapBlock from './RoadmapBlock';
 import StandoutBlock from './StandoutBlock';
 import { Grid } from 'ThemeProvider/components';
+import SettingsDrop from '../components/New/Settings';
 
 const Landing = () => (
   <Grid bg="bg">
     {/* <Header /> */}
+    <SettingsDrop />
     <MainBlock />
     <InfoBlock />
     <StandoutBlock />

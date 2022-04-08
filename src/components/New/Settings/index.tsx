@@ -4,7 +4,7 @@ import { Box, Flex, Text } from '../../../ThemeProvider';
 
 const SettingsDrop = () => {
   return (
-    <Drop headerText="Settings">
+    <Drop headerText="Settings" width={12}>
       <Box
         p={4}
         borderBottomStyle="solid"
@@ -12,7 +12,9 @@ const SettingsDrop = () => {
         borderBottomColor="inactiveDrop"
       >
         <Box>
-          <Text variant="normalRubikRegular">Slippage Tolerance</Text>
+          <Text variant="normalRubikRegular" color="disabled">
+            Slippage Tolerance
+          </Text>
         </Box>
         <Flex></Flex>
       </Box>
