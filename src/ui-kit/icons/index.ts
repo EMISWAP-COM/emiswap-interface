@@ -49,4 +49,3 @@ export * from './socials/facebook';
 export * from './socials/medium';
 export * from './socials/telegram';
 export * from './socials/twitter';
-export * from './close';
