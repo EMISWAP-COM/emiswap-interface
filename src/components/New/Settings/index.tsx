@@ -2,9 +2,8 @@ import React from 'react';
 import Drop from '../../../ui-kit/drops';
 import { Box, Flex, Text } from '../../../ThemeProvider';
 import { Button, ButtonType } from '../../../ui-kit';
-import { CloseIcon } from '../../../ui-kit/icons';
-import CheckBox from '../../../ui-kit/checkBox';
 import { SmallSwitcher } from '../../../ui-kit/switchers';
+import ExclamationHelper from '../ExclamationHelper';
 
 const SettingsDrop = () => {
   return (
@@ -19,6 +18,7 @@ const SettingsDrop = () => {
           <Text variant="normalRubikRegular" color="disabled">
             Slippage Tolerance
           </Text>
+          <ExclamationHelper text="Your transaction will revert if the price changes unfavorable by more than this percentage." />
         </Box>
         <Flex mt={2}>
           <Button buttonType={ButtonType.gradient}>
@@ -39,9 +39,12 @@ const SettingsDrop = () => {
         </Flex>
       </Box>
       <Flex p={4} justifyContent="space-between" alignItems="center">
-        <Text variant="smallRubikRegular" color="disabled">
-          Expert mode
-        </Text>
+        <Flex alignItems="center">
+          <Text variant="smallRubikRegular" color="disabled">
+            Expert mode
+          </Text>
+          <ExclamationHelper text="Your transaction will revert if the price changes unfavorable by more than this percentage." />
+        </Flex>
         <SmallSwitcher highlighted={true} />
       </Flex>
     </Drop>
