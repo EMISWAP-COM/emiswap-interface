@@ -53,7 +53,7 @@ const InputOption = ({
         ) : (
           <></>
         )}
-        <FlexItemBox flex="2">
+        <FlexItemBox flex="2" px={2}>
           <Input
             width="100%"
             height="100%"

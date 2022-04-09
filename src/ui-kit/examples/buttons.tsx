@@ -1,14 +1,9 @@
 import React from 'react';
 import { Button, ButtonType } from 'ui-kit';
 import { HomeIcon } from 'ui-kit/icons';
-import { Flex, Text } from 'ThemeProvider';
+import { Text } from 'ThemeProvider';
+import { Line } from './index';
 import Wrapper from './wrapper';
-
-const Line = ({ children }) => (
-  <Flex width="100%" justifyContent="space-between" m={1}>
-    {children}
-  </Flex>
-);
 
 const ButtonsExample = () => (
   <Wrapper>
