@@ -21,21 +21,27 @@ const SettingsDrop = () => {
           <ExclamationHelper text="Your transaction will revert if the price changes unfavorable by more than this percentage." />
         </Box>
         <Flex mt={2}>
-          <Button buttonType={ButtonType.gradient}>
-            <Text variant="mediumRubikMedium" color="paper">
-              0.1%
-            </Text>
-          </Button>
-          <Button buttonType={ButtonType.cancel}>
-            <Text variant="mediumRubikMedium" color="paper">
-              0.1%
-            </Text>
-          </Button>
-          <Button buttonType={ButtonType.cancel}>
-            <Text variant="mediumRubikMedium" color="paper">
-              0.1%
-            </Text>
-          </Button>
+          <Box>
+            <Button buttonType={ButtonType.gradient}>
+              <Text variant="mediumRubikMedium" color="paper">
+                0.1%
+              </Text>
+            </Button>
+          </Box>
+          <Box ml={2}>
+            <Button buttonType={ButtonType.cancel}>
+              <Text variant="mediumRubikMedium" color="paper">
+                0.1%
+              </Text>
+            </Button>
+          </Box>
+          <Box ml={2}>
+            <Button buttonType={ButtonType.cancel}>
+              <Text variant="mediumRubikMedium" color="paper">
+                0.1%
+              </Text>
+            </Button>
+          </Box>
         </Flex>
       </Box>
       <Flex p={4} justifyContent="space-between" alignItems="center">
