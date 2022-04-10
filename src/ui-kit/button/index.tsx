@@ -1,6 +1,6 @@
 import React, { ReactElement, ReactNode } from 'react';
 import styled from 'styled-components';
-import { variant, border, color, flexbox, space, system, BordersProps } from 'styled-system';
+import { variant, border, color, system, BordersProps } from 'styled-system';
 import { ButtonThemeType, ButtonSizeType, ButtonGradientType, Flex, Box } from 'ThemeProvider';
 import { SpinnerIcon } from '../icons';
 
@@ -22,6 +22,7 @@ interface ButtonInterface {
   icon?: ReactElement;
   processing?: boolean;
 }
+
 interface ButtonStyle extends BordersProps {
   variant: ButtonThemeType;
   size: ButtonSizeType;

@@ -4,6 +4,7 @@ import { Box, Flex, Text } from '../../../ThemeProvider';
 import { Button, ButtonType } from '../../../ui-kit';
 import { SmallSwitcher } from '../../../ui-kit/switchers';
 import ExclamationHelper from '../ExclamationHelper';
+import InputUnit from '../../../ui-kit/inputs/InputUnit';
 
 const SettingsDrop = () => {
   return (
@@ -41,6 +42,9 @@ const SettingsDrop = () => {
                 0.1%
               </Text>
             </Button>
+          </Box>
+          <Box ml={2}>
+            <InputUnit unit="%" />
           </Box>
         </Flex>
       </Box>
