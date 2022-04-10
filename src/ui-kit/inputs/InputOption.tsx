@@ -1,16 +1,10 @@
 import React, { ReactElement, ReactNode } from 'react';
 import { Flex, Text, FlexItemBox, Input } from 'ThemeProvider';
+import { getBorderData, InputInterface, InputState } from './common';
 
-export const enum InputState {
-  initial = 'initial',
-  fail = 'fail',
-  attention = 'attention',
-}
-
-interface InputOptionInterface {
+interface InputOptionInterface extends InputInterface {
   header?: string;
   subheader?: string;
-  state?: InputState;
   children?: ReactNode | Array<ReactNode>;
 }
 
@@ -20,12 +14,7 @@ const InputOption = ({
   state = InputState.initial,
   children,
 }: InputOptionInterface): ReactElement => {
-  let borderWidth;
-  let borderColor;
-  if (state !== InputState.initial) {
-    borderWidth = '1px';
-    borderColor = state === InputState.fail ? 'error' : 'statusYellow';
-  }
+  const { borderWidth, borderColor } = getBorderData(state);
   return (
     <Flex flexDirection="column">
       <Flex justifyContent="space-between">

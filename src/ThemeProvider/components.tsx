@@ -170,4 +170,9 @@ export const Input = styled.input<Props & TextStyleInterface>`
   ${variant({
     scale: 'textStyles',
   })}
+  &::-webkit-input-placeholder,
+  &::-moz-placeholder,
+  &::placeholder {
+    color: currentColor;
+  }
 `;
