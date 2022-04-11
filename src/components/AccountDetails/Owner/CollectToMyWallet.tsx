@@ -1,5 +1,5 @@
 import { Token } from '@uniswap/sdk';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Countdown from 'react-countdown';
 import CurrencyLogo from '../../CurrencyLogo';
 import { useCollectData, useGetRemainder } from './hooks';
@@ -16,6 +16,7 @@ import {
   CollectBtn,
   ButtonText,
 } from './styled';
+import { useActivePopups, useAddPopup } from '../../../state/application/hooks';
 
 const Item = ({
   label,
@@ -61,8 +62,30 @@ const CollectToMyWallet = ({
     nextDay,
     nextValue,
     progress,
+    txHash,
     handler: changeCollect,
   } = useCollectData(() => closeWindow());
+
+  const addPopup = useAddPopup();
+  const popups = useActivePopups();
+
+  useEffect(() => {
+    const isPending = progress === 'success';
+    const key = `${txHash}CollectSuccess`;
+    const isPopUpAlreadyShown = popups.find(item => item.key === key);
+    if (isPending && !isPopUpAlreadyShown) {
+      addPopup(
+        {
+          txn: {
+            hash: txHash,
+            success: true,
+            summary: `Transfer ${requested} ESW to the wallet`,
+          },
+        },
+        key,
+      );
+    }
+  }, [progress]);
 
   const avalibleCollect = unlocked === '0' ? '0' : avalible;
   const remainderValue = useGetRemainder();
@@ -73,7 +96,8 @@ const CollectToMyWallet = ({
     <WalletWrapper>
       <Title style={{ paddingBottom: '8px' }}>Collect to my Wallet</Title>
       <Label>
-        Note: To obtain a reward, you must first click the request collect button, then return to the same page in 10 days and click collect to my wallet.
+        Note: To obtain a reward, you must first click the request collect button, then return to
+        the same page in 10 days and click collect to my wallet.
       </Label>
       <Frame>
         <FrameRow>
@@ -88,9 +112,7 @@ const CollectToMyWallet = ({
           <Item label="Available ESW to collect in the current Epoch" value={avalibleCollect} />
         </FrameRow>
         <ButtonGroup>
-          <CollectBtn
-            onClick={openRequestCollect}
-          >
+          <CollectBtn onClick={openRequestCollect}>
             {isInProgress ? 'Pending' : 'Request collect'}
           </CollectBtn>
 
@@ -103,8 +125,10 @@ const CollectToMyWallet = ({
                 <ButtonText>Сollect to my wallet | </ButtonText>
                 <Countdown date={new Date(remainderValue.value)}></Countdown>
               </>
+            ) : isCollectInProgress ? (
+              'Pending'
             ) : (
-              isCollectInProgress ? 'Pending' : remainderValue.value
+              remainderValue.value
             )}
           </CollectBtn>
         </ButtonGroup>
