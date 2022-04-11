@@ -32,14 +32,14 @@ const SettingsDrop = () => {
           <Box ml={2}>
             <Button buttonType={ButtonType.cancel}>
               <Text variant="mediumRubikMedium" color="paper">
-                0.1%
+                0.5%
               </Text>
             </Button>
           </Box>
           <Box ml={2}>
             <Button buttonType={ButtonType.cancel}>
               <Text variant="mediumRubikMedium" color="paper">
-                0.1%
+                1%
               </Text>
             </Button>
           </Box>

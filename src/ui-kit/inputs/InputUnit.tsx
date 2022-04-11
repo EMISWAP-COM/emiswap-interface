@@ -16,7 +16,6 @@ const InputUnit = ({
   return (
     <Flex
       mt={1}
-      width={12}
       height="3rem"
       bg="inputDark"
       borderWidth={borderWidth || '0'}

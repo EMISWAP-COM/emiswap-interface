@@ -68,7 +68,7 @@ const Button = ({
       onClick={disabled || processing ? undefined : onClick}
       disabled={disabled}
     >
-      <Flex alignItems="center" justifyContent="center">
+      <Flex alignItems="center" justifyContent="center" width="max-content">
         {processing && (
           <Box pr="12px">
             <SpinnerIcon width="17" height="17" color="white" />
