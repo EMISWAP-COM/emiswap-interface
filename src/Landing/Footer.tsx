@@ -80,7 +80,7 @@ const SocialMediaButton = styled(Button)`
 SocialMediaButton.defaultProps = {
   width: 4,
   py: '0.375rem',
-  bg: 'fadedWhite',
+  bg: 'inactive',
 };
 
 const UnorderedListWrapper = styled.ul<SpaceProps>`
