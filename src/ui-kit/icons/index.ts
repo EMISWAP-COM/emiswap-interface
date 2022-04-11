@@ -45,3 +45,8 @@ export * from './minus';
 export * from './kucoin';
 export * from './settingsAlert';
 export * from './menu';
+export * from './socials/discord';
+export * from './socials/facebook';
+export * from './socials/medium';
+export * from './socials/telegram';
+export * from './socials/twitter';
