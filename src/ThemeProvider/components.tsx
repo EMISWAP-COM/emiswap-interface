@@ -127,6 +127,8 @@ export const Image = styled.div<Props>`
   ${layout};
 `;
 
+export const Img = styled.img``;
+
 export const SVG = styled.div<Props>`
   ${background};
   ${space};

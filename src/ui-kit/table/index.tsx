@@ -17,16 +17,9 @@ const RowsWrapper = styled(Box)`
 
 const Table = ({ children, ariaLabel, columns }: TableInterface): ReactElement => {
   return (
-    <Flex
-      flexDirection="column"
-      aria-Label={ariaLabel}
-    >
-      <Header
-        columns={columns}
-      />
-      <RowsWrapper>
-        {children}
-      </RowsWrapper>
+    <Flex flexDirection="column" aria-Label={ariaLabel}>
+      <Header columns={columns} />
+      <RowsWrapper>{children}</RowsWrapper>
     </Flex>
   );
 };
