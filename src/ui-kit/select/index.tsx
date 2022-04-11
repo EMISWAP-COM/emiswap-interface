@@ -12,16 +12,10 @@ interface OptionProps {
 interface SelectProps {
   value: string;
   icon: React.FC;
-  options?: OptionProps[];
+  options: OptionProps[];
 }
 
-const IconWrapper = ({ IconComponent }: { IconComponent: React.FC }) => {
-  return (
-    <>
-      <IconComponent />
-    </>
-  );
-};
+const IconWrapper = ({ IconComponent }: { IconComponent: React.FC }) => <IconComponent />;
 
 const MenuItem = ({ value, icon, onClick }: OptionProps) => {
   return (
