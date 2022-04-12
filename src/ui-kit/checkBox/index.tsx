@@ -66,8 +66,9 @@ const CheckBox = ({
       <Box role={type} boxShadow={boxShadow} borderRadius={boxRadius} size="15px" mr="8px">
         {checked && (
           <Check
+            width="calc(100% - 6px)"
+            height="calc(100% - 6px)"
             role={type}
-            size={9}
             margin="3px"
             borderRadius={checkRadius}
             backgroundColor={bgColor}

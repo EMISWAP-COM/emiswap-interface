@@ -51,6 +51,17 @@ export const Text = styled.span<TextStyleInterface>`
   })}
 `;
 
+export const Link = styled.a<TextStyleInterface>`
+  color: white;
+  ${color}
+  ${layout}
+  ${space}
+  ${typography};
+  ${variant({
+    scale: 'textStyles',
+  })}
+`;
+
 interface HeadStyleInterface extends ColorProps, LayoutProps, SpaceProps {
   variant: HeaderStyleTypes;
 }

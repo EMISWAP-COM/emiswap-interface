@@ -21,7 +21,8 @@ import {
 import Option from './Option';
 import NewModal from '../NewModal';
 import { toggleNewWalletModal } from '../../state/application/actions';
-import { Box } from '../../ThemeProvider';
+import { Box, Flex, Link, Text } from '../../ThemeProvider';
+import CheckBox from '../../ui-kit/checkBox';
 
 const WalletCustomModal = styled(NewModal)`
   overflow-y: visible !important;
@@ -72,7 +73,7 @@ const WalletModal = () => {
 
   const [termAndConditionsAccepted, setTermAndConditionsAccepted] = useLocalStorage(
     'termAndConditionsAccepted',
-    true,
+    false,
   );
 
   function getMobileOption(option, key) {
@@ -146,6 +147,28 @@ const WalletModal = () => {
   return isWalletModalOpen ? (
     <WalletCustomModal onClose={toggleNewWalletModal}>
       <Box mt={-3}>{getOptions()}</Box>
+      <Flex mt={4} alignItems="baseline">
+        <Box pt={1}>
+          <CheckBox
+            type="checkbox"
+            checked={termAndConditionsAccepted}
+            onChange={() => setTermAndConditionsAccepted(!termAndConditionsAccepted)}
+          />
+        </Box>
+        <Flex alignSelf="flex-start">
+          <Text variant="mediumRubikRegular" color="disabled">
+            I accept&nbsp;
+            <Link variant="mediumRubikRegular" href="#">
+              Terms of Use
+            </Link>
+            <br />
+            &&nbsp;
+            <Link variant="mediumRubikRegular" href="#">
+              Privacy Policy
+            </Link>
+          </Text>
+        </Flex>
+      </Flex>
     </WalletCustomModal>
   ) : (
     <></>
