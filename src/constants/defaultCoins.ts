@@ -4633,6 +4633,15 @@ const defaultCoins: DefaultCoins = {
       symbol: 'WETH',
     },
     {
+      address: '0xd2Fa7C9386040f260e3Ec934601982aD4Cd7902B',
+      chainId: chainIds.AURORA,
+      name: 'EmiSwap - EmiDao Token',
+      decimals: 18,
+      symbol: 'ESW',
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
       address: '0x4988a896b1227218e4A686fdE5EabdcAbd91571f',
       chainId: chainIds.AURORA,
       name: 'USDT',
