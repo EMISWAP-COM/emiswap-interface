@@ -7,18 +7,12 @@ interface RowInterface {
 
 CellWrapper.defaultProps = {
   alignItems: 'center',
-}
+};
 
 const Row = ({ children }: RowInterface): ReactElement => {
   return (
-    <CellWrapper
-      borderRadius="0.875rem"
-      bg="almostNoWhite"
-      minHeight="3rem"
-      px={1}
-      color="text"
-    >
-      { children }
+    <CellWrapper borderRadius="0.875rem" bg="almostNoWhite" minHeight="3rem" px={1} color="text">
+      {children}
     </CellWrapper>
   );
 };

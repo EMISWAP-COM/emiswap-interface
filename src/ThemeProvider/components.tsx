@@ -37,30 +37,23 @@ export interface Props
   children?: React.ReactNode;
 }
 
-interface VariantProps {
-  variant?: string;
-}
-
-interface TextProps extends ColorProps, VariantProps, LayoutProps, SpaceProps {
-  children?: React.ReactNode;
-}
-
-// Typography
 interface TextStyleInterface extends ColorProps, LayoutProps, SpaceProps {
   variant: TextStyleTypes;
 }
+
+export const Text = styled.span<TextStyleInterface>`
+  ${color}
+  ${layout}
+  ${space}
+  ${typography};
+  ${variant({
+    scale: 'textStyles',
+  })}
+`;
+
 interface HeadStyleInterface extends ColorProps, LayoutProps, SpaceProps {
   variant: HeaderStyleTypes;
 }
-
-export const Text = styled.span<TextStyleInterface>`
-    ${color}
-    ${layout}
-    ${space}
-    ${variant({
-      scale: 'textStyles',
-    })}
-  `;
 
 export const Head = styled.header<HeadStyleInterface>`
   ${color}
@@ -143,6 +136,8 @@ export const Image = styled.div<Props>`
   ${background};
   ${layout};
 `;
+
+export const Img = styled.img``;
 
 export const SVG = styled.div<Props>`
   ${background};

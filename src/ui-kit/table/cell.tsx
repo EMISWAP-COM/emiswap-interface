@@ -23,11 +23,7 @@ export const CellWrapper = styled(Flex)`
 `;
 
 const Cell = ({ children }: CellInterface): ReactElement => {
-  return (
-    <CellWrapper>
-      { children }
-    </CellWrapper>
-  );
+  return <CellWrapper>{children}</CellWrapper>;
 };
 
 export default Cell;
