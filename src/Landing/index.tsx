@@ -10,10 +10,12 @@ import PartnersBlock from './PartnersBlock';
 import RoadmapBlock from './RoadmapBlock';
 import StandoutBlock from './StandoutBlock';
 import { Grid } from 'ThemeProvider/components';
+import NewWalletModal from '../components/NewWalletModal/NewWalletModal';
 
 const Landing = () => (
   <Grid bg="bg">
     {/* <Header /> */}
+    <NewWalletModal />
     <MainBlock />
     <InfoBlock />
     <StandoutBlock />

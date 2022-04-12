@@ -3,9 +3,11 @@ import {
   addPopup,
   PopupContent,
   removePopup,
-  showWalletModal, toggleBridgeModal,
+  showWalletModal,
+  toggleBridgeModal,
   toggleConfirmSwitchModal,
   toggleNetworkSwitchModal,
+  toggleNewWalletModal,
   toggleSettingsMenu,
   toggleWalletModal,
   updateBlockNumber,
@@ -17,6 +19,7 @@ export interface ApplicationState {
   blockNumber: { [chainId: number]: number };
   popupList: PopupList;
   walletModalOpen: boolean;
+  walletNewModalOpen: boolean;
   confirmSwitchModalOpen: boolean;
   networkSwitchModalOpen: boolean;
   bridgeModalOpen: boolean;
@@ -33,6 +36,7 @@ const initialState: ApplicationState = {
   blockNumber: {},
   popupList: [],
   walletModalOpen,
+  walletNewModalOpen: true,
   confirmSwitchModalOpen: false,
   networkSwitchModalOpen: false,
   bridgeModalOpen: false,
@@ -55,6 +59,9 @@ export default createReducer(initialState, builder =>
     .addCase(toggleWalletModal, state => {
       state.walletModalOpen = !state.walletModalOpen;
     })
+    .addCase(toggleNewWalletModal, state => {
+      state.walletNewModalOpen = !state.walletNewModalOpen;
+    })
     .addCase(toggleNetworkSwitchModal, state => {
       state.networkSwitchModalOpen = !state.networkSwitchModalOpen;
     })
@@ -69,8 +76,8 @@ export default createReducer(initialState, builder =>
     })
     .addCase(addPopup, (state, { payload: { content, key } }) => {
       state.popupList = (key
-          ? state.popupList.filter(popup => popup.key !== key)
-          : state.popupList
+        ? state.popupList.filter(popup => popup.key !== key)
+        : state.popupList
       ).concat([
         {
           key: key || nanoid(),

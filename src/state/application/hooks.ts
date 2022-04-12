@@ -8,6 +8,7 @@ import {
   toggleBridgeModal,
   toggleConfirmSwitchModal,
   toggleNetworkSwitchModal,
+  toggleNewWalletModal,
   toggleSettingsMenu,
   toggleWalletModal,
 } from './actions';
@@ -24,6 +25,10 @@ export function useWalletModalOpen(): boolean {
   return useSelector((state: AppState) => state.application.walletModalOpen);
 }
 
+export function useNewWalletModalOpen(): boolean {
+  return useSelector((state: AppState) => state.application.walletNewModalOpen);
+}
+
 export function useWalletModalShow(): () => void {
   const dispatch = useDispatch();
   return useCallback(() => dispatch(showWalletModal()), [dispatch]);
@@ -33,6 +38,13 @@ export function useWalletModalToggle(): () => void {
   const dispatch = useDispatch();
   return useCallback(() => {
     dispatch(toggleWalletModal());
+  }, [dispatch]);
+}
+
+export function useNewWalletModalToggle(): () => void {
+  const dispatch = useDispatch();
+  return useCallback(() => {
+    dispatch(toggleNewWalletModal());
   }, [dispatch]);
 }
 
