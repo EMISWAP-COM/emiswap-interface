@@ -7,9 +7,10 @@ interface DropInterface {
   children?: ReactNode;
   headerText: string;
   width?: number | string;
+  onClose?: () => void;
 }
 
-const Drop = ({ children, headerText, width }: DropInterface) => {
+const Drop = ({ children, headerText, width, onClose }: DropInterface) => {
   const BORDER_WIDTH = '0.0625rem';
   return (
     <Box
@@ -31,7 +32,7 @@ const Drop = ({ children, headerText, width }: DropInterface) => {
         <Text variant="xlRubikMedium" color="paper">
           {headerText}
         </Text>
-        <CloseIcon width="1.125rem" height="1.125rem" />
+        <CloseIcon width="1.125rem" height="1.125rem" onClick={onClose} />
       </Flex>
       {children}
     </Box>
