@@ -24,6 +24,7 @@ const theme = {
     '10rem',
     '16rem',
     '17.5rem',
+    '20rem',
   ],
   headerStyles,
   textStyles,
@@ -50,7 +51,10 @@ const theme = {
     fadedLink: '#AAAAAA',
     drop: '#1B1B1F',
     inactive: 'rgba(255, 255, 255, 0.15)',
+    inactiveDrop: 'rgba(255, 255, 255, 0.2)',
     almostDisabled: 'rgba(255, 255, 255, 0.6)',
+    inputDark: '#0F0F13',
+    error: '#E84142',
     disabled: 'rgba(255, 255, 255, 0.7)',
     almostNoWhite: 'rgba(255, 255, 255, 0.05)',
   },
@@ -90,7 +94,6 @@ const theme = {
   buttons: {
     gradient: {
       ...textStyles.mediumRubikRegular,
-      minWidth: '9rem',
       borderRadius: '.75rem',
       background:
         'linear-gradient(163deg, rgba(47,168,255,1) 0%, rgba(50,169,255,1) 0%, rgba(129,40,204,1) 100%);',
@@ -111,7 +114,6 @@ const theme = {
     },
     simple: {
       ...textStyles.mediumRubikRegular,
-      minWidth: '10.125rem',
       padding: '.5rem',
       borderRadius: '.75rem',
       background: '#7A2DF4',
@@ -130,7 +132,6 @@ const theme = {
     },
     icon: {
       ...textStyles.mediumRubikRegular,
-      minWidth: '6.813rem',
       padding: '.5rem',
       borderRadius: '.75rem',
       background: '#7A2DF4',
@@ -149,7 +150,6 @@ const theme = {
     },
     small: {
       ...textStyles.mediumRubikRegular,
-      minWidth: '3rem',
       borderRadius: '.625rem',
       background: '#7A2DF4',
       border: 'none',
@@ -162,7 +162,6 @@ const theme = {
     },
     alert: {
       ...textStyles.mediumRubikRegular,
-      minWidth: '13.25rem',
       borderRadius: '.75rem',
       background: '#F54E4E',
       border: 'none',
@@ -180,7 +179,6 @@ const theme = {
     },
     cancel: {
       ...textStyles.mediumRubikRegular,
-      minWidth: '13.25rem',
       borderRadius: '.75rem',
       background: 'none',
       border: '1px solid #FFFFFF',

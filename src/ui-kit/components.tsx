@@ -1,6 +1,8 @@
 import { ChangeEventHandler } from 'react';
 import styled, { css } from 'styled-components';
 import {
+  border,
+  BorderProps,
   color,
   ColorProps,
   flexbox,
@@ -39,15 +41,16 @@ export const Header = styled.header<HeaderStyleInterface>`
   })}
 `;
 
-interface LabelInterface extends ColorProps, FlexboxProps {}
+interface LabelInterface extends ColorProps, FlexboxProps, BorderProps {}
 export const Label = styled.label<LabelInterface>`
   display: flex;
   ${css({
     cursor: 'pointer',
     userSelect: 'none',
-  })}
-  ${flexbox}
-  ${color}
+  })};
+  ${flexbox};
+  ${color};
+  ${border};
 `;
 
 interface InputInterface {

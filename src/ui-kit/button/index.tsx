@@ -1,6 +1,6 @@
 import React, { ReactElement, ReactNode } from 'react';
 import styled from 'styled-components';
-import { variant, border, color, flexbox, space, system, BordersProps } from 'styled-system';
+import { variant, border, color, system, BordersProps } from 'styled-system';
 import { ButtonThemeType, ButtonSizeType, ButtonGradientType, Flex, Box } from 'ThemeProvider';
 import { SpinnerIcon } from '../icons';
 
@@ -22,6 +22,7 @@ interface ButtonInterface {
   icon?: ReactElement;
   processing?: boolean;
 }
+
 interface ButtonStyle extends BordersProps {
   variant: ButtonThemeType;
   size: ButtonSizeType;
@@ -67,7 +68,7 @@ const Button = ({
       onClick={disabled || processing ? undefined : onClick}
       disabled={disabled}
     >
-      <Flex alignItems="center" justifyContent="center">
+      <Flex alignItems="center" justifyContent="center" width="max-content">
         {processing && (
           <Box pr="12px">
             <SpinnerIcon width="17" height="17" color="white" />

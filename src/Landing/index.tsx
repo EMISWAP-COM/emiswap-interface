@@ -11,11 +11,13 @@ import RoadmapBlock from './RoadmapBlock';
 import StandoutBlock from './StandoutBlock';
 import { Grid } from 'ThemeProvider/components';
 import NewWalletModal from '../components/NewWalletModal/NewWalletModal';
+import SettingsDrop from '../components/New/Settings';
 
 const Landing = () => (
   <Grid bg="bg">
     {/* <Header /> */}
     <NewWalletModal />
+    <SettingsDrop />
     <MainBlock />
     <InfoBlock />
     <StandoutBlock />

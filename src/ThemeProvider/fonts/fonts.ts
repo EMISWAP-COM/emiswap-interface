@@ -15,6 +15,10 @@ const textSizes = {
     fontSize: '1.125rem',
     lineHeight: '1.5rem',
   },
+  xl: {
+    fontSize: '1.25rem',
+    lineHeight: '1.5rem',
+  },
 };
 
 const headerSizes = {
@@ -138,6 +142,26 @@ export const textStyles = {
   },
   largeSoraBold: {
     ...textSizes.large,
+    ...fontFamilys.SoraBold,
+  },
+  xlRubikRegular: {
+    ...textSizes.xl,
+    ...fontFamilys.RubikRegular,
+  },
+  xlRubikMedium: {
+    ...textSizes.xl,
+    ...fontFamilys.RubikMedium,
+  },
+  xlRubikBold: {
+    ...textSizes.xl,
+    ...fontFamilys.RubikBold,
+  },
+  xlSoraSemiBold: {
+    ...textSizes.xl,
+    ...fontFamilys.SoraSemiBold,
+  },
+  xlSoraBold: {
+    ...textSizes.xl,
     ...fontFamilys.SoraBold,
   },
 };

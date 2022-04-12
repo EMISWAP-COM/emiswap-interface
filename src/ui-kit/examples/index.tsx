@@ -8,7 +8,8 @@ import { SpinnerIcon } from 'ui-kit/icons';
 import SwitchersExample from './swithers';
 import CheckBoxsExamples from './checkbox';
 import RefLinkExample from './refLink';
-import { Head } from '../../ThemeProvider/components';
+import { Flex, Head } from '../../ThemeProvider/components';
+import InputsExample from './inputs';
 
 interface RootProp extends LayoutProps, ColorProps, SpaceProps {}
 const Root = styled.div<RootProp>`
@@ -22,6 +23,12 @@ const Header = ({ children }: { children: ReactNode }): ReactElement => (
   <Head variant="mediumSoraSemiBold" pb="4" pt="4" color="paper">
     {children}
   </Head>
+);
+
+export const Line = ({ children }) => (
+  <Flex width="100%" justifyContent="space-between" m={1}>
+    {children}
+  </Flex>
 );
 
 export default () => (
@@ -41,6 +48,8 @@ export default () => (
       <RefLinkExample />
       <Header>Fonts</Header>
       <FontsExample />
+      <Header>Inputs</Header>
+      <InputsExample />
     </Root>
   </>
 );
