@@ -84,15 +84,8 @@ const StyledDialogContent = styled(
 `;
 
 interface ModalProps {
-  isOpen: boolean;
-  onDismiss: () => void;
-  width?: string | number;
-  minHeight?: number | false;
-  maxHeight?: number;
-  maxWidth?: number;
-  initialFocusRef?: React.RefObject<any>;
+  onClose?: () => void;
   children?: React.ReactNode;
-  className?: string;
 }
 
 const ModalBgWrapper = styled(Box)<{
@@ -106,15 +99,7 @@ const ModalBgWrapper = styled(Box)<{
   })}
 `;
 
-export default function NewModal({
-  isOpen,
-  width = 12,
-  minHeight = false,
-  maxHeight = 50,
-  maxWidth = 440,
-  children,
-  className,
-}: ModalProps) {
+export default function NewModal({ children, onClose }: ModalProps) {
   return (
     <>
       <ModalBgWrapper
@@ -133,7 +118,7 @@ export default function NewModal({
         alignItems="center"
         left="0"
       >
-        <Drop headerText="Select wallet" width={12}>
+        <Drop headerText="Select wallet" width={12} onClose={onClose}>
           <Flex flexDirection="column" p="1.5rem">
             {children}
           </Flex>

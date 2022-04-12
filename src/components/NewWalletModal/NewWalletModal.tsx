@@ -20,6 +20,7 @@ import {
 } from '../WalletModal/gaEvents';
 import Option from './Option';
 import NewModal from '../NewModal';
+import { toggleNewWalletModal } from '../../state/application/actions';
 
 const WalletCustomModal = styled(NewModal)`
   overflow-y: visible !important;
@@ -29,15 +30,15 @@ const WalletModal = () => {
   const { account, connector, activate } = useWeb3React();
   const { chainId } = useActiveWeb3React();
 
-  const walletModalOpen = useNewWalletModalOpen();
+  const isWalletModalOpen = useNewWalletModalOpen();
   const toggleWalletModal = useNewWalletModalToggle();
 
   const previousAccount = usePrevious(account);
   useEffect(() => {
-    if (account && !previousAccount && walletModalOpen) {
+    if (account && !previousAccount && isWalletModalOpen) {
       toggleWalletModal();
     }
-  }, [account, previousAccount, toggleWalletModal, walletModalOpen]);
+  }, [account, previousAccount, toggleWalletModal, isWalletModalOpen]);
 
   const tryActivation = async connector => {
     let name = '';
@@ -139,17 +140,10 @@ const WalletModal = () => {
     });
   }
 
-  return (
-    <WalletCustomModal
-      isOpen={walletModalOpen}
-      onDismiss={toggleWalletModal}
-      width={'70vw'}
-      minHeight={null}
-      maxHeight={90}
-      maxWidth={900}
-    >
-      {getOptions()}
-    </WalletCustomModal>
+  return isWalletModalOpen ? (
+    <WalletCustomModal onClose={toggleNewWalletModal}>{getOptions()}</WalletCustomModal>
+  ) : (
+    <></>
   );
 };
 
