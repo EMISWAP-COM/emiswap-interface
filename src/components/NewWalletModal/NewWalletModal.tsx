@@ -20,7 +20,6 @@ import {
 } from '../WalletModal/gaEvents';
 import Option from './Option';
 import NewModal from '../NewModal';
-import { toggleNewWalletModal } from '../../state/application/actions';
 import { Box, Flex, Link, Text } from '../../ThemeProvider';
 import CheckBox from '../../ui-kit/checkBox';
 
@@ -145,7 +144,7 @@ const WalletModal = () => {
   }
 
   return isWalletModalOpen ? (
-    <WalletCustomModal onClose={toggleNewWalletModal}>
+    <WalletCustomModal onClose={() => toggleWalletModal()}>
       <Box mt={-3}>{getOptions()}</Box>
       <Flex mt={4} alignItems="baseline">
         <Box pt={1}>

@@ -32,7 +32,7 @@ const Drop = ({ children, headerText, width, onClose }: DropInterface) => {
         <Text variant="xlRubikMedium" color="paper">
           {headerText}
         </Text>
-        <Box onClick={onClose}>
+        <Box onClick={onClose} cursor="pointer">
           <CloseIcon width="1.125rem" height="1.125rem" />
         </Box>
       </Flex>

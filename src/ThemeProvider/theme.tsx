@@ -82,6 +82,9 @@ const theme = {
     nowrap: 'nowrap',
     preLine: 'pre-line',
   },
+  cursor: {
+    pointer: 'pointer',
+  },
   textDecoration: {
     none: 'none',
     underline: 'underline',
@@ -229,5 +232,6 @@ export type FlexGapType = StringOrNumber;
 export type BackdropFilterType = keyof typeof theme.backdropFilter;
 export type InputStylesType = keyof typeof theme.InputStyles;
 export type ToggleStylesType = keyof typeof theme.ToggleStyles;
+export type CursorType = keyof typeof theme.cursor;
 
 export default theme;

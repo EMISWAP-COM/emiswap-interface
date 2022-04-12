@@ -23,6 +23,7 @@ import {
   system,
 } from 'styled-system';
 import { HeaderStyleTypes, TextStyleTypes } from './fonts';
+import { CursorType } from './theme';
 
 export interface Props
   extends ColorProps,
@@ -126,7 +127,7 @@ export const Flex = styled.div<Props>`
   ${background}
 `;
 
-export const Box = styled.div<Props>`
+export const Box = styled.div<Props & { cursor?: CursorType }>`
   ${space};
   ${layout};
   ${color};
@@ -134,6 +135,12 @@ export const Box = styled.div<Props>`
   ${border};
   ${position};
   ${shadow};
+  ${system({
+    cursor: {
+      property: 'cursor',
+      scale: 'cursor',
+    },
+  })};
 `;
 
 export const FlexItemBox = styled(Box)<Props & { flex: string }>`
