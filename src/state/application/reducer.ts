@@ -36,7 +36,7 @@ const initialState: ApplicationState = {
   blockNumber: {},
   popupList: [],
   walletModalOpen,
-  walletNewModalOpen: true,
+  walletNewModalOpen: false,
   confirmSwitchModalOpen: false,
   networkSwitchModalOpen: false,
   bridgeModalOpen: false,
