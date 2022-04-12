@@ -1,5 +1,5 @@
 import React from 'react';
 
-const Header = () => <span>Header</span>;
+const Header = () => <></>;
 
 export default Header;

@@ -112,6 +112,7 @@ export const Flex = styled.div<Props>`
   ${layout};
   ${border};
   ${position}
+  ${background}
 `;
 
 export const Box = styled.div<Props>`
