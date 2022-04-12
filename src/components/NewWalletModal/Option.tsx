@@ -12,12 +12,14 @@ export interface OptionProps {
 const OptionWrapper = styled(Flex)<{
   background: ButtonGradientType;
 }>`
-  ${system({
-    background: {
-      property: 'background',
-      scale: 'gradients',
-    },
-  })}
+  cursor: pointer;
+  &:hover {
+    background: radial-gradient(
+      281.25% 870.12% at 2.78% -76.56%,
+      rgba(129, 40, 204, 0.2) 0%,
+      rgba(50, 169, 255, 0.2) 100%
+    );
+  }
 `;
 
 const Option = (props: OptionProps) => {

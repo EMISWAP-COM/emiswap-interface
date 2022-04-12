@@ -21,6 +21,7 @@ import {
 import Option from './Option';
 import NewModal from '../NewModal';
 import { toggleNewWalletModal } from '../../state/application/actions';
+import { Box } from '../../ThemeProvider';
 
 const WalletCustomModal = styled(NewModal)`
   overflow-y: visible !important;
@@ -71,7 +72,7 @@ const WalletModal = () => {
 
   const [termAndConditionsAccepted, setTermAndConditionsAccepted] = useLocalStorage(
     'termAndConditionsAccepted',
-    false,
+    true,
   );
 
   function getMobileOption(option, key) {
@@ -98,7 +99,9 @@ const WalletModal = () => {
         onClick={() => {
           if (termAndConditionsAccepted !== true) return;
           option.connector !== connector && !option.href && tryActivation(option.connector);
-          window.location.replace(option.href);
+          if (option.href) {
+            window.location.replace(option.href);
+          }
         }}
         key={key}
         header={option.name}
@@ -141,7 +144,9 @@ const WalletModal = () => {
   }
 
   return isWalletModalOpen ? (
-    <WalletCustomModal onClose={toggleNewWalletModal}>{getOptions()}</WalletCustomModal>
+    <WalletCustomModal onClose={toggleNewWalletModal}>
+      <Box mt={-3}>{getOptions()}</Box>
+    </WalletCustomModal>
   ) : (
     <></>
   );
