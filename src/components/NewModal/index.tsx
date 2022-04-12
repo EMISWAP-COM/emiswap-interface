@@ -133,19 +133,10 @@ export default function NewModal({
         alignItems="center"
         left="0"
       >
-        <Drop headerText="Select wallet">
-          <StyledDialogContent
-            aria-label="dialog content"
-            hidden={true}
-            width={width}
-            minHeight={minHeight}
-            maxHeight={maxHeight}
-            maxWidth={maxWidth}
-            isOpen={isOpen}
-            className={className}
-          >
+        <Drop headerText="Select wallet" width={12}>
+          <Flex flexDirection="column" p="1.5rem">
             {children}
-          </StyledDialogContent>
+          </Flex>
         </Drop>
       </Flex>
     </>

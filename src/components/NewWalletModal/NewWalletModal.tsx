@@ -59,7 +59,6 @@ const WalletModal = () => {
         if (confirmGAEvent) confirmGAEvent();
         confirmWalletGA();
         successWalletGA();
-        console.log('SUCCEESSSSS');
         ReactPixel.track('wallet_connect_success');
       })
       .catch(error => {
