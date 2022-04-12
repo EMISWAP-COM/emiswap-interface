@@ -55,7 +55,6 @@ const theme = {
     almostDisabled: 'rgba(255, 255, 255, 0.6)',
     inputDark: '#0F0F13',
     error: '#E84142',
-    fadedWhite: 'rgba(255, 255, 255, 0.15)',
     disabled: 'rgba(255, 255, 255, 0.7)',
     almostNoWhite: 'rgba(255, 255, 255, 0.05)',
   },
@@ -219,9 +218,12 @@ const theme = {
   },
 };
 
+type StringOrNumber = string | number;
+
 export type ButtonThemeType = keyof typeof theme.buttons;
 export type ButtonSizeType = keyof typeof theme.buttonSize;
 export type ButtonGradientType = keyof typeof theme.gradients;
+export type FlexGapType = StringOrNumber;
 export type BackdropFilterType = keyof typeof theme.backdropFilter;
 export type InputStylesType = keyof typeof theme.InputStyles;
 export type ToggleStylesType = keyof typeof theme.ToggleStyles;

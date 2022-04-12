@@ -114,26 +114,32 @@ const RequestCollect = ({ closeWindow }: { closeWindow: () => void }): React.Rea
   const addPopup = useAddPopup();
   const popups = useActivePopups();
 
-  const FailMessage = txHash ? <>
-    <LinkNoColor href={`https://polygonscan.com/tx/${txHash}`}>
-      <b>Transaction</b>
-    </LinkNoColor> has failed
-  </> : <span>Something has failed</span>;
+  const FailMessage = txHash ? (
+    <>
+      <LinkNoColor href={`https://polygonscan.com/tx/${txHash}`}>
+        <b>Transaction</b>
+      </LinkNoColor>{' '}
+      has failed
+    </>
+  ) : (
+    <span>Something has failed</span>
+  );
 
   useEffect(() => {
-    const isPending = progress === 'pending';
-    const isSuccess = progress === 'success';
-    const isStatusForPopUp = isSuccess || isPending;
-    const key = isSuccess ? `${txHash}Success` : `${txHash}Pending`;
+    const isPending = progress === 'success';
+    const key = `${txHash}RequestSuccess`;
     const isPopUpAlreadyShown = popups.find(item => item.key === key);
-    if (isStatusForPopUp && !isPopUpAlreadyShown) {
-      addPopup({
-        txn: {
-          hash: txHash,
-          success: true,
-          summary: isPending ? `Request ${requestedAmount} ESW` : `Transfer ${requestedAmount} ESW to the wallet`,
+    if (isPending && !isPopUpAlreadyShown) {
+      addPopup(
+        {
+          txn: {
+            hash: txHash,
+            success: true,
+            summary: `Request ${requestedAmount} ESW`,
+          },
         },
-      }, key);
+        key,
+      );
     }
   }, [progress]);
 
@@ -156,9 +162,7 @@ const RequestCollect = ({ closeWindow }: { closeWindow: () => void }): React.Rea
           }
         }}
       />
-      {status && <Status>
-        {status === 'fail' ? FailMessage : status }
-      </Status>}
+      {status && <Status>{status === 'fail' ? FailMessage : status}</Status>}
       <Buttons>
         <CancelButton onClick={closeWindow}>Cancel</CancelButton>
         <RequestButton onClick={requestHandler}>{title}</RequestButton>
