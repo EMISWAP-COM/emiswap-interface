@@ -48,13 +48,13 @@ const options = {
 ReactPixel.init('980043795863508', advancedMatching, options);
 ReactPixel.pageView();
 
-const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName);
+export const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName);
 
 if (window.ethereum && (window.ethereum as any).hasOwnProperty('autoRefreshOnNetworkChange')) {
   (window.ethereum as any).autoRefreshOnNetworkChange = false;
 }
 
-function getLibrary(provider: any): Web3Provider {
+export function getLibrary(provider: any): Web3Provider {
   const library = new Web3Provider(provider);
   library.pollingInterval = 15000;
   return library;
