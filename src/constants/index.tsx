@@ -11,6 +11,7 @@ import PolygonNetworkIcon from '../assets/svg/polygon-network.svg';
 import ShidenNetworkIcon from '../assets/images/shiden-network.png';
 import AvalancheNetworkIcon from '../assets/svg/avalanche-network.svg';
 import AstarNetworkIcon from '../assets/images/astar-network.png';
+import GateChainNetworkIcon from '../assets/currencies/GT.png';
 import AuroraNetworkIcon from '../assets/svg/aurora-network.svg';
 import WalletConnectIcon from '../assets/images/walletConnectIcon.svg';
 import CoinbaseWalletIcon from '../assets/images/coinbaseWalletIcon.svg';
@@ -25,6 +26,7 @@ import { AVAX } from './tokens/AVAX';
 import { SDN } from './tokens/SDN';
 import { AURORA_ETHER } from './tokens/AURORA_ETHER';
 import { ASTR } from './tokens/ASTR';
+import { GT } from './tokens/GT';
 
 export const MAX_NUM_DECIMALS = 18;
 export const ROUTER_ADDRESS = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D';
@@ -127,6 +129,42 @@ export const ASTAR_DAI = new Token(
   'DAI',
   'DAI',
 );
+
+export const WGT = new Token(
+  // @ts-ignore
+  chainIds.GATECHAIN,
+  '0x672f30407A71fa8737A3A14474ff37E09c7Fc44a',
+  18,
+  'WGT',
+  'WGT',
+);
+
+// export const GT_USDT = new Token(
+//   // @ts-ignore
+//   chainIds.GATECHAIN,
+//   '0x3795C36e7D12A8c252A20C5a7B455f7c57b60283',
+//   6,
+//   'USDT',
+//   'USDT',
+// );
+
+// export const GT_USDC = new Token(
+//   // @ts-ignore
+//   chainIds.GATECHAIN,
+//   '0x6a2d262D56735DbA19Dd70682B39F6bE9a931D98',
+//   6,
+//   'USDC',
+//   'USDC',
+// );
+
+// export const GT_DAI = new Token(
+//   // @ts-ignore
+//   chainIds.GATECHAIN,
+//   '0x6De33698e9e9b787e09d3Bd7771ef63557E148bb',
+//   6,
+//   'DAI',
+//   'DAI',
+// );
 
 export const DAI = new Token(
   ChainId.MAINNET,
@@ -291,6 +329,10 @@ export const ESW: ChainTokenList = {
     // @ts-ignore
     new Token(chainIds.ASTAR, esw_addresses[chainIds.ASTAR], 18, 'ESW', 'EmiDAO Token'),
   ],
+  [chainIds.GATECHAIN]: [
+    // @ts-ignore
+    new Token(chainIds.GATECHAIN, esw_addresses[chainIds.GATECHAIN], 18, 'ESW', 'EmiDAO Token'),
+  ],
   [chainIds.AURORA]: [
     // @ts-ignore
     new Token(chainIds.AURORA, esw_addresses[chainIds.AURORA], 18, 'ESW', 'EmiDAO Token'),
@@ -310,6 +352,7 @@ const ETH_ONLY: ChainTokenList = {
   [chainIds.SHIDEN]: [ETHER],
   [chainIds.AVALANCHE]: [ETHER],
   [chainIds.ASTAR]: [ETHER],
+  [chainIds.GATECHAIN]: [ETHER],
   [chainIds.AURORA]: [ETHER],
 };
 
@@ -326,6 +369,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   [chainIds.SHIDEN]: [WSDN],
   [chainIds.AVALANCHE]: [WAVAX],
   [chainIds.ASTAR]: [ASTAR_DAI, ASTAR_USDC, ASTAR_USDT, WASTR],
+  [chainIds.GATECHAIN]: [WGT],
   [chainIds.AURORA]: [AURORA_DAI, AURORA_USDT /*AURORA_WETH*/],
 };
 
@@ -344,6 +388,8 @@ export const SUGGESTED_BASES: ChainTokenList = {
   [chainIds.SHIDEN]: [ESW[chainIds.SHIDEN][0]],
   // @ts-ignore
   [chainIds.ASTAR]: [ESW[chainIds.ASTAR][0]],
+  // @ts-ignore
+  [chainIds.GATECHAIN]: [ESW[chainIds.GATECHAIN][0]],
   // @ts-ignore
   [chainIds.AURORA]: [AURORA_DAI, AURORA_USDT /*AURORA_WETH*/ /*ESW[chainIds.AURORA][0]*/],
 };
@@ -365,6 +411,8 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   [chainIds.AVALANCHE]: [ESW[chainIds.AVALANCHE][0]],
   // @ts-ignore
   [chainIds.ASTAR]: [ESW[chainIds.ASTAR][0]],
+  // @ts-ignore
+  [chainIds.GATECHAIN]: [ESW[chainIds.GATECHAIN][0]],
   // @ts-ignore
   [chainIds.AURORA]: [AURORA_DAI, AURORA_USDT /*AURORA_WETH*/ /*ESW[chainIds.AURORA][0]*/],
 };
@@ -463,6 +511,7 @@ export const SUPPORTED_WALLETS = {
         chainIds.SHIDEN,
         chainIds.AVALANCHE,
         chainIds.ASTAR,
+        chainIds.GATECHAIN,
       ],
       color: '#6748FF',
       mobile: true,
@@ -478,6 +527,7 @@ export const SUPPORTED_WALLETS = {
         chainIds.SHIDEN,
         chainIds.AVALANCHE,
         chainIds.ASTAR,
+        chainIds.GATECHAIN,
       ],
       color: '#4A6C9B',
       mobile: true,
@@ -672,6 +722,25 @@ export const networksItems: INetworkItem[] = [
     eswExplorerUrl: 'https://etherscan.io/token/0x5a75A093747b72a0e14056352751eDF03518031d',
     eswExplorerName: 'ESW KCC Explorer',
     bridgeUrl: 'https://app.multichain.org/#/router',
+    active: true,
+  },
+  {
+    alias: 'gatechain',
+    value: 'gatechain',
+    chainId: chainIds.GATECHAIN,
+    token: GT,
+    icon: GateChainNetworkIcon,
+    name: 'GateChain',
+    rpcUrls: ['https://evm.gatenode.cc'],
+    currencySymbol: 'GT',
+    currencySymbolWrap: 'WGT',
+    currencySymbolWeth: 'WGT',
+    blockExplorerUrl: 'https://gatescan.org',
+    blockExplorerName: 'GateChain Explorer',
+    analyticsUrl: '',
+    eswExplorerUrl: 'https://gatescan.org/address/0x18f38359551258C35e8593d775cb6Fe8D27fd89b',
+    eswExplorerName: 'ESW GateChaiin',
+    bridgeUrl: 'https://www.hipo.com/en/gatebridge',
     active: true,
   },
   {

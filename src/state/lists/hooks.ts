@@ -49,6 +49,7 @@ const EMPTY_LIST: TokenAddressMap = {
   [chainIds.SHIDEN]: {},
   [chainIds.AVALANCHE]: {},
   [chainIds.ASTAR]: {},
+  [chainIds.GATECHAIN]: {},
   [chainIds.AURORA]: {},
 };
 

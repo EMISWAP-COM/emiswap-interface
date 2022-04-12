@@ -4470,6 +4470,79 @@ const defaultCoins: DefaultCoins = {
       logoURI:
         'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
     },
+    // GateChain
+    {
+      address: '0x18f38359551258c35e8593d775cb6fe8d27fd89b',
+      chainId: chainIds.GATECHAIN,
+      name: 'EmiDAO Token',
+      decimals: 18,
+      symbol: 'ESW',
+      logoURI:
+        'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
+      address: '0x0e6165994B58bFDc8de3340ab4A898Ac27Be1751',
+      chainId: chainIds.GATECHAIN,
+      name: 'Bitcoin',
+      decimals: 8,
+      symbol: 'BTC',
+    },
+    {
+      address: '0x3428e3dbA9198F961526e220Ed4a7F665429FcE8',
+      chainId: chainIds.GATECHAIN,
+      name: 'Litecoin',
+      decimals: 8,
+      symbol: 'LTC',
+    },
+    {
+      address: '0x41f9BBD239D745e698A140466929334B81872045',
+      chainId: chainIds.GATECHAIN,
+      name: 'EOS',
+      decimals: 4,
+      symbol: 'EOS',
+    },
+    {
+      address: '0x35f669463BABE838e3cD3dDaB41885c334c892Ef',
+      chainId: chainIds.GATECHAIN,
+      name: 'GATE USD',
+      decimals: 6,
+      symbol: 'USDG',
+    },
+    {
+      address: '0x307d30A0c705Efed8D046b58E48d422837D5Ae10',
+      chainId: chainIds.GATECHAIN,
+      name: 'Polkadot',
+      decimals: 10,
+      symbol: 'DOT',
+    },
+    {
+      address: '0xafc10201f2e9e543555d9465f0452fa0dd2336a5',
+      chainId: chainIds.GATECHAIN,
+      name: 'Dogecoin',
+      decimals: 8,
+      symbol: 'DOGE',
+    },
+    {
+      address: '0x6985f212619be83b6Cc9deA65d58FfbEf4459eCd',
+      chainId: chainIds.GATECHAIN,
+      name: 'Cordano',
+      decimals: 6,
+      symbol: 'ADA',
+    },
+    {
+      address: '0x73558DE09203CDaD0a122B50CD257218992CE098',
+      chainId: chainIds.GATECHAIN,
+      name: 'Filecoin',
+      decimals: 18,
+      symbol: 'FIL',
+    },
+    {
+      address: '0x2a3afF3C8d0e16ccC25d71a2ca0b80f8dab209A7',
+      chainId: chainIds.GATECHAIN,
+      name: 'XRP',
+      decimals: 6,
+      symbol: 'XRP',
+    },
     //
     {
       address: '0xfa9343c3897324496a05fc75abed6bac29f8a40f',
@@ -4701,5 +4774,17 @@ export const mustVisibleAddresses = {
     '0x7f27352D5F83Db87a5A3E00f4B07Cc2138D8ee52',
     '0x4Bf769b05E832FCdc9053fFFBC78Ca889aCb5E1E',
     '0xad543f18cFf85c77E140E3E5E3c3392f6Ba9d5CA',
+  ],
+  gatechain: [
+    '0x18f38359551258c35e8593d775cb6fe8d27fd89b',
+    '0x0e6165994B58bFDc8de3340ab4A898Ac27Be1751',
+    '0x3428e3dbA9198F961526e220Ed4a7F665429FcE8',
+    '0x41f9BBD239D745e698A140466929334B81872045',
+    '0x35f669463BABE838e3cD3dDaB41885c334c892Ef',
+    '0x307d30A0c705Efed8D046b58E48d422837D5Ae10',
+    '0xafc10201f2e9e543555d9465f0452fa0dd2336a5',
+    '0x6985f212619be83b6Cc9deA65d58FfbEf4459eCd',
+    '0x73558DE09203CDaD0a122B50CD257218992CE098',
+    '0x2a3afF3C8d0e16ccC25d71a2ca0b80f8dab209A7',
   ],
 };
