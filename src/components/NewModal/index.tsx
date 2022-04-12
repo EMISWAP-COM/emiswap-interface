@@ -1,12 +1,11 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import { animated, useSpring, useTransition } from 'react-spring';
-import { Spring } from 'react-spring/renderprops';
-
+import { animated } from 'react-spring';
 import { DialogContent, DialogOverlay } from '@reach/dialog';
-import { isMobile } from 'react-device-detect';
 import '@reach/dialog/styles.css';
-import { useGesture } from 'react-use-gesture';
+import Drop from '../../ui-kit/drops';
+import { BackdropFilterType, Box, Flex } from '../../ThemeProvider';
+import { system } from 'styled-system';
 
 const AnimatedDialogOverlay = animated(DialogOverlay);
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -87,7 +86,7 @@ const StyledDialogContent = styled(
 interface ModalProps {
   isOpen: boolean;
   onDismiss: () => void;
-  width?: string;
+  width?: string | number;
   minHeight?: number | false;
   maxHeight?: number;
   maxWidth?: number;
@@ -96,115 +95,59 @@ interface ModalProps {
   className?: string;
 }
 
+const ModalBgWrapper = styled(Box)<{
+  backdropFilter: BackdropFilterType;
+}>`
+  ${system({
+    backdropFilter: {
+      property: 'backdropFilter',
+      scale: 'backdropFilter',
+    },
+  })}
+`;
+
 export default function NewModal({
   isOpen,
-  onDismiss,
-  width = '54wv',
+  width = 12,
   minHeight = false,
   maxHeight = 50,
   maxWidth = 440,
-  initialFocusRef = null,
   children,
   className,
 }: ModalProps) {
-  const transitions = useTransition(isOpen, null, {
-    config: { duration: 200 },
-    from: { opacity: 0 },
-    enter: { opacity: 1 },
-    leave: { opacity: 0 },
-  });
-
-  const [{ y }, set] = useSpring(() => ({ y: 0, config: { mass: 1, tension: 210, friction: 20 } }));
-  const bind = useGesture({
-    onDrag: state => {
-      set({
-        y: state.down ? state.movement[1] : 0,
-      });
-      if (state.velocity > 3 && state.direction[1] > 0) {
-        onDismiss();
-      }
-    },
-  });
-
-  if (isMobile) {
-    return (
-      <>
-        {transitions.map(
-          ({ item, key, props }) =>
-            item && (
-              <StyledDialogOverlay
-                key={key}
-                style={props}
-                onDismiss={onDismiss}
-                initialFocusRef={initialFocusRef}
-                mobile={true}
-              >
-                {/* prevents the automatic focusing of inputs on mobile by the reach dialog */}
-                {initialFocusRef ? null : <div tabIndex={1} />}
-                <Spring // animation for entrance and exit
-                  from={{
-                    transform: isOpen ? 'translateY(200px)' : 'translateY(100px)',
-                  }}
-                  to={{
-                    transform: isOpen ? 'translateY(0px)' : 'translateY(200px)',
-                  }}
-                >
-                  {props => (
-                    <animated.div
-                      {...bind()}
-                      style={{
-                        transform: y.interpolate(y => `translateY(${y > 0 ? y : 0}px)`),
-                      }}
-                    >
-                      <StyledDialogContent
-                        aria-label="dialog content"
-                        className={className}
-                        style={props}
-                        hidden={true}
-                        width={width}
-                        minHeight={minHeight}
-                        maxHeight={maxHeight}
-                        maxWidth={maxWidth}
-                        mobile={isMobile}
-                      >
-                        {children}
-                      </StyledDialogContent>
-                    </animated.div>
-                  )}
-                </Spring>
-              </StyledDialogOverlay>
-            ),
-        )}
-      </>
-    );
-  } else {
-    return (
-      <>
-        {transitions.map(
-          ({ item, key, props }) =>
-            item && (
-              <StyledDialogOverlay
-                key={key}
-                style={props}
-                onDismiss={onDismiss}
-                initialFocusRef={initialFocusRef}
-              >
-                <StyledDialogContent
-                  aria-label="dialog content"
-                  hidden={true}
-                  width={width}
-                  minHeight={minHeight}
-                  maxHeight={maxHeight}
-                  maxWidth={maxWidth}
-                  isOpen={isOpen}
-                  className={className}
-                >
-                  {children}
-                </StyledDialogContent>
-              </StyledDialogOverlay>
-            ),
-        )}
-      </>
-    );
-  }
+  return (
+    <>
+      <ModalBgWrapper
+        position="fixed"
+        left="0"
+        width="100%"
+        height="100%"
+        bg="fadedToBlur"
+        backdropFilter="kindaBlurred"
+      />
+      <Flex
+        position="fixed"
+        width="100%"
+        height="100%"
+        justifyContent="center"
+        alignItems="center"
+        left="0"
+      >
+        <Drop headerText="Select wallet">
+          <StyledDialogContent
+            aria-label="dialog content"
+            hidden={true}
+            width={width}
+            minHeight={minHeight}
+            maxHeight={maxHeight}
+            maxWidth={maxWidth}
+            isOpen={isOpen}
+            className={className}
+          >
+            {children}
+          </StyledDialogContent>
+        </Drop>
+      </Flex>
+    </>
+  );
 }

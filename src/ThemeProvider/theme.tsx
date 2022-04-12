@@ -57,6 +57,7 @@ const theme = {
     error: '#E84142',
     disabled: 'rgba(255, 255, 255, 0.7)',
     almostNoWhite: 'rgba(255, 255, 255, 0.05)',
+    fadedToBlur: 'rgba(15, 15, 19, 0.7)',
   },
   gradients: {
     buttonPrimary:
@@ -70,6 +71,7 @@ const theme = {
       'radial-gradient( 184.37% 184.37% at -60.94% -46.88%, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 61%)',
   },
   backdropFilter: {
+    kindaBlurred: 'blur(1.25rem)',
     default: 'blur(3.5rem)',
   },
   textOverflow: {
