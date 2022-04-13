@@ -4488,6 +4488,20 @@ const defaultCoins: DefaultCoins = {
       symbol: 'BTC',
     },
     {
+      address: '0x4151Ab5072198D0843CD2999590Ef292F49d6c66',
+      chainId: chainIds.GATECHAIN,
+      name: 'USDT',
+      decimals: 6,
+      symbol: 'USDT',
+    },
+    {
+      address: '0x9140B8ebcD3d14F37D278c90b371f3f2B556f2ca',
+      chainId: chainIds.GATECHAIN,
+      name: 'USD Coin',
+      decimals: 6,
+      symbol: 'USDC',
+    },
+    {
       address: '0x3428e3dbA9198F961526e220Ed4a7F665429FcE8',
       chainId: chainIds.GATECHAIN,
       name: 'Litecoin',
@@ -4516,7 +4530,7 @@ const defaultCoins: DefaultCoins = {
       symbol: 'DOT',
     },
     {
-      address: '0xafc10201f2e9e543555d9465f0452fa0dd2336a5',
+      address: '0xEC10B30B66839FB86c80a5641e685aD14cAC4A9f',
       chainId: chainIds.GATECHAIN,
       name: 'Dogecoin',
       decimals: 8,

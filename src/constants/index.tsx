@@ -139,32 +139,23 @@ export const WGT = new Token(
   'WGT',
 );
 
-// export const GT_USDT = new Token(
-//   // @ts-ignore
-//   chainIds.GATECHAIN,
-//   '0x3795C36e7D12A8c252A20C5a7B455f7c57b60283',
-//   6,
-//   'USDT',
-//   'USDT',
-// );
+export const GATECHAIN_USDT = new Token(
+  // @ts-ignore
+  chainIds.GATECHAIN,
+  '0x4151Ab5072198D0843CD2999590Ef292F49d6c66',
+  6,
+  'USDT',
+  'USDT',
+);
 
-// export const GT_USDC = new Token(
-//   // @ts-ignore
-//   chainIds.GATECHAIN,
-//   '0x6a2d262D56735DbA19Dd70682B39F6bE9a931D98',
-//   6,
-//   'USDC',
-//   'USDC',
-// );
-
-// export const GT_DAI = new Token(
-//   // @ts-ignore
-//   chainIds.GATECHAIN,
-//   '0x6De33698e9e9b787e09d3Bd7771ef63557E148bb',
-//   6,
-//   'DAI',
-//   'DAI',
-// );
+export const GATECHAIN_USDC = new Token(
+  // @ts-ignore
+  chainIds.GATECHAIN,
+  '0x9140B8ebcD3d14F37D278c90b371f3f2B556f2ca',
+  6,
+  'USDC',
+  'USDC',
+);
 
 export const DAI = new Token(
   ChainId.MAINNET,
@@ -369,7 +360,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   [chainIds.SHIDEN]: [WSDN],
   [chainIds.AVALANCHE]: [WAVAX],
   [chainIds.ASTAR]: [ASTAR_DAI, ASTAR_USDC, ASTAR_USDT, WASTR],
-  [chainIds.GATECHAIN]: [WGT],
+  [chainIds.GATECHAIN]: [GATECHAIN_USDC, GATECHAIN_USDT, WGT],
   [chainIds.AURORA]: [AURORA_DAI, AURORA_USDT /*AURORA_WETH*/],
 };
 
