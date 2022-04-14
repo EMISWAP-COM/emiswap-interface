@@ -12,6 +12,7 @@ import {
   useIsAuroraActive,
   useIsAvalancheActive,
   useIsAstarActive,
+  useIsGateChainActive,
   useIsEthActive,
   useIsKuCoinActive,
   useIsPolygonActive,
@@ -36,6 +37,7 @@ export function useAllTokens(isLpTokens?: boolean): [{ [address: string]: Token 
   const isShidenActive = useIsShidenActive();
   const isAvalancheActive = useIsAvalancheActive();
   const isAstarActive = useIsAstarActive();
+  const isGateChainActive = useIsGateChainActive();
   const isAuroraActive = useIsAuroraActive();
 
   return [
@@ -135,6 +137,19 @@ export function useAllTokens(isLpTokens?: boolean): [{ [address: string]: Token 
                 ct.chainId === chainId &&
                 el.address.toLowerCase() === ct.address.toLowerCase() &&
                 ct.symbol !== 'WASTR',
+            );
+
+            return (
+              Boolean(exists) ||
+              el.address === window['env'].REACT_APP_ESW_ID ||
+              el.symbol === 'ESW'
+            );
+          } else if (isGateChainActive) {
+            const exists = defaultCoins.tokens.find(
+              ct =>
+                ct.chainId === chainId &&
+                el.address.toLowerCase() === ct.address.toLowerCase() &&
+                ct.symbol !== 'WGT',
             );
 
             return (

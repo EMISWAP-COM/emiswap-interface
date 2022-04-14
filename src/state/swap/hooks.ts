@@ -30,6 +30,7 @@ import {
   MUMBAI_WMATIC,
   WASTR,
   WETH,
+  WGT,
   WKCS,
   WMATIC,
   WSDN,
@@ -129,6 +130,8 @@ export function useCurrencyWrapped(currency: Token | null | undefined) {
         return WSDN;
       case chainIds.ASTAR:
         return WASTR;
+      case chainIds.GATECHAIN:
+        return WGT;
       case chainIds.AURORA:
         return AURORA_WETH;
       default:

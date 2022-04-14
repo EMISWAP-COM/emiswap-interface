@@ -161,6 +161,12 @@ export function useIsAstarActive(): boolean {
   return (chainId as any) === chainIds.ASTAR;
 }
 
+export function useIsGateChainActive(): boolean {
+  const { chainId } = useActiveWeb3React();
+
+  return (chainId as any) === chainIds.GATECHAIN;
+}
+
 export function useIsAuroraActive(): boolean {
   const { chainId } = useActiveWeb3React();
 
