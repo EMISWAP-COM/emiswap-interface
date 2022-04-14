@@ -9,7 +9,7 @@ const toggle = {
   textAlign: 'center',
 };
 
-const theme = {
+export const theme = {
   space: ['0rem', '.25rem', '.5rem', '1rem', '1.5rem', '2rem', '2.5rem', '5rem', '10rem'],
   sizes: [
     '0rem',

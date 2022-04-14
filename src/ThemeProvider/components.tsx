@@ -20,6 +20,7 @@ import {
   ShadowProps,
   BorderProps,
   typography,
+  system,
 } from 'styled-system';
 import { HeaderStyleTypes, TextStyleTypes } from './fonts';
 
@@ -143,4 +144,13 @@ export const Button = styled.button<Props>`
   ${typography};
   ${color};
   ${background};
+`;
+
+export const FlexItemBox = styled(Box)<Props & { flex: string | number }>`
+  ${typography};
+  ${system({
+    flex: {
+      property: 'flex',
+    },
+  })}
 `;
