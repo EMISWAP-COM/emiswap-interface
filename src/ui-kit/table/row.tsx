@@ -1,19 +1,34 @@
 import React, { ReactElement, ReactNode } from 'react';
-import { CellWrapper } from './cell';
+import styled from 'styled-components';
+import { Flex } from '../../ThemeProvider';
 
 interface RowInterface {
   children: ReactNode;
+  backgroundColor?: string;
 }
 
-CellWrapper.defaultProps = {
+const RowsWrapper = styled(Flex)`
+  & > *:nth-child(n + 1) {
+    margin-top: 0.5rem;
+  }
+  &:nth-child(n + 1) {
+    margin-top: 0.5rem;
+  }
+`;
+
+RowsWrapper.defaultProps = {
+  pl: 2,
+  pr: 3,
+  pb: 2,
+  borderRadius: '0.875rem',
   alignItems: 'center',
 };
 
-const Row = ({ children }: RowInterface): ReactElement => {
+const Row = ({ children, backgroundColor }: RowInterface): ReactElement => {
   return (
-    <CellWrapper borderRadius="0.875rem" bg="almostNoWhite" minHeight="3rem" px={1} color="text">
+    <RowsWrapper color="text" backgroundColor={backgroundColor || 'almostNoWhite'}>
       {children}
-    </CellWrapper>
+    </RowsWrapper>
   );
 };
 

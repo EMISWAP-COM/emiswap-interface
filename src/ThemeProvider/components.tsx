@@ -39,6 +39,7 @@ export interface Props
 
 interface TextStyleInterface extends ColorProps, LayoutProps, SpaceProps {
   variant: TextStyleTypes;
+  textAlign?: string;
 }
 
 export const Text = styled.span<TextStyleInterface>`
