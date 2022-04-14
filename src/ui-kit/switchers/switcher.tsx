@@ -51,7 +51,7 @@ const Switcher = ({ firstLabel, secondLabel, checked, onChange }: SwitcherInterf
       <Box
         borderRadius="50px"
         bg="rgba(255, 255, 255, 0.1)"
-        color="text"
+        color="paper"
         role="checkbox"
         minWidth="228px"
       >

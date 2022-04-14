@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Flex, StyledHead, Text, Image } from 'ThemeProvider';
+import { Grid, Flex, Text, Image, Head } from 'ThemeProvider';
 import holdIcon from 'assets/landing/hold.png';
 import exIcon from 'assets/landing/ex.png';
 import mantraIcon from 'assets/landing/mantra.png';
@@ -10,10 +10,9 @@ export const IconWrapper = ({ iconUrl }) => (
   <Flex
     justifyContent="center"
     alignItems="center"
-    width="6.875rem"
-    height="6.875rem"
-    bg="silver"
-    borderRadius="2rem"
+    width={{ defaul: '4.75rem', mobileL: '6.875rem' }}
+    height={{ defaul: '4.75rem', mobileL: '6.875rem' }}
+    boxShadow="0 0 0 1 silver"
   >
     <Image backgroundImage={`url(${iconUrl})`} backgroundSize="cover" width="100%" height="100%" />
   </Flex>
@@ -21,22 +20,25 @@ export const IconWrapper = ({ iconUrl }) => (
 
 const Card = ({ head, text, icon }: { head: string; text: string; icon: any }) => (
   <Flex
-    width="20rem"
-    height="10rem"
+    width={{ defaul: '100%', mobileL: '20rem' }}
+    height={{ defaul: '6.75rem', mobileL: '10rem' }}
     alignItems="center"
     bg="#2e3033"
     borderRadius="1rem"
     pr="2rem"
     pl="1.5rem"
+    mx={{ defaul: '0', mobileL: '3' }}
+    mt={{ defaul: '0.375rem', mobileL: '3' }}
+    boxShadow="landingBox"
   >
     <Flex>
       <IconWrapper iconUrl={icon}></IconWrapper>
     </Flex>
     <Flex flexDirection="column" ml="1.25rem">
-      <Text variant="largeRubikMedium" color="paper">
+      <Text variant="mediumRubikMedium" color="paper">
         {head}
       </Text>
-      <Text variant="largeRubikRegular" color="paper" mt="2">
+      <Text variant="smallRubikRegular" color="paper" mt="2">
         {text}
       </Text>
     </Flex>
@@ -44,24 +46,14 @@ const Card = ({ head, text, icon }: { head: string; text: string; icon: any }) =
 );
 
 const InvestorsBlock = () => (
-  <Grid
-    width="64rem"
-    height="30rem"
-    gridTemplateRows="20% auto auto"
-    justifyContent="center"
-    mt="7.5rem"
-    ml="auto"
-    mr="auto"
-  >
-    <Flex justifyContent="center">
-      <StyledHead>Investors</StyledHead>
+  <Flex flexDirection="column" px={{ default: 4, laptop: 0 }}>
+    <Flex justifyContent="center" mb={{ default: 4, mobileL: 5 }}>
+      <Head variant={{ default: 'defaultMobile', mobileL: 'default' } as any}>Investors</Head>
     </Flex>
-    <Flex justifyContent="space-between">
+    <Flex justifyContent="center" flexWrap="wrap" alignItems="center">
       <Card head="Hodl.global" text="Сrypto and token fund" icon={holdIcon} />
       <Card head="ExNetwork fund" text="Fund, idea lab & an incubator" icon={exIcon} />
       <Card head="MantraDAO" text="DeFi platform focused on Staking" icon={mantraIcon} />
-    </Flex>
-    <Flex justifyContent="space-between" pl="10rem" pr="12rem" mt="1rem">
       <Card
         head="MasterVentures"
         text="Blockchain focused Venture Studio building"
@@ -69,7 +61,7 @@ const InvestorsBlock = () => (
       />
       <Card head="4RC fund" text="Fund investing in DeFi. NFT and Web 3.0 projects" icon={rcIcon} />
     </Flex>
-  </Grid>
+  </Flex>
 );
 
 export default InvestorsBlock;

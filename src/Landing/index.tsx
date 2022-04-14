@@ -9,21 +9,27 @@ import MainBlock from './MainBlock';
 import PartnersBlock from './PartnersBlock';
 import RoadmapBlock from './RoadmapBlock';
 import StandoutBlock from './StandoutBlock';
-import { Grid } from 'ThemeProvider/components';
+import { Flex, Box } from 'ThemeProvider/components';
 
 const Landing = () => (
-  <Grid bg="bg">
+  <Flex minWidth="0" bg="bg" flexDirection="column">
     {/* <Header /> */}
-    <MainBlock />
+    {/* <MainBlock /> */}
     <InfoBlock />
-    <StandoutBlock />
-    <PartnersBlock />
-    <InvestorsBlock />
-    <BlockChainsBlock />
-    <RoadmapBlock />
-    <ActivePoolsBlock />
+    <Box background="landingFirst">
+      <StandoutBlock />
+      <PartnersBlock />
+    </Box>
+    <Box background="landingSecond">
+      <InvestorsBlock />
+      <BlockChainsBlock />
+    </Box>
+    <Box background="landingThird">
+      <RoadmapBlock />
+      <ActivePoolsBlock />
+    </Box>
     <Footer />
-  </Grid>
+  </Flex>
 );
 
 export default Landing;

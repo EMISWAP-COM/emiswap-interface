@@ -1,15 +1,12 @@
-import React from 'react';
-import { Grid, Flex, StyledHead, Head, Text, StyledText, Image } from 'ThemeProvider';
-import peopleIcon from 'assets/landing/people.png';
-import rocketIcon from 'assets/landing/rocket-sharp.png';
-import trailIcon from 'assets/landing/trail-sign.png';
-import beerIcon from 'assets/landing/beer.png';
-import gameIcon from 'assets/landing/game-controller.png';
+import { SwipeIcon } from 'assets/svg/swipe';
+import React, { ReactElement } from 'react';
+import { Grid, Flex, Head, Text } from 'ThemeProvider';
+import { BeerLogo, PeopleLogo, RocketLogo, TrailLogo, GameLogo } from 'ui-kit/icons/landing';
 
 const strings = {
   info: [
     {
-      head: '100% DEX Fees Distribution',
+      head: '100% DEX  Fees Distribution',
       text:
         'Developed by EmiDAO, Emiswap pays ESW holders and liquidity providers all fees. Hodl ESW and watch your rewards grow.',
     },
@@ -64,118 +61,228 @@ const strings = {
   ],
 };
 
-const IconWrapper = ({ iconUrl }) => (
-  <Flex
-    justifyContent="center"
-    alignItems="center"
-    width="6.875rem"
-    height="6.875rem"
-    bg="silver"
-    borderRadius="1rem"
-  >
-    <Image
-      backgroundImage={`url(${iconUrl})`}
-      backgroundSize="cover"
-      width="3.281rem"
-      height="3.3rem"
-    />
-  </Flex>
-);
-const LevelBlock = ({ head, text }: { head: string; text: string }) => {
+const LevelBlock = ({ head, text, last }: { head: string; text: string; last?: boolean }) => {
   return (
-    <Flex alignItems="center" bg="#2e3033" borderRadius="1rem" pl="1.5rem">
-      <Head variant="normalSoraBold" width="auto" ml="4" color="paper">
+    <Flex
+      alignItems={{ default: 'flex-start', laptop: 'center' }}
+      justifyContent="flex-start"
+      bg="#2e3033"
+      borderTopRightRadius={{ default: 'unset', laptop: '1rem' }}
+      borderBottomRightRadius={{ default: last ? '1rem' : 'unset', laptop: '1rem' }}
+      borderBottomLeftRadius={{ default: last ? '1rem' : 'unset', laptop: 'unset' }}
+      flexDirection={{ default: 'column', laptop: 'row' }}
+      minWidth={{ default: '16rem', laptop: '33rem' }}
+      p={4}
+      boxShadow="landingBox"
+    >
+      <Head
+        variant={{ default: 'smallSoraBold', laptop: 'normalSoraBold' } as any}
+        color="paper"
+        mb={{ default: '0.5rem', laptop: 'none' }}
+        ml={{ default: 'none', laptop: 4 }}
+      >
         {head}
       </Head>
-      <Text variant="largeRubikRegular" ml="4" maxWidth="18rem" color="greyPaper">
+      <Text
+        variant="mediumRubikRegular"
+        ml={{ default: 0, laptop: 4 }}
+        // maxWidth="18rem"
+        color="greyPaper"
+        flex={1}
+      >
         {text}
       </Text>
     </Flex>
   );
 };
 
-const FeatureBlock = ({ head, text, iconUrl }: { head: string; text: string; iconUrl: any }) => {
+const FeatureBlock = ({ head, text, icon }: { head: string; text: string; icon: ReactElement }) => {
   return (
     <Flex
       bg="#2e3033"
-      alignItems="flex-start"
-      flexDirection="column"
       borderRadius="1rem"
-      p="1.5rem"
-      pr="2.75rem"
+      alignItems="start"
+      px={{ default: 3, laptop: 4 }}
+      pt={{ default: 4, laptop: 5 }}
+      pb={{ default: '3rem', laptop: 'none' }}
+      flexDirection="column"
+      minWidth="21rem"
+      boxShadow="landingBox"
     >
-      <Flex mb="1.5rem">
-        <IconWrapper iconUrl={iconUrl} />
+      <Flex
+        justifyContent={{ default: 'space-around', laptop: 'center' }}
+        alignItems={{ default: 'center', laptop: 'none' }}
+        mb={{ default: 'none', laptop: 4 }}
+      >
+        {icon}
+        <Head
+          variant={{ default: 'standoutBlockHeadMobile', laptop: 'standoutBlockHead' } as any}
+          display={{ default: 'block', laptop: 'none' }}
+          ml={5}
+        >
+          {head}
+        </Head>
       </Flex>
-      <StyledText>{head}</StyledText>
-      <Text variant="largeRubikRegular" mt="3" color="greyPaper">
+      <Head
+        variant={{ default: 'standoutBlockHeadMobile', mobileL: 'standoutBlockHead' } as any}
+        display={{ default: 'none', laptop: 'block' }}
+        mb={4}
+      >
+        {head}
+      </Head>
+      <Text variant="largeRubikRegular" color="greyPaper">
         {text}
       </Text>
     </Flex>
   );
 };
-const InfoBlock = ({ head, text, iconUrl }: { head: string; text: string; iconUrl: any }) => {
+const InfoBlock = ({ head, text, icon }: { head: string; text: string; icon: ReactElement }) => {
   return (
-    <Grid gridTemplateColumns="10rem auto" pt="4.5rem" bg="#2e3033" borderRadius="1rem">
-      <Flex justifyContent="center">
-        <IconWrapper iconUrl={iconUrl} />
+    <Flex
+      bg="#2e3033"
+      borderTopLeftRadius="1rem"
+      borderBottomLeftRadius={{ default: 'unset', laptop: '1rem' }}
+      borderTopRightRadius={{ default: '1rem', laptop: 'unset' }}
+      alignItems="flex-start"
+      px={{ default: 3, laptop: 4 }}
+      pt={{ default: 4, laptop: '4.5rem' }}
+      pb={{ default: '3rem', laptop: 'none' }}
+      flexDirection={{ default: 'column', laptop: 'row' }}
+      minWidth={{ default: '16rem', laptop: 'none' }}
+      boxShadow="landingBox"
+    >
+      <Flex
+        justifyContent={{ default: 'space-around', laptop: 'center' }}
+        mr={{ default: 0, laptop: 5 }}
+        alignItems={{ default: 'center', laptop: 'none' }}
+      >
+        {icon}
+        <Head
+          variant={{ default: 'standoutBlockHeadMobile', laptop: 'standoutBlockHead' } as any}
+          display={{ default: 'block', laptop: 'none' }}
+          ml={4}
+        >
+          {head}
+        </Head>
       </Flex>
-      <Flex flexDirection="column">
-        <Head variant="smallRubikMedium" color="buttonActive" mt={4}>
+      <Flex flexDirection="column" flex={1}>
+        <Head
+          variant={{ default: 'standoutBlockHeadMobile', mobileL: 'standoutBlockHead' } as any}
+          display={{ default: 'none', laptop: 'block' }}
+        >
           {head}
         </Head>
         <Text variant="largeRubikRegular" mt="3" color="greyPaper" maxWidth="18rem">
           {text}
         </Text>
       </Flex>
-    </Grid>
+    </Flex>
   );
 };
 
 const StandoutBlock = () => (
   <Grid
-    width="64rem"
-    gridTemplateRows="auto auto"
     justifyContent="center"
-    mt="7.5rem"
-    ml="auto"
-    mr="auto"
+    pl={{ default: '1.5rem', laptop: '4rem' }}
+    pr={{ default: 'none', laptop: '4rem' }}
   >
-    <Flex justifyContent="center">
-      <StyledHead>What makes Emiswap standout?</StyledHead>
+    <Flex justifyContent="center" flexDirection="column" alignItems="center">
+      <Head
+        variant={{ default: 'defaultMobile', mobileL: 'default' } as any}
+        mb={{ default: 0, mobile: 5 }}
+        textAlign="center"
+      >
+        What makes Emiswap standout?
+      </Head>
+      <Flex mb={{ default: 4, mobileL: 6 }} display={{ default: '', laptop: 'none' }}>
+        <SwipeIcon />
+      </Flex>
     </Flex>
-    <Grid gridTemplateRows="20rem 25.625rem 20rem" gridRowGap="2rem" mt="2rem">
-      <Grid gridTemplateColumns="1fr 1fr" gridColumnGap="1rem">
-        <InfoBlock head={strings.info[0].head} text={strings.info[0].text} iconUrl={beerIcon} />
+    <Grid
+      gridRowGap="2rem"
+      gridColumnGap="1rem"
+      mt="2rem"
+      gridTemplateRows={{ default: ' 1fr auto', laptop: '1fr' }}
+      gridTemplateColumns={{ default: ' 1fr 1fr 1fr', laptop: '1fr' }}
+      overflowX={{ default: 'auto' }}
+    >
+      <Grid
+        gridTemplateColumns={{ default: '1rf', laptop: '1fr 1fr' }}
+        gridColumnGap="1rem"
+        gridRowGap="1rem"
+      >
+        <InfoBlock
+          head={strings.info[0].head}
+          text={strings.info[0].text}
+          icon={
+            <BeerLogo
+              width={{ default: '7.4rem', laptop: '6.875rem' } as any}
+              height={{ default: '7.4rem', laptop: '6.875rem' } as any}
+            />
+          }
+        />
         <Grid gridRowGap="1rem">
           <LevelBlock head={strings.level[0].head} text={strings.level[0].text} />
           <LevelBlock head={strings.level[1].head} text={strings.level[1].text} />
-          <LevelBlock head={strings.level[2].head} text={strings.level[2].text} />
+          <LevelBlock head={strings.level[2].head} text={strings.level[2].text} last />
         </Grid>
       </Grid>
-      <Grid gridTemplateColumns="1fr 1fr 1fr" gridColumnGap="2rem">
+      <Grid
+        gridTemplateColumns={{ default: '1fr', laptop: '1fr 1fr 1fr' }}
+        gridTemplateRows={{ default: '1fr auto', laptop: '1fr' }}
+        gridColumnGap="2rem"
+        gridRowGap="1rem"
+      >
         <FeatureBlock
           head={strings.feature[0].head}
           text={strings.feature[0].text}
-          iconUrl={rocketIcon}
+          icon={
+            <RocketLogo
+              width={{ default: '5.5rem', laptop: '6.875rem' } as any}
+              height={{ default: '7.4rem', laptop: '6.875rem' } as any}
+            />
+          }
         />
         <FeatureBlock
           head={strings.feature[1].head}
           text={strings.feature[1].text}
-          iconUrl={trailIcon}
+          icon={
+            <TrailLogo
+              width={{ default: '5.5rem', laptop: '6.875rem' } as any}
+              height={{ default: '7.4rem', laptop: '6.875rem' } as any}
+            />
+          }
         />
         <FeatureBlock
           head={strings.feature[2].head}
           text={strings.feature[2].text}
-          iconUrl={gameIcon}
+          icon={
+            <GameLogo
+              width={{ default: '5.5rem', laptop: '6.875rem' } as any}
+              height={{ default: '7.4rem', laptop: '6.875rem' } as any}
+            />
+          }
         />
       </Grid>
-      <Grid gridTemplateColumns="1fr 1fr" gridColumnGap="1rem">
-        <InfoBlock head={strings.info[1].head} text={strings.info[1].text} iconUrl={peopleIcon} />
+      <Grid
+        gridTemplateColumns={{ default: '1rf', laptop: '1fr 1fr' }}
+        gridColumnGap="1rem"
+        gridRowGap="1rem"
+      >
+        <InfoBlock
+          head={strings.info[1].head}
+          text={strings.info[1].text}
+          icon={
+            <PeopleLogo
+              width={{ default: '7.4rem', laptop: '6.875rem' } as any}
+              height={{ default: '7.4rem', laptop: '6.875rem' } as any}
+            />
+          }
+        />
         <Grid gridRowGap="1rem">
           <LevelBlock head={strings.level[3].head} text={strings.level[3].text} />
           <LevelBlock head={strings.level[4].head} text={strings.level[4].text} />
-          <LevelBlock head={strings.level[5].head} text={strings.level[5].text} />
+          <LevelBlock head={strings.level[5].head} text={strings.level[5].text} last />
         </Grid>
       </Grid>
     </Grid>

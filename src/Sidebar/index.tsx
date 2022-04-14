@@ -17,8 +17,9 @@ import {
   LinkIcon,
   RefreshIcon,
   UserAddIcon,
-  MenuIcon,
+  BurgerMenuArrowLeftIcon,
 } from 'ui-kit/icons';
+import { Button } from 'ui-kit';
 
 const SidebarWrapper = styled(Box)`
   background: radial-gradient(237.61% 114.78% at 152.56% 43.16%, #2d2030 0%, #0f0f13 36.59%);
@@ -156,6 +157,7 @@ const sidebarItems = [
 ];
 
 const Sidebar = () => {
+  const [isOpen, changeIsOpen] = useState(false);
   const [activeNav, setActiveNav] = useState<string>('Home');
   const [openedGroup, setOpenedGroup] = useState<string | null>(null);
 
@@ -172,19 +174,23 @@ const Sidebar = () => {
   };
 
   return (
-    <SidebarWrapper minWidth={230} px={1} py={3}>
-      <SidebarMenuBtn
-        justifyContent="center"
-        alignItems="center"
-        width={32}
-        height={32}
-        mb={5}
-        borderRadius={10}
-      >
-        <MenuIcon />
-      </SidebarMenuBtn>
+    <SidebarWrapper
+      max-width="16rem"
+      position={{ default: 'absolute', laptop: 'inherit' } as any}
+      px={1}
+      py={3}
+    >
+      <Box mb="5" ml="3" mt="4">
+        <Button
+          buttonType="empty"
+          icon={<BurgerMenuArrowLeftIcon />}
+          onClick={() => {
+            changeIsOpen(x => !x);
+          }}
+        />
+      </Box>
       {sidebarItems.map(item => (
-        <>
+        <Box display={isOpen ? { default: 'block' } : { default: 'none', laptop: 'block' }}>
           <SidebarNavItem
             alignItems="center"
             py="12px"
@@ -196,12 +202,7 @@ const Sidebar = () => {
             <Box mr={2} mb={0.5}>
               {item.icon}
             </Box>
-            <span>{item.label}</span>
-            {item.items?.length > 0 && (
-              <Box ml="auto">
-                <ArrowDownIcon />
-              </Box>
-            )}
+            {isOpen && <Box width="9rem">{item.label}</Box>}
           </SidebarNavItem>
           {item.items?.length > 0 && openedGroup === item.label && (
             <Box zIndex={10} position="relative">
@@ -216,22 +217,31 @@ const Sidebar = () => {
               <SidebarNavSubBackground />
             </Box>
           )}
-        </>
+        </Box>
       ))}
-      <Box mt={5}>
-        <Box px={2} mb={3}>
+      <Box display={isOpen ? { default: 'block' } : { default: 'none', laptop: 'block' }} mt="5">
+        {isOpen ? (
+          <>
+            <Box px={2} mb={3}>
+              <Box>
+                <span>Audited by:</span>
+                <img style={{ marginLeft: 8 }} src={hackenSvg} alt="" />
+                <img style={{ marginLeft: -4 }} src={blueSwarmSvg} alt="" />
+              </Box>
+              <Box mt={1}>Hacken & BlueSwarm</Box>
+            </Box>
+            <SidebarEsw alignItems="center" px={1}>
+              <SidebarEswLogo src={eswLogo} />
+              <span>ESW price: </span>
+              <SidebarEswPriceValue ml={1}>$0.025</SidebarEswPriceValue>
+            </SidebarEsw>
+          </>
+        ) : (
           <Box>
-            <span>Audited by:</span>
             <img style={{ marginLeft: 8 }} src={hackenSvg} alt="" />
             <img style={{ marginLeft: -4 }} src={blueSwarmSvg} alt="" />
           </Box>
-          <Box mt={1}>Hacken & BlueSwarm</Box>
-        </Box>
-        <SidebarEsw alignItems="center" px={1}>
-          <SidebarEswLogo src={eswLogo} />
-          <span>ESW price: </span>
-          <SidebarEswPriceValue ml={1}>$0.025</SidebarEswPriceValue>
-        </SidebarEsw>
+        )}
       </Box>
     </SidebarWrapper>
   );

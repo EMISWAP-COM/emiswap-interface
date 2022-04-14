@@ -1,21 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Box, Button, Flex, Image, Text } from 'ThemeProvider';
+import { Box, Flex, Text } from 'ThemeProvider';
 import { color, HeightProps, layout, LayoutProps, space, SpaceProps, system } from 'styled-system';
-import EmiswapLogo from '../assets/svg/logo.svg';
 import { CustomListProps, CustomTextProps } from '../ThemeProvider/customProps';
-import { DiscordIcon } from '../ui-kit/icons';
-import theme from '../ThemeProvider/theme';
-import { FacebookIcon } from '../ui-kit/icons';
-import { MediumIcon } from '../ui-kit/icons';
-import { TwitterIcon } from '../ui-kit/icons';
-import { TelegramIcon } from '../ui-kit/icons';
-
-const ListWrapper = styled(Box)`
-  &:nth-of-type(n + 2) {
-    margin-left: 3.75rem;
-  }
-`;
+import { DiscordIcon, ESWLogo } from '../ui-kit/icons';
+import {
+  GithubIcon,
+  FacebookIcon,
+  MediumIcon,
+  TwitterIcon,
+  TelegramIcon,
+} from '../ui-kit/icons/socials';
 
 const ListsHeader = styled.header<HeightProps & SpaceProps & LayoutProps & CustomTextProps>`
   ${color};
@@ -33,12 +28,7 @@ const ListsHeader = styled.header<HeightProps & SpaceProps & LayoutProps & Custo
   })};
 `;
 
-ListsHeader.defaultProps = {
-  height: 3,
-};
-
 const ListLink = styled.a<CustomTextProps>`
-  ${color};
   ${system({
     textDecoration: {
       property: 'textDecoration',
@@ -65,23 +55,12 @@ const LinkListItem = styled.li<CustomListProps>`
   })};
 `;
 
-const SocialMediaButton = styled(Button)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: none;
+const SocialMediaButton = styled.a`
   cursor: pointer;
-  border-radius: 0.625rem;
   &:nth-child(n + 2) {
     margin-left: 0.75rem;
   }
 `;
-
-SocialMediaButton.defaultProps = {
-  width: 4,
-  py: '0.375rem',
-  bg: 'inactive',
-};
 
 const UnorderedListWrapper = styled.ul<SpaceProps>`
   ${space};
@@ -96,8 +75,6 @@ const HighlightedLink = styled.a<CustomTextProps>`
     },
   })};
 `;
-
-const FOOTER_MIN_HEIGHT = theme.sizes[11];
 
 const headerLinks = {
   ['EmiSwap DEX']: '#',
@@ -128,81 +105,71 @@ const links = {
 };
 
 const LogoPart = () => (
-  <Box pr="4rem" width={1 / 4}>
-    <Flex alignItems="baseline" justifyContent="flex-end" mb="4rem" width="100%" height="100%">
-      <Image
-        width="9rem"
-        height={4}
-        backgroundImage={`url(${EmiswapLogo})`}
-        backgroundSize="cover"
-      />
-    </Flex>
-  </Box>
+  <Flex mb={4}>
+    <ESWLogo />
+  </Flex>
 );
 
 const LinksPart = () => (
-  <Flex width={1 / 2}>
+  <Flex flexDirection={{ default: 'column', mobileL: 'row' }}>
     {Object.keys(links).map(headerLink => {
       const listLinks = Object.keys(links[headerLink]).map(listLink => (
         <LinkListItem listStyleType="none">
-          <ListLink
-            whiteSpace="preLine"
-            textDecoration="none"
-            color="fadedLink"
-            href={links[headerLink][listLink]}
-          >
-            {listLink}
+          <ListLink whiteSpace="preLine" textDecoration="none" href={links[headerLink][listLink]}>
+            <Text variant="normalRubikRegular" color="fadedLink">
+              {listLink}
+            </Text>
           </ListLink>
         </LinkListItem>
       ));
       return (
-        <ListWrapper>
-          <ListsHeader
-            mb={3}
-            overflow="hidden"
-            color="text"
-            textOverflow="ellipsis"
-            whiteSpace="nowrap"
-          >
-            <ListLink color="text" href={headerLinks[headerLink]}>
+        <Box ml={{ default: 0, laptop: '3.75rem' }} pr={{ default: 6, laptop: 0 }}>
+          <ListLink href={headerLinks[headerLink]}>
+            <Text variant="mediumRubikMedium" color="paper">
               {headerLink}
-            </ListLink>
-          </ListsHeader>
+            </Text>
+          </ListLink>
           <UnorderedListWrapper p="0">{listLinks}</UnorderedListWrapper>
-        </ListWrapper>
+        </Box>
       );
     })}
   </Flex>
 );
 
-const SOCIALS_ICONS_WIDTH = theme.sizes[3];
-
 const SocialsPart = () => (
-  <Box width={1 / 4}>
-    <ListsHeader mb={3} overflow="hidden" color="text" textOverflow="ellipsis" whiteSpace="nowrap">
-      <ListLink color="text">Socials</ListLink>
+  <Box>
+    <ListsHeader overflow="hidden" color="paper" textOverflow="ellipsis" whiteSpace="nowrap">
+      <ListLink>
+        <Text variant="mediumRubikMedium" color="paper">
+          Socials
+        </Text>
+      </ListLink>
     </ListsHeader>
-    <Flex>
+    <Flex my={3}>
       <SocialMediaButton>
-        <TelegramIcon width={SOCIALS_ICONS_WIDTH} height={SOCIALS_ICONS_WIDTH} />
+        <TelegramIcon />
       </SocialMediaButton>
       <SocialMediaButton>
-        <TwitterIcon width={SOCIALS_ICONS_WIDTH} height={SOCIALS_ICONS_WIDTH} />
+        <TwitterIcon />
       </SocialMediaButton>
       <SocialMediaButton>
-        <MediumIcon width={SOCIALS_ICONS_WIDTH} height={SOCIALS_ICONS_WIDTH} />
+        <MediumIcon />
       </SocialMediaButton>
       <SocialMediaButton>
-        <FacebookIcon width={SOCIALS_ICONS_WIDTH} height={SOCIALS_ICONS_WIDTH} />
+        <FacebookIcon />
       </SocialMediaButton>
       <SocialMediaButton>
-        <DiscordIcon width={SOCIALS_ICONS_WIDTH} height={SOCIALS_ICONS_WIDTH} />
+        <DiscordIcon />
+      </SocialMediaButton>
+      <SocialMediaButton>
+        <GithubIcon />
       </SocialMediaButton>
     </Flex>
     <Box>
-      <Text variant="mediumRubikMedium" color="fadedLink" mt={3} mb={1}>
+      <Text variant="normalRubikRegular" color="fadedLink" mt={3} mb={1}>
         Received grants from:
       </Text>
+      <br />
       <Text variant="mediumRubikMedium" color="paper">
         <HighlightedLink href="#" color="paper" textDecorationColor="paper">
           Near Protocol
@@ -219,10 +186,11 @@ const SocialsPart = () => (
 const Footer = () => {
   return (
     <Flex
-      justifyContent="space-between"
-      backgroundColor="bg"
-      minHeight={FOOTER_MIN_HEIGHT}
+      justifyContent="space-around"
+      backgroundColor="bg3"
       padding="2rem"
+      flexWrap="wrap"
+      flexDirection={{ default: 'column', laptop: 'row' }}
     >
       <LogoPart />
       <LinksPart />

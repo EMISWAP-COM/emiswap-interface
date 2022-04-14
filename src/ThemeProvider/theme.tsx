@@ -1,5 +1,18 @@
 import { headerStyles, textStyles } from './fonts';
 
+type BreakpointsProp = Array<string> & {
+  mobileM?: string;
+  mobileL?: string;
+  tablet?: string;
+  laptop?: string;
+};
+
+const breakpoints: BreakpointsProp = ['24rem', '32rem', '48rem', '64rem'];
+breakpoints.mobileM = breakpoints[0];
+breakpoints.mobileL = breakpoints[1];
+breakpoints.tablet = breakpoints[2];
+breakpoints.laptop = breakpoints[3];
+
 const shadedColor = 'rgba(122, 45, 244, 0.7)';
 
 const toggle = {
@@ -29,7 +42,24 @@ const theme = {
   textStyles,
   borders: {
     processing: ' 1px solid #FFBF51 !important',
+    default: '1px solid #FFFFFF',
     none: '',
+  },
+  shadows: {
+    landingBox: ' 1.125rem 1.25rem 4.875rem 0rem rgba(255, 255, 255, 0.1) inset;',
+  },
+  breakpoints,
+  backgrounds: {
+    landingFirst:
+      'radial-gradient(circle at 95% 33%, rgba(247, 55, 136, 0.2) 10%, rgba(15, 15, 19, 0) 30%),radial-gradient(circle at 15% 60%, rgba(50, 169, 255, 0.25) 2%, rgba(15, 15, 19, 0) 25%),radial-gradient(circle at 20% 70%, rgba(129, 40, 204, 0.15) 5%, rgba(15, 15, 19, 0) 25%)',
+    landingSecond:
+      'radial-gradient(circle at 10% 50%, rgba(247, 55, 136, 0.3) 10%, rgba(15, 15, 19, 0) 40%)',
+    landingThird:
+      'radial-gradient(circle at 80% 35%, rgba(50, 169, 255, 0.25) 2%, rgba(15, 15, 19, 0) 30%),radial-gradient(circle at 76% 45%, rgba(129, 40, 204, 0.15) 5%, rgba(15, 15, 19, 0) 25%)',
+    infoDefault:
+      'radial-gradient(circle at 50% 48%, rgba(50, 169, 255, 0.2) 3%, rgba(15, 15, 19, 0) 80%) ,radial-gradient(circle at 70% 48%, rgba(247, 55, 136, 0.2) 3%, rgba(15, 15, 19, 0) 50%)',
+    infoTablet:
+      'radial-gradient(circle at 5% 45%, rgba(50, 169, 255, 0.2) 3%, rgba(15, 15, 19, 0) 25%) ,radial-gradient(circle at 25% 50%, rgba(247, 55, 136, 0.2) 3%, rgba(15, 15, 19, 0) 30%)',
   },
   radii: ['.625rem', '.75rem'],
   colors: {
@@ -53,6 +83,7 @@ const theme = {
     almostDisabled: 'rgba(255, 255, 255, 0.6)',
     disabled: 'rgba(255, 255, 255, 0.7)',
     almostNoWhite: 'rgba(255, 255, 255, 0.05)',
+    empty: 'rgba(255, 255, 255, 0)',
   },
   gradients: {
     buttonPrimary:
@@ -194,6 +225,22 @@ const theme = {
       ':disabled': {
         background: 'none',
         border: '1px solid rgba(255, 255, 255, 0.2)',
+      },
+    },
+    empty: {
+      padding: '0rem',
+      margin: '0rem',
+      border: '0rem',
+      borderRadius: '0.625rem',
+      background: 'none',
+      ':hover': {
+        background: 'rgba(255, 255, 255, 0.1)',
+      },
+      ':active': {
+        background: 'none',
+      },
+      ':disabled': {
+        background: 'none',
       },
     },
   },

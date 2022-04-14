@@ -4,7 +4,7 @@ import Wrapper from './wrapper';
 
 const TextStyleExample = () => (
   <Flex>
-    <Wrapper pr="60px" color="text">
+    <Wrapper pr="60px" color="paper">
       <Head variant="smallRubikMedium" color="statusRed">
         Text styles - Rubik
       </Head>
@@ -21,7 +21,7 @@ const TextStyleExample = () => (
       <Text variant="largeRubikMedium">largeRubikMedium</Text>
       <Text variant="largeRubikBold">largeRubikBold</Text>
     </Wrapper>
-    <Wrapper pr="60px" color="text">
+    <Wrapper pr="60px" color="paper">
       <Head variant="smallRubikMedium" color="statusRed">
         Text styles - Sora
       </Head>
@@ -39,7 +39,7 @@ const TextStyleExample = () => (
 
 const HeaderStylesExample = () => (
   <Flex>
-    <Wrapper pr="60px" color="text">
+    <Wrapper pr="60px" color="paper">
       <Head variant="smallRubikMedium" color="statusRed">
         Head styles - Rubik
       </Head>
@@ -57,7 +57,7 @@ const HeaderStylesExample = () => (
       <Head variant="largeRubikMedium">largeRubikMedium</Head>
       <Head variant="largeRubikBold">largeRubikBold</Head>
     </Wrapper>
-    <Wrapper pr="60px" color="text">
+    <Wrapper pr="60px" color="paper">
       <Head variant="smallRubikMedium" color="statusRed">
         Head styles - Sora
       </Head>

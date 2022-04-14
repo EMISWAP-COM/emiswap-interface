@@ -1,15 +1,13 @@
 import React from 'react';
 import Sidebar from 'Sidebar';
-import { Grid } from '../ThemeProvider/components';
+import { Flex } from '../ThemeProvider';
 
 const Layout = ({ children }) => {
   return (
-    <>
-      <Grid height="100vh" gridTemplateColumns="230px auto">
-        <Sidebar />
-        <div>{children}</div>
-      </Grid>
-    </>
+    <Flex width="100wh">
+      <Sidebar />
+      {children}
+    </Flex>
   );
 };
 

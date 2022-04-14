@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button, ButtonType } from 'ui-kit';
-import { HomeIcon } from 'ui-kit/icons';
+import { Button } from 'ui-kit';
+import { BurgerMenuArrowLeftIcon, HomeIcon } from 'ui-kit/icons';
 import { Flex, Text } from 'ThemeProvider';
 import Wrapper from './wrapper';
 
@@ -16,11 +16,11 @@ const ButtonsExample = () => (
       <Text variant="largeRubikMedium" color="paper">
         Gradient :
       </Text>
-      <Button buttonType={ButtonType.gradient}>Connect Wallet</Button>
-      <Button buttonType={ButtonType.gradient} disabled>
+      <Button buttonType="gradient">Connect Wallet</Button>
+      <Button buttonType="gradient" disabled>
         Connect Wallet
       </Button>
-      <Button buttonType={ButtonType.gradient} processing>
+      <Button buttonType="gradient" processing>
         Connect Wallet
       </Button>
     </Line>
@@ -28,11 +28,11 @@ const ButtonsExample = () => (
       <Text variant="largeRubikMedium" color="paper">
         Simple :
       </Text>
-      <Button buttonType={ButtonType.simple}>Swap</Button>
-      <Button buttonType={ButtonType.simple} disabled>
+      <Button buttonType="simple">Swap</Button>
+      <Button buttonType="simple" disabled>
         Swap
       </Button>
-      <Button buttonType={ButtonType.simple} processing>
+      <Button buttonType="simple" processing>
         Swap
       </Button>
     </Line>
@@ -50,13 +50,23 @@ const ButtonsExample = () => (
     </Line>
     <Line>
       <Text variant="largeRubikMedium" color="paper">
+        Empty Icon;
+      </Text>
+      <Button buttonType="empty" icon={<BurgerMenuArrowLeftIcon />} />
+      <Button buttonType="empty" icon={<BurgerMenuArrowLeftIcon />} disabled />
+      <Text variant="largeRubikMedium" color="paper">
+        Not implement
+      </Text>
+    </Line>
+    <Line>
+      <Text variant="largeRubikMedium" color="paper">
         Small:
       </Text>
-      <Button buttonType={ButtonType.small}>MAX</Button>
-      <Button buttonType={ButtonType.small} disabled>
+      <Button buttonType="small">MAX</Button>
+      <Button buttonType="small" disabled>
         MAX
       </Button>
-      <Button buttonType={ButtonType.small} processing>
+      <Button buttonType="small" processing>
         MAX
       </Button>
     </Line>
@@ -64,11 +74,11 @@ const ButtonsExample = () => (
       <Text variant="largeRubikMedium" color="paper">
         Alert :
       </Text>
-      <Button buttonType={ButtonType.alert}>Turn on Expert mode</Button>
-      <Button buttonType={ButtonType.alert} disabled>
+      <Button buttonType="alert">Turn on Expert mode</Button>
+      <Button buttonType="alert" disabled>
         Turn on Expert mode
       </Button>
-      <Button buttonType={ButtonType.alert} processing>
+      <Button buttonType="alert" processing>
         Turn on Expert mode
       </Button>
     </Line>
@@ -76,11 +86,11 @@ const ButtonsExample = () => (
       <Text variant="largeRubikMedium" color="paper">
         Cancel :
       </Text>
-      <Button buttonType={ButtonType.cancel}>Cancel</Button>
-      <Button buttonType={ButtonType.cancel} disabled>
+      <Button buttonType="cancel">Cancel</Button>
+      <Button buttonType="cancel" disabled>
         Cancel
       </Button>
-      <Button buttonType={ButtonType.cancel} processing>
+      <Button buttonType="cancel" processing>
         Cancel
       </Button>
     </Line>

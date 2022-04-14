@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import styled from 'styled-components';
-import { color, ColorProps, space, SpaceProps } from 'styled-system';
+import { color, ColorProps, layout, LayoutProps, space, SpaceProps } from 'styled-system';
 
 export interface IconWrapperInterface extends SpaceProps, ColorProps {
   onClick?: () => void;
@@ -16,16 +16,17 @@ interface IconWrapper extends IconWrapperInterface {
   viewBoxSize: string;
 }
 
-interface WrapperInterface extends ColorProps, SpaceProps {}
+interface WrapperInterface extends ColorProps, SpaceProps, LayoutProps {}
 const Wrapper = styled.div<WrapperInterface>`
   ${color}
   ${space}
+  ${layout}
 `;
 
 const SVG = styled.svg``;
 
 const IconWrapper = (props): ReactElement => {
-  const { children, onClick, ariaLabel, viewBoxSize = '24', color = '#FFFFFF' } = props;
+  const { children, onClick, ariaLabel, viewBoxSize = '24', color = 'paper' } = props;
   return (
     <Wrapper {...props} color={color}>
       <SVG

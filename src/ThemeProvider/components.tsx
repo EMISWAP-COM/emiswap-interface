@@ -20,6 +20,8 @@ import {
   ShadowProps,
   BorderProps,
   typography,
+  TypographyProps,
+  system,
 } from 'styled-system';
 import { HeaderStyleTypes, TextStyleTypes } from './fonts';
 
@@ -36,59 +38,32 @@ export interface Props
   children?: React.ReactNode;
 }
 
-interface TextStyleInterface extends ColorProps, LayoutProps, SpaceProps {
+// Typography
+interface TextStyleInterface extends ColorProps, LayoutProps, SpaceProps, FlexboxProps {
   variant: TextStyleTypes;
+}
+interface HeadStyleInterface extends ColorProps, LayoutProps, SpaceProps, TypographyProps {
+  variant: HeaderStyleTypes;
 }
 
 export const Text = styled.span<TextStyleInterface>`
-  ${color}
-  ${layout}
-  ${space}
-  ${typography};
-  ${variant({
-    scale: 'textStyles',
-  })}
-`;
-
-interface HeadStyleInterface extends ColorProps, LayoutProps, SpaceProps {
-  variant: HeaderStyleTypes;
-}
+    ${color}
+    ${layout}
+    ${space}
+    ${flexbox}
+    ${variant({
+      scale: 'textStyles',
+    })}
+  `;
 
 export const Head = styled.header<HeadStyleInterface>`
   ${color}
   ${layout}
   ${space}
+  ${typography}
   ${variant({
     scale: 'headerStyles',
   })}
-`;
-
-export const StyledHead = styled.div`
-  font-weight: bold;
-  font-size: 40px;
-  font-family: 'Sora';
-  line-height: 50px;
-  background-color: #f3ec78;
-  background-image: linear-gradient(45deg, #b7e1ff, #8128cc);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -moz-text-fill-color: transparent;
-`;
-
-export const StyledText = styled.div`
-  font-weight: 600;
-  font-size: 24px;
-  font-family: 'Rubik';
-  line-height: 34px;
-  background-color: #f3ec78;
-  background-image: linear-gradient(45deg, #b7e1ff, #8128cc);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -moz-text-fill-color: transparent;
 `;
 
 // Layout
@@ -100,19 +75,40 @@ export const Grid = styled.div<Props>`
   ${color};
   ${position};
   ${border};
+  ${flexbox};
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 export const Flex = styled.div<Props>`
   display: flex;
+  ${system({
+    background: {
+      property: 'background',
+      scale: 'backgrounds',
+    },
+  })}
   ${color};
   ${space};
   ${layout};
   ${flexbox};
   ${layout};
   ${border};
-  ${position}
+  ${position};
+  ${background};
+  ${shadow};
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const Box = styled.div<Props>`
+  ${system({
+    background: {
+      property: 'background',
+      scale: 'backgrounds',
+    },
+  })}
   ${space};
   ${layout};
   ${color};
@@ -125,6 +121,8 @@ export const Box = styled.div<Props>`
 export const Image = styled.div<Props>`
   ${background};
   ${layout};
+  ${grid}
+  ${space}
 `;
 
 export const Img = styled.img``;

@@ -62,12 +62,12 @@ const CheckBox = ({
   const checkRadius = type === 'checkbox' ? '3px' : '50%';
 
   return (
-    <Label alignItems="center" color="white">
+    <Label alignItems="center" color="paper">
       <Box role={type} boxShadow={boxShadow} borderRadius={boxRadius} size="15px" mr="8px">
         {checked && (
           <Check
             role={type}
-            size={9}
+            size="9px"
             margin="3px"
             borderRadius={checkRadius}
             backgroundColor={bgColor}

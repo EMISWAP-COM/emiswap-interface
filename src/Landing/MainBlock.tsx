@@ -12,7 +12,7 @@ const MainBlock = () => (
     mr="auto"
   >
     <Flex flexDirection="column" justifyContent="center">
-      <Head variant="mediumSoraBold" color="paper">
+      <Head variant={{ default: 'normalSoraBold', mobileL: 'mediumSoraBold' } as any} color="paper">
         Next-Gen DeFi Matrix with 365% Cross-Chain APR & DAO Governance
       </Head>
       <Text variant="largeRubikRegular" color="paper">

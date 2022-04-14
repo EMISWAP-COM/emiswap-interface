@@ -56,18 +56,18 @@ const SmallSwitcher = ({ checked, onChange, disabled }: SwitchInterface): ReactE
         role="checkbox"
         aria-checked={checked}
         alignItems="center"
-        width={48}
-        height={24}
+        width="48px"
+        height="24px"
         bg="empty"
         my="2px"
-        border="1px solid paper"
+        border="default"
         borderRadius="12px"
         borderColor={disabledBC}
       >
         <Toggle
           role="checkbox"
           aria-checked={checked}
-          size={21}
+          size="21px"
           m="2px"
           bg={disabledBC}
           borderRadius="50%"

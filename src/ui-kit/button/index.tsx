@@ -1,19 +1,11 @@
 import React, { ReactElement, ReactNode } from 'react';
 import styled from 'styled-components';
-import { variant, border, color, flexbox, space, system, BordersProps } from 'styled-system';
+import { variant, border, color, system, BordersProps } from 'styled-system';
 import { ButtonThemeType, ButtonSizeType, ButtonGradientType, Flex, Box } from 'ThemeProvider';
 import { SpinnerIcon } from '../icons';
 
-export const enum ButtonType {
-  simple = 'simple',
-  gradient = 'gradient',
-  small = 'small',
-  alert = 'alert',
-  cancel = 'cancel',
-}
-
 interface ButtonInterface {
-  buttonType?: ButtonType;
+  buttonType?: ButtonThemeType;
   children?: ReactNode;
   ariaLabel?: string;
   color?: string;
@@ -48,9 +40,9 @@ const ButtonStyle = styled.button<ButtonStyle>`
 
 const Button = ({
   children,
-  buttonType = ButtonType.simple,
+  buttonType = 'simple',
   ariaLabel,
-  color = 'text',
+  color = 'paper',
   onClick,
   disabled,
   icon,
@@ -59,8 +51,8 @@ const Button = ({
   return (
     <ButtonStyle
       aria-label={ariaLabel}
-      variant={icon ? 'icon' : buttonType}
-      size={buttonType === ButtonType.small ? 'small' : 'default'}
+      variant={buttonType}
+      size={buttonType === 'small' || buttonType === 'empty' ? 'small' : 'default'}
       color={disabled ? 'disabled' : color}
       background={processing ? 'empty' : ''}
       border={processing ? 'processing' : 'none'}
@@ -69,11 +61,11 @@ const Button = ({
     >
       <Flex alignItems="center" justifyContent="center">
         {processing && (
-          <Box pr="12px">
+          <Box pr="0.75rem">
             <SpinnerIcon width="17" height="17" color="white" />
           </Box>
         )}
-        {icon && <Box pr="12px">{icon}</Box>}
+        {icon && <Box pr={children ? '0.75rem' : '0rem'}>{icon}</Box>}
         {children}
       </Flex>
     </ButtonStyle>

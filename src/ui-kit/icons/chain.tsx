@@ -2,13 +2,54 @@ import React, { FC, ReactElement } from 'react';
 import IconWrapper, { IconWrapperInterface } from './iconWrapper';
 
 export const ChainIcon: FC<IconWrapperInterface> = ({
-                                                                     width = '32',
-                                                                     height = '32',
-                                                                     ...props
-                                                                   }): ReactElement => (
-  <IconWrapper {...props} width={width} height={height} viewBoxSize={width}>
-    <path d="M8.33333 13.3327H5.83333C3.99239 13.3327 2.5 11.8403 2.5 9.99935V9.99935C2.5 8.1584 3.99238 6.66602 5.83333 6.66602H8.33333" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M13.3332 9.99951H6.6665" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M11.6667 13.3327H14.1667C16.0076 13.3327 17.5 11.8403 17.5 9.99935V9.99935C17.5 8.1584 16.0076 6.66602 14.1667 6.66602H11.6667" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  width = '32',
+  height = '32',
+  ...props
+}): ReactElement => (
+  <IconWrapper {...props} width={width} height={height} viewBoxSize="32">
+    <rect width="32" height="32" rx="10" fill="white" fill-opacity="0.15" />
+    <rect
+      x="0.5"
+      y="0.5"
+      width="31"
+      height="31"
+      rx="9.5"
+      stroke="url(#paint0_radial_177_6293)"
+      stroke-opacity="0.2"
+    />
+    <path
+      d="M14.3333 19.3332H11.8333C9.99239 19.3332 8.5 17.8408 8.5 15.9998V15.9998C8.5 14.1589 9.99238 12.6665 11.8333 12.6665H14.3333"
+      stroke="white"
+      stroke-width="1.8"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M19.3332 16H12.6665"
+      stroke="white"
+      stroke-width="1.8"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M17.6667 19.3332H20.1667C22.0076 19.3332 23.5 17.8408 23.5 15.9998V15.9998C23.5 14.1589 22.0076 12.6665 20.1667 12.6665H17.6667"
+      stroke="white"
+      stroke-width="1.8"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <defs>
+      <radialGradient
+        id="paint0_radial_177_6293"
+        cx="0"
+        cy="0"
+        r="1"
+        gradientUnits="userSpaceOnUse"
+        gradientTransform="translate(-19.5 -15) rotate(42.4664) scale(79.9812)"
+      >
+        <stop stop-color="white" />
+        <stop offset="0.609995" stop-color="white" stop-opacity="0" />
+      </radialGradient>
+    </defs>
   </IconWrapper>
 );

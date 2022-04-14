@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Flex, Image, StyledHead, Text, Box } from '../ThemeProvider';
+import { Flex, Image, Text, Box, Head } from '../ThemeProvider';
 import GreenToPurpleRectangle from '../assets/svg/Rectangles/GreenToPurple.svg';
 import PurpleToGreenRectangle from '../assets/svg/Rectangles/PurpleToGreen.svg';
 import RoadmapLineXL from '../assets/svg/Lines/RoadmapLineXL.svg';
@@ -9,20 +9,21 @@ import RoadmapLineXS from '../assets/svg/Lines/RoadmapLineXS.svg';
 import { ImageEmpty } from '../ui-kit/icons/imageEmpty';
 import { VolumeFull } from '../ui-kit/icons/volumeFull';
 import styled from 'styled-components';
-import { ShidenIcon } from '../ui-kit/icons/networks/shiden';
-import { NearAuroraIcon } from '../ui-kit/icons/networks/nearAurora';
-import theme from 'ThemeProvider/theme';
-import { AvalancheTransparentIcon } from '../ui-kit/icons/networks/avalancheTransparent';
-import { GateChainIcon } from '../ui-kit/icons/networks/gateChain';
-import { ChainIcon } from '../ui-kit/icons/chain';
-import { BSCIcon } from '../ui-kit/icons/networks/bsc';
-import { SolanaICON } from '../ui-kit/icons/networks/solana';
-import { HecoICON } from '../ui-kit/icons/networks/heco';
-import { PencilWritingIcon } from '../ui-kit/icons/pencilWriting';
-import { OKEXIcon } from '../ui-kit/icons/networks/okex';
-import { TronIcon } from '../ui-kit/icons/networks/tron';
 import { system } from 'styled-system';
 import { FlexGapType } from '../ThemeProvider';
+import { AvalancheIcon, ChainIcon } from 'ui-kit/icons';
+import {
+  BSCIcon,
+  GateChainIcon,
+  HecoICON,
+  NearAuroraIcon,
+  OKEXIcon,
+  ShidenIcon,
+  SolanaICON,
+  TronIcon,
+} from 'ui-kit/icons/networks';
+import { PencilWritingIcon } from 'ui-kit/icons/pencilWriting';
+import { SwipeIcon } from 'assets/svg/swipe';
 
 type RoadmapStepsIconType = string;
 
@@ -46,8 +47,6 @@ interface IQuartalsInfo {
   [index: string]: IQuartal;
 }
 
-const SVG_ICONS_SIZE = theme.sizes[3];
-
 const Q1 = {
   name: 'Q1',
   progressIcon: GreenToPurpleRectangle,
@@ -56,30 +55,30 @@ const Q1 = {
   steps: [
     {
       name: 'Shiden',
-      icon: <ShidenIcon width={SVG_ICONS_SIZE} height={SVG_ICONS_SIZE} />,
+      icon: <ShidenIcon />,
     },
     {
       name: 'Near/Aurora',
-      icon: <NearAuroraIcon width="2.5rem" height={SVG_ICONS_SIZE} />,
+      icon: <NearAuroraIcon />,
       width: '2.5rem',
     },
     {
       name: 'Avalanche',
-      icon: <AvalancheTransparentIcon width={SVG_ICONS_SIZE} height={SVG_ICONS_SIZE} />,
+      icon: <AvalancheIcon />,
     },
     {
       name: 'Gate Chain',
-      icon: <GateChainIcon width={SVG_ICONS_SIZE} height={SVG_ICONS_SIZE} />,
+      icon: <GateChainIcon />,
     },
     {
       name: 'Cross-chain bridge',
       description: 'Stage 01',
-      icon: <ChainIcon width={SVG_ICONS_SIZE} height={SVG_ICONS_SIZE} />,
+      icon: <ChainIcon />,
     },
     {
       name: 'Cross-chain bridge',
       description: 'Stage 02',
-      icon: <ChainIcon width={SVG_ICONS_SIZE} height={SVG_ICONS_SIZE} />,
+      icon: <ChainIcon />,
     },
   ],
 };
@@ -90,19 +89,19 @@ const Q2 = {
   steps: [
     {
       name: 'Binance Smart Chain',
-      icon: <BSCIcon width={SVG_ICONS_SIZE} height={SVG_ICONS_SIZE} />,
+      icon: <BSCIcon />,
     },
     {
       name: 'Solana',
-      icon: <SolanaICON width={SVG_ICONS_SIZE} height={SVG_ICONS_SIZE} />,
+      icon: <SolanaICON />,
     },
     {
       name: 'Heco',
-      icon: <HecoICON width={SVG_ICONS_SIZE} height={SVG_ICONS_SIZE} />,
+      icon: <HecoICON />,
     },
     {
       name: 'Platform Redesign',
-      icon: <PencilWritingIcon width={SVG_ICONS_SIZE} height={SVG_ICONS_SIZE} />,
+      icon: <PencilWritingIcon />,
     },
   ],
 };
@@ -113,17 +112,17 @@ const Q3 = {
   steps: [
     {
       name: 'OKEX',
-      icon: <OKEXIcon width={SVG_ICONS_SIZE} height={SVG_ICONS_SIZE} />,
+      icon: <OKEXIcon />,
     },
     {
       name: 'Tron',
-      icon: <TronIcon width={SVG_ICONS_SIZE} height={SVG_ICONS_SIZE} />,
+      icon: <TronIcon />,
       marginTop: '1.25rem',
     },
     {
       name: 'NFT magic hall',
       description: 'Stage 01',
-      icon: <ImageEmpty width={SVG_ICONS_SIZE} height={SVG_ICONS_SIZE} />,
+      icon: <ImageEmpty />,
       marginTop: '1.25rem',
     },
   ],
@@ -135,13 +134,13 @@ const Q4 = {
   steps: [
     {
       name: 'To be announced',
-      icon: <VolumeFull width={SVG_ICONS_SIZE} height={SVG_ICONS_SIZE} />,
+      icon: <VolumeFull />,
       marginTop: '1.25rem',
     },
     {
       name: 'NFT magic hall',
       description: 'Stage 02',
-      icon: <ImageEmpty width={SVG_ICONS_SIZE} height={SVG_ICONS_SIZE} />,
+      icon: <ImageEmpty />,
       marginTop: 3,
     },
   ],
@@ -169,22 +168,13 @@ QuartalBlocksWrapper.defaultProps = {
 const PROGRESS_BLOCK_WIDTH = 4;
 
 const StepBlock = ({ step }: { step: IStep }) => (
-  <Flex alignItems="center" mt={step.marginTop || 4}>
-    <Flex
-      width={step.width ? `calc(${step.width} + 0.5rem)` : 4}
-      height={4}
-      justifyContent="center"
-      alignItems="center"
-      borderRadius="0.625rem"
-      backgroundColor="inactive"
-    >
-      {step.icon}
-    </Flex>
+  <Flex mt={step.marginTop || 4}>
+    {step.icon}
     <Flex flexDirection="column" justifyContent="center" pl={2}>
-      <Text color="text" variant="normalRubikMedium">
+      <Text color="paper" variant="normalRubikRegular">
         {step.name}
       </Text>
-      <Text color="inactive" variant="normalRubikMedium">
+      <Text color="almostDisabled" variant="normalRubikRegular">
         {step.description}
       </Text>
     </Flex>
@@ -215,11 +205,11 @@ const ProgressBlock = ({
 );
 
 const QuartalBlock = ({ quartal }: { quartal: IQuartal }) => (
-  <Box>
+  <Flex flexDirection="column">
     <Flex alignItems="center" mb={3}>
       <Text
         width={PROGRESS_BLOCK_WIDTH}
-        color={quartal.isActive ? 'text' : 'almostDisabled'}
+        color={quartal.isActive ? 'paper' : 'almostDisabled'}
         variant="normalRubikMedium"
       >
         {quartal.name}
@@ -232,19 +222,27 @@ const QuartalBlock = ({ quartal }: { quartal: IQuartal }) => (
       />
     </Flex>
     <ProgressBlock steps={quartal.steps} roadmapStepsIcon={quartal.roadmapStepsIcon} />
-  </Box>
+  </Flex>
 );
 
 const RoadmapBlock = () => (
-  <Flex flexDirection="column">
-    <Text variant="normalRubikMedium">
-      <StyledHead>Emiswap Roadmap</StyledHead>
-      <Text variant="largeRubikRegular" color="white" mt={5}>
+  <Flex
+    flexDirection="column"
+    pl={{ default: 4, laptop: '3.75rem' }}
+    pr={{ default: 0, laptop: '3.75rem' }}
+    alignItems="center"
+  >
+    <Flex flexDirection="column" alignItems="flex-start">
+      <Head variant="default">Emiswap Roadmap</Head>
+      <Text variant="xLargeRubikRegular" color="paper" mt={5} mb="2rem">
         Emiswap is building cross-chain ecosystem <br />
         by integrating various blockchains and NFT components
       </Text>
-    </Text>
-    <QuartalBlocksWrapper gap="0.75rem">
+    </Flex>
+    <Flex mb={{ default: 4, mobileL: 6 }} display={{ default: '', laptop: 'none' }}>
+      <SwipeIcon />
+    </Flex>
+    <QuartalBlocksWrapper width="100%" overflowX={{ default: 'auto' }} gap="0.75rem">
       {Object.keys(QUARTALS_INFO).map(QUARTAL_INFO_KEY => (
         <QuartalBlock quartal={QUARTALS_INFO[QUARTAL_INFO_KEY]} />
       ))}
