@@ -4472,6 +4472,13 @@ const defaultCoins: DefaultCoins = {
     },
     // GateChain
     {
+      address: '0x672f30407A71fa8737A3A14474ff37E09c7Fc44a',
+      chainId: chainIds.GATECHAIN,
+      name: 'Wrapped GT',
+      decimals: 18,
+      symbol: 'WGT',
+    },
+    {
       address: '0x18f38359551258c35e8593d775cb6fe8d27fd89b',
       chainId: chainIds.GATECHAIN,
       name: 'EmiDAO Token',
