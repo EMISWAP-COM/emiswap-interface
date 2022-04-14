@@ -19,6 +19,7 @@ const V1_MOONISWAP_FACTORY_ADDRESSES: { [chainId in ChainId]: string } = {
   [chainIds.SHIDEN]: factory_addresses[chainIds.SHIDEN],
   [chainIds.AVALANCHE]: factory_addresses[chainIds.AVALANCHE],
   [chainIds.ASTAR]: factory_addresses[chainIds.ASTAR],
+  [chainIds.GATECHAIN]: factory_addresses[chainIds.GATECHAIN],
   [chainIds.AURORA]: factory_addresses[chainIds.AURORA],
 };
 
@@ -35,6 +36,7 @@ const V1_EMIROUTER_HELPER_ADDRESSES: { [chainId in ChainId]: string } = {
   [chainIds.SHIDEN]: emirouter_addresses[chainIds.SHIDEN],
   [chainIds.AVALANCHE]: emirouter_addresses[chainIds.AVALANCHE],
   [chainIds.ASTAR]: emirouter_addresses[chainIds.ASTAR],
+  [chainIds.GATECHAIN]: emirouter_addresses[chainIds.GATECHAIN],
   [chainIds.AURORA]: emirouter_addresses[chainIds.AURORA],
 };
 

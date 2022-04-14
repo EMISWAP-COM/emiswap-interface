@@ -11,6 +11,7 @@ enum chainIds {
   SHIDEN = 336,
   AVALANCHE = 43114,
   ASTAR = 592,
+  GATECHAIN = 86,
   AURORA = 1313161554,
 }
 

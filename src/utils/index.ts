@@ -29,6 +29,7 @@ import { ERC20_ABI } from '../constants/abis/erc20';
 import { SDN } from '../constants/tokens/SDN';
 import { AURORA_ETHER } from '../constants/tokens/AURORA_ETHER';
 import { ASTR } from '../constants/tokens/ASTR';
+import { GT } from '../constants/tokens/GT';
 
 const EMI_DELIVERY = window['env'].REACT_APP_EMI_DELIVERY;
 
@@ -54,6 +55,7 @@ const ETHERSCAN_PREFIXES: { [chainId in chainIds]: string } = {
   336: 'shiden',
   43114: 'avalanche.',
   592: 'astar.',
+  86: 'gatechain.',
   1313161554: 'aurora.',
 };
 
@@ -192,6 +194,7 @@ export function isDefaultToken(defaultTokens: TokenAddressMap, currency?: Token)
     SDN.address,
     AVAX.address,
     ASTR.address,
+    GT.address,
     AURORA_ETHER.address,
   ];
 
