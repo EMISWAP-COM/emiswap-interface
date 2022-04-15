@@ -4,6 +4,7 @@ import Wrapper from './wrapper';
 import InputOption from '../inputs/InputOption';
 import InputUnit from '../inputs/InputUnit';
 import { InputState } from '../inputs/common';
+import { Button, ButtonType } from 'ui-kit';
 
 const InputsExample = () => {
   return (
@@ -46,6 +47,25 @@ const InputsExample = () => {
         </Text>
         <Box ml={6}>
           <InputOption header="From" subheader="Balance: 5000" state={InputState.fail} />
+        </Box>
+      </Flex>
+      <Flex alignItems="center">
+        <Text variant="mediumRubikMedium" color="paper">
+          With option:
+        </Text>
+        <Box ml={6}>
+          <InputOption header="From" subheader="Balance: 5000" state={InputState.fail}>
+            <Box>
+              <Text variant="smallRubikRegular" color="paper">
+                Option
+              </Text>
+            </Box>
+            <Box>
+              <Button buttonType={ButtonType.small} disabled>
+                MAX
+              </Button>
+            </Box>
+          </InputOption>
         </Box>
       </Flex>
     </Wrapper>

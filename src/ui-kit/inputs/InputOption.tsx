@@ -37,13 +37,15 @@ const InputOption = ({
         borderRadius="0.875rem"
       >
         {children && children[0] ? (
-          <FlexItemBox flex="1" p={2}>
-            {children[0]}
+          <FlexItemBox flex="1">
+            <Flex justifyContent="center" alignItems="center" width="100%" height="100%">
+              {children[0]}
+            </Flex>
           </FlexItemBox>
         ) : (
           <></>
         )}
-        <FlexItemBox flex="2" px={2}>
+        <FlexItemBox flex="3" pl={2}>
           <Input
             width="100%"
             height="100%"
@@ -51,11 +53,14 @@ const InputOption = ({
             color="paper"
             border="none"
             variant="mediumRubikRegular"
+            textAlign="right"
           />
         </FlexItemBox>
         {children && children[1] ? (
-          <FlexItemBox flex="1" p={2}>
-            {children[1]}
+          <FlexItemBox flex="1">
+            <Flex justifyContent="center" alignItems="center" width="100%" height="100%">
+              {children[1]}
+            </Flex>
           </FlexItemBox>
         ) : (
           <></>

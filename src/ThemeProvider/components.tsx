@@ -153,7 +153,7 @@ export const Button = styled.button<Props>`
   ${background};
 `;
 
-export const Input = styled.input<Props & TextStyleInterface>`
+export const Input = styled.input<Props & TextStyleInterface & { textAlign?: string }>`
   outline: none;
   border: none;
   ${space};
