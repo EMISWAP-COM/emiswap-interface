@@ -45,7 +45,7 @@ const InputOption = ({
         ) : (
           <></>
         )}
-        <FlexItemBox flex="3" pl={2}>
+        <FlexItemBox flex="3" pl={2} pr={children && children[1] ? '' : 2}>
           <Input
             width="100%"
             height="100%"
