@@ -1,6 +1,7 @@
 import React, { ReactElement, ReactNode } from 'react';
-import { Flex, Text, FlexItemBox, Input } from 'ThemeProvider';
+import { Flex, FlexItemBox, Input, Text } from 'ThemeProvider';
 import { getBorderData, InputInterface, InputState } from './common';
+import ErrorText from './ErrorText';
 
 interface InputOptionInterface extends InputInterface {
   header?: string;
@@ -60,6 +61,9 @@ const InputOption = ({
           <></>
         )}
       </Flex>
+      {(state === InputState.fail || state === InputState.attention) && (
+        <ErrorText text={state === InputState.fail ? 'Fail' : 'Attention'} state={state} />
+      )}
     </Flex>
   );
 };
