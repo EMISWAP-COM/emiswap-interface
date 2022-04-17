@@ -1,5 +1,14 @@
-import React, { useState } from 'react';
-import { Wrapper, Buttons, CancelButton, RequestButton, Title, LogoStyle, Status } from './styled';
+import React, { useState, useEffect } from 'react';
+import {
+  Wrapper,
+  Buttons,
+  CancelButton,
+  RequestButton,
+  Title,
+  LogoStyle,
+  Status,
+  LinkNoColor,
+} from './styled';
 import * as Styled from '../../CurrencyInputPanel/styled';
 import { RowBetween } from '../../Row';
 import { TYPE, CursorPointer } from '../../../theme';
@@ -8,6 +17,8 @@ import NumericalInput from '../../NumericalInput';
 import CurrencyLogo from '../../CurrencyLogo';
 import { Token } from '@uniswap/sdk';
 import { useRequestCollect } from './hooks';
+import { useActivePopups, useAddPopup } from '../../../state/application/hooks';
+
 interface CurrencyInputInterface {
   id?: string;
   label: string;
@@ -94,8 +105,43 @@ const RequestCollect = ({ closeWindow }: { closeWindow: () => void }): React.Rea
     availableReqestCollect,
     title,
     status,
+    progress,
+    txHash,
+    requestedAmount,
     maxAvailableForRequests,
   } = useRequestCollect(userInputValue, closeWindow);
+
+  const addPopup = useAddPopup();
+  const popups = useActivePopups();
+
+  const FailMessage = txHash ? (
+    <>
+      <LinkNoColor href={`https://polygonscan.com/tx/${txHash}`}>
+        <b>Transaction</b>
+      </LinkNoColor>{' '}
+      has failed
+    </>
+  ) : (
+    <span>Something has failed</span>
+  );
+
+  useEffect(() => {
+    const isPending = progress === 'success';
+    const key = `${txHash}RequestSuccess`;
+    const isPopUpAlreadyShown = popups.find(item => item.key === key);
+    if (isPending && !isPopUpAlreadyShown) {
+      addPopup(
+        {
+          txn: {
+            hash: txHash,
+            success: true,
+            summary: `Request ${requestedAmount} ESW`,
+          },
+        },
+        key,
+      );
+    }
+  }, [progress]);
 
   return (
     <Wrapper>
@@ -116,7 +162,7 @@ const RequestCollect = ({ closeWindow }: { closeWindow: () => void }): React.Rea
           }
         }}
       />
-      {status && <Status>{status}</Status>}
+      {status && <Status>{status === 'fail' ? FailMessage : status}</Status>}
       <Buttons>
         <CancelButton onClick={closeWindow}>Cancel</CancelButton>
         <RequestButton onClick={requestHandler}>{title}</RequestButton>

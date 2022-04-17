@@ -7,18 +7,21 @@ import { formatUnits, parseUnits } from '@ethersproject/units';
 import { useAuth } from '../../../hooks/useAuth';
 import { useSelector } from 'react-redux';
 import { fetchWrapper } from '../../../api/fetchWrapper';
-import { EMI_DELIVERY } from '../../../constants/emi/addresses';
 import { format } from 'date-fns/fp';
 import { useNetworkData } from '../../../hooks/Coins';
 import { getNetworkUrl } from '../../../state/cabinets/action-polygon';
 
 const ESW_CLAIM_API = window['env'].REACT_APP_ESW_CLAIM_API;
 const ESW_CLAIM_CHAIN_ID = window['env'].REACT_APP_ESW_CLAIM_CHAIN_ID;
+const EMI_DELIVERY = window['env'].REACT_APP_EMI_DELIVERY;
 
 export const useRequestCollect = (userInput: string, closeWindow: () => void) => {
   const { library, account, chainId } = useActiveWeb3React();
   const [title, changeTitle] = useState('Request');
   const [status, changeStatus] = useState('');
+  const [progress, changeProgress] = useState('init');
+  const [txHash, changeTxHash] = useState('');
+  const [requestedAmount, changeRequestedAmount] = useState('');
   const { value: network } = useNetworkData();
   const {
     available: { ESW: availableESW },
@@ -41,7 +44,7 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
       .getWalletNonce()
       .then(nonce => Number(nonce) + 1)
       .then(nonce =>
-        handleAuth().then(token => {
+        handleAuth().then(async token => {
           changeStatus('');
           if (parseFloat(userInput) <= 0 || Number.isNaN(parseFloat(userInput))) {
             changeStatus('Error input. The Request amount is not valid');
@@ -54,8 +57,9 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
             return Promise.resolve();
           }
           const amount = parseUnits(userInput, 18).toString();
-          fetchWrapper
-            .post(ESW_CLAIM_API, {
+          let res;
+          try {
+            res = await fetchWrapper.post(ESW_CLAIM_API, {
               body: JSON.stringify({
                 token_name: 'ESW',
                 amount,
@@ -67,28 +71,40 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
                 userID,
               }),
               headers: { Authorization: token },
-            })
-            .catch(e => {
-              if (e?.payload?.error_message === 'withdrawal_amount_is_more_than_available') {
-                changeStatus('Withdrawal amount is more than available');
-              } else {
-                changeStatus(
-                  'Please wait for the previous request being processed. It usually takes less than two minutes',
-                );
+            });
+          } catch (e) {
+            if (e?.payload?.error_message === 'withdrawal_amount_is_more_than_available') {
+              changeStatus('Withdrawal amount is more than available');
+            } else {
+              changeStatus(
+                'Please wait for the previous request being processed. It usually takes less than two minutes',
+              );
+            }
+            changeTitle('Request');
+            return;
+          }
+          changeRequestedAmount(userInput);
+          contract
+            .request(account, amount, nonce, `0x${res.signature}`)
+            .then(transactionResult => {
+              if (!transactionResult) {
+                throw new Error('');
               }
-              changeTitle('Request');
-            })
-            .then(({ signature, id }) => {
-              return contract
-                .request(account, amount, nonce, `0x${signature}`)
-                .then(transactionResult => [transactionResult, id]);
+              changeTxHash(transactionResult.hash);
+              return transactionResult.wait();
             })
             .catch(_ => {
-              // TODO handle errors
-              changeTitle('Request');
+              changeStatus('fail');
             })
-            .then(([transactionResult, id]) => {
-              const transactionStateEndPoint = `/v1/private/users/${userID}/transactions/${id}`;
+            .then(transactionResult => {
+              if (!transactionResult) {
+                throw new Error('');
+              }
+              if (transactionResult.status === 0) {
+                changeStatus('fail');
+                return;
+              }
+              const transactionStateEndPoint = `/v1/private/users/${userID}/transactions/${res.id}`;
               fetchWrapper.put(transactionStateEndPoint, {
                 headers: {
                   authorization: token,
@@ -98,17 +114,30 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
                   transaction_hash: transactionResult.hash,
                 }),
               });
+              changeProgress('success');
               closeWindow();
-              changeTitle('Request');
             })
-            .catch(e => {
-              // TODO error handling
+            .catch(() => {
+              changeStatus('fail');
+            })
+            .finally(() => {
+              changeTitle('Request');
+              changeProgress('init');
             });
         }),
       );
   };
 
-  return { handler, availableReqestCollect: availableESW, title, status, maxAvailableForRequests };
+  return {
+    handler,
+    availableReqestCollect: availableESW,
+    title,
+    status,
+    progress,
+    maxAvailableForRequests,
+    txHash,
+    requestedAmount,
+  };
 };
 
 const toDate = bigNumberTimestamp => new Date(Number(bigNumberTimestamp) * 1000);
@@ -117,7 +146,8 @@ const formatTomorrow = format('RRRR-MM-dd');
 export type RemainderStatus =
   | { status: 'remaindTime'; value: string }
   | { status: 'disable'; value: string }
-  | { status: 'enable'; value: string };
+  | { status: 'enable'; value: string }
+  | { status: 'progress'; value: string };
 
 export const useGetRemainder = () => {
   const [state, changeState] = useState<RemainderStatus>({
@@ -133,35 +163,40 @@ export const useGetRemainder = () => {
 
   useEffect(() => {
     contract.getAvailableToClaim().then(result => {
+      changeState({ status: 'progress', value: 'Collect' });
       if (result.available > 0) {
         changeState({ status: 'enable', value: 'Collect' });
       } else {
-        contract.getRemainderOfRequests().then(result => {
-          if (result.remainderTotal > 0) {
-            const numberDate = Number(result.veryFirstRequestDate).toString();
-            const stringDate = `${numberDate.slice(0, 4)}-${numberDate.slice(
-              4,
-              6,
-            )}-${numberDate.slice(6, 8)}`;
-            const date = new Date(stringDate);
-            if (date < new Date()) {
-              contract.getDatesStarts().then(({ tomorrowStart }) => {
-                const tomorrow = formatTomorrow(toDate(tomorrowStart));
-                changeState({ status: 'remaindTime', value: tomorrow });
-              });
+        contract
+          .getRemainderOfRequests()
+          .then(result => {
+            if (result.remainderTotal > 0) {
+              const numberDate = Number(result.veryFirstRequestDate).toString();
+              const stringDate = `${numberDate.slice(0, 4)}-${numberDate.slice(
+                4,
+                6,
+              )}-${numberDate.slice(6, 8)}`;
+              const date = new Date(stringDate);
+              if (date < new Date()) {
+                contract.getDatesStarts().then(({ tomorrowStart }) => {
+                  const tomorrow = formatTomorrow(toDate(tomorrowStart));
+                  changeState({ status: 'remaindTime', value: tomorrow });
+                });
+              } else {
+              }
             } else {
               changeState({
-                value: stringDate,
-                status: 'remaindTime',
+                value: 'Collect to my wallet',
+                status: 'disable',
               });
             }
-          } else {
+          })
+          .catch(() => {
             changeState({
               value: 'Collect to my wallet',
               status: 'disable',
             });
-          }
-        });
+          });
       }
     });
   }, [contract]);
@@ -171,6 +206,14 @@ export const useGetRemainder = () => {
 const timeFormating = format('k:mm:ss');
 const formatDateing = format("do 'of' MMMM");
 const formatDateShortMonth = format("do 'of' MMM");
+
+const toDateFromContract = str => {
+  const stringStr = String(str);
+  const year = stringStr.substring(0, 4);
+  const month = stringStr.substring(4, 6);
+  const day = stringStr.slice(6);
+  return new Date(`${year}.${month}.${day}`);
+};
 
 const formatTime = bigNumber => timeFormating(toDate(bigNumber));
 const formatDate = bigNumber => formatDateing(toDate(bigNumber));
@@ -189,6 +232,8 @@ export const useCollectData = closeWindow => {
     handler: () => {},
   });
   const { library, account, chainId } = useActiveWeb3React();
+  const [txHash, changeTxHash] = useState('');
+  const [progress, changeProgress] = useState('init');
   const contract: Contract | null = useMemo(() => getCollectContract(library, account, chainId), [
     library,
     account,
@@ -216,17 +261,37 @@ export const useCollectData = closeWindow => {
           currentDay: formatDate(todayStart),
           nextTime: formatTime(tomorrowStart),
           nextDay: formatDate(tomorrowStart),
-          veryFirstRequestDate: formatDateShortMonth(toDate(veryFirstRequestDate)),
+          veryFirstRequestDate: formatDateShortMonth(toDateFromContract(veryFirstRequestDate)),
           nextValue: formatUnits(claimLimit, 18),
           handler: () => {
-            contract.claim().then(() => {
-              closeWindow();
-            });
+            changeProgress('pending');
+            contract
+              .claim()
+              .then(transactionResult => {
+                if (!transactionResult) {
+                  throw new Error('');
+                }
+                changeTxHash(transactionResult.hash);
+                return transactionResult.wait();
+              })
+              .catch(_ => {
+                // TODO handle errors
+              })
+              .then(transactionResult => {
+                if (!transactionResult) {
+                  throw new Error('');
+                }
+                changeProgress('success');
+              })
+              .finally(() => {
+                closeWindow();
+                changeProgress('init');
+              });
           },
         });
       },
     );
   }, [contract, closeWindow]);
 
-  return state;
+  return Object.assign({ progress, txHash }, state);
 };

@@ -9,6 +9,7 @@ const vamp_addresses: any = {
   [chainIds.SHIDEN]: '0xA1dCC591F2d7C339dF626d4a37Bc418CfA4F9ad4', // TODO
   [chainIds.AVALANCHE]: '0xeef546ffd552907fC4eb40Adbb935cD935e55EA3', // TODO
   [chainIds.ASTAR]: '0xeef546ffd552907fC4eb40Adbb935cD935e55EA3', // TODO
+  [chainIds.GATECHAIN]: '0xeef546ffd552907fC4eb40Adbb935cD935e55EA3', // TODO
 };
 
 export default vamp_addresses;

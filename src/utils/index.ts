@@ -27,9 +27,11 @@ import { expNumberToStr } from './formats';
 import { abi as EMI_SWAP_ABI } from '../constants/abis/Emiswap.json';
 import { ERC20_ABI } from '../constants/abis/erc20';
 import { SDN } from '../constants/tokens/SDN';
-import { EMI_DELIVERY } from '../constants/emi/addresses';
 import { AURORA_ETHER } from '../constants/tokens/AURORA_ETHER';
 import { ASTR } from '../constants/tokens/ASTR';
+import { GT } from '../constants/tokens/GT';
+
+const EMI_DELIVERY = window['env'].REACT_APP_EMI_DELIVERY;
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
@@ -53,6 +55,7 @@ const ETHERSCAN_PREFIXES: { [chainId in chainIds]: string } = {
   336: 'shiden',
   43114: 'avalanche.',
   592: 'astar.',
+  86: 'gatechain.',
   1313161554: 'aurora.',
 };
 
@@ -61,13 +64,7 @@ export function getExplorerLink(
   data: string,
   type: 'transaction' | 'token' | 'address' | 'block',
 ): string {
-  const { blockExplorerUrl } = getNetworkData(chainId);
-  const isEthActive = isEthereumActive(chainId);
-
-  let path = blockExplorerUrl;
-  if (isEthActive) {
-    path = `https://${ETHERSCAN_PREFIXES[chainId] || ETHERSCAN_PREFIXES[1]}${blockExplorerUrl}`;
-  }
+  const { blockExplorerUrl: path } = getNetworkData(chainId);
 
   switch (type) {
     case 'transaction': {
@@ -197,6 +194,7 @@ export function isDefaultToken(defaultTokens: TokenAddressMap, currency?: Token)
     SDN.address,
     AVAX.address,
     ASTR.address,
+    GT.address,
     AURORA_ETHER.address,
   ];
 

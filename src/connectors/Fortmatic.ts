@@ -23,6 +23,7 @@ const CHAIN_ID_NETWORK_ARGUMENT: {
   [chainIds.SHIDEN]: 'shiden',
   [chainIds.AVALANCHE]: 'avalanche',
   [chainIds.ASTAR]: 'astar',
+  [chainIds.GATECHAIN]: 'gatechain',
   [chainIds.AURORA]: 'aurora',
 };
 

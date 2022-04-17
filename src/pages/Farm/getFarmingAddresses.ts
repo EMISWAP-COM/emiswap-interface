@@ -43,6 +43,8 @@ const addressesByNetworkId = {
   // TODO
   [chainIds.ASTAR]: [''],
   // TODO
+  [chainIds.GATECHAIN]: [''],
+  // TODO
   [chainIds.AURORA]: [''],
 };
 
