@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useActiveWeb3React } from '../../../hooks';
+import { useActiveWeb3React, usePolygonWeb3React } from '../../../hooks';
 import { AppState } from '../../../state';
 import { getCollectContract } from '../../../utils';
 import { Contract } from '@ethersproject/contracts';
@@ -231,7 +231,7 @@ export const useCollectData = closeWindow => {
     veryFirstRequestDate: '',
     handler: () => {},
   });
-  const { library, account, chainId } = useActiveWeb3React();
+  const { library, account, chainId } = usePolygonWeb3React();
   const [txHash, changeTxHash] = useState('');
   const [progress, changeProgress] = useState('init');
   const contract: Contract | null = useMemo(() => getCollectContract(library, account, chainId), [
