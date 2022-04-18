@@ -85,6 +85,22 @@ const CollectToMyWallet = ({
         key,
       );
     }
+
+    const isError = progress === 'error';
+    const errorKey = `${txHash}CollectError`;
+    const isErrorPopUpAlreadyShown = popups.find(item => item.key === errorKey);
+    if (isError && !isErrorPopUpAlreadyShown) {
+      addPopup(
+        {
+          txn: {
+            hash: txHash,
+            success: false,
+            summary: `Transaction has failed`,
+          },
+        },
+        errorKey,
+      );
+    }
   }, [progress]);
 
   const avalibleCollect = unlocked === '0' ? '0' : avalible;

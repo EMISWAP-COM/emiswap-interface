@@ -278,7 +278,8 @@ export const useCollectData = closeWindow => {
                 // TODO handle errors
               })
               .then(transactionResult => {
-                if (!transactionResult) {
+                if (!transactionResult || transactionResult.status === 0) {
+                  changeProgress('fail');
                   throw new Error('');
                 }
                 changeProgress('success');
