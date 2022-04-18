@@ -52,7 +52,9 @@ export function usePolygon() {
       const key = Number(polygon.chainId);
       const value = String(polygon.rpcUrls[0]);
       const network = new NetworkConnector({ urls: { [key]: value } });
-      activate(network);
+      activate(network).catch(() => {
+        console.error('Failed to active polygon connection');
+      });
     }
   }, [activate, active]);
 }

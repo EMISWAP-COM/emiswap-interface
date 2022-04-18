@@ -32,6 +32,7 @@ import { ASTR } from '../constants/tokens/ASTR';
 import { GT } from '../constants/tokens/GT';
 
 const EMI_DELIVERY = window['env'].REACT_APP_EMI_DELIVERY;
+const POLYGON_EMI_DELIVERY = window['env'].REACT_APP_POLYGON_EMI_DELIVERY;
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
@@ -223,6 +224,10 @@ export function getVestingContract(library: Web3Provider, account: string, chain
     library,
     account,
   );
+}
+
+export function getPolygonCollectContract(library: Web3Provider, account: string) {
+  return getContract(POLYGON_EMI_DELIVERY, EMISWAP_COLLECT_ABI, library, account);
 }
 
 export function getCollectContract(library: Web3Provider, account: string, chainId: ChainId) {
