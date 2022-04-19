@@ -1,4 +1,5 @@
 import chainIds from '../../constants/chainIds';
+import { Token } from '@uniswap/sdk';
 
 export function calcFarming365Apr(
   chainId: number,
@@ -15,4 +16,8 @@ export function calcFarming365Apr(
   const reward = parseFloat(blockReward);
 
   return 365 + (dayBlocksCount * 365 * reward * eswRate * 100) / (liq + 1);
+}
+
+export function calcAprValue(token: Token): number {
+  return token.name?.includes('ESW') ? 180 : 365;
 }
