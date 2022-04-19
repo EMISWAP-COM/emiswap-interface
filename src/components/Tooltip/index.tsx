@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import Popover, { PopoverProps } from '../Popover';
+import NewPopover from '../NewPopover';
 
 const TooltipContainer = styled.div`
   width: 300px;
@@ -11,6 +12,10 @@ const TooltipContainer = styled.div`
 
 export interface TooltipProps extends Omit<PopoverProps, 'content'> {
   text: string;
+}
+
+export function NewTooltip({ text, ...rest }: TooltipProps) {
+  return <NewPopover content={<TooltipContainer>{text}</TooltipContainer>} {...rest} />;
 }
 
 export default function Tooltip({ text, ...rest }: TooltipProps) {

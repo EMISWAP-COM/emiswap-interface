@@ -53,6 +53,7 @@ const theme = {
     almostDisabled: 'rgba(255, 255, 255, 0.6)',
     disabled: 'rgba(255, 255, 255, 0.7)',
     almostNoWhite: 'rgba(255, 255, 255, 0.05)',
+    popoverGray: '#292929',
   },
   gradients: {
     buttonPrimary:
