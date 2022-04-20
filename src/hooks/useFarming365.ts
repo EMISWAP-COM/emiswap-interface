@@ -237,6 +237,20 @@ export default function useFarming365(contract: Contract) {
       });
   }, [chainId, contract, stakeToken, showError, account]);
 
+  const [stopDate, setStopDate] = useState<string | undefined>(undefined);
+  useEffect(() => {
+    contract
+      .periodStop()
+      .then((value: BigNumber) => {
+        const timestampInMs = value.toNumber() * 1000;
+        const formattedDate = dayjs(timestampInMs).format('DD.MM.YYYY HH:MM:ss');
+        setStopDate(formattedDate);
+      })
+      .catch((error: RequestError) => {
+        showError('periodFinish', '', error);
+      });
+  }, [contract, stakeToken, showError, account, chainId]);
+
   const [endDate, setEndDate] = useState<string | undefined>(undefined);
   useEffect(() => {
     contract
@@ -257,7 +271,7 @@ export default function useFarming365(contract: Contract) {
       return;
     }
 
-    const liquidityTokenAddress = getFarmingLiquidityTokenAddress(contract.address);
+    const liquidityTokenAddress = getFarmingLiquidityTokenAddress(chainId, contract.address);
     const defaultCoin = defaultCoins.tokens.find(
       token =>
         token.chainId === chainId &&
@@ -428,6 +442,7 @@ export default function useFarming365(contract: Contract) {
     reward,
     blockReward,
     totalSupply,
+    stopDate,
     endDate,
     liquidity,
     tokenMode: 1,
