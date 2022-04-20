@@ -271,7 +271,7 @@ export default function useFarming365(contract: Contract) {
       return;
     }
 
-    const liquidityTokenAddress = getFarmingLiquidityTokenAddress(contract.address);
+    const liquidityTokenAddress = getFarmingLiquidityTokenAddress(chainId, contract.address);
     const defaultCoin = defaultCoins.tokens.find(
       token =>
         token.chainId === chainId &&

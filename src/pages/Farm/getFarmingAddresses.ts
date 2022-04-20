@@ -29,6 +29,7 @@ const addressesByNetworkId = {
     '0x18f38359551258C35e8593d775cb6Fe8D27fd89b', // RewardPoolMulti PROXY
     '0xd2Fa7C9386040f260e3Ec934601982aD4Cd7902B', // RewardPoolMulti PROXY
     '0xC4e9030aC8274331506910676076eA5239d6c03D', // RewardPoolMulti PROXY
+    '0x94a12b208Ddbddd35bd6a6Bd9e1C0dA70B18E5bd', // RewardPoolMulti PROXY
   ],
   [chainIds.MUMBAI]: [
     '0xeB274bcD6CA905b7dB5F65b8C2a126fb3fF39bc3', // RewardPoolMulti PROXY
