@@ -28,7 +28,7 @@ import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import duration from 'dayjs/plugin/duration';
 
-dayjs.extend(customParseFormat)
+dayjs.extend(customParseFormat);
 dayjs.extend(duration);
 
 const { REACT_APP_SENTRY_DSN, REACT_APP_SENTRY_PROJECT, REACT_APP_SENTRY_RELEASE } = window['env'];
@@ -48,6 +48,7 @@ ReactPixel.init('980043795863508', advancedMatching, options);
 ReactPixel.pageView();
 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName);
+const Web3ReactProviderPolygon = createWeb3ReactRoot('polygon');
 
 if (window.ethereum && (window.ethereum as any).hasOwnProperty('autoRefreshOnNetworkChange')) {
   (window.ethereum as any).autoRefreshOnNetworkChange = false;
@@ -86,7 +87,6 @@ window.addEventListener('error', error => {
   });
 });
 
-
 // eslint-disable-next-line no-extend-native
 Object.defineProperty(Array.prototype, 'flat', {
   value: function(depth = 1) {
@@ -118,11 +118,13 @@ const Root = Sentry.withProfiler(() => (
         <ErrorBoundary title={'Oops, something goes wrong...'}>
           <FixedGlobalStyle />
           <Web3ReactProvider getLibrary={getLibrary}>
-            <Web3ProviderNetwork getLibrary={getLibrary}>
-              <Updaters />
-              <ThemedGlobalStyle />
-              <App />
-            </Web3ProviderNetwork>
+            <Web3ReactProviderPolygon getLibrary={getLibrary}>
+              <Web3ProviderNetwork getLibrary={getLibrary}>
+                <Updaters />
+                <ThemedGlobalStyle />
+                <App />
+              </Web3ProviderNetwork>
+            </Web3ReactProviderPolygon>
           </Web3ReactProvider>
         </ErrorBoundary>
       </ThemeProvider>
