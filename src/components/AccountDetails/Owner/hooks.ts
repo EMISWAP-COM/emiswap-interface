@@ -52,7 +52,9 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
             return Promise.resolve();
           }
           if (parseFloat(userInput) > maxAvailableForRequests) {
-            changeStatus('Error input. The Request amount is too big');
+            changeStatus(
+              'An application error has occurred. Notify our support team. Error code 011.',
+            );
             changeTitle('Request');
             return Promise.resolve();
           }
