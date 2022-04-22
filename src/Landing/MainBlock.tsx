@@ -19,7 +19,6 @@ const MainBlock = () => (
       <Text variant="largeRubikRegular" color="paper">
         Extract the highest daily yields from liquidity mining and farming
       </Text>
-      <ExclamationHelper text="HEY!!!!" />
     </Flex>
     <Flex>
       <Image
