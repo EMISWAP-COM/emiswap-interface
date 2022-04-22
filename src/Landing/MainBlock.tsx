@@ -1,6 +1,7 @@
 import React from 'react';
 import { Flex, Grid, Head, Text, Image } from 'ThemeProvider';
 import mainLogo from 'assets/landing/main-block.png';
+import ExclamationHelper from '../components/ExclamationHelper';
 
 const MainBlock = () => (
   <Grid
@@ -18,6 +19,7 @@ const MainBlock = () => (
       <Text variant="largeRubikRegular" color="paper">
         Extract the highest daily yields from liquidity mining and farming
       </Text>
+      <ExclamationHelper text="HEY!!!!" />
     </Flex>
     <Flex>
       <Image

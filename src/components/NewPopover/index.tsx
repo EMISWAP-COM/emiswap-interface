@@ -39,13 +39,14 @@ const NewArrow = styled.div<Props>`
   ${border};
   ${position};
   &.arrow-bottom {
-    top: -5px;
+    top: -0.625rem;
   }
   &.arrow-left {
-    right: -5px;
+    right: -0.3125rem;
   }
   &.arrow-right {
-    left: -10px;
+    left: -0.625rem;
+    top: -0.3125rem !important;
   }
   &[data-hide] {
     visibility: hidden;
@@ -58,7 +59,7 @@ NewArrow.defaultProps = {
   height: 3,
   backgroundColor: 'inherit',
   border: 'inherit',
-  borderRadius: '0 0 0 0.25em',
+  borderRadius: '0 0 0 0.5em',
   position: 'absolute',
   bottom: '-0.625rem',
 };
@@ -77,7 +78,10 @@ function updateArrowStyles(styles, attributes) {
   if (placement === 'right') {
     newTransform += 'rotate(45deg)';
   }
-  if (placement === 'top') {
+  if (placement === 'bottom') {
+    newTransform += 'rotate(135deg)';
+  }
+  if (placement === 'top' || placement === 'left') {
     newTransform += 'rotate(-45deg)';
   }
   copyOfStyles.transform = `${styles.transform} ${newTransform}`;
