@@ -13,7 +13,7 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { darken } from 'polished';
 import { ChangeAddress } from './ChangeAddress';
-import { useIsKuCoinActive, useIsPolygonActive, useNetworkData } from '../../../hooks/Coins';
+import { useIsKCCActive, useIsPolygonActive, useNetworkData } from '../../../hooks/Coins';
 import { MessageTooltip } from '../../../base/ui';
 import { css } from 'styled-components';
 import { Balance as BalanceType } from '../../../state/cabinets/reducer';
@@ -270,7 +270,7 @@ const Balance = ({
           {CommonInfo}
           <BalanceRequestItem className={'balance-item-request'}>
             <RowBetween>
-              <span className={"align-self-baseline"}>
+              <span className={'align-self-baseline'}>
                 Request
                 {isRequested && (
                   <>
@@ -279,14 +279,12 @@ const Balance = ({
                   </>
                 )}
               </span>
-              <span className={"align-self-start"}>
-                <QuestionHelper
-                  text="Click the Collect to my wallet button to see more details"
-                />
+              <span className={'align-self-start'}>
+                <QuestionHelper text="Click the Collect to my wallet button to see more details" />
               </span>
             </RowBetween>
             <div>
-              <BalanceValue>{requested || "0.0"}</BalanceValue>&nbsp;ESW
+              <BalanceValue>{requested || '0.0'}</BalanceValue>&nbsp;ESW
             </div>
           </BalanceRequestItem>
         </BalanceWrapper>
@@ -349,11 +347,11 @@ export const Connection: React.FC<Props> = ({
   const balance = useSelector((state: AppState) => state.cabinets.totalBalance);
   const collectData = useCollectData(false);
 
-  const isKuCoinActive = useIsKuCoinActive();
+  const isKCCActive = useIsKCCActive();
   /*const isShidenActive = useIsShidenActive();
   const isAvalanceActive = useIsAvalancheActive();*/
 
-  const isEnableChangeWallet = !isKuCoinActive;
+  const isEnableChangeWallet = !isKCCActive;
   const isCollectDisabled = true || !Number(balance?.available.ESW);
 
   const wallet = getWalletByConnector(connector);

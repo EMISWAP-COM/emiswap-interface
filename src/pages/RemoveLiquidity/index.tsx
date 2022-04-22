@@ -53,7 +53,7 @@ export default function RemoveLiquidity({
   const { account, chainId, library } = useActiveWeb3React();
   const [tokenA, tokenB] = useMemo(() => [currencyA, currencyB], [currencyA, currencyB]);
 
-  // const isKuCoinActive = useIsKuCoinActive();
+  // const isKCCActive = useIsKCCActive();
   const { currencySymbolWrap, value: network } = useNetworkData();
 
   const theme = useContext(ThemeContext);

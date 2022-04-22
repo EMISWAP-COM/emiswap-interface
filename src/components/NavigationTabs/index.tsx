@@ -10,7 +10,7 @@ import QuestionHelper from '../QuestionHelper';
 import {
   useIsAvalancheActive,
   useIsEthActive,
-  useIsKuCoinActive,
+  useIsKCCActive,
   useIsPolygonActive,
   useIsShidenActive,
   useNetworkData,
@@ -128,7 +128,7 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
   const networkItem = useNetworkData();
 
   const isEthereumActive = useIsEthActive();
-  const isKuCoinActive = useIsKuCoinActive();
+  const isKCCActive = useIsKCCActive();
   const isPolygonActive = useIsPolygonActive();
   const isShidenActive = useIsShidenActive();
   const isAvalancheActive = useIsAvalancheActive();
@@ -151,7 +151,7 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
       <StyledNavLink id={`pool-nav-link`} to={'/pool'} isActive={() => active === TabNames.POOL}>
         {t('pool')}
       </StyledNavLink>
-      {(isEthereumActive || isPolygonActive || isKuCoinActive || isAvalancheActive) && (
+      {(isEthereumActive || isPolygonActive || isKCCActive || isAvalancheActive) && (
         <StyledNavLink
           id={`migrate-nav-link`}
           to={'/migrate'}

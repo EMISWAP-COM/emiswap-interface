@@ -156,7 +156,7 @@
       "title": "About EmiSwap",
       "subtitle": "EmiSwap is an audited cross-chain AMM with higher rewards for LPs than on any other DEX.",
       "list": {
-        "1": "Available on Polygon, Ethereum, and KuCoin Blockchain",
+        "1": "Available on Polygon, Ethereum, and KCC Blockchain",
         "2": "Audited by Hacken and BluSwarm"
       },
       "swapping": "Swapping fee for all pools",

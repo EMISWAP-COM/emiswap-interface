@@ -17,7 +17,7 @@ const CHAIN_ID_NETWORK_ARGUMENT: {
   [ChainId.RINKEBY]: 'rinkeby',
   [ChainId.KOVAN]: 'kovan',
   // @ts-ignore
-  [chainIds.KUCOIN]: 'kucoin',
+  [chainIds.KCC]: 'kcc',
   [chainIds.POLYGON]: 'polygon',
   [chainIds.MUMBAI]: 'mumbai',
   [chainIds.SHIDEN]: 'shiden',

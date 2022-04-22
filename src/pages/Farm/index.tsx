@@ -75,12 +75,12 @@ const Info = styled.div`
 // ];
 
 const LoadingInfo = styled.div`
-    min-height: 45vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    color: ${({ theme }) => theme.darkWhite};
+  min-height: 45vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  color: ${({ theme }) => theme.darkWhite};
 `;
 
 const tabItems = [
@@ -103,7 +103,7 @@ const tabItems = [
   // },
 ];
 
-const filterItems: Array<{ id: 'active' | 'finished', title: string }> = [
+const filterItems: Array<{ id: 'active' | 'finished'; title: string }> = [
   {
     id: 'active',
     title: 'Active',
@@ -121,7 +121,7 @@ export default function Farm() {
   const history = useHistory();
 
   const { library, account, chainId } = useActiveWeb3React();
-  // const isKuCoinActive = useIsKuCoinActive();
+  // const isKCCActive = useIsKCCActive();
   const isEthereumActive = useIsEthActive();
 
   const { id: userId } = useSelector((state: AppState) => state.user.info);
@@ -144,7 +144,7 @@ export default function Farm() {
     if (!isEthereumActive) {
       return [];
     }
-    return farms2.map((farm) => getContract(farm.contractAddress, FARMING_2_ABI, library, account));
+    return farms2.map(farm => getContract(farm.contractAddress, FARMING_2_ABI, library, account));
   }, [library, account, farms2, isEthereumActive]);
 
   useEffect(() => {
@@ -202,23 +202,24 @@ export default function Farm() {
     return (
       <LoadingInfo>
         <div>
-          <img src={LogoIcon} alt="logo"/>
+          <img src={LogoIcon} alt="logo" />
         </div>
       </LoadingInfo>
-    )
+    );
   }
 
   return (
     <>
       <AppBody>
-        <SwapPoolTabs active={TabNames.FARM}/>
+        <SwapPoolTabs active={TabNames.FARM} />
 
         {account && loading && (
           <LoadingInfo>
             <div>
-              <img src={LogoIcon} alt="logo"/>
+              <img src={LogoIcon} alt="logo" />
               <div style={{ width: '100%', marginTop: '30px' }}>
-                We’re uploading the list of our awesome farming pools.<br/>
+                We’re uploading the list of our awesome farming pools.
+                <br />
                 It may take a few seconds 😉
               </div>
             </div>
@@ -229,11 +230,15 @@ export default function Farm() {
           <>
             <StyledFarmingHeader>
               <StyledTabs>
-                <Tabs items={tabItems} selectedItemId={selectedTab} onChange={setSelectedTab}/>
+                <Tabs items={tabItems} selectedItemId={selectedTab} onChange={setSelectedTab} />
               </StyledTabs>
               {/* <RadioGroup buttonsList={radioList} groupName="farms" value={radioValue} onChange={setRadioValue} /> */}
               <StyledTabs>
-                <Tabs items={filterItems} selectedItemId={selectedFilterTab} onChange={setSelectedFilterTab as any}/>
+                <Tabs
+                  items={filterItems}
+                  selectedItemId={selectedFilterTab}
+                  onChange={setSelectedFilterTab as any}
+                />
               </StyledTabs>
             </StyledFarmingHeader>
             <StyledInfoWrapper>
@@ -256,35 +261,36 @@ export default function Farm() {
               />
             ))}
 
-            <br/><br/>
+            <br />
+            <br />
 
             <StyledInfoWrapper>
               <StyledInfoTitle>
                 {isStakingTab(selectedTab) ? 'Fixed APR Staking' : 'Fixed APR Farming'}
               </StyledInfoTitle>
               <StyledInfo>
-                Stake coins for a limited period of time to boost your APR. Please not that you will not be able to
-                withdraw staked coins before the end of the farming period. Farming rewards are allocated to your
-                EmiSwap account every 30 seconds.
+                Stake coins for a limited period of time to boost your APR. Please not that you will
+                not be able to withdraw staked coins before the end of the farming period. Farming
+                rewards are allocated to your EmiSwap account every 30 seconds.
               </StyledInfo>
             </StyledInfoWrapper>
-            {farming2Contracts.map(contract =>
+            {farming2Contracts.map(contract => (
               <Farm2Component
                 key={contract.address}
                 contract={contract}
                 selectedTab={selectedTab}
                 selectedFilterTab={selectedFilterTab}
                 eswPriceInDai={eswPriceInDai}
-              />,
-            )}
+              />
+            ))}
           </>
         )}
 
         {!account && (
           <Info>
             Please connect your wallet to see all available farms and staking pools
-            <br/>
-            <br/>
+            <br />
+            <br />
             <Button onClick={toggleWalletModal}>Connect to a wallet</Button>
           </Info>
         )}
