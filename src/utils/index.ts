@@ -227,7 +227,12 @@ export function getVestingContract(library: Web3Provider, account: string, chain
 }
 
 export function getPolygonCollectContract(library: Web3Provider, account: string) {
-  return getContract(POLYGON_EMI_DELIVERY, EMISWAP_COLLECT_ABI, library, account);
+  return getContract(
+    '0xcee73E084f75E5aB861007052D3a427a1c9D3545',
+    EMISWAP_COLLECT_ABI,
+    library,
+    account,
+  );
 }
 
 export function getCollectContract(library: Web3Provider, account: string, chainId: ChainId) {
