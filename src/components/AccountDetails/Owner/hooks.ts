@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useActiveWeb3React, usePolygonWeb3React } from '../../../hooks';
 import { AppState } from '../../../state';
-import { getCollectContract, getPolygonCollectContract } from '../../../utils';
+import { getCollectContract } from '../../../utils';
 import { Contract } from '@ethersproject/contracts';
 import { formatUnits, parseUnits } from '@ethersproject/units';
 import { useAuth } from '../../../hooks/useAuth';
@@ -245,7 +245,7 @@ export const useCollectData = closeWindow => {
     chainId,
   ]);
   const polygonContract: Contract | null = useMemo(
-    () => getPolygonCollectContract(polygonLibrary, polygonAccount),
+    () => getCollectContract(polygonLibrary, polygonAccount, chainId),
     [polygonLibrary, polygonAccount, polygonChainId],
   );
 

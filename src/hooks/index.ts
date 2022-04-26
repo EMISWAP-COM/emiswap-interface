@@ -47,7 +47,8 @@ export function usePolygon() {
   const { activate, active } = useWeb3ReactCore('polygon');
   useEffect(() => {
     if (!active) {
-      const polygon = networksItems.find(item => item.name.toLowerCase() === 'polygon');
+      const VALUE_TO_FIND = process.env.NODE_ENV === 'development' ? 'mumbai' : 'polygon';
+      const polygon = networksItems.find(item => item.value.toLowerCase() === VALUE_TO_FIND);
       if (!polygon) return;
       const key = Number(polygon.chainId);
       const value = String(polygon.rpcUrls[0]);
