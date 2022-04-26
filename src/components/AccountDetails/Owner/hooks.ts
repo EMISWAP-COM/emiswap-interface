@@ -248,11 +248,14 @@ export const useCollectData = closeWindow => {
     () => getCollectContract(polygonLibrary, polygonAccount, chainId),
     [polygonLibrary, polygonAccount, polygonChainId],
   );
+  console.log('polygonContract: ', polygonContract);
 
   useEffect(() => {
+    console.log('before calling');
     polygonContract
       .getRemainderOfRequestsbyWallet(account)
       .then(({ remainderTotal, remainderPreparedForClaim, veryFirstRequestDate }) => {
+        console.table({ remainderTotal, remainderPreparedForClaim, veryFirstRequestDate });
         changeState({
           ...state,
           requested: formatUnits(remainderTotal, 18),
