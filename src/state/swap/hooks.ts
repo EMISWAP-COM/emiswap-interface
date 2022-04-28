@@ -120,7 +120,7 @@ export function useCurrencyWrapped(currency: Token | null | undefined) {
     switch (chainId as any) {
       case ChainId.MAINNET:
         return WETH;
-      case chainIds.KUCOIN:
+      case chainIds.KCC:
         return WKCS;
       case chainIds.POLYGON:
         return WMATIC;

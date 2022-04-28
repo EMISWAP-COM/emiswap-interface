@@ -131,10 +131,10 @@ export function useIsEthActive(): boolean {
   return isEthereumActive(chainId);
 }
 
-export function useIsKuCoinActive(): boolean {
+export function useIsKCCActive(): boolean {
   const { chainId } = useActiveWeb3React();
 
-  return (chainId as any) === chainIds.KUCOIN;
+  return (chainId as any) === chainIds.KCC;
 }
 
 export function useIsPolygonActive(): boolean {
