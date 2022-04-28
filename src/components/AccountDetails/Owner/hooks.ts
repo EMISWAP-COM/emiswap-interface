@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useActiveWeb3React } from '../../../hooks';
+import { useActiveWeb3React, usePolygonWeb3React } from '../../../hooks';
 import { AppState } from '../../../state';
 import { getCollectContract } from '../../../utils';
 import { Contract } from '@ethersproject/contracts';
@@ -232,65 +232,83 @@ export const useCollectData = closeWindow => {
     handler: () => {},
   });
   const { library, account, chainId } = useActiveWeb3React();
+  const {
+    library: polygonLibrary,
+    account: polygonAccount,
+    chainId: polygonChainId,
+  } = usePolygonWeb3React();
   const [txHash, changeTxHash] = useState('');
   const [progress, changeProgress] = useState('init');
+  console.log('library: ', library, 'account: ', account);
   const contract: Contract | null = useMemo(() => getCollectContract(library, account, chainId), [
     library,
     account,
     chainId,
   ]);
+  console.log('contract: ', contract);
+  console.log('polygonLibrary: ', polygonLibrary, 'polygonAccount: ', polygonAccount);
+  const polygonContract: Contract | null = useMemo(
+    () => getCollectContract(polygonLibrary, polygonAccount, chainId),
+    [polygonLibrary, polygonAccount, polygonChainId],
+  );
+  console.log('polygonContract: ', polygonContract);
+
+  useEffect(() => {
+    console.log('before calling');
+    polygonContract
+      .getRemainderOfRequestsbyWallet(account)
+      .then(({ remainderTotal, remainderPreparedForClaim, veryFirstRequestDate }) => {
+        console.table({ remainderTotal, remainderPreparedForClaim, veryFirstRequestDate });
+        changeState({
+          ...state,
+          requested: formatUnits(remainderTotal, 18),
+          unlocked: formatUnits(remainderPreparedForClaim, 18),
+          veryFirstRequestDate: formatDateShortMonth(toDateFromContract(veryFirstRequestDate)),
+        });
+      });
+  }, [polygonContract]);
 
   useEffect(() => {
     Promise.all([
-      contract.getRemainderOfRequests(),
       contract.getAvailableToClaim(),
       contract.getDatesStarts(),
       contract.claimDailyLimit(),
-    ]).then(
-      ([
-        { remainderTotal, remainderPreparedForClaim, veryFirstRequestDate },
-        { available },
-        { todayStart, tomorrowStart },
-        claimLimit,
-      ]) => {
-        changeState({
-          requested: formatUnits(remainderTotal, 18),
-          unlocked: formatUnits(remainderPreparedForClaim, 18),
-          avalible: formatUnits(available, 18),
-          currentTime: formatTime(todayStart),
-          currentDay: formatDate(todayStart),
-          nextTime: formatTime(tomorrowStart),
-          nextDay: formatDate(tomorrowStart),
-          veryFirstRequestDate: formatDateShortMonth(toDateFromContract(veryFirstRequestDate)),
-          nextValue: formatUnits(claimLimit, 18),
-          handler: () => {
-            changeProgress('pending');
-            contract
-              .claim()
-              .then(transactionResult => {
-                if (!transactionResult) {
-                  throw new Error('');
-                }
-                changeTxHash(transactionResult.hash);
-                return transactionResult.wait();
-              })
-              .catch(_ => {
-                // TODO handle errors
-              })
-              .then(transactionResult => {
-                if (!transactionResult) {
-                  throw new Error('');
-                }
-                changeProgress('success');
-              })
-              .finally(() => {
-                closeWindow();
-                changeProgress('init');
-              });
-          },
-        });
-      },
-    );
+    ]).then(([{ available }, { todayStart, tomorrowStart }, claimLimit]) => {
+      changeState({
+        ...state,
+        avalible: formatUnits(available, 18),
+        currentTime: formatTime(todayStart),
+        currentDay: formatDate(todayStart),
+        nextTime: formatTime(tomorrowStart),
+        nextDay: formatDate(tomorrowStart),
+        nextValue: formatUnits(claimLimit, 18),
+        handler: () => {
+          changeProgress('pending');
+          contract
+            .claim()
+            .then(transactionResult => {
+              if (!transactionResult) {
+                throw new Error('');
+              }
+              changeTxHash(transactionResult.hash);
+              return transactionResult.wait();
+            })
+            .catch(_ => {
+              // TODO handle errors
+            })
+            .then(transactionResult => {
+              if (!transactionResult) {
+                throw new Error('');
+              }
+              changeProgress('success');
+            })
+            .finally(() => {
+              closeWindow();
+              changeProgress('init');
+            });
+        },
+      });
+    });
   }, [contract, closeWindow]);
 
   return Object.assign({ progress, txHash }, state);

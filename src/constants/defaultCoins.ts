@@ -4051,7 +4051,7 @@ const defaultCoins: DefaultCoins = {
       symbol: 'ESW',
     },
 
-    // KuCoin
+    // KCC
     {
       address: '0x4446fc4eb47f2f6586f9faab68b3498f86c07521',
       chainId: 321,
@@ -4768,7 +4768,7 @@ const defaultCoins: DefaultCoins = {
 export default defaultCoins;
 
 export const mustVisibleAddresses = {
-  kucoin: [
+  kcc: [
     '0x4446fc4eb47f2f6586f9faab68b3498f86c07521',
     '0xc0ffee0000921eb8dd7d506d4de8d5b79b856157',
     '0x980a5afef3d17ad98635f6c5aebcbaeded3c3430',

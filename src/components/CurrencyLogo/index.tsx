@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import EswLogo from '../../assets/currencies/ESW.png';
 import EthereumLogo from '../../assets/images/ethereum-logo.png';
-import KucoinLogo from '../../assets/currencies/KCS.png';
+import KCCLogo from '../../assets/svg/kcc-network.svg';
 import MaticLogo from '../../assets/currencies/MATIC.png';
 import SdnLogo from '../../assets/currencies/SDN.png';
 import AvaxLogo from '../../assets/currencies/AVAX.png';
@@ -89,7 +89,7 @@ export default function CurrencyLogo({
   }
 
   if (currency?.symbol === 'KCS' || currency?.symbol === 'WKCS') {
-    return <StyledEthereumLogo src={KucoinLogo} size={size} {...rest} />;
+    return <StyledEthereumLogo src={KCCLogo} size={size} {...rest} />;
   }
 
   if (currency?.symbol === 'ETH' || currency?.symbol === 'WETH') {

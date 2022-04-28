@@ -4,12 +4,13 @@ import { Web3ReactContextInterface } from '@web3-react/core/dist/types';
 import { useEffect, useState } from 'react';
 import { isMobile } from 'react-device-detect';
 import { injected } from '../connectors';
-import { INetworkItem, NetworkContextName } from '../constants';
+import { INetworkItem, NetworkContextName, networksItems } from '../constants';
 import { ChainId } from '@uniswap/sdk';
 import { toHex } from 'web3-utils';
 import { FortmaticConnector } from '../connectors/Fortmatic';
 import { PortisConnector } from '@web3-react/portis-connector';
 import { useIsMetaMask } from './Coins';
+import { NetworkConnector } from '../connectors/NetworkConnector';
 
 export { default as useToggle } from './useToggle';
 export { default as useMediaQuery } from './useMediaQuery';
@@ -20,6 +21,12 @@ export function useActiveWeb3React(): Web3ReactContextInterface<Web3Provider> & 
   const context = useWeb3ReactCore<Web3Provider>();
   const contextNetwork = useWeb3ReactCore<Web3Provider>(NetworkContextName);
   return context.active ? context : contextNetwork;
+}
+
+export function usePolygonWeb3React(): Web3ReactContextInterface<Web3Provider> & {
+  chainId?: ChainId;
+} {
+  return useWeb3ReactCore<Web3Provider>('polygon');
 }
 
 export function useAsync(asyncFn: any, onSuccess: any) {
@@ -34,6 +41,23 @@ export function useAsync(asyncFn: any, onSuccess: any) {
       isMounted = false;
     };
   }, [asyncFn, onSuccess]);
+}
+
+export function usePolygon() {
+  const { activate, active } = useWeb3ReactCore('polygon');
+  useEffect(() => {
+    if (!active) {
+      const VALUE_TO_FIND = useIsProduction() ? 'polygon' : 'mumbai';
+      const polygon = networksItems.find(item => item.value.toLowerCase() === VALUE_TO_FIND);
+      if (!polygon) return;
+      const key = Number(polygon.chainId);
+      const value = String(polygon.rpcUrls[0]);
+      const network = new NetworkConnector({ urls: { [key]: value } });
+      activate(network).catch(() => {
+        console.error('Failed to active polygon connection');
+      });
+    }
+  }, [activate, active]);
 }
 
 export function useEagerConnect() {
@@ -107,6 +131,10 @@ export function useInactiveListener(suppress = false) {
     }
     return;
   }, [active, error, suppress, activate]);
+}
+
+export function useIsProduction() {
+  return window['env'].REACT_APP_ESW_CLAIM_API === 'https://sign.emiswap.com';
 }
 
 export function useSwitchNetwork() {
