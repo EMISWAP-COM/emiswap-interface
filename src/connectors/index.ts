@@ -28,7 +28,7 @@ export const injected = new InjectedConnector({
     5,
     chainIds.BSC,
     chainIds.KOVAN,
-    chainIds.KUCOIN,
+    chainIds.KCC,
     chainIds.POLYGON,
     chainIds.MUMBAI,
     chainIds.SHIDEN,

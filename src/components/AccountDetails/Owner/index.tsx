@@ -68,7 +68,7 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
 
   const isEthActive = useIsEthActive();
   const isPolygonActive = useIsPolygonActive();
-  /*const isKuCoinActive = useIsKuCoinActive();
+  /*const isKCCActive = useIsKCCActive();
   const isShidenActive = useIsShidenActive();
   const isAvalanceActive = useIsAvalancheActive();*/
 

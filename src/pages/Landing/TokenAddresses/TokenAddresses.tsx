@@ -6,7 +6,7 @@ import mmPng from '../../../assets/images/metamask.png';
 import copySvg from '../../../assets/svg/copy.svg';
 import polygonSvg from '../../../assets/svg/polygon-network.svg';
 import ethereumSvg from '../../../assets/svg/ethereum-network.svg';
-import kucoinSvg from '../../../assets/svg/kucoin-network.svg';
+import kccSVG from '../../../assets/svg/kcc-network.svg';
 import arrowSvg from '../../../assets/svg/arrow.svg';
 import { shortenAddressHeadTail } from '../../../utils';
 import { useTranslation } from 'react-i18next';
@@ -63,10 +63,10 @@ const TokenAddresses = () => {
       decimals: 18,
     },
     {
-      chainName: 'Kucoin',
+      chainName: 'KCC',
       address: '0x8933a6e58eeee063b5fd3221f2e1d17821dc1031',
       chainId: '321',
-      icon: kucoinSvg,
+      icon: kccSVG,
       symbol: 'ESW',
       decimals: 18,
     },

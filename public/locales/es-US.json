@@ -115,7 +115,7 @@
       "title": "Sobre EmiSwap",
       "subtitle": "EmiSwap es un AMM de cadena cruzada auditado con recompensas más altas para LP que en cualquier otro DEX.",
       "list": {
-        "1": "Disponible en Polygon, Ethereum y KuCoin Blockchain",
+        "1": "Disponible en Polygon, Ethereum y KCC Blockchain",
         "2": "Auditado por Hacken y BluSwarm"
       },
       "swapping": "Tarifa de intercambio para todas los pools",

@@ -20,7 +20,7 @@ const Farm2Component: React.FC<FarmComponentProps> = ({
 }) => {
   const farming2 = useFarming2(contract);
 
-  const isKuCoinToken = farming2.stakeToken?.symbol?.includes('KCS');
+  const isKCCToken = farming2.stakeToken?.symbol?.includes('KCS');
 
   const isVisibleFarm = useIsVisibleFarm(farming2, selectedTab, selectedFilterTab);
 
@@ -40,7 +40,7 @@ const Farm2Component: React.FC<FarmComponentProps> = ({
       onStake={farming2.stake}
       onCollect={farming2.collect}
       tokenMode={farming2.tokenMode}
-      isKuCoinToken={isKuCoinToken}
+      isKCCToken={isKCCToken}
     />
   ) : null;
 };

@@ -11,7 +11,7 @@ import LpTokenSymbol from '../LpTokenSymbol';
 import isLpToken from '../isLpToken';
 import { ExternalLink } from '../../../theme';
 import { FarmingTimeType } from '../constants';
-import KucoinLogo from '../../../assets/currencies/KCS.png';
+import KCCLogo from '../../../assets/currencies/KCS.png';
 import {
   useIsEthActive,
   useIsPolygonActive,
@@ -225,7 +225,7 @@ type ExtendableRowProps = {
   type: string;
   tokenMode: number;
   stakedTokens?: any[];
-  isKuCoinToken?: boolean;
+  isKCCToken?: boolean;
   balance?: string;
   availableToCollect?: string;
   farming365?: ReturnType<typeof useFarming365>;
@@ -250,7 +250,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
   // stakedTokens = [],
   balance,
   availableToCollect,
-  isKuCoinToken = false,
+  isKCCToken = false,
   farming365 = null,
   onStake = ((...args) => {}) as any,
   onCollect = ((...args) => {}) as any,
@@ -349,9 +349,9 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
           <StyledBlock width={150}>
             <StyledBlockTitle>Liquidity</StyledBlockTitle>
             <StyledBlockValue>
-              {isKuCoinToken && (
+              {isKCCToken && (
                 <StyledCurrencyLogo>
-                  <StyledEthereumLogo src={KucoinLogo} size={'24px'} />
+                  <StyledEthereumLogo src={KCCLogo} size={'24px'} />
                 </StyledCurrencyLogo>
               )}
               <StyledTruncatedText>
@@ -359,7 +359,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
                   value={liquidity}
                   displayType={'text'}
                   thousandSeparator={' '}
-                  prefix={isKuCoinToken ? '' : '$ '}
+                  prefix={isKCCToken ? '' : '$ '}
                   decimalScale={2}
                 />
               </StyledTruncatedText>

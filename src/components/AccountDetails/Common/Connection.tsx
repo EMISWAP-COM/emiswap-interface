@@ -13,7 +13,7 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../../state';
 import { darken } from 'polished';
 import { ChangeAddress } from './ChangeAddress';
-import { useIsKuCoinActive, useIsPolygonActive, useNetworkData } from '../../../hooks/Coins';
+import { useIsKCCActive, useIsPolygonActive, useNetworkData } from '../../../hooks/Coins';
 import { MessageTooltip } from '../../../base/ui';
 import { css } from 'styled-components';
 import { Balance as BalanceType } from '../../../state/cabinets/reducer';
@@ -349,11 +349,11 @@ export const Connection: React.FC<Props> = ({
   const balance = useSelector((state: AppState) => state.cabinets.totalBalance);
   const collectData = useCollectData(false);
 
-  const isKuCoinActive = useIsKuCoinActive();
+  const isKCCActive = useIsKCCActive();
   /*const isShidenActive = useIsShidenActive();
   const isAvalanceActive = useIsAvalancheActive();*/
 
-  const isEnableChangeWallet = !isKuCoinActive;
+  const isEnableChangeWallet = !isKCCActive;
   const isCollectDisabled = true || !Number(balance?.available.ESW);
 
   const wallet = getWalletByConnector(connector);

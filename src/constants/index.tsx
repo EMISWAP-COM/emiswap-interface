@@ -1,7 +1,7 @@
 import { keccak256 } from '@ethersproject/solidity';
 import { ChainId, ETHER, JSBI, Percent, Token } from '@uniswap/sdk';
 import EthereumNetworkIcon from '../assets/svg/ethereum-network.svg';
-import KuCoinNetworkIcon from '../assets/svg/kucoin-network.svg';
+import KCCNetworkIcon from '../assets/svg/kcc-network.svg';
 import Logo from '../assets/svg/emiswap.svg';
 import { fortmatic, injected, portis, walletconnect, walletlink } from '../connectors';
 import { bytecode } from './abis/Emiswap.json';
@@ -51,7 +51,7 @@ export const WETH = new Token(
 
 export const WKCS = new Token(
   // @ts-ignore
-  chainIds.KUCOIN,
+  chainIds.KCC,
   '0x4446fc4eb47f2f6586f9faab68b3498f86c07521',
   18,
   'WKCS',
@@ -294,9 +294,9 @@ export const ESW: ChainTokenList = {
     new Token(ChainId.KOVAN, esw_addresses[chainIds.KOVAN], 18, 'ESW', 'EmiDAO Token'),
   ],
   // @ts-ignore
-  [chainIds.KUCOIN]: [
+  [chainIds.KCC]: [
     // @ts-ignore
-    new Token(chainIds.KUCOIN, esw_addresses[chainIds.KUCOIN], 18, 'ESW', 'EmiDAO Token'),
+    new Token(chainIds.KCC, esw_addresses[chainIds.KCC], 18, 'ESW', 'EmiDAO Token'),
   ],
   // @ts-ignore
   [chainIds.POLYGON]: [
@@ -337,7 +337,7 @@ const ETH_ONLY: ChainTokenList = {
   [ChainId.GÖRLI]: [ETHER],
   [ChainId.KOVAN]: [ETHER],
   // @ts-ignore
-  [chainIds.KUCOIN]: [ETHER],
+  [chainIds.KCC]: [ETHER],
   [chainIds.POLYGON]: [ETHER],
   [chainIds.MUMBAI]: [ETHER],
   [chainIds.SHIDEN]: [ETHER],
@@ -354,7 +354,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   [ChainId.KOVAN]: [KOVAN_DAI, KOVAN_USDC, KOVAN_WETH],
   [ChainId.MAINNET]: [DAI, USDC, USDT, COMP, MKR, CHI, WETH],
   // @ts-ignore
-  [chainIds.KUCOIN]: [WKCS],
+  [chainIds.KCC]: [WKCS],
   [chainIds.POLYGON]: [WMATIC],
   [chainIds.MUMBAI]: [MUMBAI_WMATIC],
   [chainIds.SHIDEN]: [WSDN],
@@ -370,7 +370,7 @@ export const SUGGESTED_BASES: ChainTokenList = {
   [ChainId.KOVAN]: [KOVAN_DAI, KOVAN_USDC, KOVAN_WETH, ESW[ChainId.KOVAN][0]],
   [ChainId.MAINNET]: [DAI, USDC, USDT, CHI, ESW[ChainId.MAINNET][0]],
   // @ts-ignore
-  [chainIds.KUCOIN]: [ESW[chainIds.KUCOIN][0]],
+  [chainIds.KCC]: [ESW[chainIds.KCC][0]],
   // @ts-ignore
   [chainIds.POLYGON]: [ESW[chainIds.POLYGON][0]],
   // @ts-ignore
@@ -391,7 +391,7 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   [ChainId.KOVAN]: [KOVAN_DAI, KOVAN_USDC, KOVAN_WETH, ESW[ChainId.KOVAN][0]],
   [ChainId.MAINNET]: [ETHER, DAI, USDC, USDT, CHI, ESW[ChainId.MAINNET][0], WETH],
   // @ts-ignore
-  [chainIds.KUCOIN]: [ESW[chainIds.KUCOIN][0]],
+  [chainIds.KCC]: [ESW[chainIds.KCC][0]],
   // @ts-ignore
   [chainIds.POLYGON]: [ESW[chainIds.POLYGON][0]],
   // @ts-ignore
@@ -476,7 +476,7 @@ export const SUPPORTED_WALLETS = {
       iconName: CoinbaseWalletIcon,
       description: 'Use Coinbase Wallet app on mobile device',
       href: null,
-      unavailableNetworksIds: [chainIds.KUCOIN, chainIds.SHIDEN],
+      unavailableNetworksIds: [chainIds.KCC, chainIds.SHIDEN],
       color: '#315CF5',
     },
     COINBASE_LINK: {
@@ -484,7 +484,7 @@ export const SUPPORTED_WALLETS = {
       iconName: CoinbaseWalletIcon,
       description: 'Open in Coinbase Wallet app.',
       href: 'https://go.cb-w.com/fWpxXDRLvhb',
-      unavailableNetworksIds: [chainIds.KUCOIN, chainIds.SHIDEN],
+      unavailableNetworksIds: [chainIds.KCC, chainIds.SHIDEN],
       color: '#315CF5',
       mobile: true,
       mobileOnly: true,
@@ -496,7 +496,7 @@ export const SUPPORTED_WALLETS = {
       description: 'Login using Fortmatic hosted wallet',
       href: null,
       unavailableNetworksIds: [
-        chainIds.KUCOIN,
+        chainIds.KCC,
         chainIds.POLYGON,
         chainIds.MUMBAI,
         chainIds.SHIDEN,
@@ -514,7 +514,7 @@ export const SUPPORTED_WALLETS = {
       description: 'Login using Portis hosted wallet',
       href: null,
       unavailableNetworksIds: [
-        chainIds.KUCOIN,
+        chainIds.KCC,
         chainIds.SHIDEN,
         chainIds.AVALANCHE,
         chainIds.ASTAR,
@@ -615,10 +615,10 @@ export const networksItems: INetworkItem[] = [
   {
     alias: 'kcc',
     value: 'kucoin',
-    chainId: chainIds.KUCOIN,
+    chainId: chainIds.KCC,
     token: KCS,
-    icon: KuCoinNetworkIcon,
-    name: 'KuCoin',
+    icon: KCCNetworkIcon,
+    name: 'KCC',
     rpcUrls: ['https://rpc-mainnet.kcc.network'],
     currencySymbol: 'KCS',
     currencySymbolWrap: 'WKCS',
