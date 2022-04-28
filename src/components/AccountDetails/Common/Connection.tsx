@@ -265,34 +265,34 @@ const Balance = ({
   );
   return (
     <>
-      {isPolygon ? (
-        <BalanceWrapper>
-          {CommonInfo}
-          <BalanceRequestItem className={'balance-item-request'}>
-            <RowBetween>
-              <span className={"align-self-baseline"}>
-                Request
-                {isRequested && (
-                  <>
-                    <span>&nbsp;on&nbsp;</span>
-                    <DarkText>{veryFirstRequestDate}</DarkText>
-                  </>
-                )}
-              </span>
-              <span className={"align-self-start"}>
-                <QuestionHelper
-                  text="Click the Collect to my wallet button to see more details"
-                />
-              </span>
-            </RowBetween>
-            <div>
-              <BalanceValue>{requested || "0.0"}</BalanceValue>&nbsp;ESW
-            </div>
-          </BalanceRequestItem>
-        </BalanceWrapper>
-      ) : (
-        <BalanceFlexWrapper>{CommonInfo}</BalanceFlexWrapper>
-      )}
+      <BalanceWrapper>
+        {CommonInfo}
+        <BalanceRequestItem className={'balance-item-request'}>
+          <RowBetween>
+            <span className={'align-self-baseline'}>
+              Request
+              {isRequested && (
+                <>
+                  <span>&nbsp;on&nbsp;</span>
+                  <DarkText>{veryFirstRequestDate}</DarkText>
+                </>
+              )}
+            </span>
+            <span className={'align-self-start'}>
+              <QuestionHelper
+                text={
+                  isPolygon
+                    ? 'Click the Collect to my wallet button to see more details'
+                    : 'Switch to the Polygon network to see more details'
+                }
+              />
+            </span>
+          </RowBetween>
+          <div>
+            <BalanceValue>{requested || '0.0'}</BalanceValue>&nbsp;ESW
+          </div>
+        </BalanceRequestItem>
+      </BalanceWrapper>
       <Options>
         {children}
         {isPolygon ? (
