@@ -58,7 +58,7 @@ const Numbers = ({ t }: Numbers): ReactElement => {
           <div className="numbers__card">
             <div className="numbers__desc">{t('landing.numbers.users')}</div>
             <div className="numbers__value">
-              {totalTradingVolume == null ? <Skeleton /> : '86K'}
+              {totalTradingVolume == null ? <Skeleton /> : '87K'}
             </div>
           </div>
           <div className="numbers__card">
