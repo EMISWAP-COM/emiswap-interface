@@ -40,6 +40,7 @@ const liquidityTokensMap = {
   [chainIds.SHIDEN]: {
     '0x831b25EB4073d92E4766411f0DbDd0b549753179': '0x818ec0a7fe18ff94269904fced6ae3dae6d6dc0b',
     '0x94a12b208Ddbddd35bd6a6Bd9e1C0dA70B18E5bd': '0x818ec0a7fe18ff94269904fced6ae3dae6d6dc0b',
+    '0x3887d319dEC4425E8F0e74baeCB7724B39F8f183': '0x818ec0a7fe18ff94269904fced6ae3dae6d6dc0b',
   },
 };
 
