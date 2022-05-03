@@ -10,6 +10,11 @@ import kccSVG from '../../../assets/svg/kcc-network.svg';
 import arrowSvg from '../../../assets/svg/arrow.svg';
 import { shortenAddressHeadTail } from '../../../utils';
 import { useTranslation } from 'react-i18next';
+import chainIds from '../../../constants/chainIds';
+import AstarNetworkIcon from '../../../assets/images/astar-network.png';
+import ShidenNetworkIcon from '../../../assets/images/shiden-network.png';
+import GateChainNetworkIcon from '../../../assets/currencies/GT.png';
+import AuroraNetworkIcon from '../../../assets/svg/aurora-network.svg';
 
 const TokenAddresses = () => {
   const { t } = useTranslation();
@@ -68,6 +73,38 @@ const TokenAddresses = () => {
       chainId: '321',
       icon: kccSVG,
       symbol: 'ESW',
+      decimals: 18,
+    },
+    {
+      chainName: 'Astar',
+      address: '0xb361DAD0Cc1a03404b650A69d9a5ADB5aF8A531F',
+      chainId: chainIds.ASTAR,
+      icon: AstarNetworkIcon,
+      symbol: 'ASTR',
+      decimals: 18,
+    },
+    {
+      chainName: 'Shiden',
+      address: '0xb4BcA5955F26d2fA6B57842655d7aCf2380Ac854',
+      chainId: chainIds.SHIDEN,
+      icon: ShidenNetworkIcon,
+      symbol: 'SDN',
+      decimals: 18,
+    },
+    {
+      chainName: 'GateChain',
+      address: '0x18f38359551258C35e8593d775cb6Fe8D27fd89b',
+      chainId: chainIds.GATECHAIN,
+      icon: GateChainNetworkIcon,
+      symbol: 'GT',
+      decimals: 18,
+    },
+    {
+      chainName: 'Aurora',
+      address: '0xd2Fa7C9386040f260e3Ec934601982aD4Cd7902B',
+      chainId: chainIds.AURORA,
+      icon: AuroraNetworkIcon,
+      symbol: 'ETH',
       decimals: 18,
     },
   ];
