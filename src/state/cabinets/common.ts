@@ -1,4 +1,8 @@
 import { Deposit, LockedDeposit, PaymentOperationTokens } from './reducer';
+import { fetchWrapper } from '../../api/fetchWrapper';
+
+// @ts-ignore
+const baseUrl = window.env ? window.env.REACT_APP_PUBLIC_URL : '';
 
 export interface InitialState {
   balance: Balance;
@@ -106,4 +110,42 @@ export const initialState: InitialState = {
     farming365: {},
     myRewardHistory: [],
   },
+};
+
+export const getNetworkUrl = (network: string): string => {
+  switch (network) {
+    case 'polygon':
+      return 'polygon_main';
+    case 'mumbai':
+      return 'polygon_test';
+    case 'shiden':
+      return 'shiden_main';
+    default:
+      return 'eth_main';
+  }
+};
+
+export const loadBalance = async (
+  { userId, network }: { userId: string; network: string },
+  { dispatch, getState },
+) => {
+  const url = `${baseUrl}/v1/public/users/${userId}/balances/${getNetworkUrl(network)} `;
+  try {
+    const response = await fetchWrapper.get(url);
+    return response;
+  } catch (e) {
+    //FIXME - встроить централизованную обработку ошибок
+    // dispatch(
+    //   addPopup({
+    //     key: 'loadBalance',
+    //     content: {
+    //       status: {
+    //         name: e.message,
+    //         isError: true,
+    //       },
+    //     },
+    //   }),
+    // );
+    return Promise.reject(e);
+  }
 };

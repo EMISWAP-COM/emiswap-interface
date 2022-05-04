@@ -3,4 +3,4 @@ import { loadBalance } from './common';
 
 // export const loadPolygonBalance = createAction('loadPolygonBalance');
 
-export const loadPolygonBalance = createAsyncThunk('loadPolygonBalance', loadBalance);
+export const loadShidenBalance = createAsyncThunk('loadShidenBalance', loadBalance);
