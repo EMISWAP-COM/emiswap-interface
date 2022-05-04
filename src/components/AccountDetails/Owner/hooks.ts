@@ -245,16 +245,12 @@ export const useCollectData = closeWindow => {
     account,
     chainId,
   ]);
-  console.log('contract: ', contract);
-  console.log('polygonLibrary: ', polygonLibrary, 'polygonAccount: ', polygonAccount);
   const polygonContract: Contract | null = useMemo(
     () => getCollectContract(polygonLibrary, polygonAccount, chainId),
     [polygonLibrary, polygonAccount, polygonChainId],
   );
-  console.log('polygonContract: ', polygonContract);
 
   useEffect(() => {
-    console.log('before calling');
     polygonContract
       .getRemainderOfRequestsbyWallet(account)
       .then(({ remainderTotal, remainderPreparedForClaim, veryFirstRequestDate }) => {
