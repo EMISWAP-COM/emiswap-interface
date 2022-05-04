@@ -30,6 +30,7 @@ import styled from 'styled-components/macro';
 import { useNetworkData } from '../../hooks/Coins';
 import { loadPolygonBalance } from '../../state/cabinets/action-polygon';
 import { loadTotalBalance } from '../../state/cabinets/actions';
+import { loadShidenBalance } from '../../state/cabinets/action-shiden';
 
 export enum UserRoles {
   client = 'client',
@@ -86,6 +87,7 @@ const WalletModal: React.FC<WalletModalProps> = ({ ENSName }) => {
   // always reset to account view
   useEffect(() => {
     dispatch(loadPolygonBalance({ userId: user.id, network }));
+    dispatch(loadShidenBalance({ userId: user.id, network }));
     dispatch(loadTotalBalance(user.id));
     if (walletModalOpen) {
       setPendingError(false);

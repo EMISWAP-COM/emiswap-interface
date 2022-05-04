@@ -86,6 +86,8 @@ export const ESWRewards = () => {
   const balance = useSelector((state: AppState) => {
     if (network === 'polygon' || network === 'mumbai') {
       return state.polygonCabinet.balance;
+    } else if (network === 'shiden') {
+      return state.shidenCabinet.balance;
     } else return state.cabinets.balance;
   });
   const grouped = balance?.total?.grouped;
@@ -128,7 +130,7 @@ export const ESWRewards = () => {
           <Item text="Fee Compensation" count={balance?.total.grouped.compensation?.ESW!} />
         </RewardsWrapper>
       )}
-      {(network === 'polygon' || network === 'mumbai') && (
+      {(network === 'polygon' || network === 'mumbai' || network === 'shiden') && (
         <RewardsWrapperPolygon>
           <Item
             text="180% APR campain"
