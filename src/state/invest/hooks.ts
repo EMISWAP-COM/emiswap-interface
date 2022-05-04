@@ -45,12 +45,13 @@ const EMPTY_LIST: TokenAddressMap = {
   [ChainId.GÖRLI]: {},
   [ChainId.MAINNET]: {},
   // @ts-ignore
-  [chainIds.KUCOIN]: {},
+  [chainIds.KCC]: {},
   [chainIds.POLYGON]: {},
   [chainIds.MUMBAI]: {},
   [chainIds.SHIDEN]: {},
   [chainIds.AVALANCHE]: {},
   [chainIds.ASTAR]: {},
+  [chainIds.GATECHAIN]: {},
   [chainIds.AURORA]: {},
 };
 

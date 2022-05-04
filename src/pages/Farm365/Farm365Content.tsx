@@ -17,7 +17,7 @@ import { useAllTransactions } from '../../state/transactions/hooks';
 import { useCurrencyBalance } from '../../state/wallet/hooks';
 import { useIsPolygonActive, useIsShidenActive, useNetworkData } from '../../hooks/Coins';
 import dayjs from 'dayjs';
-import { calcFarming365Apr } from './helpers';
+import { calcAprValue, calcFarming365Apr } from './helpers';
 import { isMobile } from 'react-device-detect';
 import Tooltip from '../Farm/Tooltip';
 import { useWalletModalToggle } from '../../state/application/hooks';
@@ -212,6 +212,8 @@ export default function Farm365Content({ farming365, eswRate }: Farm365ContentPr
 
   const farmingAddresses = farming365.contract.address;
 
+  console.log(farming365.contract);
+
   const allTransactions = useAllTransactions();
 
   const recentTransactions = useMemo(() => {
@@ -228,6 +230,13 @@ export default function Farm365Content({ farming365, eswRate }: Farm365ContentPr
   }, [recentTransactions]);*/
 
   const hasPendingTransactions = useMemo(() => !!pending.length, [pending]);
+
+  const isStopped = useMemo(() => {
+    const dateNow = dayjs();
+    const stopDate = dayjs(farming365.stopDate, 'DD.MM.YYYY HH:mm:ss');
+
+    return stopDate < dateNow;
+  }, [farming365.endDate]);
 
   const isFinished = useMemo(() => {
     const dateNow = dayjs();
@@ -307,6 +316,9 @@ export default function Farm365Content({ farming365, eswRate }: Farm365ContentPr
   useEffect(() => {
     if (hasPendingTransactions) {
       setStakeButtonText('Pending transaction...');
+      setStakeButtonDisabled(true);
+    } else if (isStopped) {
+      setStakeButtonText('Stopped');
       setStakeButtonDisabled(true);
     } else if (isFinished) {
       setStakeButtonText('Finished');
@@ -582,7 +594,7 @@ export default function Farm365Content({ farming365, eswRate }: Farm365ContentPr
                   </Tooltip>
                 </StakeTokenLine>
               </StakeToken>
-              <StakeApr>365%</StakeApr>
+              <StakeApr>{calcAprValue(tokenAmount.token)}%</StakeApr>
               {isPolygonActive && (
                 <StakeRewardWallet onClick={toggleWalletModal}>See details</StakeRewardWallet>
               )}

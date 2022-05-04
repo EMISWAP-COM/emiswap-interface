@@ -129,6 +129,7 @@ export default function NetworkSwitchModal() {
   };
 
   const logosMaxWidths = {
+    [chainIds.KCC]: '70%',
     [chainIds.AVALANCHE]: '80%',
     [chainIds.AURORA]: '80%',
   };

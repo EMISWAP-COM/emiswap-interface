@@ -12,8 +12,9 @@ import {
   useIsAuroraActive,
   useIsAvalancheActive,
   useIsAstarActive,
+  useIsGateChainActive,
   useIsEthActive,
-  useIsKuCoinActive,
+  useIsKCCActive,
   useIsPolygonActive,
   useIsShidenActive,
   useNetworkData,
@@ -31,11 +32,12 @@ export function useAllTokens(isLpTokens?: boolean): [{ [address: string]: Token 
   const allTokens = useDefaultTokenList();
   const [enableTokensList, isLoading] = useTokenListWithPair();
 
-  const isKuCoinActive = useIsKuCoinActive();
+  const isKCCActive = useIsKCCActive();
   const isPolygonActive = useIsPolygonActive();
   const isShidenActive = useIsShidenActive();
   const isAvalancheActive = useIsAvalancheActive();
   const isAstarActive = useIsAstarActive();
+  const isGateChainActive = useIsGateChainActive();
   const isAuroraActive = useIsAuroraActive();
 
   return [
@@ -45,12 +47,12 @@ export function useAllTokens(isLpTokens?: boolean): [{ [address: string]: Token 
       }
       const filteredTokens = Object.values(allTokens[chainId])
         .filter(el => {
-          if (isKuCoinActive) {
+          if (isKCCActive) {
             const exists = defaultCoins.tokens.find(
               ct =>
                 ct.chainId === chainId &&
                 el.address.toLowerCase() === ct.address.toLowerCase() &&
-                mustVisibleAddresses.kucoin.includes(el.address.toLowerCase()),
+                mustVisibleAddresses.kcc.includes(el.address.toLowerCase()),
             );
 
             // @ts-ignore
@@ -142,6 +144,19 @@ export function useAllTokens(isLpTokens?: boolean): [{ [address: string]: Token 
               el.address === window['env'].REACT_APP_ESW_ID ||
               el.symbol === 'ESW'
             );
+          } else if (isGateChainActive) {
+            const exists = defaultCoins.tokens.find(
+              ct =>
+                ct.chainId === chainId &&
+                el.address.toLowerCase() === ct.address.toLowerCase() &&
+                ct.symbol !== 'WGT',
+            );
+
+            return (
+              Boolean(exists) ||
+              el.address === window['env'].REACT_APP_ESW_ID ||
+              el.symbol === 'ESW'
+            );
           }
 
           // @ts-ignore // todo: fix it
@@ -175,7 +190,7 @@ export function useAllTokens(isLpTokens?: boolean): [{ [address: string]: Token 
       userAddedTokens,
       allTokens,
       enableTokensList,
-      isKuCoinActive,
+      isKCCActive,
       isPolygonActive,
       isShidenActive,
       isAvalancheActive,

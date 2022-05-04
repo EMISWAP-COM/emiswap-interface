@@ -22,7 +22,7 @@ const FarmComponent: React.FC<FarmComponentProps> = ({
 
   const [apr, setApr] = useState<number>(0);
 
-  const isKuCoinToken = farming.stakeToken?.symbol?.includes('KCS');
+  const isKCCToken = farming.stakeToken?.symbol?.includes('KCS');
 
   const isVisibleFarm = useIsVisibleFarm(farming, selectedTab, selectedFilterTab);
 
@@ -32,13 +32,13 @@ const FarmComponent: React.FC<FarmComponentProps> = ({
       const dai = parseFloat(eswPriceInDai);
       const liq = parseFloat(farming.liquidity);
 
-      if (isKuCoinToken) {
+      if (isKCCToken) {
         setApr((block * 28800 * 365 * 100 * dai) / liq);
       } else {
         setApr((block * 6400 * 365 * 100 * dai) / liq);
       }
     }
-  }, [eswPriceInDai, farming.blockReward, farming.liquidity, selectedTab, isKuCoinToken]);
+  }, [eswPriceInDai, farming.blockReward, farming.liquidity, selectedTab, isKCCToken]);
 
   return isVisibleFarm ? (
     <ExtendableRow
@@ -55,7 +55,7 @@ const FarmComponent: React.FC<FarmComponentProps> = ({
       onStake={farming.stake}
       onCollect={farming.collect}
       tokenMode={farming.tokenMode}
-      isKuCoinToken={isKuCoinToken}
+      isKCCToken={isKCCToken}
     />
   ) : null;
 };

@@ -30,7 +30,7 @@ import Modal from '../../components/Modal';
 import { BigNumber } from '@ethersproject/bignumber';
 import vamp_addresses from '../../constants/vamp_addresses';
 import ReactGA from 'react-ga';
-import { useIsKuCoinActive, useNetworkData } from '../../hooks/Coins';
+import { useIsKCCActive, useNetworkData } from '../../hooks/Coins';
 
 const POOL_CURRENCY_AMOUNT_MIN = new Fraction(JSBI.BigInt(1), JSBI.BigInt(1000000));
 
@@ -194,7 +194,7 @@ export default function MigrateV1Exchange({
 
   const notEnoughBalance = !inputCurrencyBalance || +inputCurrencyBalance?.toExact() < +amount;
 
-  const isKuCoinActive = useIsKuCoinActive();
+  const isKCCActive = useIsKCCActive();
   const { value: network } = useNetworkData();
 
   useEffect(() => {
@@ -302,7 +302,7 @@ export default function MigrateV1Exchange({
         <div>
           <QuestionHelper
             text={`Migrate your liquidity tokens from ${
-              isKuCoinActive ? 'KoffeSwap' : 'Uniswap V2'
+              isKCCActive ? 'KoffeSwap' : 'Uniswap V2'
             } to Emiswap.`}
           />
         </div>

@@ -2,8 +2,18 @@
   {
     "anonymous": false,
     "inputs": [
-      { "indexed": true, "internalType": "address", "name": "wallet", "type": "address" },
-      { "indexed": true, "internalType": "uint256", "name": "requestId", "type": "uint256" }
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "wallet",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "requestId",
+        "type": "uint256"
+      }
     ],
     "name": "ClaimRequested",
     "type": "event"
@@ -11,8 +21,18 @@
   {
     "anonymous": false,
     "inputs": [
-      { "indexed": true, "internalType": "address", "name": "wallet", "type": "address" },
-      { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "wallet",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
     ],
     "name": "Claimed",
     "type": "event"
@@ -20,8 +40,18 @@
   {
     "anonymous": false,
     "inputs": [
-      { "indexed": true, "internalType": "address", "name": "previousOwner", "type": "address" },
-      { "indexed": true, "internalType": "address", "name": "newOwner", "type": "address" }
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
     ],
     "name": "OwnershipTransferred",
     "type": "event"
@@ -29,28 +59,71 @@
   {
     "inputs": [],
     "name": "OFFSET19700101",
-    "outputs": [{ "internalType": "int256", "name": "", "type": "int256" }],
+    "outputs": [
+      {
+        "internalType": "int256",
+        "name": "",
+        "type": "int256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "SECONDS_PER_DAY",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint256", "name": "ymd", "type": "uint256" }],
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "ymd",
+        "type": "uint256"
+      }
+    ],
     "name": "YMDToTimestamp",
-    "outputs": [{ "internalType": "uint256", "name": "timestamp", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "pure",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "availableForRequests",
-    "outputs": [{ "internalType": "uint256", "name": "available", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "available",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "checkRequests",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "lockedByActiveRequests",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
@@ -64,33 +137,63 @@
   {
     "inputs": [],
     "name": "claimDailyLimit",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "claimTimeout",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "currentClaimDailyLimit",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "deliveryToken",
-    "outputs": [{ "internalType": "contract IERC20Upgradeable", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "contract IERC20Upgradeable",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }],
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
     "name": "deposite",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -100,8 +203,40 @@
     "inputs": [],
     "name": "getAvailableToClaim",
     "outputs": [
-      { "internalType": "uint256", "name": "available", "type": "uint256" },
-      { "internalType": "uint256[]", "name": "requestIds", "type": "uint256[]" }
+      {
+        "internalType": "uint256",
+        "name": "available",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "requestIds",
+        "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "wallet",
+        "type": "address"
+      }
+    ],
+    "name": "getAvailableToClaimbyWallet",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "available",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "requestIds",
+        "type": "uint256[]"
+      }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -109,7 +244,13 @@
   {
     "inputs": [],
     "name": "getClaimDailyLimit",
-    "outputs": [{ "internalType": "uint256", "name": "limit", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "limit",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
@@ -117,16 +258,36 @@
     "inputs": [],
     "name": "getDatesStarts",
     "outputs": [
-      { "internalType": "uint256", "name": "todayStart", "type": "uint256" },
-      { "internalType": "uint256", "name": "tomorrowStart", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "todayStart",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "tomorrowStart",
+        "type": "uint256"
+      }
     ],
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "address", "name": "wallet", "type": "address" }],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "wallet",
+        "type": "address"
+      }
+    ],
     "name": "getFinishedRequests",
-    "outputs": [{ "internalType": "uint256[]", "name": "requestIds", "type": "uint256[]" }],
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "requestIds",
+        "type": "uint256[]"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
@@ -134,10 +295,60 @@
     "inputs": [],
     "name": "getRemainderOfRequests",
     "outputs": [
-      { "internalType": "uint256", "name": "remainderTotal", "type": "uint256" },
-      { "internalType": "uint256", "name": "remainderPreparedForClaim", "type": "uint256" },
-      { "internalType": "uint256[]", "name": "requestIds", "type": "uint256[]" },
-      { "internalType": "uint256", "name": "veryFirstRequestDate", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "remainderTotal",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "remainderPreparedForClaim",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "requestIds",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256",
+        "name": "veryFirstRequestDate",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "wallet",
+        "type": "address"
+      }
+    ],
+    "name": "getRemainderOfRequestsbyWallet",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "remainderTotal",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "remainderPreparedForClaim",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "requestIds",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256",
+        "name": "veryFirstRequestDate",
+        "type": "uint256"
+      }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -145,20 +356,58 @@
   {
     "inputs": [],
     "name": "getWalletNonce",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_signatureWallet", "type": "address" },
-      { "internalType": "address", "name": "_deliveryToken", "type": "address" },
-      { "internalType": "address", "name": "_deliveryAdmin", "type": "address" },
-      { "internalType": "uint256", "name": "_claimTimeout", "type": "uint256" },
-      { "internalType": "uint256", "name": "_claimDailyLimit", "type": "uint256" },
-      { "internalType": "bool", "name": "_isOneRequest", "type": "bool" },
-      { "internalType": "uint256", "name": "_localShift", "type": "uint256" },
-      { "internalType": "bool", "name": "_positiveShift", "type": "bool" }
+      {
+        "internalType": "address",
+        "name": "_signatureWallet",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_deliveryToken",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_deliveryAdmin",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_claimTimeout",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_claimDailyLimit",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "_isOneRequest",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_localShift",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "_positiveShift",
+        "type": "bool"
+      }
     ],
     "name": "initialize",
     "outputs": [],
@@ -168,54 +417,134 @@
   {
     "inputs": [],
     "name": "isOneRequest",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "lastYMD",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "localShift",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "localTime",
-    "outputs": [{ "internalType": "uint256", "name": "localTimeStamp", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "localTimeStamp",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "lockedForRequests",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "operators",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "owner",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "positiveShift",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint256[]", "name": "requestIds", "type": "uint256[]" }],
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "freedAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "reduceLockedForRequests",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "requestIds",
+        "type": "uint256[]"
+      }
+    ],
     "name": "removeRequest",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -230,10 +559,26 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "wallet", "type": "address" },
-      { "internalType": "uint256", "name": "amount", "type": "uint256" },
-      { "internalType": "uint256", "name": "nonce", "type": "uint256" },
-      { "internalType": "bytes", "name": "sig", "type": "bytes" }
+      {
+        "internalType": "address",
+        "name": "wallet",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "nonce",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes",
+        "name": "sig",
+        "type": "bytes"
+      }
     ],
     "name": "request",
     "outputs": [],
@@ -242,33 +587,74 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "wallet", "type": "address" },
-      { "internalType": "uint256", "name": "amount", "type": "uint256" },
-      { "internalType": "uint256", "name": "nonce", "type": "uint256" },
-      { "internalType": "bytes", "name": "sig", "type": "bytes" }
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
-    "name": "requestUnsigned",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "name": "requests",
+    "name": "requestWallet",
     "outputs": [
-      { "internalType": "uint256", "name": "claimfromYMD", "type": "uint256" },
-      { "internalType": "uint256", "name": "requestedAmount", "type": "uint256" },
-      { "internalType": "uint256", "name": "paidAmount", "type": "uint256" },
-      { "internalType": "uint256", "name": "index", "type": "uint256" },
-      { "internalType": "bool", "name": "isDeactivated", "type": "bool" }
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
     ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "newLocalShift", "type": "uint256" },
-      { "internalType": "bool", "name": "newPositiveShift", "type": "bool" }
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "requests",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "claimfromYMD",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "requestedAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "paidAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "index",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "isDeactivated",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "newLocalShift",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "newPositiveShift",
+        "type": "bool"
+      }
     ],
     "name": "setLocalTimeShift",
     "outputs": [],
@@ -276,14 +662,26 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint256", "name": "newclaimDailyLimit", "type": "uint256" }],
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "newclaimDailyLimit",
+        "type": "uint256"
+      }
+    ],
     "name": "setNewClaimDailyLimit",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint256", "name": "newClaimTimeout", "type": "uint256" }],
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "newClaimTimeout",
+        "type": "uint256"
+      }
+    ],
     "name": "setNewTimeOut",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -291,8 +689,16 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "newOperator", "type": "address" },
-      { "internalType": "bool", "name": "isActive", "type": "bool" }
+      {
+        "internalType": "address",
+        "name": "newOperator",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "isActive",
+        "type": "bool"
+      }
     ],
     "name": "setOperator",
     "outputs": [],
@@ -300,14 +706,44 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "address", "name": "_signatureWallet", "type": "address" }],
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "ReuestId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "indexValue",
+        "type": "uint256"
+      }
+    ],
+    "name": "setRequestIndex",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_signatureWallet",
+        "type": "address"
+      }
+    ],
     "name": "setSignatureWallet",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "bool", "name": "newisOneRequest", "type": "bool" }],
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "newisOneRequest",
+        "type": "bool"
+      }
+    ],
     "name": "setisOneRequest",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -316,51 +752,165 @@
   {
     "inputs": [],
     "name": "signatureWallet",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint256", "name": "timestamp", "type": "uint256" }],
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      }
+    ],
     "name": "timestampToYMD",
-    "outputs": [{ "internalType": "uint256", "name": "ymd", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "ymd",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "pure",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "totalSupply",
-    "outputs": [{ "internalType": "uint256", "name": "supply", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "supply",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "tokenAddress", "type": "address" },
-      { "internalType": "address", "name": "beneficiary", "type": "address" },
-      { "internalType": "uint256", "name": "amount", "type": "uint256" }
+      {
+        "internalType": "address",
+        "name": "tokenAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "beneficiary",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
     ],
     "name": "transferAnyERC20Token",
-    "outputs": [{ "internalType": "bool", "name": "success", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "success",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
     "name": "transferOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
-    "name": "walletNonce",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "walletFinishedRequests",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "walletNonce",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "walletRequests",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
     "name": "withdraw",
     "outputs": [],
     "stateMutability": "nonpayable",

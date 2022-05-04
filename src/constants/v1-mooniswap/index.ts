@@ -12,13 +12,14 @@ const V1_MOONISWAP_FACTORY_ADDRESSES: { [chainId in ChainId]: string } = {
   [ChainId.GÖRLI]: factory_addresses[chainIds.GÖRLI],
   [ChainId.KOVAN]: factory_addresses[chainIds.KOVAN],
   // @ts-ignore
-  [chainIds.KUCOIN]: factory_addresses[chainIds.KUCOIN],
+  [chainIds.KCC]: factory_addresses[chainIds.KCC],
   // @ts-ignore
   [chainIds.POLYGON]: factory_addresses[chainIds.POLYGON],
   [chainIds.MUMBAI]: factory_addresses[chainIds.MUMBAI],
   [chainIds.SHIDEN]: factory_addresses[chainIds.SHIDEN],
   [chainIds.AVALANCHE]: factory_addresses[chainIds.AVALANCHE],
   [chainIds.ASTAR]: factory_addresses[chainIds.ASTAR],
+  [chainIds.GATECHAIN]: factory_addresses[chainIds.GATECHAIN],
   [chainIds.AURORA]: factory_addresses[chainIds.AURORA],
 };
 
@@ -29,12 +30,13 @@ const V1_EMIROUTER_HELPER_ADDRESSES: { [chainId in ChainId]: string } = {
   [ChainId.GÖRLI]: emirouter_addresses[chainIds.GÖRLI],
   [ChainId.KOVAN]: emirouter_addresses[chainIds.KOVAN],
   // @ts-ignore
-  [chainIds.KUCOIN]: emirouter_addresses[chainIds.KUCOIN],
+  [chainIds.KCC]: emirouter_addresses[chainIds.KCC],
   [chainIds.POLYGON]: emirouter_addresses[chainIds.POLYGON],
   [chainIds.MUMBAI]: emirouter_addresses[chainIds.MUMBAI],
   [chainIds.SHIDEN]: emirouter_addresses[chainIds.SHIDEN],
   [chainIds.AVALANCHE]: emirouter_addresses[chainIds.AVALANCHE],
   [chainIds.ASTAR]: emirouter_addresses[chainIds.ASTAR],
+  [chainIds.GATECHAIN]: emirouter_addresses[chainIds.GATECHAIN],
   [chainIds.AURORA]: emirouter_addresses[chainIds.AURORA],
 };
 

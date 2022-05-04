@@ -1,3 +1,5 @@
+import chainIds from '../../constants/chainIds';
+
 const liquidityTokensMap = {
   // Dev
   '0x25356d68645692d1D456314728Cab21c283B1f47': '0x1c879c2681Cb1c63F6CEBc11A5F2B65Fc8AD23ba',
@@ -20,25 +22,34 @@ const liquidityTokensMap = {
   '0x27a9c2033bdfB221e1F07F6e5F07eF59810F7431': '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
   '0x91a97dDEa63A9E35b96c185a320f4606e77b6b7f': '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
 
-  // KuCoin
-  '0x8667dcf5498bEFBBFd7faEA7FD70F704f5A75685': '0x4446fc4eb47f2f6586f9faab68b3498f86c07521',
-
-  // Polygon RewardPoolMulti PROXY
-  '0x18f38359551258C35e8593d775cb6Fe8D27fd89b': '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
-  '0xd2Fa7C9386040f260e3Ec934601982aD4Cd7902B': '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
-  '0xC4e9030aC8274331506910676076eA5239d6c03D': '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
-
-  // Mumbai RewardPoolMulti PROXY
-  '0xeB274bcD6CA905b7dB5F65b8C2a126fb3fF39bc3': '0x37e103a3BFabC8Fb542BA24C7e4594E5534806A3',
-  '0xb7Ff11b03DD28cDea45D65E274381a4E3D90778D': '0x37e103a3BFabC8Fb542BA24C7e4594E5534806A3',
-
-  // Shiden RewardPoolMulti PROXY
-  '0x831b25EB4073d92E4766411f0DbDd0b549753179': '0x818ec0a7fe18ff94269904fced6ae3dae6d6dc0b',
-  '0x94a12b208Ddbddd35bd6a6Bd9e1C0dA70B18E5bd': '0x818ec0a7fe18ff94269904fced6ae3dae6d6dc0b',
+  [chainIds.KCC]: {
+    '0x8667dcf5498bEFBBFd7faEA7FD70F704f5A75685': '0x4446fc4eb47f2f6586f9faab68b3498f86c07521',
+  },
+  [chainIds.POLYGON]: {
+    '0x18f38359551258C35e8593d775cb6Fe8D27fd89b': '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
+    '0xd2Fa7C9386040f260e3Ec934601982aD4Cd7902B': '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
+    '0xC4e9030aC8274331506910676076eA5239d6c03D': '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
+    '0x94a12b208Ddbddd35bd6a6Bd9e1C0dA70B18E5bd': '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
+  },
+  [chainIds.MUMBAI]: {
+    '0xeB274bcD6CA905b7dB5F65b8C2a126fb3fF39bc3': '0x37e103a3BFabC8Fb542BA24C7e4594E5534806A3',
+    '0xb7Ff11b03DD28cDea45D65E274381a4E3D90778D': '0x37e103a3BFabC8Fb542BA24C7e4594E5534806A3',
+    '0xFc08167F6D8c7662cc10B41cA1D4AbD3E24be313': '0x37e103a3BFabC8Fb542BA24C7e4594E5534806A3',
+    '0x4d56cb35DC76D63B9A2b79F8f9DC987F1b7Bc743': '0x37e103a3BFabC8Fb542BA24C7e4594E5534806A3',
+  },
+  [chainIds.SHIDEN]: {
+    '0x831b25EB4073d92E4766411f0DbDd0b549753179': '0x818ec0a7fe18ff94269904fced6ae3dae6d6dc0b',
+    '0x94a12b208Ddbddd35bd6a6Bd9e1C0dA70B18E5bd': '0x818ec0a7fe18ff94269904fced6ae3dae6d6dc0b',
+    '0x3887d319dEC4425E8F0e74baeCB7724B39F8f183': '0x818ec0a7fe18ff94269904fced6ae3dae6d6dc0b',
+  },
 };
 
-const getFarmingLiquidityTokenAddress = (farmContractAddress: string): string => {
-  return liquidityTokensMap[farmContractAddress] || '';
+const getFarmingLiquidityTokenAddress = (chainId: number, farmContractAddress: string): string => {
+  return (
+    liquidityTokensMap[farmContractAddress] ||
+    liquidityTokensMap[chainId]?.[farmContractAddress] ||
+    ''
+  );
 };
 
 export default getFarmingLiquidityTokenAddress;
