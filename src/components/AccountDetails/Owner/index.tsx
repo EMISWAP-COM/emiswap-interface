@@ -9,7 +9,7 @@ import {
 } from '../../../state/cabinets/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, AppState } from '../../../state';
-import { useActiveWeb3React } from '../../../hooks';
+import { useActiveWeb3React, useIsOraculOK } from '../../../hooks';
 import { ESWRewards } from '../Common/ESWRewards';
 import { ESWHoldingRewards } from '../Common/ESWHoldingRewards';
 import { ESWLocked } from '../Common/ESWLocked';
@@ -80,6 +80,8 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
     }
   }, [dispatch, chainId, userId, isEthActive]);
 
+  const isOraculOK = useIsOraculOK();
+
   return (
     <>
       <Wrapper>
@@ -101,15 +103,20 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
             </ExternalLink>
           </OptionsPromo>
         </Connection>
-        {(isEthActive || isPolygonActive) && (
-          <div style={{ padding: '0 16px' }}>
-            <ESWRewards />
-            {isEthActive && <ESWHoldingRewards />}
-            <ESWLocked />
-            {isEthActive && <FarmingRewards />}
-            <ReferralPerformance />
-            <PurchaseHistory />
-          </div>
+
+        {isOraculOK && (
+          <>
+            {(isEthActive || isPolygonActive) && (
+              <div style={{ padding: '0 16px' }}>
+                <ESWRewards />
+                {isEthActive && <ESWHoldingRewards />}
+                <ESWLocked />
+                {isEthActive && <FarmingRewards />}
+                <ReferralPerformance />
+                <PurchaseHistory />
+              </div>
+            )}
+          </>
         )}
       </Wrapper>
       {collectButtonState === 'request' && (
