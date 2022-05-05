@@ -10,9 +10,9 @@ import QuestionHelper from '../QuestionHelper';
 import {
   useIsAvalancheActive,
   useIsEthActive,
+  useIsFarm365Active,
   useIsKCCActive,
   useIsPolygonActive,
-  useIsShidenActive,
   useNetworkData,
 } from '../../hooks/Coins';
 import { isMobile } from 'react-device-detect';
@@ -130,8 +130,9 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
   const isEthereumActive = useIsEthActive();
   const isKCCActive = useIsKCCActive();
   const isPolygonActive = useIsPolygonActive();
-  const isShidenActive = useIsShidenActive();
   const isAvalancheActive = useIsAvalancheActive();
+
+  const isFarm365Active = useIsFarm365Active();
 
   const toggleBridgeModal = useBridgeModalToggle();
 
@@ -184,7 +185,7 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
           {isMobile ? t('Farm') : t('Stake & Farm')}
         </StyledNavLink>
       )}
-      {(isPolygonActive || isShidenActive) && (
+      {isFarm365Active && (
         <StyledNavLink
           id={`farm-365-nav-link`}
           to={'/farm-365'}

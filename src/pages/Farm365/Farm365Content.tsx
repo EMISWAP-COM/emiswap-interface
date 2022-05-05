@@ -212,7 +212,7 @@ export default function Farm365Content({ farming365, eswRate }: Farm365ContentPr
 
   const farmingAddresses = farming365.contract.address;
 
-  console.log(farming365.contract);
+  // console.log(farming365.contract);
 
   const allTransactions = useAllTransactions();
 
