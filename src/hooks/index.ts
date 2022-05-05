@@ -137,6 +137,10 @@ export function useIsProduction() {
   return window['env'].REACT_APP_ESW_CLAIM_API === 'https://sign.emiswap.com';
 }
 
+export function useIsOraculOK() {
+  return window['env'].REACT_APP_ORACUL_STATUS === 'ok';
+}
+
 export function useSwitchNetwork() {
   const { connector } = useActiveWeb3React();
   const { deactivate } = useWeb3React();

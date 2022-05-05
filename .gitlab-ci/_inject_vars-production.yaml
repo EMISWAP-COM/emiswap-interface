@@ -40,4 +40,5 @@ chart_vars:
         REACT_APP_SENTRY_RELEASE: '0.0.0',
         REACT_APP_SENTRY_AUTH_TOKEN: '3fd6fa12c53411ebabadb2b6a736423f',
         REACT_APP_DISABLE_BRIDGE: false,
+        REACT_APP_ORACUL_STATUS: 'ok',
       };
