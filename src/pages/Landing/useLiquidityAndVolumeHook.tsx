@@ -57,7 +57,7 @@ const useLiquidityAndVolume = (): Data => {
 
       try {
         const data = await Promise.all(requests);
-        console.log(data);
+        // console.log(data);
         setPair(getResult(data));
         setPairToLocalStorage(getResult(data));
       } catch (e) {

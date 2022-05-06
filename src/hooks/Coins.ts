@@ -173,6 +173,14 @@ export function useIsAuroraActive(): boolean {
   return [chainIds.AURORA].includes(chainId as any);
 }
 
+export function useIsFarm365Active(): boolean {
+  const isPolygonActive = useIsPolygonActive();
+  const isShidenActive = useIsShidenActive();
+  const isAstarActive = useIsAstarActive();
+
+  return isPolygonActive || isShidenActive || isAstarActive;
+}
+
 export function useIsMetaMask(): boolean {
   const { connector } = useActiveWeb3React();
 

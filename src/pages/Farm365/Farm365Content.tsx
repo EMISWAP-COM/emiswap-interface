@@ -15,7 +15,12 @@ import { parseUnits } from '@ethersproject/units';
 import { tokenAmountToString } from '../../utils/formats';
 import { useAllTransactions } from '../../state/transactions/hooks';
 import { useCurrencyBalance } from '../../state/wallet/hooks';
-import { useIsPolygonActive, useIsShidenActive, useNetworkData } from '../../hooks/Coins';
+import {
+  useIsAstarActive,
+  useIsPolygonActive,
+  useIsShidenActive,
+  useNetworkData,
+} from '../../hooks/Coins';
 import dayjs from 'dayjs';
 import { calcAprValue, calcFarming365Apr } from './helpers';
 import { isMobile } from 'react-device-detect';
@@ -209,10 +214,11 @@ export default function Farm365Content({ farming365, eswRate }: Farm365ContentPr
 
   const isPolygonActive = useIsPolygonActive();
   const isShidenActive = useIsShidenActive();
+  const isAstarActive = useIsAstarActive();
 
   const farmingAddresses = farming365.contract.address;
 
-  console.log(farming365.contract);
+  // console.log(farming365.contract);
 
   const allTransactions = useAllTransactions();
 
@@ -598,7 +604,7 @@ export default function Farm365Content({ farming365, eswRate }: Farm365ContentPr
               {isPolygonActive && (
                 <StakeRewardWallet onClick={toggleWalletModal}>See details</StakeRewardWallet>
               )}
-              {isShidenActive && <StakeReward>Coming soon</StakeReward>}
+              {(isShidenActive || isAstarActive) && <StakeReward>Coming soon</StakeReward>}
             </StakeItem>
           ))}
         </StakeList>

@@ -113,7 +113,7 @@ export const initialState: InitialState = {
 export default createReducer(initialState, builder =>
   builder.addCase(loadPolygonBalance.fulfilled, (state, action) => {
     state.balance = action.payload;
-    console.log(action.payload);
+    // console.log(action.payload);
     // FIX_ME
     state.balance.farming365 = {};
   }),

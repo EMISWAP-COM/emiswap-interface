@@ -42,6 +42,9 @@ const liquidityTokensMap = {
     '0x94a12b208Ddbddd35bd6a6Bd9e1C0dA70B18E5bd': '0x818ec0a7fe18ff94269904fced6ae3dae6d6dc0b',
     '0x3887d319dEC4425E8F0e74baeCB7724B39F8f183': '0x818ec0a7fe18ff94269904fced6ae3dae6d6dc0b',
   },
+  [chainIds.ASTAR]: {
+    '0x588Ab29561cA03bDE01C3c84F1677be9640f31A9': '0x3795C36e7D12A8c252A20C5a7B455f7c57b60283',
+  },
 };
 
 const getFarmingLiquidityTokenAddress = (chainId: number, farmContractAddress: string): string => {
