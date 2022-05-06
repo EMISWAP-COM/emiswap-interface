@@ -42,13 +42,9 @@ const addressesByNetworkId = {
     '0x94a12b208Ddbddd35bd6a6Bd9e1C0dA70B18E5bd', // RewardPoolMulti PROXY
     '0x3887d319dEC4425E8F0e74baeCB7724B39F8f183', // RewardPoolMulti PROXY
   ],
-  // TODO
   [chainIds.AVALANCHE]: [''],
-  // TODO
-  [chainIds.ASTAR]: [''],
-  // TODO
+  [chainIds.ASTAR]: ['0x588Ab29561cA03bDE01C3c84F1677be9640f31A9'],
   [chainIds.GATECHAIN]: [''],
-  // TODO
   [chainIds.AURORA]: [''],
 };
 

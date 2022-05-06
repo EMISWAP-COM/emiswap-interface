@@ -13,7 +13,7 @@ import getFarmingCoinNameAndSymbol from '../pages/Farm/getFarmingCoinNameAndSymb
 import getFarmingLiquidityTokenAddress from '../pages/Farm/getFarmingLiquidityTokenAddress';
 import dayjs from 'dayjs';
 import { convertTokenAmount, getLpTokenByAddress } from '../utils';
-import { useIsPolygonActive, useIsShidenActive } from './Coins';
+import { useIsAstarActive, useIsPolygonActive, useIsShidenActive } from './Coins';
 
 const logContractError = (
   methodName: string,
@@ -45,6 +45,7 @@ export default function useFarming365(contract: Contract) {
 
   const isPolygonActive = useIsPolygonActive();
   const isShidenActive = useIsShidenActive();
+  const isAstarActive = useIsAstarActive();
 
   // This counter is used to update data whenever transaction finishes
   const completedTransactionsCount = useCompletedTransactionsCount();
@@ -205,6 +206,8 @@ export default function useFarming365(contract: Contract) {
           if (isPolygonActive) {
             calcValue = value.mul(BigNumber.from(24)).div(BigNumber.from(10));
           } else if (isShidenActive) {
+            calcValue = value.mul(BigNumber.from(12));
+          } else if (isAstarActive) {
             calcValue = value.mul(BigNumber.from(12));
           }
           const tokenAmount = new TokenAmount(rewardToken, JSBI.BigInt(calcValue.toString()));
