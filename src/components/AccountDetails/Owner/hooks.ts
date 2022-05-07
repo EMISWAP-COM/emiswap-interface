@@ -260,7 +260,7 @@ export const useCollectData = closeWindow => {
           veryFirstRequestDate: formatDateShortMonth(toDateFromContract(veryFirstRequestDate)),
         });
       });
-  }, [polygonContract.address]);
+  }, [polygonContract]);
 
   useEffect(() => {
     Promise.all([
