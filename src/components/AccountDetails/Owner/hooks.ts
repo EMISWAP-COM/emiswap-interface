@@ -253,7 +253,6 @@ export const useCollectData = closeWindow => {
     polygonContract
       .getRemainderOfRequestsbyWallet(account)
       .then(({ remainderTotal, remainderPreparedForClaim, veryFirstRequestDate }) => {
-        console.table({ remainderTotal, remainderPreparedForClaim, veryFirstRequestDate });
         changeState({
           ...state,
           requested: formatUnits(remainderTotal, 18),
@@ -261,7 +260,7 @@ export const useCollectData = closeWindow => {
           veryFirstRequestDate: formatDateShortMonth(toDateFromContract(veryFirstRequestDate)),
         });
       });
-  }, [polygonContract, closeWindow]);
+  }, [polygonContract.address]);
 
   useEffect(() => {
     Promise.all([
