@@ -46,15 +46,12 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
       .then(nonce =>
         handleAuth().then(async token => {
           changeStatus('');
-          if (parseFloat(userInput) <= 0 || Number.isNaN(parseFloat(userInput))) {
+          const isWrongInput =
+            parseFloat(userInput) <= 0 ||
+            Number.isNaN(parseFloat(userInput)) ||
+            parseFloat(userInput) > maxAvailableForRequests;
+          if (isWrongInput) {
             changeStatus('Error input. The Request amount is not valid');
-            changeTitle('Request');
-            return Promise.resolve();
-          }
-          if (parseFloat(userInput) > maxAvailableForRequests) {
-            changeStatus(
-              'An application error has occurred. Notify our support team. Error code 011.',
-            );
             changeTitle('Request');
             return Promise.resolve();
           }
