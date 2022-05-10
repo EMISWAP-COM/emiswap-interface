@@ -4086,7 +4086,7 @@ const defaultCoins: DefaultCoins = {
       address: '0x980a5afef3d17ad98635f6c5aebcbaeded3c3430',
       chainId: 321,
       name: 'USDC',
-      decimals: 6,
+      decimals: 18,
       symbol: 'USDC',
     },
     {
