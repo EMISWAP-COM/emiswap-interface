@@ -122,6 +122,8 @@ export const getNetworkUrl = (network: string): string => {
       return 'shiden_main';
     case 'astar':
       return 'astar_main';
+    case 'aurora':
+      return 'aurora_main';
     default:
       return 'eth_main';
   }

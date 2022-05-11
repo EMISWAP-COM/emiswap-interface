@@ -90,6 +90,8 @@ export const ESWRewards = () => {
       return state.shidenCabinet.balance;
     } else if (network === 'astar') {
       return state.astarCabinet.balance;
+    } else if (network === 'aurora') {
+      return state.auroraCabinet.balance;
     } else return state.cabinets.balance;
   });
   const grouped = balance?.total?.grouped;

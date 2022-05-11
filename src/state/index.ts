@@ -16,6 +16,7 @@ import launchpad from './launchpad/reducer';
 import farming from './farming/reducer';
 import polygonCabinet from './cabinets/polygon-cabinet';
 import shidenCabinet from './cabinets/shiden-cabinet';
+import auroraCabinet from './cabinets/aurora-cabinet';
 import astarCabinet from './cabinets/astar-cabinet';
 import bridge from '../pages/Bridge/slice';
 import { apiSlice } from '../pages/Bridge/api';
@@ -41,6 +42,7 @@ const store = configureStore({
     farming,
     polygonCabinet,
     shidenCabinet,
+    auroraCabinet,
     astarCabinet,
     bridge,
     [apiSlice.reducerPath]: apiSlice.reducer,
