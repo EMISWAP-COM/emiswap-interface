@@ -18,6 +18,7 @@ import { PurchaseHistory } from '../Common/PurchaseHistory';
 import FarmingRewards from '../Common/FarmingRewards';
 import {
   useIsAstarActive,
+  useIsAuroraActive,
   useIsEthActive,
   useIsPolygonActive,
   useIsShidenActive,
@@ -75,7 +76,9 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
   const isPolygonActive = useIsPolygonActive();
   const isShidenActive = useIsShidenActive();
   const isAstarActive = useIsAstarActive();
-  const isPersonalCabinet = isEthActive || isPolygonActive || isShidenActive || isAstarActive;
+  const isAuroraActive = useIsAuroraActive();
+  const isPersonalCabinet =
+    isEthActive || isPolygonActive || isShidenActive || isAstarActive || isAuroraActive;
   /*const isKCCActive = useIsKCCActive();
   const isShidenActive = useIsShidenActive();
   const isAvalanceActive = useIsAvalancheActive();*/

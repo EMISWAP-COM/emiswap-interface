@@ -134,7 +134,10 @@ export const ESWRewards = () => {
           <Item text="Fee Compensation" count={balance?.total.grouped.compensation?.ESW!} />
         </RewardsWrapper>
       )}
-      {(network === 'polygon' || network === 'mumbai' || network === 'shiden') && (
+      {(network === 'polygon' ||
+        network === 'mumbai' ||
+        network === 'shiden' ||
+        network === 'aurora') && (
         <RewardsWrapperPolygon>
           <Item
             text="180% APR campain"
