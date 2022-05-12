@@ -97,7 +97,7 @@ const CollectToMyWallet = ({
     ? 'Pending'
     : isAnyToCollect
     ? 'Request collect'
-    : 'Not enought to collect';
+    : 'Insufficient balance';
   return (
     <WalletWrapper>
       <Title style={{ paddingBottom: '8px' }}>Collect to my Wallet</Title>
