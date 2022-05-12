@@ -18,9 +18,7 @@ export function calcFarming365Apr(
   const liq = parseFloat(liquidity);
   const reward = parseFloat(blockReward);
 
-  console.log(365, dayBlocksCount, 365, reward, eswRate, 100, liq, 1);
-
-  return 365 + (dayBlocksCount * 365 * reward * eswRate * 100) / (liq + 1);
+  return 180 + (dayBlocksCount * 365 * reward * eswRate * 100) / (liq + 1);
 }
 
 export function calcAprValue(token: Token): number {
