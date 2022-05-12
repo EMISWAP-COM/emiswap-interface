@@ -22,7 +22,7 @@ import {
   useNetworkData,
 } from '../../hooks/Coins';
 import dayjs from 'dayjs';
-import { calcAprValue, calcFarming365Apr } from './helpers';
+import { calcAprValue, calcFarming365Apr, getFarmDays } from './helpers';
 import { isMobile } from 'react-device-detect';
 import Tooltip from '../Farm/Tooltip';
 import { useWalletModalToggle } from '../../state/application/hooks';
@@ -576,9 +576,9 @@ export default function Farm365Content({ farming365, eswRate }: Farm365ContentPr
                 </Tooltip>
               </StakeTokenLine>
             </StakeToken>
-            <Tooltip title={parseFloat(eswStakedBalance) > 0 ? `${+apr - 365}%` : '0'}>
+            <Tooltip title={parseFloat(eswStakedBalance) > 0 ? `${+apr - getFarmDays()}%` : '0'}>
               <StakeApr>
-                {parseFloat(eswStakedBalance) > 0 ? `${(+apr - 365).toFixed(2)}%` : '0'}
+                {parseFloat(eswStakedBalance) > 0 ? `${(+apr - getFarmDays()).toFixed(2)}%` : '0'}
               </StakeApr>
             </Tooltip>
             <Tooltip title={farming365.reward}>
