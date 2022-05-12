@@ -10,7 +10,7 @@ const esw_addresses: any = {
   [chainIds.AVALANCHE]: '0x242403a0d65be599EE03D11ffc076e7E3Db6f008', // TODO
   [chainIds.ASTAR]: '0xb361DAD0Cc1a03404b650A69d9a5ADB5aF8A531F', // TODO
   [chainIds.GATECHAIN]: '0x18f38359551258C35e8593d775cb6Fe8D27fd89b', // TODO
-  [chainIds.AURORA]: '0x242403a0d65be599EE03D11ffc076e7E3Db6f008', // TODO
+  [chainIds.AURORA]: '0xd2Fa7C9386040f260e3Ec934601982aD4Cd7902B', // TODO
 };
 
 export default esw_addresses;

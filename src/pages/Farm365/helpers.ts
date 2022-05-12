@@ -1,6 +1,10 @@
 import chainIds from '../../constants/chainIds';
 import { Token } from '@uniswap/sdk';
 
+export function getFarmDays(): number {
+  return 180;
+}
+
 export function calcFarming365Apr(
   chainId: number,
   liquidity: string,
@@ -18,9 +22,7 @@ export function calcFarming365Apr(
   const liq = parseFloat(liquidity);
   const reward = parseFloat(blockReward);
 
-  console.log(365, dayBlocksCount, 365, reward, eswRate, 100, liq, 1);
-
-  return 365 + (dayBlocksCount * 365 * reward * eswRate * 100) / (liq + 1);
+  return getFarmDays() + (dayBlocksCount * 365 * reward * eswRate * 100) / (liq + 1);
 }
 
 export function calcAprValue(token: Token): number {
