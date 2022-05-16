@@ -176,7 +176,7 @@ export default function NetworkSwitchModal() {
           onCancel={onClickCancel}
         />
       )}
-      {isVisibleNeedSwitchModal && <NetworkNeedSwitchModal onClose={onCloseNeedSwitch} />}
+      {/*{isVisibleNeedSwitchModal && <NetworkNeedSwitchModal onClose={onCloseNeedSwitch} />}*/}
     </div>
   );
 }
