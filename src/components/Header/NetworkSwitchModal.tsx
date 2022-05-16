@@ -96,7 +96,7 @@ export default function NetworkSwitchModal() {
       return;
     }
 
-    if (item.chainId !== chainIds.MAINNET && (isMetaMask || !isMobile)) {
+    if (item.chainId !== chainIds.MAINNET && isMetaMask) {
       setSelectedItem(item);
     } else if (item.chainId !== chainIds.MAINNET) {
       setVisibleNeedSwitchModal(true);
