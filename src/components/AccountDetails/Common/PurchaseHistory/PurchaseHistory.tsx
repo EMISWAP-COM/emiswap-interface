@@ -259,8 +259,8 @@ export const PurchaseHistory = () => {
   );
 
   const myRewardHistory = [
-    ...polygonDetails.bonus_180.map(getTableItem('180% APR Compain')),
-    ...polygonDetails.bonus_365.map(getTableItem('365+% APR Compain')),
+    ...polygonDetails.bonus_180.map(getTableItem('180% APR Campaign')),
+    ...polygonDetails.bonus_365.map(getTableItem('365+% APR Campaign')),
   ];
 
   return (
