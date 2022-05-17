@@ -4,7 +4,7 @@ import { SwapPoolTabs, TabNames } from '../../components/NavigationTabs';
 import AppBody from '../AppBody';
 import { useActiveWeb3React } from '../../hooks';
 import LogoIcon from '../../assets/svg/logo-icon.svg';
-import { useIsPolygonActive, useIsShidenActive } from '../../hooks/Coins';
+import { useIsFarm365Active, useIsPolygonActive, useIsShidenActive } from '../../hooks/Coins';
 import { useHistory } from 'react-router-dom';
 import Farm365Item from './Farm365Item';
 import { Contract } from '@ethersproject/contracts';
@@ -50,10 +50,8 @@ export default function Farm365() {
   const history = useHistory();
 
   const { library, account, chainId } = useActiveWeb3React();
-  const isPolygonActive = useIsPolygonActive();
-  const isShidenActive = useIsShidenActive();
 
-  const isValidNetwork = isPolygonActive || isShidenActive;
+  const isFarm365Active = useIsFarm365Active();
 
   const toggleWalletModal = useWalletModalToggle();
 
@@ -61,19 +59,19 @@ export default function Farm365() {
   const [selectedFilterTab, setSelectedFilterTab] = useState<'active' | 'finished'>('active');
 
   const farming365Contracts: Contract[] = useMemo(() => {
-    if (!isValidNetwork) {
+    if (!isFarm365Active) {
       return [];
     }
     return getFarming365Contracts(library, account, chainId);
-  }, [library, account, chainId, isValidNetwork]);
+  }, [library, account, chainId, isFarm365Active]);
 
   useEffect(() => {
-    if (!isValidNetwork) {
+    if (!isFarm365Active) {
       history.push(`swap`);
     }
-  }, [isValidNetwork, history]);
+  }, [isFarm365Active, history]);
 
-  if (!isValidNetwork) {
+  if (!isFarm365Active) {
     return (
       <div>
         <div>

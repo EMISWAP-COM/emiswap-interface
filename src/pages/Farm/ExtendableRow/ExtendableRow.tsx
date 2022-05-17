@@ -12,12 +12,7 @@ import isLpToken from '../isLpToken';
 import { ExternalLink } from '../../../theme';
 import { FarmingTimeType } from '../constants';
 import KCCLogo from '../../../assets/currencies/KCS.png';
-import {
-  useIsEthActive,
-  useIsPolygonActive,
-  useIsShidenActive,
-  useNetworkData,
-} from '../../../hooks/Coins';
+import { useIsEthActive, useIsFarm365Active, useNetworkData } from '../../../hooks/Coins';
 import Farm365Content from '../../Farm365/Farm365Content';
 import useFarming365 from '../../../hooks/useFarming365';
 
@@ -258,8 +253,8 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
   // const { chainId } = useActiveWeb3React();
   const { alias } = useNetworkData();
   const isEthereumActive = useIsEthActive();
-  const isPolygonActive = useIsPolygonActive();
-  const isShidenActive = useIsShidenActive();
+
+  const isFarm365Active = useIsFarm365Active();
 
   const [isRowExtended, setIsRowExtended] = useState(false);
 
@@ -268,7 +263,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
   }, [isRowExtended]);
 
   const aprTooltip = farming365
-    ? `APR ESW staking: ${(apr - 365).toFixed(2)}'% LP Staking: 365%`
+    ? `APR ESW staking up to ${(apr - 180).toFixed(2)}% LP Staking: 180%`
     : `${apr}'%`;
 
   return (
@@ -285,7 +280,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
                   <CurrencyLogo currency={stakeToken} size={'24px'} />
                 )}
               </StyledCurrencyLogo>
-              {isPolygonActive || isShidenActive ? (
+              {isFarm365Active ? (
                 <StyledTruncatedText>LP - ESW</StyledTruncatedText>
               ) : (
                 <StyledTruncatedText>

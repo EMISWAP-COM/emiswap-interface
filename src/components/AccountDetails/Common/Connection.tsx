@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { convertBigDecimal, getWalletByConnector } from '../uitls';
 import { Header, WalletAction } from '../styleds';
-import styled from 'styled-components/macro';
-import { useActiveWeb3React } from '../../../hooks';
+import styled, { ThemeContext } from 'styled-components/macro';
+import { useActiveWeb3React, useIsOraculOK } from '../../../hooks';
 import { getExplorerLink, shortenAddress } from '../../../utils';
 import { useHistory } from 'react-router';
 import { useWalletModalToggle } from '../../../state/application/hooks';
@@ -22,6 +22,7 @@ import { isMobile } from 'react-device-detect';
 import { useCollectData } from '../Owner/hooks';
 import QuestionHelper from '../../QuestionHelper';
 import { RowBetween } from '../../Row';
+import { Text } from 'rebass';
 
 const Container = styled.div`
   font-size: 13px;
@@ -357,6 +358,8 @@ export const Connection: React.FC<Props> = ({
   const isCollectDisabled = true || !Number(balance?.available.ESW);
 
   const wallet = getWalletByConnector(connector);
+  const isOraculOK = useIsOraculOK();
+  const theme = useContext(ThemeContext);
 
   return (
     <>
@@ -424,28 +427,41 @@ export const Connection: React.FC<Props> = ({
               </ChangeWalletMessageTooltip>
             </ChangeActionsBlock>
           </WalletInfo>*/}
-          <Header style={{ marginTop: 4 }}>Your rewards from all networks</Header>
-          <Balance
-            total={sumESW('ESW', balance)}
-            wallet={convertBigDecimal(balance?.wallet.ESW)}
-            locked={convertBigDecimal(balance?.total.locked.ESW)}
-            avalible={convertBigDecimal(balance?.available.ESW)}
-            requested={collectData?.requested}
-            veryFirstRequestDate={collectData?.veryFirstRequestDate}
-            handleRequest={() => changeCollectButtonState('request')}
-            handleClaim={() => {
-              changeCollectButtonState('wallet');
+          {isOraculOK ? (
+            <>
+              <Header style={{ marginTop: 4 }}>Your rewards from all networks</Header>
+              <Balance
+                total={sumESW('ESW', balance)}
+                wallet={convertBigDecimal(balance?.wallet.ESW)}
+                locked={convertBigDecimal(balance?.total.locked.ESW)}
+                avalible={convertBigDecimal(balance?.available.ESW)}
+                requested={collectData?.requested}
+                veryFirstRequestDate={collectData?.veryFirstRequestDate}
+                handleRequest={() => changeCollectButtonState('request')}
+                handleClaim={() => {
+                  changeCollectButtonState('wallet');
 
-              if (isCollectDisabled) {
-                return;
-              }
+                  if (isCollectDisabled) {
+                    return;
+                  }
 
-              toggle();
-              history.push(`/claim/${network}`);
-            }}
-          >
-            {children}
-          </Balance>
+                  toggle();
+                  history.push(`/claim/${network}`);
+                }}
+              >
+                {children}
+              </Balance>
+            </>
+          ) : (
+            <>
+              <Text color={theme.white} fontWeight={500} fontSize={20}>
+                <span>
+                  Personal account is now under maintenance. <br /> It will be available again in 4
+                  hours.
+                </span>
+              </Text>
+            </>
+          )}
         </Main>
       </Container>
     </>

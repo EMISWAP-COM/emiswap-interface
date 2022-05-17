@@ -4086,7 +4086,7 @@ const defaultCoins: DefaultCoins = {
       address: '0x980a5afef3d17ad98635f6c5aebcbaeded3c3430',
       chainId: 321,
       name: 'USDC',
-      decimals: 6,
+      decimals: 18,
       symbol: 'USDC',
     },
     {
@@ -4469,6 +4469,34 @@ const defaultCoins: DefaultCoins = {
       decimals: 18,
       logoURI:
         'https://raw.githubusercontent.com/plasmadlt/token-list/master/assets/0x5a75a093747b72a0e14056352751edf03518031d.png',
+    },
+    {
+      address: '0x9a5c3baaa78b289d8369e669529fbd69ad22d429',
+      chainId: chainIds.ASTAR,
+      name: 'LP USDT-WASTR',
+      symbol: 'USDTWASTR',
+      decimals: 18,
+    },
+    {
+      address: '0x7b6bf528e70fd0a5c6f9570fd4e09424731fc911',
+      chainId: chainIds.ASTAR,
+      name: 'LP ESW-USDT',
+      symbol: 'ESWUSDT',
+      decimals: 18,
+    },
+    {
+      address: '0x8b16914aa5edd02a1f192f30e19470506420b059',
+      chainId: chainIds.ASTAR,
+      name: 'LP USDC-WASTR',
+      symbol: 'USDCWASTR',
+      decimals: 18,
+    },
+    {
+      address: '0x7b0b0bbe7a99c0f92bb87c335cb76b4f0bf495f0',
+      chainId: chainIds.ASTAR,
+      name: 'LP ESW-WASTR',
+      symbol: 'ESWWASTR',
+      decimals: 18,
     },
     // GateChain
     {
