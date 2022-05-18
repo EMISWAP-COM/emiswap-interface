@@ -263,7 +263,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
   }, [isRowExtended]);
 
   const aprTooltip = farming365
-    ? `APR ESW staking up to ${(apr - 180).toFixed(2)}% LP Staking: 180%`
+    ? `APR ESW staking up to ${(apr - 365).toFixed(2)}% LP Staking up to 365%`
     : `${apr}'%`;
 
   return (

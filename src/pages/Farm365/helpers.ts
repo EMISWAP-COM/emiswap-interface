@@ -2,7 +2,7 @@ import chainIds from '../../constants/chainIds';
 import { Token } from '@uniswap/sdk';
 
 export function getFarmDays(): number {
-  return 180;
+  return 365;
 }
 
 export function calcFarming365Apr(
