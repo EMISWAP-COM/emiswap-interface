@@ -96,9 +96,9 @@ export default function Farm365() {
               />
             </StyledTabs>
             <FarmingInfo>
-              Stake LP tokens in pair with ESW into the farming pools and win a 365% APR airdrop per
-              provided liquidity + Additional % APR for Farming. Farming rewards are allocated to
-              your EmiSwap account for every block.
+              Stake LP token in pair with ESW into the farming pools and win a 365% or 180% APR
+              airdrop if LP includes EmiSwap token + Additional % AIR for Farming. Farming rewards
+              are allocated to your EmiSwap account for every block.
             </FarmingInfo>
 
             {farming365Contracts.map(contract => (
