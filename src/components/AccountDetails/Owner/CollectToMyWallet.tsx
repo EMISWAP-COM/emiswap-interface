@@ -93,6 +93,7 @@ const CollectToMyWallet = ({
   }, [progress]);
 
   const avalibleCollect = unlocked === '0' ? '0' : avalible;
+  console.log('unlocked: ', unlocked);
   const isAnyToCollect = Number(avalibleCollect) !== 0;
   const remainderValue = useGetRemainder();
   const isCollectDisabled = remainderValue.status !== 'enable';
@@ -103,6 +104,7 @@ const CollectToMyWallet = ({
     : isAnyToCollect
     ? 'Request collect'
     : 'Insufficient balance';
+  console.log('isAnyToCollect: ', isAnyToCollect);
   return (
     <WalletWrapper>
       <Title style={{ paddingBottom: '8px' }}>Collect to my Wallet</Title>

@@ -262,6 +262,7 @@ export const useCollectData = closeWindow => {
     polygonContract
       .getRemainderOfRequestsbyWallet(account)
       .then(({ remainderTotal, remainderPreparedForClaim, veryFirstRequestDate }) => {
+        console.log('remainderPreparedForClaim: ', remainderPreparedForClaim);
         changeState({
           ...state,
           requested: formatUnits(remainderTotal, 18),
