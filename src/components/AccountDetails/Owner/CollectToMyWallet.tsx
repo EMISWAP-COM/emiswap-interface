@@ -69,22 +69,27 @@ const CollectToMyWallet = ({
   const addPopup = useAddPopup();
   const popups = useActivePopups();
 
-  useEffect(() => {
-    const isPending = progress === 'success';
-    const key = `${txHash}CollectSuccess`;
+  function showPopUpIfNot(condition, popUp) {
+    const key = `${popUp.txn.hash}${popUp.txn.summary}`;
     const isPopUpAlreadyShown = popups.find(item => item.key === key);
-    if (isPending && !isPopUpAlreadyShown) {
-      addPopup(
-        {
-          txn: {
-            hash: txHash,
-            success: true,
-            summary: `Transfer ${requested} ESW to the wallet`,
-          },
-        },
-        key,
-      );
-    }
+    if (condition && !isPopUpAlreadyShown) addPopup(popUp, key);
+  }
+
+  useEffect(() => {
+    showPopUpIfNot(progress === 'success', {
+      txn: {
+        hash: txHash,
+        success: true,
+        summary: `Transfer ${requested} ESW to the wallet`,
+      },
+    });
+    showPopUpIfNot(progress === 'error', {
+      txn: {
+        hash: txHash,
+        success: false,
+        summary: `Transaction has failed`,
+      },
+    });
   }, [progress]);
 
   const avalibleCollect = unlocked === '0' ? '0' : avalible;
