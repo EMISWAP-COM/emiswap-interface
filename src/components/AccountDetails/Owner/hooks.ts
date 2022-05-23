@@ -278,6 +278,7 @@ export const useCollectData = closeWindow => {
       contract.getDatesStarts(),
       contract.claimDailyLimit(),
     ]).then(([{ available }, { todayStart, tomorrowStart }, claimLimit]) => {
+      console.log('available: ', available);
       changeState({
         ...state,
         avalible: formatUnits(available, 18),
