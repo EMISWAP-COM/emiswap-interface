@@ -46,6 +46,15 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
       .then(nonce =>
         handleAuth().then(async token => {
           changeStatus('');
+          const isEswOutOfStock =
+            parseFloat(userInput) > maxAvailableForRequests || parseFloat(userInput) < availableESW;
+          if (isEswOutOfStock) {
+            changeStatus(
+              'An application error has occurred. Notify our support team. Error code 011.',
+            );
+            changeTitle('Request');
+            return Promise.resolve();
+          }
           const isWrongInput =
             parseFloat(userInput) <= 0 ||
             Number.isNaN(parseFloat(userInput)) ||
