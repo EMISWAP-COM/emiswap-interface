@@ -47,7 +47,8 @@ export const useRequestCollect = (userInput: string, closeWindow: () => void) =>
         handleAuth().then(async token => {
           changeStatus('');
           const isEswOutOfStock =
-            parseFloat(userInput) > maxAvailableForRequests || parseFloat(userInput) < availableESW;
+            parseFloat(userInput) > maxAvailableForRequests &&
+            parseFloat(userInput) <= availableESW;
           if (isEswOutOfStock) {
             changeStatus(
               'An application error has occurred. Notify our support team. Error code 011.',
