@@ -238,26 +238,20 @@ export const useCollectData = closeWindow => {
   } = usePolygonWeb3React();
   const [txHash, changeTxHash] = useState('');
   const [progress, changeProgress] = useState('init');
-  console.log('library: ', library, 'account: ', account);
   const contract: Contract | null = useMemo(() => getCollectContract(library, account, chainId), [
     library,
     account,
     chainId,
   ]);
-  console.log('contract: ', contract);
-  console.log('polygonLibrary: ', polygonLibrary, 'polygonAccount: ', polygonAccount);
   const polygonContract: Contract | null = useMemo(
     () => getCollectContract(polygonLibrary, polygonAccount, chainId),
     [polygonLibrary, polygonAccount, polygonChainId],
   );
-  console.log('polygonContract: ', polygonContract);
 
   useEffect(() => {
-    console.log('before calling');
     polygonContract
       .getRemainderOfRequestsbyWallet(account)
       .then(({ remainderTotal, remainderPreparedForClaim, veryFirstRequestDate }) => {
-        console.table({ remainderTotal, remainderPreparedForClaim, veryFirstRequestDate });
         changeState({
           ...state,
           requested: formatUnits(remainderTotal, 18),
@@ -265,7 +259,7 @@ export const useCollectData = closeWindow => {
           veryFirstRequestDate: formatDateShortMonth(toDateFromContract(veryFirstRequestDate)),
         });
       });
-  }, [polygonContract]);
+  }, [polygonContract.address]);
 
   useEffect(() => {
     Promise.all([
