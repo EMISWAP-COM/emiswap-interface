@@ -314,7 +314,7 @@ export const useCollectData = closeWindow => {
         },
       });
     });
-  }, [contract, closeWindow]);
+  }, [contract.address, closeWindow]);
 
   return Object.assign({ progress, txHash }, state);
 };
