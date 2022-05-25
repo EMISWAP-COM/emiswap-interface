@@ -21,32 +21,39 @@ const Skeleton = (): React.ReactElement => (
 
 interface Numbers {
   t: any;
+  isTranslationReady: boolean;
 }
 
-const Numbers = ({ t }: Numbers): ReactElement => {
+const Numbers = ({ t, isTranslationReady }: Numbers): ReactElement => {
   const [totalValueLocked, totalTradingVolume, totalTxData] = useLiquidityAndVolume();
 
   return (
     <section className="numbers">
       <div className="section__card">
         <div className="section__header">
-          <div className="section__title">{t('landing.numbers.title')}</div>
+          <div className="section__title">
+            {isTranslationReady ? t('landing.numbers.title') : ''}
+          </div>
           <button
             className="btn-primary transparent numbers__btn-analytics-top"
             onClick={() => window.open('https://emiswap.com/analytics/home?network=polygon')}
           >
-            {t('landing.button.analytics')}
+            {isTranslationReady ? t('landing.button.analytics') : ''}
           </button>
         </div>
         <div className="numbers__list">
           <div className="numbers__card">
-            <div className="numbers__desc">{t('landing.numbers.value')}</div>
+            <div className="numbers__desc">
+              {isTranslationReady ? t('landing.numbers.value') : ''}
+            </div>
             <div className="numbers__value">
               {totalValueLocked === null ? <Skeleton /> : formatTotalValueLocked(totalValueLocked)}
             </div>
           </div>
           <div className="numbers__card">
-            <div className="numbers__desc">{t('landing.numbers.volume')}</div>
+            <div className="numbers__desc">
+              {isTranslationReady ? t('landing.numbers.volume') : ''}
+            </div>
             <div className="numbers__value">
               {totalTradingVolume == null ? (
                 <Skeleton />
@@ -56,13 +63,17 @@ const Numbers = ({ t }: Numbers): ReactElement => {
             </div>
           </div>
           <div className="numbers__card">
-            <div className="numbers__desc">{t('landing.numbers.users')}</div>
+            <div className="numbers__desc">
+              {isTranslationReady ? t('landing.numbers.users') : ''}
+            </div>
             <div className="numbers__value">
               {totalTradingVolume == null ? <Skeleton /> : '86K'}
             </div>
           </div>
           <div className="numbers__card">
-            <div className="numbers__desc">{t('landing.numbers.trades')}</div>
+            <div className="numbers__desc">
+              {isTranslationReady ? t('landing.numbers.trades') : ''}
+            </div>
             <div className="numbers__value">
               {totalTxData == null ? <Skeleton /> : formatTotalTXCount(totalTxData)}
             </div>
@@ -72,7 +83,7 @@ const Numbers = ({ t }: Numbers): ReactElement => {
           className="btn-primary transparent numbers__btn-analytics-bottom"
           onClick={() => window.open('https://emiswap.com/analytics/home?network=polygon')}
         >
-          {t('landing.button.analytics')}
+          {isTranslationReady ? t('landing.button.analytics') : ''}
         </button>
       </div>
     </section>

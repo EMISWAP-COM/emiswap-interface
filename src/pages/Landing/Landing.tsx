@@ -26,7 +26,7 @@ export default function Landing({ history }: any) {
   const aboutSectionRef = useRef<HTMLElement>();
   const communitySectionRef = useRef<HTMLElement>();
   const teamSectionRef = useRef<HTMLElement>();
-  const { t, i18n } = useTranslation();
+  const { t, i18n, ready } = useTranslation();
   const { account } = useActiveWeb3React();
   const toggleWalletModal = useWalletModalToggle();
 
@@ -85,6 +85,7 @@ export default function Landing({ history }: any) {
         <div className="landing-wrapper">
           <Header
             t={t}
+            isTranslationReady={ready}
             currentLanguage={currentLanguage}
             sectionInViewPort={sectionInViewPort}
             changeLanguage={changeLanguage}
@@ -93,6 +94,7 @@ export default function Landing({ history }: any) {
           />
           <Banner
             t={t}
+            isTranslationReady={ready}
             aboutSectionRef={aboutSectionRef}
             account={account}
             currentLanguage={currentLanguage}
@@ -100,13 +102,18 @@ export default function Landing({ history }: any) {
             changeChainToPolygon={changeChainToPolygon}
             toggleWalletModal={toggleWalletModal}
           />
-          <Numbers t={t} />
-          <Apr t={t} toggleModal={toggleModal} />
-          <About t={t} />
-          <Steps t={t} />
-          <Community t={t} communitySectionRef={communitySectionRef} />
-          <Partners t={t} />
-          <Polygon t={t} changeChainToPolygon={changeChainToPolygon} goToPool={goToPool} />
+          <Numbers t={t} isTranslationReady={ready} />
+          <Apr t={t} toggleModal={toggleModal} isTranslationReady={ready} />
+          <About t={t} isTranslationReady={ready} />
+          <Steps t={t} isTranslationReady={ready} />
+          <Community t={t} communitySectionRef={communitySectionRef} isTranslationReady={ready} />
+          <Partners t={t} isTranslationReady={ready} />
+          <Polygon
+            t={t}
+            changeChainToPolygon={changeChainToPolygon}
+            goToPool={goToPool}
+            isTranslationReady={ready}
+          />
         </div>
       </Body>
     </>

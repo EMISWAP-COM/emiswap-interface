@@ -8,17 +8,18 @@ import rangesSvg from '../../../assets/landing/ranges.svg';
 interface Apr {
   t: any;
   toggleModal: (value: boolean) => void;
+  isTranslationReady: boolean;
 }
 
-const Apr = ({ t, toggleModal }: Apr): ReactElement => (
+const Apr = ({ t, toggleModal, isTranslationReady }: Apr): ReactElement => (
   <section className="apr">
     <button className="btn-primary transparent apr__button-more" onClick={() => toggleModal(true)}>
-      {t('landing.button.more')}
+      {isTranslationReady ? t('landing.button.more') : ''}
     </button>
     <div className="apr__top">
       <div>
         <div className="apr__state">
-          <div className="apr__state-label">{t('landing.upTo')}</div>
+          <div className="apr__state-label">{isTranslationReady ? t('landing.upTo') : ''}</div>
           <div className="apr__value">
             <img className="apr__value-img" src={Apr2000Png} alt="" />
           </div>
@@ -32,26 +33,26 @@ const Apr = ({ t, toggleModal }: Apr): ReactElement => (
         <div className="apr__card-pie-img__wrapper">
           <img className="apr__card-pie-img" src={Apr365PiePng} alt="" />
         </div>
-        <div className="apr__card-text">{t('landing.365')}</div>
+        <div className="apr__card-text">{isTranslationReady ? t('landing.365') : ''}</div>
       </div>
       <div className="apr__card">
         <div className="apr__card-pie-img__wrapper">
           <img className="apr__card-pie-img" src={Apr1000PiePng} alt="" />
         </div>
-        <div className="apr__card-text">{t('landing.1000')}</div>
+        <div className="apr__card-text">{isTranslationReady ? t('landing.1000') : ''}</div>
       </div>
       <div className="apr__card">
         <div className="apr__card-pie-img__wrapper">
           <img className="apr__card-pie-img" src={Apr025PiePng} alt="" />
         </div>
-        <div className="apr__card-text">{t('landing.025')}</div>
+        <div className="apr__card-text">{isTranslationReady ? t('landing.025') : ''}</div>
       </div>
     </div>
     <button
       className="btn-primary transparent apr__button-more apr__button-more--bottom"
       onClick={() => toggleModal(true)}
     >
-      {t('landing.button.more')}
+      {isTranslationReady ? t('landing.button.more') : ''}
     </button>
   </section>
 );

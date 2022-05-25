@@ -8,9 +8,11 @@ import SocialsCardPng from '../../../assets/landing/socials-card.png';
 const Community = ({
   t,
   communitySectionRef,
+  isTranslationReady,
 }: {
   t: any;
   communitySectionRef: React.MutableRefObject<HTMLElement>;
+  isTranslationReady: boolean;
 }) => (
   <section id="community" className="socials" ref={communitySectionRef}>
     <div className="socials__image">
@@ -18,7 +20,7 @@ const Community = ({
     </div>
     <div className="socials__links">
       <div className="section__header">
-        <div className="section__title">{t('landing.join')}</div>
+        <div className="section__title">{isTranslationReady ? t('landing.join') : ''}</div>
       </div>
       <div className="socials__list">
         <div className="social__card">
@@ -30,7 +32,7 @@ const Community = ({
               rel="noopener noreferrer"
               className="social__join-link"
             >
-              {t('landing.button.join')}
+              {isTranslationReady ? t('landing.button.join') : ''}
             </a>
           </div>
           <div>
@@ -46,7 +48,7 @@ const Community = ({
               rel="noopener noreferrer"
               className="social__join-link"
             >
-              {t('landing.button.join')}
+              {isTranslationReady ? t('landing.button.join') : ''}
             </a>
           </div>
           <div>
@@ -62,7 +64,7 @@ const Community = ({
               rel="noopener noreferrer"
               className="social__join-link"
             >
-              {t('landing.button.join')}
+              {isTranslationReady ? t('landing.button.join') : ''}
             </a>
           </div>
           <div>
@@ -78,7 +80,7 @@ const Community = ({
               rel="noopener noreferrer"
               className="social__join-link"
             >
-              {t('landing.button.join')}
+              {isTranslationReady ? t('landing.button.join') : ''}
             </a>
           </div>
           <div>

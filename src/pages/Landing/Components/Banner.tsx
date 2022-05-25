@@ -17,6 +17,7 @@ interface Banner {
   goToPool: () => void;
   changeChainToPolygon: () => void;
   toggleWalletModal: () => void;
+  isTranslationReady: boolean;
 }
 
 const Banner = ({
@@ -27,14 +28,15 @@ const Banner = ({
   goToPool,
   changeChainToPolygon,
   toggleWalletModal,
+  isTranslationReady,
 }: Banner): ReactElement => (
   <section id="about" className="banner" ref={aboutSectionRef}>
     <div className="mobile-web3-buttons">
       <Web3Status disableClickOnConnected />
     </div>
     <div className="banner__info">
-      <div className="banner__title">{t('landing.banner.title')}</div>
-      <div className="banner__desc">{t('landing.banner.subtitle')}</div>
+      <div className="banner__title">{isTranslationReady ? t('landing.banner.title') : ''}</div>
+      <div className="banner__desc">{isTranslationReady ? t('landing.banner.subtitle') : ''}</div>
       <div className="banner__buttons">
         <button
           className="btn-primary"
@@ -44,19 +46,19 @@ const Banner = ({
           }}
           style={{ flex: 1, padding: 0 }}
         >
-          {t('landing.button.startEarning')}
+          {isTranslationReady ? t('landing.button.startEarning') : ''}
         </button>
 
         {!account ? (
           <button className="btn-primary lp_btn-connect" onClick={toggleWalletModal}>
-            {t('landing.button.connect-wallet')}
+            {isTranslationReady ? t('landing.button.connect-wallet') : ''}
           </button>
         ) : (
           <ReferralLink
             showText={false}
             showIcon={false}
-            text={t('landing.button.copy')}
-            onCopyText={t('landing.button.onCopy')}
+            text={isTranslationReady ? t('landing.button.copy') : ''}
+            onCopyText={isTranslationReady ? t('landing.button.onCopy') : ''}
             className="lp_referral_button"
           />
         )}
@@ -74,14 +76,14 @@ const Banner = ({
         <div className="chart__stat-item">
           <div className="chart__stat-name">
             <img className="chart__list-dot" src={listDotSvg} alt="" />
-            {t('landing.banner.supply')}
+            {isTranslationReady ? t('landing.banner.supply') : ''}
           </div>
           <div className="chart__percent">365%</div>
         </div>
         <div className="chart__stat-item">
           <div className="chart__stat-name" style={{ color: '#7A2DF4' }}>
             <img className="chart__list-dot" src={listDotVioletSvg} alt="" />
-            {t('landing.banner.farming')}
+            {isTranslationReady ? t('landing.banner.farming') : ''}
           </div>
           <div className="chart__percent-label">{t('landing.upTo')}</div>
           <div className="chart__percent">1000%</div>
@@ -89,9 +91,11 @@ const Banner = ({
         <div className="chart__stat-item">
           <div className="chart__stat-name" style={{ color: '#E478FF' }}>
             <img className="chart__list-dot" src={listDotSvg} alt="" />
-            {t('landing.banner.swap')}
+            {isTranslationReady ? t('landing.banner.swap') : ''}
           </div>
-          <div className="chart__percent-label">{t('landing.banner.volume')}</div>
+          <div className="chart__percent-label">
+            {isTranslationReady ? t('landing.banner.volume') : ''}
+          </div>
           <div className="chart__percent">0,25%</div>
         </div>
       </div>

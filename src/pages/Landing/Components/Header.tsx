@@ -13,6 +13,7 @@ interface Header {
   changeLanguage: (lng: any) => void;
   changeChainToPolygon: () => void;
   goToPool: () => void;
+  isTranslationReady: boolean;
 }
 
 const Header = ({
@@ -22,6 +23,7 @@ const Header = ({
   changeLanguage,
   changeChainToPolygon,
   goToPool,
+  isTranslationReady,
 }: Header): ReactElement => (
   <section className="header">
     <a className="logo" href="/">
@@ -33,7 +35,7 @@ const Header = ({
         href="#about"
       >
         <img className="nav__img" src={AboutSvg} alt="" />
-        <div className="nav__name">{t('landing.menu.about')}</div>
+        <div className="nav__name">{isTranslationReady ? t('landing.menu.about') : ''}</div>
       </a>
       {/* <a className="nav__link" href="#farms">
       <img className="nav__img" src={FarmsSvg} alt=""/>
@@ -44,7 +46,7 @@ const Header = ({
         href="#community"
       >
         <img className="nav__img" src={CommunitySvg} alt="" />
-        <div className="nav__name">{t('landing.menu.community')}</div>
+        <div className="nav__name">{isTranslationReady ? t('landing.menu.community') : ''}</div>
       </a>
     </div>
     <div className="language-switch" style={{ marginLeft: 'auto' }}>
@@ -89,7 +91,7 @@ const Header = ({
           goToPool();
         }}
       >
-        {t('landing.button.startEarning')}
+        {isTranslationReady ? t('landing.button.startEarning') : ''}
       </button>
 
       <Menu />

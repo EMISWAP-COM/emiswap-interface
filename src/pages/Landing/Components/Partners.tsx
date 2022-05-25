@@ -13,10 +13,16 @@ import uboostLogo from '../../../assets/landing/partners/uboost.png';
 import unilendLogo from '../../../assets/landing/partners/unilend.png';
 import yieldLogo from '../../../assets/landing/partners/yield.png';
 
-const Partners = ({ t }: { t: any }): ReactElement => (
+const Partners = ({
+  t,
+  isTranslationReady,
+}: {
+  t: any;
+  isTranslationReady: boolean;
+}): ReactElement => (
   <section id="partners" className="partners">
     <div className="section__header">
-      <div className="section__title">{t('landing.partners.title')}</div>
+      <div className="section__title">{isTranslationReady ? t('landing.partners.title') : ''}</div>
     </div>
     <div className="partners__list">
       <div>
