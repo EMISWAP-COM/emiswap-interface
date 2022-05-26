@@ -91,6 +91,7 @@ export class NetworkConnector extends AbstractConnector {
   private currentChainId: number;
 
   constructor({ urls, defaultChainId }: NetworkConnectorArguments) {
+    console.log('urls: ', urls, 'defaultChainId: ', defaultChainId);
     invariant(
       defaultChainId || Object.keys(urls).length === 1,
       'defaultChainId is a required argument with >1 url',
