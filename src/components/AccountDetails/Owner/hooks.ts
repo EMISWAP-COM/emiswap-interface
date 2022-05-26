@@ -246,6 +246,14 @@ export const useCollectData = closeWindow => {
     account: polygonAccount,
     chainId: polygonChainId,
   } = usePolygonWeb3React();
+  console.log(
+    'polygonLibrary: ',
+    polygonLibrary,
+    'polygonAccount: ',
+    polygonAccount,
+    'polygonChainId: ',
+    polygonChainId,
+  );
   const [txHash, changeTxHash] = useState('');
   const [progress, changeProgress] = useState('init');
   const contract: Contract | null = useMemo(() => getCollectContract(library, account, chainId), [
@@ -253,6 +261,7 @@ export const useCollectData = closeWindow => {
     account,
     chainId,
   ]);
+  console.log('library: ', library, 'account: ', account, 'chainId: ', chainId);
   const polygonContract: Contract | null = useMemo(
     () => getCollectContract(polygonLibrary, polygonAccount, chainId),
     [polygonLibrary, polygonAccount, polygonChainId],
