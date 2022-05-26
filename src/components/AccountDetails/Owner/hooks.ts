@@ -261,7 +261,16 @@ export const useCollectData = closeWindow => {
     account,
     chainId,
   ]);
-  console.log('library: ', library, 'account: ', account, 'chainId: ', chainId);
+  console.log(
+    'library: ',
+    library,
+    'account: ',
+    account,
+    'chainId: ',
+    chainId,
+    'contract: ',
+    contract,
+  );
   const polygonContract: Contract | null = useMemo(
     () => getCollectContract(polygonLibrary, polygonAccount, chainId),
     [polygonLibrary, polygonAccount, polygonChainId],
@@ -323,7 +332,7 @@ export const useCollectData = closeWindow => {
         },
       });
     });
-  }, [contract.address, closeWindow]);
+  }, [contract, closeWindow]);
 
   return Object.assign({ progress, txHash }, state);
 };
