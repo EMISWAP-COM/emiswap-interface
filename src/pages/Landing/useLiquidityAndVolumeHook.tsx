@@ -7,6 +7,7 @@ const ethUrl = 'https://api.thegraph.com/subgraphs/name/lombardi22/emiswap8';
 const kccUrl = 'https://thegraph.kcc.network/subgraphs/name/emiswap/emiswap1';
 const polygonUrl = 'https://api.thegraph.com/subgraphs/name/lombardi22/polygon';
 const shidenUrl = 'https://shiden-graph.emiswap.com/subgraphs/name/shiden';
+const astarUrl = 'https://astar-graph.emiswap.com/subgraphs/name/astar';
 
 const getResult = data =>
   data.reduce(
@@ -51,7 +52,7 @@ const useLiquidityAndVolume = (): Data => {
     setPair(initPair);
 
     const getLiquidityAndValue = async () => {
-      const requests = [ethUrl, kccUrl, polygonUrl, shidenUrl].map(url =>
+      const requests = [ethUrl, kccUrl, polygonUrl, shidenUrl, astarUrl].map(url =>
         fetchLiquidityAndValue(url).then(result => result.json()),
       );
 
