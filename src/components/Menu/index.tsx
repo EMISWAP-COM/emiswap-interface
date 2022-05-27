@@ -129,10 +129,12 @@ export default function Menu() {
             <img src={WikiIcon} width={14} height={14} alt="" />
             Wiki
           </MenuItem>
-          <MenuItem id="link" href={analyticsUrl}>
-            <PieChart size={14} />
-            Analytics
-          </MenuItem>
+          {analyticsUrl && (
+            <MenuItem id="link" href={analyticsUrl}>
+              <PieChart size={14} />
+              Analytics
+            </MenuItem>
+          )}
           <MenuItem
             id="link"
             href="https://emiswap.medium.com/all-you-need-to-know-about-nft-magic-cards-7c0ec9875800"
@@ -175,7 +177,11 @@ export default function Menu() {
             <Code size={14} />
             Code
           </MenuItem>
-          <MenuItem id="link" href="https://wiki.emiswap.com/user-guide/how-to-farm-usdesw" target="_blank">
+          <MenuItem
+            id="link"
+            href="https://wiki.emiswap.com/user-guide/how-to-farm-usdesw"
+            target="_blank"
+          >
             <BookOpen size={14} />
             Earn with EmiSwap
           </MenuItem>

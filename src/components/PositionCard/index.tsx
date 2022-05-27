@@ -21,7 +21,7 @@ import { AutoRow, RowBetween, RowFixed } from '../Row';
 import { Dots } from '../swap/styleds';
 import { tokenAmountToString } from '../../utils/formats';
 import { ExternalLink } from '../../theme';
-import { useNetworkData } from '../../hooks/Coins';
+import { useIsAvalancheActive, useIsGateChainActive, useNetworkData } from '../../hooks/Coins';
 
 export const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -140,7 +140,7 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
   const theme = useContext(ThemeContext);
   const { account, chainId } = useActiveWeb3React();
 
-  const {analyticsUrl} = useNetworkData();
+  const { analyticsUrl } = useNetworkData();
 
   const currency0 = unwrappedToken(chainId, pair.token0);
   const currency1 = unwrappedToken(chainId, pair.token1);
@@ -149,6 +149,8 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
 
   const userPoolBalance = useTokenBalance(account, pair.liquidityToken);
   const totalPoolTokens = useTotalSupply(pair.liquidityToken);
+  const isGateChainActive = useIsGateChainActive();
+  const isAvalancheActive = useIsAvalancheActive();
 
   const poolTokenPercentage =
     !!userPoolBalance &&
@@ -249,11 +251,13 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
                 {poolTokenPercentage ? poolTokenPercentage.toFixed(2) + '%' : '-'}
               </Text>
             </FixedHeightRow>
-            <AutoRow justify="center" marginTop={'10px'}>
-              <ExternalLink href={analyticsUrl}>
-                <YellowText>View pool information ↗</YellowText>
-              </ExternalLink>
-            </AutoRow>
+            {!isGateChainActive && !isAvalancheActive && (
+              <AutoRow justify="center" marginTop={'10px'}>
+                <ExternalLink href={analyticsUrl}>
+                  <YellowText>View pool information ↗</YellowText>
+                </ExternalLink>
+              </AutoRow>
+            )}
             <RowBetween marginTop="10px">
               <ButtonSecondary
                 as={Link}
