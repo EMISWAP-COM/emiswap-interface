@@ -95,8 +95,6 @@ const NetworkSwitch = () => {
         )}
         <span>{NETWORK_LABELS[chainId] || 'Change Network'}</span>
         {[chainIds.AVALANCHE].includes(chainId as any) && <NetworkLabel>Beta Version</NetworkLabel>}
-        {[chainIds.ASTAR].includes(chainId as any) && <NetworkLabel>Beta Version</NetworkLabel>}
-        {[chainIds.GATECHAIN].includes(chainId as any) && <NetworkLabel>Beta Version</NetworkLabel>}
       </NetworkButtonSwitch>
       <NetworkSwitchModal />
     </>
