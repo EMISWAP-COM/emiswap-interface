@@ -248,21 +248,21 @@ export const useCollectData = closeWindow => {
     () => getCollectContract(polygonLibrary, polygonAccount, chainId),
     [polygonLibrary, polygonAccount, polygonChainId],
   );
-  const [wasPolygonContractCalled, setWasPolygonContractCalled] = useState(false);
 
   useEffect(() => {
-    if (wasPolygonContractCalled) return;
-    polygonContract
-      .getRemainderOfRequestsbyWallet(account)
-      .then(({ remainderTotal, remainderPreparedForClaim, veryFirstRequestDate }) => {
-        changeState({
-          ...state,
-          requested: formatUnits(remainderTotal, 18),
-          unlocked: formatUnits(remainderPreparedForClaim, 18),
-          veryFirstRequestDate: formatDateShortMonth(toDateFromContract(veryFirstRequestDate)),
+    if (polygonContract.address && account) {
+      polygonContract
+        .getRemainderOfRequestsbyWallet(account)
+        .then(({ remainderTotal, remainderPreparedForClaim, veryFirstRequestDate }) => {
+          changeState({
+            ...state,
+            requested: formatUnits(remainderTotal, 18),
+            unlocked: formatUnits(remainderPreparedForClaim, 18),
+            veryFirstRequestDate: formatDateShortMonth(toDateFromContract(veryFirstRequestDate)),
+          });
         });
-      });
-    setWasPolygonContractCalled(true);
+      console.log('getRemainderOfRequestsbyWallet');
+    }
   }, [polygonContract.address, account]);
 
   useEffect(() => {

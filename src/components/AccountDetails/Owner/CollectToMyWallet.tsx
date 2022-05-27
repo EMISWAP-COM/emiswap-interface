@@ -4,17 +4,17 @@ import Countdown from 'react-countdown';
 import CurrencyLogo from '../../CurrencyLogo';
 import { useCollectData, useGetRemainder } from './hooks';
 import {
-  Title,
+  ButtonGroup,
+  ButtonText,
   CancelButton,
+  CollectBtn,
   Field,
-  Label,
-  Value,
-  WalletWrapper,
   Frame,
   FrameRow,
-  ButtonGroup,
-  CollectBtn,
-  ButtonText,
+  Label,
+  Title,
+  Value,
+  WalletWrapper,
 } from './styled';
 import { useActivePopups, useAddPopup } from '../../../state/application/hooks';
 
