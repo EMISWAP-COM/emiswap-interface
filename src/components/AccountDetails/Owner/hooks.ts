@@ -266,7 +266,7 @@ export const useCollectData = closeWindow => {
           veryFirstRequestDate: formatDateShortMonth(toDateFromContract(veryFirstRequestDate)),
         });
       });
-  }, [polygonContract]);
+  }, [polygonContract.address]);
 
   useEffect(() => {
     Promise.all([
