@@ -266,6 +266,22 @@ export const useCollectData = closeWindow => {
   }, [polygonContract.address, account]);
 
   useEffect(() => {
+    setTimeout(() => {
+      polygonContract
+        .getRemainderOfRequestsbyWallet(account)
+        .then(({ remainderTotal, remainderPreparedForClaim, veryFirstRequestDate }) => {
+          changeState({
+            ...state,
+            requested: formatUnits(remainderTotal, 18),
+            unlocked: formatUnits(remainderPreparedForClaim, 18),
+            veryFirstRequestDate: formatDateShortMonth(toDateFromContract(veryFirstRequestDate)),
+          });
+        });
+      console.log('getRemainderOfRequestsbyWallet');
+    }, 4000);
+  }, []);
+
+  useEffect(() => {
     Promise.all([
       contract.getAvailableToClaim(),
       contract.getDatesStarts(),
