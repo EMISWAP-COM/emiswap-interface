@@ -16,7 +16,13 @@ import { ESWLocked } from '../Common/ESWLocked';
 import { ReferralPerformance } from '../Common/ReferralPerformance';
 import { PurchaseHistory } from '../Common/PurchaseHistory';
 import FarmingRewards from '../Common/FarmingRewards';
-import { useIsEthActive, useIsPolygonActive } from '../../../hooks/Coins';
+import {
+  useIsAstarActive,
+  useIsAuroraActive,
+  useIsEthActive,
+  useIsPolygonActive,
+  useIsShidenActive,
+} from '../../../hooks/Coins';
 import RequestCollect from './RequestCollect';
 import CollectToMyWallet from './CollectToMyWallet';
 
@@ -68,6 +74,11 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
 
   const isEthActive = useIsEthActive();
   const isPolygonActive = useIsPolygonActive();
+  const isShidenActive = useIsShidenActive();
+  const isAstarActive = useIsAstarActive();
+  const isAuroraActive = useIsAuroraActive();
+  const isPersonalCabinet =
+    isEthActive || isPolygonActive || isShidenActive || isAstarActive || isAuroraActive;
   /*const isKCCActive = useIsKCCActive();
   const isShidenActive = useIsShidenActive();
   const isAvalanceActive = useIsAvalancheActive();*/
@@ -103,10 +114,9 @@ const Owner: React.FC<Props> = ({ openOptions, ENSName }) => {
             </ExternalLink>
           </OptionsPromo>
         </Connection>
-
         {isOraculOK && (
           <>
-            {(isEthActive || isPolygonActive) && (
+            {isPersonalCabinet && (
               <div style={{ padding: '0 16px' }}>
                 <ESWRewards />
                 {isEthActive && <ESWHoldingRewards />}
