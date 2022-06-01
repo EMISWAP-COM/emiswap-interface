@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 import { fetchWrapper } from '../../../api/fetchWrapper';
 import { format } from 'date-fns/fp';
 import { useNetworkData } from '../../../hooks/Coins';
-import { getNetworkUrl } from '../../../state/cabinets/action-polygon';
+import { getNetworkUrl } from '../../../state/cabinets/common';
 
 const ESW_CLAIM_API = window['env'].REACT_APP_ESW_CLAIM_API;
 const ESW_CLAIM_CHAIN_ID = window['env'].REACT_APP_ESW_CLAIM_CHAIN_ID;
@@ -245,16 +245,12 @@ export const useCollectData = closeWindow => {
     account,
     chainId,
   ]);
-  console.log('contract: ', contract);
-  console.log('polygonLibrary: ', polygonLibrary, 'polygonAccount: ', polygonAccount);
   const polygonContract: Contract | null = useMemo(
     () => getCollectContract(polygonLibrary, polygonAccount, chainId),
     [polygonLibrary, polygonAccount, polygonChainId],
   );
-  console.log('polygonContract: ', polygonContract);
 
   useEffect(() => {
-    console.log('before calling');
     polygonContract
       .getRemainderOfRequestsbyWallet(account)
       .then(({ remainderTotal, remainderPreparedForClaim, veryFirstRequestDate }) => {
