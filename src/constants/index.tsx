@@ -741,7 +741,12 @@ export const networksItems: INetworkItem[] = [
     token: MUMBAI_WMATIC,
     icon: PolygonNetworkIcon,
     name: 'Mumbai',
-    rpcUrls: ['https://rpc-mumbai.matic.today'],
+    rpcUrls: [
+      'https://matic-mumbai.chainstacklabs.com',
+      'https://rpc-mumbai.matic.today',
+      'https://rpc-mumbai.maticvigil.com',
+      'https://matic-testnet-archive-rpc.bwarelabs.com',
+    ],
     currencySymbol: 'MATIC',
     currencySymbolWrap: 'WMATIC',
     currencySymbolWeth: 'WMATIC',

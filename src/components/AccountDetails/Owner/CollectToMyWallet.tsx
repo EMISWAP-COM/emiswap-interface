@@ -66,6 +66,9 @@ const CollectToMyWallet = ({
     handler: changeCollect,
   } = useCollectData(() => closeWindow());
 
+  console.log(currentTime);
+  console.log(currentDay);
+
   const addPopup = useAddPopup();
   const popups = useActivePopups();
 

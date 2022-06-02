@@ -70,7 +70,10 @@ class MiniRpcProvider implements AsyncSendable {
         params,
       }),
     });
-    if (!response.ok) throw new RequestError(`${response.status}: ${response.statusText}`, -32000);
+    if (!response.ok) {
+      console.log(method, params);
+      throw new RequestError(`${response.status}: ${response.statusText}`, -32000);
+    }
     const body = await response.json();
     if ('error' in body) {
       throw new RequestError(body?.error?.message, body?.error?.code, body?.error?.data);

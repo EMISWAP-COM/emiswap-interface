@@ -261,32 +261,18 @@ export const useCollectData = closeWindow => {
             veryFirstRequestDate: formatDateShortMonth(toDateFromContract(veryFirstRequestDate)),
           });
         });
-      console.log('getRemainderOfRequestsbyWallet');
+      console.log('getRemainderOfRequestsbyWallet', polygonContract.address, account);
     }
   }, [polygonContract.address, account]);
 
   useEffect(() => {
-    setTimeout(() => {
-      polygonContract
-        .getRemainderOfRequestsbyWallet(account)
-        .then(({ remainderTotal, remainderPreparedForClaim, veryFirstRequestDate }) => {
-          changeState({
-            ...state,
-            requested: formatUnits(remainderTotal, 18),
-            unlocked: formatUnits(remainderPreparedForClaim, 18),
-            veryFirstRequestDate: formatDateShortMonth(toDateFromContract(veryFirstRequestDate)),
-          });
-        });
-      console.log('getRemainderOfRequestsbyWallet');
-    }, 4000);
-  }, []);
-
-  useEffect(() => {
+    console.log('getAvailableToClaim', contract.address);
     Promise.all([
       contract.getAvailableToClaim(),
       contract.getDatesStarts(),
       contract.claimDailyLimit(),
     ]).then(([{ available }, { todayStart, tomorrowStart }, claimLimit]) => {
+      console.log(available, todayStart, tomorrowStart, claimLimit);
       changeState({
         ...state,
         avalible: formatUnits(available, 18),
@@ -322,7 +308,7 @@ export const useCollectData = closeWindow => {
         },
       });
     });
-  }, [contract, closeWindow]);
+  }, [contract.address]);
 
   return Object.assign({ progress, txHash }, state);
 };
