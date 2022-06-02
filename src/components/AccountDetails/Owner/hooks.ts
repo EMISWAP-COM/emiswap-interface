@@ -220,14 +220,14 @@ const formatDate = bigNumber => formatDateing(toDate(bigNumber));
 
 export const useCollectData = closeWindow => {
   const [state, changeState] = useState({
-    requested: '',
-    unlocked: '',
-    avalible: '',
+    requested: '0',
+    unlocked: '0',
+    available: '0',
     currentTime: '',
     currentDay: '',
     nextTime: '',
     nextDay: '',
-    nextValue: '',
+    nextValue: '0',
     veryFirstRequestDate: '',
     handler: () => {},
   });
@@ -239,77 +239,73 @@ export const useCollectData = closeWindow => {
   } = usePolygonWeb3React();
   const [txHash, changeTxHash] = useState('');
   const [progress, changeProgress] = useState('init');
-  console.log('library: ', library, 'account: ', account);
   const contract: Contract | null = useMemo(() => getCollectContract(library, account, chainId), [
     library,
     account,
     chainId,
   ]);
-  console.log('contract: ', contract);
-  console.log('polygonLibrary: ', polygonLibrary, 'polygonAccount: ', polygonAccount);
   const polygonContract: Contract | null = useMemo(
     () => getCollectContract(polygonLibrary, polygonAccount, chainId),
     [polygonLibrary, polygonAccount, polygonChainId],
   );
-  console.log('polygonContract: ', polygonContract);
 
   useEffect(() => {
-    console.log('before calling');
-    polygonContract
-      .getRemainderOfRequestsbyWallet(account)
-      .then(({ remainderTotal, remainderPreparedForClaim, veryFirstRequestDate }) => {
-        console.table({ remainderTotal, remainderPreparedForClaim, veryFirstRequestDate });
-        changeState({
-          ...state,
-          requested: formatUnits(remainderTotal, 18),
-          unlocked: formatUnits(remainderPreparedForClaim, 18),
-          veryFirstRequestDate: formatDateShortMonth(toDateFromContract(veryFirstRequestDate)),
-        });
-      });
-  }, [polygonContract.address]);
-
-  useEffect(() => {
-    Promise.all([
-      contract.getAvailableToClaim(),
-      contract.getDatesStarts(),
-      contract.claimDailyLimit(),
-    ]).then(([{ available }, { todayStart, tomorrowStart }, claimLimit]) => {
-      changeState({
-        ...state,
-        avalible: formatUnits(available, 18),
-        currentTime: formatTime(todayStart),
-        currentDay: formatDate(todayStart),
-        nextTime: formatTime(tomorrowStart),
-        nextDay: formatDate(tomorrowStart),
-        nextValue: formatUnits(claimLimit, 18),
-        handler: () => {
-          changeProgress('pending');
-          contract
-            .claim()
-            .then(transactionResult => {
-              if (!transactionResult) {
-                throw new Error('');
-              }
-              changeTxHash(transactionResult.hash);
-              return transactionResult.wait();
-            })
-            .catch(_ => {
-              // TODO handle errors
-            })
-            .then(transactionResult => {
-              if (!transactionResult) {
-                throw new Error('');
-              }
-              changeProgress('success');
-            })
-            .finally(() => {
-              closeWindow();
-              changeProgress('init');
-            });
+    if (polygonContract.address && account) {
+      Promise.all([
+        contract.getAvailableToClaim(),
+        contract.getDatesStarts(),
+        contract.claimDailyLimit(),
+        polygonContract.getRemainderOfRequestsbyWallet(account),
+      ]).then(
+        ([
+          { available },
+          { todayStart, tomorrowStart },
+          claimLimit,
+          { remainderTotal, remainderPreparedForClaim, veryFirstRequestDate },
+        ]) => {
+          // console.log('available', available.toString(), claimLimit.toString());
+          // console.log('remainderTotal', remainderTotal.toString(), remainderPreparedForClaim.toString());
+          changeState({
+            ...state,
+            available: formatUnits(available, 18),
+            currentTime: formatTime(todayStart),
+            currentDay: formatDate(todayStart),
+            nextTime: formatTime(tomorrowStart),
+            nextDay: formatDate(tomorrowStart),
+            nextValue: formatUnits(claimLimit, 18),
+            requested: formatUnits(remainderTotal, 18),
+            unlocked: formatUnits(remainderPreparedForClaim, 18),
+            veryFirstRequestDate: formatDateShortMonth(toDateFromContract(veryFirstRequestDate)),
+            handler: () => {
+              changeProgress('pending');
+              contract
+                .claim()
+                .then(transactionResult => {
+                  if (!transactionResult) {
+                    throw new Error('');
+                  }
+                  changeTxHash(transactionResult.hash);
+                  return transactionResult.wait();
+                })
+                .catch(_ => {
+                  // TODO handle errors
+                })
+                .then(transactionResult => {
+                  if (!transactionResult) {
+                    throw new Error('');
+                  }
+                  changeProgress('success');
+                })
+                .finally(() => {
+                  closeWindow();
+                  changeProgress('init');
+                });
+            },
+          });
         },
-      });
-    });
-  }, [contract, closeWindow]);
+      );
+    }
+  }, [contract.address, polygonContract.address, account]);
 
   return Object.assign({ progress, txHash }, state);
 };

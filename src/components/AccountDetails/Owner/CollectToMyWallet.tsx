@@ -4,17 +4,17 @@ import Countdown from 'react-countdown';
 import CurrencyLogo from '../../CurrencyLogo';
 import { useCollectData, useGetRemainder } from './hooks';
 import {
-  Title,
+  ButtonGroup,
+  ButtonText,
   CancelButton,
+  CollectBtn,
   Field,
-  Label,
-  Value,
-  WalletWrapper,
   Frame,
   FrameRow,
-  ButtonGroup,
-  CollectBtn,
-  ButtonText,
+  Label,
+  Title,
+  Value,
+  WalletWrapper,
 } from './styled';
 import { useActivePopups, useAddPopup } from '../../../state/application/hooks';
 
@@ -55,7 +55,7 @@ const CollectToMyWallet = ({
   const {
     requested,
     unlocked,
-    avalible,
+    available,
     currentTime,
     currentDay,
     nextTime,
@@ -65,6 +65,9 @@ const CollectToMyWallet = ({
     txHash,
     handler: changeCollect,
   } = useCollectData(() => closeWindow());
+
+  // console.log('requested', requested, unlocked, available);
+  // console.log('currentTime', currentTime, currentDay);
 
   const addPopup = useAddPopup();
   const popups = useActivePopups();
@@ -87,11 +90,12 @@ const CollectToMyWallet = ({
     }
   }, [progress]);
 
-  const avalibleCollect = unlocked === '0' ? '0' : avalible;
+  const availableCollect = available;
   const remainderValue = useGetRemainder();
   const isCollectDisabled = remainderValue.status !== 'enable';
   const isInProgress = remainderValue.status === 'progress';
   const isCollectInProgress = progress === 'pending';
+
   return (
     <WalletWrapper>
       <Title style={{ paddingBottom: '8px' }}>Collect to my Wallet</Title>
@@ -105,11 +109,11 @@ const CollectToMyWallet = ({
           <Item label="Unlocked ESW to collect" value={unlocked} />
           <Item
             label="Current Epoch started at: "
-            value={currentTime}
+            value={currentTime || '-'}
             secondValue={`on ${currentDay}`}
             hideLogo
           />
-          <Item label="Available ESW to collect in the current Epoch" value={avalibleCollect} />
+          <Item label="Available ESW to collect in the current Epoch" value={availableCollect} />
         </FrameRow>
         <ButtonGroup>
           <CollectBtn onClick={openRequestCollect}>
@@ -137,7 +141,7 @@ const CollectToMyWallet = ({
         <FrameRow>
           <Item
             label=" Next Epoch started at"
-            value={nextTime}
+            value={nextTime || '-'}
             secondValue={`on ${nextDay}`}
             hideLogo
           />
