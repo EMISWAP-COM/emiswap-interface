@@ -234,7 +234,7 @@ interface BalanceInterface {
   total: string;
   wallet: string;
   locked: string;
-  avalible: string;
+  available: string;
   requested: string;
   veryFirstRequestDate: string;
   children?: React.ReactNode;
@@ -247,7 +247,7 @@ const Balance = ({
   total,
   wallet,
   locked,
-  avalible,
+  available,
   children,
   handleClaim,
   handleRequest,
@@ -261,7 +261,7 @@ const Balance = ({
       <Item label="Total" value={total} />
       <Item label="Wallet" value={wallet} />
       <Item label="Locked at Emiswap" value={locked} />
-      <Item label="Available to collect" value={avalible} />
+      <Item label="Available to collect" value={available} />
     </>
   );
   return (
@@ -434,7 +434,7 @@ export const Connection: React.FC<Props> = ({
                 total={sumESW('ESW', balance)}
                 wallet={convertBigDecimal(balance?.wallet.ESW)}
                 locked={convertBigDecimal(balance?.total.locked.ESW)}
-                avalible={convertBigDecimal(balance?.available.ESW)}
+                available={convertBigDecimal(balance?.available.ESW)}
                 requested={collectData?.requested}
                 veryFirstRequestDate={collectData?.veryFirstRequestDate}
                 handleRequest={() => changeCollectButtonState('request')}
