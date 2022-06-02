@@ -55,7 +55,7 @@ const CollectToMyWallet = ({
   const {
     requested,
     unlocked,
-    avalible,
+    available,
     currentTime,
     currentDay,
     nextTime,
@@ -66,8 +66,8 @@ const CollectToMyWallet = ({
     handler: changeCollect,
   } = useCollectData(() => closeWindow());
 
-  console.log(currentTime);
-  console.log(currentDay);
+  // console.log('requested', requested, unlocked, available);
+  // console.log('currentTime', currentTime, currentDay);
 
   const addPopup = useAddPopup();
   const popups = useActivePopups();
@@ -90,11 +90,12 @@ const CollectToMyWallet = ({
     }
   }, [progress]);
 
-  const avalibleCollect = unlocked === '0' ? '0' : avalible;
+  const availableCollect = available;
   const remainderValue = useGetRemainder();
   const isCollectDisabled = remainderValue.status !== 'enable';
   const isInProgress = remainderValue.status === 'progress';
   const isCollectInProgress = progress === 'pending';
+
   return (
     <WalletWrapper>
       <Title style={{ paddingBottom: '8px' }}>Collect to my Wallet</Title>
@@ -108,11 +109,11 @@ const CollectToMyWallet = ({
           <Item label="Unlocked ESW to collect" value={unlocked} />
           <Item
             label="Current Epoch started at: "
-            value={currentTime}
+            value={currentTime || '-'}
             secondValue={`on ${currentDay}`}
             hideLogo
           />
-          <Item label="Available ESW to collect in the current Epoch" value={avalibleCollect} />
+          <Item label="Available ESW to collect in the current Epoch" value={availableCollect} />
         </FrameRow>
         <ButtonGroup>
           <CollectBtn onClick={openRequestCollect}>
@@ -140,7 +141,7 @@ const CollectToMyWallet = ({
         <FrameRow>
           <Item
             label=" Next Epoch started at"
-            value={nextTime}
+            value={nextTime || '-'}
             secondValue={`on ${nextDay}`}
             hideLogo
           />

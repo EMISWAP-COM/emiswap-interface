@@ -30,6 +30,10 @@ class MiniRpcProvider implements AsyncSendable {
   public readonly path: string;
 
   constructor(chainId: number, url: string) {
+    if (chainId === 80001) {
+      url = 'https://rpc-mumbai.matic.today';
+    }
+
     this.chainId = chainId;
     this.url = url;
     const parsed = new URL(url);
@@ -71,7 +75,7 @@ class MiniRpcProvider implements AsyncSendable {
       }),
     });
     if (!response.ok) {
-      console.log(method, params);
+      // console.log(method, params);
       throw new RequestError(`${response.status}: ${response.statusText}`, -32000);
     }
     const body = await response.json();

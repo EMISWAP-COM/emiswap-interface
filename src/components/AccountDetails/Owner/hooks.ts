@@ -220,14 +220,14 @@ const formatDate = bigNumber => formatDateing(toDate(bigNumber));
 
 export const useCollectData = closeWindow => {
   const [state, changeState] = useState({
-    requested: '',
-    unlocked: '',
-    avalible: '',
+    requested: '0',
+    unlocked: '0',
+    available: '0',
     currentTime: '',
     currentDay: '',
     nextTime: '',
     nextDay: '',
-    nextValue: '',
+    nextValue: '0',
     veryFirstRequestDate: '',
     handler: () => {},
   });
@@ -251,64 +251,61 @@ export const useCollectData = closeWindow => {
 
   useEffect(() => {
     if (polygonContract.address && account) {
-      polygonContract
-        .getRemainderOfRequestsbyWallet(account)
-        .then(({ remainderTotal, remainderPreparedForClaim, veryFirstRequestDate }) => {
+      Promise.all([
+        contract.getAvailableToClaim(),
+        contract.getDatesStarts(),
+        contract.claimDailyLimit(),
+        polygonContract.getRemainderOfRequestsbyWallet(account),
+      ]).then(
+        ([
+          { available },
+          { todayStart, tomorrowStart },
+          claimLimit,
+          { remainderTotal, remainderPreparedForClaim, veryFirstRequestDate },
+        ]) => {
+          // console.log('available', available.toString(), claimLimit.toString());
+          // console.log('remainderTotal', remainderTotal.toString(), remainderPreparedForClaim.toString());
           changeState({
             ...state,
+            available: formatUnits(available, 18),
+            currentTime: formatTime(todayStart),
+            currentDay: formatDate(todayStart),
+            nextTime: formatTime(tomorrowStart),
+            nextDay: formatDate(tomorrowStart),
+            nextValue: formatUnits(claimLimit, 18),
             requested: formatUnits(remainderTotal, 18),
             unlocked: formatUnits(remainderPreparedForClaim, 18),
             veryFirstRequestDate: formatDateShortMonth(toDateFromContract(veryFirstRequestDate)),
+            handler: () => {
+              changeProgress('pending');
+              contract
+                .claim()
+                .then(transactionResult => {
+                  if (!transactionResult) {
+                    throw new Error('');
+                  }
+                  changeTxHash(transactionResult.hash);
+                  return transactionResult.wait();
+                })
+                .catch(_ => {
+                  // TODO handle errors
+                })
+                .then(transactionResult => {
+                  if (!transactionResult) {
+                    throw new Error('');
+                  }
+                  changeProgress('success');
+                })
+                .finally(() => {
+                  closeWindow();
+                  changeProgress('init');
+                });
+            },
           });
-        });
-      console.log('getRemainderOfRequestsbyWallet', polygonContract.address, account);
-    }
-  }, [polygonContract.address, account]);
-
-  useEffect(() => {
-    console.log('getAvailableToClaim', contract.address);
-    Promise.all([
-      contract.getAvailableToClaim(),
-      contract.getDatesStarts(),
-      contract.claimDailyLimit(),
-    ]).then(([{ available }, { todayStart, tomorrowStart }, claimLimit]) => {
-      console.log(available, todayStart, tomorrowStart, claimLimit);
-      changeState({
-        ...state,
-        avalible: formatUnits(available, 18),
-        currentTime: formatTime(todayStart),
-        currentDay: formatDate(todayStart),
-        nextTime: formatTime(tomorrowStart),
-        nextDay: formatDate(tomorrowStart),
-        nextValue: formatUnits(claimLimit, 18),
-        handler: () => {
-          changeProgress('pending');
-          contract
-            .claim()
-            .then(transactionResult => {
-              if (!transactionResult) {
-                throw new Error('');
-              }
-              changeTxHash(transactionResult.hash);
-              return transactionResult.wait();
-            })
-            .catch(_ => {
-              // TODO handle errors
-            })
-            .then(transactionResult => {
-              if (!transactionResult) {
-                throw new Error('');
-              }
-              changeProgress('success');
-            })
-            .finally(() => {
-              closeWindow();
-              changeProgress('init');
-            });
         },
-      });
-    });
-  }, [contract.address]);
+      );
+    }
+  }, [contract.address, polygonContract.address, account]);
 
   return Object.assign({ progress, txHash }, state);
 };
