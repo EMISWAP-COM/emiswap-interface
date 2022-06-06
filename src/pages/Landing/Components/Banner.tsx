@@ -9,6 +9,7 @@ import PieEs from '../../../assets/landing/PieEs.png';
 import listDotSvg from '../../../assets/svg/list-dot.svg';
 import listDotVioletSvg from '../../../assets/svg/list-dot-violet.svg';
 import styled from 'styled-components';
+import AvalancheNetworkIcon from '../../../assets/svg/avalanche-network.svg';
 
 interface Banner {
   aboutSectionRef: React.MutableRefObject<any>;
@@ -56,6 +57,7 @@ const Banner = ({
           {tokens.map(item => (
             <img src={item.icon} alt="icon" />
           ))}
+          <img src={AvalancheNetworkIcon} alt="icon" />
         </IconsWrapper>
       </BannerDesc>
       <div className="banner__buttons">
