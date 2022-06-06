@@ -1,13 +1,14 @@
 import Web3Status from '../../../components/Web3Status';
 import React, { ReactElement } from 'react';
 import ReferralLink from 'components/RefferalLink';
-import { TokenAddresses } from '../TokenAddresses';
+import { TokenAddresses, tokens } from '../TokenAddresses';
 import hackenSvg from '../../../assets/landing/header/hacken.svg';
 import blueswarmSvg from '../../../assets/landing/header/blueswarm.svg';
 import PieEn from '../../../assets/landing/PieEn.png';
 import PieEs from '../../../assets/landing/PieEs.png';
 import listDotSvg from '../../../assets/svg/list-dot.svg';
 import listDotVioletSvg from '../../../assets/svg/list-dot-violet.svg';
+import styled from 'styled-components';
 
 interface Banner {
   aboutSectionRef: React.MutableRefObject<any>;
@@ -18,6 +19,21 @@ interface Banner {
   changeChainToPolygon: () => void;
   toggleWalletModal: () => void;
 }
+
+const BannerDesc = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const IconsWrapper = styled.div`
+  display: inline-flex;
+  gap: 0.25rem;
+  margin-left: 1rem;
+  & > img {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+`;
 
 const Banner = ({
   aboutSectionRef,
@@ -34,7 +50,14 @@ const Banner = ({
     </div>
     <div className="banner__info">
       <div className="banner__title">{t('landing.banner.title')}</div>
-      <div className="banner__desc">{t('landing.banner.subtitle')}</div>
+      <BannerDesc className="banner__desc">
+        <span>{t('landing.banner.subtitle')}</span>
+        <IconsWrapper>
+          {tokens.map(item => (
+            <img src={item.icon} alt="icon" />
+          ))}
+        </IconsWrapper>
+      </BannerDesc>
       <div className="banner__buttons">
         <button
           className="btn-primary"
