@@ -24,6 +24,10 @@ interface Banner {
 const BannerDesc = styled.div`
   display: flex;
   align-items: center;
+
+  @media screen and (max-width: 769px) {
+    display: block;
+  }
 `;
 
 const IconsWrapper = styled.div`
@@ -33,6 +37,12 @@ const IconsWrapper = styled.div`
   & > img {
     width: 1.5rem;
     height: 1.5rem;
+  }
+
+  @media screen and (max-width: 769px) {
+    display: block;
+    margin-top: 1rem;
+    margin-left: 0;
   }
 `;
 
@@ -52,7 +62,7 @@ const Banner = ({
     <div className="banner__info">
       <div className="banner__title">{t('landing.banner.title')}</div>
       <BannerDesc className="banner__desc">
-        <span>{t('landing.banner.subtitle')}</span>
+        <div>{t('landing.banner.subtitle')}</div>
         <IconsWrapper>
           {tokens.map(item => (
             <img src={item.icon} alt="icon" />

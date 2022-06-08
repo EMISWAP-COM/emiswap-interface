@@ -303,8 +303,8 @@ export const Body = styled.div`
       color: #FFFFFF;
       
       @media screen and (max-width: 769px) {
-        font-size: 36px;
-        line-height: 44px;
+        font-size: 24px;
+        line-height: 32px;
       }
       
     }
@@ -313,13 +313,13 @@ export const Body = styled.div`
       padding-bottom: 24px;
       font-style: normal;
       font-weight: normal;
-      font-size: 24px;
+      font-size: 25px;
       line-height: 32px;
       color: #FFFFFF;
       
       @media screen and (max-width: 769px) {
-        font-size: 24px;
-        line-height: 32px;
+        font-size: 20px;
+        line-height: 28px;
       }
     }
 
