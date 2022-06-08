@@ -133,15 +133,15 @@
       "onCopy": "Copied"
     },
     "banner": {
-      "title": "365% APR and higher\n Zero effort\n Only on EmiSwap AMM DEX",
-      "subtitle": "EmiSwap is live on Polygon – this is your\n chance to earn even more.",
+      "title": "EmiSwap - multi chain DEX pioneering\n yield-boosting NFT's utility",
+      "subtitle": "Live on eight blockchains",
       "supply": "Liquidity supply",
       "farming": "Farming",
       "swap": "Swap commision",
       "volume": "From volume",
       "tokenAddress": "ESW token address:"
     },
-    "365": "365% APR: special Airdrop for EmiSwap Liquidity Providers on Polygon. Available only if LP tokens are staked with ESW in Farming pools.",
+    "365": "365% APR: special Airdrop for EmiSwap Liquidity Providers on every chain. Available only if LP tokens are staked with ESW in Farming pools.",
     "1000": "Farming pools with up to 1000% APR to multiply your rewards.",
     "025": "0.25% of the trading volume in any pool is distributed between Liquidity Providers.",
     "numbers": {
@@ -156,7 +156,7 @@
       "title": "About EmiSwap",
       "subtitle": "EmiSwap is an audited cross-chain AMM with higher rewards for LPs than on any other DEX.",
       "list": {
-        "1": "Available on Polygon, Ethereum, and KCC Blockchain",
+        "1": "Available on Ethereum, Polygon, KCC, Astar, Shiden, Aurora, Avalanche, Gate Chain",
         "2": "Audited by Hacken and BluSwarm"
       },
       "swapping": "Swapping fee for all pools",
@@ -206,8 +206,8 @@
       }
     },
     "polygon": {
-      "title": "Earn 1% a day on EmiSwap Polygon with 0 effort",
-      "text": "All LPs on EmiSwap Polygon are eligible for the unique 365% APR airdrop. Connect wallet, add liquidity to any pool – and get a daily 1% return until October 31, 2022. The first reward distribution is on February 3, 2022."
+      "title": "Earn 1% per day on every blockchain on Emiswap with zero effort",
+      "text": "All the users who stake their LPs with ESW tokens in farming pools are eligible for the unique 365% APR airdrop. Connect the wallet, add liquidity to any pool – and get a daily 1% return."
     },
     "popup": {
       "title": "EmiSwap Smart Farming",
