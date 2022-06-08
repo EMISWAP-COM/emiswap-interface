@@ -16,6 +16,65 @@ import ShidenNetworkIcon from '../../../assets/images/shiden-network.png';
 import GateChainNetworkIcon from '../../../assets/currencies/GT.png';
 import AuroraNetworkIcon from '../../../assets/svg/aurora-network.svg';
 
+export const tokens = [
+  {
+    chainName: 'Polygon',
+    address: '0xd2A2a353D28e4833FAFfC882f6649c9c884a7D8f',
+    chainId: '137',
+    icon: polygonSvg,
+    symbol: 'ESW',
+    decimals: 18,
+  },
+  {
+    chainName: 'Ethereum',
+    address: '0x5a75a093747b72a0e14056352751edf03518031d',
+    chainId: '1',
+    icon: ethereumSvg,
+    symbol: 'ESW',
+    decimals: 18,
+  },
+  {
+    chainName: 'KCC',
+    address: '0x8933a6e58eeee063b5fd3221f2e1d17821dc1031',
+    chainId: '321',
+    icon: kccSVG,
+    symbol: 'ESW',
+    decimals: 18,
+  },
+  {
+    chainName: 'Astar',
+    address: '0xb361DAD0Cc1a03404b650A69d9a5ADB5aF8A531F',
+    chainId: chainIds.ASTAR,
+    icon: AstarNetworkIcon,
+    symbol: 'ASTR',
+    decimals: 18,
+  },
+  {
+    chainName: 'Shiden',
+    address: '0xb4BcA5955F26d2fA6B57842655d7aCf2380Ac854',
+    chainId: chainIds.SHIDEN,
+    icon: ShidenNetworkIcon,
+    symbol: 'SDN',
+    decimals: 18,
+  },
+  {
+    chainName: 'GateChain',
+    address: '0x18f38359551258C35e8593d775cb6Fe8D27fd89b',
+    chainId: chainIds.GATECHAIN,
+    icon: GateChainNetworkIcon,
+    symbol: 'GT',
+    decimals: 18,
+  },
+  {
+    chainName: 'Aurora',
+    address: '0xd2Fa7C9386040f260e3Ec934601982aD4Cd7902B',
+    chainId: chainIds.AURORA,
+    icon: AuroraNetworkIcon,
+    symbol: 'ETH',
+    decimals: 18,
+  },
+];
+
 const TokenAddresses = () => {
   const { t } = useTranslation();
   const { ethereum } = window as any;
@@ -49,65 +108,6 @@ const TokenAddresses = () => {
     },
     [ethereum],
   );
-
-  const tokens = [
-    {
-      chainName: 'Polygon',
-      address: '0xd2A2a353D28e4833FAFfC882f6649c9c884a7D8f',
-      chainId: '137',
-      icon: polygonSvg,
-      symbol: 'ESW',
-      decimals: 18,
-    },
-    {
-      chainName: 'Ethereum',
-      address: '0x5a75a093747b72a0e14056352751edf03518031d',
-      chainId: '1',
-      icon: ethereumSvg,
-      symbol: 'ESW',
-      decimals: 18,
-    },
-    {
-      chainName: 'KCC',
-      address: '0x8933a6e58eeee063b5fd3221f2e1d17821dc1031',
-      chainId: '321',
-      icon: kccSVG,
-      symbol: 'ESW',
-      decimals: 18,
-    },
-    {
-      chainName: 'Astar',
-      address: '0xb361DAD0Cc1a03404b650A69d9a5ADB5aF8A531F',
-      chainId: chainIds.ASTAR,
-      icon: AstarNetworkIcon,
-      symbol: 'ASTR',
-      decimals: 18,
-    },
-    {
-      chainName: 'Shiden',
-      address: '0xb4BcA5955F26d2fA6B57842655d7aCf2380Ac854',
-      chainId: chainIds.SHIDEN,
-      icon: ShidenNetworkIcon,
-      symbol: 'SDN',
-      decimals: 18,
-    },
-    {
-      chainName: 'GateChain',
-      address: '0x18f38359551258C35e8593d775cb6Fe8D27fd89b',
-      chainId: chainIds.GATECHAIN,
-      icon: GateChainNetworkIcon,
-      symbol: 'GT',
-      decimals: 18,
-    },
-    {
-      chainName: 'Aurora',
-      address: '0xd2Fa7C9386040f260e3Ec934601982aD4Cd7902B',
-      chainId: chainIds.AURORA,
-      icon: AuroraNetworkIcon,
-      symbol: 'ETH',
-      decimals: 18,
-    },
-  ];
 
   const enableAddToken =
     ethereum && isMetamask && connectedNetworkId === tokens[activeIndex].chainId;
