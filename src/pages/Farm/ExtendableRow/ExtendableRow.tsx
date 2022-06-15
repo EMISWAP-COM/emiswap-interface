@@ -15,6 +15,8 @@ import KCCLogo from '../../../assets/currencies/KCS.png';
 import { useIsEthActive, useIsFarm365Active, useNetworkData } from '../../../hooks/Coins';
 import Farm365Content from '../../Farm365/Farm365Content';
 import useFarming365 from '../../../hooks/useFarming365';
+import NftList from '../../../components/NfstList';
+import NftListWrap from '../../../components/NfstList/NftListWrap';
 
 const StyledRow = styled.div`
   background-color: ${({ theme }) => theme.border1Transparency};
@@ -311,8 +313,10 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
               </Tooltip>
             </StyledBlockValue>
           </StyledBlock>
-          <StyledBlock width={100}>
-            <StyledBlockTitle>APR</StyledBlockTitle>
+          <StyledBlock width={150}>
+            <StyledBlockTitle>
+              <NftListWrap>APR</NftListWrap>
+            </StyledBlockTitle>
             <StyledBlockValue>
               <Tooltip title={aprTooltip}>
                 <StyledTruncatedText>{apr.toFixed(2) + '%'}</StyledTruncatedText>

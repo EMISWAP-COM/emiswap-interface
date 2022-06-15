@@ -18,7 +18,7 @@ interface Header {
   goToPool: () => void;
 }
 
-const NftList = styled.div`
+const StyledNftList = styled.div`
   display: flex;
   align-items: center;
   max-width: 200px;
@@ -33,7 +33,7 @@ const NftList = styled.div`
   }
 `;
 
-const NftImg = styled.img`
+const StyledNftImg = styled.img`
   display: block;
   margin: 0 7px;
   width: 100%;
@@ -56,7 +56,7 @@ const Header = ({
   changeChainToPolygon,
   goToPool,
 }: Header): ReactElement => {
-  const nftData = useNftData();
+  const { nfts } = useNftData();
 
   const [nftModalVisible, setNftModalVisible] = useState(false);
 
@@ -117,11 +117,15 @@ const Header = ({
         </div>
       </div>
 
-      <NftList>
-        {nftData.images.map(img => (
-          <NftImg src={img} onClick={() => setNftModalVisible(true)} />
+      <StyledNftList>
+        {nfts.map((nft, index) => (
+          <StyledNftImg
+            key={index.toString()}
+            src={nft.img}
+            onClick={() => setNftModalVisible(true)}
+          />
         ))}
-      </NftList>
+      </StyledNftList>
       <NftLevelsModal isOpen={nftModalVisible} onClose={() => setNftModalVisible(false)} />
 
       <div className="web3-wrapper">

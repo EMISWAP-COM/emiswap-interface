@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components/macro';
 import { useActiveWeb3React } from '../../../hooks';
 
-import nftBigPng from '../../../assets/images/nft-big.png';
+import nftPurpleBigPng from '../../../assets/images/nft-purple-big.png';
 import Modal from '../../../components/Modal';
 
 const StyledModal = styled(Modal)`
@@ -59,6 +59,10 @@ const StyledCard = styled.div`
   padding: 16px 24px;
   background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(48px);
+
+  @media screen and (max-width: 980px) {
+    backdrop-filter: blur(48px);
+  }
 `;
 
 const StyledCardBasic = styled(StyledCard)`
@@ -114,7 +118,7 @@ export default function NftLevelsModal({ isOpen, onClose }: Props) {
       maxWidth={850}
     >
       <StyledContent>
-        <StyledNftImg src={nftBigPng} />
+        <StyledNftImg src={nftPurpleBigPng} />
         <StyledTitle>To get your extended APRs follow 2 easy steps</StyledTitle>
         <StyledSubtitle>
           Put liquidity in Pool c ESP and get an LP token (example: LP / W) - get 180% per annum + a

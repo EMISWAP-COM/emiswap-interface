@@ -1,10 +1,21 @@
 // @ts-ignore
-import nftPng from '../assets/images/nft.png';
+import nftPurplePng from '../assets/images/nft-purple.png';
+// @ts-ignore
+import nftGreenPng from '../assets/images/nft-green.png';
 
 export default function useNftData() {
-  const images = [nftPng, nftPng];
+  const nfts = [
+    {
+      name: 'Basic level NFT',
+      img: nftPurplePng,
+    },
+    {
+      name: 'Top level NFT',
+      img: nftGreenPng,
+    },
+  ];
 
   return {
-    images,
+    nfts,
   };
 }
