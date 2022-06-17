@@ -26,6 +26,7 @@ import { calcAprValue, calcFarming365Apr, getFarmDays } from './helpers';
 import { isMobile } from 'react-device-detect';
 import Tooltip from '../Farm/Tooltip';
 import { useWalletModalToggle } from '../../state/application/hooks';
+import NftListWrap from '../../components/NfstList/NftListWrap';
 
 const Content = styled.div`
   display: flex;
@@ -590,7 +591,9 @@ export default function Farm365Content({ farming365, eswRate }: Farm365ContentPr
           {lpStakedTokens.map((tokenAmount, index) => (
             <StakeItem key={index}>
               <StakeToken>
-                <StakeTokenName>{tokenAmount.token.name}</StakeTokenName>
+                <StakeTokenName>
+                  <NftListWrap size={20}>{tokenAmount.token.name}</NftListWrap>
+                </StakeTokenName>
                 <StakeTokenLine>
                   <LpTokenSymbol />
                   <Tooltip title={tokenAmountToString(tokenAmount)}>

@@ -9,9 +9,9 @@ const StyledWrap = styled.div`
 
 const StyledContent = styled.div``;
 
-const StyledNftListContainer = styled.div`
+const StyledNftListContainer = styled.div<{ size: number }>`
   width: 100%;
-  margin: 0 4px;
+  margin: 0 ${({ size }) => (size || 30) / 7}px;
 `;
 
 interface Props {
@@ -23,7 +23,7 @@ export default function NftListWrap({ children, size = 30 }: Props) {
   return (
     <StyledWrap>
       <StyledContent>{children}</StyledContent>
-      <StyledNftListContainer>
+      <StyledNftListContainer size={size}>
         <NftList size={size} />
       </StyledNftListContainer>
     </StyledWrap>

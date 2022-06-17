@@ -315,7 +315,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
           </StyledBlock>
           <StyledBlock width={150}>
             <StyledBlockTitle>
-              <NftListWrap>APR</NftListWrap>
+              <NftListWrap size={30}>APR</NftListWrap>
             </StyledBlockTitle>
             <StyledBlockValue>
               <Tooltip title={aprTooltip}>

@@ -19,7 +19,7 @@ const StyledNftList = styled.div`
 
 const StyledNftImg = styled.img<{ size: number }>`
   display: block;
-  margin: 0 4px;
+  margin: 0 ${({ size }) => (size || 30) / 7}px;
   width: 100%;
   height: 100%;
   max-height: ${({ size }) => size || 30}px;
