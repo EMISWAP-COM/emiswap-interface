@@ -8,6 +8,9 @@ import Menu from '../../../components/Menu';
 import styled from 'styled-components/macro';
 import useNftData from '../../../hooks/useNftData';
 import NftLevelsModal from './NftLevelsModal';
+import { ReactComponent as DropDown } from '../../../assets/images/dropdown.svg';
+import Popover, { MouseoverPopover } from '../../../components/Popover';
+import NftPopoverContent from './NftPopoverContent';
 
 interface Header {
   t: any;
@@ -45,6 +48,16 @@ const StyledNftImg = styled.img`
   @media screen and (max-width: 980px) {
     max-height: 28px;
     max-width: 28px;
+  }
+`;
+
+export const StyledNftDropDown = styled(DropDown)`
+  margin: 0 0.25rem 0 0.5rem;
+  height: 35%;
+
+  path {
+    stroke: ${({ theme }) => theme.white};
+    stroke-width: 1.5px;
   }
 `;
 
@@ -119,11 +132,13 @@ const Header = ({
 
       <StyledNftList>
         {nfts.map((nft, index) => (
-          <StyledNftImg
-            key={index.toString()}
-            src={nft.img}
-            onClick={() => setNftModalVisible(true)}
-          />
+          <MouseoverPopover content={<NftPopoverContent />}>
+            <StyledNftImg
+              key={index.toString()}
+              src={nft.img}
+              onClick={() => setNftModalVisible(true)}
+            />
+          </MouseoverPopover>
         ))}
       </StyledNftList>
       <NftLevelsModal isOpen={nftModalVisible} onClose={() => setNftModalVisible(false)} />

@@ -9,11 +9,6 @@ const StyledNftList = styled.div`
   margin: 0 32px 0 4px;
 
   @media screen and (max-width: 980px) {
-    position: absolute;
-    top: 24px;
-    right: 72px;
-    max-width: 84px;
-    margin: 0;
   }
 `;
 

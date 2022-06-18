@@ -61,7 +61,7 @@ const StyledCard = styled.div`
   backdrop-filter: blur(48px);
 
   @media screen and (max-width: 980px) {
-    backdrop-filter: blur(48px);
+    backdrop-filter: none;
   }
 `;
 

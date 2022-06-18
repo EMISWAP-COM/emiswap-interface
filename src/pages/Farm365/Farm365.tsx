@@ -28,6 +28,10 @@ const StyledTabs = styled.div`
 
 const StyledFarmingHeader = styled.div`
   display: flex;
+
+  @media screen and (max-width: 769px) {
+    display: block;
+  }
 `;
 
 const StyledFarmingInfo = styled.div`
@@ -35,15 +39,26 @@ const StyledFarmingInfo = styled.div`
   color: white;
   max-width: 500px;
   text-align: left;
+
+  @media screen and (max-width: 769px) {
+    margin: 16px 0 32px 0;
+  }
 `;
 
 const StyledNftList = styled.div`
   display: flex;
   align-items: center;
   max-height: 124px;
-  padding: 16px 12px;
+  padding: 8px 12px;
   border: 1px solid #5b5763;
   border-radius: 8px;
+
+  @media screen and (max-width: 769px) {
+    display: block;
+    max-height: 200px;
+    margin-bottom: 32px;
+    padding: 8px 4px;
+  }
 `;
 
 const StyledNft = styled.div`
@@ -58,6 +73,10 @@ const StyledNft = styled.div`
     background: #0e0f13;
     border-color: #494755;
     border-radius: 8px;
+  }
+
+  @media screen and (max-width: 769px) {
+    padding: 8px 8px;
   }
 `;
 
