@@ -16,6 +16,9 @@ import Tabs from '../../base/ui/Tabs';
 import useNftData from '../../hooks/useNftData';
 
 import infoIconSvg from '../../assets/svg/info-icon.svg';
+import { MouseoverPopover } from '../../components/Popover';
+import NftMiniPopoverContent from '../Landing/Components/NftMiniPopoverContent';
+import { bottom } from '@popperjs/core/lib/enums';
 
 const StyledTabs = styled.div`
   display: flex;
@@ -172,11 +175,13 @@ export default function Farm365() {
               </StyledFarmingInfo>
               <StyledNftList>
                 {nfts.map((nft, index) => (
-                  <StyledNft key={index.toString()}>
-                    <StyledNftImg src={nft.img} />
-                    <StyledNftName>{nft.name}</StyledNftName>
-                    <StyledNftInfoIcon src={infoIconSvg} />
-                  </StyledNft>
+                  <MouseoverPopover content={<NftMiniPopoverContent />} placement="bottom">
+                    <StyledNft key={index.toString()}>
+                      <StyledNftImg src={nft.img} />
+                      <StyledNftName>{nft.name}</StyledNftName>
+                      <StyledNftInfoIcon src={infoIconSvg} />
+                    </StyledNft>
+                  </MouseoverPopover>
                 ))}
               </StyledNftList>
             </StyledFarmingHeader>
