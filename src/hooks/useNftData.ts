@@ -28,7 +28,7 @@ export default function useNftData() {
             module: 'account',
             action: 'tokennfttx',
             apikey: '58MJVC5HYTPBNYZDJIXBUD63RKACESMMU5',
-            address: '0xC1f77e2D09bbB37135D069e969854582B0EaB975', // account!, // '0xC1f77e2D09bbB37135D069e969854582B0EaB975',
+            address: account!, // '0xC1f77e2D09bbB37135D069e969854582B0EaB975',
           }),
       )
       .then(response => {

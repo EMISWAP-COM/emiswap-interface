@@ -1,6 +1,7 @@
 import styled from 'styled-components/macro';
 import React from 'react';
 import { TextLabel } from '../NavigationTabs';
+import useNftData from '../../hooks/useNftData';
 
 const StyledWrap = styled.div`
   display: flex;
@@ -20,10 +21,12 @@ interface Props {
 }
 
 export default function NftBoost({ children, size = 30 }: Props) {
+  const { nfts } = useNftData();
+
   return (
     <StyledWrap>
       <StyledContent>{children}</StyledContent>
-      <TextLabel>NFT Boost</TextLabel>
+      {Boolean(nfts?.length) && <TextLabel>NFT Boost</TextLabel>}
     </StyledWrap>
   );
 }
