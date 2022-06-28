@@ -17,8 +17,7 @@ import useNftData from '../../hooks/useNftData';
 
 import infoIconSvg from '../../assets/svg/info-icon.svg';
 import { MouseoverPopover } from '../../components/Popover';
-import NftMiniPopoverContent from '../Landing/Components/NftMiniPopoverContent';
-import { bottom } from '@popperjs/core/lib/enums';
+import NftMiniPopoverContent from '../../components/Nft/NftMiniPopoverContent';
 
 const StyledTabs = styled.div`
   display: flex;
@@ -66,9 +65,10 @@ const StyledNftList = styled.div`
 
 const StyledNft = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-end;
+  height: 80px;
   margin: 0 8px;
-  padding: 12px 16px;
+  padding: 0 16px 8px 16px;
   border: 1px solid transparent;
   cursor: pointer;
 
@@ -84,21 +84,23 @@ const StyledNft = styled.div`
 `;
 
 const StyledNftImg = styled.img`
-  height: 100%;
+  // height: 100%;
   width: 100%;
   max-width: 50px;
-  max-height: 50px;
+  // max-height: 50px;
 `;
 
 const StyledNftName = styled.div`
-  margin: 0 16px;
+  margin: 0 16px 16px 16px;
   font-weight: 700;
   font-size: 16px;
   line-height: 24px;
   color: #ffffff;
 `;
 
-const StyledNftInfoIcon = styled.img``;
+const StyledNftInfoIcon = styled.img`
+  margin-bottom: 20px;
+`;
 
 const StyledInfo = styled.div`
   color: ${({ theme }) => theme.darkWhite};
@@ -173,17 +175,22 @@ export default function Farm365() {
                 airdrop if LP includes EmiSwap token + Additional % AIR for Farming. Farming rewards
                 are allocated to your EmiSwap account for every block.
               </StyledFarmingInfo>
-              <StyledNftList>
-                {nfts.map((nft, index) => (
-                  <MouseoverPopover content={<NftMiniPopoverContent />} placement="bottom">
-                    <StyledNft key={index.toString()}>
-                      <StyledNftImg src={nft.img} />
-                      <StyledNftName>{nft.name}</StyledNftName>
-                      <StyledNftInfoIcon src={infoIconSvg} />
-                    </StyledNft>
-                  </MouseoverPopover>
-                ))}
-              </StyledNftList>
+              {Boolean(nfts.length) && (
+                <StyledNftList>
+                  {nfts.map((nft, index) => (
+                    <MouseoverPopover
+                      content={<NftMiniPopoverContent nft={nft} />}
+                      placement="bottom"
+                    >
+                      <StyledNft key={index.toString()}>
+                        <StyledNftImg src={nft.imgBig} />
+                        <StyledNftName>{nft.name}</StyledNftName>
+                        <StyledNftInfoIcon src={infoIconSvg} />
+                      </StyledNft>
+                    </MouseoverPopover>
+                  ))}
+                </StyledNftList>
+              )}
             </StyledFarmingHeader>
 
             {farming365Contracts.map(contract => (

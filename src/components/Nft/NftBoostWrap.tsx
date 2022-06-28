@@ -1,6 +1,6 @@
 import styled from 'styled-components/macro';
 import React from 'react';
-import NftList from './index';
+import { TextLabel } from '../NavigationTabs';
 
 const StyledWrap = styled.div`
   display: flex;
@@ -19,13 +19,11 @@ interface Props {
   size?: number;
 }
 
-export default function NftListWrap({ children, size = 30 }: Props) {
+export default function NftBoost({ children, size = 30 }: Props) {
   return (
     <StyledWrap>
       <StyledContent>{children}</StyledContent>
-      <StyledNftListContainer size={size}>
-        <NftList size={size} />
-      </StyledNftListContainer>
+      <TextLabel>NFT Boost</TextLabel>
     </StyledWrap>
   );
 }

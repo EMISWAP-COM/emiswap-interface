@@ -1,9 +1,11 @@
 import React from 'react';
 import styled from 'styled-components/macro';
-import { useActiveWeb3React } from '../../../hooks';
+import { useActiveWeb3React } from '../../hooks';
 
-import nftPurpleBigPng from '../../../assets/images/nft-purple-big.png';
-import Modal from '../../../components/Modal';
+import Modal from '../Modal';
+import useNftData from '../../hooks/useNftData';
+import { ButtonPrimary } from '../Button';
+import { useHistory } from 'react-router-dom';
 
 const StyledModal = styled(Modal)`
   margin-top: 16px !important;
@@ -19,12 +21,20 @@ const StyledModal = styled(Modal)`
 
 const StyledContent = styled.div`
   width: 100%;
-  padding: 32px 32px 8px 32px;
+  padding: 16px 32px 4px 32px;
+`;
+
+const StyledImages = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  margin: auto;
 `;
 
 const StyledNftImg = styled.img`
   display: block;
-  margin: 0 auto 16px auto;
+  width: 170px;
+  margin: 16px 16px 16px 16px;
 `;
 
 const StyledTitle = styled.div`
@@ -37,7 +47,7 @@ const StyledTitle = styled.div`
 `;
 
 const StyledSubtitle = styled.div`
-  margin-bottom: 8px;
+  margin-bottom: 24px;
   text-align: center;
   font-weight: 400;
   font-size: 14px;
@@ -74,7 +84,7 @@ const StyledCardBasic = styled(StyledCard)`
 `;
 
 const StyledCardTitle = styled.div`
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   text-align: center;
   font-weight: 400;
   font-size: 24px;
@@ -84,18 +94,18 @@ const StyledCardTitle = styled.div`
 
 const StyledCardSubtitle = styled.div`
   text-align: center;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 16px;
   line-height: 32px;
   color: white;
 `;
 
 const StyledCardText = styled.div`
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   text-align: center;
   font-weight: 400;
   font-size: 14px;
-  line-height: 24px;
+  line-height: 30px;
   color: #b6b6b7;
 `;
 
@@ -105,7 +115,11 @@ interface Props {
 }
 
 export default function NftLevelsModal({ isOpen, onClose }: Props) {
+  const history = useHistory();
+
   const { chainId } = useActiveWeb3React();
+
+  const { nfts } = useNftData();
 
   return (
     <StyledModal
@@ -118,7 +132,11 @@ export default function NftLevelsModal({ isOpen, onClose }: Props) {
       maxWidth={850}
     >
       <StyledContent>
-        <StyledNftImg src={nftPurpleBigPng} />
+        <StyledImages>
+          {nfts.map(nft => (
+            <StyledNftImg src={nft.imgBig} />
+          ))}
+        </StyledImages>
         <StyledTitle>To get your extended APRs follow 2 easy steps</StyledTitle>
         <StyledSubtitle>
           Put liquidity in Pool c ESP and get an LP token (example: LP / W) - get 180% per annum + a
@@ -164,6 +182,8 @@ export default function NftLevelsModal({ isOpen, onClose }: Props) {
             </StyledCardText>
           </StyledCard>
         </StyledLevels>
+        <ButtonPrimary onClick={() => history.push('/pool')}>Provide liquidity</ButtonPrimary>
+        <div style={{ paddingBottom: 12 }}></div>
       </StyledContent>
     </StyledModal>
   );

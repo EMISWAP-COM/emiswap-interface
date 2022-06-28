@@ -88,7 +88,7 @@ const StyledNavLinkWrapper = styled.div`
   align-items: center;
 `;
 
-const NetworkLabel = styled.div`
+export const TextLabel = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -170,7 +170,7 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
           >
             {t('bridge')}
           </StyledNavLink>
-          <NetworkLabel>Beta</NetworkLabel>
+          <TextLabel>Beta</TextLabel>
         </StyledNavLinkWrapper>
       )}
       {/*<StyledNavLink

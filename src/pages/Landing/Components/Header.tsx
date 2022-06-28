@@ -1,16 +1,11 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement } from 'react';
 import Switch from 'react-switch';
 import Web3Status from 'components/Web3Status';
 import LogoSvg from '../../../assets/svg/logo.svg';
 import AboutSvg from '../../../assets/landing/header/about.svg';
 import CommunitySvg from '../../../assets/landing/header/community.svg';
 import Menu from '../../../components/Menu';
-import styled from 'styled-components/macro';
-import useNftData from '../../../hooks/useNftData';
-import NftLevelsModal from './NftLevelsModal';
-import { ReactComponent as DropDown } from '../../../assets/images/dropdown.svg';
-import Popover, { MouseoverPopover } from '../../../components/Popover';
-import NftPopoverContent from './NftPopoverContent';
+import NftListHeader from 'components/Nft/NftListHeader';
 
 interface Header {
   t: any;
@@ -21,46 +16,6 @@ interface Header {
   goToPool: () => void;
 }
 
-const StyledNftList = styled.div`
-  display: flex;
-  align-items: center;
-  max-width: 200px;
-  margin: 0 32px 0 4px;
-
-  @media screen and (max-width: 980px) {
-    position: absolute;
-    top: 24px;
-    right: 72px;
-    max-width: 84px;
-    margin: 0;
-  }
-`;
-
-const StyledNftImg = styled.img`
-  display: block;
-  margin: 0 7px;
-  width: 100%;
-  height: 100%;
-  max-height: 42px;
-  max-width: 42px;
-  cursor: pointer;
-
-  @media screen and (max-width: 980px) {
-    max-height: 28px;
-    max-width: 28px;
-  }
-`;
-
-export const StyledNftDropDown = styled(DropDown)`
-  margin: 0 0.25rem 0 0.5rem;
-  height: 35%;
-
-  path {
-    stroke: ${({ theme }) => theme.white};
-    stroke-width: 1.5px;
-  }
-`;
-
 const Header = ({
   t,
   currentLanguage,
@@ -69,10 +24,6 @@ const Header = ({
   changeChainToPolygon,
   goToPool,
 }: Header): ReactElement => {
-  const { nfts } = useNftData();
-
-  const [nftModalVisible, setNftModalVisible] = useState(false);
-
   return (
     <section className="header">
       <a className="logo" href="/">
@@ -130,18 +81,7 @@ const Header = ({
         </div>
       </div>
 
-      <StyledNftList>
-        {nfts.map((nft, index) => (
-          <MouseoverPopover content={<NftPopoverContent />}>
-            <StyledNftImg
-              key={index.toString()}
-              src={nft.img}
-              onClick={() => setNftModalVisible(true)}
-            />
-          </MouseoverPopover>
-        ))}
-      </StyledNftList>
-      <NftLevelsModal isOpen={nftModalVisible} onClose={() => setNftModalVisible(false)} />
+      <NftListHeader />
 
       <div className="web3-wrapper">
         <Web3Status disableClickOnConnected />

@@ -22,7 +22,7 @@ import { Dots } from '../../components/swap/styleds';
 import ReferralLink from '../../components/RefferalLink';
 
 import * as Styled from './styleds';
-import NftListWrap from '../../components/NfstList/NftListWrap';
+import NftBoost from '../../components/Nft/NftBoostWrap';
 
 // const MEDIUM_LINK =
 // 'https://emiswap.medium.com/pay-0-for-gas-and-get-x10-reward-the-two-big-reasons-to-join-emiswap-today-8af2e68d0aaa';
@@ -101,11 +101,11 @@ const Pool = () => {
           <>
             <AutoColumn gap="12px" style={{ width: '100%' }}>
               <RowBetween padding={'0 8px'}>
-                <NftListWrap size={30}>
+                <NftBoost>
                   <Text style={{ minWidth: 100 }} color={theme.white} fontWeight={500}>
                     Your Liquidity
                   </Text>
-                </NftListWrap>
+                </NftBoost>
                 <Question text="When you add liquidity, you are given pool tokens that represent your share. If you don’t see a pool you joined in this list, try importing a pool below." />
               </RowBetween>
               {!account ? (

@@ -144,7 +144,7 @@ export function MouseoverPopover({ children, ...rest }: Omit<PopoverProps, 'show
   }
 
   return (
-    <div onMouseEnter={open} onMouseLeave={close}>
+    <div style={{ display: 'flex', alignItems: 'center' }} onMouseEnter={open} onMouseLeave={close}>
       <Popover {...rest} show={show} withPortal={false}>
         {children}
       </Popover>

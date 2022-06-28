@@ -1,9 +1,8 @@
 import React from 'react';
 import styled from 'styled-components/macro';
-import { useActiveWeb3React } from '../../../hooks';
-
-import nftPurpleBigPng from '../../../assets/images/nft-purple-big.png';
+import { useActiveWeb3React } from '../../hooks';
 import { useHistory } from 'react-router';
+import { INft } from '../../hooks/useNftData';
 
 const StyledContent = styled.div`
   width: 320px;
@@ -12,6 +11,7 @@ const StyledContent = styled.div`
 
 const StyledNftImg = styled.img`
   display: block;
+  width: 171px;
   margin: 0 auto 16px auto;
 `;
 
@@ -24,16 +24,18 @@ const StyledText = styled.div`
   color: #898889;
 `;
 
-interface Props {}
+interface Props {
+  nft: INft;
+}
 
-export default function NftMiniPopoverContent({}: Props) {
+export default function NftMiniPopoverContent({ nft }: Props) {
   const history = useHistory();
 
   const { chainId } = useActiveWeb3React();
 
   return (
     <StyledContent>
-      <StyledNftImg src={nftPurpleBigPng} />
+      <StyledNftImg src={nft.imgBig} />
       <StyledText>
         LP 180 -&gt; 185% (+5% APR)
         <br />
