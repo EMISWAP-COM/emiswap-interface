@@ -20,15 +20,18 @@ export default function useNftData() {
 
   const [nfts, setNfts] = useState<INft[]>([]);
 
+  const isTest = true;
+  const url = isTest ? 'https://api-testnet.polygonscan.com' : 'https://api.polygonscan.com';
+
   useEffect(() => {
     fetchWrapper
       .get(
-        `https://api.polygonscan.com/api?` +
+        `${url}/api?` +
           new URLSearchParams({
             module: 'account',
             action: 'tokennfttx',
             apikey: '58MJVC5HYTPBNYZDJIXBUD63RKACESMMU5',
-            address: account!, // '0xC1f77e2D09bbB37135D069e969854582B0EaB975',
+            address: account!, // '0xC1f77e2D09bbB37135D069e969854582B0EaB975', // 0xE8d3dE7260e631B81cEcB1B29808Cd3F3998D1FA
           }),
       )
       .then(response => {
