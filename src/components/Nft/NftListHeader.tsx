@@ -51,10 +51,12 @@ export const StyledNftDropDown = styled(DropDown)`
 
 interface Props {}
 
-export default function NftListWrap({}: Props) {
+export default function NftListHeader({}: Props) {
   const { nfts } = useNftData();
 
   const [nftModalVisible, setNftModalVisible] = useState(false);
+
+  console.log(nfts);
 
   return (
     <>

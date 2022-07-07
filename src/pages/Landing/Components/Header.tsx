@@ -6,6 +6,7 @@ import AboutSvg from '../../../assets/landing/header/about.svg';
 import CommunitySvg from '../../../assets/landing/header/community.svg';
 import Menu from '../../../components/Menu';
 import NftListHeader from 'components/Nft/NftListHeader';
+import NftHeaderButton from '../../../components/Nft/NftHeaderButton';
 
 interface Header {
   t: any;
@@ -81,7 +82,7 @@ const Header = ({
         </div>
       </div>
 
-      <NftListHeader />
+      <NftHeaderButton />
 
       <div className="web3-wrapper">
         <Web3Status disableClickOnConnected />

@@ -25,6 +25,7 @@ const StyledContent = styled.div`
 `;
 
 const StyledImages = styled.div`
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: flex-end;
@@ -34,25 +35,19 @@ const StyledImages = styled.div`
 const StyledNftImg = styled.img`
   display: block;
   width: 170px;
-  margin: 16px 16px 16px 16px;
+  margin: 16px 32px 16px 32px;
+
+  @media screen and (max-width: 980px) {
+    width: 150px;
+    margin: 16px 16px 16px 16px;
+  }
 `;
 
-const StyledTitle = styled.div`
-  margin-bottom: 8px;
-  text-align: center;
-  font-weight: 400;
-  font-size: 24px;
-  line-height: 36px;
-  color: white;
-`;
-
-const StyledSubtitle = styled.div`
-  margin-bottom: 24px;
-  text-align: center;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 32px;
-  color: #898889;
+const StyledPlus = styled.div`
+  position: absolute;
+  top: 110px;
+  font-size: 50px;
+  color: #e478ff;
 `;
 
 const StyledLevels = styled.div`
@@ -65,8 +60,10 @@ const StyledLevels = styled.div`
 
 const StyledCard = styled.div`
   flex: 1;
-  margin-bottom: 16px;
-  padding: 16px 24px;
+  max-width: 314px;
+  margin-right: 24px;
+  margin-bottom: 24px;
+  padding: 24px 32px 12px 32px;
   background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(48px);
 
@@ -76,7 +73,7 @@ const StyledCard = styled.div`
 `;
 
 const StyledCardBasic = styled(StyledCard)`
-  margin-right: 24px;
+  margin-right: 0;
 
   @media screen and (max-width: 900px) {
     margin-right: 0;
@@ -92,21 +89,24 @@ const StyledCardTitle = styled.div`
   color: white;
 `;
 
-const StyledCardSubtitle = styled.div`
+const StyledCardText = styled.div`
+  max-width: 240px;
+  margin-bottom: 24px;
   text-align: center;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 16px;
-  line-height: 32px;
+  line-height: 30px;
+  color: #b6b6b7;
+`;
+
+const StyledCardTextBold = styled.b`
+  font-size: 18px;
+  font-weight: 500;
   color: white;
 `;
 
-const StyledCardText = styled.div`
-  margin-bottom: 16px;
-  text-align: center;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 30px;
-  color: #b6b6b7;
+const StyledLink = styled.a`
+  color: #e478ff !important;
 `;
 
 interface Props {
@@ -129,61 +129,51 @@ export default function NftLevelsModal({ isOpen, onClose }: Props) {
       width={'70vw'}
       minHeight={null}
       maxHeight={90}
-      maxWidth={850}
+      maxWidth={nfts.length > 1 ? 719 : 378}
     >
       <StyledContent>
         <StyledImages>
           {nfts.map(nft => (
             <StyledNftImg src={nft.imgBig} />
           ))}
+          {nfts.length > 1 && <StyledPlus>+</StyledPlus>}
         </StyledImages>
-        <StyledTitle>To get your extended APRs follow 2 easy steps</StyledTitle>
-        <StyledSubtitle>
-          Put liquidity in Pool c ESP and get an LP token (example: LP / W) - get 180% per annum + a
-          NET bonus
-        </StyledSubtitle>
         <StyledLevels>
           <StyledCardBasic>
-            <StyledCardTitle>Basic Level NFT</StyledCardTitle>
-            <StyledCardSubtitle>Pool:</StyledCardSubtitle>
+            <StyledCardTitle>EmiChicko Space Star</StyledCardTitle>
             <StyledCardText>
-              {'Pool with ESW LP 180 -> 185%'}
-              <br />
-              {'(+5% APR)(LP < 150$?)'}
-              <br />
-              Pool witout ESW (LP 0)
+              Gives you: +5% on liquidity provision and + 10% to your farming rewards!
             </StyledCardText>
-            <StyledCardSubtitle>Farm:</StyledCardSubtitle>
             <StyledCardText>
-              {'Farm with ESW 180 -> 185%'}
+              APR LP 180% {'>'} <StyledCardTextBold>185%</StyledCardTextBold>
               <br />
-              (+ 5 % APR)
-              <br />
-              {'Farm witout ESW 365 -> 375% (+10% APR)'}
+              PR Farm 365% {'>'} <StyledCardTextBold>375%</StyledCardTextBold>
+            </StyledCardText>
+            <StyledCardText>
+              Follow our guide how to provide liquidity with{' '}
+              <StyledLink href="#">EmiChiko</StyledLink>
             </StyledCardText>
           </StyledCardBasic>
-          <StyledCard>
-            <StyledCardTitle>Top Level NFT</StyledCardTitle>
-            <StyledCardSubtitle>Pool:</StyledCardSubtitle>
-            <StyledCardText>
-              {'Pool with ESW (LP 180) -> 190%'}
-              <br />
-              {'(+10% APR) (LP >=150$)'}
-              <br />
-              Pool witout ESW (LP 0)
-            </StyledCardText>
-            <StyledCardSubtitle>Farm:</StyledCardSubtitle>
-            <StyledCardText>
-              {'Farm with ESW 180 -> 180'}
-              <br />
-              {'(10% APR) >=150$)'}
-              <br />
-              {'Farm witout ESW 365 -> 385% (+20% APR)'}
-            </StyledCardText>
-          </StyledCard>
+          {nfts.length > 1 && (
+            <StyledCard>
+              <StyledCardTitle>EmiChicko Space Star</StyledCardTitle>
+              <StyledCardText>
+                Gives you: +10% on liquidity provision and + 20% to your farming rewards!
+              </StyledCardText>
+              <StyledCardText>
+                APR LP 180% {'>'} <StyledCardTextBold>190%</StyledCardTextBold>
+                <br />
+                PR Farm 365% {'>'} <StyledCardTextBold>385%</StyledCardTextBold>
+              </StyledCardText>
+              <StyledCardText>
+                Follow our guide how to provide liquidity with{' '}
+                <StyledLink href="#">EmiRoko</StyledLink>
+              </StyledCardText>
+            </StyledCard>
+          )}
         </StyledLevels>
         <ButtonPrimary onClick={() => history.push('/pool')}>Provide liquidity</ButtonPrimary>
-        <div style={{ paddingBottom: 12 }}></div>
+        <div style={{ paddingBottom: 24 }}></div>
       </StyledContent>
     </StyledModal>
   );

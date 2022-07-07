@@ -15,7 +15,7 @@ import KCCLogo from '../../../assets/currencies/KCS.png';
 import { useIsEthActive, useIsFarm365Active, useNetworkData } from '../../../hooks/Coins';
 import Farm365Content from '../../Farm365/Farm365Content';
 import useFarming365 from '../../../hooks/useFarming365';
-import NftBoost from '../../../components/Nft/NftBoostWrap';
+import NftBoostWrap from '../../../components/Nft/NftBoostWrap';
 
 const StyledRow = styled.div`
   background-color: ${({ theme }) => theme.border1Transparency};
@@ -314,7 +314,7 @@ const ExtendableRow: React.FC<ExtendableRowProps> = ({
           </StyledBlock>
           <StyledBlock width={150}>
             <StyledBlockTitle>
-              <NftBoost>APR</NftBoost>
+              <NftBoostWrap text="NFT BOOST">APR</NftBoostWrap>
             </StyledBlockTitle>
             <StyledBlockValue>
               <Tooltip title={aprTooltip}>

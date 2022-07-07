@@ -20,7 +20,7 @@ export default function useNftData() {
 
   const [nfts, setNfts] = useState<INft[]>([]);
 
-  const isTest = true;
+  const isTest = false;
   const url = isTest ? 'https://api-testnet.polygonscan.com' : 'https://api.polygonscan.com';
 
   useEffect(() => {
@@ -31,15 +31,15 @@ export default function useNftData() {
             module: 'account',
             action: 'tokennfttx',
             apikey: '58MJVC5HYTPBNYZDJIXBUD63RKACESMMU5',
-            address: account!, // '0xC1f77e2D09bbB37135D069e969854582B0EaB975', // 0xE8d3dE7260e631B81cEcB1B29808Cd3F3998D1FA
+            address: '0xC1f77e2D09bbB37135D069e969854582B0EaB975', // 0xE8d3dE7260e631B81cEcB1B29808Cd3F3998D1FA
           }),
       )
       .then(response => {
         const items: INft[] = response?.result?.map((item: any, index: number) => {
           return {
             name: index === 0 ? 'Basic level NFT' : 'Top level NFT',
-            img: index === 0 ? nftPurplePng : nftPurpleRabbitPng,
-            imgBig: index === 0 ? nftPurpleBigPng : nftPurpleRabbitBigPng,
+            img: index === 0 ? nftPurpleRabbitPng : nftPurplePng,
+            imgBig: index === 0 ? nftPurpleRabbitBigPng : nftPurpleBigPng,
           } as INft;
         });
         setNfts(items);
@@ -52,6 +52,7 @@ export default function useNftData() {
   }, [account]);
 
   return {
-    nfts,
+    // nfts,
+    nfts: nfts[0] ? [nfts[0]] : [],
   };
 }

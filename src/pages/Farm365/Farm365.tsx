@@ -49,7 +49,9 @@ const StyledFarmingInfo = styled.div`
 
 const StyledNftList = styled.div`
   display: flex;
+  justify-content: center;
   align-items: center;
+  width: 100%;
   max-height: 124px;
   padding: 8px 12px;
   border: 1px solid #5b5763;
@@ -66,7 +68,7 @@ const StyledNftList = styled.div`
 const StyledNft = styled.div`
   display: flex;
   align-items: flex-end;
-  height: 80px;
+  height: 95px;
   margin: 0 8px;
   padding: 0 16px 8px 16px;
   border: 1px solid transparent;
@@ -86,12 +88,12 @@ const StyledNft = styled.div`
 const StyledNftImg = styled.img`
   // height: 100%;
   width: 100%;
-  max-width: 50px;
+  max-width: calc(50px + 12px);
   // max-height: 50px;
 `;
 
 const StyledNftName = styled.div`
-  margin: 0 16px 16px 16px;
+  margin: 0 16px 24px 16px;
   font-weight: 700;
   font-size: 16px;
   line-height: 24px;
@@ -99,7 +101,7 @@ const StyledNftName = styled.div`
 `;
 
 const StyledNftInfoIcon = styled.img`
-  margin-bottom: 20px;
+  margin-bottom: 28px;
 `;
 
 const StyledInfo = styled.div`

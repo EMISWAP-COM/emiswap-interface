@@ -17,6 +17,7 @@ import {
 } from '../../hooks/Coins';
 import { isMobile } from 'react-device-detect';
 import { useBridgeModalToggle } from '../../state/application/hooks';
+import NftBoostWrap from '../Nft/NftBoostWrap';
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -191,7 +192,7 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
           to={'/farm-365'}
           isActive={() => active === TabNames.FARM_365}
         >
-          {t('Farm')}
+          <NftBoostWrap text="NFT">{t('Farm')}</NftBoostWrap>
         </StyledNavLink>
       )}
     </Tabs>
