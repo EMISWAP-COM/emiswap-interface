@@ -11,6 +11,7 @@ export interface INft {
   name: string;
   img: string;
   imgBig: string;
+  type: number;
 }
 
 export default function useNftData() {
@@ -31,7 +32,7 @@ export default function useNftData() {
             module: 'account',
             action: 'tokennfttx',
             apikey: '58MJVC5HYTPBNYZDJIXBUD63RKACESMMU5',
-            address: '0xC1f77e2D09bbB37135D069e969854582B0EaB975', // 0xE8d3dE7260e631B81cEcB1B29808Cd3F3998D1FA
+            address: account, // '0xC1f77e2D09bbB37135D069e969854582B0EaB975', // 0xE8d3dE7260e631B81cEcB1B29808Cd3F3998D1FA
           }),
       )
       .then(response => {
@@ -40,6 +41,7 @@ export default function useNftData() {
             name: index === 0 ? 'Basic level NFT' : 'Top level NFT',
             img: index === 0 ? nftPurpleRabbitPng : nftPurplePng,
             imgBig: index === 0 ? nftPurpleRabbitBigPng : nftPurpleBigPng,
+            type: index + 1,
           } as INft;
         });
         setNfts(items);
@@ -52,7 +54,7 @@ export default function useNftData() {
   }, [account]);
 
   return {
-    // nfts,
-    nfts: nfts[0] ? [nfts[0]] : [],
+    nfts,
+    // nfts: nfts[0] ? [nfts[0]] : [],
   };
 }

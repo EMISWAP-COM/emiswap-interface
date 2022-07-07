@@ -121,6 +121,11 @@ export default function NftLevelsModal({ isOpen, onClose }: Props) {
 
   const { nfts } = useNftData();
 
+  const handleClickPool = () => {
+    history.push('/pool');
+    onClose();
+  };
+
   return (
     <StyledModal
       isOpen={isOpen}
@@ -172,7 +177,7 @@ export default function NftLevelsModal({ isOpen, onClose }: Props) {
             </StyledCard>
           )}
         </StyledLevels>
-        <ButtonPrimary onClick={() => history.push('/pool')}>Provide liquidity</ButtonPrimary>
+        <ButtonPrimary onClick={handleClickPool}>Provide liquidity</ButtonPrimary>
         <div style={{ paddingBottom: 24 }}></div>
       </StyledContent>
     </StyledModal>

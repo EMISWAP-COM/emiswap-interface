@@ -6,22 +6,42 @@ import { INft } from '../../hooks/useNftData';
 
 const StyledContent = styled.div`
   width: 320px;
-  padding: 32px 32px 32px 32px;
+  padding: 24px 32px 24px 32px;
 `;
 
 const StyledNftImg = styled.img`
   display: block;
-  width: 171px;
-  margin: 0 auto 16px auto;
+  width: 120px;
+  margin: 0 auto 24px auto;
 `;
 
-const StyledText = styled.div`
-  margin-bottom: 8px;
+const StyledCardTitle = styled.div`
+  margin-bottom: 16px;
+  text-align: center;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.4px;
+  color: white;
+`;
+
+const StyledCardText = styled.div`
+  max-width: 240px;
+  margin-top: 24px;
   text-align: center;
   font-weight: 400;
   font-size: 14px;
-  line-height: 28px;
-  color: #898889;
+  line-height: 30px;
+  color: #b6b6b7;
+`;
+
+const StyledCardTextBold = styled.b`
+  font-size: 16px;
+  font-weight: 500;
+  color: white;
+`;
+
+const StyledLink = styled.a`
+  color: #e478ff !important;
 `;
 
 interface Props {
@@ -36,12 +56,41 @@ export default function NftMiniPopoverContent({ nft }: Props) {
   return (
     <StyledContent>
       <StyledNftImg src={nft.imgBig} />
-      <StyledText>
-        LP 180 -&gt; 185% (+5% APR)
-        <br />
-        Farm 365 -&gt; 375% (+10% APR)
-        <br />
-      </StyledText>
+
+      {nft.type === 1 && (
+        <>
+          <StyledCardTitle>EmiChicko Space Star</StyledCardTitle>
+          <StyledCardText>
+            Gives you: +5% on liquidity provision and + 10% to your farming rewards!
+          </StyledCardText>
+          <StyledCardText>
+            APR LP 180% {'>'} <StyledCardTextBold>185%</StyledCardTextBold>
+            <br />
+            PR Farm 365% {'>'} <StyledCardTextBold>375%</StyledCardTextBold>
+          </StyledCardText>
+          <StyledCardText>
+            Follow our guide how to provide liquidity with{' '}
+            <StyledLink href="#">EmiChiko</StyledLink>
+          </StyledCardText>
+        </>
+      )}
+
+      {nft.type === 2 && (
+        <>
+          <StyledCardTitle>EmiChicko Space Star</StyledCardTitle>
+          <StyledCardText>
+            Gives you: +10% on liquidity provision and + 20% to your farming rewards!
+          </StyledCardText>
+          <StyledCardText>
+            APR LP 180% {'>'} <StyledCardTextBold>190%</StyledCardTextBold>
+            <br />
+            PR Farm 365% {'>'} <StyledCardTextBold>385%</StyledCardTextBold>
+          </StyledCardText>
+          <StyledCardText>
+            Follow our guide how to provide liquidity with <StyledLink href="#">EmiRoko</StyledLink>
+          </StyledCardText>
+        </>
+      )}
     </StyledContent>
   );
 }

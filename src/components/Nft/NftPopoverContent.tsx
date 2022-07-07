@@ -47,6 +47,10 @@ export default function NftPopoverContent({ nft }: Props) {
 
   const { chainId } = useActiveWeb3React();
 
+  const handleClickPool = () => {
+    history.push('/pool');
+  };
+
   return (
     <StyledContent>
       <StyledNftImg src={nft.imgBig} />
@@ -56,7 +60,7 @@ export default function NftPopoverContent({ nft }: Props) {
         NET bonus
       </StyledText>
 
-      <ButtonPrimary onClick={() => history.push('/pool')}>Provide liquidity</ButtonPrimary>
+      <ButtonPrimary onClick={handleClickPool}>Provide liquidity</ButtonPrimary>
     </StyledContent>
   );
 }
