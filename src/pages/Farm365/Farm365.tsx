@@ -13,11 +13,13 @@ import styled from 'styled-components/macro';
 import Button from '../../base/ui/Button';
 import { useWalletModalToggle } from '../../state/application/hooks';
 import Tabs from '../../base/ui/Tabs';
-import useNftData from '../../hooks/useNftData';
+import useNftData, { INft } from '../../hooks/useNftData';
 
 import infoIconSvg from '../../assets/svg/info-icon.svg';
 import { MouseoverPopover } from '../../components/Popover';
 import NftMiniPopoverContent from '../../components/Nft/NftMiniPopoverContent';
+import NftLevelsModal from '../../components/Nft/NftLevelsModal';
+import { isMobile } from 'react-device-detect';
 
 const StyledTabs = styled.div`
   display: flex;
@@ -134,6 +136,8 @@ export default function Farm365() {
   // const [loading, setLoading] = useState<boolean>(Boolean(account) && false);
   const [selectedFilterTab, setSelectedFilterTab] = useState<'active' | 'finished'>('active');
 
+  const [nftModalVisible, setNftModalVisible] = useState<INft | null>(null);
+
   const farming365Contracts: Contract[] = useMemo(() => {
     if (!isFarm365Active) {
       return [];
@@ -178,20 +182,30 @@ export default function Farm365() {
                 are allocated to your EmiSwap account for every block.
               </StyledFarmingInfo>
               {Boolean(nfts.length) && (
-                <StyledNftList>
-                  {nfts.map((nft, index) => (
-                    <MouseoverPopover
-                      content={<NftMiniPopoverContent nft={nft} />}
-                      placement="bottom"
-                    >
-                      <StyledNft key={index.toString()}>
-                        <StyledNftImg src={nft.imgBig} />
-                        <StyledNftName>{nft.name}</StyledNftName>
-                        <StyledNftInfoIcon src={infoIconSvg} />
-                      </StyledNft>
-                    </MouseoverPopover>
-                  ))}
-                </StyledNftList>
+                <>
+                  <StyledNftList>
+                    {nfts.map((nft, index) => (
+                      <MouseoverPopover
+                        content={<NftMiniPopoverContent nft={nft} />}
+                        placement="bottom"
+                      >
+                        <StyledNft
+                          key={index.toString()}
+                          onClick={() => (isMobile ? setNftModalVisible(nft) : undefined)}
+                        >
+                          <StyledNftImg src={nft.imgBig} />
+                          <StyledNftName>{nft.name}</StyledNftName>
+                          <StyledNftInfoIcon src={infoIconSvg} />
+                        </StyledNft>
+                      </MouseoverPopover>
+                    ))}
+                  </StyledNftList>
+                  <NftLevelsModal
+                    isOpen={!!nftModalVisible}
+                    onlyNfts={nftModalVisible ? [nftModalVisible] : undefined}
+                    onClose={() => setNftModalVisible(null)}
+                  />
+                </>
               )}
             </StyledFarmingHeader>
 

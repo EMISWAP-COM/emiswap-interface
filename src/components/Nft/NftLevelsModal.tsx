@@ -3,7 +3,7 @@ import styled from 'styled-components/macro';
 import { useActiveWeb3React } from '../../hooks';
 
 import Modal from '../Modal';
-import useNftData from '../../hooks/useNftData';
+import useNftData, { INft } from '../../hooks/useNftData';
 import { ButtonPrimary } from '../Button';
 import { useHistory } from 'react-router-dom';
 
@@ -111,15 +111,18 @@ const StyledLink = styled.a`
 
 interface Props {
   isOpen: boolean;
+  onlyNfts?: INft[];
   onClose: () => void;
 }
 
-export default function NftLevelsModal({ isOpen, onClose }: Props) {
+export default function NftLevelsModal({ isOpen, onlyNfts, onClose }: Props) {
   const history = useHistory();
 
   const { chainId } = useActiveWeb3React();
 
   const { nfts } = useNftData();
+
+  const visibleNfts = onlyNfts?.length ? onlyNfts : nfts;
 
   const handleClickPool = () => {
     history.push('/pool');
@@ -134,14 +137,14 @@ export default function NftLevelsModal({ isOpen, onClose }: Props) {
       width={'70vw'}
       minHeight={null}
       maxHeight={90}
-      maxWidth={nfts.length > 1 ? 719 : 378}
+      maxWidth={visibleNfts.length > 1 ? 719 : 378}
     >
       <StyledContent>
         <StyledImages>
-          {nfts.map(nft => (
+          {visibleNfts.map(nft => (
             <StyledNftImg src={nft.imgBig} />
           ))}
-          {nfts.length > 1 && <StyledPlus>+</StyledPlus>}
+          {visibleNfts.length > 1 && <StyledPlus>+</StyledPlus>}
         </StyledImages>
         <StyledLevels>
           <StyledCardBasic>
@@ -159,7 +162,7 @@ export default function NftLevelsModal({ isOpen, onClose }: Props) {
               <StyledLink href="#">EmiChiko</StyledLink>
             </StyledCardText>
           </StyledCardBasic>
-          {nfts.length > 1 && (
+          {visibleNfts.length > 1 && (
             <StyledCard>
               <StyledCardTitle>EmiChicko Space Star</StyledCardTitle>
               <StyledCardText>
