@@ -21,7 +21,7 @@ export default function useNftData() {
 
   const [nfts, setNfts] = useState<INft[]>([]);
 
-  const isTest = false;
+  const isTest = true;
   const url = isTest ? 'https://api-testnet.polygonscan.com' : 'https://api.polygonscan.com';
 
   useEffect(() => {
