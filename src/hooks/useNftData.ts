@@ -72,9 +72,13 @@ export default function useNftData() {
             }),
         )
         .then((response: IPolygonAccountResponse) => {
+          if (!response?.result?.length) {
+            return;
+          }
+
           const items: INft[] = [];
 
-          response?.result.forEach(item => {
+          response.result.forEach(item => {
             if (item.tokenSymbol !== 'EMICHIKO' && item.tokenSymbol !== 'EMIROKO') {
               return;
             }
@@ -95,7 +99,8 @@ export default function useNftData() {
           });
 
           setNfts(items);
-        });
+        })
+        .catch(e => console.log(e));
     }
     /* contract.balanceOf('0xC1f77e2D09bbB37135D069e969854582B0EaB975')
        .then((value) => {
