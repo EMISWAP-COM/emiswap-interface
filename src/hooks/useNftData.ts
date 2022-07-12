@@ -51,11 +51,15 @@ export default function useNftData() {
   const isTest = true;
   const url = isTest ? 'https://api-testnet.polygonscan.com' : 'https://api.polygonscan.com';
 
-  const address = account as string;
+  const contractsAddresses = [
+    '0xE8d3dE7260e631B81cEcB1B29808Cd3F3998D1FA',
+    '0x4A44941B455b15E316F5AAB380A15074f2eF1448',
+  ].map(value => value.toLowerCase());
+
+  // const address = account as string;
   // const address = '0xC1f77e2D09bbB37135D069e969854582B0EaB975';
   // const address = '0x6E3dfdD80EAeFc4C10e5C136b19de0b2a943089E'; // Basic
-  // const address = '0x412c090d8CeC64de9Be2ae48689155EA96D5Ac3e'; // Top
-  // const address = '0xE8d3dE7260e631B81cEcB1B29808Cd3F3998D1FA';
+  const address = '0x412c090d8CeC64de9Be2ae48689155EA96D5Ac3e'; // Top
 
   useEffect(() => {
     if (requestAccount !== address) {
@@ -83,6 +87,10 @@ export default function useNftData() {
               return;
             }
 
+            if (!contractsAddresses.includes(item.contractAddress.toLowerCase())) {
+              return;
+            }
+
             if (items.find(v => v.tokenSymbol === item.tokenSymbol)) {
               return;
             }
@@ -96,6 +104,14 @@ export default function useNftData() {
               imgBig: isBasic ? nftPurpleRabbitBigPng : nftPurpleBigPng,
               type: isBasic ? 'basic' : 'top',
             } as INft);
+          });
+
+          items.sort((a, b) => {
+            if (a.type === 'basic' && b.type !== 'basic') {
+              return -1;
+            }
+
+            return 1;
           });
 
           setNfts(items);
