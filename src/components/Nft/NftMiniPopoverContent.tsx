@@ -57,7 +57,7 @@ export default function NftMiniPopoverContent({ nft }: Props) {
     <StyledContent>
       <StyledNftImg src={nft.imgBig} />
 
-      {nft.type === 1 && (
+      {nft.type === 'basic' && (
         <>
           <StyledCardTitle>EmiChicko Space Star</StyledCardTitle>
           <StyledCardText>
@@ -75,7 +75,7 @@ export default function NftMiniPopoverContent({ nft }: Props) {
         </>
       )}
 
-      {nft.type === 2 && (
+      {nft.type === 'top' && (
         <>
           <StyledCardTitle>EmiChicko Space Star</StyledCardTitle>
           <StyledCardText>
