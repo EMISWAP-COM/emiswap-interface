@@ -56,10 +56,10 @@ export default function useNftData() {
     '0x4A44941B455b15E316F5AAB380A15074f2eF1448',
   ].map(value => value.toLowerCase());
 
-  // const address = account as string;
+  const address = account as string;
   // const address = '0xC1f77e2D09bbB37135D069e969854582B0EaB975';
   // const address = '0x6E3dfdD80EAeFc4C10e5C136b19de0b2a943089E'; // Basic
-  const address = '0x412c090d8CeC64de9Be2ae48689155EA96D5Ac3e'; // Top
+  // const address = '0x412c090d8CeC64de9Be2ae48689155EA96D5Ac3e'; // Top
 
   useEffect(() => {
     if (requestAccount !== address) {
