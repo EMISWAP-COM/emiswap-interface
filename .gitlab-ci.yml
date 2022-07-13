@@ -1,87 +1,87 @@
+# You can override the included template(s) by including variable overrides
+# SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
+# Secret Detection customization: https://docs.gitlab.com/ee/user/application_security/secret_detection/#customizing-settings
+# Dependency Scanning customization: https://docs.gitlab.com/ee/user/application_security/dependency_scanning/#customizing-the-dependency-scanning-settings
+# Container Scanning customization: https://docs.gitlab.com/ee/user/application_security/container_scanning/#customizing-the-container-scanning-settings
+# Note that environment variables can be set in several places
+# See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
 stages:
-  - compile
-  - build
-  - registry
-  - deploy:review
-  - deploy:uat
-  - deploy:prod
-
+- compile
+- build
+- registry
+- deploy:review
+- deploy:uat
+- deploy:prod
+- test
 variables:
-  _img_repo: $CI_REGISTRY_IMAGE
+  _img_repo: "$CI_REGISTRY_IMAGE"
   _img_name: emiswap-ui-$CI_COMMIT_REF_SLUG
   _app_name: emiswap-ui
   _img_short_name: emiswap-ui
   _env_name: emiswap-ui-$CI_COMMIT_REF_SLUG
   _node_image: node:12
-
 include:
-  - project: emirex-exchange/devops/pipelines
-    file: emiswap.yaml
-    ref: dev
-
+- project: emirex-exchange/devops/pipelines
+  file: emiswap.yaml
+  ref: dev
+- template: Security/SAST.gitlab-ci.yml
 compile:
   stage: compile
-  image: $_node_image
+  image: "$_node_image"
   artifacts:
-    name: $_img_short_name-$CI_COMMIT_REF_SLUG
+    name: "$_img_short_name-$CI_COMMIT_REF_SLUG"
     paths:
-      - build/
+    - build/
   script:
-    - yarn install --frozen-lockfile
-    - yarn build
+  - yarn install --frozen-lockfile
+  - yarn build
   tags:
-    - hetzner
-    - docker
-
+  - hetzner
+  - docker
 build:
-  extends: .build:react
+  extends: ".build:react"
   stage: build
   script:
-    - docker build -t $_img_repo/$_img_name:$_img_tag .
-
+  - docker build -t $_img_repo/$_img_name:$_img_tag .
 push:
-  extends: .push
+  extends: ".push"
   stage: registry
   only:
-    - branches
-
+  - branches
 push:tagged:
-  extends: .push:tagged
+  extends: ".push:tagged"
   stage: registry
   only:
-    - tags
-
+  - tags
 deploy:review:
-  extends: .deploy:review
+  extends: ".deploy:review"
   stage: deploy:review
   when: manual
   except:
     refs:
-      - production
-      - /^release-.*$/
-
+    - production
+    - "/^release-.*$/"
 deploy:release:
-  extends: .deploy:review
+  extends: ".deploy:review"
   stage: deploy:review
   when: manual
   only:
     refs:
-      - /^release-.*$/
-
+    - "/^release-.*$/"
 deploy:uat:
-  extends: .deploy:uat
+  extends: ".deploy:uat"
   stage: deploy:uat
   when: manual
   only:
     refs:
-      - production
-      - /^release-.*$/
-
+    - production
+    - "/^release-.*$/"
 deploy:prod:
-  extends: .deploy:prod
+  extends: ".deploy:prod"
   stage: deploy:prod
   when: manual
-
 abandon:
-  extends: .abandon
+  extends: ".abandon"
   stage: deploy:review
+sast:
+  stage: test
