@@ -48,12 +48,14 @@ export default function useNftData() {
   const [nfts, setNfts] = useState<INft[]>([]);
   const [requestAccount, setRequestAccount] = useState<string | null | undefined>(null);
 
-  const isTest = true;
+  const isTest = false;
   const url = isTest ? 'https://api-testnet.polygonscan.com' : 'https://api.polygonscan.com';
 
   const contractsAddresses = [
     '0xE8d3dE7260e631B81cEcB1B29808Cd3F3998D1FA',
     '0x4A44941B455b15E316F5AAB380A15074f2eF1448',
+    '0xd1f4513cacBFF3AbaF3a6A6bB6D976c5157720C9',
+    '0x850fbF18C87b6d209e9dE0477B077c613feE5435',
   ].map(value => value.toLowerCase());
 
   const address = account as string;
