@@ -4232,6 +4232,13 @@ const defaultCoins: DefaultCoins = {
       symbol: 'WETHUSDT',
       decimals: 18,
     },
+    {
+      address: '0x5b4cbcb6aefdfc9edf289791114cdeb1a229ee89',
+      chainId: 137,
+      name: 'LP USDT-USDC',
+      symbol: 'WETHUSDT',
+      decimals: 18,
+    },
 
     // Polygon Mumbai
     {
