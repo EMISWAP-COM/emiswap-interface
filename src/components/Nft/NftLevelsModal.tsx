@@ -147,38 +147,43 @@ export default function NftLevelsModal({ isOpen, onlyNfts, onClose }: Props) {
           {visibleNfts.length > 1 && <StyledPlus>+</StyledPlus>}
         </StyledImages>
         <StyledLevels>
-          <StyledCardBasic>
-            <StyledCardTitle>EmiRoko Space Star</StyledCardTitle>
-            <StyledCardText>
-              Gives you: +5% on liquidity provision and + 10% to your farming rewards!
-            </StyledCardText>
-            <StyledCardText>
-              APR LP 180% {'>'} <StyledCardTextBold>185%</StyledCardTextBold>
-              <br />
-              PR Farm 365% {'>'} <StyledCardTextBold>375%</StyledCardTextBold>
-            </StyledCardText>
-            <StyledCardText>
-              Follow our guide how to provide liquidity with{' '}
-              <StyledLink href="#">EmiRoko</StyledLink>
-            </StyledCardText>
-          </StyledCardBasic>
-          {visibleNfts.length > 1 && (
-            <StyledCard>
-              <StyledCardTitle>EmiChiko Space Star</StyledCardTitle>
-              <StyledCardText>
-                Gives you: +10% on liquidity provision and + 20% to your farming rewards!
-              </StyledCardText>
-              <StyledCardText>
-                APR LP 180% {'>'} <StyledCardTextBold>190%</StyledCardTextBold>
-                <br />
-                PR Farm 365% {'>'} <StyledCardTextBold>385%</StyledCardTextBold>
-              </StyledCardText>
-              <StyledCardText>
-                Follow our guide how to provide liquidity with{' '}
-                <StyledLink href="#">EmiChiko</StyledLink>
-              </StyledCardText>
-            </StyledCard>
-          )}
+          {visibleNfts.map(nft => (
+            <>
+              {nft.type === 'basic' ? (
+                <StyledCardBasic>
+                  <StyledCardTitle>EmiRoko Space Star</StyledCardTitle>
+                  <StyledCardText>
+                    Gives you: +5% on liquidity provision and + 10% to your farming rewards!
+                  </StyledCardText>
+                  <StyledCardText>
+                    APR LP 180% {'>'} <StyledCardTextBold>185%</StyledCardTextBold>
+                    <br />
+                    PR Farm 365% {'>'} <StyledCardTextBold>375%</StyledCardTextBold>
+                  </StyledCardText>
+                  <StyledCardText>
+                    Follow our guide how to provide liquidity with{' '}
+                    <StyledLink href="#">EmiRoko</StyledLink>
+                  </StyledCardText>
+                </StyledCardBasic>
+              ) : (
+                <StyledCard>
+                  <StyledCardTitle>EmiChiko Space Star</StyledCardTitle>
+                  <StyledCardText>
+                    Gives you: +10% on liquidity provision and + 20% to your farming rewards!
+                  </StyledCardText>
+                  <StyledCardText>
+                    APR LP 180% {'>'} <StyledCardTextBold>190%</StyledCardTextBold>
+                    <br />
+                    PR Farm 365% {'>'} <StyledCardTextBold>385%</StyledCardTextBold>
+                  </StyledCardText>
+                  <StyledCardText>
+                    Follow our guide how to provide liquidity with{' '}
+                    <StyledLink href="#">EmiChiko</StyledLink>
+                  </StyledCardText>
+                </StyledCard>
+              )}
+            </>
+          ))}
         </StyledLevels>
         <ButtonPrimary onClick={handleClickPool}>Provide liquidity</ButtonPrimary>
         <div style={{ paddingBottom: 24 }}></div>
