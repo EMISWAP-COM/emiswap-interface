@@ -106,7 +106,7 @@ export const Body = styled.div`
         position: relative;
         display: flex;
         padding: 0 0 8px 0;
-        margin: 0 28px 0 8px;
+        margin: 12px 28px 0 8px;
         text-decoration: none !important;
         
         @media screen and (max-width: 769px) {
@@ -162,21 +162,32 @@ export const Body = styled.div`
     align-items: center;
     margin-left: auto;
 
-    @media screen and (max-width: 1160px) {
+    /*@media screen and (max-width: 1160px) {
       position: absolute;
       top: 27px;
       right: 8px;
+    }*/
+    
+    @media screen and (max-width: 980px) {
+      margin-left: 0;
     }
 
-    @media screen and (max-width: 760px) {
-      right: 12px;
+    @media screen and (max-width: 950px) {
+      position: absolute;
+      top: 24px;
+      right: 150px;
+      margin: 0;
+    }
+    
+    @media screen and (max-width: 530px) {
+     display: none;
     }
 
     .options {
       display: flex;
       align-items: center;
       color: #fff;
-      margin-right: 20px;
+      margin-right: 16px;
 
       @media screen and (max-width: 760px) {
         margin-right: 0px;
@@ -198,20 +209,21 @@ export const Body = styled.div`
         background: #0f0f13 !important;
       }
     }
-
-    .btn-earn {
-      margin-left: 10px;
-      white-space: nowrap;
-
-      @media screen and (max-width: 1380px) {
-        display: none;
-      }
+  }
+  
+  .btn-earn {
+    display: block;
+    margin-left: 10px;
+    white-space: nowrap;
+  
+    @media screen and (max-width: 1400px) {
+      display: none;
     }
-
-    .web3-wrapper {
-      @media screen and (max-width: 1380px) {
-        display: none;
-      }
+  }
+  
+  .web3-wrapper {
+    @media screen and (max-width: 1300px) {
+      display: none;
     }
   }
 
@@ -235,7 +247,7 @@ export const Body = styled.div`
       right: 0;
       padding: 0 40px;
      
-      @media screen and (min-width: 1380px) {
+      @media screen and (min-width: 1300px) {
         display: none;
       }
 
