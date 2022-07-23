@@ -160,10 +160,10 @@ export default function NftLevelsModal({ isOpen, onlyNfts, onClose }: Props) {
                     <br />
                     PR Farm 365% {'>'} <StyledCardTextBold>375%</StyledCardTextBold>
                   </StyledCardText>
-                  <StyledCardText>
+                  {/*<StyledCardText>
                     Follow our guide how to provide liquidity with{' '}
                     <StyledLink href="#">EmiRoko</StyledLink>
-                  </StyledCardText>
+                  </StyledCardText>*/}
                 </StyledCardBasic>
               ) : (
                 <StyledCard>
@@ -176,10 +176,10 @@ export default function NftLevelsModal({ isOpen, onlyNfts, onClose }: Props) {
                     <br />
                     PR Farm 365% {'>'} <StyledCardTextBold>385%</StyledCardTextBold>
                   </StyledCardText>
-                  <StyledCardText>
+                  {/*<StyledCardText>
                     Follow our guide how to provide liquidity with{' '}
                     <StyledLink href="#">EmiChiko</StyledLink>
-                  </StyledCardText>
+                  </StyledCardText>*/}
                 </StyledCard>
               )}
             </>
