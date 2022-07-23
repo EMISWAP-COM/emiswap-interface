@@ -10,11 +10,13 @@ import { useGesture } from 'react-use-gesture';
 
 const AnimatedDialogOverlay = animated(DialogOverlay);
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const StyledDialogOverlay = styled(({ mobile, ...rest }) => <AnimatedDialogOverlay {...rest} />)<{
+const StyledDialogOverlay = styled(({ mobile, zIndex, ...rest }) => (
+  <AnimatedDialogOverlay {...rest} />
+))<{
   mobile: boolean;
 }>`
   &[data-reach-dialog-overlay] {
-    z-index: 2;
+    z-index: ${({ zIndex }) => zIndex || 2};
     display: flex;
     align-items: center;
     justify-content: center;
@@ -51,7 +53,7 @@ const StyledDialogContent = styled(
   'aria-label': 'dialog',
 })`
   &[data-reach-dialog-content] {
-    border: none!important;
+    border: none !important;
     margin: 0 0 2rem 0;
     border: 1px solid ${({ theme }) => theme.border1};
     background-color: ${({ theme }) => theme.dark1};
@@ -106,6 +108,7 @@ interface ModalProps {
   minHeight?: number | false;
   maxHeight?: number;
   maxWidth?: number;
+  zIndex?: number;
   initialFocusRef?: React.RefObject<any>;
   children?: React.ReactNode;
   className?: string;
@@ -118,6 +121,7 @@ export default function Modal({
   minHeight = false,
   maxHeight = 50,
   maxWidth = 440,
+  zIndex = 2,
   initialFocusRef = null,
   children,
   className,
@@ -153,6 +157,7 @@ export default function Modal({
                 onDismiss={onDismiss}
                 initialFocusRef={initialFocusRef}
                 mobile={true}
+                zIndex={zIndex}
               >
                 {/* prevents the automatic focusing of inputs on mobile by the reach dialog */}
                 {initialFocusRef ? null : <div tabIndex={1} />}
@@ -203,6 +208,7 @@ export default function Modal({
                 style={props}
                 onDismiss={onDismiss}
                 initialFocusRef={initialFocusRef}
+                zIndex={zIndex}
               >
                 <StyledDialogContent
                   aria-label="dialog content"

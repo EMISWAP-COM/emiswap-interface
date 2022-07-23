@@ -65,7 +65,7 @@ const Banner = ({
         <div>{t('landing.banner.subtitle')}</div>
         <IconsWrapper>
           {tokens.map(item => (
-            <img src={item.icon} alt="icon" />
+            <img key={item.address} src={item.icon} alt="icon" />
           ))}
           <img src={AvalancheNetworkIcon} alt="icon" />
         </IconsWrapper>
