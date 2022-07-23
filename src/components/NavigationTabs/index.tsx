@@ -17,6 +17,7 @@ import {
 } from '../../hooks/Coins';
 import { isMobile } from 'react-device-detect';
 import { useBridgeModalToggle } from '../../state/application/hooks';
+import NftBoostWrap from '../Nft/NftBoostWrap';
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -88,7 +89,7 @@ const StyledNavLinkWrapper = styled.div`
   align-items: center;
 `;
 
-const NetworkLabel = styled.div`
+export const TextLabel = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -170,7 +171,7 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
           >
             {t('bridge')}
           </StyledNavLink>
-          <NetworkLabel>Beta</NetworkLabel>
+          <TextLabel>Beta</TextLabel>
         </StyledNavLinkWrapper>
       )}
       {/*<StyledNavLink
@@ -191,7 +192,7 @@ export function SwapPoolTabs({ active }: { active: TabNames }) {
           to={'/farm-365'}
           isActive={() => active === TabNames.FARM_365}
         >
-          {t('Farm')}
+          <NftBoostWrap text="NFT">{t('Farm')}</NftBoostWrap>
         </StyledNavLink>
       )}
     </Tabs>

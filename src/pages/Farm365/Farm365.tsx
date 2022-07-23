@@ -4,7 +4,7 @@ import { SwapPoolTabs, TabNames } from '../../components/NavigationTabs';
 import AppBody from '../AppBody';
 import { useActiveWeb3React } from '../../hooks';
 import LogoIcon from '../../assets/svg/logo-icon.svg';
-import { useIsFarm365Active, useIsPolygonActive, useIsShidenActive } from '../../hooks/Coins';
+import { useIsFarm365Active } from '../../hooks/Coins';
 import { useHistory } from 'react-router-dom';
 import Farm365Item from './Farm365Item';
 import { Contract } from '@ethersproject/contracts';
@@ -13,6 +13,13 @@ import styled from 'styled-components/macro';
 import Button from '../../base/ui/Button';
 import { useWalletModalToggle } from '../../state/application/hooks';
 import Tabs from '../../base/ui/Tabs';
+import useNftData, { INft } from '../../hooks/useNftData';
+
+import infoIconSvg from '../../assets/svg/info-icon.svg';
+import { MouseoverPopover } from '../../components/Popover';
+import NftMiniPopoverContent from '../../components/Nft/NftMiniPopoverContent';
+import NftLevelsModal from '../../components/Nft/NftLevelsModal';
+import { isMobile } from 'react-device-detect';
 
 const StyledTabs = styled.div`
   display: flex;
@@ -23,14 +30,83 @@ const StyledTabs = styled.div`
   `};
 `;
 
-const FarmingInfo = styled.div`
-  margin: 16px 0 32px 0;
+const StyledFarmingHeader = styled.div`
+  display: flex;
+
+  @media screen and (max-width: 769px) {
+    display: block;
+  }
+`;
+
+const StyledFarmingInfo = styled.div`
+  margin: 16px 48px 32px 0;
   color: white;
   max-width: 500px;
   text-align: left;
+
+  @media screen and (max-width: 769px) {
+    margin: 16px 0 32px 0;
+  }
 `;
 
-const Info = styled.div`
+const StyledNftList = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-height: 124px;
+  padding: 8px 12px;
+  border: 1px solid #5b5763;
+  border-radius: 8px;
+
+  @media screen and (max-width: 769px) {
+    display: block;
+    max-height: 200px;
+    margin-bottom: 32px;
+    padding: 8px 4px;
+  }
+`;
+
+const StyledNft = styled.div`
+  display: flex;
+  align-items: flex-end;
+  height: 95px;
+  margin: 0 8px;
+  padding: 0 16px 8px 16px;
+  border: 1px solid transparent;
+  cursor: pointer;
+
+  &:hover {
+    background: #0e0f13;
+    border-color: #494755;
+    border-radius: 8px;
+  }
+
+  @media screen and (max-width: 769px) {
+    padding: 8px 8px;
+  }
+`;
+
+const StyledNftImg = styled.img`
+  // height: 100%;
+  width: 100%;
+  max-width: calc(50px + 12px);
+  // max-height: 50px;
+`;
+
+const StyledNftName = styled.div`
+  margin: 0 16px 24px 16px;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  color: #ffffff;
+`;
+
+const StyledNftInfoIcon = styled.img`
+  margin-bottom: 28px;
+`;
+
+const StyledInfo = styled.div`
   color: ${({ theme }) => theme.darkWhite};
 `;
 
@@ -55,8 +131,12 @@ export default function Farm365() {
 
   const toggleWalletModal = useWalletModalToggle();
 
+  const { nfts } = useNftData();
+
   // const [loading, setLoading] = useState<boolean>(Boolean(account) && false);
   const [selectedFilterTab, setSelectedFilterTab] = useState<'active' | 'finished'>('active');
+
+  const [nftModalVisible, setNftModalVisible] = useState<INft | null>(null);
 
   const farming365Contracts: Contract[] = useMemo(() => {
     if (!isFarm365Active) {
@@ -95,11 +175,39 @@ export default function Farm365() {
                 onChange={setSelectedFilterTab as any}
               />
             </StyledTabs>
-            <FarmingInfo>
-              Stake LP token in pair with ESW into the farming pools and win a 365% or 180% APR
-              airdrop if LP includes EmiSwap token + Additional % AIR for Farming. Farming rewards
-              are allocated to your EmiSwap account for every block.
-            </FarmingInfo>
+            <StyledFarmingHeader>
+              <StyledFarmingInfo>
+                Stake LP token in pair with ESW into the farming pools and win a 365% or 180% APR
+                airdrop if LP includes EmiSwap token + Additional % AIR for Farming. Farming rewards
+                are allocated to your EmiSwap account for every block.
+              </StyledFarmingInfo>
+              {Boolean(nfts.length) && (
+                <>
+                  <StyledNftList>
+                    {nfts.map((nft, index) => (
+                      <MouseoverPopover
+                        content={<NftMiniPopoverContent nft={nft} />}
+                        placement="bottom"
+                      >
+                        <StyledNft
+                          key={index.toString()}
+                          onClick={() => (isMobile ? setNftModalVisible(nft) : undefined)}
+                        >
+                          <StyledNftImg src={nft.imgBig} />
+                          <StyledNftName>{nft.name}</StyledNftName>
+                          <StyledNftInfoIcon src={infoIconSvg} />
+                        </StyledNft>
+                      </MouseoverPopover>
+                    ))}
+                  </StyledNftList>
+                  <NftLevelsModal
+                    isOpen={!!nftModalVisible}
+                    onlyNfts={nftModalVisible ? [nftModalVisible] : undefined}
+                    onClose={() => setNftModalVisible(null)}
+                  />
+                </>
+              )}
+            </StyledFarmingHeader>
 
             {farming365Contracts.map(contract => (
               <Farm365Item
@@ -111,12 +219,12 @@ export default function Farm365() {
           </>
         ) : (
           <>
-            <Info>
+            <StyledInfo>
               Please connect your wallet to see all available farms
               <br />
               <br />
               <Button onClick={toggleWalletModal}>Connect to a wallet</Button>
-            </Info>
+            </StyledInfo>
           </>
         )}
       </AppBody>

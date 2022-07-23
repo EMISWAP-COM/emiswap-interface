@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 // import { Info, BookOpen, Code, PieChart, MessageCircle } from 'react-feather'
 import { BookOpen, Code, MessageCircle, PieChart } from 'react-feather';
 import WikiIcon from '../../assets/images/wiki.svg';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { ReactComponent as MenuIcon } from '../../assets/images/menu.svg';
 import WhitePaper from '../../assets/whitePaper.pdf';
 import useToggle from '../../hooks/useToggle';
@@ -37,7 +37,7 @@ const StyledMenuButton = styled.button`
   }
 `;
 
-const StyledMenu = styled.div`
+const StyledMenu = styled.div<{ isLanding: boolean }>`
   margin-left: 0.5rem;
   display: flex;
   justify-content: center;
@@ -45,6 +45,17 @@ const StyledMenu = styled.div`
   position: relative;
   border: none;
   text-align: left;
+
+  ${({ isLanding }) =>
+    isLanding &&
+    css`
+      @media screen and (max-width: 980px) {
+        position: absolute;
+        top: 20px;
+        right: 16px;
+        width: 46px;
+      }
+    `}
 `;
 
 const MenuFlyout = styled.span`
@@ -87,7 +98,11 @@ const MenuItem = styled(ExternalLink)`
   }
 `;*/
 
-export default function Menu() {
+interface Props {
+  isLanding?: boolean;
+}
+
+export default function Menu({ isLanding = false }) {
   const { analyticsUrl } = useNetworkData();
 
   const node = useRef<HTMLDivElement>();
@@ -114,7 +129,7 @@ export default function Menu() {
     };
   }, [open, toggle]);
   return (
-    <StyledMenu ref={node}>
+    <StyledMenu ref={node} isLanding={isLanding}>
       <StyledMenuButton onClick={toggle}>
         <StyledMenuIcon />
       </StyledMenuButton>

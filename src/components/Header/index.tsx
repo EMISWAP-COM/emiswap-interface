@@ -23,6 +23,8 @@ import { isMobile } from 'react-device-detect';
 import { useRouteMatch } from 'react-router-dom';
 import BridgeModal from './BridgeModal';
 import { NetworkSwitch } from '../NetworkSwitch';
+import NftListHeader from '../Nft/NftListHeader';
+import NftHeaderButton from '../Nft/NftHeaderButton';
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -144,6 +146,7 @@ const StyledMagicButton = styled.a`
 
   ${({ theme }) => theme.mediaWidth.upToTabletop`
     display: inline-block;
+    display: none;
   `};
 `;
 
@@ -434,6 +437,7 @@ export default function Header() {
                         <span>Magic Hall</span>
                       </a>
                     )}
+                    <NftHeaderButton appHeader={true} />
                     <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
                       {account && userEthBalance ? (
                         <>

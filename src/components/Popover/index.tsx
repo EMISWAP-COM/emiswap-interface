@@ -1,9 +1,10 @@
 import { Placement } from '@popperjs/core';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { usePopper } from 'react-popper';
 import styled from 'styled-components';
 import useInterval from '../../hooks/useInterval';
 import Portal from '@reach/portal';
+import { isMobile } from 'react-device-detect';
 
 const PopoverContainer = styled.div<{ show: boolean }>`
   z-index: 9999;
@@ -74,14 +75,23 @@ const Arrow = styled.div`
   }
 `;
 
+const Inner = styled.div``;
+
 export interface PopoverProps {
   content: React.ReactNode;
   show: boolean;
   children: React.ReactNode;
   placement?: Placement;
+  withPortal?: boolean;
 }
 
-export default function Popover({ content, show, children, placement = 'auto' }: PopoverProps) {
+export default function Popover({
+  content,
+  show,
+  children,
+  placement = 'auto',
+  withPortal = true,
+}: PopoverProps) {
   const [referenceElement, setReferenceElement] = useState<HTMLDivElement>(null);
   const [popperElement, setPopperElement] = useState<HTMLDivElement>(null);
   const [arrowElement, setArrowElement] = useState<HTMLDivElement>(null);
@@ -99,10 +109,12 @@ export default function Popover({ content, show, children, placement = 'auto' }:
   });
   useInterval(update, show ? 100 : null);
 
+  const PortalComponent = withPortal ? Portal : Inner;
+
   return (
     <>
       <ReferenceElement ref={setReferenceElement}>{children}</ReferenceElement>
-      <Portal>
+      <PortalComponent>
         <PopoverContainer
           show={show}
           ref={setPopperElement}
@@ -117,7 +129,25 @@ export default function Popover({ content, show, children, placement = 'auto' }:
             {...attributes.arrow}
           />
         </PopoverContainer>
-      </Portal>
+      </PortalComponent>
     </>
+  );
+}
+
+export function MouseoverPopover({ children, ...rest }: Omit<PopoverProps, 'show'>) {
+  const [show, setShow] = useState(false);
+  const open = useCallback(() => setShow(true), [setShow]);
+  const close = useCallback(() => setShow(false), [setShow]);
+
+  if (isMobile) {
+    return <div>{children}</div>;
+  }
+
+  return (
+    <div style={{ display: 'flex', alignItems: 'center' }} onMouseEnter={open} onMouseLeave={close}>
+      <Popover {...rest} show={show} withPortal={false}>
+        {children}
+      </Popover>
+    </div>
   );
 }
