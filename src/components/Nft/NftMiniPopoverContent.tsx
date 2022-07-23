@@ -59,7 +59,7 @@ export default function NftMiniPopoverContent({ nft }: Props) {
 
       {nft.type === 'basic' && (
         <>
-          <StyledCardTitle>EmiChiko Space Star</StyledCardTitle>
+          <StyledCardTitle>EmiRoko Space Star</StyledCardTitle>
           <StyledCardText>
             Gives you: +5% on liquidity provision and + 10% to your farming rewards!
           </StyledCardText>
@@ -69,15 +69,14 @@ export default function NftMiniPopoverContent({ nft }: Props) {
             PR Farm 365% {'>'} <StyledCardTextBold>375%</StyledCardTextBold>
           </StyledCardText>
           <StyledCardText>
-            Follow our guide how to provide liquidity with{' '}
-            <StyledLink href="#">EmiChiko</StyledLink>
+            Follow our guide how to provide liquidity with <StyledLink href="#">EmiRoko</StyledLink>
           </StyledCardText>
         </>
       )}
 
       {nft.type === 'top' && (
         <>
-          <StyledCardTitle>EmiRoko Space Star</StyledCardTitle>
+          <StyledCardTitle>EmiChiko Space Star</StyledCardTitle>
           <StyledCardText>
             Gives you: +10% on liquidity provision and + 20% to your farming rewards!
           </StyledCardText>
@@ -87,7 +86,8 @@ export default function NftMiniPopoverContent({ nft }: Props) {
             PR Farm 365% {'>'} <StyledCardTextBold>385%</StyledCardTextBold>
           </StyledCardText>
           <StyledCardText>
-            Follow our guide how to provide liquidity with <StyledLink href="#">EmiRoko</StyledLink>
+            Follow our guide how to provide liquidity with{' '}
+            <StyledLink href="#">EmiChiko</StyledLink>
           </StyledCardText>
         </>
       )}

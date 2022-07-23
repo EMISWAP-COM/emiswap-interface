@@ -19,7 +19,7 @@ export interface IPolygonAccountResponse {
     to: '0x6e3dfdd80eaefc4c10e5c136b19de0b2a943089e';
     tokenID: '2';
     tokenName: 'EmiChiko Gift Certificate';
-    tokenSymbol: 'EMICHIKO';
+    tokenSymbol: 'EMICHIKO' | 'EMIROKO';
     tokenDecimal: '0';
     transactionIndex: '21';
     gas: '143841';
@@ -97,7 +97,7 @@ export default function useNftData() {
               return;
             }
 
-            const isBasic = item.tokenSymbol === 'EMICHIKO';
+            const isBasic = item.tokenSymbol === 'EMIROKO';
 
             items.push({
               tokenSymbol: item.tokenSymbol,
