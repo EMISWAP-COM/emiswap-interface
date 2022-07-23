@@ -30,6 +30,7 @@ import { SDN } from '../constants/tokens/SDN';
 import { AURORA_ETHER } from '../constants/tokens/AURORA_ETHER';
 import { ASTR } from '../constants/tokens/ASTR';
 import { GT } from '../constants/tokens/GT';
+import { useMemo } from 'react';
 
 const EMI_DELIVERY = window['env'].REACT_APP_EMI_DELIVERY;
 
@@ -226,6 +227,10 @@ export function getVestingContract(library: Web3Provider, account: string, chain
 }
 
 export function getCollectContract(library: Web3Provider, account: string, chainId: ChainId) {
+  return getContract(EMI_DELIVERY, EMISWAP_COLLECT_ABI, library, account);
+}
+
+export function getPolygonNftContract(library: Web3Provider, account: string, chainId: ChainId) {
   return getContract(EMI_DELIVERY, EMISWAP_COLLECT_ABI, library, account);
 }
 
