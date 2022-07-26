@@ -151,7 +151,7 @@ export default function NftLevelsModal({ isOpen, onlyNfts, onClose }: Props) {
             <>
               {nft.type === 'basic' ? (
                 <StyledCardBasic>
-                  <StyledCardTitle>EmiRoko Space Star</StyledCardTitle>
+                  <StyledCardTitle>EmiChiko Space Star</StyledCardTitle>
                   <StyledCardText>
                     Gives you: +5% on liquidity provision and + 10% to your farming rewards!
                   </StyledCardText>
@@ -162,12 +162,12 @@ export default function NftLevelsModal({ isOpen, onlyNfts, onClose }: Props) {
                   </StyledCardText>
                   {/*<StyledCardText>
                     Follow our guide how to provide liquidity with{' '}
-                    <StyledLink href="#">EmiRoko</StyledLink>
+                    <StyledLink href="#">EmiChiko</StyledLink>
                   </StyledCardText>*/}
                 </StyledCardBasic>
               ) : (
                 <StyledCard>
-                  <StyledCardTitle>EmiChiko Space Star</StyledCardTitle>
+                  <StyledCardTitle>EmiRoko Space Star</StyledCardTitle>
                   <StyledCardText>
                     Gives you: +10% on liquidity provision and + 20% to your farming rewards!
                   </StyledCardText>
@@ -178,7 +178,7 @@ export default function NftLevelsModal({ isOpen, onlyNfts, onClose }: Props) {
                   </StyledCardText>
                   {/*<StyledCardText>
                     Follow our guide how to provide liquidity with{' '}
-                    <StyledLink href="#">EmiChiko</StyledLink>
+                    <StyledLink href="#">EmiRoko</StyledLink>
                   </StyledCardText>*/}
                 </StyledCard>
               )}

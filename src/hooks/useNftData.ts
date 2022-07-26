@@ -97,13 +97,13 @@ export default function useNftData() {
               return;
             }
 
-            const isBasic = item.tokenSymbol === 'EMIROKO';
+            const isBasic = item.tokenSymbol === 'EMICHIKO';
 
             items.push({
               tokenSymbol: item.tokenSymbol,
               name: isBasic ? 'Basic level NFT' : 'Top level NFT',
-              img: isBasic ? nftPurpleRabbitPng : nftPurplePng,
-              imgBig: isBasic ? nftPurpleRabbitBigPng : nftPurpleBigPng,
+              img: isBasic ? nftPurplePng : nftPurpleRabbitPng,
+              imgBig: isBasic ? nftPurpleBigPng : nftPurpleRabbitBigPng,
               type: isBasic ? 'basic' : 'top',
             } as INft);
           });
