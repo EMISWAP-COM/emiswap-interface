@@ -4170,6 +4170,13 @@ const defaultCoins: DefaultCoins = {
       symbol: 'ETH',
     },
     {
+      address: '0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6',
+      chainId: 137,
+      name: 'BTC',
+      decimals: 6,
+      symbol: 'BTC',
+    },
+    {
       address: '0x055a93a5624b386ae5eace5906b61eec8ddffa8b',
       chainId: 137,
       name: 'LP WETH-ESW',
