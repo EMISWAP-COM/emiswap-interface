@@ -7,8 +7,8 @@ import { ESW } from '../../constants';
 import { Token } from '@uniswap/sdk';
 import { BigNumber } from '@ethersproject/bignumber';
 import { useActiveWeb3React } from '../../hooks';
-import { calcFarming365Apr } from './helpers';
 import dayjs from 'dayjs';
+import { useFarm365Data } from './useFarm365Data';
 
 type Farm365ItemProps = {
   contract: Contract;
@@ -18,6 +18,8 @@ type Farm365ItemProps = {
 export default function Farm365Item({ contract, selectedFilterTab }: Farm365ItemProps) {
   const { chainId } = useActiveWeb3React();
   const farming365 = useFarming365(contract);
+
+  const { calcAprValue } = useFarm365Data();
 
   const eswCurrency: Token = ESW[chainId][0];
 
@@ -37,7 +39,7 @@ export default function Farm365Item({ contract, selectedFilterTab }: Farm365Item
 
   useEffect(() => {
     if (farming365.liquidity) {
-      setApr(calcFarming365Apr(chainId, farming365.liquidity, farming365.blockReward, eswRate));
+      setApr(calcAprValue(farming365.liquidity, farming365.blockReward, eswRate));
     }
   }, [chainId, farming365.blockReward, farming365.liquidity, eswRate]);
 
