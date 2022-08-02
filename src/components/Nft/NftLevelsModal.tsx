@@ -158,7 +158,7 @@ export default function NftLevelsModal({ isOpen, onlyNfts, onClose }: Props) {
                   <StyledCardText>
                     APR LP 180% {'>'} <StyledCardTextBold>185%</StyledCardTextBold>
                     <br />
-                    PR Farm 365% {'>'} <StyledCardTextBold>375%</StyledCardTextBold>
+                    APR Farm 365% {'>'} <StyledCardTextBold>375%</StyledCardTextBold>
                   </StyledCardText>
                   {/*<StyledCardText>
                     Follow our guide how to provide liquidity with{' '}
@@ -174,7 +174,7 @@ export default function NftLevelsModal({ isOpen, onlyNfts, onClose }: Props) {
                   <StyledCardText>
                     APR LP 180% {'>'} <StyledCardTextBold>190%</StyledCardTextBold>
                     <br />
-                    PR Farm 365% {'>'} <StyledCardTextBold>385%</StyledCardTextBold>
+                    APR Farm 365% {'>'} <StyledCardTextBold>385%</StyledCardTextBold>
                   </StyledCardText>
                   {/*<StyledCardText>
                     Follow our guide how to provide liquidity with{' '}
