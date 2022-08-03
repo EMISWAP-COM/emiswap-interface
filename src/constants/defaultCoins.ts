@@ -4172,9 +4172,10 @@ const defaultCoins: DefaultCoins = {
     {
       address: '0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6',
       chainId: 137,
-      name: 'BTC',
+      name: 'WrappedBTC',
       decimals: 6,
-      symbol: 'BTC',
+      symbol: 'WBTC',
+      logoURI: 'https://tokens.1inch.exchange/0x2260fac5e5542a773aa44fbcfedf7c193bc2c599.png',
     },
     {
       address: '0x055a93a5624b386ae5eace5906b61eec8ddffa8b',
