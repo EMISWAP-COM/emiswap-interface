@@ -22,7 +22,7 @@ import {
   useNetworkData,
 } from '../../hooks/Coins';
 import dayjs from 'dayjs';
-import { calcAprValue, calcFarming365Apr, getFarmDays } from './helpers';
+import { useFarm365Data } from './useFarm365Data';
 import { isMobile } from 'react-device-detect';
 import Tooltip from '../Farm/Tooltip';
 import { useWalletModalToggle } from '../../state/application/hooks';
@@ -215,6 +215,8 @@ export default function Farm365Content({ farming365, eswRate }: Farm365ContentPr
   const isPolygonActive = useIsPolygonActive();
   const isShidenActive = useIsShidenActive();
   const isAstarActive = useIsAstarActive();
+
+  const { getFarmDays, calcAprValue, calcAprPercent } = useFarm365Data();
 
   const farmingAddresses = farming365.contract.address;
 
@@ -509,12 +511,7 @@ export default function Farm365Content({ farming365, eswRate }: Farm365ContentPr
     farming365.update();
   };
 
-  const apr = calcFarming365Apr(
-    chainId,
-    farming365.liquidity,
-    farming365.blockReward,
-    eswRate,
-  ).toFixed(2);
+  const aprValue = calcAprValue(farming365.liquidity, farming365.blockReward, eswRate).toFixed(2);
 
   const headerMarginBottom = lpStakedTokens?.length > 1 ? (isMobile ? 12 : 24) : isMobile ? 12 : 0;
 
@@ -576,9 +573,13 @@ export default function Farm365Content({ farming365, eswRate }: Farm365ContentPr
                 </Tooltip>
               </StakeTokenLine>
             </StakeToken>
-            <Tooltip title={parseFloat(eswStakedBalance) > 0 ? `${+apr - getFarmDays()}%` : '0'}>
+            <Tooltip
+              title={parseFloat(eswStakedBalance) > 0 ? `${+aprValue - getFarmDays()}%` : '0'}
+            >
               <StakeApr>
-                {parseFloat(eswStakedBalance) > 0 ? `${(+apr - getFarmDays()).toFixed(2)}%` : '0'}
+                {parseFloat(eswStakedBalance) > 0
+                  ? `${(+aprValue - getFarmDays()).toFixed(2)}%`
+                  : '0'}
               </StakeApr>
             </Tooltip>
             <Tooltip title={farming365.reward}>
@@ -600,7 +601,7 @@ export default function Farm365Content({ farming365, eswRate }: Farm365ContentPr
                   </Tooltip>
                 </StakeTokenLine>
               </StakeToken>
-              <StakeApr>{calcAprValue(tokenAmount.token)}%</StakeApr>
+              <StakeApr>{calcAprPercent(tokenAmount.token)}%</StakeApr>
               {isPolygonActive && (
                 <StakeRewardWallet onClick={toggleWalletModal}>See details</StakeRewardWallet>
               )}

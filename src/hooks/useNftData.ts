@@ -126,8 +126,18 @@ export default function useNftData() {
        });*/
   }, [account]);
 
+  const basicNft = nfts.find(({ type }) => type === 'basic');
+  const topNft = nfts.find(({ type }) => type === 'top');
+
+  const isOnlyBasicNft = basicNft && !topNft;
+  const isOnlyTopNft = !basicNft && topNft;
+  const isTwoNft = basicNft && topNft;
+
   return {
-    nfts,
     // nfts: nfts[0] ? [nfts[0]] : [],
+    nfts,
+    isOnlyBasicNft,
+    isOnlyTopNft,
+    isTwoNft,
   };
 }
