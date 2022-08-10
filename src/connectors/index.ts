@@ -36,6 +36,7 @@ export const injected = new InjectedConnector({
     chainIds.ASTAR,
     chainIds.GATECHAIN,
     chainIds.AURORA,
+    chainIds.MANDALA,
   ],
 });
 
@@ -54,6 +55,7 @@ export const walletconnect = new WalletConnectConnector({
     chainIds.ASTAR,
     chainIds.GATECHAIN,
     chainIds.AURORA,
+    chainIds.MANDALA,
   ],
   rpc: {
     [CHAIN_ID]: NETWORK_URL,

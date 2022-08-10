@@ -134,6 +134,8 @@ export function useCurrencyWrapped(currency: Token | null | undefined) {
         return WGT;
       case chainIds.AURORA:
         return AURORA_WETH;
+      case chainIds.MANDALA:
+        return AURORA_WETH;
       default:
         return KOVAN_WETH;
     }

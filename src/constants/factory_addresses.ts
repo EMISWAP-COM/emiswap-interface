@@ -14,6 +14,7 @@ const factory_addresses: any = {
   [chainIds.ASTAR]: '0xb4BcA5955F26d2fA6B57842655d7aCf2380Ac854',
   [chainIds.GATECHAIN]: '0xb4BcA5955F26d2fA6B57842655d7aCf2380Ac854',
   [chainIds.AURORA]: '0x979e5d41595263f6Dfec4F4D48419C555B80D95c',
+  [chainIds.MANDALA]: '0xA1bF82933E9A91C4449bDfb5D6bdf359DE328033',
 };
 
 export default factory_addresses;

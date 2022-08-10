@@ -53,6 +53,7 @@ const EMPTY_LIST: TokenAddressMap = {
   [chainIds.ASTAR]: {},
   [chainIds.GATECHAIN]: {},
   [chainIds.AURORA]: {},
+  [chainIds.MANDALA]: {},
 };
 
 export function useInvestState(): AppState['invest'] {

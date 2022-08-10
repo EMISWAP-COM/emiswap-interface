@@ -11,6 +11,7 @@ const esw_addresses: any = {
   [chainIds.ASTAR]: '0xb361DAD0Cc1a03404b650A69d9a5ADB5aF8A531F', // TODO
   [chainIds.GATECHAIN]: '0x18f38359551258C35e8593d775cb6Fe8D27fd89b', // TODO
   [chainIds.AURORA]: '0xd2Fa7C9386040f260e3Ec934601982aD4Cd7902B', // TODO
+  [chainIds.MANDALA]: '0xed772835863a783412177dB9F0A608721117871B',
 };
 
 export default esw_addresses;

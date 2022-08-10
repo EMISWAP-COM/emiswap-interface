@@ -49,6 +49,7 @@ const addressesByNetworkId = {
   [chainIds.ASTAR]: ['0x588Ab29561cA03bDE01C3c84F1677be9640f31A9'],
   [chainIds.GATECHAIN]: [''],
   [chainIds.AURORA]: [''],
+  [chainIds.MANDALA]: [''],
 };
 
 const getFarmingAddresses = (chainId: ChainId): string[] => {

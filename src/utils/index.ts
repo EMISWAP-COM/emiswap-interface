@@ -30,7 +30,6 @@ import { SDN } from '../constants/tokens/SDN';
 import { AURORA_ETHER } from '../constants/tokens/AURORA_ETHER';
 import { ASTR } from '../constants/tokens/ASTR';
 import { GT } from '../constants/tokens/GT';
-import { useMemo } from 'react';
 
 const EMI_DELIVERY = window['env'].REACT_APP_EMI_DELIVERY;
 
@@ -58,6 +57,7 @@ const ETHERSCAN_PREFIXES: { [chainId in chainIds]: string } = {
   592: 'astar.',
   86: 'gatechain.',
   1313161554: 'aurora.',
+  0: 'mandala.',
 };
 
 export function getExplorerLink(

@@ -25,6 +25,7 @@ const CHAIN_ID_NETWORK_ARGUMENT: {
   [chainIds.ASTAR]: 'astar',
   [chainIds.GATECHAIN]: 'gatechain',
   [chainIds.AURORA]: 'aurora',
+  [chainIds.MANDALA]: 'mandala',
 };
 
 export class FortmaticConnector extends FortmaticConnectorCore {

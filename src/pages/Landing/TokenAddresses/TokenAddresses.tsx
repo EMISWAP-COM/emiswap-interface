@@ -15,6 +15,7 @@ import AstarNetworkIcon from '../../../assets/images/astar-network.png';
 import ShidenNetworkIcon from '../../../assets/images/shiden-network.png';
 import GateChainNetworkIcon from '../../../assets/currencies/GT.png';
 import AuroraNetworkIcon from '../../../assets/svg/aurora-network.svg';
+import NftBoostSvg from '../../../assets/svg/nft-boost.svg';
 
 export const tokens = [
   {
@@ -24,6 +25,7 @@ export const tokens = [
     icon: polygonSvg,
     symbol: 'ESW',
     decimals: 18,
+    isNetwork: true,
   },
   {
     chainName: 'Ethereum',
@@ -32,6 +34,7 @@ export const tokens = [
     icon: ethereumSvg,
     symbol: 'ESW',
     decimals: 18,
+    isNetwork: true,
   },
   {
     chainName: 'KCC',
@@ -40,6 +43,7 @@ export const tokens = [
     icon: kccSVG,
     symbol: 'ESW',
     decimals: 18,
+    isNetwork: true,
   },
   {
     chainName: 'Astar',
@@ -48,6 +52,7 @@ export const tokens = [
     icon: AstarNetworkIcon,
     symbol: 'ASTR',
     decimals: 18,
+    isNetwork: true,
   },
   {
     chainName: 'Shiden',
@@ -56,6 +61,7 @@ export const tokens = [
     icon: ShidenNetworkIcon,
     symbol: 'SDN',
     decimals: 18,
+    isNetwork: true,
   },
   {
     chainName: 'GateChain',
@@ -64,6 +70,7 @@ export const tokens = [
     icon: GateChainNetworkIcon,
     symbol: 'GT',
     decimals: 18,
+    isNetwork: true,
   },
   {
     chainName: 'Aurora',
@@ -72,6 +79,36 @@ export const tokens = [
     icon: AuroraNetworkIcon,
     symbol: 'ETH',
     decimals: 18,
+    isNetwork: true,
+  },
+  {
+    chainName: 'Mandala',
+    address: '0xd2Fa7C9386040f260e3Ec934601982aD4Cd7902B',
+    chainId: chainIds.MANDALA,
+    icon: AuroraNetworkIcon,
+    symbol: 'ETH',
+    decimals: 18,
+    isNetwork: true,
+  },
+  {
+    chainName: 'EmiChiko',
+    address: '0xd1f4513cacBFF3AbaF3a6A6bB6D976c5157720C9',
+    chainId: '137',
+    icon: polygonSvg,
+    symbol: 'ESW',
+    decimals: 18,
+    isNetwork: false,
+    isNftBoost: true,
+  },
+  {
+    chainName: 'EmiRoko',
+    address: '0x850fbF18C87b6d209e9dE0477B077c613feE5435',
+    chainId: '137',
+    icon: polygonSvg,
+    symbol: 'ESW',
+    decimals: 18,
+    isNetwork: false,
+    isNftBoost: true,
   },
 ];
 
@@ -148,7 +185,7 @@ const TokenAddresses = () => {
                 <S.Address>{shortenAddressHeadTail(token.address)}</S.Address>
                 <S.Controls>
                   <S.Chain>
-                    <img src={token.icon} alt="" />
+                    <img className="img-icon" src={token.icon} alt="" />
                     <S.ChainName>{token.chainName}</S.ChainName>
                   </S.Chain>
                 </S.Controls>

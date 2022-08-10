@@ -4804,6 +4804,15 @@ const defaultCoins: DefaultCoins = {
       decimals: 18,
       symbol: 'NEAR',
     },
+
+    // Mandala
+    {
+      address: '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d',
+      chainId: chainIds.MANDALA,
+      name: 'NEAR',
+      decimals: 18,
+      symbol: 'NEAR',
+    },
   ],
   logoURI: 'https://1inch.exchange/assets/images/logo.png',
 };

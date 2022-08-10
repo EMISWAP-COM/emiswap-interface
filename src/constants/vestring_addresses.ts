@@ -11,6 +11,7 @@ const vesting_addresses: any = {
   [chainIds.ASTAR]: '0x9Cf73e538acC5B2ea51396eA1a6DE505f6a68f2b', // TODO
   [chainIds.GATECHAIN]: '0x9Cf73e538acC5B2ea51396eA1a6DE505f6a68f2b', // TODO
   [chainIds.AURORA]: '0x9Cf73e538acC5B2ea51396eA1a6DE505f6a68f2b', // TODO
+  [chainIds.MANDALA]: '0x9Cf73e538acC5B2ea51396eA1a6DE505f6a68f2b', // TODO
 };
 
 export default vesting_addresses;

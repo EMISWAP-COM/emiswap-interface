@@ -15,6 +15,7 @@ const emirouter_addresses: any = {
   [chainIds.ASTAR]: '0x7B4b70c61a8fDE4E8c03f99adC567C1762d9d247',
   [chainIds.GATECHAIN]: '0x3fE2cB91496Cf22F1Cf8382c82Cf9Ea70979654B',
   [chainIds.AURORA]: '0xa139eAE059aEacf15375dd258dddeBFbF2928f5b',
+  [chainIds.MANDALA]: '0xE9C561d4d60E0632d039B1a3bb2DaE6bc44FC0Ea',
 };
 
 export default emirouter_addresses;

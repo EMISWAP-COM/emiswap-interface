@@ -277,6 +277,15 @@ export const AURORA_USDT = new Token(
   'Tether USD',
 );
 
+export const MANDALA_USDT = new Token(
+  // @ts-ignore
+  chainIds.MANDALA,
+  '0x4988a896b1227218e4A686fdE5EabdcAbd91571f',
+  18,
+  'USDT',
+  'Tether USD',
+);
+
 export const ESW: ChainTokenList = {
   [ChainId.MAINNET]: [
     new Token(ChainId.MAINNET, esw_addresses[chainIds.MAINNET], 18, 'ESW', 'EmiDAO Token'),
@@ -328,6 +337,10 @@ export const ESW: ChainTokenList = {
     // @ts-ignore
     new Token(chainIds.AURORA, esw_addresses[chainIds.AURORA], 18, 'ESW', 'EmiDAO Token'),
   ],
+  [chainIds.MANDALA]: [
+    // @ts-ignore
+    new Token(chainIds.AURORA, esw_addresses[chainIds.MANDALA], 18, 'ESW', 'EmiDAO Token'),
+  ],
 };
 
 const ETH_ONLY: ChainTokenList = {
@@ -345,6 +358,7 @@ const ETH_ONLY: ChainTokenList = {
   [chainIds.ASTAR]: [ETHER],
   [chainIds.GATECHAIN]: [ETHER],
   [chainIds.AURORA]: [ETHER],
+  [chainIds.MANDALA]: [ETHER],
 };
 
 // used to construct intermediary pairs for trading
@@ -362,6 +376,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   [chainIds.ASTAR]: [ASTAR_DAI, ASTAR_USDC, ASTAR_USDT, WASTR],
   [chainIds.GATECHAIN]: [GATECHAIN_USDC, GATECHAIN_USDT, WGT],
   [chainIds.AURORA]: [AURORA_DAI, AURORA_USDT /*AURORA_WETH*/],
+  [chainIds.MANDALA]: [MANDALA_USDT],
 };
 
 // used for display in the default list when adding liquidity
@@ -406,6 +421,8 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   [chainIds.GATECHAIN]: [ESW[chainIds.GATECHAIN][0]],
   // @ts-ignore
   [chainIds.AURORA]: [AURORA_DAI, AURORA_USDT /*AURORA_WETH*/ /*ESW[chainIds.AURORA][0]*/],
+  // @ts-ignore
+  [chainIds.MANDALA]: [MANDALA_USDT],
 };
 
 // @ts-ignore
@@ -840,6 +857,25 @@ export const networksItems: INetworkItem[] = [
     analyticsUrl: 'https://emiswap.com/analytics?network=polygon', // TODO: FAKE
     eswExplorerName: 'ESW Polygonscan', // TODO: FAKE
     active: false,
+  },
+  {
+    alias: 'mandala',
+    value: 'mandala',
+    chainId: chainIds.MANDALA,
+    token: AURORA_ETHER,
+    icon: AuroraNetworkIcon,
+    name: 'Mandala',
+    rpcUrls: ['https://mainnet.madala.dev'],
+    currencySymbol: 'ETH',
+    currencySymbolWrap: 'WETH',
+    currencySymbolWeth: 'WETH',
+    blockExplorerUrl: 'https://explorer.mainnet.aurora.dev',
+    blockExplorerName: 'Mandala Block Explorer',
+    analyticsUrl: 'https://emiswap.com/analytics?network=mandala',
+    eswExplorerUrl: 'https://etherscan.io/token/0x5a75A093747b72a0e14056352751eDF03518031d',
+    eswExplorerName: 'ESW Mandala',
+    active: true,
+    bridgeUrl: 'https://rainbowbridge.app/transfer',
   },
 ];
 

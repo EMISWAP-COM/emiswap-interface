@@ -13,6 +13,7 @@ enum chainIds {
   ASTAR = 592,
   GATECHAIN = 86,
   AURORA = 1313161554,
+  MANDALA = 0,
 }
 
 export default chainIds;

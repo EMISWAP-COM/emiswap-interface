@@ -11,6 +11,7 @@ const crowdSales_addresses: any = {
   [chainIds.ASTAR]: '0x57C8844fBDb197Ad9C80cB5bCCC36ec43EE392EF',
   [chainIds.GATECHAIN]: '0x57C8844fBDb197Ad9C80cB5bCCC36ec43EE392EF',
   [chainIds.AURORA]: '0x57C8844fBDb197Ad9C80cB5bCCC36ec43EE392EF',
+  [chainIds.MANDALA]: '0x57C8844fBDb197Ad9C80cB5bCCC36ec43EE392EF',
 };
 
 export default crowdSales_addresses;
