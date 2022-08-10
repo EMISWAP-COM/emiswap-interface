@@ -76,6 +76,7 @@ export const Copy = styled.div`
 `;
 
 export const Chain = styled.div`
+  position: relative;
   display: flex;
   height: 18px;
   justify-content: center;
@@ -83,7 +84,8 @@ export const Chain = styled.div`
   gap: 8px;
   cursor: pointer;
 
-  img:first-of-type {
+  img:first-of-type,
+  .img-icon {
     background-color: white;
     border-radius: 50%;
     height: 18px;
@@ -101,6 +103,14 @@ export const ChainName = styled.div`
   min-width: 60px;
   font-size: 12px;
   color: #ffffff;
+`;
+
+export const NftBoostImg = styled.img`
+  position: absolute;
+  right: -7px;
+  background-color: transparent !important;
+  height: auto !important;
+  width: 10px !important;
 `;
 
 export const Options = styled.div`
