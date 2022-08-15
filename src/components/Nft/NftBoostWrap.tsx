@@ -36,15 +36,16 @@ interface Props {
   text: string;
   children: any;
   size?: number;
+  visible?: boolean;
 }
 
-export default function NftBoostWrap({ text, children, size = 30 }: Props) {
+export default function NftBoostWrap({ text, children, size = 30, visible = false }: Props) {
   const { nfts } = useNftData();
 
   return (
     <StyledWrap>
       <StyledContent>{children}</StyledContent>
-      {Boolean(nfts?.length) && (
+      {(Boolean(nfts?.length) || visible) && (
         <StyledNftBoost>
           <StyledNftBoostImg src={NftBoostSvg} />
           {text}
