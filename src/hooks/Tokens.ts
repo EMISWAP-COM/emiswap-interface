@@ -18,6 +18,7 @@ import {
   useIsPolygonActive,
   useIsShidenActive,
   useNetworkData,
+  useIsMandalaActive,
 } from './Coins';
 import { useTokenListWithPair } from './useTokenListWithPair';
 import defaultCoins, { mustVisibleAddresses } from '../constants/defaultCoins';
@@ -39,6 +40,7 @@ export function useAllTokens(isLpTokens?: boolean): [{ [address: string]: Token 
   const isAstarActive = useIsAstarActive();
   const isGateChainActive = useIsGateChainActive();
   const isAuroraActive = useIsAuroraActive();
+  const isMandalaActive = useIsMandalaActive();
 
   return [
     useMemo(() => {
@@ -150,6 +152,19 @@ export function useAllTokens(isLpTokens?: boolean): [{ [address: string]: Token 
                 ct.chainId === chainId &&
                 el.address.toLowerCase() === ct.address.toLowerCase() &&
                 ct.symbol !== 'WGT',
+            );
+
+            return (
+              Boolean(exists) ||
+              el.address === window['env'].REACT_APP_ESW_ID ||
+              el.symbol === 'ESW'
+            );
+          } else if (isMandalaActive) {
+            const exists = defaultCoins.tokens.find(
+              ct =>
+                ct.chainId === chainId &&
+                el.address.toLowerCase() === ct.address.toLowerCase() &&
+                ct.symbol !== 'ACA',
             );
 
             return (

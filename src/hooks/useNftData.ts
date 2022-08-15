@@ -5,6 +5,7 @@ import nftPurpleRabbitBigPng from '../assets/images/nft-purple-rabbit-big.png';
 import { useActiveWeb3React } from './index';
 import { useEffect, useState } from 'react';
 import { fetchWrapper } from '../api/fetchWrapper';
+import { useIsPolygonActive } from './Coins';
 
 export interface IPolygonAccountResponse {
   message: 'OK';
@@ -43,6 +44,8 @@ export interface INft {
 export default function useNftData() {
   const { /*library, chainId,*/ account } = useActiveWeb3React();
 
+  const isPolygonActive = useIsPolygonActive();
+
   // const contract = getPolygonNftContract(library!, '0x527b0726d7817ce8a3281a137276e6950efb0a3c', chainId!);
 
   const [nfts, setNfts] = useState<INft[]>([]);
@@ -64,7 +67,7 @@ export default function useNftData() {
   // const address = '0x412c090d8CeC64de9Be2ae48689155EA96D5Ac3e'; // Top
 
   useEffect(() => {
-    if (requestAccount !== address) {
+    if (requestAccount !== address && isPolygonActive) {
       setRequestAccount(address);
 
       fetchWrapper
@@ -120,11 +123,7 @@ export default function useNftData() {
         })
         .catch(e => console.log(e));
     }
-    /* contract.balanceOf('0xC1f77e2D09bbB37135D069e969854582B0EaB975')
-       .then((value) => {
-         console.log(value);
-       });*/
-  }, [account]);
+  }, [account, isPolygonActive]);
 
   const basicNft = nfts.find(({ type }) => type === 'basic');
   const topNft = nfts.find(({ type }) => type === 'top');

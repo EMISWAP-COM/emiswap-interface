@@ -11,6 +11,7 @@ import PolygonNetworkIcon from '../assets/svg/polygon-network.svg';
 import ShidenNetworkIcon from '../assets/images/shiden-network.png';
 import AvalancheNetworkIcon from '../assets/svg/avalanche-network.svg';
 import AstarNetworkIcon from '../assets/images/astar-network.png';
+import MandalaNetworkIcon from '../assets/images/mandala-network.png';
 import GateChainNetworkIcon from '../assets/currencies/GT.png';
 import AuroraNetworkIcon from '../assets/svg/aurora-network.svg';
 import WalletConnectIcon from '../assets/images/walletConnectIcon.svg';
@@ -27,6 +28,7 @@ import { SDN } from './tokens/SDN';
 import { AURORA_ETHER } from './tokens/AURORA_ETHER';
 import { ASTR } from './tokens/ASTR';
 import { GT } from './tokens/GT';
+import { ACA } from './tokens/ACA';
 
 export const MAX_NUM_DECIMALS = 18;
 export const ROUTER_ADDRESS = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D';
@@ -862,14 +864,14 @@ export const networksItems: INetworkItem[] = [
     alias: 'mandala',
     value: 'mandala',
     chainId: chainIds.MANDALA,
-    token: AURORA_ETHER,
-    icon: AuroraNetworkIcon,
+    token: ACA,
+    icon: MandalaNetworkIcon,
     name: 'Mandala',
-    rpcUrls: ['https://mainnet.madala.dev'],
-    currencySymbol: 'ETH',
-    currencySymbolWrap: 'WETH',
-    currencySymbolWeth: 'WETH',
-    blockExplorerUrl: 'https://explorer.mainnet.aurora.dev',
+    rpcUrls: ['https://acala-mandala-adapter.api.onfinality.io/public'],
+    currencySymbol: 'ACA',
+    currencySymbolWrap: 'ACA',
+    currencySymbolWeth: 'ACA',
+    blockExplorerUrl: 'https://blockscout.mandala.acala.network',
     blockExplorerName: 'Mandala Block Explorer',
     analyticsUrl: 'https://emiswap.com/analytics?network=mandala',
     eswExplorerUrl: 'https://etherscan.io/token/0x5a75A093747b72a0e14056352751eDF03518031d',

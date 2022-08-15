@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import copy from 'copy-to-clipboard';
 
 import * as S from './styleds';
@@ -15,7 +15,7 @@ import AstarNetworkIcon from '../../../assets/images/astar-network.png';
 import ShidenNetworkIcon from '../../../assets/images/shiden-network.png';
 import GateChainNetworkIcon from '../../../assets/currencies/GT.png';
 import AuroraNetworkIcon from '../../../assets/svg/aurora-network.svg';
-import NftBoostSvg from '../../../assets/svg/nft-boost.svg';
+import MandalaNetworkIcon from '../../../assets/images/mandala-network.png';
 
 export const tokens = [
   {
@@ -83,10 +83,10 @@ export const tokens = [
   },
   {
     chainName: 'Mandala',
-    address: '0xd2Fa7C9386040f260e3Ec934601982aD4Cd7902B',
+    address: '0x0000000000000000000100000000000000000000',
     chainId: chainIds.MANDALA,
-    icon: AuroraNetworkIcon,
-    symbol: 'ETH',
+    icon: MandalaNetworkIcon,
+    symbol: 'ACA',
     decimals: 18,
     isNetwork: true,
   },

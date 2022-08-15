@@ -57,7 +57,7 @@ const ETHERSCAN_PREFIXES: { [chainId in chainIds]: string } = {
   592: 'astar.',
   86: 'gatechain.',
   1313161554: 'aurora.',
-  0: 'mandala.',
+  595: 'mandala.',
 };
 
 export function getExplorerLink(

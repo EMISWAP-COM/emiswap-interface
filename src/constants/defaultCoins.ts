@@ -4807,11 +4807,20 @@ const defaultCoins: DefaultCoins = {
 
     // Mandala
     {
-      address: '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d',
+      address: '0x0000000000000000000100000000000000000000',
       chainId: chainIds.MANDALA,
-      name: 'NEAR',
+      name: 'ACA',
       decimals: 18,
-      symbol: 'NEAR',
+      symbol: 'ACA',
+      logoURI: 'https://s2.coinmarketcap.com/static/img/coins/64x64/6756.png',
+    },
+    {
+      address: '0x0000000000000000000100000000000000000001',
+      chainId: chainIds.MANDALA,
+      name: 'AUSD',
+      decimals: 18,
+      symbol: 'AUSD',
+      logoURI: 'https://s2.coinmarketcap.com/static/img/coins/64x64/17066.png',
     },
   ],
   logoURI: 'https://1inch.exchange/assets/images/logo.png',
