@@ -16,6 +16,7 @@ import ShidenNetworkIcon from '../../../assets/images/shiden-network.png';
 import GateChainNetworkIcon from '../../../assets/currencies/GT.png';
 import AuroraNetworkIcon from '../../../assets/svg/aurora-network.svg';
 import MandalaNetworkIcon from '../../../assets/images/mandala-network.png';
+import NftBoostSvg from '../../../assets/svg/nft-boost.svg';
 
 export const tokens = [
   {
@@ -185,6 +186,7 @@ const TokenAddresses = () => {
                 <S.Address>{shortenAddressHeadTail(token.address)}</S.Address>
                 <S.Controls>
                   <S.Chain>
+                    {token.isNftBoost && <S.NftBoostImg src={NftBoostSvg} />}
                     <img className="img-icon" src={token.icon} alt="" />
                     <S.ChainName>{token.chainName}</S.ChainName>
                   </S.Chain>

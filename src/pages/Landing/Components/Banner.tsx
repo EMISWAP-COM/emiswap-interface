@@ -64,9 +64,11 @@ const Banner = ({
       <BannerDesc className="banner__desc">
         <div>{t('landing.banner.subtitle')}</div>
         <IconsWrapper>
-          {tokens.map(item => (
-            <img key={item.address} src={item.icon} alt="icon" />
-          ))}
+          {tokens
+            .filter(({ isNetwork }) => !!isNetwork)
+            .map(item => (
+              <img key={item.address} src={item.icon} alt="icon" />
+            ))}
           <img src={AvalancheNetworkIcon} alt="icon" />
         </IconsWrapper>
       </BannerDesc>
