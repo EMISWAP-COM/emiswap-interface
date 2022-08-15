@@ -82,7 +82,7 @@ export const tokens = [
     decimals: 18,
     isNetwork: true,
   },
-  {
+  /*{
     chainName: 'Mandala',
     address: '0x0000000000000000000100000000000000000000',
     chainId: chainIds.MANDALA,
@@ -90,7 +90,7 @@ export const tokens = [
     symbol: 'ACA',
     decimals: 18,
     isNetwork: true,
-  },
+  },*/
   {
     chainName: 'EmiChiko',
     address: '0xd1f4513cacBFF3AbaF3a6A6bB6D976c5157720C9',
@@ -153,7 +153,11 @@ const TokenAddresses = () => {
   return (
     <S.Root>
       <S.Control>
-        <S.Label>{t('landing.banner.tokenAddress')}</S.Label>
+        <S.Label>
+          {tokens[activeIndex]
+            ? `${tokens[activeIndex].chainName} ${tokens[activeIndex].symbol}`
+            : t('landing.banner.tokenAddress')}
+        </S.Label>
         <S.Details>
           <S.Address>{shortenAddressHeadTail(tokens[activeIndex].address, 4, 20)}</S.Address>
           <S.Controls>
