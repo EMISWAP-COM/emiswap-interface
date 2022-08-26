@@ -15,7 +15,7 @@ import AstarNetworkIcon from '../../../assets/images/astar-network.png';
 import ShidenNetworkIcon from '../../../assets/images/shiden-network.png';
 import GateChainNetworkIcon from '../../../assets/currencies/GT.png';
 import AuroraNetworkIcon from '../../../assets/svg/aurora-network.svg';
-import MandalaNetworkIcon from '../../../assets/images/mandala-network.png';
+// import MandalaNetworkIcon from '../../../assets/images/mandala-network.png';
 import NftBoostSvg from '../../../assets/svg/nft-boost.svg';
 
 export const tokens = [
@@ -96,7 +96,7 @@ export const tokens = [
     address: '0xd1f4513cacBFF3AbaF3a6A6bB6D976c5157720C9',
     chainId: '137',
     icon: polygonSvg,
-    symbol: 'ESW',
+    symbol: 'NFT',
     decimals: 18,
     isNetwork: false,
     isNftBoost: true,
@@ -106,7 +106,7 @@ export const tokens = [
     address: '0x850fbF18C87b6d209e9dE0477B077c613feE5435',
     chainId: '137',
     icon: polygonSvg,
-    symbol: 'ESW',
+    symbol: 'NFT',
     decimals: 18,
     isNetwork: false,
     isNftBoost: true,

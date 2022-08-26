@@ -1,12 +1,15 @@
 import { ETHER, JSBI, Token, TokenAmount } from '@uniswap/sdk';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import ERC20_INTERFACE from '../../constants/abis/erc20';
 import { useAllTokens } from '../../hooks/Tokens';
 import { useActiveWeb3React } from '../../hooks';
 import { useMulticallContract } from '../../hooks/useContract';
 import { useAllCoins } from '../../hooks/Coins';
-import { isAddress } from '../../utils';
+import { getContract, isAddress } from '../../utils';
 import { useMultipleContractSingleData, useSingleContractMultipleData } from '../multicall/hooks';
+import { Contract } from '@ethersproject/contracts';
+import { FARMING_ABI } from '../../constants/abis/farming';
+import { BigNumber } from '@ethersproject/bignumber';
 
 /**
  * Returns a map of the given addresses to their eventually consistent ETH balances.
@@ -82,6 +85,7 @@ export function useTokenBalancesWithLoadingIndicator(
   address?: string,
   tokens?: (Token | undefined)[],
 ): [{ [tokenAddress: string]: TokenAmount | undefined }, boolean] {
+  const { account, library } = useActiveWeb3React();
   // const isPolygonActive = useIsPolygonActive();
 
   const validatedTokens: Token[] = useMemo(
@@ -92,12 +96,27 @@ export function useTokenBalancesWithLoadingIndicator(
   const validatedTokenAddresses = useMemo(() => validatedTokens.map(vt => vt.address), [
     validatedTokens,
   ]);
+
+  useEffect(() => {
+    if (validatedTokenAddresses?.length) {
+      for (const tokenAddress of validatedTokenAddresses) {
+        const contract = getContract(tokenAddress, ERC20_INTERFACE, library!, account!);
+        contract.balanceOf(account);
+        // .then((amount: BigNumber) => console.log(amount.toString()))
+        // .catch((e: any) => console.log(e));
+      }
+    }
+  }, [validatedTokenAddresses]);
+
   const balances = useMultipleContractSingleData(
-    validatedTokenAddresses,
+    ['0x0000000000000000000100000000000000000000'],
     ERC20_INTERFACE,
     'balanceOf',
     [address],
   );
+
+  // console.log('balance', balances[0]?.result);
+
   const anyLoading: boolean = useMemo(() => balances.some(callState => callState.loading), [
     balances,
   ]);
@@ -247,6 +266,7 @@ export function useCurrencyBalance(account?: string, currency?: Token): TokenAmo
 export function useAllTokenBalances(): { [tokenAddress: string]: TokenAmount | undefined } {
   const { account } = useActiveWeb3React();
   const [allTokens] = useAllTokens();
+
   const allTokensArray = useMemo(() => Object.values(allTokens ?? {}), [allTokens]);
   const balances = useTokenBalances(account ?? undefined, allTokensArray);
   return balances ?? {};
