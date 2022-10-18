@@ -161,10 +161,8 @@ export function useAllTokens(isLpTokens?: boolean): [{ [address: string]: Token 
             );
           } else if (isMandalaActive) {
             const exists = defaultCoins.tokens.find(
-              ct =>
-                ct.chainId === chainId &&
-                el.address.toLowerCase() === ct.address.toLowerCase() &&
-                ct.symbol !== 'ACA',
+              ct => ct.chainId === chainId && el.address.toLowerCase() === ct.address.toLowerCase(), // &&
+              // ct.symbol !== 'ACA',
             );
 
             return (

@@ -19,7 +19,7 @@ import { currencyKey } from '../../utils/currencyId';
 import { tokenAmountToString } from '../../utils/formats';
 import defaultCoins from '../../constants/defaultCoins';
 import { KOVAN_WETH } from '../../constants';
-import { useIsAuroraActive, useNetworkData } from '../../hooks/Coins';
+import { useIsAuroraActive, useIsMandalaActive, useNetworkData } from '../../hooks/Coins';
 
 export default function CurrencyList({
   currencies,
@@ -52,13 +52,14 @@ export default function CurrencyList({
   const removeToken = useRemoveUserAddedToken();
   const ETHBalance = useETHBalances([account])[account];
   const isAuroraActive = useIsAuroraActive();
+  const isMandalaActive = useIsMandalaActive();
 
   const CurrencyRow = useMemo(() => {
     return memo(function CurrencyRow({ index, style }: { index: number; style: CSSProperties }) {
       const mainToken = networkData.token;
 
       let currency = currencies[index];
-      if (!isLpTokens)
+      if (!isLpTokens && !isMandalaActive)
         if (index === 0) {
           currency = mainToken;
         } else {
@@ -70,7 +71,7 @@ export default function CurrencyList({
       const customAdded = Boolean(
         !isDefault && currency instanceof Token && allTokens[currency.address],
       );
-      const balance = currency === mainToken ? ETHBalance : allBalances[key];
+      const balance = currency === mainToken && !isMandalaActive ? ETHBalance : allBalances[key];
 
       const zeroBalance = balance && JSBI.equal(JSBI.BigInt(0), balance.raw);
       const wethTokenInfo = defaultCoins.tokens.find(
@@ -190,7 +191,7 @@ export default function CurrencyList({
     <StyledFixedSizeList
       width="auto"
       height={500}
-      itemCount={isLpTokens ? currencies.length : currencies.length + 1}
+      itemCount={isLpTokens || isMandalaActive ? currencies.length : currencies.length + 1}
       itemSize={50}
       style={{ flex: '1', margin: '0 30px' }}
       itemKey={index => currencyKey(currencies[index])}

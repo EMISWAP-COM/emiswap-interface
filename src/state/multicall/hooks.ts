@@ -143,6 +143,8 @@ function toCallState(
   fragment: FunctionFragment | undefined,
   latestBlockNumber: number | undefined,
 ): CallState {
+  // console.log(callResult, contractInterface, fragment, latestBlockNumber);
+
   if (!callResult) {
     return INVALID_CALL_STATE;
   }
@@ -331,6 +333,7 @@ export function useMultipleContractSingleData(
           })
         : [];
   } else {
+    // console.log(fragment, callInputs);
     const callData =
       fragment && isValidMethodArgs(callInputs)
         ? contractInterface.encodeFunctionData(fragment, callInputs)

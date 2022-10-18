@@ -867,7 +867,7 @@ export const networksItems: INetworkItem[] = [
     token: ACA,
     icon: MandalaNetworkIcon,
     name: 'Mandala',
-    rpcUrls: ['https://acala-mandala-adapter.api.onfinality.io/public'],
+    rpcUrls: ['https://eth-rpc-mandala.aca-staging.network'],
     currencySymbol: 'ACA',
     currencySymbolWrap: 'ACA',
     currencySymbolWeth: 'ACA',

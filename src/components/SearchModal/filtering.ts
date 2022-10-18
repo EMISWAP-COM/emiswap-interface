@@ -6,7 +6,14 @@ export function filterTokens(
   search: string,
   isLpTokens: boolean = false,
 ): Token[] {
-  let visibleTokens = tokens;
+  let visibleTokens: Token[] = [];
+
+  tokens.forEach(token => {
+    if (!visibleTokens.find(value => value.address === token.address)) {
+      // console.log(token.address, tokens.length);
+      visibleTokens.push(token);
+    }
+  });
 
   if (isLpTokens) {
     visibleTokens = visibleTokens.filter(token => token.name.includes('LP '));
